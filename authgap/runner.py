@@ -35,6 +35,8 @@ class RunConfig:
     options: Options = field(default_factory=Options)
     #: 完全解析（支配判定 + 判定）を行うか。偽なら F0a だけ。
     full: bool = True
+    #: §3 の 3 腕（``A`` / ``B`` / ``C``）。**同一バイナリのフラグ違い。**
+    arm: str = "C"
 
 
 @dataclass
@@ -85,6 +87,7 @@ def run(cfg: RunConfig) -> RunResult:
                 exposure_supplied=bool(cfg.exposure_file),
                 prev_unit=prev.join(unit.unit_id) if prev else None,
                 options=cfg.options,
+                arm=cfg.arm,
             )
         else:
             report = analyze_unit_f0a(index, unit, cfg.options)

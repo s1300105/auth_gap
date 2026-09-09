@@ -112,7 +112,10 @@ class TrigIndex:
                 if site.selector_is_model:
                     return TrigResult(Prin.MODEL, "traced", site)
         # 低レベルハンドラ自身は、入口引数 `name` で分岐する dispatcher である。
-        if unit.entry_kind.startswith("lowlevel") and unit.dispatch_names:
+        # **`dispatch_names` の有無を条件にしない。** 候補名が `GitTools.STATUS` の
+        # ような Enum メンバで、文字列として読めないことがあるためで、
+        # 「MODEL セレクタで分岐している」ことは候補名が読めなくても決まる。
+        if unit.entry_kind.startswith("lowlevel"):
             for site in self.sites:
                 if site.relpath == unit.relpath and site.selector_is_model:
                     return TrigResult(Prin.MODEL, "traced", site)
@@ -272,6 +275,8 @@ def _sites_in(
                 )
     # (3) `if name == "x": tool_x(...)` の連鎖
     out += _if_chain_sites(fn, rel, model_names)
+    # (4) `match name: case GitTools.STATUS: ...`（Def 4 の「解決済みレジストリ上の match」）
+    out += _match_sites(fn, rel, model_names)
     return out
 
 
@@ -319,6 +324,63 @@ def _if_chain_sites(fn: ast.AST, rel: str, model_names: set[str]) -> list[Dispat
             )
         )
     return out
+
+
+def _match_sites(fn: ast.AST, rel: str, model_names: set[str]) -> list[DispatchSite]:
+    """`match <sel>: case <定数>:` を dispatch とみなす（Def 4）。
+
+    これを落とすと `mcp-server-git` のような `match name:` 形の低レベル
+    ハンドラで trig が常に `assumed` になり、SELECT 座標が原理的に発火しない。
+    """
+    match_cls = getattr(ast, "Match", None)
+    if match_cls is None:  # pragma: no cover - 3.10 未満
+        return []
+    out: list[DispatchSite] = []
+    for node in ast.walk(fn):
+        if not isinstance(node, match_cls):
+            continue
+        if not _is_model_expr(node.subject, model_names):
+            continue
+        for case in node.cases:
+            if not _is_constant_pattern(case.pattern):
+                continue
+            callees = sorted(
+                {
+                    dotted_of(c.func)
+                    for c in ast.walk(ast.Module(body=case.body, type_ignores=[]))
+                    if isinstance(c, ast.Call) and dotted_of(c.func)
+                }
+            )
+            out.append(
+                DispatchSite(
+                    rel,
+                    getattr(case.pattern, "lineno", getattr(node, "lineno", 0)),
+                    _text(node.subject),
+                    True,
+                    tuple(c for c in callees if c),
+                    "resolved" if callees else "opaque",
+                    None if callees else "dynamic_registry",
+                    "match",
+                )
+            )
+    return out
+
+
+def _is_constant_pattern(pattern: ast.AST) -> bool:
+    """`case "x":` / `case Enum.MEMBER:` のように**定数へ解決できる**パターンか。
+
+    `case _:` や捕捉パターンは候補集合を決めないので dispatch に数えない。
+    """
+    mv = getattr(ast, "MatchValue", None)
+    ms = getattr(ast, "MatchSingleton", None)
+    mo = getattr(ast, "MatchOr", None)
+    if mv is not None and isinstance(pattern, mv):
+        return isinstance(pattern.value, (ast.Constant, ast.Attribute, ast.Name))
+    if ms is not None and isinstance(pattern, ms):
+        return True
+    if mo is not None and isinstance(pattern, mo):
+        return all(_is_constant_pattern(p) for p in pattern.patterns)
+    return False
 
 
 def _selector_of_test(test: ast.AST) -> Optional[str]:

@@ -130,99 +130,116 @@ class UnitVerdictInput:
 def decide(inp: UnitVerdictInput) -> list[Row]:
     """Def 7 の判定を行い、行の列を返す。
 
-    行は `(unit id, effect, position)` 単位。**行の verdict は集合である**（§3）。
+    **行は `(unit id, effect, position)` であり、その verdict は集合である**（§3）。
+    SELECT 座標の verdict は当該効果の**各制御位置の行に載せる**。別行にすると
+    §3 の交差行（同一行が SELECT 系と INJECT 系を同時に持つ形）が定義上 0 になる。
+    制御位置を持たない効果は `slot=None` の行を 1 本だけ出す。
     """
     rows: list[Row] = []
     effect_kinds = {e.kind for e in inp.effects}
     d_layers = _layers_present(inp)
-
     contradiction_flag = _contradiction(inp, effect_kinds)
 
     for i, eff in enumerate(inp.effects):
-        # -- UNKNOWN: 解決できていない行は clean にしない -------------------
-        unresolved = eff.resolution.kind != "resolved" or bool(inp.opaque_reasons)
+        # **行の確度で判定する。** ユニットのどこかで opaque が立ったことを
+        # 全行に伝播させると、解決できている行まで UNKNOWN になり、
+        # opaque 率も §3 の交差行も測れなくなる。ユニット水準の opaque 理由は
+        # manifest の `opaque_reasons` に別途残る。
+        unresolved = eff.resolution.kind != "resolved"
+        sel_verdicts, sel_covered, sel_notes = _select_coordinate(
+            inp, i, eff, contradiction_flag
+        )
 
-        # -- SELECT 座標（効果ごとに 1 行）-------------------------------
-        sel = Row(inp.unit_id, eff, None, set(), None, d_layers)
-        if contradiction_flag and eff.kind in ("EXEC", "SPAWN", "FS_WRITE"):
-            sel.verdicts.add("CONTRADICTION")
-        occ = inp.req_occ_by_effect.get(i, inp.req_occ)
-        if inp.trig_label is Prin.MODEL and inp.trig_mode == "traced" and occ is Req.MODEL:
-            if inp.d_op.covers(inp.tool_name):
-                sel.verdicts.add("INVENTORY")
-                sel.covered_by = "op"
-            elif inp.d_kind.covers(eff.kind):
-                sel.verdicts.add("INVENTORY")
-                sel.covered_by = "kind"
-            else:
-                sel.verdicts.add("GAP_SELECT")
-        elif inp.trig_mode == "assumed":
-            # **`assumed` の trig では SELECT 行は GAP ではなくマニフェスト行。**
-            sel.notes = sel.notes + ("select_manifest_only(assumed_trig)",)
-        if inp.drift_reasons and inp.d_kind.is_bottom and inp.d_op.is_bottom:
-            sel.verdicts.add("GAP_DRIFT")
-            sel.covered_by = sel.covered_by or "prev"
-            sel.notes = sel.notes + tuple(inp.drift_reasons)
-        if unresolved:
-            sel.verdicts.add("UNKNOWN")
-        if sel.verdicts or sel.notes:
-            rows.append(sel)
-
-        # -- INJECT 座標（制御位置ごとに 1 行）---------------------------
-        for slot, value in sorted(eff.control_slots().items()):
-            grade, weak_reason = inp.grades.get((i, slot), (None, None))
-            req = inp.req_val.get((i, slot), Req.MODEL)
-            row = Row(inp.unit_id, eff, slot, set(), None, d_layers)
-
-            if value.prov.kind != "resolved":
+        slots = sorted(eff.control_slots().items())
+        if not slots:
+            row = Row(inp.unit_id, eff, None, set(sel_verdicts), sel_covered, d_layers)
+            row.notes = sel_notes
+            if unresolved:
                 row.verdicts.add("UNKNOWN")
-
-            if value.prin is not Prin.MODEL:
-                if row.verdicts:
-                    rows.append(row)
-                continue
-
-            # 規則 W: weak validator は宣言に優先する（D_op には優先しない）。
-            weak = grade == "weak"
-            if req is not Req.MODEL and not weak:
-                # ゲートが引き上げているので GAP ではない。
-                continue
-
-            if inp.d_op.covers(inp.tool_name):
-                row.verdicts.add("INVENTORY")
-                row.covered_by = "op"
+            if row.verdicts or row.notes:
                 rows.append(row)
-                continue
+            continue
 
-            # rubric 1c（凍結済み）
-            if inp.tool_name in inp.rubric_1c_names and slot in PRIMARY_SLOTS:
-                any_validator = any(
-                    inp.grades.get((i, s), (None, None))[0] is not None
-                    for s in eff.control_slots()
-                )
-                if not any_validator and inp.exposure_supplied:
-                    row.verdicts.add("INVENTORY")
-                    row.covered_by = "op"
-                    row.rubric_1c = "inventory(no_validator+exposure)"
-                    rows.append(row)
-                    continue
-                row.rubric_1c = (
-                    "gap(rule_w:weak_validator)" if weak else "gap(P0:no_exposure)"
-                )
-
-            # D_dom は実装条件を満たすまで常に ⊥（反証条件 F1）。
-            # D_kind は kind の上界しか宣言せず**制御位置を宣言しないので
-            # INJECT を被覆しない**。宣言があることは行に記録するだけ。
-            if inp.d_kind.covers(eff.kind):
-                row.notes = row.notes + (f"D_layer_present:kind:{eff.kind}",)
-
-            if eff.kind in P0_KINDS or eff.kind in ("DB", "NET"):
-                row.verdicts.add("GAP_INJECT")
-                row.rule_w = weak
-            if row.verdicts:
+        for slot, value in slots:
+            row = Row(inp.unit_id, eff, slot, set(sel_verdicts), sel_covered, d_layers)
+            row.notes = sel_notes
+            if unresolved or value.prov.kind != "resolved":
+                row.verdicts.add("UNKNOWN")
+            _inject_coordinate(inp, i, eff, slot, value, row)
+            if row.verdicts or row.notes:
                 rows.append(row)
-
     return rows
+
+
+def _select_coordinate(
+    inp: UnitVerdictInput, i: int, eff: Effect, contradiction_flag: bool
+) -> tuple[set[str], Optional[str], tuple[str, ...]]:
+    """SELECT / CONTRADICTION / DRIFT の座標（効果ごと）。"""
+    verdicts: set[str] = set()
+    covered: Optional[str] = None
+    notes: tuple[str, ...] = ()
+    if contradiction_flag and eff.kind in ("EXEC", "SPAWN", "FS_WRITE"):
+        verdicts.add("CONTRADICTION")
+    occ = inp.req_occ_by_effect.get(i, inp.req_occ)
+    if inp.trig_label is Prin.MODEL and inp.trig_mode == "traced" and occ is Req.MODEL:
+        if inp.d_op.covers(inp.tool_name):
+            verdicts.add("INVENTORY")
+            covered = "op"
+        elif inp.d_kind.covers(eff.kind):
+            verdicts.add("INVENTORY")
+            covered = "kind"
+        else:
+            verdicts.add("GAP_SELECT")
+    elif inp.trig_mode == "assumed":
+        # **`assumed` の trig では SELECT 行は GAP ではなくマニフェスト行。**
+        notes = notes + ("select_manifest_only(assumed_trig)",)
+    if inp.drift_reasons and inp.d_kind.is_bottom and inp.d_op.is_bottom:
+        verdicts.add("GAP_DRIFT")
+        covered = covered or "prev"
+        notes = notes + tuple(inp.drift_reasons)
+    return verdicts, covered, notes
+
+
+def _inject_coordinate(
+    inp: UnitVerdictInput, i: int, eff: Effect, slot: str, value, row: Row
+) -> None:
+    """INJECT の座標（制御位置ごと）。"""
+    grade, _weak_reason = inp.grades.get((i, slot), (None, None))
+    req = inp.req_val.get((i, slot), Req.MODEL)
+
+    if value.prin is not Prin.MODEL:
+        return
+
+    # 規則 W: weak validator は宣言に優先する（D_op には優先しない）。
+    weak = grade == "weak"
+    if req is not Req.MODEL and not weak:
+        return  # ゲートが引き上げているので GAP ではない
+
+    if inp.d_op.covers(inp.tool_name):
+        row.verdicts.add("INVENTORY")
+        row.covered_by = row.covered_by or "op"
+        return
+
+    if inp.tool_name in inp.rubric_1c_names and slot in PRIMARY_SLOTS:
+        any_validator = any(
+            inp.grades.get((i, s), (None, None))[0] is not None for s in eff.control_slots()
+        )
+        if not any_validator and inp.exposure_supplied:
+            row.verdicts.add("INVENTORY")
+            row.covered_by = row.covered_by or "op"
+            row.rubric_1c = "inventory(no_validator+exposure)"
+            return
+        row.rubric_1c = "gap(rule_w:weak_validator)" if weak else "gap(P0:no_exposure)"
+
+    # D_dom は実装条件を満たすまで常に ⊥（反証条件 F1）。
+    # D_kind は kind の上界しか宣言せず**制御位置を宣言しないので INJECT を
+    # 被覆しない**。宣言があることは行に記録するだけ。
+    if inp.d_kind.covers(eff.kind):
+        row.notes = row.notes + (f"D_layer_present:kind:{eff.kind}",)
+
+    if eff.kind in P0_KINDS or eff.kind in ("DB", "NET"):
+        row.verdicts.add("GAP_INJECT")
+        row.rule_w = weak
 
 
 def _contradiction(inp: UnitVerdictInput, effect_kinds: set[str]) -> bool:

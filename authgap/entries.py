@@ -324,7 +324,7 @@ def find_units(index: SourceIndex) -> list[Unit]:
 # --------------------------------------------------------------------------
 
 
-def find_lowlevel_units(index: SourceIndex) -> list[Unit]:
+def find_lowlevel_units(index: SourceIndex) -> list[Unit]:  # noqa: C901
     """`@server.call_tool()` デコレータ形（v1）と `Server(on_call_tool=...)` 形（v2）。
 
     低レベル経路ではハンドラが 1 つで、その中の `name` 分岐が DISPATCH になる。
@@ -332,6 +332,7 @@ def find_lowlevel_units(index: SourceIndex) -> list[Unit]:
     """
     out: list[Unit] = []
     seen: set[str] = set()
+    enums = enum_string_members(index)
 
     for fd in index.functions():
         for name, _call, _node in _decorator_calls(fd.node):
@@ -352,7 +353,7 @@ def find_lowlevel_units(index: SourceIndex) -> list[Unit]:
                     node=fd.node,
                     params=params_of(fd.node),
                     tool_name=None,
-                    dispatch_names=dispatch_name_candidates(fd.node),
+                    dispatch_names=dispatch_name_candidates(fd.node, enums),
                     is_async=fd.is_async,
                 )
             )
@@ -396,7 +397,7 @@ def find_lowlevel_units(index: SourceIndex) -> list[Unit]:
                         node=fd.node,
                         params=params_of(fd.node),
                         tool_name=None,
-                        dispatch_names=dispatch_name_candidates(fd.node),
+                        dispatch_names=dispatch_name_candidates(fd.node, enums),
                         is_async=fd.is_async,
                     )
                 )
@@ -404,7 +405,29 @@ def find_lowlevel_units(index: SourceIndex) -> list[Unit]:
     return out
 
 
-def dispatch_name_candidates(fn: ast.AST) -> tuple[str, ...]:
+def enum_string_members(index: SourceIndex) -> dict[str, str]:
+    """`class GitTools(str, Enum): STATUS = "git_status"` を `GitTools.STATUS` →
+    `"git_status"` の表にする。
+
+    低レベルハンドラの `match name: case GitTools.STATUS:` から候補名を読むために
+    要る。**読めない形は表に入れない**（推定で名前を作らない）。
+    """
+    out: dict[str, str] = {}
+    for cd in index.classes():
+        if not any("Enum" in b or "str" in b for b in cd.bases):
+            continue
+        for node in cd.node.body:
+            if isinstance(node, ast.Assign) and isinstance(node.value, ast.Constant):
+                if not isinstance(node.value.value, str):
+                    continue
+                for t in node.targets:
+                    if isinstance(t, ast.Name):
+                        out[f"{cd.name}.{t.id}"] = node.value.value
+                        out[t.id] = node.value.value
+    return out
+
+
+def dispatch_name_candidates(fn: ast.AST, enums: Optional[dict[str, str]] = None) -> tuple[str, ...]:
     """低レベルハンドラ内の `name` 分岐から候補名を集める。
 
     `if name == "x"` / `elif name in (...)` / `match name: case "x"` /
@@ -426,11 +449,27 @@ def dispatch_name_candidates(fn: ast.AST) -> tuple[str, ...]:
                 if isinstance(k, ast.Constant) and isinstance(k.value, str):
                     names.add(k.value)
         elif _MATCH_CASE is not None and isinstance(node, _MATCH_CASE):
-            pat = node.pattern
-            if isinstance(pat, ast.MatchValue) and isinstance(pat.value, ast.Constant):
-                if isinstance(pat.value.value, str):
-                    names.add(pat.value.value)
+            for pat in _flatten_patterns(node.pattern):
+                if not isinstance(pat, ast.MatchValue):
+                    continue
+                v = pat.value
+                if isinstance(v, ast.Constant) and isinstance(v.value, str):
+                    names.add(v.value)
+                elif enums is not None:
+                    dotted = dotted_of(v)
+                    if dotted and dotted in enums:
+                        names.add(enums[dotted])
     return tuple(sorted(names))
+
+
+def _flatten_patterns(pattern: ast.AST) -> list[ast.AST]:
+    mo = getattr(ast, "MatchOr", None)
+    if mo is not None and isinstance(pattern, mo):
+        out: list[ast.AST] = []
+        for p in pattern.patterns:
+            out += _flatten_patterns(p)
+        return out
+    return [pattern]
 
 
 # --------------------------------------------------------------------------

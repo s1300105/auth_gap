@@ -36,6 +36,14 @@ from .verdict import Row, UnitVerdictInput, decide
 #: LLM 戻り値（R1）の root id の前置き。
 R1_ROOT_PREFIX = "llm:"
 
+#: §3 の 3 腕アブレーション。**3 腕は同一バイナリのフラグ違いでなければならない**
+#: （別実装なら不合格）。ゲートは 3 腕とも入っている。
+#:
+#: * ``A`` — trig を計算し、**val を全位置で OP に固定**する（INJECT が出ない）
+#: * ``B`` — val を計算し、**trig を全て assumed に固定**する（SELECT が出ない）
+#: * ``C`` — 完全版
+ARMS = ("A", "B", "C")
+
 
 @dataclass
 class UnitReport:
@@ -214,8 +222,15 @@ def analyze_unit_full(
     exposure_supplied: bool = False,
     prev_unit: Optional[dict] = None,
     options: Optional[Options] = None,
+    arm: str = "C",
 ) -> UnitReport:
-    """F0a に支配判定・等級・判定を足す。"""
+    """F0a に支配判定・等級・判定を足す。
+
+    :param arm: §3 の 3 腕（``A`` / ``B`` / ``C``）。**同一の解析経路を通り、
+        座標を 1 つずつ止めるだけ**である。腕ごとに別の実装を書いてはならない。
+    """
+    if arm not in ARMS:
+        raise ValueError(f"未知の腕: {arm!r}")
     report = analyze_unit_f0a(index, unit, options)
     if report.val is None:
         return report
@@ -229,6 +244,15 @@ def analyze_unit_full(
     _attach_subject_roots(cands, report.val)
 
     report.trig = trig_index.trig_for(unit)
+    if arm == "B":
+        # 腕 B: trig を全て assumed に固定する（SELECT 座標を止める）。
+        report.trig = TrigResult(report.trig.label, "assumed", None)
+    if arm == "A":
+        # 腕 A: val を全位置で OP に固定する（INJECT 座標を止める）。
+        # **効果行そのものは残す**（ゲートも残る）。座標だけを止める。
+        for e in report.effects:
+            for slot, v in list(e.slots.items()):
+                e.slots[slot] = Value(Prin.OP, v.prov, v.shape, v.attrs, v.roots)
 
     # -- req_occ（**効果ごと**。Def 5 は `req_occ(e)` と書く）-----------------
     selector_roots = _selector_roots(unit, report)
