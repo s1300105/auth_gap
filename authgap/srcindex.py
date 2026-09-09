@@ -11,8 +11,9 @@ from __future__ import annotations
 
 import ast
 import os
+from collections.abc import Iterator
 from dataclasses import dataclass, field
-from typing import Iterator, Optional
+from typing import Optional
 
 from .ir import AST_NODE_CAP
 

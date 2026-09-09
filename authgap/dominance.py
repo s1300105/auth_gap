@@ -144,21 +144,27 @@ def test_sense(expr: Optional[ast.AST]) -> str:
 
     CFG 構築で `not` は既に脱糖されているので、ここで見るのは式そのものの形だけ。
 
-    * `x in S`     → positive（真 = 許可）
-    * `x not in S` → negative（真 = 拒否）
-    * `f(...)` で f が :data:`DENY_SENSE_NAMES` → negative
+    規則（**述語の意味から決める。構造からは決めない**）:
+
+    * `==` / `in` / `is`         → positive（真 = 許可）
+    * `!=` / `not in` / `is not` → negative（真 = 拒否）
+    * 呼び出し先が :data:`DENY_SENSE_NAMES` → negative
     * それ以外 → positive
 
-    **この規則は測定可能な形で固定する。** 誤ると `deny(g)` が反対側を指し、
-    (G-ii) が逆向きに効く。
+    **「raise へ行く方が deny」という構造的な規則にしてはならない。** それだと
+    (G-ii) が自明に成立し、mutant 8（ガード偽側の分岐に効果がある形）を
+    誤って DOM と採点する。センスは述語の意味から決め、構造はその後で検査する。
+
+    等号系を規則に入れているのは、`os.path.commonpath([real, base]) != base` の
+    ような包含述語の否定形（G5）が実データの主要形だからである。
     """
     if expr is None:
         return "positive"
     if isinstance(expr, ast.Compare) and expr.ops:
         op = expr.ops[0]
-        if isinstance(op, ast.NotIn):
+        if isinstance(op, (ast.NotIn, ast.NotEq, ast.IsNot)):
             return "negative"
-        if isinstance(op, ast.In):
+        if isinstance(op, (ast.In, ast.Eq, ast.Is)):
             return "positive"
     if isinstance(expr, ast.Call):
         name = _callee_name(expr.func)
@@ -235,6 +241,13 @@ def gates(cfg: CFG, dom: DomTree, g: int, d: int, raises_form: bool = False) -> 
     報告価値が最も高い行である）。
     """
     if not dom.is_reachable(d):
+        return GateCheck(False, "no_gate")
+    if g == d:
+        # **同一 CFG ノードのゲートは支配しない。** 1 文の中には制御フローの
+        # 順序が無いので、`return [f(x) for x in xs if ok(x)]` のような行で
+        # 「同じ行にゲート語彙がある」ことを支配と読むのは、前身の AST 兄弟文
+        # 方式そのものである。内包表記の `if` は §2.5.1 の別 CFG（subgraph）で
+        # 採点する。
         return GateCheck(False, "no_gate")
     if not dom.dominates(g, d):
         return GateCheck(False, "no_gate")

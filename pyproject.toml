@@ -15,10 +15,23 @@ include = ["authgap*"]
 [tool.ruff]
 line-length = 110
 target-version = "py310"
+# fixtures は「解析対象の見本」であって本 repo のコードではない。意図的に
+# 汚い形（未使用変数・構文エラー・巨大関数）を含むので lint から外す。
+# scripts/premeasure と scripts/verification_artifacts は救出した既存資産で、
+# 内容を変えると出所（sha256）が崩れるので同じく外す。
+extend-exclude = [
+    "fixtures",
+    "scripts/premeasure",
+    "scripts/verification_artifacts",
+    "corpus",
+    "evidence",
+]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP"]
-ignore = ["E501"]
+# UP007/UP038: Optional[...] と isinstance(x, (A, B)) を許す。仕様書の読者が
+# 型を追いやすい形を優先する（Python 3.10 が対象なので | でも動くが統一しない）。
+ignore = ["E501", "UP007", "UP038"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

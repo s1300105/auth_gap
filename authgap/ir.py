@@ -247,8 +247,8 @@ class Atom:
 class Str:
     """文字列の連結。`parts` は順序を保つ。K を超えた分は `tail` に畳む。"""
 
-    parts: tuple["Value", ...] = ()
-    tail: Optional["Value"] = None
+    parts: tuple[Value, ...] = ()
+    tail: Optional[Value] = None
 
     def kind(self) -> str:
         return "Str"
@@ -258,8 +258,8 @@ class Str:
 class Seq:
     """リスト / タプル。"""
 
-    elems: tuple["Value", ...] = ()
-    tail: Optional["Value"] = None
+    elems: tuple[Value, ...] = ()
+    tail: Optional[Value] = None
 
     def kind(self) -> str:
         return "Seq"
@@ -269,8 +269,8 @@ class Seq:
 class Argv:
     """argv として使われる列（`shell=False` の spawn 引数）。"""
 
-    elems: tuple["Value", ...] = ()
-    tail: Optional["Value"] = None
+    elems: tuple[Value, ...] = ()
+    tail: Optional[Value] = None
 
     def kind(self) -> str:
         return "Argv"
@@ -280,8 +280,8 @@ class Argv:
 class Map:
     """辞書。`entries` はキー文字列でソートする（決定論のため）。"""
 
-    entries: tuple[tuple[str, "Value"], ...] = ()
-    tail: Optional["Value"] = None
+    entries: tuple[tuple[str, Value], ...] = ()
+    tail: Optional[Value] = None
 
     def kind(self) -> str:
         return "Map"
@@ -291,9 +291,9 @@ class Map:
 class Path:
     """パス。`base` に対して `segs` を順に結合したもの。"""
 
-    base: Optional["Value"] = None
-    segs: tuple["Value", ...] = ()
-    tail: Optional["Value"] = None
+    base: Optional[Value] = None
+    segs: tuple[Value, ...] = ()
+    tail: Optional[Value] = None
 
     def kind(self) -> str:
         return "Path"
@@ -309,7 +309,7 @@ class Obj:
     """
 
     classes: tuple[str, ...] = ()
-    fields: tuple[tuple[str, "Value"], ...] = ()
+    fields: tuple[tuple[str, Value], ...] = ()
 
     def kind(self) -> str:
         return "Obj"
@@ -365,13 +365,13 @@ class Value:
     def is_literal(self) -> bool:
         return isinstance(self.shape, Atom) and self.shape.const is not None
 
-    def with_attr(self, *names: str) -> "Value":
+    def with_attr(self, *names: str) -> Value:
         return Value(self.prin, self.prov, self.shape, self.attrs | frozenset(names), self.roots)
 
-    def with_prov(self, p: Prov) -> "Value":
+    def with_prov(self, p: Prov) -> Value:
         return Value(self.prin, p, self.shape, self.attrs, self.roots)
 
-    def with_shape(self, s: Shape) -> "Value":
+    def with_shape(self, s: Shape) -> Value:
         return Value(self.prin, self.prov, s, self.attrs, self.roots)
 
     # -- 直列化（決定論のため。キーは常にソート順に出す）-------------------

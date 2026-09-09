@@ -33,6 +33,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 GATES = {
     "g01_exit_prefix": {
+        "coordinate": "occ",
         "hole": "exit 前に 1 文（`_is_exit_body` の全 exit 要求）",
         "verdict": "DOM",
         "reason": None,
@@ -41,6 +42,7 @@ GATES = {
         "direction": "誤 FN",
     },
     "g02_or_failure_conjunction": {
+        "coordinate": "occ",
         "hole": "`or` の失敗連言",
         "verdict": "DOM",
         "reason": None,
@@ -49,6 +51,7 @@ GATES = {
         "direction": "誤 FN（v2 で退行）",
     },
     "g03_await_bare_approval": {
+        "coordinate": "occ",
         "hole": "`await` した承認割り込みの裸文",
         "verdict": "DOM",
         "reason": None,
@@ -57,6 +60,7 @@ GATES = {
         "direction": "誤 FN",
     },
     "g04_walrus_test": {
+        "coordinate": "occ",
         "hole": "walrus を含む test",
         "verdict": "DOM",
         "reason": None,
@@ -65,6 +69,7 @@ GATES = {
         "direction": "誤 FN（v2 で退行）",
     },
     "g05_try_revalidate_reraise": {
+        "coordinate": "val",
         "hole": "try/except でパス検証が再送出",
         "verdict": "DOM",
         "reason": None,
@@ -74,6 +79,7 @@ GATES = {
         "direction": "誤 FN",
     },
     "g06_except_swallows_approval": {
+        "coordinate": "occ",
         "hole": "承認の例外が except で握り潰される",
         "verdict": "NODOM",
         "reason": "deny_reaches_effect",
@@ -82,6 +88,7 @@ GATES = {
         "direction": "一致（回帰固定）",
     },
     "g07_comprehension_filter": {
+        "coordinate": "occ",
         "hole": "内包表記の `if` フィルタ",
         "verdict": "DOM",
         "reason": None,
@@ -90,6 +97,7 @@ GATES = {
         "direction": "誤 FN",
     },
     "g08_context_manager_approval": {
+        "coordinate": "occ",
         "hole": "CM 形の承認ゲート（`Gateway.require_approval`、木内解決可）",
         "verdict": "DOM",
         "reason": None,
@@ -98,6 +106,7 @@ GATES = {
         "direction": "誤 FN",
     },
     "g09_suppress_absorbs_approval": {
+        "coordinate": "occ",
         "hole": "`contextlib.suppress` が承認を吸収",
         "verdict": "NODOM",
         "reason": "deny_reaches_effect",
@@ -106,6 +115,7 @@ GATES = {
         "direction": "一致（回帰固定）",
     },
     "g10_loop_continue_allowlist": {
+        "coordinate": "occ",
         "hole": "ループ内 `continue` の allowlist",
         "verdict": "DOM",
         "reason": None,
@@ -115,6 +125,7 @@ GATES = {
         "direction": "一致（回帰固定）",
     },
     "g11_non_binding_subject": {
+        "coordinate": "occ",
         "hole": "主語不一致（`Gateway.is_allowed(self.default_tool)`）",
         "verdict": "NODOM",
         "reason": "non_binding_gate",
@@ -123,6 +134,7 @@ GATES = {
         "direction": "誤 clear（不健全）",
     },
     "g12_effect_in_finally": {
+        "coordinate": "occ",
         "hole": "効果が `finally` 側にある",
         "verdict": "NODOM",
         "reason": "deny_reaches_effect",
@@ -138,6 +150,7 @@ GATES = {
         ),
     },
     "g13_dynamic_registry": {
+        "coordinate": "occ",
         "hole": "木内で解決できないレジストリ（`Gateway.plugins.get(name)`）",
         "verdict": "OPAQUE",
         "reason": "dynamic_registry",
@@ -148,6 +161,7 @@ GATES = {
         "direction": "誤 clean（不健全）と推定",
     },
     "g14_alt_entry": {
+        "coordinate": "occ",
         "hole": "第 2 のユニット入口（無ガード）",
         "verdict": "NODOM",
         "reason": "alt_entry",
@@ -159,6 +173,7 @@ GATES = {
         "direction": "誤 clear（不健全）",
     },
     "g15_req_occ_vs_req_val": {
+        "coordinate": "occ",
         "hole": "最弱等級 / `req_occ` と `req_val` の分離",
         "verdict": "DOM",
         "reason": None,
@@ -174,29 +189,35 @@ GATES = {
 
 MUTANTS = {
     "m1_binding_only": {
+        "coordinate": "occ",
         "hole": "`ok = confirm(name)` の束縛のみで無条件 dispatch",
         "not_verdict": "DOM",
         "note": "A-a / A-b / A-c のいずれも取れない。confirm は木内で解決でき拒否側が raise しない",
     },
     "m2_or_polarity": {
+        "coordinate": "occ",
         "hole": "`if trusted or confirm(name):`（`or` の極性）",
         "not_verdict": "DOM",
         "note": "G2 と対。両方を正しく分けられることが前身 v2 との差",
     },
     "m3_reversed_polarity": {
+        "coordinate": "occ",
         "hole": "`if not is_allowed(name): tool.run()`（極性逆）",
         "not_verdict": "DOM",
     },
     "m4_file_level_gate": {
+        "coordinate": "occ",
         "hole": "無関係な関数の `human_in_the_loop=False`（file-level gate の誤検出）",
         "not_verdict": "DOM",
     },
     "m5_same_name_other_module": {
+        "coordinate": "occ",
         "hole": "別モジュールの同名クラスにゲートがあり、当該ユニットの連結経路上には無い形",
         "not_verdict": "DOM",
         "note": "下向き走査が同名クラスに引きずられないことを試す",
     },
     "m6_parse_failure": {
+        "coordinate": "occ",
         "hole": "parse 失敗ファイルの黙殺",
         "not_verdict": "DOM",
         "requires_rows": ["parse_failure"],
@@ -204,12 +225,14 @@ MUTANTS = {
         "note": "期待値は「非支配」に加えて該当行が出力されること。行が出なければ不合格",
     },
     "m7_cfg_cap": {
+        "coordinate": "occ",
         "hole": "node/深さ cap 到達での黙示 clear",
         "not_verdict": "DOM",
         "requires_rows": ["TRUNCATED", "OPAQUE(cfg_cap)"],
         "note": "期待値は「非支配」に加えて該当行が出力されること。行が出なければ不合格",
     },
     "m8_effect_on_false_branch": {
+        "coordinate": "occ",
         "hole": "ガード偽側の分岐に dispatch がある形",
         "not_verdict": "DOM",
     },

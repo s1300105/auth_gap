@@ -9,7 +9,7 @@ R1 と R2 は同一主体 MODEL の導入位置が 2 か所あるだけで、sin
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Optional
 
 # --------------------------------------------------------------------------

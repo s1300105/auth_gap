@@ -4,6 +4,7 @@
   "_schema": "authgap/fixtures/expected/v1",
   "cases": {
     "g01_exit_prefix": {
+      "coordinate": "occ",
       "direction": "誤 FN",
       "effect_line": 17,
       "file": "g01_exit_prefix.py",
@@ -15,6 +16,7 @@
       "witness_line": 14
     },
     "g02_or_failure_conjunction": {
+      "coordinate": "occ",
       "direction": "誤 FN（v2 で退行）",
       "effect_line": 16,
       "file": "g02_or_failure_conjunction.py",
@@ -26,6 +28,7 @@
       "witness_line": 14
     },
     "g03_await_bare_approval": {
+      "coordinate": "occ",
       "direction": "誤 FN",
       "effect_line": 11,
       "file": "g03_await_bare_approval.py",
@@ -37,6 +40,7 @@
       "witness_line": 10
     },
     "g04_walrus_test": {
+      "coordinate": "occ",
       "direction": "誤 FN（v2 で退行）",
       "effect_line": 12,
       "file": "g04_walrus_test.py",
@@ -48,6 +52,7 @@
       "witness_line": 10
     },
     "g05_try_revalidate_reraise": {
+      "coordinate": "val",
       "direction": "誤 FN",
       "effect_line": 17,
       "file": "g05_try_revalidate_reraise.py",
@@ -60,6 +65,7 @@
       "witness_line": 14
     },
     "g06_except_swallows_approval": {
+      "coordinate": "occ",
       "direction": "一致（回帰固定）",
       "effect_line": 17,
       "file": "g06_except_swallows_approval.py",
@@ -71,6 +77,7 @@
       "witness_line": 14
     },
     "g07_comprehension_filter": {
+      "coordinate": "occ",
       "direction": "誤 FN",
       "effect_line": 11,
       "file": "g07_comprehension_filter.py",
@@ -82,6 +89,7 @@
       "witness_line": 11
     },
     "g08_context_manager_approval": {
+      "coordinate": "occ",
       "direction": "誤 FN",
       "effect_line": 13,
       "file": "g08_context_manager_approval.py",
@@ -93,6 +101,7 @@
       "witness_line": 12
     },
     "g09_suppress_absorbs_approval": {
+      "coordinate": "occ",
       "direction": "一致（回帰固定）",
       "effect_line": 16,
       "file": "g09_suppress_absorbs_approval.py",
@@ -109,6 +118,7 @@
         "name": "ALLOWED_TOOLS",
         "source": "module_const"
       },
+      "coordinate": "occ",
       "direction": "一致（回帰固定）",
       "effect_line": 17,
       "file": "g10_loop_continue_allowlist.py",
@@ -120,6 +130,7 @@
       "witness_line": 15
     },
     "g11_non_binding_subject": {
+      "coordinate": "occ",
       "direction": "誤 clear（不健全）",
       "effect_line": 20,
       "file": "g11_non_binding_subject.py",
@@ -131,6 +142,7 @@
       "witness_line": 18
     },
     "g12_effect_in_finally": {
+      "coordinate": "occ",
       "direction": "一致（回帰固定）",
       "effect_line": 19,
       "file": "g12_effect_in_finally.py",
@@ -143,6 +155,7 @@
       "witness_line": 17
     },
     "g13_dynamic_registry": {
+      "coordinate": "occ",
       "direction": "誤 clean（不健全）と推定",
       "effect_line": 16,
       "file": "g13_dynamic_registry.py",
@@ -156,6 +169,7 @@
       "witness_line": 15
     },
     "g14_alt_entry": {
+      "coordinate": "occ",
       "direction": "誤 clear（不健全）",
       "effect_line": 27,
       "entries": [
@@ -175,6 +189,7 @@
       "witness_line": 19
     },
     "g15_req_occ_vs_req_val": {
+      "coordinate": "occ",
       "direction": "誤 clear（不健全）",
       "effect_line": 18,
       "file": "g15_req_occ_vs_req_val.py",

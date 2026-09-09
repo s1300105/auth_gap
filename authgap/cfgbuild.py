@@ -58,7 +58,7 @@ class Node:
     #: この test ノードが評価する式（脱糖後の 1 オペランド）。
     test_expr: Optional[ast.AST] = None
     #: 内包表記の別 CFG（あれば）。
-    subgraph: Optional["CFG"] = None
+    subgraph: Optional[CFG] = None
 
     def witness(self) -> str:
         """witness 行の表記。`finally` 複製は脱出種別を併記する（§2.5.1）。"""
@@ -144,7 +144,7 @@ class _Ctx:
     #: `finally` 節の AST 本体（内側から順）。複製に使う。
     finallys: list[list] = field(default_factory=list)
 
-    def child(self, **kw) -> "_Ctx":
+    def child(self, **kw) -> _Ctx:
         return _Ctx(
             kw.get("exc_targets", list(self.exc_targets)),
             kw.get("suppress_targets", list(self.suppress_targets)),
@@ -257,6 +257,10 @@ class CFGBuilder:
         nid = self._new("stmt", st)
         self._attach_comprehensions(nid, st)
         self._link_exc(nid, ctx, st)
+        if _is_process_exit(st):
+            # `sys.exit` / `os._exit` は後続へ落ちない。落ちる辺を残すと
+            # A-b の「拒否側の出口がすべて raise / exit」が判定できなくなる。
+            return _Frag(nid, [])
         return _Frag(nid, [(nid, "seq")])
 
     _st_Expr = _simple
@@ -623,6 +627,28 @@ def _cannot_raise(node: ast.AST) -> bool:
     if isinstance(node, ast.Constant):
         return True
     return False
+
+
+#: プロセスを終える呼び出し（後続へ落ちない）。
+PROCESS_EXIT_NAMES: frozenset[str] = frozenset({"sys.exit", "os._exit", "exit", "quit", "os.abort"})
+
+
+def _is_process_exit(st: ast.AST) -> bool:
+    """文が `sys.exit` / `os._exit` の類の呼び出しだけからなるか。"""
+    if not isinstance(st, ast.Expr) or not isinstance(st.value, ast.Call):
+        return False
+    parts: list[str] = []
+    cur = st.value.func
+    while True:
+        if isinstance(cur, ast.Attribute):
+            parts.append(cur.attr)
+            cur = cur.value
+        elif isinstance(cur, ast.Name):
+            parts.append(cur.id)
+            break
+        else:
+            return False
+    return ".".join(reversed(parts)) in PROCESS_EXIT_NAMES
 
 
 def _is_suppress(expr: ast.AST) -> bool:
