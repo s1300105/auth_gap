@@ -1,0 +1,135 @@
+# AuthGap と**同じ source 設定**の Semgrep OSS ルール（§6 の baseline）。
+#
+# source = カタログ化したツールエントリのパラメータ（Def 2 の R2）と
+#          カタログ化した LLM 呼び出しの戻り値（R1）。
+# sink   = Def 3 の危険効果。
+#
+# **Semgrep CE は手続き内 taint のみ**（公式ドキュメント: "Semgrep Community
+# Edition (CE) can only analyze interactions within a single function, also
+# known as intraprocedural analysis."）。したがって連結経路（callee をまたぐ）は
+# 定義上追えない。§6 はこの前提で「(a) source と sink が同一関数内にある行に
+# 限定した部分表」と「(b) 全行表」に分けて報告せよと書いている。
+#
+# **同じ source 設定の Semgrep が同じ両側対を通過したら、貢献は「ルールファイル」
+# であり静的解析の新規性は主張しない**（§1.5.4 の事前登録）。
+rules:
+  # 低レベル MCP のハンドラ引数を source にする（Def 2 の R2 の 2 形目）。
+  # mcp-server-git のような `@server.call_tool()` 形はこれが無いと source が 0 になる。
+  - id: authgap-lowlevel-arguments-to-spawn
+    languages: [python]
+    severity: WARNING
+    message: "低レベル MCP ハンドラの arguments が SPAWN へ到達"
+    mode: taint
+    pattern-sources:
+      - patterns:
+          - pattern: $ARGS
+          - pattern-inside: |
+              @$S.call_tool(...)
+              async def $F(..., $ARGS, ...):
+                  ...
+      - patterns:
+          - pattern: $ARGS
+          - pattern-inside: |
+              @$S.call_tool(...)
+              def $F(..., $ARGS, ...):
+                  ...
+    pattern-sinks:
+      - pattern: subprocess.run(...)
+      - pattern: subprocess.Popen(...)
+      - pattern: os.system(...)
+      # proxy 形（GitPython）。**Semgrep は受け手の型を絞れないので構文で近似する。**
+      - pattern: $R.git.$M(...)
+      - pattern: $R.index.add(...)
+      - pattern: git.Repo(...)
+
+  - id: authgap-r2-param-to-spawn
+    languages: [python]
+    severity: WARNING
+    message: "R2 のツール引数が SPAWN へ到達（AuthGap の GAP_INJECT 相当）"
+    mode: taint
+    pattern-sources:
+      - patterns:
+          - pattern: $PARAM
+          - pattern-inside: |
+              @$DECO(...)
+              def $F(..., $PARAM, ...):
+                  ...
+      - patterns:
+          - pattern: $PARAM
+          - pattern-inside: |
+              @$DECO
+              def $F(..., $PARAM, ...):
+                  ...
+    pattern-sinks:
+      - pattern: subprocess.run(...)
+      - pattern: subprocess.Popen(...)
+      - pattern: subprocess.call(...)
+      - pattern: subprocess.check_call(...)
+      - pattern: subprocess.check_output(...)
+      - pattern: os.system(...)
+      - pattern: os.popen(...)
+      - pattern: asyncio.create_subprocess_shell(...)
+      - pattern: asyncio.create_subprocess_exec(...)
+      # proxy 形（GitPython）。受け手型を絞れないので構文で近似する。
+      - pattern: $R.git.$M(...)
+      - pattern: $R.index.add(...)
+
+  - id: authgap-r2-param-to-exec
+    languages: [python]
+    severity: WARNING
+    message: "R2 のツール引数が EXEC へ到達"
+    mode: taint
+    pattern-sources:
+      - patterns:
+          - pattern: $PARAM
+          - pattern-inside: |
+              @$DECO(...)
+              def $F(..., $PARAM, ...):
+                  ...
+    pattern-sinks:
+      - pattern: eval(...)
+      - pattern: exec(...)
+      - pattern: compile(...)
+
+  - id: authgap-r2-param-to-fs
+    languages: [python]
+    severity: WARNING
+    message: "R2 のツール引数が FS_READ / FS_WRITE へ到達"
+    mode: taint
+    pattern-sources:
+      - patterns:
+          - pattern: $PARAM
+          - pattern-inside: |
+              @$DECO(...)
+              def $F(..., $PARAM, ...):
+                  ...
+    pattern-sinks:
+      - pattern: open(...)
+      - pattern: $P.write_text(...)
+      - pattern: $P.write_bytes(...)
+      - pattern: $P.read_text(...)
+      - pattern: shutil.copy(...)
+      - pattern: os.remove(...)
+
+  - id: authgap-r2-param-to-db
+    languages: [python]
+    severity: WARNING
+    message: "R2 のツール引数が DB へ到達"
+    mode: taint
+    pattern-sources:
+      - patterns:
+          - pattern: $PARAM
+          - pattern-inside: |
+              @$DECO(...)
+              def $F(..., $PARAM, ...):
+                  ...
+    pattern-sinks:
+      - pattern: sqlalchemy.text(...)
+      - pattern: text(...)
+      - pattern: $C.execute(...)
+      # NOTE: neo4j の `session.run(sql)` は書けない。`$S.run(...)` と書くと
+      # `subprocess.run(...)` にも当たる（受け手の型を絞れないため）。
+      # **これは比較点そのものである** — AuthGap は proxy カタログで
+      # 受け手型と slot 束縛を持つので `git.cmd.Git.*` と `neo4j.Session.run` を
+      # 区別できる。Semgrep のパターンは型推論を持たないので、
+      # 過剰一致か取りこぼしかのどちらかになる。

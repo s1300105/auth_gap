@@ -198,6 +198,57 @@ A5 は修正版も `weak(first_token)` のままなので規則 W により GAP_
 `spec_expected_tuple_change`（仕様書の値）を**両方**持つ。
 **仕様書の値を黙って書き換えていない。**
 
+### 2.6 Semgrep OSS baseline との対ごと突き合わせ（§6 T1.5 (ii)）
+
+```bash
+.venv/bin/semgrep --config baselines/semgrep_authgap_source.yaml \
+    --json --quiet fixtures/semgrep_boundary/   # §8-4 の機能境界の実測
+.venv/bin/python scripts/baseline_semgrep.py --json evidence/w0/baseline_semgrep.json
+```
+
+**まず機能境界を自分で実測する**（§8-4）。`fixtures/semgrep_boundary/` は
+2 本だけで、`intra.py`（source と sink が同一関数）は報告され、
+`inter.py`（別関数）は**報告されない**。Semgrep CE が手続き内 taint のみで
+あることの、自分の手による確認である。
+
+結果:
+
+| 対 | AuthGap | Semgrep（消滅あり） | 備考 |
+|---|---|---|---|
+| A1 A2 A3 A4 | ○ | × | 所見が両側で同一 |
+| A5 | ○ | × | 所見が両側で同一 |
+| A9+A10 | ○ | × | 修正側で所見が**増えた**だけ |
+| A18 | ○ | × | 所見が両側で同一 |
+
+**AuthGap 7/7、Semgrep 0/7。**
+
+「変化あり」（増減どちらでも通過とする baseline に最も有利な読み方）でも
+1/7 で、その 1 件（A9）は**修正でコードが増えて所見が増えた**だけである。
+**増減を分けずに報告すると baseline が修正を検出したように見える。**
+
+なぜ Semgrep が修正版を clear できないかは A1 で目に見える。Semgrep は
+`git.Repo(repo_path)` の行を**両側とも**報告する。修正版が入れた
+`validate_repo_path` は**別関数**なので、手続き内 taint では見えない。
+**これが §1.5.6 の軸 1（修正版側の精度）そのものである。**
+
+公平性のために baseline は次まで強化してある。**弱い baseline は
+AuthGap を実際より良く見せる。**
+
+- 低レベル MCP ハンドラの `arguments` も source にした
+- GitPython の proxy 形（`$R.git.$M(...)` / `$R.index.add(...)`）を sink に足した
+- 過剰一致していた `$S.run(...)`（`subprocess.run` にも当たる）は外した。
+  **受け手の型を絞れないので過剰一致か取りこぼしかのどちらかになる** — これ自体が
+  比較点であり、AuthGap は proxy カタログで受け手型と slot 束縛を持つ
+
+未実施: **Pysa ModelQuery**。pyre 環境の構築が要る（§6 は「D13 までに環境が
+立つ repo が 0 なら baseline から落として『pyre 依存 baseline は環境コストにより
+不成立』と報告する」と書いている）。
+
+副産物: PraisonAI の 2 ファイルを semgrep が parse できない
+（`reproduce_issue_878_simple.py` / `test_all_optimizations.py`）。
+**AuthGap は同じ木で parse 失敗 5 件を記録しており、どちらも黙って落として
+いない。** 件数が違うのは対象ファイル集合と parser の差である。
+
 ---
 
 ## 3. F0a（床）— 支配判定に依存しない測定
