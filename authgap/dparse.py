@@ -247,16 +247,29 @@ def _from_permissions(data: dict, source: str) -> DOp:
 # in-tree の露出宣言（§8-7。含めるかは未凍結）
 # --------------------------------------------------------------------------
 
-#: §8 項目 7 の凍結が済むまで **含めない**。前測の実使用は 0 件なので
-#: 数値影響は無い見込みだが、既定を明示しておく（`docs/open_questions.md` Q6）。
-INCLUDE_IN_TREE_EXPOSURE = False
+#: §8 項目 7 の凍結（2026-09-09）: **含める。**
+#:
+#: ただし Def 6 の D_op 節の条件をそのまま課す — `enabled=` の式が
+#: **真偽 config atom に解決でき、かつ atom の既定が閉**のときのみ D として読む。
+#: 既定が開なら `D ⊭ e` 側に倒す。解決できない式は `opaque` として記録し、
+#: **D にも `D ⊭ e` にも数えない**。
+#:
+#: 前測の実使用は 0 件なので数値影響は無い見込みだが、「含めるか否かを先に
+#: 決める」という §8-7 の要求を満たすために既定を明示する。
+#: 判断の根拠は `docs/decisions.md` D3。
+INCLUDE_IN_TREE_EXPOSURE = True
 
 
 def in_tree_exposure(index: SourceIndex) -> list[dict]:
     """FastMCP `enabled=` / `disable(names=|tags=)` / 低レベル `list_tools` フィルタ。
 
-    **測って報告するが、`INCLUDE_IN_TREE_EXPOSURE` が偽の間は D_op に入れない。**
+    各行に `resolved`（真偽 config atom に解決できたか）と `default_closed` を
+    付ける。**解決できない式は `opaque` として記録し、D にも `D ⊭ e` にも
+    数えない**（Def 6）。
     """
+    from .atoms import build_atom_index
+
+    ai = build_atom_index(index)
     out: list[dict] = []
     for path in index.py_files():
         tree = index.parse(path)
@@ -264,14 +277,95 @@ def in_tree_exposure(index: SourceIndex) -> list[dict]:
             continue
         rel = index.relpath(path)
         for node in ast.walk(tree):
-            if isinstance(node, ast.Call):
-                name = (dotted_of(node.func) or "").split(".")[-1]
-                if name in ("disable", "enable"):
-                    out.append({"relpath": rel, "lineno": node.lineno, "form": name})
-                for kw in node.keywords:
-                    if kw.arg == "enabled":
-                        out.append({"relpath": rel, "lineno": node.lineno, "form": "enabled="})
+            if not isinstance(node, ast.Call):
+                continue
+            fname = (dotted_of(node.func) or "").split(".")[-1]
+            if fname in ("disable", "enable"):
+                names = _string_list_kwarg(node, "names")
+                out.append(
+                    {
+                        "relpath": rel,
+                        "lineno": node.lineno,
+                        "form": fname,
+                        "names": names,
+                        "resolved": bool(names),
+                        "default_closed": fname == "disable" if names else None,
+                    }
+                )
+            for kw in node.keywords:
+                if kw.arg != "enabled":
+                    continue
+                atom, closed = _resolve_enabled(kw.value, ai)
+                out.append(
+                    {
+                        "relpath": rel,
+                        "lineno": node.lineno,
+                        "form": "enabled=",
+                        "tool": _tool_name_of(node),
+                        "atom": atom,
+                        "resolved": closed is not None,
+                        "default_closed": closed,
+                    }
+                )
     return out
+
+
+def _string_list_kwarg(call: ast.Call, key: str) -> list[str]:
+    for kw in call.keywords:
+        if kw.arg == key and isinstance(kw.value, (ast.List, ast.Tuple, ast.Set)):
+            return [e.value for e in kw.value.elts if isinstance(e, ast.Constant) and isinstance(e.value, str)]
+    return []
+
+
+def _tool_name_of(call: ast.Call) -> Optional[str]:
+    for kw in call.keywords:
+        if kw.arg == "name" and isinstance(kw.value, ast.Constant):
+            if isinstance(kw.value.value, str):
+                return kw.value.value
+    if call.args and isinstance(call.args[0], ast.Constant) and isinstance(call.args[0].value, str):
+        return call.args[0].value
+    return None
+
+
+def _resolve_enabled(expr: ast.AST, ai) -> tuple[Optional[str], Optional[bool]]:
+    """`enabled=<式>` を真偽 config atom に解決する。
+
+    :returns: `(atom 名, 既定が閉か)`。**解決できなければ `(None, None)`**
+        （`opaque`。推定で開閉を決めない）。
+    """
+    if isinstance(expr, ast.Constant) and isinstance(expr.value, bool):
+        return "<literal>", expr.value is False
+    name = dotted_of(expr)
+    if name is None and isinstance(expr, ast.Lambda):
+        # `enabled=lambda config: config.execute_local_commands` の形。
+        name = dotted_of(expr.body)
+    if name is None:
+        return None, None
+    atom = ai.lookup(name)
+    if atom is None or atom.default_closed is None:
+        return name.split(".")[-1], None
+    return atom.name, atom.default_closed
+
+
+def exposure_as_d_op(declarations: list[dict]) -> DOp:
+    """in-tree の露出宣言を D_op に畳む（§8-7 の凍結: **含める**）。
+
+    既定が閉（露出されない）ものだけを D として読む。既定が開のものと
+    解決できないものは D に数えない。
+    """
+    if not INCLUDE_IN_TREE_EXPOSURE:
+        return DOp()
+    deny: set[str] = set()
+    for d in declarations:
+        if not d.get("resolved") or not d.get("default_closed"):
+            continue
+        if d.get("form") == "disable":
+            deny.update(d.get("names") or [])
+        elif d.get("tool"):
+            deny.add(d["tool"])
+    if not deny:
+        return DOp()
+    return DOp(allow=None, deny=frozenset(deny), source="in_tree_exposure")
 
 
 # --------------------------------------------------------------------------

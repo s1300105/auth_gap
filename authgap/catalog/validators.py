@@ -5,8 +5,8 @@
 
 月 6 の凍結対象:
 
-* :data:`VALIDATOR_SHAPES`（11 語）
-* :data:`WEAK_REASONS`（19 語）
+* :data:`VALIDATOR_SHAPES`（12 語。§6 F0a の 11 語 + 改訂 D1）
+* :data:`WEAK_REASONS`（22 語。Def 5 の 19 語 + 改訂 D1）
 * strong の 4 定義（:func:`strong_path_requirements` ほか）
 * :data:`CONFIG_ATOM_SOURCES`（4 源）
 * :data:`WITNESS_TEMPLATES`
@@ -18,7 +18,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 # --------------------------------------------------------------------------
-# §6 F0a: 構文的 validator 形状の語彙（11 語）
+# §6 F0a: 構文的 validator 形状の語彙（12 語）
 #
 # **本節が唯一の定義点。** 第 3 版は §0 で 7 語、§6 で 8 語、§10 で別の 8 語と
 # 3 通りに書き、3 つとも `Path.resolve` と `relative_to` を欠いていた。A1 の
@@ -70,6 +70,12 @@ VALIDATOR_SHAPES: tuple[ShapeRule, ...] = (
     ShapeRule("split", methods=("split", "rsplit", "partition")),
     ShapeRule("ctor_path", dotted=("pathlib.Path",), note="Path(...) は正規化ではない（F7）"),
     ShapeRule(
+        "absolute",
+        dotted=("os.path.isabs",),
+        methods=("is_absolute",),
+        note="絶対パス検査。**単独では包含にならない**（F7 の absolute_only の根拠）",
+    ),
+    ShapeRule(
         "exists",
         dotted=("os.path.exists", "os.path.isfile", "os.path.isdir"),
         methods=("exists", "is_file", "is_dir", "rev_parse"),
@@ -77,9 +83,15 @@ VALIDATOR_SHAPES: tuple[ShapeRule, ...] = (
     ),
 )
 
-#: 形状語彙の名前だけ（11 語）。
+#: 形状語彙の名前（12 語）。
+#:
+#: **仕様書 §6 F0a は 11 語と書くが、`absolute` を足して 12 語にした**
+#: （改訂 2026-09-09、月 6 の凍結前）。理由は §2.6 の fixture F7 が
+#: `absolute_only` を weak 理由として要求しており、絶対パス検査を形状として
+#: 数えないとその理由を機械的に出せないため。§6 F0a は「唯一の定義点」なので、
+#: 数を変える改訂はここに記録する。詳細は `docs/decisions.md` D1。
 SHAPE_NAMES: tuple[str, ...] = tuple(r.name for r in VALIDATOR_SHAPES)
-assert len(SHAPE_NAMES) == 11, "validator 形状語彙は 11 語（§6 F0a）"
+assert len(SHAPE_NAMES) == 12, "validator 形状語彙は 12 語（§6 F0a + 改訂 D1）"
 
 
 def shape_for_dotted(dotted: str) -> Optional[str]:
@@ -165,11 +177,22 @@ NOT_STRONG_DOMAINS: tuple[str, ...] = ("format", "bounded", "length", "path_type
 
 
 # --------------------------------------------------------------------------
-# Def 5: weak 理由の語彙（19 語。月 6 凍結）
+# Def 5: weak 理由の語彙（22 語。月 6 凍結）
 #
 # **語彙外の理由を新設してはならない。**
 # --------------------------------------------------------------------------
 
+#: **改訂の記録**（月 6 の凍結前なので逸脱ではない）:
+#:
+#: * `absolute_only` / `existence_only` — §2.6 の fixture F7 が
+#:   「weak 理由 `absolute_only` / `existence_only` / `no_containment` を
+#:   追加する根拠」と明記しているのに Def 5 の 19 語に無かった。
+#:   絶対パス検査だけ / 存在検査だけの検証子に付ける理由が無いと、
+#:   その形が `unknown`（判定不能）に落ちて weak と区別できない。
+#: * `statement_type_only` — A18（langroid）の修正が
+#:   「sqlglot で正規化してから**文型**の allowlist を掛ける」形で、
+#:   Def 5 のどの語にも当たらなかった。値そのものは自由な SQL のままなので
+#:   strong ではなく、拒否リストでもないので `denylist_enum` でもない。
 WEAK_REASONS: tuple[str, ...] = (
     "first_token",
     "prefix_no_canon",
@@ -190,14 +213,18 @@ WEAK_REASONS: tuple[str, ...] = (
     "validate_then_fetch",
     "underscore_denylist",
     "lexical_canon_only",
+    # -- 改訂 2026-09-09（月 6 の凍結前。`docs/decisions.md` D1）------------
+    "absolute_only",
+    "existence_only",
+    "statement_type_only",
 )
-assert len(WEAK_REASONS) == 19, "weak 理由語彙は 19 語（Def 5）"
+assert len(WEAK_REASONS) == 22, "weak 理由語彙は 22 語（Def 5 の 19 語 + 改訂 D1 の 3 語）"
 WEAK_REASON_SET = frozenset(WEAK_REASONS)
 
 
 def validate_weak_reason(reason: str) -> None:
     if reason not in WEAK_REASON_SET:
-        raise ValueError(f"weak 理由語彙（19 語）にない理由: {reason!r}")
+        raise ValueError(f"weak 理由語彙（{len(WEAK_REASONS)} 語）にない理由: {reason!r}")
 
 
 # --------------------------------------------------------------------------
@@ -286,6 +313,12 @@ WITNESS_TEMPLATES: dict[str, str] = {
     "regex_denylist": "拒否語彙に載っていない同義構文",
     "regex_no_canon": "引用識別子 / インラインコメント / スキーマ修飾",
     "validate_then_fetch": "検証を通す初期 URL からのリダイレクト先",
+    "absolute_only": "/etc/passwd（絶対パスなので検査を通るが木の外）",
+    "existence_only": "/etc/passwd（存在するので検査を通るが木の外）",
+    "statement_type_only": (
+        "許可された文型のまま危険な操作をする文"
+        "（例: SELECT ... INTO OUTFILE、全行 SELECT による流出）"
+    ),
 }
 
 #: 格下げ属性の witness（weak 理由語彙には含めない）。
@@ -312,16 +345,23 @@ SHLEX_SPLIT_ALONE_IS_NOT_STRONG = True
 
 
 # --------------------------------------------------------------------------
-# 未解決事項（黙って安全側に倒さないための記録）
+# 語彙の改訂記録（月 6 の凍結前）
 # --------------------------------------------------------------------------
 
-#: 仕様書内で解決していない語彙の食い違い。月 6 の凍結前に学生が決める。
-OPEN_VOCABULARY_QUESTIONS: tuple[tuple[str, str], ...] = (
+#: 仕様書の語彙に対して行った改訂。**月 6 の凍結後はここに足さず、
+#: `docs/preregistration.md` に逸脱として記録する。**
+VOCABULARY_REVISIONS: tuple[tuple[str, str, str], ...] = (
     (
-        "absolute_only / existence_only",
-        "§2.6 の fixture F7 は「weak 理由 absolute_only / existence_only / no_containment を"
-        "追加する根拠」と書くが、Def 5 の凍結語彙 19 語にこの 2 語は無い。"
-        "本実装は 19 語を採り、2 語は追加していない。月 6 凍結前に決めること。"
-        "docs/open_questions.md に記録。",
+        "2026-09-09",
+        "VALIDATOR_SHAPES 11 -> 12（`absolute` を追加）",
+        "§2.6 の fixture F7 が `absolute_only` を weak 理由として要求しているが、"
+        "絶対パス検査を形状として数えないと機械的に出せない。",
+    ),
+    (
+        "2026-09-09",
+        "WEAK_REASONS 19 -> 22（`absolute_only` / `existence_only` / `statement_type_only`）",
+        "前 2 者は F7 が明記しながら Def 5 の 19 語に無かったもの。"
+        "`statement_type_only` は A18（langroid、sqlglot 正規化 + 文型 allowlist）が"
+        "既存のどの語にも当たらず、`unknown` に落ちて weak と区別できなかったため。",
     ),
 )

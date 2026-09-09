@@ -251,16 +251,19 @@ A5 は修正版も `weak(first_token)` のままなので規則 W により GAP_
 
 **確かめること**:
 
-- validator 形状 11 語、weak 理由 19 語、ゲート側 OPAQUE 8 語、NODOM 4 語、
-  val 側 opaque 8 語。**語彙外の理由は構築時に例外になる**
+- validator 形状 **12 語**、weak 理由 **22 語**、ゲート側 OPAQUE 8 語、
+  NODOM 4 語、val 側 opaque 8 語。**語彙外の理由は構築時に例外になる**
   （`DomResult(DomKind.NODOM, "made_up_reason")` が `ValueError`）。
+- 仕様書は 11 語 / 19 語と書く。**月 6 の凍結前に拡張した**（`docs/decisions.md` D1）。
+  改訂の日付と理由は `VOCABULARY_REVISIONS` にあり、テストで空でないことを固定
+  している。
 - `self_granted` が weak 理由語彙に**入っていない**こと（格下げ属性である）。
 - 指紋の `sha256` が sink 表・R1/R2 カタログ・ゲート語彙・執行表の 4 つに
   分かれていること。月 10 の凍結ではこの値をコミットしてタグを打つ。
 
-**未解決の語彙の食い違いが 1 件ある**: F7 が挙げる `absolute_only` /
-`existence_only` は Def 5 の 19 語に無い。実装は 19 語を採っている。
-`docs/open_questions.md` の Q1。**月 6 の凍結前に決めること。**
+F7 が挙げる `absolute_only` / `existence_only` は Def 5 の 19 語に無かったので
+**足した**。A18 で当たった「正規化後の文型 allowlist」にも語が無かったので
+`statement_type_only` を足した。いずれも `docs/decisions.md` D1。
 
 ---
 

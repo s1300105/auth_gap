@@ -39,9 +39,13 @@ def test_known_survivor_is_documented():
     変わらないからである。複製が変えるのは効果行に対応する CFG ノードの**個数**
     （2 対 1）と witness の脱出種別表記であって、付録 G の受け入れ条件は
     そこを見ていない。**これは fixture 集合の被覆の穴であり、隠さず記録する。**
+
+    複製の性質そのものは `tests/test_cfg_structure.py` が構造的に固定するが、
+    **その単体テストは生存数の計算に入れない**（§2.5.6 の定義を動かさない）。
     """
-    doc = os.path.join(ROOT, "docs", "open_questions.md")
-    assert os.path.exists(doc), "docs/open_questions.md が無い"
+    doc = os.path.join(ROOT, "docs", "decisions.md")
+    assert os.path.exists(doc), "docs/decisions.md が無い"
     with open(doc, encoding="utf-8") as fh:
         text = fh.read()
     assert "no_finally_copies" in text
+    assert "1/15" in text, "生存数の報告値が記録されていない"

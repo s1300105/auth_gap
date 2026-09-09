@@ -54,6 +54,13 @@ from .srcindex import FuncDef, Scope, SourceIndex, dotted_of, resolve_call_name
 #: A-b のゲート要約を取るときの木内解決の深さ上限（§2.5.3）。
 GATE_SUMMARY_DEPTH = 2
 
+#: SQL を構文木へ正規化する呼び出し。`statement_type_only` の判定に使う。
+#: **これらは「値を安全にする」ものではない。** 文型が読めるようになるだけで、
+#: 許可された文型のまま危険な操作はできる（A18 の witness）。
+SQL_CANONICALISERS: frozenset[str] = frozenset(
+    {"sqlglot.parse", "sqlglot.parse_one", "sqlparse.parse", "sqlparse.parsestream"}
+)
+
 #: 承認割り込みのうち「呼ぶと拒否時に送出する」とカタログが宣言する名前（A-a）。
 RAISES_FORM_NAMES: frozenset[str] = frozenset(
     r.name for r in APPROVAL_INTERRUPTS if r.form == "raises"
@@ -105,6 +112,22 @@ def literal_of(expr: ast.expr) -> tuple[bool, object]:
         return False, None
 
 
+#: 木ごとの config atom 表。`find_gate_candidates` に渡す。
+_ATOM_INDEX_CACHE: dict[str, object] = {}
+
+
+def atom_index_for(index: Optional[SourceIndex]):
+    """木の config atom 表（4 源）。**1 回だけ作って使い回す。**"""
+    if index is None:
+        return None
+    key = index.src_root
+    if key not in _ATOM_INDEX_CACHE:
+        from .atoms import build_atom_index
+
+        _ATOM_INDEX_CACHE[key] = build_atom_index(index)
+    return _ATOM_INDEX_CACHE[key]
+
+
 def resolve_atom_via_scope(
     name: str, tree: Optional[ast.Module], scope: Optional[Scope], index: Optional[SourceIndex]
 ) -> Optional[ConfigAtom]:
@@ -118,6 +141,15 @@ def resolve_atom_via_scope(
         hit = resolve_atom(name, tree)
         if hit is not None and hit.default_closed is not None:
             return hit
+    # **4 源すべてを見る**（Def 5）。モジュール定数だけだと、pydantic の
+    # クラス既定値や CLI 既定値で開閉が決まる atom を読み落とし、
+    # `config-conditional(atom, default)` による `req` の引き上げが
+    # 常に効かなくなる（A18 / A14 がその形）。
+    ai = atom_index_for(index)
+    if ai is not None:
+        hit = ai.lookup(name, scope.module if scope is not None else None)
+        if hit is not None:
+            return ConfigAtom(hit.name, hit.source, hit.default, hit.default_closed)
     if scope is not None and index is not None:
         dotted = scope.lookup(name)
         if dotted:
@@ -293,6 +325,26 @@ def _is_first_token_check(fn: ast.AST, scope: Scope) -> bool:
             if isinstance(node.ops[0], (ast.In, ast.NotIn)):
                 return True
     return False
+
+
+def _is_statement_type_check(fn: ast.AST, scope: Scope) -> bool:
+    """SQL を構文木に正規化してから**文型**の allowlist を掛ける形か。
+
+    A18（langroid）の修正がこれ。`sqlglot.parse(query)` の結果の型名を
+    `allowed_statement_types` と突き合わせる。**値そのものは自由な SQL のまま**
+    なので strong ではなく、拒否リストでもないので `denylist_enum` でもない。
+    """
+    canon = False
+    member = False
+    for node in ast.walk(fn):
+        if isinstance(node, ast.Call):
+            dotted = resolve_call_name(node.func, scope)
+            if dotted in SQL_CANONICALISERS:
+                canon = True
+        elif isinstance(node, ast.Compare) and node.ops:
+            if isinstance(node.ops[0], (ast.In, ast.NotIn)):
+                member = True
+    return canon and member
 
 
 def _is_dash_literal(args: list) -> bool:
@@ -495,10 +547,11 @@ class SummaryCache:
         containments = _containment_forms(fd.node, scope)
         atoms = self._atom_names(fd.node, path)
         first_token = _is_first_token_check(fd.node, scope)
+        statement_type = _is_statement_type_check(fd.node, scope)
         checked = _checked_params(fd.node, scope)
         raises = self._raises_on_deny(fd, path, scope, is_cm, depth)
         grade, weak_reason = self._value_grade(
-            transforms, containments, shapes, fd.node, first_token
+            transforms, containments, shapes, fd.node, first_token, statement_type
         )
         tree = self.index.parse(path)
         atom: Optional[ConfigAtom] = None
@@ -578,6 +631,7 @@ class SummaryCache:
         shapes: set[str],
         fn: ast.AST,
         first_token: bool = False,
+        statement_type: bool = False,
     ) -> tuple[Optional[str], Optional[str]]:
         """Def 5 の値検証等級。**strong は推定で出さない。**
 
@@ -600,6 +654,10 @@ class SummaryCache:
             # **A5 / A6 の形。** 先頭トークンだけを見る allowlist / denylist は
             # `ls; rm -rf /` のような witness で抜けられる。
             return "weak", "first_token"
+
+        if statement_type:
+            # **A18 の形。** 文型は絞れているが値は自由な SQL のまま。
+            return "weak", "statement_type_only"
 
         # -- strong-token（Def 5）: メタ文字・フラグ拒否 + 存在検証 + argv 実行。
         # **argv 実行の確認は効果側の exec_mode で行う**（検証子の本体からは
@@ -644,6 +702,13 @@ class SummaryCache:
         if path_containment and not transforms:
             # 包含述語はあるが正規化子が無い（パス領域）。
             return "weak", "no_symlink_resolution"
+        absolute_only = "absolute" in shapes
+        existence_only = "exists" in shapes
+        if not transforms and not containments and (absolute_only or existence_only):
+            # **F7 の形。** 絶対パスか存在かだけを見る検証子は木の外を止めない。
+            # 絶対パス検査を先に採る（`/etc/passwd` は絶対かつ存在する）。
+            return "weak", "absolute_only" if absolute_only else "existence_only"
+
         if "exact_allowlist" in containments and not transforms:
             # **完全一致 allowlist だけ。** 領域が決まらないので等級は付けず、
             # `req` の引き上げは config atom 規則（既定閉なら OP）に任せる。
@@ -838,8 +903,9 @@ def _membership_candidate(
     container = cmp_node.comparators[0]
     atom: Optional[ConfigAtom] = None
     inline_literal = False
-    if isinstance(container, ast.Name):
-        atom = resolve_atom_via_scope(container.id, tree, scope, index)  # noqa: E501
+    if isinstance(container, (ast.Name, ast.Attribute)):
+        cname = container.id if isinstance(container, ast.Name) else (dotted_of(container) or "")
+        atom = resolve_atom_via_scope(cname, tree, scope, index) if cname else None
     else:
         # **インラインのリテラル集合は config atom ではない**（Def 5 の 4 源:
         # コンストラクタ kwarg / モジュール定数 / os.environ / CLI 既定値）。

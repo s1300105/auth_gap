@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 from .analyze import TreeReport, UnitReport, analyze_unit_f0a, analyze_unit_full
-from .dparse import DOp, DPrev, in_tree_exposure, parse_d_op
+from .dparse import DOp, DPrev, exposure_as_d_op, in_tree_exposure, parse_d_op
 from .enforcement import DepPin, EnforcementVerdict, classify_unit, read_dep_pins
 from .entries import find_tool_literals, find_units, join_annotations
 from .ir import WALL_CLOCK_CAP
@@ -60,6 +60,17 @@ def run(cfg: RunConfig) -> RunResult:
 
     trig_index: TrigIndex = build_trig_index(index, units)
     d_op: DOp = parse_d_op(index, cfg.population, cfg.exposure_file)
+    exposure_decls = in_tree_exposure(index)
+    in_tree_d_op = exposure_as_d_op(exposure_decls)
+    if not in_tree_d_op.is_bottom:
+        # §8-7 の凍結: in-tree の露出宣言を D_op に**含める**。
+        d_op = DOp(
+            allow=d_op.allow,
+            ask=d_op.ask,
+            deny=d_op.deny | in_tree_d_op.deny,
+            source=d_op.source or in_tree_d_op.source,
+            excluded_files=d_op.excluded_files,
+        )
     rubric = load_rubric_1c(cfg.rubric_1c_path)
     prev = DPrev.load(cfg.prev_manifest) if cfg.prev_manifest else None
     pins = read_dep_pins(cfg.src_root)
@@ -99,6 +110,6 @@ def run(cfg: RunConfig) -> RunResult:
 
     tree.parse_failures = sorted(index.parse_failures)
     tree.cap_hits = sorted(index.cap_hits)
-    res.exposure_declarations = in_tree_exposure(index)
+    res.exposure_declarations = exposure_decls
     res.elapsed_s = time.monotonic() - started
     return res

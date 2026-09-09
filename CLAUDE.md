@@ -14,13 +14,17 @@
    記録先は `docs/open_questions.md`。
 5. **仕様書が「凍結」と書いた項目は、凍結後に見た結果で変えない。**
    期待値ファイル（`fixtures/*/expected.json`）は採点器より**先に**コミットする。
+6. **仕様書と実データが食い違ったら、実データを採り、仕様書の値も残す。**
+   決定は `docs/decisions.md` に根拠つきで書く。**仕様書本体は書き換えない**
+   （設計の記録として残す）。学生の入力が要るものだけ
+   `docs/open_questions.md` に置く。
 
 ## 語彙は 1 か所でしか定義しない
 
 | 語彙 | 定義点 | 数 |
 |---|---|---|
-| validator 形状 | `authgap/catalog/validators.py: VALIDATOR_SHAPES` | 11 |
-| weak 理由 | 同 `WEAK_REASONS`（月 6 凍結） | 19 |
+| validator 形状 | `authgap/catalog/validators.py: VALIDATOR_SHAPES` | 12 |
+| weak 理由 | 同 `WEAK_REASONS`（月 6 凍結） | 22 |
 | 格下げ属性 | 同 `DOWNGRADES`。**`self_granted` は weak 理由ではない** | 4 |
 | config atom の源 | 同 `CONFIG_ATOM_SOURCES` | 4 |
 | ゲート側 OPAQUE | `authgap/ir.py: GATE_OPAQUE_REASONS` | 8 |
@@ -29,7 +33,10 @@
 | 効果 kind と slot | `authgap/catalog/sinks.py: SLOTS` | 7 kind |
 
 **語彙外の値は構築時に例外になる。** `DomResult(DomKind.NODOM, "made_up")` は
-`ValueError`。新しい理由が要ると思ったら、まず `docs/open_questions.md` に書く。
+`ValueError`。
+
+語彙を仕様書から動かしたときは `VOCABULARY_REVISIONS` に日付と理由を残す。
+**月 6 の凍結後は語彙を動かさず、`docs/preregistration.md` に逸脱として記録する。**
 
 ## よく踏む落とし穴（全部一度踏んだ）
 
@@ -65,6 +72,8 @@ uv pip install --python .venv/bin/python -r requirements.txt
 ```
 
 **手検証の入口は `docs/verification_guide.md`。**
+**判断の履歴は `docs/decisions.md`。** 仕様書と違う値を出しているときは
+まずここを見る。
 
 ## コミットの約束
 
