@@ -321,6 +321,15 @@ def _checked_params(fn: ast.AST, scope: Scope) -> frozenset[str]:
                 targets, value = list(node.targets), node.value
             elif isinstance(node, ast.AnnAssign) and node.value is not None:
                 targets, value = [node.target], node.value
+            elif isinstance(node, (ast.For, ast.AsyncFor)):
+                # `for f in files:` の `f` は `files` に由来する。
+                # ここを落とすと A4 の `for f in files: (root / f).resolve()` が
+                # 「どの仮引数も検査していない」と読まれ、修正が見えなくなる。
+                targets, value = [node.target], node.iter
+            elif isinstance(node, ast.comprehension):
+                targets, value = [node.target], node.iter
+            elif isinstance(node, ast.withitem) and node.optional_vars is not None:
+                targets, value = [node.optional_vars], node.context_expr
             if value is None:
                 continue
             tnames: set[str] = set()

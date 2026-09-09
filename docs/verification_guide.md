@@ -130,12 +130,31 @@ git -C $C diff d9c45477 9e5d5b8e -- src/git             # A2 の diff を目視
 - **verdict-clearing 数が必ず併記されていること**（§6 T1.1 の副次指標）。
   タプル変化のみで通過した対と区別せずに報告すると「修正を検出した」と誤読される。
 
-### 2.4 現時点で一次確認できている対（2 対のみ）
+### 2.4 現時点で一次確認できている対（4 対）
 
-| 対 | 結果 | 変化 | verdict-clearing |
+すべて `modelcontextprotocol/servers` の `src/git`。**同一プロジェクトなので、
+§6 T1.5 (iii) の「≥ 4 プロジェクトにまたがる」はまだ満たしていない。**
+
+| 対 | 両側通過 | 変化 | verdict-clearing（対単位） |
 |---|---|---|---|
-| A1 | 両側通過 | `cwd`: grade なし → `strong-path`、`req_val` MODEL → OP（8 経路） | 8 |
-| A2 | 両側通過 | `argv[*]`: grade なし → `strong-token`、`req_val` MODEL → OP（`git_checkout` と `git_diff` の 2 経路） | 2 |
+| A1 | ○ | `cwd`: 検証なし → `strong-path`、`req_val` MODEL → OP（8 経路） | **×**（`git_add` に GAP が残る） |
+| A2 | ○ | `argv[*]`: 検証なし → `strong-token`（`git_checkout` と `git_diff`） | **×**（`repo_path` の GAP が残る） |
+| A3 | ○ | `FS_WRITE(index.add)` 消滅 + `SPAWN@git.Git.add#argv[*]` 主体 OP → MODEL | **×** |
+| A4 | ○ | `argv[*]`: 検証なし → `strong-path` | **○** |
+
+**両側通過 4/4、verdict-clearing 1/4。**
+
+この差こそ §6 T1.1 が副次指標の併記を要求している理由である。
+`mcp-server-git` は A2 → A1 → A3 → A4 と段階的に硬化しており、
+**タプルは 4 対とも変化するが、ツールが GAP でなくなるのは最後の 1 対だけ**である。
+「両側通過 4 対」だけを書くと「4 件の修正を検出した」と誤読される。
+
+再現:
+
+```bash
+.venv/bin/python scripts/two_sided.py --spec docs/corpus_spec.json \
+    --json evidence/w0/two_sided.json
+```
 
 **残り 20 行余の対は `docs/cve_triage.csv` で `verified_by_me = none`、すなわち
 仕様書からの転記であって未検証である。論文に数として書く前に、2.1〜2.3 を

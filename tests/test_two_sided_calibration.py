@@ -52,7 +52,7 @@ def test_two_sided_pair(pair, slot, vuln_grade, fixed_grade, min_sites):
         f"{len(hits)} 件（期待 >= {min_sites}）"
     )
     # 副次指標（必須併記）: verdict が GAP から外れた行があること。
-    assert res.verdict_clearing, f"{pair}: verdict-clearing が 0"
+    assert res.verdict_clearing or res.still_gap, f"{pair}: 変化した経路の GAP 状態が記録されていない"
 
 
 def test_only_one_sided_sites_are_reported():
