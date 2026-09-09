@@ -1,0 +1,12 @@
+# 解析対象の木と実行証拠は追跡しない（§5.0）
+corpus/
+evidence/
+# 第 0 週の証拠だけは例外として残す（監査可能性のため）
+!evidence/w0/
+
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
