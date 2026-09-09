@@ -7,7 +7,7 @@
 
 再現: `python scripts/ablation.py <木> [<木> ...]`
 
-- 交差行 **13** 行 / **1** プロジェクト
+- 交差行 **12** 行 / **1** プロジェクト
 - 事前登録した閾値 **3**（**経験的根拠は無い。事前に固定することだけが根拠である**）
 - 判定: **不合格**
 
@@ -20,9 +20,12 @@ fixture 由来と自作ケーススタディ由来。
 | 木 | プロジェクト | 行数 | 交差行 |
 |---|---|---|---|
 | `corpus/A1__vuln` | modelcontextprotocol/servers | 19 | 5 |
-| `corpus/A1__fixed` | modelcontextprotocol/servers | 19 | 1 |
 | `corpus/A2__vuln` | modelcontextprotocol/servers | 19 | 6 |
 | `corpus/A3__vuln` | modelcontextprotocol/servers | 19 | 1 |
+| `corpus/A9__vuln` | MervinPraison/PraisonAI | 49 | 0 |
+| `corpus/A9__fixed` | MervinPraison/PraisonAI | 49 | 0 |
+| `corpus/A18__vuln` | langroid/langroid | 14 | 0 |
+| `corpus/A18__fixed` | langroid/langroid | 14 | 0 |
 
 ## 交差行
 
@@ -33,7 +36,6 @@ fixture 由来と自作ケーススタディ由来。
 | `mcp-lowlevel-v1:serve.call_tool:965af40077db|SPAWN@git.Git.checkout|cwd` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
 | `mcp-lowlevel-v1:serve.call_tool:965af40077db|SPAWN@git.Git.log|cwd` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
 | `mcp-lowlevel-v1:serve.call_tool:965af40077db|SPAWN@git.Git.status|cwd` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
-| `mcp-lowlevel-v1:serve.call_tool:965af40077db|FS_WRITE@git.IndexFile.add|path` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
 | `mcp-lowlevel-v1:serve.call_tool:965af40077db|FS_WRITE@git.IndexFile.add|path` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
 | `mcp-lowlevel-v1:serve.call_tool:965af40077db|SPAWN@git.Git.add|cwd` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
 | `mcp-lowlevel-v1:serve.call_tool:965af40077db|SPAWN@git.Git.checkout|argv[*]` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
@@ -51,4 +53,6 @@ fixture 由来と自作ケーススタディ由来。
 
 | プロジェクト | 腕 A とだけ差 | 腕 B とだけ差 |
 |---|---|---|
+| MervinPraison/PraisonAI | 13 | 3 |
+| langroid/langroid | 9 | 0 |
 | modelcontextprotocol/servers | 0 | 18 |

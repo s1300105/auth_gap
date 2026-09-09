@@ -1,0 +1,28 @@
+{
+  "_schema": "authgap/rubric_1c/v1",
+  "_frozen": "第 0 週（§8 項目 5）。**この文の追認と記録であり再検討ではない。**",
+  "_rule": "仕様として任意実行するツールは、制御位置に validator が一つも無い場合に限り INVENTORY 候補とし、運用者が exposure ファイルを供給した場合のみ INVENTORY にする。供給が無ければ P0 の下で GAP_INJECT。いずれかの制御位置に weak(reason) があれば規則 W が優先し GAP_INJECT。",
+  "_invariant": "**同型のツールは CVE の有無に関わらず同じ verdict。**",
+  "_evidence": "修正が存在しない CVE 2 件（A6 AutoGPT CVE-2024-6091、B5 Upsonic CVE-2026-30625。どちらも仕様書 §6 T1.3 で一次確認済みとされる）を、この rubric の議論の典拠に使う。",
+  "_scope_note": "対象ツール名の列挙は**コーパスを必要としない**（第 0 週にコーパスは無い）。コーパス上の照合は A5（F0a）で行い、**rubric 自体は変えない**。F0a で新しい名前が見つかった場合は docs/preregistration.md に逸脱として記録し、この JSON は月 3 の凍結まで動かさない。",
+  "tool_names": [
+    "PythonExecute",
+    "python_execute",
+    "execute_command",
+    "execute_shell",
+    "run_code",
+    "run_python",
+    "run_shell",
+    "shell",
+    "bash",
+    "terminal",
+    "code_interpreter",
+    "execute_python_code",
+    "run_command"
+  ],
+  "_name_patterns_note": "実装は完全一致で照合する（authgap/verdict.py の load_rubric_1c）。前方一致や正規表現にすると、`run_query` のような無関係なツールまで rubric 1c に落ちる。",
+  "_excluded_examples": [
+    "run_query（SQL 実行。任意コード実行ではない）",
+    "execute（受け手が DB の場合。Def 3 の非 DB .execute() 判定規則で分ける）"
+  ]
+}
