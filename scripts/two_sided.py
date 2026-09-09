@@ -150,7 +150,12 @@ def collect(src_root: str, population: str) -> dict[tuple, SideRow]:
                     exec_mode=exec_mode,
                     dispatch_resolution=(u.get("trig") or {}).get("mode"),
                     verdicts=tuple(sorted(verdict_by_slot.get((e["kind"], e["site"], slot), ()))),
-                    chain=tuple(e.get("witness_chain", ())),
+                    # **経路が空のときはユニット名で埋める。**
+                    # sink をユニット本体で直に呼ぶ形（AutoGPT の
+                    # `execute_shell` / `execute_shell_popen`）は
+                    # `witness_chain` が空なので、埋めないと別のツールが
+                    # 同じ経路 `-` に潰れて変化が読めなくなる。
+                    chain=tuple(e.get("witness_chain", ())) or (u["unit"]["qualname"],),
                 )
                 prev = out.get(row.key())
                 # 同じキーが複数行あるときは**最弱**を採る（攻撃者が最弱を選ぶ）。

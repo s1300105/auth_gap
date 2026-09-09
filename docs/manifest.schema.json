@@ -1,0 +1,507 @@
+{
+  "$defs": {
+    "effect": {
+      "properties": {
+        "db_rule": {
+          "enum": [
+            "db",
+            "db_unresolved"
+          ]
+        },
+        "entry_lineno": {
+          "description": "入口ユニットの CFG 上の行。支配判定はこちらで行う（§2.5.4 の連結経路）",
+          "type": "integer"
+        },
+        "form": {
+          "enum": [
+            "direct",
+            "proxy",
+            "pipe"
+          ]
+        },
+        "kind": {
+          "enum": [
+            "EXEC",
+            "SPAWN",
+            "FS_WRITE",
+            "FS_READ",
+            "NET",
+            "DB",
+            "DISPATCH"
+          ]
+        },
+        "lineno": {
+          "type": "integer"
+        },
+        "resolution": {
+          "$ref": "#/$defs/resolution"
+        },
+        "shape_from": {
+          "type": "object"
+        },
+        "slots": {
+          "additionalProperties": {
+            "$ref": "#/$defs/value"
+          },
+          "type": "object"
+        },
+        "sub_kind": {
+          "type": "string"
+        },
+        "witness_chain": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "write_policy": {
+          "const": true,
+          "description": "マニフェスト属性。**verdict を持たない**"
+        }
+      },
+      "required": [
+        "kind",
+        "site",
+        "form",
+        "lineno",
+        "entry_lineno",
+        "relpath",
+        "slots",
+        "resolution"
+      ],
+      "type": "object"
+    },
+    "gate": {
+      "description": "**真偽値ではない。** 3 値 verdict + 等級 + 理由 + witness 行。",
+      "properties": {
+        "grade": {
+          "$ref": "#/$defs/req"
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verdict": {
+          "enum": [
+            "DOM",
+            "NODOM",
+            "OPAQUE"
+          ]
+        },
+        "witness": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "verdict"
+      ],
+      "type": "object"
+    },
+    "principal": {
+      "description": "ラベル束 P。**UNKNOWN は無い**",
+      "enum": [
+        "USER",
+        "OP",
+        "MODEL"
+      ]
+    },
+    "req": {
+      "description": "要求束 P^op。ゲート無し = MODEL",
+      "enum": [
+        "MODEL",
+        "OP",
+        "USER"
+      ]
+    },
+    "resolution": {
+      "description": "確度。**clean に潰さない**",
+      "enum": [
+        "resolved",
+        "opaque",
+        "remote"
+      ]
+    },
+    "row": {
+      "description": "行 = (unit id, effect, position)。**verdict は集合**（§3）。",
+      "properties": {
+        "D_layer_present": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "covered_by": {
+          "description": "**「いずれかの層」ではない。** その verdict を被覆する権限のある層",
+          "enum": [
+            "kind",
+            "dom",
+            "op",
+            "prev",
+            null
+          ],
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rule_w": {
+          "const": true
+        },
+        "slot": {
+          "type": "string"
+        },
+        "verdicts": {
+          "items": {
+            "enum": [
+              "GAP_SELECT",
+              "GAP_INJECT",
+              "GAP_DRIFT",
+              "CONTRADICTION",
+              "INVENTORY",
+              "UNKNOWN"
+            ]
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "unit_id",
+        "kind",
+        "site",
+        "form",
+        "verdicts",
+        "covered_by",
+        "D_layer_present"
+      ],
+      "type": "object"
+    },
+    "unit": {
+      "properties": {
+        "D_kind": {
+          "required": [
+            "bottom",
+            "explicit",
+            "present_no_bound"
+          ],
+          "type": "object"
+        },
+        "alias_facts": {
+          "items": {
+            "required": [
+              "root",
+              "site",
+              "transform"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "effects": {
+          "items": {
+            "$ref": "#/$defs/effect"
+          },
+          "type": "array"
+        },
+        "enforcement": {
+          "properties": {
+            "verdict": {
+              "enum": [
+                "enforced",
+                "not_enforced",
+                "D_unknown"
+              ]
+            }
+          },
+          "required": [
+            "path",
+            "verdict",
+            "reason"
+          ],
+          "type": "object"
+        },
+        "gate": {
+          "additionalProperties": {
+            "properties": {
+              "gate": {
+                "$ref": "#/$defs/gate"
+              }
+            },
+            "required": [
+              "gate"
+            ],
+            "type": "object"
+          },
+          "type": "object"
+        },
+        "gate_occ": {
+          "type": "object"
+        },
+        "grades": {
+          "additionalProperties": {
+            "properties": {
+              "grade": {
+                "enum": [
+                  "strong-path",
+                  "strong-token",
+                  "strong-enum",
+                  "strong-eval",
+                  "weak",
+                  "unknown",
+                  null
+                ]
+              },
+              "weak_reason": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          },
+          "type": "object"
+        },
+        "opaque_reasons": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "req_occ": {
+          "$ref": "#/$defs/req"
+        },
+        "req_occ_by_effect": {
+          "additionalProperties": {
+            "$ref": "#/$defs/req"
+          },
+          "type": "object"
+        },
+        "req_val": {
+          "additionalProperties": {
+            "$ref": "#/$defs/req"
+          },
+          "type": "object"
+        },
+        "rows": {
+          "items": {
+            "$ref": "#/$defs/row"
+          },
+          "type": "array"
+        },
+        "trig": {
+          "properties": {
+            "label": {
+              "$ref": "#/$defs/principal"
+            },
+            "mode": {
+              "enum": [
+                "traced",
+                "assumed"
+              ]
+            }
+          },
+          "required": [
+            "label",
+            "mode"
+          ],
+          "type": "object"
+        },
+        "unit": {
+          "properties": {
+            "schema_hash": {
+              "pattern": "^[0-9a-f]{12}$",
+              "type": "string"
+            },
+            "unit_id": {
+              "pattern": "^[^:]+:.+:[0-9a-f]{12}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "unit_id",
+            "framework",
+            "entry_kind",
+            "module",
+            "qualname",
+            "relpath",
+            "schema_hash"
+          ],
+          "type": "object"
+        },
+        "validator_shapes": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "unit",
+        "effects",
+        "req_occ",
+        "req_val",
+        "grades",
+        "gate",
+        "rows",
+        "D_kind"
+      ],
+      "type": "object"
+    },
+    "value": {
+      "properties": {
+        "attrs": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "prin": {
+          "$ref": "#/$defs/principal"
+        },
+        "prov": {
+          "$ref": "#/$defs/resolution"
+        },
+        "prov_reasons": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "roots": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "shape": {
+          "required": [
+            "k"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "prin",
+        "prov",
+        "shape"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://github.com/s1300105/auth_gap/docs/manifest.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "description": "§5.2 の manifest。**gate 欄は真偽ではなく (3 値 verdict, grade, reason, witness 行) である。** volatile（実行時刻・経過時間・絶対パス）は トップレベルの run_meta にだけ置く（§5.2 の決定論の定義）。",
+  "properties": {
+    "d_op": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "dispatch_sites": {
+      "type": "array"
+    },
+    "fingerprint": {
+      "properties": {
+        "caps": {
+          "required": [
+            "K",
+            "SUMMARY_CAP",
+            "AST_NODE_CAP",
+            "EFFECT_ROW_CAP",
+            "CFG_NODE_CAP",
+            "MAX_DEPTH"
+          ],
+          "type": "object"
+        },
+        "sha256": {
+          "additionalProperties": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "required": [
+            "sink_table",
+            "entry_catalog",
+            "gate_vocabulary",
+            "enforcement_table"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "schema",
+        "caps",
+        "sha256",
+        "counts"
+      ],
+      "type": "object"
+    },
+    "gate_verdict_counts": {
+      "type": "object"
+    },
+    "parse_failures": {
+      "description": "**parse 失敗は行として出す。黙って捨てない。**",
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "population": {
+      "enum": [
+        "app",
+        "mcp_server",
+        "tool_package"
+      ]
+    },
+    "run_meta": {
+      "description": "**volatile はここにだけ置く。** 3 回一致の比較では除く。",
+      "properties": {
+        "elapsed_s": {
+          "type": "number"
+        },
+        "run_id": {
+          "type": "string"
+        },
+        "src_root": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "schema": {
+      "const": "authgap/v1"
+    },
+    "truncations": {
+      "description": "cap に当たったファイル（TRUNCATED 行）。",
+      "items": {
+        "required": [
+          "cap"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "units": {
+      "items": {
+        "$ref": "#/$defs/unit"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema",
+    "population",
+    "fingerprint",
+    "units",
+    "parse_failures",
+    "truncations"
+  ],
+  "title": "AuthGap manifest",
+  "type": "object"
+}

@@ -106,6 +106,16 @@ class EntryRule:
     bases: tuple[str, ...] = ()
     #: 引数のうち MODEL としない名前（`self`、`cls`、実行文脈など）。
     exclude_params: tuple[str, ...] = ("self", "cls")
+    #: デコレータの第 N 位置引数がツール名（`@command("execute_shell", ...)`）。
+    name_arg: Optional[int] = None
+    #: デコレータが持たねばならない位置引数の数。**名前が同じ別のデコレータと
+    #: 取り違えないための構造条件。** `@click.command()` と AutoGPT の
+    #: `@command("execute_shell", "...", {...})` は末尾名が同じである。
+    require_positional: int = 0
+    #: デコレータの第 N 位置引数が**モデルが埋める引数のスキーマ辞書**。
+    #: これがあるとき、辞書のキーに無い仮引数は `val = MODEL` としない。
+    #: 名前のブラックリストより強い根拠である（機械可読な宣言だから）。
+    schema_arg: Optional[int] = None
     note: str = ""
 
 
@@ -165,6 +175,18 @@ ENTRY_RULES: tuple[EntryRule, ...] = (
     ),
     # -- gptme -------------------------------------------------------------
     EntryRule("spec_object", "gptme", ("ToolSpec",)),
+    # -- AutoGPT -----------------------------------------------------------
+    EntryRule(
+        "decorator",
+        "autogpt",
+        ("command",),
+        name_arg=0,
+        schema_arg=2,
+        require_positional=3,
+        note="@command(名前, 説明, {param: JSONSchema(...)}, enabled=...)。"
+        "**第 3 引数の辞書がモデルの埋める引数を機械可読に宣言している**ので、"
+        "そこに無い仮引数（`agent` など）は MODEL としない",
+    ),
     # -- tools=[...] 形（フレームワーク横断）--------------------------------
     EntryRule(
         "tools_list",

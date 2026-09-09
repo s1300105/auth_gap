@@ -251,6 +251,32 @@ def _kwarg_str(call: Optional[ast.Call], key: str) -> Optional[str]:
     return None
 
 
+def _positional_str(call: Optional[ast.Call], idx: Optional[int]) -> Optional[str]:
+    if call is None or idx is None or idx >= len(call.args):
+        return None
+    a = call.args[idx]
+    return a.value if isinstance(a, ast.Constant) and isinstance(a.value, str) else None
+
+
+def _schema_keys(call: Optional[ast.Call], idx: Optional[int]) -> Optional[frozenset[str]]:
+    """デコレータのスキーマ辞書のキー（= モデルが埋める引数名）。
+
+    読めなければ `None` を返す。**読めないことを「全部 MODEL」とも
+    「全部除外」とも解釈しない**（`None` は「宣言が無い」として扱い、
+    呼び出し側が既定の全引数 MODEL に落とす）。
+    """
+    if call is None or idx is None:
+        return None
+    node = call.args[idx] if idx < len(call.args) else None
+    if not isinstance(node, ast.Dict):
+        return None
+    out: set[str] = set()
+    for k in node.keys:
+        if isinstance(k, ast.Constant) and isinstance(k.value, str):
+            out.add(k.value)
+    return frozenset(out) if out else None
+
+
 def _class_bases(index: SourceIndex, classname: str, module: Optional[str]) -> frozenset[str]:
     """クラスの基底名（1 段だけ。多重継承の連鎖は追わない）。"""
     cd = index.get_class(classname, module)
@@ -277,7 +303,28 @@ def find_units(index: SourceIndex) -> list[Unit]:
             rule = _match_decorator(name)
             if rule is None:
                 continue
-            tool_name = _kwarg_str(call, "name") or fd.qualname.split(".")[-1]
+            if rule.require_positional:
+                # **末尾名が同じ別のデコレータと取り違えない。**
+                # `@click.command()` は位置引数を取らないので落ちる。
+                if call is None or len(call.args) < rule.require_positional:
+                    continue
+                if not isinstance(call.args[rule.name_arg or 0], ast.Constant):
+                    continue
+            tool_name = (
+                _kwarg_str(call, "name")
+                or _positional_str(call, rule.name_arg)
+                or fd.qualname.split(".")[-1]
+            )
+            params = params_of(fd.node, rule.exclude_params)
+            declared = _schema_keys(call, rule.schema_arg)
+            if declared is not None:
+                # **スキーマ辞書に無い仮引数は MODEL としない。**
+                # 実行文脈（`agent` など）を MODEL に数えると、フレームワークが
+                # 渡すオブジェクトがモデル由来の値として伝播する。
+                for pm in params:
+                    if pm.name not in declared:
+                        pm.excluded = True
+                        pm.excluded_reason = f"{rule.framework}:not_in_tool_schema"
             units.append(
                 Unit(
                     framework=rule.framework,
@@ -286,7 +333,7 @@ def find_units(index: SourceIndex) -> list[Unit]:
                     qualname=fd.qualname,
                     relpath=fd.relpath,
                     node=fd.node,
-                    params=params_of(fd.node, rule.exclude_params),
+                    params=params,
                     tool_name=tool_name,
                     is_async=fd.is_async,
                 )

@@ -130,38 +130,48 @@ git -C $C diff d9c45477 9e5d5b8e -- src/git             # A2 の diff を目視
 - **verdict-clearing 数が必ず併記されていること**（§6 T1.1 の副次指標）。
   タプル変化のみで通過した対と区別せずに報告すると「修正を検出した」と誤読される。
 
-### 2.4 現時点で一次確認できている対（6 対 / 3 プロジェクト）
+### 2.4 現時点で一次確認できている対（7 対 / 4 プロジェクト）
 
-| 対 | プロジェクト | 両側通過 | 変化 | clearing 厳密 | clearing INJECT |
+| 対 | プロジェクト | 両側通過 | 変化した座標 | clearing 厳密 | clearing INJECT |
 |---|---|---|---|---|---|
 | A1 | mcp-server-git | ○ | `cwd`: 検証なし → `strong-path`（8 経路） | × | × |
 | A2 | mcp-server-git | ○ | `argv[*]`: 検証なし → `strong-token`（2 経路） | × | × |
 | A3 | mcp-server-git | ○ | `FS_WRITE(index.add)` 消滅 + `argv[*]` 主体 OP → MODEL | × | × |
 | A4 | mcp-server-git | ○ | `argv[*]`: 検証なし → `strong-path` | × | **○** |
-| A9+A10 | PraisonAI | ○ | `req_occ` MODEL → **USER**（`@require_approval`）／ `path`: `weak(no_symlink_resolution)` → `strong-path` | × | × |
+| A5 | AutoGPT | ○ | `exec_mode`: `True` → `config-conditional`（argv 行が増える） | × | × |
+| A9+A10 | PraisonAI | ○ | `req_occ` MODEL → **USER**／`path`: `weak(no_symlink_resolution)` → `strong-path` | × | × |
 | A18 | langroid | ○ | `sql`: 検証なし → `unknown`（sqlglot 文型 allowlist） | × | × |
 
-**両側通過 6/6。verdict-clearing は厳密 0/6、INJECT 座標のみ 1/6。**
+**両側通過 7/7。verdict-clearing は厳密 0/7、INJECT 座標のみ 1/7。**
 
 §6 T1.5 の合格条件との対応:
 
-- (i) 修正コミット単位で **≥ 6 対** → **6 対で満たす**（A9 と A10 は同一修正
+- (i) 修正コミット単位で **≥ 6 対** → **7 対で満たす**（A9 と A10 は同一修正
   コミットなので 1 対として数えている）
-- (iii) **≥ 4 プロジェクト** → **3 プロジェクトなので未達**。もう 1 つ要る
-- PraisonAI 由来は 1 対なので上限 3 は満たす
+- (iii) **≥ 4 プロジェクト** → **4 プロジェクトで満たす**
+  （mcp-server-git / AutoGPT / PraisonAI / langroid）
+- PraisonAI 由来は 1 対なので上限 3 を満たす
+- (ii) Semgrep / Pysa との突き合わせは**未実施**。§6 T1.5 の 3 条件のうち
+  これだけが残っている
+
+仕様書の期待タプルと**完全に一致した**のは 2 対:
+
+- **A10**: `weak(no_symlink_resolution)` → `strong-path`
+- **A5**: `(weak(first_token), shell=True)` → `(weak(first_token), argv 行が増える)`。
+  修正側の `shell` は素の `False` ではなく `config-conditional` である
+  （`validate_command` が `shell_command_control` に応じて `allow_shell` を返す）。
+  §6 T1.1 が F3 で要求する「モードが確定しないときは 2 行出す」がここで働き、
+  `shell_string` 行と `argv` 行の両方が出る。
 
 **verdict-clearing が厳密版で 0 になる理由を本文に書くこと。**
 `GAP_SELECT` は「モデルがそのツールを呼ぶかを決めており、承認割り込みも宣言も
 無い」ことを言うので、**値検証を足しても消えない**。消えるのは承認割り込みを
 足した対だけである。A9 は `@require_approval` で `req_occ` を USER へ上げるが、
-同じ木の別経路（`create_directories_for_file`）に GAP が残るので対単位では
-まだ clear にならない。
+同じ木の別経路に GAP が残るので対単位ではまだ clear にならない。
+A5 は修正版も `weak(first_token)` のままなので規則 W により GAP_INJECT が残る
+（仕様書が「修正版も weak のまま」と書いているとおり）。
 **片方の数だけを書くと、SELECT 座標が常に残ることを隠すか、値検証の効果を
 見落とすかのどちらかになる。**
-
-A10 は仕様書の期待タプル
-（`weak(no_symlink_resolution)` → `strong-path`）と**完全に一致した**。
-実データで Def 5 の等級づけが仕様どおり働いた最初の例である。
 
 再現:
 
@@ -171,7 +181,7 @@ A10 は仕様書の期待タプル
     --json evidence/w0/two_sided.json
 ```
 
-**残り 19 行の対は `docs/cve_triage.csv` で `verified_by_me = none`、すなわち
+**残り 18 行の対は `docs/cve_triage.csv` で `verified_by_me = none`、すなわち
 仕様書からの転記であって未検証である。論文に数として書く前に、2.1〜2.3 を
 その対に対して実行すること。**
 

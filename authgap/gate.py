@@ -261,6 +261,40 @@ def _containment_forms(fn: ast.AST, scope: Scope) -> set[str]:
     return out
 
 
+def _is_first_token_check(fn: ast.AST, scope: Scope) -> bool:
+    """`split(...)[0]` の結果が会員判定に入る形か（Def 5 の `first_token`）。
+
+    `command.split()[0] in config.shell_allowlist`（A5 脆弱側）も
+    `shlex.split(command_line)[0] in allowlist`（A5 修正側）も同じ形で、
+    **どちらも先頭トークンしか見ていない**。修正が `shlex` を入れても
+    等級が上がらないことを示すのがこの判定である
+    （否定規則: `shlex.split` の存在だけでは strong に上げない）。
+    """
+    first_tokens: set[str] = set()
+    for node in ast.walk(fn):
+        # `X.split(...)[0]` / `shlex.split(X)[0]`
+        if not isinstance(node, ast.Subscript):
+            continue
+        idx = node.slice
+        if not (isinstance(idx, ast.Constant) and idx.value == 0):
+            continue
+        val = node.value
+        if not isinstance(val, ast.Call):
+            continue
+        dotted = resolve_call_name(val.func, scope)
+        attr = val.func.attr if isinstance(val.func, ast.Attribute) else None
+        if dotted in ("shlex.split",) or attr in ("split", "rsplit"):
+            first_tokens.add("yes")
+    if not first_tokens:
+        return False
+    # 会員判定（`in` / `not in`）が本体にあること。
+    for node in ast.walk(fn):
+        if isinstance(node, ast.Compare) and node.ops:
+            if isinstance(node.ops[0], (ast.In, ast.NotIn)):
+                return True
+    return False
+
+
 def _is_dash_literal(args: list) -> bool:
     for a in args:
         if isinstance(a, ast.Constant) and isinstance(a.value, str) and a.value in ("-", "--"):
@@ -460,9 +494,12 @@ class SummaryCache:
         transforms = _transform_names(fd.node, scope)
         containments = _containment_forms(fd.node, scope)
         atoms = self._atom_names(fd.node, path)
+        first_token = _is_first_token_check(fd.node, scope)
         checked = _checked_params(fd.node, scope)
         raises = self._raises_on_deny(fd, path, scope, is_cm, depth)
-        grade, weak_reason = self._value_grade(transforms, containments, shapes, fd.node)
+        grade, weak_reason = self._value_grade(
+            transforms, containments, shapes, fd.node, first_token
+        )
         tree = self.index.parse(path)
         atom: Optional[ConfigAtom] = None
         if tree is not None:
@@ -540,12 +577,29 @@ class SummaryCache:
         containments: set[str],
         shapes: set[str],
         fn: ast.AST,
+        first_token: bool = False,
     ) -> tuple[Optional[str], Optional[str]]:
-        """Def 5 の値検証等級。**strong は推定で出さない。**"""
+        """Def 5 の値検証等級。**strong は推定で出さない。**
+
+        **weak 理由は値の領域ごとに分かれている。** `prefix_no_canon` /
+        `no_containment` / `no_symlink_resolution` はパス領域の語であり、
+        シェルコマンドの allowlist に付けてはならない（A5 がその実例で、
+        `command.split()[0] in allowlist` は `first_token` である）。
+        したがって領域を先に決める:
+
+        1. 先頭トークン検査（`split()[0]` が会員判定に入る）→ `weak(first_token)`
+        2. パス正規化子がある → パス領域の規則
+        3. どちらでもない → 会員判定は config atom 規則に任せて等級は付けない
+        """
         has_symlink = bool(transforms & SYMLINK_RESOLVERS)
         has_lexical = bool(transforms & LEXICAL_CANONS)
         dash_reject = "dash_reject" in containments
         existence = "exists" in shapes
+
+        if first_token:
+            # **A5 / A6 の形。** 先頭トークンだけを見る allowlist / denylist は
+            # `ls; rm -rf /` のような witness で抜けられる。
+            return "weak", "first_token"
 
         # -- strong-token（Def 5）: メタ文字・フラグ拒否 + 存在検証 + argv 実行。
         # **argv 実行の確認は効果側の exec_mode で行う**（検証子の本体からは
@@ -582,8 +636,19 @@ class SummaryCache:
         if not transforms and "exact_allowlist" in containments:
             # 完全一致 allowlist。等級は config atom 規則が決める（既定閉なら OP）。
             return "allowlist", None
-        if strong_containment and not transforms:
+        path_containment = containments & {
+            "os.path.commonpath",
+            "is_relative_to",
+            "relative_to",
+        }
+        if path_containment and not transforms:
+            # 包含述語はあるが正規化子が無い（パス領域）。
             return "weak", "no_symlink_resolution"
+        if "exact_allowlist" in containments and not transforms:
+            # **完全一致 allowlist だけ。** 領域が決まらないので等級は付けず、
+            # `req` の引き上げは config atom 規則（既定閉なら OP）に任せる。
+            # ここでパス領域の理由を付けると A5 のような対で誤った weak 理由が出る。
+            return "allowlist", None
         # **形状語彙の語が本体に出るだけでは検証子にしない。**
         # §6 F0a の 11 語は構文的な棚卸しの語彙であって、`split` や `Path()` は
         # 値の変換である。`repo.git.log(*args).split("\n")` を「等級 unknown の
