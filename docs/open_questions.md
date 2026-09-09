@@ -92,3 +92,42 @@
 - **実装がしたこと**: §3 と §10 が「この条項は撤回しない」と書いているので、
   承認を要さない**仕様内規則**として扱っている。拒否分岐は作っていない。
 - **決める時点**: 学生が追認する。
+
+## Q8. 較正対 A1 / A2 の脆弱側の期待タプルが仕様書と食い違う（一次確認済み）
+
+- **状況**: 2026-09-09 に `modelcontextprotocol/servers` を pin して diff を
+  目視した結果、A1 と A2 の**脆弱側に検証子が 1 つも存在しない**ことを確認した。
+  仕様書 §6 T1.2 は A1 の脆弱側を `weak(prefix_no_canon)`、A2 の脆弱側を
+  `weak(no_dash_reject)` と書いている。
+- **一次確認の内容**:
+  - A1 脆弱側 `9e5d5b8e`: `repo_path = Path(arguments["repo_path"])` の直後に
+    `git.Repo(repo_path)` があり、包含検査も正規化子も無い
+    （`grep -n 'repo_path' server.py` で全 2 箇所）。
+  - A2 脆弱側 `d9c45477`: `git_diff` は `return repo.git.diff(f"--unified={n}", target)`、
+    `git_checkout` は `repo.git.checkout(branch_name)` のみ。dash 拒否も
+    `rev_parse` も無い。
+  - なお `9e5d5b8e`（A1 脆弱側 = A2 修正側）には dash 拒否 + `rev_parse` が
+    **既に入っている**。仕様書の A1/A2 の ref 関係と整合する。
+- **影響**: 消滅理由は A1 が `normalisation-add` 単独ではなく `validator-add`
+  （`validate_repo_path` の新設）。**両側判別可能性は変わらず成立する**ので
+  §6 T1.5 の算入数は動かない。
+- **もう 1 点**: 仕様書の A2 は `git_checkout` しか挙げていないが、
+  同じ修正コミットが `git_diff` にも同じ検証を入れている。両側で変化する
+  効果サイトは 1 つではなく 2 つである。
+- **実装がしたこと**: `docs/cve_triage.csv` に `expected_tuple_change`（訂正後）と
+  `spec_expected_tuple_change`（仕様書の値）を**両方**置いた。
+  **仕様書の値を黙って書き換えていない。**
+- **決める時点**: 学生が追認し、`AUTHGAP_BRIEF_v3.md` §6 T1.2 を訂正するか、
+  triage 表の訂正だけに留めるかを決める。**採点前に決めること**（§6 T1.1 が
+  期待タプルの事前凍結を要求している）。
+
+## Q9. 較正対のうち一次確認できているのは 2 対だけ
+
+- **状況**: `docs/cve_triage.csv` の 25 行のうち、ref・diff・両側実行まで
+  自分で確認したのは **A1 と A2 の 2 対のみ**（`verified_by_me = sha+diff+two_sided`）。
+  残りは仕様書からの転記で `verified_by_me = none`、すなわち**未検証**。
+- **したがって**: 「両側通過 11 対」「算入可能 11 対 / 5 プロジェクト」といった
+  数を**現時点で論文に書いてはならない**。書けるのは「2 対で両側通過を確認した」
+  だけである。
+- **決める時点**: §7.6 の D9–D12 に相当する作業。各対について
+  `docs/verification_guide.md` の 2.1〜2.3 を実行し、`verified_by_me` を埋める。

@@ -537,11 +537,18 @@ class ValEngine:
         if isinstance(base.shape, Map) and isinstance(idx, ast.Constant) and isinstance(idx.value, str):
             for k, v in base.shape.entries:
                 if k == idx.value:
-                    return v
+                    return _refine_roots(v, base.roots, idx.value)
         if isinstance(base.shape, (Seq, Argv)) and isinstance(idx, ast.Constant) and isinstance(idx.value, int):
             if 0 <= idx.value < len(base.shape.elems):
                 return base.shape.elems[idx.value]
-        return _element_of(base)
+        out = _element_of(base)
+        if isinstance(idx, ast.Constant) and isinstance(idx.value, str):
+            # **定数キーの添字は root を精緻化する。**
+            # `arguments["repo_path"]` と `arguments["target"]` を同じ root に
+            # まとめると、片方への検証がもう片方の位置に付いてしまう
+            # （Def 5 が禁じている型エラーが主語一致をすり抜ける）。
+            out = _refine_roots(out, base.roots, idx.value)
+        return out
 
     def _ev_ListComp(self, node, env, scope, res, depth, chain) -> Value:
         for gen in node.generators:
@@ -853,11 +860,24 @@ def _prin2(a: Value, b: Value) -> Prin:
 
 
 def _prin_all(vals) -> Prin:
-    out = Prin.USER
+    """要素の主体の join。
+
+    **空の列は OP**（コードに書かれた定数の列であって利用者由来ではない）。
+    `Prin.USER` を既定にすると空 argv が USER になり、P0 の判定が緩む。
+    """
+    out = Prin.OP
     for v in vals:
         if v.prin > out:
             out = v.prin
     return out
+
+
+def _refine_roots(v: Value, base_roots: frozenset[str], key: str) -> Value:
+    """`arguments["repo_path"]` のように root をキーで具体化する。"""
+    if not base_roots:
+        return v
+    refined = frozenset(f'{r}["{key}"]' for r in base_roots)
+    return Value(v.prin, v.prov, v.shape, v.attrs, (v.roots - base_roots) | refined)
 
 
 def _prov_all(vals) -> Prov:

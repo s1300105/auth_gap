@@ -1,0 +1,5 @@
+name,repo,ref,commit_sha,subdir,population,path,n_py,has_requirements_txt,has_lock,note
+A1@fixed,modelcontextprotocol/servers,a37158bc,a37158bc1555ce0b1121ea98a3e740119d7fc8c7,src/git,mcp_server,corpus/A1__fixed,12,False,True,A1 修正側。resolve + relative_to を ValueError 捕捉で使う
+A1@vuln,modelcontextprotocol/servers,9e5d5b8e,9e5d5b8e4b5dd6fa4fc84cad5eb291568024aad4,src/git,mcp_server,corpus/A1__vuln,12,False,True,A1 mcp-server-git repo_path 封じ込め CVE-2025-68145 脆弱側
+A2@fixed,modelcontextprotocol/servers,9e5d5b8e,9e5d5b8e4b5dd6fa4fc84cad5eb291568024aad4,src/git,mcp_server,corpus/A2__fixed,12,False,True,A2 修正側 = A1 脆弱側と同一コミット
+A2@vuln,modelcontextprotocol/servers,d9c45477,d9c45477cd6ff4d3456c138498dca984c8697f43,src/git,mcp_server,corpus/A2__vuln,12,False,True,A2 フラグ混入 CWE-88 CVE-2025-68144 脆弱側

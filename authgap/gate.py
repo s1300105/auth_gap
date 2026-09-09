@@ -176,6 +176,10 @@ class FuncSummary:
     atom: Optional[ConfigAtom] = None
     #: 本体が返り値で allowlist 判定をしているときの被参照集合名。
     membership_sets: frozenset[str] = frozenset()
+    #: **検証述語が実際に見ている仮引数の名前。**
+    #: `git_diff(repo, target)` の dash 検査は `target` を見ているので、
+    #: `repo` 経由で無関係な位置（`cwd`）に等級が付くのを防ぐ。
+    checked_params: frozenset[str] = frozenset()
     notes: tuple[str, ...] = ()
 
 
@@ -242,12 +246,100 @@ def _containment_forms(fn: ast.AST, scope: Scope) -> set[str]:
                 if node.func.attr in ("is_relative_to", "relative_to"):
                     out.add(node.func.attr)
                 if node.func.attr == "startswith":
-                    out.add("startswith")
+                    # **`startswith("-")` はフラグ拒否であって包含述語ではない。**
+                    # 包含述語として数えると、`git_diff` のような
+                    # 「引数の先頭がハイフンかを見るツール実装」がパス検証子に
+                    # 化け、無関係な位置に weak(prefix_no_canon) が付く。
+                    if _is_dash_literal(node.args):
+                        out.add("dash_reject")
+                    else:
+                        out.add("startswith")
         if isinstance(node, ast.Compare):
             for op, comp in zip(node.ops, node.comparators, strict=False):
                 if isinstance(op, (ast.In, ast.NotIn)) and isinstance(comp, (ast.Set, ast.List, ast.Tuple, ast.Name)):
                     out.add("exact_allowlist")
     return out
+
+
+def _is_dash_literal(args: list) -> bool:
+    for a in args:
+        if isinstance(a, ast.Constant) and isinstance(a.value, str) and a.value in ("-", "--"):
+            return True
+    return False
+
+
+def _predicate_operands(fn: ast.AST, scope: Scope) -> set[str]:
+    """本体の検証述語が見ている**名前**を集める。
+
+    * `X.startswith(...)` / `X.resolve()` / `X.relative_to(Y)` → 受け手 X
+    * `os.path.commonpath([a, b])` / `rev_parse(a)` / `exists(a)` → 実引数
+    * `x in S` → 左辺 x
+    """
+    names: set[str] = set()
+
+    def add(node) -> None:
+        for sub in ast.walk(node):
+            if isinstance(sub, ast.Name):
+                names.add(sub.id)
+            elif isinstance(sub, ast.Attribute):
+                d = dotted_of(sub)
+                if d:
+                    names.add(d)
+
+    for node in ast.walk(fn):
+        if isinstance(node, ast.Call):
+            dotted = resolve_call_name(node.func, scope)
+            shape = V.shape_for_dotted(dotted) if dotted else None
+            attr = node.func.attr if isinstance(node.func, ast.Attribute) else None
+            mshape = V.shape_for_method(attr) if attr else None
+            if shape is None and mshape is None:
+                continue
+            if mshape is not None and attr in ("startswith", "resolve", "relative_to", "is_relative_to"):
+                add(node.func.value)
+            else:
+                for a in node.args:
+                    add(a)
+        elif isinstance(node, ast.Compare) and node.ops:
+            if isinstance(node.ops[0], (ast.In, ast.NotIn, ast.Eq, ast.NotEq)):
+                add(node.left)
+    return names
+
+
+def _checked_params(fn: ast.AST, scope: Scope) -> frozenset[str]:
+    """検証述語のオペランドを局所の代入連鎖で仮引数まで遡る。"""
+    operands = _predicate_operands(fn, scope)
+    if not operands:
+        return frozenset()
+    seen = set(operands)
+    changed = True
+    while changed:
+        changed = False
+        for node in ast.walk(fn):
+            targets: list = []
+            value = None
+            if isinstance(node, ast.Assign):
+                targets, value = list(node.targets), node.value
+            elif isinstance(node, ast.AnnAssign) and node.value is not None:
+                targets, value = [node.target], node.value
+            if value is None:
+                continue
+            tnames: set[str] = set()
+            for t in targets:
+                for sub in ast.walk(t):
+                    if isinstance(sub, ast.Name):
+                        tnames.add(sub.id)
+            if tnames & seen:
+                for sub in ast.walk(value):
+                    if isinstance(sub, ast.Name) and sub.id not in seen:
+                        seen.add(sub.id)
+                        changed = True
+    params: set[str] = set()
+    args = getattr(fn, "args", None)
+    if args is not None:
+        for a in list(args.posonlyargs) + list(args.args) + list(args.kwonlyargs):
+            if a.arg in seen and a.arg not in ("self", "cls"):
+                params.add(a.arg)
+    return frozenset(params)
 
 
 def _startswith_has_sep(fn: ast.AST) -> bool:
@@ -302,6 +394,7 @@ class SummaryCache:
         transforms = _transform_names(fd.node, scope)
         containments = _containment_forms(fd.node, scope)
         atoms = self._atom_names(fd.node, path)
+        checked = _checked_params(fd.node, scope)
         raises = self._raises_on_deny(fd, path, scope, is_cm, depth)
         grade, weak_reason = self._value_grade(transforms, containments, shapes, fd.node)
         tree = self.index.parse(path)
@@ -321,6 +414,7 @@ class SummaryCache:
             atom_names=frozenset(atoms),
             atom=atom,
             membership_sets=frozenset(atoms),
+            checked_params=checked,
         )
 
     def _atom_names(self, fn: ast.AST, path: str) -> set[str]:
@@ -384,6 +478,19 @@ class SummaryCache:
         """Def 5 の値検証等級。**strong は推定で出さない。**"""
         has_symlink = bool(transforms & SYMLINK_RESOLVERS)
         has_lexical = bool(transforms & LEXICAL_CANONS)
+        dash_reject = "dash_reject" in containments
+        existence = "exists" in shapes
+
+        # -- strong-token（Def 5）: メタ文字・フラグ拒否 + 存在検証 + argv 実行。
+        # **argv 実行の確認は効果側の exec_mode で行う**（検証子の本体からは
+        # 分からない）ので、ここでは 2 条件までを見て `strong-token` を返し、
+        # 3 条件目は `analyze._grade_of` が効果を見て確かめる。
+        if dash_reject and existence:
+            return "strong-token", None
+        if dash_reject and not existence:
+            return "weak", "no_existence_check"
+        if existence and not dash_reject and not transforms:
+            return "weak", "no_dash_reject"
         strong_containment = containments & {
             "os.path.commonpath",
             "is_relative_to",
@@ -411,8 +518,11 @@ class SummaryCache:
             return "allowlist", None
         if strong_containment and not transforms:
             return "weak", "no_symlink_resolution"
-        if shapes:
-            return "unknown", None
+        # **形状語彙の語が本体に出るだけでは検証子にしない。**
+        # §6 F0a の 11 語は構文的な棚卸しの語彙であって、`split` や `Path()` は
+        # 値の変換である。`repo.git.log(*args).split("\n")` を「等級 unknown の
+        # 検証子」と読むと、検証が 1 つも無い脆弱側に等級が付き、両側の差が消える。
+        del shapes
         return None, None
 
 
@@ -467,8 +577,11 @@ class GateCandidate:
     witness_node: Optional[int] = None
     #: 述語のオペランドが由来する MODEL 導入点（`Value.roots`）。
     #: **位置引数の並びを崩さないよう必ず末尾に置く。**
-    #: val エンジンが入ったらこちらで主語一致を取る（名前一致は暫定）。
     subject_roots: frozenset[str] = frozenset()
+    #: 述語のオペランドの式そのもの。`arguments["branch_name"]` のような
+    #: 添字式から root を精緻化するために要る（名前だけだと `arguments` に潰れ、
+    #: 別の引数への検証が同じ root に見えてしまう）。
+    subject_exprs: tuple = ()
 
     def to_json(self) -> dict:
         d = {
@@ -595,7 +708,7 @@ def _membership_candidate(
     atom: Optional[ConfigAtom] = None
     inline_literal = False
     if isinstance(container, ast.Name):
-        atom = resolve_atom_via_scope(container.id, tree, scope, index)
+        atom = resolve_atom_via_scope(container.id, tree, scope, index)  # noqa: E501
     else:
         # **インラインのリテラル集合は config atom ではない**（Def 5 の 4 源:
         # コンストラクタ kwarg / モジュール定数 / os.environ / CLI 既定値）。
@@ -616,6 +729,7 @@ def _membership_candidate(
         name=dotted_of(container) or ("<inline_literal>" if inline_literal else "<literal>"),
         expr=cmp_node,
         subjects=subject_names(cmp_node.left),
+        subject_exprs=(cmp_node.left,),
         grade=grade,
         value_grade="allowlist",
         downgrade=downgrade,
@@ -672,17 +786,71 @@ def _call_candidate(
 
     # 値検証: 木内の検証子か、カタログ形状の直接呼び出し。
     if summary is not None and summary.value_grade:
-        return _value_candidate(nid, name, call, subjects, summary.value_grade, summary.weak_reason, summary, tree)
+        subj, exprs = _subjects_for_checked(call, fds[0] if fds else None, summary, subjects)
+        cand = _value_candidate(
+            nid, name, call, subj, summary.value_grade, summary.weak_reason, summary, tree
+        )
+        cand.subject_exprs = exprs
+        return cand
     dotted = resolve_call_name(call.func, scope)
     shape = V.shape_for_dotted(dotted) if dotted else None
     if shape is None and isinstance(call.func, ast.Attribute):
         shape = V.shape_for_method(call.func.attr)
         if shape is not None:
             subjects = subjects | subject_names(call.func.value)
-    if shape is not None:
+    if shape is not None and shape in PREDICATE_SHAPES:
         grade, weak = _grade_from_shape(shape)
-        return _value_candidate(nid, name, call, subjects, grade, weak, None, tree)
+        cand = _value_candidate(nid, name, call, subjects, grade, weak, None, tree)
+        cand.subject_exprs = tuple(call.args) + (
+            (call.func.value,) if isinstance(call.func, ast.Attribute) else ()
+        )
+        return cand
     return None
+
+
+def _subjects_for_checked(
+    call: ast.Call, fd, summary: FuncSummary, fallback: frozenset[str]
+) -> tuple[frozenset[str], tuple]:
+    """呼び出し先が実際に検証している仮引数に対応する**実引数**の名前だけを返す。
+
+    これが無いと `git_diff(repo, arguments["target"])` の dash 検査が、
+    `repo` 経由で `cwd` 位置にも等級を付けてしまう。
+    """
+    if fd is None or not summary.checked_params:
+        return fallback, tuple(call.args)
+    args = getattr(fd.node, "args", None)
+    if args is None:
+        return fallback, tuple(call.args)
+    formals = [a.arg for a in list(args.posonlyargs) + list(args.args)]
+    if fd.classname is not None and formals and formals[0] in ("self", "cls"):
+        formals = formals[1:]
+    out: set[str] = set()
+    exprs: list = []
+    for i, formal in enumerate(formals):
+        if formal not in summary.checked_params:
+            continue
+        if i < len(call.args):
+            out |= subject_names(call.args[i])
+            exprs.append(call.args[i])
+    for kw in call.keywords:
+        if kw.arg in summary.checked_params:
+            out |= subject_names(kw.value)
+            exprs.append(kw.value)
+    return (frozenset(out) if out else frozenset({"<no-checked-arg>"})), tuple(exprs)
+
+
+#: 単独で「ゲート候補」になりうる形状。
+#:
+#: §6 F0a の 11 語は**構文的な棚卸しの語彙**であって、全部がゲートではない。
+#: 正規化子（`realpath` / `lexical_canon`）とトークン化（`shlex_*` / `split` /
+#: `ctor_path` / `urlparse`）は**値の変換**であり、val が属性と alias 事実として
+#: 記録する。それらが等級になるのは、検証子関数の本体をまとめて採点したとき
+#: （`FuncSummary.value_grade`）だけである。
+#:
+#: これを分けないと `Path(arguments["repo_path"])` が「検証」に化け、
+#: 検証が 1 つも無い脆弱側に `unknown` の等級が付く（F7 の
+#: 「`Path()` は正規化ではない」と同じ論点）。
+PREDICATE_SHAPES: frozenset[str] = frozenset({"containment", "prefix", "exists"})
 
 
 def _grade_from_shape(shape: str) -> tuple[str, Optional[str]]:

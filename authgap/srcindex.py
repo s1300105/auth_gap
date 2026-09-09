@@ -174,22 +174,43 @@ class SourceIndex:
             return
         rel = self.relpath(path)
         mod = self.module_name(path)
-        for node in tree.body:
+        self._index_body(tree.body, rel, mod, prefix="", classname=None)
+
+    def _index_body(
+        self, body: list, rel: str, mod: str, prefix: str, classname: Optional[str]
+    ) -> None:
+        """入れ子定義も索引する。
+
+        **入れ子関数を落としてはならない。** 低レベル MCP のハンドラは
+        ほぼ常に `async def serve(...)` の中の `@server.call_tool()` 付き
+        入れ子関数であり、モジュール直下しか見ないと R2 の入口が 0 件になる。
+        qualname は `serve.call_tool` のように `.` で連ねる。
+        """
+        for node in body:
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                fd = FuncDef(rel, mod, node.name, node, None, isinstance(node, ast.AsyncFunctionDef))
+                qual = f"{prefix}{node.name}"
+                fd = FuncDef(rel, mod, qual, node, classname, isinstance(node, ast.AsyncFunctionDef))
                 self._funcs.setdefault(fd.key, fd)
-                self._funcs_by_qual.setdefault(node.name, []).append(fd)
+                self._funcs_by_qual.setdefault(qual, []).append(fd)
+                if qual != node.name:
+                    self._funcs_by_qual.setdefault(node.name, []).append(fd)
+                self._index_body(node.body, rel, mod, prefix=f"{qual}.", classname=classname)
             elif isinstance(node, ast.ClassDef):
                 cd = ClassDef(rel, mod, node.name, node, tuple(_base_names(node)))
                 self._classes.setdefault(f"{mod}:{node.name}", cd)
                 self._classes.setdefault(node.name, cd)
-                for sub in node.body:
-                    if isinstance(sub, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                        qual = f"{node.name}.{sub.name}"
-                        fd = FuncDef(rel, mod, qual, sub, node.name, isinstance(sub, ast.AsyncFunctionDef))
-                        self._funcs.setdefault(fd.key, fd)
-                        self._funcs_by_qual.setdefault(qual, []).append(fd)
-                        self._funcs_by_qual.setdefault(sub.name, []).append(fd)
+                self._index_body(
+                    node.body, rel, mod, prefix=f"{prefix}{node.name}.", classname=node.name
+                )
+            elif isinstance(node, (ast.If, ast.Try, ast.With, ast.AsyncWith)):
+                for sub in (
+                    list(getattr(node, "body", []))
+                    + list(getattr(node, "orelse", []))
+                    + list(getattr(node, "finalbody", []))
+                ):
+                    self._index_body([sub], rel, mod, prefix, classname)
+                for h in getattr(node, "handlers", []):
+                    self._index_body(h.body, rel, mod, prefix, classname)
 
     def functions(self) -> Iterator[FuncDef]:
         self.build()

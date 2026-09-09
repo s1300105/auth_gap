@@ -247,10 +247,14 @@ def analyze_unit_full(
     # -- req_val（制御位置ごと）-------------------------------------------
     for i, slot, value in report.control_positions():
         nodes = cfg.nodes_for_line(report.effects[i].entry_lineno) or [cfg.exit]
-        sc = score_gates(cfg, dom, cands, nodes, "val", value.roots)
+        # root が空 = 定数 / OP 由来。**「主語が無い」のであって「未知」ではない**
+        # ので、どの値検証も束縛しない番兵を渡す（空集合を渡すと主語一致が
+        # 素通りして無関係な検証が等級として表示される）。
+        subjects = value.roots or frozenset({"<no-root>"})
+        sc = score_gates(cfg, dom, cands, nodes, "val", subjects)
         report.req_val[(i, slot)] = sc.req
         report.gate_results[(i, slot)] = sc.to_json()
-        report.grades[(i, slot)] = _grade_of(sc.passing, sc.candidates, value)  # noqa: E501
+        report.grades[(i, slot)] = _grade_of(sc.passing, sc.candidates, value, report.effects[i])
 
     from .dparse import drift as _drift
 
@@ -277,6 +281,16 @@ def analyze_unit_full(
         )
     )
     return report
+
+
+def _is_argv_exec(effect: Optional[Effect]) -> bool:
+    """効果が argv 実行（`shell=False`）か。判定できなければ偽（**推定で strong にしない**）。"""
+    if effect is None:
+        return False
+    if effect.kind != "SPAWN":
+        return True  # SPAWN 以外に argv 条件は無い
+    shell = effect.exec_mode.get("shell", {})
+    return shell.get("const") is False or shell.get("source") == "proxy"
 
 
 def _selector_roots(unit: Unit, report: UnitReport) -> frozenset[str]:
@@ -335,15 +349,59 @@ def _attach_subject_roots(cands: list[GateCandidate], val: ValResult) -> None:
         return
     for c in cands:
         roots: set[str] = set()
-        for name in c.subjects:
-            v = env.get(name)
-            if v is not None:
-                roots |= v.roots
+        for expr in c.subject_exprs:
+            roots |= _roots_of_expr(expr, env)
+        if not roots:
+            for name in c.subjects:
+                v = env.get(name)
+                if v is not None:
+                    roots |= v.roots
         c.subject_roots = frozenset(roots)
 
 
+def _roots_of_expr(node, env) -> frozenset[str]:
+    """式から root 集合を取る。**添字は root を精緻化する。**
+
+    `arguments["branch_name"]` を `{arguments}` に潰すと、別の引数への検証が
+    同じ root に見え、Def 5 が禁じている型エラー（無関係な検証が別の位置の
+    判定を動かす）が主語一致をすり抜ける。
+    """
+    if isinstance(node, ast.Name):
+        v = env.get(node.id)
+        return v.roots if v is not None else frozenset()
+    if isinstance(node, ast.Attribute):
+        from .val import access_path
+
+        p = access_path(node)
+        if p is not None:
+            v = env.get(p)
+            if v is not None:
+                return v.roots
+        return _roots_of_expr(node.value, env)
+    if isinstance(node, ast.Subscript):
+        base = _roots_of_expr(node.value, env)
+        idx = node.slice
+        if isinstance(idx, ast.Constant) and isinstance(idx.value, str) and base:
+            return frozenset(f'{r}["{idx.value}"]' for r in base)
+        return base
+    if isinstance(node, ast.Call):
+        out: set[str] = set()
+        for a in node.args:
+            out |= _roots_of_expr(a, env)
+        if isinstance(node.func, ast.Attribute):
+            out |= _roots_of_expr(node.func.value, env)
+        return frozenset(out)
+    out2: set[str] = set()
+    for sub in ast.iter_child_nodes(node) if node is not None else ():
+        out2 |= _roots_of_expr(sub, env)
+    return frozenset(out2)
+
+
 def _grade_of(
-    passing: list[GateCandidate], candidates: list[GateCandidate], value: Value
+    passing: list[GateCandidate],
+    candidates: list[GateCandidate],
+    value: Value,
+    effect: Optional[Effect] = None,
 ) -> tuple[Optional[str], Optional[str]]:
     """位置の等級と weak 理由。**strong は推定で出さない。**
 
@@ -357,6 +415,12 @@ def _grade_of(
     best: Optional[str] = None
     weak_reason: Optional[str] = None
     for c in passing:
+        if c.value_grade == "strong-token":
+            # Def 5 の strong-token は 3 条件目に **argv 実行（shell=False）** を
+            # 要求する。検証子の本体からは分からないので効果側で確かめる。
+            if _is_argv_exec(effect):
+                return "strong-token", None
+            return "unknown", None
         if c.value_grade and c.value_grade.startswith("strong"):
             return c.value_grade, None
     # **主語一致しない候補は等級に寄与しない。** 位置の値に root が無い

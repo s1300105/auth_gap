@@ -1,0 +1,17 @@
+{
+  "_note": "較正対の pin。ref は docs/cve_triage.csv と一致させること。SHA は取得後に docs/frame.csv へ記録される。",
+  "targets": [
+    {"repo": "modelcontextprotocol/servers", "ref": "9e5d5b8e", "name": "A1@vuln",
+     "subdir": "src/git", "population": "mcp_server",
+     "note": "A1 mcp-server-git repo_path 封じ込め CVE-2025-68145 脆弱側"},
+    {"repo": "modelcontextprotocol/servers", "ref": "a37158bc", "name": "A1@fixed",
+     "subdir": "src/git", "population": "mcp_server",
+     "note": "A1 修正側。resolve + relative_to を ValueError 捕捉で使う"},
+    {"repo": "modelcontextprotocol/servers", "ref": "d9c45477", "name": "A2@vuln",
+     "subdir": "src/git", "population": "mcp_server",
+     "note": "A2 フラグ混入 CWE-88 CVE-2025-68144 脆弱側"},
+    {"repo": "modelcontextprotocol/servers", "ref": "9e5d5b8e", "name": "A2@fixed",
+     "subdir": "src/git", "population": "mcp_server",
+     "note": "A2 修正側 = A1 脆弱側と同一コミット"}
+  ]
+}
