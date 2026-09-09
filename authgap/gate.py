@@ -465,6 +465,10 @@ class GateCandidate:
     opaque_reason: Optional[str] = None
     raises_form: bool = False
     witness_node: Optional[int] = None
+    #: 述語のオペランドが由来する MODEL 導入点（`Value.roots`）。
+    #: **位置引数の並びを崩さないよう必ず末尾に置く。**
+    #: val エンジンが入ったらこちらで主語一致を取る（名前一致は暫定）。
+    subject_roots: frozenset[str] = frozenset()
 
     def to_json(self) -> dict:
         d = {
@@ -589,12 +593,16 @@ def _membership_candidate(
         return None
     container = cmp_node.comparators[0]
     atom: Optional[ConfigAtom] = None
+    inline_literal = False
     if isinstance(container, ast.Name):
         atom = resolve_atom_via_scope(container.id, tree, scope, index)
     else:
-        ok, value = literal_of(container)
-        if ok:
-            atom = ConfigAtom("<literal>", "module_const", value, V.is_default_closed(value))
+        # **インラインのリテラル集合は config atom ではない**（Def 5 の 4 源:
+        # コンストラクタ kwarg / モジュール定数 / os.environ / CLI 既定値）。
+        # ここを atom と見なすと、低レベル MCP の `if name in ("a","b"):` という
+        # **ディスパッチそのもの**が「運用者 allowlist」として req_occ を
+        # 引き上げてしまい、すべての低レベルサーバが clear される。
+        inline_literal = True
     grade = Req.OP if (atom is not None and atom.default_closed) else REQ_BOTTOM
     downgrade = None
     if atom is not None and atom.default_closed is None:
@@ -605,7 +613,7 @@ def _membership_candidate(
         node=nid,
         form="value",
         recognition="V",
-        name=dotted_of(container) or "<literal>",
+        name=dotted_of(container) or ("<inline_literal>" if inline_literal else "<literal>"),
         expr=cmp_node,
         subjects=subject_names(cmp_node.left),
         grade=grade,
@@ -743,9 +751,15 @@ def subject_ok(cand: GateCandidate, subjects: frozenset[str]) -> bool:
     ゲートしていても、述語のオペランドが当該効果の当該制御位置の値、または
     前向き def-use でその値から導かれる値でなければ `req` を引き上げない。
     承認は位置ではなく効果の発生に対する承認なので A には課さない。
+
+    照合は **root 集合を優先**する（`Value.roots` = MODEL 導入点の集合）。
+    root は名前の書き換え（`safe = validate_path(path)`）を跨いで保たれるので、
+    AST 名の一致より正確である。root が無いときだけ名前一致に落ちる。
     """
     if cand.form != "value" or not subjects:
         return True
+    if cand.subject_roots:
+        return bool(cand.subject_roots & subjects)
     return bool(cand.subjects & subjects)
 
 
@@ -821,7 +835,7 @@ def score_gates(
     :param alt_entry_witness: 別入口に在るゲートの witness。
         「ゲートは在るが、この入口からは通らない」ことを示す。
     """
-    relevant = [c for c in candidates if _is_relevant(c, coordinate)]
+    relevant = [c for c in candidates if _is_relevant(c, coordinate, subjects)]
     passing: list[GateCandidate] = []
     failures: list[tuple[str, GateCandidate, Optional[int]]] = []
     opaque_reasons: list[str] = list(path_opaque)
@@ -913,15 +927,21 @@ def score_gates(
     return GateScore(DomResult(DomKind.NODOM, "no_gate"), REQ_BOTTOM, relevant, passing, per_copy)
 
 
-def _is_relevant(c: GateCandidate, coordinate: str) -> bool:
+def _is_relevant(c: GateCandidate, coordinate: str, subjects: frozenset[str] = frozenset()) -> bool:
     """座標ごとに見るゲートを分ける（Def 5 の `req_occ` / `req_val` 分割）。
 
     **1 つにまとめてはならない。** まとめると、無関係な引数への強い検証が
     ツール全体の SELECT 判定を消す（型エラー）。
+
+    `req_occ` に入る allowlist は「**ディスパッチキー（セレクタ）そのものを
+    主語とする**もの」に限る。セレクタが特定できない（`subjects` が空の）
+    ユニットでは allowlist を `req_occ` に数えない — 数えると値位置への
+    allowlist がツール全体の SELECT 判定を消す。
     """
     if coordinate == "occ":
-        # 承認割り込み ∪（セレクタを主語とする allowlist）
-        return c.form == "approval" or c.value_grade == "allowlist"
+        if c.form == "approval":
+            return True
+        return c.value_grade == "allowlist" and bool(subjects)
     # req_val: 承認割り込み ∪（位置 p の値検証）
     return True
 
