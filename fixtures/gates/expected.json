@@ -1,0 +1,197 @@
+{
+  "_kind": "appendix_g",
+  "_provenance": "verdict / reason / grade は仕様書 §2.5 付録 G と §2.5.6 から手で写した。effect_line / witness_line は fixture 中の # EFFECT / # WITNESS マーカー。**いずれも解析器の出力ではない。** 生成: scripts/gen_expected.py",
+  "_schema": "authgap/fixtures/expected/v1",
+  "cases": {
+    "g01_exit_prefix": {
+      "direction": "誤 FN",
+      "effect_line": 17,
+      "file": "g01_exit_prefix.py",
+      "grade": "OP",
+      "hole": "exit 前に 1 文（`_is_exit_body` の全 exit 要求）",
+      "predecessor": "NODOM（\"non-exit body\"）",
+      "reason": null,
+      "verdict": "DOM",
+      "witness_line": 14
+    },
+    "g02_or_failure_conjunction": {
+      "direction": "誤 FN（v2 で退行）",
+      "effect_line": 16,
+      "file": "g02_or_failure_conjunction.py",
+      "grade": "USER",
+      "hole": "`or` の失敗連言",
+      "predecessor": "NODOM（\"`or` disjunct\"）[f7aced6 では DOM]",
+      "reason": null,
+      "verdict": "DOM",
+      "witness_line": 14
+    },
+    "g03_await_bare_approval": {
+      "direction": "誤 FN",
+      "effect_line": 11,
+      "file": "g03_await_bare_approval.py",
+      "grade": "USER",
+      "hole": "`await` した承認割り込みの裸文",
+      "predecessor": "NODOM（seen にすら出ない）",
+      "reason": null,
+      "verdict": "DOM",
+      "witness_line": 10
+    },
+    "g04_walrus_test": {
+      "direction": "誤 FN（v2 で退行）",
+      "effect_line": 12,
+      "file": "g04_walrus_test.py",
+      "grade": "USER",
+      "hole": "walrus を含む test",
+      "predecessor": "NODOM [f7aced6 では DOM]",
+      "reason": null,
+      "verdict": "DOM",
+      "witness_line": 10
+    },
+    "g05_try_revalidate_reraise": {
+      "direction": "誤 FN",
+      "effect_line": 17,
+      "file": "g05_try_revalidate_reraise.py",
+      "grade": "OP",
+      "hole": "try/except でパス検証が再送出",
+      "predecessor": "NODOM",
+      "reason": null,
+      "value_grade": "strong-path",
+      "verdict": "DOM",
+      "witness_line": 14
+    },
+    "g06_except_swallows_approval": {
+      "direction": "一致（回帰固定）",
+      "effect_line": 17,
+      "file": "g06_except_swallows_approval.py",
+      "grade": null,
+      "hole": "承認の例外が except で握り潰される",
+      "predecessor": "NODOM",
+      "reason": "deny_reaches_effect",
+      "verdict": "NODOM",
+      "witness_line": 14
+    },
+    "g07_comprehension_filter": {
+      "direction": "誤 FN",
+      "effect_line": 11,
+      "file": "g07_comprehension_filter.py",
+      "grade": "OP",
+      "hole": "内包表記の `if` フィルタ",
+      "predecessor": "NODOM",
+      "reason": null,
+      "verdict": "DOM",
+      "witness_line": 11
+    },
+    "g08_context_manager_approval": {
+      "direction": "誤 FN",
+      "effect_line": 13,
+      "file": "g08_context_manager_approval.py",
+      "grade": "USER",
+      "hole": "CM 形の承認ゲート（`Gateway.require_approval`、木内解決可）",
+      "predecessor": "NODOM",
+      "reason": null,
+      "verdict": "DOM",
+      "witness_line": 12
+    },
+    "g09_suppress_absorbs_approval": {
+      "direction": "一致（回帰固定）",
+      "effect_line": 16,
+      "file": "g09_suppress_absorbs_approval.py",
+      "grade": null,
+      "hole": "`contextlib.suppress` が承認を吸収",
+      "predecessor": "NODOM",
+      "reason": "deny_reaches_effect",
+      "verdict": "NODOM",
+      "witness_line": 15
+    },
+    "g10_loop_continue_allowlist": {
+      "atom": {
+        "default_closed": true,
+        "name": "ALLOWED_TOOLS",
+        "source": "module_const"
+      },
+      "direction": "一致（回帰固定）",
+      "effect_line": 17,
+      "file": "g10_loop_continue_allowlist.py",
+      "grade": "OP",
+      "hole": "ループ内 `continue` の allowlist",
+      "predecessor": "DOM",
+      "reason": null,
+      "verdict": "DOM",
+      "witness_line": 15
+    },
+    "g11_non_binding_subject": {
+      "direction": "誤 clear（不健全）",
+      "effect_line": 20,
+      "file": "g11_non_binding_subject.py",
+      "grade": null,
+      "hole": "主語不一致（`Gateway.is_allowed(self.default_tool)`）",
+      "predecessor": "DOM",
+      "reason": "non_binding_gate",
+      "verdict": "NODOM",
+      "witness_line": 18
+    },
+    "g12_effect_in_finally": {
+      "direction": "一致（回帰固定）",
+      "effect_line": 19,
+      "file": "g12_effect_in_finally.py",
+      "grade": null,
+      "hole": "効果が `finally` 側にある",
+      "predecessor": "NODOM",
+      "reason": "deny_reaches_effect",
+      "reason_note": "**仕様書の付録 G は G12 の reason を書いていない。** `deny_reaches_effect` は本 fixture の構造からの導出である: 承認の拒否辺は finally(exc) 複製へ入り、その複製が効果そのものなので `d ∈ Reach(s)` が成り立つ。§2.5.6 が 3 つ組一致を要求する以上 reason を 空のままには置けないのでここで固定した。**学生が追認すること。**",
+      "verdict": "NODOM",
+      "witness_line": 17
+    },
+    "g13_dynamic_registry": {
+      "direction": "誤 clean（不健全）と推定",
+      "effect_line": 16,
+      "file": "g13_dynamic_registry.py",
+      "grade": null,
+      "hole": "木内で解決できないレジストリ（`Gateway.plugins.get(name)`）",
+      "predecessor": "未実測（コード読解からの推定）。§9-13 で実測に置き換える",
+      "reason": "dynamic_registry",
+      "resolution": "opaque",
+      "row": "UNKNOWN",
+      "verdict": "OPAQUE",
+      "witness_line": 15
+    },
+    "g14_alt_entry": {
+      "direction": "誤 clear（不健全）",
+      "effect_line": 27,
+      "entries": [
+        "dispatch",
+        "llm_loop"
+      ],
+      "file": "g14_alt_entry.py",
+      "grade": null,
+      "hole": "第 2 のユニット入口（無ガード）",
+      "not_entries": [
+        "run_shell"
+      ],
+      "predecessor": "guarded=True（clear）",
+      "reason": "alt_entry",
+      "row": "GAP_SELECT",
+      "verdict": "NODOM",
+      "witness_line": 19
+    },
+    "g15_req_occ_vs_req_val": {
+      "direction": "誤 clear（不健全）",
+      "effect_line": 18,
+      "file": "g15_req_occ_vs_req_val.py",
+      "grade": "OP",
+      "hole": "最弱等級 / `req_occ` と `req_val` の分離",
+      "predecessor": "guarded=True（clear）",
+      "reason": null,
+      "req_occ": "OP",
+      "req_val": {
+        "grade": "weak",
+        "slot": "argv[*]",
+        "weak_reason": "no_dashdash"
+      },
+      "row": "GAP_INJECT",
+      "rule": "規則 W（weak validator は宣言に優先）",
+      "verdict": "DOM",
+      "witness_line": 16
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "_kind": "dominance_mutants",
+  "_provenance": "verdict / reason / grade は仕様書 §2.5 付録 G と §2.5.6 から手で写した。effect_line / witness_line は fixture 中の # EFFECT / # WITNESS マーカー。**いずれも解析器の出力ではない。** 生成: scripts/gen_expected.py",
+  "_schema": "authgap/fixtures/expected/v1",
+  "cases": {
+    "m1_binding_only": {
+      "effect_line": 16,
+      "file": "m1_binding_only.py",
+      "hole": "`ok = confirm(name)` の束縛のみで無条件 dispatch",
+      "not_verdict": "DOM",
+      "note": "A-a / A-b / A-c のいずれも取れない。confirm は木内で解決でき拒否側が raise しない",
+      "witness_line": 14
+    },
+    "m2_or_polarity": {
+      "effect_line": 15,
+      "file": "m2_or_polarity.py",
+      "hole": "`if trusted or confirm(name):`（`or` の極性）",
+      "not_verdict": "DOM",
+      "note": "G2 と対。両方を正しく分けられることが前身 v2 との差",
+      "witness_line": 14
+    },
+    "m3_reversed_polarity": {
+      "effect_line": 11,
+      "file": "m3_reversed_polarity.py",
+      "hole": "`if not is_allowed(name): tool.run()`（極性逆）",
+      "not_verdict": "DOM",
+      "witness_line": 10
+    },
+    "m4_file_level_gate": {
+      "effect_line": 15,
+      "file": "m4_file_level_gate.py",
+      "hole": "無関係な関数の `human_in_the_loop=False`（file-level gate の誤検出）",
+      "not_verdict": "DOM",
+      "witness_line": null
+    },
+    "m5_same_name_other_module": {
+      "effect_line": 17,
+      "file": "m5_same_name_other_module.py",
+      "hole": "別モジュールの同名クラスにゲートがあり、当該ユニットの連結経路上には無い形",
+      "not_verdict": "DOM",
+      "note": "下向き走査が同名クラスに引きずられないことを試す",
+      "witness_line": null
+    },
+    "m6_parse_failure": {
+      "effect_line": null,
+      "file": "m6_parse_failure.py.broken",
+      "hole": "parse 失敗ファイルの黙殺",
+      "not_verdict": "DOM",
+      "note": "期待値は「非支配」に加えて該当行が出力されること。行が出なければ不合格",
+      "requires_rows": [
+        "parse_failure"
+      ],
+      "source": "m6_parse_failure.py.broken",
+      "witness_line": null
+    },
+    "m7_cfg_cap": {
+      "effect_line": 2615,
+      "file": "m7_cfg_cap.py",
+      "hole": "node/深さ cap 到達での黙示 clear",
+      "not_verdict": "DOM",
+      "note": "期待値は「非支配」に加えて該当行が出力されること。行が出なければ不合格",
+      "requires_rows": [
+        "TRUNCATED",
+        "OPAQUE(cfg_cap)"
+      ],
+      "witness_line": null
+    },
+    "m8_effect_on_false_branch": {
+      "effect_line": 12,
+      "file": "m8_effect_on_false_branch.py",
+      "hole": "ガード偽側の分岐に dispatch がある形",
+      "not_verdict": "DOM",
+      "witness_line": 10
+    }
+  }
+}

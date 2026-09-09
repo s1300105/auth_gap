@@ -1,0 +1,11 @@
+"""mutant 6: parse 失敗ファイルの黙殺。
+
+期待: **非支配**に加えて `parse_failure` 行が出力されること。
+行が出なければ不合格（これは支配規則ではなくハーネスの性質を突く）。
+
+拡張子を `.py.broken` にしてあるのは、この repo 自身の CI がここで落ちない
+ようにするため。ハーネスは走査前に `.py` へ複写する。
+"""
+
+def dispatch(name, args)      # <- コロンが無い
+    return TOOLS[name](args)
