@@ -191,8 +191,10 @@ class PairResult:
     changed_sites: list[dict] = field(default_factory=list)
     #: verdict が GAP から外れた**経路**（内訳）。
     verdict_clearing: list[str] = field(default_factory=list)
-    #: 変化した経路のうち、修正側にまだ GAP が残っているもの。
+    #: 変化した経路のうち、修正側にまだ GAP が残っているもの（全 GAP 種）。
     still_gap: list[str] = field(default_factory=list)
+    #: 同じく、修正側にまだ `GAP_INJECT` が残っているもの。
+    still_gap_inject: list[str] = field(default_factory=list)
 
     @property
     def two_sided(self) -> bool:
@@ -200,13 +202,29 @@ class PairResult:
 
     @property
     def pair_cleared(self) -> bool:
-        """**対単位の verdict-clearing**（§6 T1.1 の副次指標はこちら）。
+        """**対単位の verdict-clearing（厳密）**。
 
-        変化した経路のどれにも修正側で GAP が残っていないこと。1 本でも
-        残っていれば AuthGap はそのツールを依然 GAP として報告するので、
+        変化した経路のどれにも修正側で GAP が**一切**残っていないこと。
+        1 本でも残っていれば AuthGap はそのツールを依然 GAP として報告するので、
         「修正を検出した」とは書けない。
+
+        **MCP サーバではこれはほぼ常に偽になる。** `GAP_SELECT` は
+        「モデルがそのツールを呼ぶかを決めており、承認割り込みも宣言も無い」
+        ことを言うので、**値検証を足しても消えない**。消えるのは承認割り込みを
+        足した対（A9 のような `approval-add`）だけである。
         """
         return self.two_sided and not self.still_gap
+
+    @property
+    def pair_cleared_inject(self) -> bool:
+        """**対単位の verdict-clearing（INJECT 座標に限る）**。
+
+        CVE が問うているのは多くの場合「引数位置の注入」なので、
+        `GAP_INJECT` が消えたかを別に数える。**厳密版と必ず並べて報告する。**
+        片方だけを書くと、SELECT 座標が常に残ることを隠すか、
+        値検証の効果を見落とすかのどちらかになる。
+        """
+        return self.two_sided and not self.still_gap_inject
 
     def to_json(self) -> dict:
         return {
@@ -223,7 +241,9 @@ class PairResult:
             "verdict_clearing_paths": sorted(self.verdict_clearing),
             "n_verdict_clearing_paths": len(self.verdict_clearing),
             "still_gap_paths": sorted(self.still_gap),
-            "pair_cleared": self.pair_cleared,
+            "still_gap_inject_paths": sorted(self.still_gap_inject),
+            "pair_cleared_strict": self.pair_cleared,
+            "pair_cleared_inject": self.pair_cleared_inject,
         }
 
     # 旧名（テストと既存の呼び出し向け）。
@@ -279,10 +299,13 @@ def compare(pair_id: str, vuln: str, fixed: str, population: str) -> PairResult:
         res.changed_sites.extend(site_diffs)
         gap_a = any(v.startswith("GAP") for r in sa.values() for v in r.verdicts)
         gap_b = any(v.startswith("GAP") for r in sb.values() for v in r.verdicts)
+        inj_b = any("GAP_INJECT" in r.verdicts for r in sb.values())
         if gap_b:
             res.still_gap.append(path)
         elif gap_a:
             res.verdict_clearing.append(path)
+        if inj_b:
+            res.still_gap_inject.append(path)
     return res
 
 
@@ -317,6 +340,7 @@ def main() -> int:
                         sides["vuln"].get("population", "mcp_server"),
                     )
                 )
+    # `--population` は spec に population が無い対の既定値としてだけ使う。
     if args.vuln and args.fixed:
         pairs.append((args.pair, args.vuln, args.fixed, args.population))
     if not pairs:
@@ -336,17 +360,26 @@ def main() -> int:
             for k, (x, y) in sorted(c["diffs"].items()):
                 print(f"    {c['site']:44s} {k:20s} {str(x):16s} -> {y}")
         print(
-            f"  verdict-clearing: 対単位 = {r.pair_cleared}"
-            f"（経路単位 {len(r.verdict_clearing)} 解消 / {len(r.still_gap)} 残存）"
+            f"  verdict-clearing: 厳密（全 GAP）= {r.pair_cleared} / "
+            f"INJECT 座標のみ = {r.pair_cleared_inject}"
         )
-        for pth in r.still_gap[:6]:
-            print(f"      修正側にも GAP が残る経路: {pth}")
+        print(
+            f"      経路単位: 全 GAP 解消 {len(r.verdict_clearing)} / 残存 {len(r.still_gap)}"
+            f" ｜ INJECT 残存 {len(r.still_gap_inject)}"
+        )
+        for pth in r.still_gap_inject[:4]:
+            print(f"      修正側にも GAP_INJECT が残る経路: {pth}")
 
     n_pass = sum(1 for r in results if r.two_sided)
     n_cleared = sum(1 for r in results if r.pair_cleared)
+    n_cleared_inj = sum(1 for r in results if r.pair_cleared_inject)
     print(f"\n両側通過 {n_pass}/{len(results)} 対")
-    print(f"verdict-clearing 数（対単位・必須併記）: {n_cleared}/{n_pass}")
+    print(f"verdict-clearing（必須併記）: 厳密 {n_cleared}/{n_pass} / "
+          f"INJECT 座標のみ {n_cleared_inj}/{n_pass}")
     print("**タプル変化のみで通過した対と区別せずに報告すると「修正を検出した」と誤読される**")
+    if n_cleared == 0 and n_pass:
+        print("→ 厳密版が 0 なのは `GAP_SELECT` が値検証では消えないため。"
+              "消えるのは承認割り込みを足した対だけである。**この理由を本文に書く**")
 
     if args.json:
         os.makedirs(os.path.dirname(args.json) or ".", exist_ok=True)
@@ -358,7 +391,8 @@ def main() -> int:
                     "coords": list(TUPLE_COORDS),
                     "n_pairs": len(results),
                     "n_two_sided_pass": n_pass,
-                    "n_verdict_clearing_pairs": n_cleared,
+                    "n_verdict_clearing_pairs_strict": n_cleared,
+                    "n_verdict_clearing_pairs_inject": n_cleared_inj,
                     "pairs": [r.to_json() for r in results],
                 },
                 fh,

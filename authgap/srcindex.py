@@ -253,11 +253,17 @@ class SourceIndex:
     # -- スコープつき import 表 --------------------------------------------
 
     def module_scope(self, path: str) -> Scope:
-        """モジュール水準の import 表だけを持つスコープ。"""
+        """モジュール水準の import 表だけを持つスコープ。
+
+        **条件つき import を必ず拾う。** 任意依存を
+        `try: from sqlalchemy import text / except ImportError: ...` で包むのは
+        母集団の常套形で、`tree.body` の直下だけを見ると `text` が解決できず
+        sink 表に当たらない（langroid の SQL agent がこれで無言になった）。
+        """
         tree = self.parse(path)
         imports: dict[str, str] = {}
         if tree is not None:
-            _collect_imports(tree.body, imports)
+            _collect_imports(tree.body, imports, recurse=True)
         return Scope(self.module_name(path), self.relpath(path), imports)
 
     def function_scope(self, path: str, fn: ast.AST) -> Scope:

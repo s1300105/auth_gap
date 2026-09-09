@@ -1,17 +1,17 @@
 {
-  "_note": "較正対の pin。ref は docs/cve_triage.csv と一致させること。SHA は取得後に docs/frame.csv へ記録される。",
+  "_note": "較正対の pin。ref は docs/cve_triage.csv と一致させること。SHA は取得後に docs/frame.csv へ記録される。population は D_op の帰属規則（Def 6）を決める。",
   "targets": [
-    {"repo": "modelcontextprotocol/servers", "ref": "9e5d5b8e", "name": "A1@vuln",
-     "subdir": "src/git", "population": "mcp_server",
-     "note": "A1 mcp-server-git repo_path 封じ込め CVE-2025-68145 脆弱側"},
-    {"repo": "modelcontextprotocol/servers", "ref": "a37158bc", "name": "A1@fixed",
-     "subdir": "src/git", "population": "mcp_server",
-     "note": "A1 修正側。resolve + relative_to を ValueError 捕捉で使う"},
-    {"repo": "modelcontextprotocol/servers", "ref": "d9c45477", "name": "A2@vuln",
-     "subdir": "src/git", "population": "mcp_server",
-     "note": "A2 フラグ混入 CWE-88 CVE-2025-68144 脆弱側"},
-    {"repo": "modelcontextprotocol/servers", "ref": "9e5d5b8e", "name": "A2@fixed",
-     "subdir": "src/git", "population": "mcp_server",
-     "note": "A2 修正側 = A1 脆弱側と同一コミット"}
+    {"repo": "modelcontextprotocol/servers", "ref": "9e5d5b8e", "name": "A1@vuln", "subdir": "src/git", "population": "mcp_server", "note": "A1 repo_path 封じ込め CVE-2025-68145 脆弱側"},
+    {"repo": "modelcontextprotocol/servers", "ref": "a37158bc", "name": "A1@fixed", "subdir": "src/git", "population": "mcp_server", "note": "A1 修正側 validate_repo_path"},
+    {"repo": "modelcontextprotocol/servers", "ref": "d9c45477", "name": "A2@vuln", "subdir": "src/git", "population": "mcp_server", "note": "A2 フラグ混入 CWE-88 CVE-2025-68144 脆弱側"},
+    {"repo": "modelcontextprotocol/servers", "ref": "9e5d5b8e", "name": "A2@fixed", "subdir": "src/git", "population": "mcp_server", "note": "A2 修正側 = A1 脆弱側と同一コミット"},
+    {"repo": "modelcontextprotocol/servers", "ref": "dcb47d2d", "name": "A3@vuln", "subdir": "src/git", "population": "mcp_server", "note": "A3 git_add 木外パス CVE-2026-27735 脆弱側"},
+    {"repo": "modelcontextprotocol/servers", "ref": "db960508", "name": "A3@fixed", "subdir": "src/git", "population": "mcp_server", "note": "A3 修正側 index.add -> git.add('--', *files)"},
+    {"repo": "modelcontextprotocol/servers", "ref": "275175cd", "name": "A4@vuln", "subdir": "src/git", "population": "mcp_server", "note": "A4 後追い硬化 脆弱側"},
+    {"repo": "modelcontextprotocol/servers", "ref": "0588ec09", "name": "A4@fixed", "subdir": "src/git", "population": "mcp_server", "note": "A4 修正側 files の包含検査"},
+    {"repo": "MervinPraison/PraisonAI", "ref": "9991e00f", "name": "A9@vuln", "population": "tool_package", "note": "A9(承認欠落 CVE-2026-55530) + A10(symlink CVE-2026-55540) 脆弱側。同一修正コミットなので 1 対"},
+    {"repo": "MervinPraison/PraisonAI", "ref": "2f9677ab", "name": "A9@fixed", "population": "tool_package", "note": "A9/A10 修正側 require_approval + realpath"},
+    {"repo": "langroid/langroid", "ref": "763d5cba", "name": "A18@vuln", "population": "tool_package", "note": "A18 SQLChatAgent が LLM 生成 SQL を無検証実行 CVE-2026-25879 脆弱側"},
+    {"repo": "langroid/langroid", "ref": "60933b48", "name": "A18@fixed", "population": "tool_package", "note": "A18 修正側 sqlglot 文型 allowlist"}
   ]
 }

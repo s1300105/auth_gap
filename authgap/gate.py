@@ -352,14 +352,71 @@ def _checked_params(fn: ast.AST, scope: Scope) -> frozenset[str]:
 
 
 def _startswith_has_sep(fn: ast.AST) -> bool:
-    """`startswith(root + os.sep)` の形（root が os.sep 終端に正規化されている）か。"""
+    """`startswith(root + os.sep)`（root が `os.sep` 終端に正規化されている形）か。
+
+    Def 5(ii) が包含述語として認めるのはこの形であって、素の `startswith` では
+    ない。**引数の式だけを見てはならない。** 母集団の主要形は
+
+        if not abs_dir.endswith(os.sep):
+            abs_dir += os.sep
+        return abs_file.startswith(abs_dir)
+
+    のように**前の文で境界を正規化してから**素の名前を渡す形で、引数の式だけを
+    見ると境界の無い前置一致に見える。これを取り違えると
+    `strong-path` が `weak(prefix_no_boundary)` に落ち、正しく直した修正版が
+    脆弱版と同じ等級になる（A10 が実例）。
+    """
+    subjects: set[str] = set()
     for node in ast.walk(fn):
-        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr == "startswith":
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
+            if node.func.attr != "startswith":
+                continue
             for a in node.args:
+                # (1) 引数の式そのものが `root + os.sep` / 末尾が区切りのリテラル
                 for sub in ast.walk(a):
                     if isinstance(sub, ast.Attribute) and sub.attr in ("sep", "altsep"):
                         return True
-                    if isinstance(sub, ast.Constant) and isinstance(sub.value, str) and sub.value.endswith(("/", "\\")):
+                    if isinstance(sub, ast.Constant) and isinstance(sub.value, str):
+                        if sub.value.endswith(("/", "\\")):
+                            return True
+                # (2) 引数が名前なら、その名前が本体のどこかで区切り終端に
+                #     正規化されているかを見る
+                if isinstance(a, ast.Name):
+                    subjects.add(a.id)
+    if not subjects:
+        return False
+    return any(_normalised_to_sep(fn, name) for name in sorted(subjects))
+
+
+def _normalised_to_sep(fn: ast.AST, name: str) -> bool:
+    """`name` が本体のどこかで `os.sep` 終端に正規化されているか。
+
+    認める形は 3 つだけ（**推定で広げない**）:
+
+    * ``name += os.sep`` / ``name = name + os.sep``
+    * ``name = name.rstrip(os.sep) + os.sep``
+    * ``name = os.path.join(name, "")``
+    """
+    for node in ast.walk(fn):
+        target = None
+        value = None
+        if isinstance(node, ast.AugAssign) and isinstance(node.op, ast.Add):
+            target, value = node.target, node.value
+        elif isinstance(node, ast.Assign) and len(node.targets) == 1:
+            target, value = node.targets[0], node.value
+        if not isinstance(target, ast.Name) or target.id != name or value is None:
+            continue
+        for sub in ast.walk(value):
+            if isinstance(sub, ast.Attribute) and sub.attr in ("sep", "altsep"):
+                return True
+            if isinstance(sub, ast.Constant) and isinstance(sub.value, str):
+                if sub.value in ("/", "\\") or sub.value.endswith(("/", "\\")):
+                    return True
+            if isinstance(sub, ast.Call):
+                fname = dotted_of(sub.func) or ""
+                if fname.endswith("path.join") and len(sub.args) >= 2:
+                    last = sub.args[-1]
+                    if isinstance(last, ast.Constant) and last.value == "":
                         return True
     return False
 

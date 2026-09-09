@@ -131,3 +131,39 @@
   だけである。
 - **決める時点**: §7.6 の D9–D12 に相当する作業。各対について
   `docs/verification_guide.md` の 2.1〜2.3 を実行し、`verified_by_me` を埋める。
+
+## Q10. Def 5 に「正規化後の allowlist」の等級が無い（A18 で実際に当たった）
+
+- **状況**: A18（langroid `SQLChatAgent`）の修正は
+  `sqlglot.parse(query)` で正規化してから `type(stmt).__name__.upper() in allowed`
+  で文型 allowlist を掛ける。Def 5 の等級語彙は
+  `strong-path`（パス）/ `strong-token`（シェルトークン）/
+  `strong-enum`（Def 6 の執行表で執行される値域）/ `strong-eval`（任意）/
+  `weak(19 語)` / `unknown` で、**この形に当たる語が無い**。
+  weak の 19 語も `denylist_enum` / `regex_denylist` は拒否リスト側で、
+  allowlist 側の語ではない。
+- **仕様書自身も未決**: A13 の行に「`sqlglot` を Def 5 の正規化子カタログに
+  載せた場合に限り算入する」とあり、sqlglot の扱いは決まっていない。
+- **実装がしたこと**: 等級は `unknown`（判定不能）とし、**語彙外の等級を作らない**。
+  会員判定が束縛したことは manifest の `gate.candidates[]` に
+  `value_grade: "allowlist"` と config atom 情報つきで残る。
+  A18 の両側判別は `grade: None -> unknown` の変化で成立する。
+- **決める時点**: 月 6 のゲート語彙凍結の前。選択肢は 3 つ —
+  (a) `sqlglot` を正規化子カタログに載せ SQL 版の `strong-*` を新設する、
+  (b) weak の 19 語に allowlist 側の語を足す、
+  (c) `unknown` のままにして「SQL 文型 allowlist は等級づけの対象外」と限界節に書く。
+  **(a) と (b) は語彙の拡張なので、凍結前でなければできない。**
+
+## Q11. config atom の 4 源のうち「コンストラクタ kwarg」がまだ読めない
+
+- **状況**: Def 5 の config atom の源は 4 種（コンストラクタ kwarg / モジュール定数 /
+  `os.environ` / CLI 既定値）だが、実装が解決できるのは**モジュール定数と
+  `os.environ` の 2 源**だけである（`authgap/gate.py: resolve_atom`）。
+- **実際に当たった例**: A18 の `SQLChatAgentConfig.allowed_statement_types`
+  （pydantic のクラス既定値）と `allow_dangerous_operations`。読めないので
+  `req_val` が MODEL のままになり、A18 の両側差は grade だけになった。
+- **影響**: `config-conditional(atom, default)` による `req` の引き上げが
+  過小評価される。**方向は保守側**（GAP を多めに出す）なので false-clean は
+  起きないが、A14 のような「既定閉 config atom の実例」は等級が出ない。
+- **決める時点**: B3b の完了前。`_self_fields` が既に `__init__` を解析して
+  いるので、同じ機構でコンストラクタ kwarg と CLI 既定値を足せる。

@@ -23,6 +23,7 @@ from .catalog.entries import (
     LOWLEVEL_V2_KWARGS,
     LOWLEVEL_V2_REQUEST,
     R2_EXCEPTIONS,
+    TOOLMESSAGE_META_FIELDS,
     EntryRule,
 )
 from .srcindex import Scope, SourceIndex, dotted_of
@@ -74,6 +75,12 @@ class Unit:
     #: 低レベル経路のとき、ハンドラ内の name 分岐から得た候補名。
     dispatch_names: tuple[str, ...] = ()
     is_async: bool = False
+    #: `toolmessage_handler` 形のとき、MODEL 値を運ぶ仮引数の名前（`msg`）。
+    message_param: Optional[str] = None
+    #: 同じく、`ToolMessage` 派生クラスの `(フィールド名, 注釈)`。
+    message_fields: tuple[tuple[str, Optional[str]], ...] = ()
+    #: 同じく、`ToolMessage` 派生クラス名。
+    message_class: Optional[str] = None
 
     @property
     def schema_hash(self) -> str:
@@ -115,6 +122,10 @@ class Unit:
             d["annotation_form"] = self.annotation_form
         if self.dispatch_names:
             d["dispatch_names"] = list(self.dispatch_names)
+        if self.message_param:
+            d["message_param"] = self.message_param
+            d["message_class"] = self.message_class
+            d["message_fields"] = [[n, a] for n, a in self.message_fields]
         return d
 
 
@@ -315,8 +326,152 @@ def find_units(index: SourceIndex) -> list[Unit]:
             break
 
     units += find_lowlevel_units(index)
+    units += find_toolmessage_units(index)
+    units += find_tools_list_units(index, {u.qualname for u in units})
     units.sort(key=lambda u: (u.relpath, u.qualname, u.framework))
     return units
+
+
+# --------------------------------------------------------------------------
+# `tools=[...]` 形（フレームワーク横断）
+# --------------------------------------------------------------------------
+
+
+def find_tools_list_units(index: SourceIndex, already: frozenset[str] | set[str] = frozenset()) -> list[Unit]:
+    """`Agent(tools=[f, g])` / `tools = [f, g]` の要素を入口にする。
+
+    **木内のユーザ定義関数に一意に解決できる要素だけを採る。** 名前だけで
+    拾うと同名の無関係な関数まで入口になり、母集団が膨らむ。
+    """
+    names: set[str] = set()
+    for path in index.py_files():
+        tree = index.parse(path)
+        if tree is None:
+            continue
+        for node in ast.walk(tree):
+            elts: list = []
+            if isinstance(node, ast.Call):
+                for kw in node.keywords:
+                    if kw.arg == "tools" and isinstance(kw.value, (ast.List, ast.Tuple)):
+                        elts += list(kw.value.elts)
+            elif isinstance(node, ast.Assign) and isinstance(node.value, (ast.List, ast.Tuple)):
+                for t in node.targets:
+                    if isinstance(t, ast.Name) and t.id in ("tools", "TOOLS", "AGENT_TOOLS"):
+                        elts += list(node.value.elts)
+            elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                # `def get_ast_grep_tools(): return [f, g, h]` 形。
+                if node.name.endswith("_tools") or node.name.endswith("_toolset"):
+                    for sub in ast.walk(node):
+                        if isinstance(sub, ast.Return) and isinstance(
+                            sub.value, (ast.List, ast.Tuple)
+                        ):
+                            elts += list(sub.value.elts)
+            for e in elts:
+                n = dotted_of(e)
+                if n:
+                    names.add(n.split(".")[-1])
+                elif isinstance(e, ast.Constant) and isinstance(e.value, str):
+                    # `tools=["ast_grep_search", "ast_grep_rewrite"]` の文字列形。
+                    names.add(e.value)
+
+    out: list[Unit] = []
+    seen: set[str] = set()
+    for name in sorted(names):
+        if name in already:
+            continue
+        fds = index.lookup_function(name)
+        fds = [f for f in fds if f.qualname == name]
+        if len(fds) != 1:
+            continue  # 一意に解決できないものは採らない
+        fd = fds[0]
+        if fd.key in seen:
+            continue
+        seen.add(fd.key)
+        out.append(
+            Unit(
+                framework="tools-list",
+                entry_kind="tools_list",
+                module=fd.module,
+                qualname=fd.qualname,
+                relpath=fd.relpath,
+                node=fd.node,
+                params=params_of(fd.node),
+                tool_name=name,
+                is_async=fd.is_async,
+            )
+        )
+    return out
+
+
+# --------------------------------------------------------------------------
+# langroid の `ToolMessage` 派生 + 同名ハンドラ
+# --------------------------------------------------------------------------
+
+
+def find_toolmessage_units(index: SourceIndex) -> list[Unit]:
+    """`ToolMessage` 派生クラスの `request` 値と同名のメソッドを入口にする。
+
+    **MODEL 値はメソッドの仮引数ではなくクラスのフィールドである。**
+    `def run_query(self, msg: RunQueryTool)` の `msg` は 1 つの引数だが、
+    モデルが決めるのは `RunQueryTool.query` などのフィールドなので、
+    仮引数だけを見ると MODEL 値が 1 つも見つからない。
+    """
+    out: list[Unit] = []
+    messages: dict[str, tuple[str, tuple[tuple[str, Optional[str]], ...]]] = {}
+    for cd in index.classes():
+        bases = {b.split(".")[-1] for b in cd.bases}
+        if "ToolMessage" not in bases:
+            continue
+        request = None
+        fields: list[tuple[str, Optional[str]]] = []
+        for node in cd.node.body:
+            if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+                name = node.target.id
+                ann = _annotation_str(node.annotation)
+                if name == "request" and isinstance(node.value, ast.Constant):
+                    if isinstance(node.value.value, str):
+                        request = node.value.value
+                    continue
+                if name in TOOLMESSAGE_META_FIELDS or name.startswith("_"):
+                    continue
+                fields.append((name, ann))
+        if request:
+            messages[request] = (cd.name, tuple(fields))
+
+    if not messages:
+        return out
+    for fd in index.functions():
+        method = fd.qualname.split(".")[-1]
+        if fd.classname is None or method not in messages:
+            continue
+        cls, fields = messages[method]
+        params = params_of(fd.node)
+        msg_param = None
+        for p in params:
+            if p.annotation and p.annotation.split(".")[-1] == cls:
+                msg_param = p.name
+                break
+        if msg_param is None and params:
+            msg_param = params[0].name
+        if msg_param is None:
+            continue
+        out.append(
+            Unit(
+                framework="langroid",
+                entry_kind="toolmessage_handler",
+                module=fd.module,
+                qualname=fd.qualname,
+                relpath=fd.relpath,
+                node=fd.node,
+                params=[p for p in params if p.name != msg_param],
+                tool_name=method,
+                is_async=fd.is_async,
+                message_param=msg_param,
+                message_fields=fields,
+                message_class=cls,
+            )
+        )
+    return out
 
 
 # --------------------------------------------------------------------------

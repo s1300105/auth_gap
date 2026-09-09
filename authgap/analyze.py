@@ -20,17 +20,21 @@ from dataclasses import dataclass, field
 from typing import Any, Optional
 
 from .catalog import validators as V
+from .catalog.entries import APPROVAL_INTERRUPTS
 from .catalog.sinks import DANGEROUS_KINDS, PRIMARY_SLOTS
 from .cfgbuild import build_cfg
 from .dominance import compute_dominators
 from .dparse import DKind, DOp, parse_d_kind
 from .effects import Effect, EffectExtractor
-from .entries import Unit
-from .gate import GateCandidate, SummaryCache, find_gate_candidates, score_gates
-from .ir import RESOLVED, DomKind, Prin, Prov, Req, Value, prov_merge, req_meet
-from .srcindex import Scope, SourceIndex
+from .entries import (
+    Unit,  # noqa: F401
+    params_of,
+)
+from .gate import GateCandidate, GateScore, SummaryCache, find_gate_candidates, score_gates
+from .ir import RESOLVED, DomKind, DomResult, Prin, Prov, Req, Value, prov_merge, req_meet
+from .srcindex import Scope, SourceIndex, dotted_of
 from .trig import TrigIndex, TrigResult
-from .val import Options, ValEngine, ValResult, seed_model_param
+from .val import Env, Options, ValEngine, ValResult, seed_model_param
 from .verdict import Row, UnitVerdictInput, decide
 
 #: LLM 戻り値（R1）の root id の前置き。
@@ -145,7 +149,7 @@ def analyze_unit_f0a(
         return report
     scope = index.function_scope(path, unit.node)
 
-    seed = _seed(unit)
+    seed = _seed(unit, index)
     extractor = EffectExtractor()
     engine = ValEngine(index, options or Options(), on_call=extractor.on_call)
     report.val = engine.analyze(unit.node, scope, seed)
@@ -160,7 +164,7 @@ def analyze_unit_f0a(
     return report
 
 
-def _seed(unit: Unit) -> dict[str, Value]:
+def _seed(unit: Unit, index: Optional[SourceIndex] = None) -> dict[str, Value]:
     """R2 が与える MODEL 引数と、メソッドの受け手を種付ける。"""
     from .ir import Atom, Obj
 
@@ -172,8 +176,89 @@ def _seed(unit: Unit) -> dict[str, Value]:
         seed[p.name] = seed_model_param(p.name, p.name, p.annotation)
     if unit.qualname.count(".") >= 1:
         cls = unit.qualname.split(".")[0]
-        seed["self"] = Value(Prin.OP, RESOLVED, Obj((cls,), ()))
+        fields = _self_fields(index, cls, unit.module) if index is not None else ()
+        seed["self"] = Value(Prin.OP, RESOLVED, Obj((cls,), fields))
+    if unit.message_param:
+        # langroid 形: MODEL 値は `ToolMessage` 派生クラスのフィールドにある。
+        fields = tuple(
+            (
+                name,
+                seed_model_param(f"{unit.message_param}.{name}", f"{unit.message_param}.{name}", ann),
+            )
+            for name, ann in unit.message_fields
+        )
+        seed[unit.message_param] = Value(
+            Prin.OP, RESOLVED, Obj((unit.message_class or "ToolMessage",), fields)
+        )
     return seed
+
+
+#: `__init__` の解析結果を使い回すための記憶化。
+_SELF_FIELD_CACHE: dict[tuple[int, str, str], tuple] = {}
+
+
+def _self_fields(
+    index: SourceIndex, classname: str, module: str
+) -> tuple[tuple[str, Value], ...]:
+    """`self.<name>` に書かれた値を集めて `Obj.fields` にする（§2.6）。
+
+    **クラス体のフィールド既定値と `__init__` の両方を見る。**
+    これが無いと `self.conn.execute(...)` のような受け手が解決できず、
+    proxy sink（DB / HTTP / git）が 1 つも当たらない。
+
+    受け手アクセスパスの深さは 2 までで、それ以上は `opaque(receiver)`
+    （val エンジンの規則をそのまま使う）。
+    """
+    key = (id(index), module, classname)
+    if key in _SELF_FIELD_CACHE:
+        return _SELF_FIELD_CACHE[key]
+    _SELF_FIELD_CACHE[key] = ()  # 再帰の打ち切り
+    cd = index.get_class(classname, module)
+    if cd is None:
+        return ()
+    path = index.resolve_module_path(cd.module)
+    if path is None:
+        return ()
+
+    from .ir import Atom, Obj
+
+    fields: dict[str, Value] = {}
+    scope = index.module_scope(path)
+    engine = ValEngine(index)
+
+    # (1) クラス体のフィールド既定値
+    body_res = ValResult()
+    env = Env({"self": Value(Prin.OP, RESOLVED, Obj((classname,), ()))})
+    class_body = [n for n in cd.node.body if isinstance(n, (ast.Assign, ast.AnnAssign))]
+    engine._exec_body(class_body, env, scope, body_res, 1, (classname,))
+    for name, v in env.items():
+        if not name.startswith("self."):
+            fields.setdefault(name[len("self.") :], v)
+    for node in class_body:
+        target = None
+        if isinstance(node, ast.Assign) and len(node.targets) == 1:
+            target = node.targets[0]
+        elif isinstance(node, ast.AnnAssign):
+            target = node.target
+        if isinstance(target, ast.Name) and node.value is not None:
+            fields.setdefault(target.id, engine._eval(node.value, env, scope, body_res, 1, ()))
+
+    # (2) `__init__` の本体
+    for fd in index.lookup_function(f"{classname}.__init__", cd.module):
+        init_scope = index.function_scope(path, fd.node)
+        init_env = Env({"self": Value(Prin.OP, RESOLVED, Obj((classname,), ()))})
+        for p in params_of(fd.node):
+            init_env.set(p.name, Value(Prin.OP, RESOLVED, Atom(formal=p.name)))
+        init_res = ValResult()
+        engine._exec_body(getattr(fd.node, "body", []), init_env, init_scope, init_res, 1, (classname,))
+        for name, v in init_env.items():
+            if name.startswith("self."):
+                fields[name[len("self.") :]] = v
+        break
+
+    out = tuple(sorted(fields.items()))
+    _SELF_FIELD_CACHE[key] = out
+    return out
 
 
 def _mark_shape_from(report: UnitReport, unit: Unit) -> None:
@@ -255,10 +340,24 @@ def analyze_unit_full(
                 e.slots[slot] = Value(Prin.OP, v.prov, v.shape, v.attrs, v.roots)
 
     # -- req_occ（**効果ごと**。Def 5 は `req_occ(e)` と書く）-----------------
+    # デコレータ形の承認割り込み（`@require_approval(risk_level=...)` など）は
+    # 関数全体を包むので、その関数の**すべての効果**をゲートする。
+    # CFG 上の呼び出しではないので、候補探索とは別に見る必要がある。
+    decorator_approval = _decorator_approval(unit)
     selector_roots = _selector_roots(unit, report)
     for i, e in enumerate(report.effects):
         nodes = cfg.nodes_for_line(e.entry_lineno) or [cfg.exit]
         sc = score_gates(cfg, dom, cands, nodes, "occ", selector_roots)
+        if decorator_approval is not None and arm != "A":
+            name, lineno = decorator_approval
+            sc = GateScore(
+                DomResult(DomKind.DOM, None, Req.USER, f"decorator:{name}@L{lineno}"),
+                Req.USER,
+                sc.candidates,
+                sc.passing,
+                sc.per_copy,
+                sc.notes + [f"decorator_approval:{name}"],
+            )
         report.req_occ_by_effect[i] = sc.req
         report.occ_gate_by_effect[i] = sc.to_json()
     dangerous_idx = [i for i, e in enumerate(report.effects) if e.kind in DANGEROUS_KINDS]
@@ -315,6 +414,26 @@ def _is_argv_exec(effect: Optional[Effect]) -> bool:
         return True  # SPAWN 以外に argv 条件は無い
     shell = effect.exec_mode.get("shell", {})
     return shell.get("const") is False or shell.get("source") == "proxy"
+
+
+#: デコレータ形の承認割り込み名（Def 5 の語彙のうち `decorator` 形）。
+_DECORATOR_APPROVALS: frozenset[str] = frozenset(
+    r.name for r in APPROVAL_INTERRUPTS if r.form == "decorator"
+)
+
+
+def _decorator_approval(unit: Unit) -> Optional[tuple[str, int]]:
+    """ユニットの関数に承認割り込みデコレータが付いているか。
+
+    付いていればその関数の**すべての効果**が `req_occ = USER` になる。
+    A9（PraisonAI の `@require_approval(risk_level="high")`）がこの形。
+    """
+    for d in getattr(unit.node, "decorator_list", []):
+        target = d.func if isinstance(d, ast.Call) else d
+        name = dotted_of(target)
+        if name and name.split(".")[-1] in _DECORATOR_APPROVALS:
+            return name, getattr(d, "lineno", getattr(unit.node, "lineno", 0))
+    return None
 
 
 def _selector_roots(unit: Unit, report: UnitReport) -> frozenset[str]:
@@ -456,10 +575,18 @@ def _grade_of(
                 weak_reason = c.weak_reason
                 best = "weak"
         elif c.value_grade in ("allowlist", "unknown") and best is None:
-            best = c.value_grade
+            # **`allowlist` は Def 5 の等級語彙に無い。** 語彙外の等級を作らない。
+            # 会員判定は req の引き上げ（config atom 規則）で効き、等級としては
+            # `unknown`（判定不能）にとどめる。どの候補が束縛したかは
+            # manifest の `gate.candidates[]` に残る。
+            # SQL 文型 allowlist のような形に Def 5 の等級が無いことは
+            # `docs/open_questions.md` Q10 に記録した。
+            best = "unknown"
     if weak_reason is not None:
         V.validate_weak_reason(weak_reason)
         return "weak", weak_reason
+    if best is not None and best not in V.GRADES:
+        raise ValueError(f"Def 5 の等級語彙にない等級: {best!r}")
     return best, None
 
 

@@ -130,33 +130,48 @@ git -C $C diff d9c45477 9e5d5b8e -- src/git             # A2 の diff を目視
 - **verdict-clearing 数が必ず併記されていること**（§6 T1.1 の副次指標）。
   タプル変化のみで通過した対と区別せずに報告すると「修正を検出した」と誤読される。
 
-### 2.4 現時点で一次確認できている対（4 対）
+### 2.4 現時点で一次確認できている対（6 対 / 3 プロジェクト）
 
-すべて `modelcontextprotocol/servers` の `src/git`。**同一プロジェクトなので、
-§6 T1.5 (iii) の「≥ 4 プロジェクトにまたがる」はまだ満たしていない。**
+| 対 | プロジェクト | 両側通過 | 変化 | clearing 厳密 | clearing INJECT |
+|---|---|---|---|---|---|
+| A1 | mcp-server-git | ○ | `cwd`: 検証なし → `strong-path`（8 経路） | × | × |
+| A2 | mcp-server-git | ○ | `argv[*]`: 検証なし → `strong-token`（2 経路） | × | × |
+| A3 | mcp-server-git | ○ | `FS_WRITE(index.add)` 消滅 + `argv[*]` 主体 OP → MODEL | × | × |
+| A4 | mcp-server-git | ○ | `argv[*]`: 検証なし → `strong-path` | × | **○** |
+| A9+A10 | PraisonAI | ○ | `req_occ` MODEL → **USER**（`@require_approval`）／ `path`: `weak(no_symlink_resolution)` → `strong-path` | × | × |
+| A18 | langroid | ○ | `sql`: 検証なし → `unknown`（sqlglot 文型 allowlist） | × | × |
 
-| 対 | 両側通過 | 変化 | verdict-clearing（対単位） |
-|---|---|---|---|
-| A1 | ○ | `cwd`: 検証なし → `strong-path`、`req_val` MODEL → OP（8 経路） | **×**（`git_add` に GAP が残る） |
-| A2 | ○ | `argv[*]`: 検証なし → `strong-token`（`git_checkout` と `git_diff`） | **×**（`repo_path` の GAP が残る） |
-| A3 | ○ | `FS_WRITE(index.add)` 消滅 + `SPAWN@git.Git.add#argv[*]` 主体 OP → MODEL | **×** |
-| A4 | ○ | `argv[*]`: 検証なし → `strong-path` | **○** |
+**両側通過 6/6。verdict-clearing は厳密 0/6、INJECT 座標のみ 1/6。**
 
-**両側通過 4/4、verdict-clearing 1/4。**
+§6 T1.5 の合格条件との対応:
 
-この差こそ §6 T1.1 が副次指標の併記を要求している理由である。
-`mcp-server-git` は A2 → A1 → A3 → A4 と段階的に硬化しており、
-**タプルは 4 対とも変化するが、ツールが GAP でなくなるのは最後の 1 対だけ**である。
-「両側通過 4 対」だけを書くと「4 件の修正を検出した」と誤読される。
+- (i) 修正コミット単位で **≥ 6 対** → **6 対で満たす**（A9 と A10 は同一修正
+  コミットなので 1 対として数えている）
+- (iii) **≥ 4 プロジェクト** → **3 プロジェクトなので未達**。もう 1 つ要る
+- PraisonAI 由来は 1 対なので上限 3 は満たす
+
+**verdict-clearing が厳密版で 0 になる理由を本文に書くこと。**
+`GAP_SELECT` は「モデルがそのツールを呼ぶかを決めており、承認割り込みも宣言も
+無い」ことを言うので、**値検証を足しても消えない**。消えるのは承認割り込みを
+足した対だけである。A9 は `@require_approval` で `req_occ` を USER へ上げるが、
+同じ木の別経路（`create_directories_for_file`）に GAP が残るので対単位では
+まだ clear にならない。
+**片方の数だけを書くと、SELECT 座標が常に残ることを隠すか、値検証の効果を
+見落とすかのどちらかになる。**
+
+A10 は仕様書の期待タプル
+（`weak(no_symlink_resolution)` → `strong-path`）と**完全に一致した**。
+実データで Def 5 の等級づけが仕様どおり働いた最初の例である。
 
 再現:
 
 ```bash
+.venv/bin/python scripts/fetch_corpus.py --spec docs/corpus_spec.json
 .venv/bin/python scripts/two_sided.py --spec docs/corpus_spec.json \
     --json evidence/w0/two_sided.json
 ```
 
-**残り 20 行余の対は `docs/cve_triage.csv` で `verified_by_me = none`、すなわち
+**残り 19 行の対は `docs/cve_triage.csv` で `verified_by_me = none`、すなわち
 仕様書からの転記であって未検証である。論文に数として書く前に、2.1〜2.3 を
 その対に対して実行すること。**
 

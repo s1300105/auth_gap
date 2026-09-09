@@ -85,6 +85,15 @@ class EntryRule:
     * ``lowlevel_v1``    `@server.call_tool()` デコレータ + name 分岐
     * ``lowlevel_v2``    `Server(on_call_tool=...)` / `add_request_handler("tools/call", ...)`
     * ``spec_object``    `ToolSpec(...)` のようなオブジェクト構築（gptme）
+    * ``tools_list``      `Agent(tools=[f, g])` や `tools = [f, g]` の要素として
+      渡される**裸の関数**（praisonai / openai-agents / agno / autogen）。
+      登録デコレータを持たないので他の規則では拾えない。
+      **木内のユーザ定義関数に解決できる要素だけを採る**（過剰収集を避ける）。
+    * ``toolmessage_handler``
+      `ToolMessage` 派生クラスが `request: str = "run_query"` を宣言し、
+      エージェント側に同名のメソッド `def run_query(self, msg: RunQueryTool)` が
+      あるもの（langroid）。**MODEL 値はメソッドの仮引数ではなく
+      `ToolMessage` 派生クラスのフィールド**であり、`msg.query` で読まれる。
 
     `framework` は unit id の第 1 成分になる。
     """
@@ -156,6 +165,29 @@ ENTRY_RULES: tuple[EntryRule, ...] = (
     ),
     # -- gptme -------------------------------------------------------------
     EntryRule("spec_object", "gptme", ("ToolSpec",)),
+    # -- tools=[...] 形（フレームワーク横断）--------------------------------
+    EntryRule(
+        "tools_list",
+        "tools-list",
+        ("tools",),
+        note="Agent(tools=[f, g]) / tools = [f, g] の要素。praisonai の "
+        "ast_grep_rewrite（A9）はこの形でしか拾えない",
+    ),
+    # -- langroid ----------------------------------------------------------
+    EntryRule(
+        "toolmessage_handler",
+        "langroid",
+        ("*",),
+        bases=("ToolMessage",),
+        note="ToolMessage 派生の request 値と同名のエージェントメソッドが入口。"
+        "MODEL 値は ToolMessage のフィールド",
+    ),
+)
+
+#: `ToolMessage` 派生クラスのフィールドのうち **MODEL としない**もの。
+#: プロトコル上の識別子であってモデルが自由に決める値ではない。
+TOOLMESSAGE_META_FIELDS: frozenset[str] = frozenset(
+    {"request", "purpose", "id", "recipient", "_handler"}
 )
 
 #: 低レベル MCP の v2 ハンドラ登録キーワード。
