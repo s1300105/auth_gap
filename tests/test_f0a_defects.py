@@ -574,6 +574,274 @@ def test_url_split_does_not_cut_host_from_template_placeholder(tmp_path, tool):
                 and any(ph in host.const for ph in ("%", "{", "}")))
 
 
+@pytest.mark.parametrize("tool", ["fetch_pct", pytest.param("fetch_fmt", marks=DEFECT)])
+def test_url_template_host_is_not_op_resolved(tmp_path, tool):
+    """**上のテストは弱すぎた**（プレースホルダの定数だけを見ていた）。host は MODEL なので、
+    分割しなくても url.host が OP / resolved であってはならない。`.format` は TRANSFER 表が
+    受け手（テンプレート）の主体しか採らず、実引数の MODEL を捨てていた（2 回目のレビュー）。"""
+    u = _unit(_run(tmp_path, {"s.py": URL_TEMPLATE}), tool)
+    host = _slot(u, "NET", "url.host")
+    assert not (host.prin == Prin.OP and host.prov.kind == "resolved")
+
+
+# ---------------------------------------------------------------------------
+# 11. 854f71b（改訂 2）の 2 回目の敵対的レビューで再現した欠陥
+# ---------------------------------------------------------------------------
+
+MUTATED_MODULE_OBJECTS = FASTMCP_HEAD + """\
+import sqlite3
+import requests
+
+conn = sqlite3.connect("app.db")
+conn.row_factory = sqlite3.Row
+session = requests.Session()
+session.headers.update({"Authorization": "Bearer x"})
+
+class Store:
+    def __init__(self):
+        self._db = sqlite3.connect("store.db")
+        self.cache = {}
+
+    def post(self, text):
+        self._db.execute(text)
+
+store = Store()
+
+@mcp.tool()
+def query_rows(sql: str) -> str:
+    return str(conn.execute(sql).fetchall())
+
+@mcp.tool()
+def fetch(url: str) -> str:
+    return session.get(url).text
+
+@mcp.tool()
+def reset_cache() -> str:
+    store.cache.clear()
+    return "ok"
+
+@mcp.tool()
+def post_message(msg: str) -> str:
+    store.post(msg)
+    return "ok"
+"""
+
+
+def test_mutated_module_objects_precondition(tmp_path):
+    res = _run(tmp_path, {"s.py": MUTATED_MODULE_OBJECTS})
+    for name in ("query_rows", "fetch", "post_message"):
+        _unit(res, name)
+
+
+@pytest.mark.parametrize(
+    "tool,kind",
+    [
+        pytest.param("query_rows", "DB", marks=DEFECT),
+        pytest.param("fetch", "NET", marks=DEFECT),
+        pytest.param("post_message", "DB", marks=DEFECT),
+    ],
+)
+def test_mutated_module_object_keeps_effect_rows(tmp_path, tool, kind):
+    """属性やメソッドで変更されるモジュール水準のオブジェクトを「読まない」にすると受け手の型が
+    消え、**効果行ごと消える**（opaque ではなく drop。false-clean）。型は保ち、確度だけ落とす。"""
+    assert _effects(_unit(_run(tmp_path, {"s.py": MUTATED_MODULE_OBJECTS}), tool), kind)
+
+
+RELATIVE_BASE = {
+    "pkg/__init__.py": "",
+    "pkg/base.py": "class Resource:\n    pass\n",
+    "pkg/tools/__init__.py": "",
+    "pkg/tools/base.py": """\
+import sqlite3
+
+class BaseTool:
+    def __init__(self):
+        self.conn = sqlite3.connect("tools.db")
+
+    def run_query(self, sql):
+        return self.conn.execute(sql).fetchall()
+""",
+    "pkg/tools/sqltool.py": """\
+from .base import BaseTool
+
+class SqlTool(BaseTool):
+    def query(self, sql):
+        return self.conn.execute(sql).fetchall()
+""",
+    "pkg/server.py": FASTMCP_HEAD + """\
+from pkg.tools.sqltool import SqlTool
+
+tool = SqlTool()
+
+@mcp.tool()
+def own_method(sql: str) -> str:
+    return str(tool.query(sql))
+
+@mcp.tool()
+def inherited_method(sql: str) -> str:
+    return str(tool.run_query(sql))
+""",
+}
+
+
+def test_relative_base_precondition(tmp_path):
+    res = _run(tmp_path, RELATIVE_BASE)
+    _unit(res, "own_method")
+    _unit(res, "inherited_method")
+
+
+@pytest.mark.parametrize("tool", [pytest.param("own_method", marks=DEFECT), pytest.param("inherited_method", marks=DEFECT)])
+def test_relative_import_base_init_fields_keep_effects(tmp_path, tool):
+    """`from .base import BaseTool`（木に別の `pkg/base.py` もある）の基底の `__init__` が作る
+    `self.conn` 経由の DB 効果を落とさない。import 表が相対 import の点を捨てるので、厳密化で
+    別の `base` モジュールと区別できず基底が解決されなくなった（2 回目のレビュー）。"""
+    assert _effects(_unit(_run(tmp_path, RELATIVE_BASE), tool), "DB")
+
+
+TRANSFER_ARGS = FASTMCP_HEAD + """\
+import os
+import subprocess
+import requests
+from urllib.parse import urljoin
+
+@mcp.tool()
+def run_fmt_kw(d: str) -> str:
+    return subprocess.run("ls {d}".format(d=d), shell=True, capture_output=True).stdout
+
+@mcp.tool()
+def read_join(name: str) -> str:
+    return open(os.path.join("/data", name)).read()
+
+@mcp.tool()
+def fetch_join(url: str) -> str:
+    return requests.get(urljoin("https://api.example.com/", url)).text
+
+@mcp.tool()
+def fetch_replace(host: str) -> str:
+    return requests.get("https://HOST/api".replace("HOST", host)).text
+"""
+
+
+def test_transfer_args_precondition(tmp_path):
+    res = _run(tmp_path, {"s.py": TRANSFER_ARGS})
+    for name in ("run_fmt_kw", "read_join", "fetch_join", "fetch_replace"):
+        _unit(res, name)
+
+
+@pytest.mark.parametrize(
+    "tool,kind,slot",
+    [
+        pytest.param("run_fmt_kw", "SPAWN", "shell_string", marks=DEFECT, id="str_format_kwarg"),
+        pytest.param("read_join", "FS_READ", "path", marks=DEFECT, id="os_path_join_second_arg"),
+        pytest.param("fetch_join", "NET", "url.host", marks=DEFECT, id="urljoin_second_arg"),
+        pytest.param("fetch_replace", "NET", "url.host", marks=DEFECT, id="str_replace_new"),
+    ],
+)
+def test_transfer_keeps_model_from_non_subject_args(tmp_path, tool, kind, slot):
+    """TRANSFER 表の変換は subject 以外の実引数の主体も結果に入れる。捨てると MODEL が OP / resolved に
+    なる（`"ls {d}".format(d=d)` が `"ls " + d` と違う結果になる）。"""
+    v = _slot(_unit(_run(tmp_path, {"s.py": TRANSFER_ARGS}), tool), kind, slot)
+    assert not (v.prin == Prin.OP and v.prov.kind == "resolved")
+
+
+WRITE_ALIASES = {
+    "helper/s.py": FASTMCP_HEAD + """\
+import subprocess
+
+SETTINGS = {"cmd": "echo ready"}
+
+def _put(d, k, v):
+    d[k] = v
+
+@mcp.tool()
+def set_setting(cmd: str) -> str:
+    _put(SETTINGS, "cmd", cmd)
+    return "ok"
+
+@mcp.tool()
+def run_helper_setting() -> str:
+    return subprocess.run(SETTINGS["cmd"], shell=True, capture_output=True).stdout
+""",
+    "alias/s.py": FASTMCP_HEAD + """\
+import subprocess
+
+CONFIG = {"cmd": "echo ready"}
+CMD = "echo ready"
+
+@mcp.tool()
+def set_alias(cmd: str) -> str:
+    c = CONFIG
+    c["cmd"] = cmd
+    globals()["CMD"] = cmd
+    return "ok"
+
+@mcp.tool()
+def run_alias_setting() -> str:
+    return subprocess.run(CONFIG["cmd"], shell=True, capture_output=True).stdout
+
+@mcp.tool()
+def run_globals_cmd() -> str:
+    return subprocess.run(CMD, shell=True, capture_output=True).stdout
+""",
+    "envalias/s.py": FASTMCP_HEAD + """\
+import os
+import subprocess
+
+@mcp.tool()
+def set_env_alias(cmd: str) -> str:
+    env = os.environ
+    env["TOOL_CMD"] = cmd
+    return "ok"
+
+@mcp.tool()
+def run_env_alias() -> str:
+    return subprocess.run(os.environ.get("TOOL_CMD", "true"), shell=True, capture_output=True).stdout
+""",
+}
+
+
+def test_write_aliases_precondition(tmp_path):
+    for sub, tool in (("helper", "run_helper_setting"), ("alias", "run_alias_setting"), ("envalias", "run_env_alias")):
+        res = _run(tmp_path / sub, {"s.py": WRITE_ALIASES[f"{sub}/s.py"]})
+        assert _effects(_unit(res, tool), "SPAWN")
+
+
+@pytest.mark.parametrize(
+    "sub,tool",
+    [
+        pytest.param("helper", "run_helper_setting", marks=DEFECT, id="write_via_helper_function"),
+        pytest.param("alias", "run_alias_setting", marks=DEFECT, id="write_via_local_alias"),
+        pytest.param("alias", "run_globals_cmd", marks=DEFECT, id="write_via_globals"),
+        pytest.param("envalias", "run_env_alias", marks=DEFECT, id="environ_write_via_alias"),
+    ],
+)
+def test_writes_through_aliases_are_not_constant(tmp_path, sub, tool):
+    """構文上の根の名前だけでは書き込みを見落とす（補助関数の仮引数、局所別名、`globals()`、
+    `env = os.environ`）。その名前の値を定数（OP / resolved）にしない。"""
+    res = _run(tmp_path / sub, {"s.py": WRITE_ALIASES[f"{sub}/s.py"]})
+    v = _slot(_unit(res, tool), "SPAWN", "shell_string")
+    assert not (v.prin == Prin.OP and v.prov.kind == "resolved")
+
+
+@DEFECT
+def test_deep_unrelated_file_does_not_crash_write_scan(tmp_path):
+    """木の無関係なファイルに深い AST（550 項の連結）があっても、書き込み走査の再帰で
+    RecursionError を出して木 1 本の出力を全部落とさない。"""
+    deep = "BIG = " + " + ".join(['"a"'] * 550) + "\n"
+    server = FASTMCP_HEAD + """\
+import os
+import subprocess
+
+CMD = "ls"
+
+@mcp.tool()
+def run_it(arg: str) -> str:
+    return subprocess.run([CMD, arg, os.environ.get("X", "")], capture_output=True).stdout.decode()
+"""
+    res = _run(tmp_path, {"server.py": server, "generated_strings.py": deep})
+    assert _effects(_unit(res, "run_it"), "SPAWN")
+
+
 URL_PREFIX_VAR = FASTMCP_HEAD + """\
 import os
 import requests
