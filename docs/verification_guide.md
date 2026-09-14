@@ -328,9 +328,13 @@ AuthGap を実際より良く見せる。**
    ```
    「消えた」が 0 件であること。「slot 変化」の各行は原ソースを開いて、変化の向きが
    正しいか（resolved → opaque は保守側、MODEL → OP は要注意）を見る。
+   改訂 5（150e06a）では `--before 170a7b2` で較正対 14 木（`corpus/A*__vuln` / `__fixed`）を
+   突き合わせ、消えた 0・増えた 0、slot 変化は A9 の 86 件で、すべて行の確度の理由が
+   `opaque(unresolved)` → `opaque(depth+unresolved)` になっただけだった（D17 改訂 5 の「確認」）。
    **野外の run 同士でも同じことを確かめる**（較正対だけでは足りない）:
    ```bash
-   .venv/bin/python scripts/lost_units.py evidence/f0a_run1py312 evidence/f0a_run4
+   .venv/bin/python scripts/lost_units.py evidence/f0a_run1py312 evidence/f0a_run6
+   .venv/bin/python scripts/lost_units.py evidence/f0a_run5 evidence/f0a_run6   # 改訂 5 の前後（0 件）
    ```
    危険効果から外れたユニットを 1 件ずつ列挙する（終了コード 1 なら 1 件以上）。
    母集団の件数だけを見ると、新たに増えた分に隠れて消えた分を見落とす。
@@ -343,15 +347,19 @@ AuthGap を実際より良く見せる。**
    ```bash
    .venv/bin/python scripts/compare_f0a_runs.py      # → docs/f0a_runs.md
    ```
-   `run1`（3.10、直す前）→ `run1py312`（3.12、同じ解析器）→ `run4`（3.12、D17 / 改訂 2 / 改訂 3 の後）。
+   `run1`（3.10、直す前）→ `run1py312`（3.12、同じ解析器）→ `run6`（3.12、D17 / 改訂 2〜5 の後。150e06a）。
    `Δ 処理系` がほぼ 0 で `Δ 解析器` が大きいなら、関門の変化は解析器の修正による。
-   **`run2`（0662b39）と `run3`（854f71b）は中間状態で、関門の数字に使わない。** run 2 は
-   敵対的レビューで false-clean 5 系統が見つかり（mcp_server の解決率 51.0% はそれで
-   かさ上げされていた）、run 3 は `lost_units.py` で危険効果ユニットの消失が見つかった
-   （D17 改訂 2 / 3）。**直した後の run だけを書くと「関門を通すために直した」と読まれ
-   うるので、表ごと載せ、中間の run が捨てられた理由も書く。**
-   **run 4 の解析器にも 3 回目のレビューの指摘（`_pinned_function` の決め打ち）が残っている**
-   ので、最終の数字は改訂 4 の後の run で置き換える（`docs/decisions.md` D17 を見る）。
+   **`run2`（0662b39）・`run3`（854f71b）・`run4`（8f24cbd）・`run5`（ea35672）は中間状態で、
+   関門の数字に使わない。** run 2 は敵対的レビューで false-clean 5 系統が見つかり（mcp_server の
+   解決率 51.0% はそれでかさ上げされていた）、run 3 は `lost_units.py` で危険効果ユニットの消失が
+   見つかり、run 4 は 3 回目のレビューで `_pinned_function` の決め打ちなど 6 件、run 5 は 4 回目の
+   レビューで再束縛される名前の定数の読み取りと同名定義による効果行の消失など 6 件が確認された
+   （D17 改訂 2〜5）。**直した後の run だけを書くと「関門を通すために直した」と読まれうるので、
+   表ごと載せ、中間の run が捨てられた理由も書く。**
+   **run 5 と run 6 は `units.jsonl` / `trees.jsonl` がバイト一致する**（`cmp` で確かめられる。
+   改訂 5 が直した形は標本の 98 木に無かった）。関門の数字は run 5 と同じだが、報告には欠陥を
+   直した版の run 6 を使う。レビューと修正の繰り返しは D19 で止める（5 回目のレビューの結果と、
+   凍結したか既知の欠陥として報告するかは `docs/decisions.md` D19 に書く）。
    各 run の `run_meta` に解析器の commit、Python の版、標本の sha256（run2 以降）がある。
    **関門の率は点推定だけで読まない**（D18）:
    ```bash

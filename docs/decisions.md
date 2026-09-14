@@ -473,8 +473,16 @@ evidence/w0 と同一）と決定論は不変。
 受け入れ B3a 8/8、B3b 15/15、実装変異の生存 1/15、決定論（A1__fixed / A9__vuln で 3 回バイト一致）は
 不変。両側 7/7 で、**変化した経路・判定・verdict-clearing は `evidence/w0/two_sided.json` と同一**。
 違うのは不変の経路の数 `n_unchanged_paths` だけで、3 対で増えた（対 1: 10 → 12、対 5: 13 → 14、
-対 6: 23 → 55）。増えた経路がどの改訂によるものかは、較正対の `diff_effects.py` と 170a7b2 での
-再実行で確かめて `verification_guide.md` §3.2 に書く。
+対 6: 23 → 55）。**これは改訂 5 によるものではない**: 170a7b2 を `git archive` で取り出して同じ手続きで
+走らせると（`authgap` がその展開先から import されることを確かめた）すでに 12 / 14 / 55 で、
+170a7b2 と 150e06a の出力 JSON の違いは木の絶対パス（`vuln_root` / `fixed_root`）だけだった。
+w0 の後、改訂 2〜4 のどこで増えたかは切り分けていない（不明。変化した経路と判定は同一なので、
+T1 の主指標には効かない）。
+較正対 14 木の `diff_effects.py --before 170a7b2 --after 150e06a`: 消えた行 0・増えた行 0。slot 変化は
+A9 の 86 件（両側 43 件ずつ、`BasicSkillMutator` の経路）で、**すべて行の確度の理由が
+`opaque(unresolved)` → `opaque(depth+unresolved)` になっただけ**（主体・確度の種類の変化 0）。
+野外: run 6（150e06a、Python 3.12）の `units.jsonl` / `trees.jsonl` は run 5 と**バイト一致**
+（改訂 5 が直した形は標本の 98 木に無かった。関門の数字も区間も run 5 と同じ）。
 
 **フレームの誤り（直す。結果とは独立の事実誤認）:** `APP_FRAME` の
 `OpenManus/OpenManus` は RL 用の openmanus_rl で、選定根拠に書いた「§2.6 の負例
