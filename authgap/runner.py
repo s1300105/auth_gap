@@ -37,6 +37,11 @@ class RunConfig:
     full: bool = True
     #: §3 の 3 腕（``A`` / ``B`` / ``C``）。**同一バイナリのフラグ違い。**
     arm: str = "C"
+    #: 1 本の木に費やす壁時計の上限（秒）。0 で無制限。
+    #: **超えたら残りのユニットを `TRUNCATED(tree_budget)` として記録して打ち切る。**
+    #: 黙って止めない — 野外走査で 1 本が全体を止めないための cap であり、
+    #: 打ち切った件数は母集団の分母に効くので必ず出す。
+    max_tree_seconds: float = 0.0
 
 
 @dataclass
@@ -46,6 +51,8 @@ class RunResult:
     dep_pins: dict[str, DepPin] = field(default_factory=dict)
     exposure_declarations: list[dict] = field(default_factory=list)
     wall_clock_truncations: list[str] = field(default_factory=list)
+    #: 木ごとの時間上限で解析しなかったユニット数。**0 でないなら報告する。**
+    tree_budget_skipped: int = 0
     elapsed_s: float = 0.0
 
 
@@ -86,7 +93,12 @@ def run(cfg: RunConfig) -> RunResult:
     )
     res = RunResult(tree=tree, dep_pins=pins)
 
+    budget_hit = False
     for unit in units:
+        if cfg.max_tree_seconds and (time.monotonic() - started) > cfg.max_tree_seconds:
+            res.tree_budget_skipped += 1
+            budget_hit = True
+            continue
         t0 = time.monotonic()
         if cfg.full:
             report: UnitReport = analyze_unit_full(
@@ -108,6 +120,8 @@ def run(cfg: RunConfig) -> RunResult:
         tree.units.append(report)
         res.enforcement[unit.unit_id] = classify_unit(unit.framework, unit.entry_kind, pins)
 
+    if budget_hit:
+        res.wall_clock_truncations.append(f"TRUNCATED(tree_budget):{res.tree_budget_skipped} units")
     tree.parse_failures = sorted(index.parse_failures)
     tree.cap_hits = sorted(index.cap_hits)
     res.exposure_declarations = exposure_decls

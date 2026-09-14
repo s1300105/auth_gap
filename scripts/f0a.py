@@ -62,6 +62,10 @@ class PopStats:
     population: str
     n_trees: int = 0
     n_trees_failed: int = 0
+    #: 解析できたがユニットが 1 件も無かった木。
+    #: **フレームの雑音を測る量である**（code search で集めた母集団には
+    #: クライアント / 例 / fork / 無関係な repo が混ざる）。
+    n_trees_no_units: int = 0
     n_units: int = 0
     #: 危険効果を持つユニット（粗い分母）。
     n_dangerous: int = 0
@@ -93,6 +97,8 @@ class PopStats:
     trig_modes: Counter = field(default_factory=Counter)
     parse_failures: int = 0
     truncations: int = 0
+    #: 木ごとの時間上限で解析しなかったユニット数。
+    budget_skipped: int = 0
     elapsed_s: float = 0.0
 
     # -- 率 ---------------------------------------------------------------
@@ -160,6 +166,7 @@ class PopStats:
             "population": self.population,
             "n_trees": self.n_trees,
             "n_trees_failed": self.n_trees_failed,
+            "n_trees_no_units": self.n_trees_no_units,
             "n_units": self.n_units,
             "n_units_with_dangerous_effect": self.n_dangerous,
             "n_units_with_dangerous_effect_fp_excluded": self.n_dangerous_clean,
@@ -198,15 +205,19 @@ class PopStats:
             "trig_modes": dict(sorted(self.trig_modes.items())),
             "parse_failures": self.parse_failures,
             "truncations": self.truncations,
+            "units_skipped_by_tree_budget": self.budget_skipped,
             "elapsed_s": round(self.elapsed_s, 1),
         }
 
 
 def accumulate(stats: PopStats, res: RunResult, rubric: frozenset[str], with_trig: bool) -> None:
     stats.n_trees += 1
+    if not res.tree.units:
+        stats.n_trees_no_units += 1
     stats.elapsed_s += res.elapsed_s
     stats.parse_failures += len(res.tree.parse_failures)
     stats.truncations += len(res.tree.cap_hits) + len(res.wall_clock_truncations)
+    stats.budget_skipped += res.tree_budget_skipped
     d_op = res.tree.d_op
     for u in res.tree.units:
         _accumulate_unit(stats, u, d_op, rubric, with_trig)
@@ -279,7 +290,9 @@ def main() -> int:
     ap.add_argument("--with-traced", action="store_true",
                     help="trig を計算する。**A5 の run では使わない**（§5.1）")
     ap.add_argument("--evidence", default=os.path.join(ROOT, "evidence", "f0a"))
-    ap.add_argument("--limit", type=int, default=0, help="母集団ごとの上限（動作確認用）")
+    ap.add_argument("--limit", type=int, default=0, help="母集団ごとの上限（§6 の 60 / 30 / 8）")
+    ap.add_argument("--tree-budget", type=float, default=180.0,
+                    help="1 本の木の壁時計上限（秒）。超えた分は TRUNCATED として記録する")
     args = ap.parse_args()
 
     jobs: list[tuple[str, str]] = []
@@ -307,7 +320,14 @@ def main() -> int:
         seen[pop] = seen.get(pop, 0) + 1
         t0 = time.monotonic()
         try:
-            res = run(RunConfig(src_root=path, population=pop, full=args.with_traced))
+            res = run(
+                RunConfig(
+                    src_root=path,
+                    population=pop,
+                    full=args.with_traced,
+                    max_tree_seconds=args.tree_budget,
+                )
+            )
         except Exception as exc:  # 1 本の失敗で全体を落とさない。**件数として残す。**
             st.n_trees_failed += 1
             print(f"FAIL {path}: {type(exc).__name__}: {exc}", file=sys.stderr)
@@ -342,7 +362,8 @@ def _print_gates(by_pop: dict[str, PopStats]) -> None:
         itr = s.in_tree_resolution_ratio
         vh = s.validator_holding
         op = s.opaque_ratio(True)
-        print(f"[{p}] 木 {s.n_trees}（失敗 {s.n_trees_failed}） ユニット {s.n_units}")
+        print(f"[{p}] 木 {s.n_trees}（失敗 {s.n_trees_failed} / ユニット 0 件 "
+              f"{s.n_trees_no_units}） ユニット {s.n_units}")
         print(f"  in_tree_resolution_ratio {_fmt(itr)}  (>= 50%): "
               f"{'○' if itr is not None and itr >= GATE_IN_TREE_RESOLUTION else '×'}")
         print(f"  validator 保有            {_fmt(vh)}  (>= 5%):  "
@@ -371,7 +392,8 @@ def _write_md(by_pop: dict[str, PopStats], with_trig: bool) -> None:
         lines += [
             f"## 母集団: {p}",
             "",
-            f"木 {s.n_trees} 本（取得 / 解析に失敗 {s.n_trees_failed} 本）、"
+            f"木 {s.n_trees} 本（取得 / 解析に失敗 {s.n_trees_failed} 本、"
+            f"ユニット 0 件 {s.n_trees_no_units} 本 = **フレームの雑音**）、"
             f"ユニット {s.n_units}、危険効果を持つユニット {s.n_dangerous}"
             f"（偽陽性クラス除外後 {s.n_dangerous_clean}）",
             "",
@@ -421,7 +443,8 @@ def _write_md(by_pop: dict[str, PopStats], with_trig: bool) -> None:
             "",
             f"ゲート述語を持つユニット {s.n_with_gate_predicate} / {s.n_units}",
             "",
-            f"parse 失敗 {s.parse_failures} 件、cap 到達 {s.truncations} 件"
+            f"parse 失敗 {s.parse_failures} 件、cap 到達 {s.truncations} 件、"
+            f"時間上限で未解析のユニット {s.budget_skipped} 件"
             "（**黙って落としていない**）",
             "",
         ]
