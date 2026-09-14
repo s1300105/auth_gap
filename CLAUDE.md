@@ -92,6 +92,8 @@ uv pip install --python .venv/bin/python -r requirements.txt
 
 # 解析器を直したら（コミット前に）
 .venv/bin/python scripts/diff_effects.py --before <直す前の commit> corpus/A9__vuln corpus/A9__fixed corpus/A18__vuln corpus/A18__fixed
+# 野外の run を取り直したら（件数の増減に隠れた消失を見る）
+.venv/bin/python scripts/lost_units.py evidence/f0a_<前の run> evidence/f0a_<新しい run>
 
 # 野外 F0a（D14 / D16）。run 2 以降は Python 3.12
 uv venv .venv312 --python 3.12 && uv pip install --python .venv312/bin/python -r requirements.txt
