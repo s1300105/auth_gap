@@ -18,8 +18,10 @@
         --ref 9e5d5b8e --name mcp-server-git@vuln \\
         --subdir src/git
 
-`--subdir` を渡すと sparse checkout でその部分木だけを取る（`.txt` と `.lock` は
-リポジトリ全体から拾う）。
+sparse checkout を worktree に対して実際に適用する。パターンは
+:data:`BASE_PATTERNS`（`--subdir` を渡すとその部分木 + 依存ファイル）。
+**`.txt` と `.lock` を必ず含める**（§9-12。前測のコーパスはこれらを 1 件も
+含まないまま「依存版を読んだ」と書いていた）。
 """
 
 from __future__ import annotations
@@ -126,9 +128,28 @@ def fetch(t: Target, depth: int = 1) -> tuple[Optional[Fetched], Optional[str]]:
         return None, f"{t.name}: ref {t.ref!r} を rev-parse で解決できない -> {resolved}"
     sha = resolved.strip()
 
-    code, out = _run(["git", "worktree", "add", "--detach", "--force", dest, sha], cwd=cache)
+    # **sparse checkout を実際に適用する。** `--no-checkout` で worktree を作り、
+    # パターンを設定してから checkout する。適用しないと巨大な repo を丸ごと
+    # 展開してしまう（野外 90 木では致命的）。
+    code, out = _run(
+        ["git", "worktree", "add", "--no-checkout", "--detach", "--force", dest, sha], cwd=cache
+    )
     if code != 0:
         return None, f"{t.name}: worktree add -> {out}"
+    patterns = list(BASE_PATTERNS)
+    if t.subdir:
+        patterns = [f"/{t.subdir.strip('/')}/**"] + [
+            p for p in BASE_PATTERNS if p.endswith((".txt", ".lock", ".toml", ".cfg"))
+        ]
+    code, out = _run(["git", "sparse-checkout", "init", "--no-cone"], cwd=dest)
+    if code != 0:
+        return None, f"{t.name}: sparse-checkout init -> {out}"
+    code, out = _run(["git", "sparse-checkout", "set", *patterns], cwd=dest)
+    if code != 0:
+        return None, f"{t.name}: sparse-checkout set -> {out}"
+    code, out = _run(["git", "checkout", "--detach", sha], cwd=dest)
+    if code != 0:
+        return None, f"{t.name}: checkout -> {out}"
 
     code, head = _run(["git", "rev-parse", "HEAD"], cwd=dest)
     if code != 0 or head.strip() != sha:
@@ -223,6 +244,7 @@ def main() -> int:
     ap.add_argument("--subdir")
     ap.add_argument("--population", default="mcp_server")
     ap.add_argument("--note", default="")
+    ap.add_argument("--jobs", type=int, default=4, help="並列数（clone が律速なので 4 程度）")
     args = ap.parse_args()
 
     targets: list[Target] = []
@@ -240,19 +262,32 @@ def main() -> int:
     os.makedirs(CORPUS, exist_ok=True)
     ok: list[Fetched] = []
     failures: list[str] = []
+
+    # 同一 repo への worktree 追加は直列でなければならないので、repo 単位で束ねる。
+    from concurrent.futures import ThreadPoolExecutor
+
+    by_repo: dict[str, list[Target]] = {}
     for t in targets:
-        f, err = fetch(t)
-        if f is None:
-            failures.append(err or f"{t.name}: unknown error")
-            print(f"FAIL {t.name}: {err}", file=sys.stderr)
-            continue
-        ok.append(f)
-        flags = []
-        if not f.has_requirements:
-            flags.append("no requirements*.txt")
-        if not f.has_lock:
-            flags.append("no lock file")
-        print(f"OK   {t.name} {f.sha[:12]} py={f.n_py} " + ("; ".join(flags) if flags else ""))
+        by_repo.setdefault(t.repo, []).append(t)
+
+    def do_repo(ts: list[Target]) -> list[tuple[Optional[Fetched], Optional[str]]]:
+        return [fetch(t) for t in ts]
+
+    with ThreadPoolExecutor(max_workers=max(1, args.jobs)) as pool:
+        for batch in pool.map(do_repo, by_repo.values()):
+            for f, err in batch:
+                if f is None:
+                    failures.append(err or "unknown error")
+                    print(f"FAIL {err}", file=sys.stderr)
+                    continue
+                ok.append(f)
+                flags = []
+                if not f.has_requirements:
+                    flags.append("no requirements*.txt")
+                if not f.has_lock:
+                    flags.append("no lock file")
+                print(f"OK   {f.target.name} {f.sha[:12]} py={f.n_py} "
+                      + ("; ".join(flags) if flags else ""))
     write_frame(ok)
     write_failures(failures)
     print(f"\nframe: {FRAME_CSV}  failures: {len(failures)} -> {FAILURES_MD}")
