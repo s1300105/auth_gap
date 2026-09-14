@@ -1521,7 +1521,6 @@ def test_rebound_url_precondition(tmp_path):
             assert _effects(_unit(res, tool), "NET"), (form, tool)
 
 
-@DEFECT
 @pytest.mark.parametrize(
     "form,tool",
     [
@@ -1581,7 +1580,6 @@ def test_rebound_modes_precondition(tmp_path):
     assert _effects(_unit(res, "touch"), "FS_READ")
 
 
-@DEFECT
 def test_rebound_shell_flag_keeps_shell_string_row(tmp_path):
     """`shell=USE_SHELL` の USE_SHELL を MODEL が書き換えるなら、shell=True 側の行（shell_string）を
     落とさない。opaque に落とした値の定数 False を `_exec_mode` がリテラルとして読み、SPAWN 行の
@@ -1590,7 +1588,6 @@ def test_rebound_shell_flag_keeps_shell_string_row(tmp_path):
     assert any("shell_string" in e.control_slots() for e in rows)
 
 
-@DEFECT
 def test_rebound_open_mode_keeps_fs_write_row(tmp_path):
     """`open(path, MODE)` の MODE を MODEL が書き換えるなら、FS_WRITE の行を落とさない
     （`_mode_is_write` が opaque の定数 "r" を読んでいた。4 回目のレビュー、false-clean）。"""
@@ -1681,7 +1678,6 @@ def test_pin_sink_forms_precondition(tmp_path):
         assert any("shell_string" in e.control_slots() for e in _effects(u, "SPAWN")), form
 
 
-@DEFECT
 @pytest.mark.parametrize("form", _PIN_SINK_FORMS)
 def test_same_name_definitions_do_not_drop_helper_effect_rows(tmp_path, form):
     """呼び出し側から見えない同名の入れ子 def（別の関数の中）、if / else の 2 つの def、import した名前と
@@ -1693,7 +1689,6 @@ def test_same_name_definitions_do_not_drop_helper_effect_rows(tmp_path, form):
     assert any("shell_string" in e.control_slots() for e in _effects(u, "SPAWN"))
 
 
-@DEFECT
 def test_if_else_definitions_keep_rows_of_both_branches_as_opaque(tmp_path):
     """どちらの def が効くかを決めない（flow-insensitive）。両方の分岐の SPAWN 行を出し、
     どれを採ったかが名前だけで決まらないので行の確度は resolved にしない。"""
@@ -1731,7 +1726,6 @@ def test_container_template_url_precondition(tmp_path):
         assert _slot(_unit(res, tool), "NET", "url.host") is not None
 
 
-@DEFECT
 @pytest.mark.parametrize("tool", ["call_fmt", "call_plus"])
 def test_mutable_container_url_template_is_not_split_into_op_resolved_host(tmp_path, tool):
     """tool が `ENDPOINTS[name] = tmpl` で差し替えるモジュール水準の dict の要素は opaque（改訂 3 / 4 の

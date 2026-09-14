@@ -357,13 +357,19 @@ class Value:
 
     @property
     def const(self) -> Optional[Any]:
-        """リテラル定数なら返す。そうでなければ None。"""
-        if isinstance(self.shape, Atom):
+        """リテラル定数なら返す。そうでなければ None。
+
+        **確度が resolved でない値の定数は返さない**（D17 改訂 5）。opaque に落とした値（再束縛される
+        モジュール名など）の形に残った定数は「どの値か分からない」値の一候補にすぎない。効果側が
+        それをリテラルとして読むと、URL の host・`shell=`・`open` の mode を OP / resolved に確定させる
+        （4 回目のレビュー、false-clean）。形そのものの定数が要るときは `shape.const` を読む。
+        """
+        if isinstance(self.shape, Atom) and self.prov.kind == "resolved":
             return self.shape.const
         return None
 
     def is_literal(self) -> bool:
-        return isinstance(self.shape, Atom) and self.shape.const is not None
+        return self.const is not None
 
     def with_attr(self, *names: str) -> Value:
         return Value(self.prin, self.prov, self.shape, self.attrs | frozenset(names), self.roots)

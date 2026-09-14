@@ -442,6 +442,40 @@ evidence/w0 と同一）と決定論は不変。
 相対 import の判定は「同じパッケージに同名モジュールがあればそれ」で、絶対 import が
 同名の兄弟モジュールと衝突する木では誤りうる。
 
+**改訂 5（2026-09-14、ea35672 の 4 回目の敵対的レビュー（確認 6・棄却 0。6 件すべて false-clean /
+効果行の消失の向き）による）:** 6 件は下の 4 系統に重なる（URL 分割の件は 3 観点が独立に指摘した）。
+**D19 の凍結条件を満たさない**ので、D19(3) に従い、すべて修正より先に `tests/test_f0a_defects.py`
+14 節に固定し（xfail 17 件。「連結で作った Str」の形はレビューの指摘には無く、再現の途中で自分で
+見つけた同じ系統の形）、直した差分だけを 5 回目のレビューにかける。**5 回目が最後の繰り返しである。**
+
+| 系統 | 何が起きていたか | 誤りの向き | 直し方 |
+|---|---|---|---|
+| opaque の値の定数を URL 分割がリテラルとして読む | 改訂 4 の `_opaque_deep` が Atom の定数と Str の part の確度を残し、`_split_url` がその定数から url.scheme / url.host = OP / resolved を作った。`global` / `exec(..., globals())` / 読む側の再束縛で MODEL が書き換えるベース URL の host が resolved の定数になり、行の確度も resolved になった | false-clean（opaque → resolved。"*" 形と import 形は MODEL → OP も。改訂 4 の退行） | `Value.const` / `is_literal()` は**確度が resolved の値の定数しか返さない**。`_opaque_deep` は Str の part にも opaque を合流する（`_make_str` が part を平らに展開するので、外側だけでは足りない） |
+| `shell=` / `open` の mode | `_exec_mode` / `_mode_is_write` が再束縛される名前の opaque な定数（False / "r"）をリテラルとして読み、shell=True 側の SPAWN 行と FS_WRITE 行が消えた | 効果行の消失（改訂 4 の退行） | 同上（定数を読めなくなるので「判定できない」側に回り、両方の行を出す） |
+| 差し替えられる dict の URL テンプレート | tool が `ENDPOINTS[name] = tmpl` で差し替える要素（opaque）の `.format(q)` で、改訂 4 のテンプレート先頭の part が確度を捨てて host = OP / resolved を作った。`ENDPOINTS[k] + q` の形は 8f24cbd の時点から同じ | false-clean（`.format` は改訂 4 の退行、`+` は既存） | 同上 |
+| 同名の定義による効果行の消失 | `_pinned_function` がモジュール内の同名の def を、呼び出し位置から見えない入れ子 def（別の関数の中）まで数えて pin をやめ、末尾名の木全体検索も 2 候補で降りなかった。if / else の 2 つの def、import した名前と読む側の無関係な入れ子 def、`helpers.run_command(...)` と helper 側の入れ子 def でも同じ。helper の中の SPAWN 行が丸ごと消えた | 効果行の消失（改訂 4 の退行） | **呼び出し位置から見える定義だけを数える**（`_visible_defs`: モジュール直下の def と、素の名前の呼び出しなら呼び出し行を囲む関数の中の def）。見える定義が複数ある、または同じ名前が import / 代入でも束縛されるときは、**全候補へ降りて戻り値を join し、行と戻り値を opaque にする**（1 つを選ぶと他方の行が消え、降りなければ全部消える） |
+
+**警報の向きの判定は、確度に関係なく形の定数を読む:** `_is_policy_path`（方針ファイルへの書き込み
+`write_policy`）と `sep.join` の受け手の型判定は `shape.const` を読む。`Value.const` の変更で
+再束縛されうる方針ファイルのパスへの書き込みを見落とさないため。
+
+**記録する限界（新たに受け入れたもの）:**
+- モジュール水準のリスト / dict の要素（改訂 4 から、書き込みの有無にかかわらず opaque）の定数も
+  リテラルとして読まなくなる。`CMD = ["ls", "-la"]` の argv0 は副 kind `SPAWN_CONST_ARGV` にならず、
+  pipe の argv0 の判定にも使わない（resolved → opaque の向き。精度の損失）。
+- 見える同名の定義が複数ある呼び出しは、全候補の効果を opaque で出す（どれが効くかを決めない。
+  使われない分岐の行は誤警報になりうる）。
+- 呼び出し関数自身の局所 def と同名の呼び出し（`func.id in scope.local_bindings`）は、従来どおり
+  pin を引かず末尾名の木全体検索に回る。
+
+**確認（修正の commit の時点）:** テスト 177 件が `.venv`（3.10）と `.venv312`（3.12）の両方で通る
+（14 節の 17 件は、未修正の 56f61c5 / 170a7b2 を worktree に取り出して走らせると xfail）。
+受け入れ B3a 8/8、B3b 15/15、実装変異の生存 1/15、決定論（A1__fixed / A9__vuln で 3 回バイト一致）は
+不変。両側 7/7 で、**変化した経路・判定・verdict-clearing は `evidence/w0/two_sided.json` と同一**。
+違うのは不変の経路の数 `n_unchanged_paths` だけで、3 対で増えた（対 1: 10 → 12、対 5: 13 → 14、
+対 6: 23 → 55）。増えた経路がどの改訂によるものかは、較正対の `diff_effects.py` と 170a7b2 での
+再実行で確かめて `verification_guide.md` §3.2 に書く。
+
 **フレームの誤り（直す。結果とは独立の事実誤認）:** `APP_FRAME` の
 `OpenManus/OpenManus` は RL 用の openmanus_rl で、選定根拠に書いた「§2.6 の負例
 F5/F6/F7 の出所」（FoundationAgents 版 `app/tool/python_execute.py` ほか）ではない。

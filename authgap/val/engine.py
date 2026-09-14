@@ -230,8 +230,10 @@ class ValEngine:
         self._module_active: set[tuple[str, str]] = set()
         #: いま末尾名だけで降りた経路の中にいるか（入れ子の深さ）。
         self._by_name_depth = 0
-        #: 直前の `_resolve_in_tree` が末尾名だけで決めたか。
+        #: 直前の `_resolve_in_tree` が末尾名だけで決めたか（見える同名の定義が決まらないときも立つ）。
         self._by_name_hint = False
+        #: 直前の `_resolve_in_tree` が、見える同名の定義のどれが効くかを決められなかったか（D17 改訂 5）。
+        self._pinned_ambiguous = False
 
     # -- 入口 -------------------------------------------------------------
 
@@ -662,14 +664,21 @@ class ValEngine:
             return self._descend_indirect(node, dotted, args, kwargs, env, scope, res, depth, chain)
 
         # (4) 木内のユーザ定義関数（深さを消費する）
-        callee = self._resolve_in_tree(node, dotted, receiver, scope)
-        if callee is not None:
+        callees = self._resolve_in_tree(node, dotted, receiver, scope)
+        if callees:
             by_name = self._by_name_hint
+            ambiguous = self._pinned_ambiguous
             if by_name:
                 res.note_opaque("unresolved")
-            return self._descend(
-                callee, node, args, kwargs, receiver, env, scope, res, depth, chain, by_name=by_name
-            )
+            # 見える同名の定義のどれが効くか決まらないときは**全候補へ降りて戻り値を join する**
+            # （D17 改訂 5）。1 つを選ぶと他方の効果行が消え、降りなければ全部消える。
+            ret: Optional[Value] = None
+            for callee in callees:
+                v = self._descend(
+                    callee, node, args, kwargs, receiver, env, scope, res, depth, chain, by_name=by_name
+                )
+                ret = v if ret is None else value_join(ret, v)
+            return _opaque_deep(ret) if ambiguous else ret
 
         # (5) 木内クラスの構築 `C(...)`（`__init__` を実行するので深さを消費する）
         built = self._construct_in_tree(node, dotted, args, kwargs, scope, res, depth, chain)
@@ -734,20 +743,28 @@ class ValEngine:
 
     def _resolve_in_tree(
         self, node, dotted: Optional[str], receiver: Optional[Value], scope: Optional[Scope] = None
-    ) -> Optional[FuncDef]:
-        """木内のユーザ定義関数へ解決する。**同名メソッドを無条件に採らない。**"""
+    ) -> list[FuncDef]:
+        """木内のユーザ定義関数へ解決する。**同名メソッドを無条件に採らない。** 解決できなければ空。
+
+        複数の候補を返すのは、呼び出し位置から見える同名の定義のどれが効くか決まらないときだけ
+        （D17 改訂 5）。そのとき（と、1 候補でも import / 代入の束縛と競合するとき）は
+        `_pinned_ambiguous` を立てる。呼び出し側は全候補へ降り、行（`_by_name_hint`）と戻り値を opaque にする。
+        """
         self._by_name_hint = False
+        self._pinned_ambiguous = False
         name = dotted_of(node.func)
         if name is None:
-            return None
+            return []
         last = name.split(".")[-1]
         # **import 表で指したモジュール / 同じモジュールの定義を先に引く**（D17 改訂 3）。
-        pinned = self._pinned_function(node, dotted, last, scope)
+        pinned = self._pinned_candidates(node, dotted, last, scope)
         if pinned is not None:
-            return pinned
+            pinned_cands, ambiguous = pinned
+            self._by_name_hint = self._pinned_ambiguous = ambiguous
+            return pinned_cands
         cands = self.index.lookup_function(last)
         if not cands:
-            return None
+            return []
         if receiver is not None and isinstance(receiver.shape, Obj) and receiver.shape.classes:
             classes = {c.split(".")[-1] for c in receiver.shape.classes}
             narrowed = [c for c in cands if c.classname in classes]
@@ -758,7 +775,7 @@ class ValEngine:
         if narrowed:
             cands = narrowed
         if len(cands) != 1:
-            return None  # 絞れないものは opaque(unresolved) に落とす
+            return []  # 絞れないものは opaque(unresolved) に落とす
         chosen = cands[0]
         if want_method and chosen.classname is not None:
             typed = receiver is not None and isinstance(receiver.shape, Obj)
@@ -767,7 +784,7 @@ class ValEngine:
                 # 降りないと真の経路（langroid の `compute_from_docs` の eval など）が消える
                 # ので降りるが、呼び出し側がその経路の効果を `opaque(unresolved)` にする。
                 self._by_name_hint = True
-        return chosen
+        return [chosen]
 
     def _descend(
         self, callee: FuncDef, node, args, kwargs, receiver, env, scope, res, depth, chain, by_name: bool = False
@@ -858,12 +875,12 @@ class ValEngine:
             v = self._eval(args_node, env, scope, res, depth, chain)
             inner_args = list(_elements(v)) or [v]
 
-        callee = self._resolve_in_tree(_fake_call(target_node), dotted_of(target_node), None)
-        if callee is None:
+        callees = self._resolve_in_tree(_fake_call(target_node), dotted_of(target_node), None)
+        if len(callees) != 1:  # scope なしなので pin は引かず、末尾名の検索は 0 か 1 候補
             res.note_opaque("unresolved")
             return Value(Prin.OP, opaque("unresolved"), Unknown())
         return self._descend(
-            callee, node, inner_args, {}, None, env, scope, res, depth, chain + ("<indirect>",)
+            callees[0], node, inner_args, {}, None, env, scope, res, depth, chain + ("<indirect>",)
         )
 
     # -- D17: 組込みの値操作 / モジュール水準の束縛 / 木内クラスの構築 ----------
@@ -893,7 +910,9 @@ class ValEngine:
             return None
         attr = node.func.attr
         if attr == "join" and len(args) == 1 and not kwargs and (
-            isinstance(receiver.shape, Str) or isinstance(receiver.const, str)
+            # 型の判定なので確度に関係なく形の定数を見る（`Value.const` は resolved の値の定数しか返さない）
+            isinstance(receiver.shape, Str)
+            or (isinstance(receiver.shape, Atom) and isinstance(receiver.shape.const, str))
         ):
             return _str_join(receiver, args[0], k)
         if receiver_path is None or isinstance(receiver.shape, Obj):
@@ -1144,21 +1163,31 @@ class ValEngine:
                 out.append(hit)
         return out
 
-    def _pinned_function(self, node, dotted, last: str, scope: Optional[Scope]) -> Optional[FuncDef]:
-        """呼び出し名が import 表または同じモジュールで**一意に**指す木内の関数（メソッドは除く）。
+    def _pinned_candidates(
+        self, node, dotted, last: str, scope: Optional[Scope]
+    ) -> Optional[tuple[list[FuncDef], bool]]:
+        """呼び出し名が import 表または同じモジュールで指す木内の関数（メソッドは除く）の候補と、
+        どれが効くかが決まらないか（`ambiguous`）。引けなければ None（末尾名の木全体検索に回す）。
 
         末尾名だけで木全体を引くと、同名の関数が別ファイルに増えただけで 2 候補になり解決を
         失う（run 3 の spotify_mcp で `sp.get_followed_artists` の NET 効果が消えた。false-clean）。
+
+        **呼び出し位置から見える定義だけを数える**（D17 改訂 5。`_visible_defs`）。見える定義が複数ある、
+        または同じ名前が import / 代入でも束縛されるときは `ambiguous` にし、呼び出し側が**全候補へ
+        降りて**行と戻り値を opaque にする。改訂 4 は見えない入れ子 def まで数えて pin をやめ、末尾名の
+        検索も 2 候補で降りず、helper の中の効果行を落としていた（4 回目のレビュー）。
         """
         if scope is None:
             return None
         module: Optional[str] = None
+        bare_same_module = False
         func = node.func
         if isinstance(func, ast.Name):
             if func.id in scope.local_bindings:
                 return None
             if dotted is None:
                 module = scope.module  # 同じモジュールで定義された素の名前
+                bare_same_module = True
             elif "." in dotted:
                 module = self.index.resolve_import_module(scope.module, dotted.rpartition(".")[0])
         elif isinstance(func, ast.Attribute) and dotted is not None and "." in dotted:
@@ -1167,24 +1196,50 @@ class ValEngine:
                 module = self.index.resolve_import_module(scope.module, dotted.rpartition(".")[0])
         if module is None:
             return None
-        # **一意性は全定義で判定する**（D17 改訂 4）。`lookup_function(name, module)` は索引の
-        # setdefault で最初の定義 1 件しか返さないので、再定義・if / else の def・`@overload` の
-        # スタブを見落として最初の定義に決め打ちしていた（3 回目のレビュー、false-clean）。
-        same = [f for f in self.index.lookup_function(last) if f.module == module and f.classname is None]
-        top = [f for f in same if f.qualname == last]
-        if len(top) != 1 or len(same) != 1:
-            # 同名の定義が複数ある、または同じモジュールに同名の入れ子 def がある（入れ子ハンドラから
-            # 見えるのは外側関数の def かもしれない）。どれが効くかを決めない。
+        # **全定義を引く**（D17 改訂 4）。`lookup_function(name, module)` は索引の setdefault で最初の
+        # 定義 1 件しか返さないので、再定義・if / else の def・`@overload` のスタブを見落とす。
+        cands = self._visible_defs(module, last, node if bare_same_module else None)
+        if not cands:
             return None
+        ambiguous = len(cands) > 1
         mpath = self.index.resolve_module_path(module)
         tree = self.index.parse(mpath) if mpath is not None else None
-        if tree is None or last in self.index.module_scope(mpath).module_imports or _module_assignments(tree.body, last):
-            return None  # 同じモジュールで import や代入でも束縛される
+        if tree is None:
+            return None
+        if last in self.index.module_scope(mpath).module_imports or _module_assignments(tree.body, last):
+            ambiguous = True  # 同じモジュールで import や代入でも束縛される（その値は追わない）
         if isinstance(func, ast.Name) and dotted is not None and module != scope.module:
-            # import した名前を、読む側のモジュールが def で上書きしていないか
-            if any(f.module == scope.module and f.classname is None for f in self.index.lookup_function(last)):
-                return None
-        return top[0]
+            # import した名前を、読む側のモジュールの（呼び出し位置から見える）def が上書きしうる
+            reader = self._visible_defs(scope.module, last, node)
+            if reader:
+                cands = cands + reader
+                ambiguous = True
+        return cands, ambiguous
+
+    def _visible_defs(self, module: str, name: str, call: Optional[ast.AST]) -> list[FuncDef]:
+        """`module` で `name` を束縛する関数定義（メソッドは除く）のうち、呼び出し位置から見えるもの。
+
+        モジュール直下の def（`if` / `try` の中を含む）は常に見える。入れ子 def は、`call` が与えられ、
+        その def を囲む関数の本体が `call` の行を含むときだけ見える（Python のスコープ規則）。
+        別の関数の中の入れ子 def と、モジュール属性越し（`call=None`）の入れ子 def は見えない。
+        """
+        line = getattr(call, "lineno", None) if call is not None else None
+        out: list[FuncDef] = []
+        for f in self.index.lookup_function(name):
+            if f.module != module or f.classname is not None:
+                continue
+            if f.qualname == name:
+                out.append(f)
+                continue
+            parent = f.qualname[: -len(name) - 1]
+            if line is not None and any(
+                p.module == module
+                and p.qualname == parent
+                and p.node.lineno <= line <= (getattr(p.node, "end_lineno", None) or p.node.lineno)
+                for p in self.index.lookup_function(parent)
+            ):
+                out.append(f)
+        return out
 
     def _seed_params(self, callee: FuncDef, args, kwargs, receiver) -> dict[str, Value]:
         """呼び出し先の仮引数に実引数を割り当てる。"""
@@ -1372,6 +1427,15 @@ def _opaque_deep(v: Value, depth: int = 2) -> Value:
             s = Map(tuple((k, _opaque_deep(e, depth - 1)) for k, e in s.entries), tail)
         elif isinstance(s, Obj):
             s = Obj(s.classes, tuple((k, _opaque_deep(e, depth - 1)) for k, e in s.fields))
+    if isinstance(s, Str):
+        # **Str の part にも合流する**（D17 改訂 5）。`_make_str` は連結のたびに part を平らに展開する
+        # ので、外側の確度だけ落としても `BASE = HOST + VERSION` の part が resolved のまま URL 分割に
+        # 届き、再束縛される BASE から host = OP / resolved を切り出していた（4 回目のレビューの再現中に発見）。
+        # part は Str にならない（平らにしてある）ので深さは消費しない。
+        s = Str(
+            tuple(_opaque_deep(p, 0) for p in s.parts),
+            _opaque_deep(s.tail, 0) if s.tail is not None else None,
+        )
     return Value(v.prin, prov_merge(v.prov, opaque("unresolved")), s, v.attrs, v.roots)
 
 

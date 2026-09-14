@@ -233,13 +233,20 @@ def _sub_kind(kind: str, slots: dict[str, Value]) -> Optional[str]:
 
 
 def _is_policy_path(v: Optional[Value]) -> bool:
+    """書き込み先が方針ファイルに見えるか（`write_policy`）。
+
+    **警報の向きの判定なので、確度が resolved でない値に残った定数も読む**（`shape.const`）。
+    D17 改訂 5 で `Value.const` が resolved の値の定数しか返さなくなったが、再束縛されうる
+    方針ファイルのパスへの書き込みを見落とさないため。
+    """
     if v is None:
         return False
-    text = v.const
+    text = v.shape.const if isinstance(v.shape, Atom) else None
     if not isinstance(text, str):
         if isinstance(v.shape, (Str, Path)):
             parts = list(getattr(v.shape, "parts", ())) + list(getattr(v.shape, "segs", ()))
-            text = "".join(str(p.const) for p in parts if isinstance(p.const, str))
+            consts = [p.shape.const for p in parts if isinstance(p.shape, Atom)]
+            text = "".join(c for c in consts if isinstance(c, str))
         else:
             return False
     return any(pat in str(text) for pat in POLICY_FILE_PATTERNS)
