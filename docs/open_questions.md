@@ -75,5 +75,12 @@
   あと 2 プロジェクト足すか、§3 の格下げ分岐に入るかを C1 の標本抽出**前**に
   決める（`docs/decisions.md` D10）。
 - **§9 の未検証リスト 13 項目**: 1〜5・9〜13 は較正対の検証と重なる。
-  6（母集団規模 ≥ 300）と 7（先行研究の一次資料）と 8（Semgrep の機能境界）は
-  未着手。
+  6（母集団規模 ≥ 300）は通過済み（`docs/population.md`）。7（先行研究の一次資料）と
+  8（Semgrep の機能境界）は未着手。
+- **§2.6 の val 受け入れ fixture F1–F10（`fixtures/val/expected.json`）が未作成。**
+  F5–F8 は `FoundationAgents/OpenManus` の `app/tool/` が出所（コーパスに取得済み、
+  commit 3309bf4e）。期待行は仕様の表から先に pin し、採点器より先にコミットする。
+- **カタログ外のツールの形**（D17「直さない 3」）: llama-index
+  `FunctionTool.from_defaults` / `QueryEngineTool`、SuperAGI `_execute`、OpenManus
+  `BaseTool.execute`、OpenHands `ToolDefinition`、claude_agent_sdk `tool(...)` など。
+  広げるなら月 10 の指紋凍結前に、**F0a 標本の外の根拠**（公式文書）で行う。

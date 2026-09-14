@@ -332,3 +332,13 @@ F5/F6/F7 の出所」（FoundationAgents 版 `app/tool/python_execute.py` ほか
 選定根拠が偽なので、根拠どおりの repo に置き換える。**置き換えは結果を見て選び
 直したのではなく、名前の取り違えの訂正である**が、run 1 には誤った repo が入って
 いることを run 1 の表の注記に残す。
+
+**訂正後の `FoundationAgents/OpenManus`（3309bf4e）もユニット 0 件である。** ツールは
+`class PythonExecute(BaseTool)` の `async def execute(...)` 形で、Def 2 の R2 カタログ
+（`@mcp.tool`、低レベル MCP 2 形、`@tool`、`BaseTool._run`、CrewAI `_run`、
+`@function_tool`、`@kernel_function`、agno、gptme `ToolSpec`）に `execute` は無い。
+§2.6 の F5–F8 は **val エンジンの受け入れ fixture**（関数本体の値の解析）であって、
+OpenManus を R2 の入口として認識することを要求していない。**上の「直さない 3」に
+従いカタログは広げず、アプリ母集団のカタログ外の形の取りこぼしとして数える。**
+（F1–F10 の fixture `fixtures/val/expected.json` 自体はまだ作っていない。
+`docs/open_questions.md` の作業一覧に置いた。）
