@@ -774,6 +774,66 @@ def test_nested_function_outer_local_shadows_module_constant(tmp_path):
         assert v is None or not (v.prin == Prin.OP and v.prov.kind == "resolved")
 
 
+# ---------------------------------------------------------------------------
+# 10. 末尾名の木全体検索が、同名の関数が別ファイルに増えただけで解決を失う（run 3 で発見）
+# ---------------------------------------------------------------------------
+
+SAME_NAME_TWO_MODULES = {
+    "api/spotify_api.py": """\
+import requests
+
+def get_followed_artists(token, max_artists=50):
+    return requests.get("https://api.example.com/me/following", headers={"Authorization": token}).json()
+
+def _token():
+    return "t"
+""",
+    "bot/chatbot_agent.py": FASTMCP_HEAD + """\
+import spotify_api as sp
+
+def _helper(q):
+    import requests
+    return requests.get("https://search.example/?q=" + q).text
+
+@mcp.tool()
+def followed(limit: int) -> str:
+    return str(sp.get_followed_artists("t", max_artists=limit))
+
+@mcp.tool()
+def search(q: str) -> str:
+    return _helper(q)
+""",
+    # 同じ名前の関数を持つ別のファイル（野外では BOM を直して parse できるようになったファイル）
+    "bot/mcp_server.py": """\
+def get_followed_artists():
+    return "local"
+
+def _helper(q):
+    return q
+""",
+}
+
+
+def test_same_name_two_modules_precondition(tmp_path):
+    res = _run(tmp_path, SAME_NAME_TWO_MODULES)
+    _unit(res, "followed")
+    _unit(res, "search")
+
+
+@DEFECT
+def test_module_alias_call_resolves_in_imported_module(tmp_path):
+    """`import spotify_api as sp; sp.get_followed_artists(...)` は import 先のモジュールの
+    関数である。末尾名だけで木全体を引くと、別ファイルの同名関数と衝突して解決を失い、
+    NET 効果が消える（run 3 の w-jitz10__spotify_mcp で 6 ユニット、false-clean）。"""
+    assert _effects(_unit(_run(tmp_path, SAME_NAME_TWO_MODULES), "followed"), "NET")
+
+
+@DEFECT
+def test_bare_call_prefers_same_module_definition(tmp_path):
+    """局所束縛も import も無い素の名前 `_helper(q)` は、同じモジュールの定義を指す。"""
+    assert _effects(_unit(_run(tmp_path, SAME_NAME_TWO_MODULES), "search"), "NET")
+
+
 def test_catalog_forms_precondition(tmp_path):
     _unit(_run(tmp_path, {"a/c.py": AUTOGPT}, population="app"), "web_search_legacy")
     _unit(_run(tmp_path, {"b/t.py": TOOLS_LIST}, population="tool_package"), "web_lookup")
