@@ -690,6 +690,96 @@ def test_external_base_does_not_run_intree_init_with_same_name(tmp_path):
     assert not _effects(u, "SPAWN")
 
 
+MODULE_WRITE_VARIANTS = {
+    "srv/server.py": FASTMCP_HEAD + """\
+import subprocess
+import requests
+from srv import cfg
+
+COMMAND = "echo ready"
+SETTINGS = {"cmd": "echo ready"}
+
+@mcp.tool()
+def nested_shadow(cmd: str) -> str:
+    COMMAND = cmd
+    def inner():
+        return subprocess.run(COMMAND, shell=True, capture_output=True).stdout
+    return inner()
+
+@mcp.tool()
+def set_setting(cmd: str) -> str:
+    SETTINGS["cmd"] = cmd
+    return "ok"
+
+@mcp.tool()
+def run_setting() -> str:
+    return subprocess.run(SETTINGS["cmd"], shell=True, capture_output=True).stdout
+
+@mcp.tool()
+def set_base(url: str) -> str:
+    cfg.BASE_URL = url
+    return "ok"
+
+@mcp.tool()
+def fetch_base(path: str) -> str:
+    return requests.get(cfg.BASE_URL + "/" + path).text
+""",
+    "srv/cfg.py": """\
+BASE_URL = "https://api.example.com"
+""",
+    "srv/env_setter.py": FASTMCP_HEAD + """\
+import os
+
+@mcp.tool()
+def set_env(cmd: str) -> str:
+    os.environ["TOOL_CMD"] = cmd
+    return "ok"
+""",
+    "srv/env_reader.py": FASTMCP_HEAD + """\
+import os
+import subprocess
+
+@mcp.tool()
+def run_env() -> str:
+    return subprocess.run(os.environ.get("TOOL_CMD", "true"), shell=True, capture_output=True).stdout
+""",
+}
+
+
+def test_module_write_variants_precondition(tmp_path):
+    res = _run(tmp_path, MODULE_WRITE_VARIANTS)
+    for name in ("run_setting", "run_env"):
+        assert _effects(_unit(res, name), "SPAWN")
+    assert _effects(_unit(res, "fetch_base"), "NET")
+    _unit(res, "nested_shadow")
+
+
+@pytest.mark.parametrize(
+    "tool,kind,slot",
+    [
+        pytest.param("run_setting", "SPAWN", "shell_string", marks=DEFECT, id="container_written_by_other_tool"),
+        # 現状 `cfg.BASE_URL` 自体を解決しない（opaque のまま）ので欠陥ではなく**番人**。
+        # モジュール属性を読むようにしたとき、他モジュールからの書き込みを見落とさないため。
+        pytest.param("fetch_base", "NET", "url.host", id="module_attr_written_from_other_module"),
+        pytest.param("run_env", "SPAWN", "shell_string", marks=DEFECT, id="environ_written_in_other_module"),
+    ],
+)
+def test_written_module_state_is_not_constant(tmp_path, tool, kind, slot):
+    """木内のどこかで書き換えられるモジュール水準の状態（コンテナ・モジュール属性・環境変数）を
+    読み手のユニットで定数（OP / resolved）にしない（レビューの検証者が見つけた変形）。"""
+    v = _slot(_unit(_run(tmp_path, MODULE_WRITE_VARIANTS), tool), kind, slot)
+    assert not (v.prin == Prin.OP and v.prov.kind == "resolved")
+
+
+@DEFECT
+def test_nested_function_outer_local_shadows_module_constant(tmp_path):
+    """入れ子関数が読む `COMMAND` は外側関数の局所変数（MODEL）であり、同名のモジュール定数ではない。"""
+    u = _unit(_run(tmp_path, MODULE_WRITE_VARIANTS), "nested_shadow")
+    for e in _effects(u, "SPAWN"):
+        v = e.control_slots().get("shell_string")
+        assert v is None or not (v.prin == Prin.OP and v.prov.kind == "resolved")
+
+
 def test_catalog_forms_precondition(tmp_path):
     _unit(_run(tmp_path, {"a/c.py": AUTOGPT}, population="app"), "web_search_legacy")
     _unit(_run(tmp_path, {"b/t.py": TOOLS_LIST}, population="tool_package"), "web_lookup")
