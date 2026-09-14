@@ -310,6 +310,44 @@ AuthGap を実際より良く見せる。**
    解析器の主張が正しいかを確かめる。**機械による事前点検の分類は
    `evidence/f0a/check_results.json` にあるが、それは C2 のラベルではない。**
 
+### 3.2 解析器の修正を自分で確かめる（D14 / D16 / D17）
+
+野外 run 1 の後で解析器を直したので、**直す前と後の run を両方持っている。**
+論文に数字を書く前に、次の 4 つを自分の手で確かめる。
+
+1. **欠陥が本当にあり、本当に直ったか。** `tests/test_f0a_defects.py` は欠陥ごとに
+   最小の fixture を持つ。直す前の commit で走らせると失敗し（`git checkout 186d406`
+   相当の worktree で `pytest tests/test_f0a_defects.py`）、今の commit では通る。
+   各テストの docstring に出所（`OPQ[5]` などの標本 index）がある。
+   **前提テスト**（`*_precondition`）は fixture が解析器の当該経路に届いていることを
+   確かめるもので、直す前でも通る。
+2. **直したことで別の経路が消えていないか。**
+   ```bash
+   .venv/bin/python scripts/diff_effects.py --before 186d406 --after 0662b39 \
+       corpus/A9__vuln corpus/A9__fixed corpus/A18__vuln corpus/A18__fixed
+   ```
+   「消えた」が 0 件であること。「slot 変化」の各行は原ソースを開いて、変化の向きが
+   正しいか（resolved → opaque は保守側、MODEL → OP は要注意）を見る。
+   **このスクリプトは、受け入れテストが通ったまま真の経路が消えていたのを実際に
+   見つけた**（`docs/decisions.md` D17 の改訂）。
+3. **差を処理系と解析器に分けて読む。**
+   ```bash
+   .venv/bin/python scripts/compare_f0a_runs.py      # → docs/f0a_runs.md
+   ```
+   `run1`（3.10、直す前）→ `run1py312`（3.12、同じ解析器）→ `run2`（3.12、直した後）。
+   `Δ 処理系` がほぼ 0 で `Δ 解析器` が大きいなら、関門の変化は解析器の修正による。
+   **run 2 だけを書くと「関門を通すために直した」と読まれうるので、表ごと載せる。**
+   各 run の `run_meta` に解析器の commit、Python の版、標本の sha256（run2 以降）がある。
+4. **直さなかったものの扱い**（D17 の「直さない」）。
+   * VAL 層の 13/20（`split` などの変換を形状と数える）は §6 F0a の定義どおり。
+     「構文的形状の保有 ≠ 実際の検証の保有」として**妥当性の注記**に書く。
+   * カタログに無いツールの形（llama-index `FunctionTool.from_defaults` など）は
+     取りこぼしの件数として報告する（`docs/f0a_checks.md` のユニット 0 件の木の表）。
+   * 低レベル MCP と annotation の join は決定待ち（`docs/open_questions.md` O5）。
+   * アプリ母集団の `OpenManus/OpenManus` は取り違え（D17）。run1 / run1py312 / run2 の
+     アプリ母集団にはその別 repo が入っているので、アプリの数字は訂正後の標本で
+     測った run を使い、訂正前の数字には注記を付ける。
+
 ---
 
 ## 4. 決定論（§5.2）
