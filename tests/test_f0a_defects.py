@@ -1274,6 +1274,100 @@ def test_pinned_bare_name_respects_enclosing_function_definition(tmp_path):
     assert not (v.prin == Prin.OP and v.prov.kind == "resolved")
 
 
+MODULE_OBJECTS_WITH_EXEC = FASTMCP_HEAD + """\
+import sqlite3
+import httpx
+
+client = httpx.Client()
+conn = sqlite3.connect("app.db")
+
+@mcp.tool()
+def fetch(url: str) -> str:
+    return client.get(url).text
+
+@mcp.tool()
+def query(sql: str) -> str:
+    return str(conn.execute(sql).fetchall())
+
+@mcp.tool()
+def run_python(code: str) -> str:
+    exec(code)
+    return "ok"
+
+def show_config():
+    return str(globals().get("VERSION"))
+"""
+
+
+def test_module_objects_with_exec_precondition(tmp_path):
+    res = _run(tmp_path, {"s.py": MODULE_OBJECTS_WITH_EXEC})
+    for name in ("fetch", "query", "run_python"):
+        _unit(res, name)
+
+
+@pytest.mark.parametrize("tool,kind", [pytest.param("fetch", "NET", marks=DEFECT), pytest.param("query", "DB", marks=DEFECT)])
+def test_dynamic_namespace_module_keeps_object_effect_rows(tmp_path, tool, kind):
+    """`exec` / `globals()` を含むモジュールでも、モジュール水準のオブジェクトを受け手にする効果行を
+    落とさない。改訂 3 の `"*"`（どの名前も再束縛されうる）が名前を読まない側に倒したので、受け手の型が
+    消えて DB / NET の行ごと消えていた（3 回目のレビュー、2 観点が独立に指摘）。"""
+    assert _effects(_unit(_run(tmp_path, {"s.py": MODULE_OBJECTS_WITH_EXEC}), tool), kind)
+
+
+@DEFECT
+def test_deep_expression_read_by_tool_does_not_crash_tree(tmp_path):
+    """tool が 550 項の連結式を読んでも、val エンジンの `_eval` の再帰で RecursionError を出して
+    木 1 本の出力（無関係な tool の行を含む）を全部落とさない。"""
+    deep = "BIG = " + " + ".join(['"a"'] * 550) + "\n"
+    server = FASTMCP_HEAD + """\
+import subprocess
+from generated_strings import BIG
+
+@mcp.tool()
+def run_big(cmd: str) -> str:
+    return subprocess.run(BIG + cmd, shell=True).stdout
+
+@mcp.tool()
+def other(cmd: str) -> str:
+    return subprocess.run(cmd, shell=True).stdout
+"""
+    res = _run(tmp_path, {"server.py": server, "generated_strings.py": deep})
+    assert _effects(_unit(res, "other"), "SPAWN")
+    assert _effects(_unit(res, "run_big"), "SPAWN")
+
+
+FORMAT_CONSTANT_HOST = FASTMCP_HEAD + """\
+import requests
+
+@mcp.tool()
+def fmt(owner: str, repo: str):
+    return requests.get("https://api.github.com/repos/{}/{}".format(owner, repo))
+
+@mcp.tool()
+def fmtkw(city: str):
+    return requests.get("https://api.weather.com/v1/{city}".format(city=city))
+"""
+
+
+def test_format_constant_host_precondition(tmp_path):
+    res = _run(tmp_path, {"s.py": FORMAT_CONSTANT_HOST})
+    assert _effects(_unit(res, "fmt"), "NET")
+    assert _effects(_unit(res, "fmtkw"), "NET")
+
+
+@pytest.mark.parametrize(
+    "tool,host",
+    [pytest.param("fmt", "api.github.com", marks=DEFECT), pytest.param("fmtkw", "api.weather.com", marks=DEFECT)],
+)
+def test_format_template_with_literal_authority_splits_host(tmp_path, tool, host):
+    """権威部の終端が最初のプレースホルダより前のリテラルにある `.format` テンプレートは、f 文字列と
+    同じく url.host = OP の定数に分割し、MODEL は url.path に残す（§2.6 の分割規則。改訂 3 が形を
+    丸ごと捨てたので host が MODEL になっていた。3 回目のレビュー、精度の損失）。"""
+    u = _unit(_run(tmp_path, {"s.py": FORMAT_CONSTANT_HOST}), tool)
+    h = _slot(u, "NET", "url.host")
+    assert h.prin == Prin.OP and h.const == host
+    assert _slot(u, "NET", "url.path").prin == Prin.MODEL
+
+
 def test_catalog_forms_precondition(tmp_path):
     _unit(_run(tmp_path, {"a/c.py": AUTOGPT}, population="app"), "web_search_legacy")
     _unit(_run(tmp_path, {"b/t.py": TOOLS_LIST}, population="tool_package"), "web_lookup")
