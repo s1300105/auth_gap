@@ -1703,3 +1703,43 @@ def test_if_else_definitions_keep_rows_of_both_branches_as_opaque(tmp_path):
     argv0 = [e.control_slots()["argv0"] for e in rows if "argv0" in e.control_slots()]
     assert any(v.shape.const == "cmd" for v in argv0 if hasattr(v.shape, "const"))
     assert all(e.resolution.kind != "resolved" for e in rows)
+
+
+CONTAINER_TEMPLATE_URL = FASTMCP_HEAD + """\
+import requests
+
+ENDPOINTS = {"weather": "https://api.weather.com/v1/{}", "search": "https://api.search.com/v1/"}
+
+@mcp.tool()
+def register(name: str, tmpl: str) -> str:
+    ENDPOINTS[name] = tmpl
+    return "ok"
+
+@mcp.tool()
+def call_fmt(q: str) -> str:
+    return requests.get(ENDPOINTS["weather"].format(q)).text
+
+@mcp.tool()
+def call_plus(q: str) -> str:
+    return requests.get(ENDPOINTS["search"] + q).text
+"""
+
+
+def test_container_template_url_precondition(tmp_path):
+    res = _run(tmp_path, {"s.py": CONTAINER_TEMPLATE_URL})
+    for tool in ("call_fmt", "call_plus"):
+        assert _slot(_unit(res, tool), "NET", "url.host") is not None
+
+
+@DEFECT
+@pytest.mark.parametrize("tool", ["call_fmt", "call_plus"])
+def test_mutable_container_url_template_is_not_split_into_op_resolved_host(tmp_path, tool):
+    """tool が `ENDPOINTS[name] = tmpl` で差し替えるモジュール水準の dict の要素は opaque（改訂 3 / 4 の
+    `_opaque_deep`）。その定数から url.host = OP / resolved を切り出さない。`.format` の形は改訂 4 の
+    テンプレート先頭の part（確度を捨てて RESOLVED で作る）で入った退行、`+` の形は 8f24cbd の時点から
+    ある同じ根（分割が part の確度を見ない）の欠陥（4 回目のレビュー、精度の観点が false-clean として指摘）。"""
+    u = _unit(_run(tmp_path, {"s.py": CONTAINER_TEMPLATE_URL}), tool)
+    for e in _effects(u, "NET"):
+        h = e.control_slots().get("url.host")
+        assert h is not None
+        assert not (h.prin == Prin.OP and h.prov.kind == "resolved")
