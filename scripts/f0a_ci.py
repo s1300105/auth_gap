@@ -47,6 +47,7 @@ DEFAULT_RUNS = (
     ("run1py312", "evidence/f0a_run1py312"),
     ("run2", "evidence/f0a_run2"),
     ("run2app", "evidence/f0a_run2app"),
+    ("run3", "evidence/f0a_run3"),
 )
 
 #: `(率の名前, 向き, 閾値)`（`scripts/f0a.py` の §10 関門と同じ値）。

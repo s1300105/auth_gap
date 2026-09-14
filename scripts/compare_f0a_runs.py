@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 """F0a の複数 run を並べ、差を「処理系の変更」と「解析器の修正」に分解する（D14 / D16）。
 
-既定の 3 run（すべて同じ標本 `docs/corpus_sample.json`）:
+既定の 3 run（標本は `docs/corpus_sample.json`。run3 はアプリ母集団の取り違えを
+訂正した後の標本だが、訂正した 1 木はどちらの repo でもユニット 0 件なので率は変わらない）:
 
 * ``run1``       — 解析器 9c2bb11 相当 / Python 3.10（直す前）
 * ``run1py312``  — 解析器は run1 と同一 / Python 3.12（処理系だけ替えた）
-* ``run2``       — 解析器を D17 で修正 / Python 3.12
+* ``run3``       — 解析器を D17 と D17 改訂 2 で修正（854f71b）/ Python 3.12
 
-``run1py312 - run1`` が処理系の効果、``run2 - run1py312`` が解析器の修正の効果である。
+``run1py312 - run1`` が処理系の効果、``run3 - run1py312`` が解析器の修正の効果である。
 **どちらか一方の run だけを報告しない**（D14）。
+
+``run2``（0662b39、D17 の最初の修正）は**中間状態として残す**。敵対的レビューで
+false-clean 5 系統が見つかった版なので、関門の数字には使わない（D17 改訂 2）。
+並べたいときは引数で渡す: ``python scripts/compare_f0a_runs.py run2=evidence/f0a_run2/f0a.json run3=evidence/f0a_run3/f0a.json``
 
 出力: `docs/f0a_runs.md`
 
@@ -30,7 +35,7 @@ OUT = os.path.join(ROOT, "docs", "f0a_runs.md")
 DEFAULT_RUNS = (
     ("run1", "evidence/f0a/f0a.json"),
     ("run1py312", "evidence/f0a_run1py312/f0a.json"),
-    ("run2", "evidence/f0a_run2/f0a.json"),
+    ("run3", "evidence/f0a_run3/f0a.json"),
 )
 
 #: §10 の関門（`scripts/f0a.py` と同じ値。**動かさない**）。
