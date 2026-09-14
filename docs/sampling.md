@@ -1,11 +1,11 @@
 # 標本設計（§6 / §7.6 D14）
 
-抽出日時 2026-09-14T13:19:44+09:00　**seed = 20260909（固定。動かさない）**
+抽出日時 2026-09-14T13:38:14+09:00　**seed = 20260909（固定。動かさない）**
 
 | 母集団 | フレーム件数 | 目標 | 抽出（割り増し込み） |
 |---|---|---|---|
 | MCP サーバ | 2299 | 60 | 90 |
-| ツールパッケージ | 0 | 30 | 0 |
+| ツールパッケージ | 2684 | 30 | 45 |
 | アプリ（T3-app） | 8 | 8 | 8 |
 
 割り増し率 1.5。**取得に失敗したら抽出順で次を繰り上げる。**
@@ -131,6 +131,51 @@
 
 <details><summary>ツールパッケージ</summary>
 
+- `gabrielmmbarros/langchain-academic-data-agent`
+- `jomoll/onco-agent`
+- `celiamarrakchi/wheat_ai_project`
+- `x/agent-framework-wizard-battle`
+- `gitpaperone/data-analysis`
+- `harishghasolia07/vwo-financial-analyzer`
+- `jitz10/spotify_mcp`
+- `swapnild03/contextclerk`
+- `bmwise14/documentation-jam`
+- `douglara/woofed-crm`
+- `masumi-network/crewai-masumi-reference-implementations`
+- `flaviosenne/jornada-dados-pipeline-bitcoin`
+- `sergei-baranov/curriculumbuilder`
+- `rizkypsr/ercai`
+- `codinglearner24/journalist-research`
+- `saidiibrahim/langgraph-cookbook`
+- `defulat-coder/agno-cookbook-cn`
+- `gabrielefuoco/spark-data-agent`
+- `nuguardai/nuguard`
+- `rivkysh/rag-with-lamaindex`
+- `mdwoicke/unstract`
+- `koreabhi288/flipkart_product_recommandor_bot`
+- `prembharne/ai-smart-contract-sentinel`
+- `archsec-emman/financial-orchestrator`
+- `shailaverma05/majorproject`
+- `daviburg/narrative-state-engine`
+- `mcmasterai/second-brain`
+- `ravik04/finance-assistant`
+- `quratulain-bilal/open_ai_sdk`
+- `joseguilhermev/hackathon-idp`
+- `tonykipkemboi/crewai-streamlit-demo`
+- `codemie-ai/codemie`
+- `danishahmad111/buisness_analysis_competitior`
+- `attestifyagent/attestify-crewai`
+- `alonsoir/python-samples-2025`
+- `chandru-007a/cognexa`
+- `ragformation/ragformation`
+- `gair-nlp/openresearcher`
+- `jaskkaransingh/gap2growth`
+- `shaikimrannazeer/rag_application_pdf`
+- `mruser95/agentstemplate`
+- `vasu2604/medagentica`
+- `uffanmehmoodkhan/nyx-agent`
+- `emarhnuel/crypto_ai_agent`
+- `kihalaya/kira.ai`
 
 </details>
 

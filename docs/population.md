@@ -39,3 +39,30 @@ GitHub code search は 1 クエリあたり最大 1000 件しか返さないの�
 関門は「≥ 300」なので下限で判定できるが、**母集団規模そのものを
 論文に数として書くときはこの上限を併記する。**
 
+## ツールパッケージ母集団（**別フレーム**。§10 の D 規則は母集団別に適用する）
+
+再現: `python scripts/fetch_frame.py --method toolpkg`（MCP 側の採用結果と取得日は保持する）
+
+| 手段 | 件数 | 取得日時 |
+|---|---|---|
+| GitHub code search (tool packages) | 2722 | 2026-09-14T13:31:13+09:00 |
+
+クエリ（Def 2 の R2 カタログの登録形に対応）:
+
+- `"from langchain_core.tools import BaseTool" language:Python`
+- `"from crewai.tools import" language:Python`
+- `"from agno.tools" language:Python`
+- `"@function_tool" language:Python`
+- `"from llama_index.core.tools" language:Python`
+
+**MCP フレームとの重複 38 件はツールパッケージ側から除いた**（`sample_corpus.py` が
+`tool_all - mcp_all` を取る）。1 つの repo を 2 つの母集団に数えないため。
+
+**このフレームは「ツールパッケージ」だけではない。** code search は import 文で
+拾うので、ツールを定義するパッケージと、ツールを使うアプリ / ノートブック /
+チュートリアルが混ざる。§6 が想定する「LangChain / CrewAI / agno / llama-index /
+openai-agents のツールパッケージ」より広い。**混入率は F0a のユニット 0 件の木の
+率（フレームの雑音）として測る**（`docs/f0a.md`）。フレームを事後に絞り込むと
+事後選択になるので、抽出前の定義のまま使う。件数は MCP 側と同じく**下限**
+（1 クエリ最大 1000 件）。
+
