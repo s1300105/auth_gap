@@ -335,7 +335,11 @@ def main() -> int:
     ap.add_argument("--population", default="mcp_server")
     ap.add_argument("--with-traced", action="store_true",
                     help="trig を計算する。**A5 の run では使わない**（§5.1）")
-    ap.add_argument("--evidence", default=os.path.join(ROOT, "evidence", "f0a"))
+    ap.add_argument("--evidence", default=None,
+                    help="既定は evidence/f0a（--label があれば evidence/f0a_<label>）")
+    ap.add_argument("--label", default="",
+                    help="run の名前（例: run2）。**前の run の出力を上書きしない**ため、"
+                         "docs/f0a_<label>.md と evidence/f0a_<label>/ に書く（D14）")
     ap.add_argument("--limit", type=int, default=0,
                     help="全母集団に同じ上限を掛ける（煙試験用）。指定すると --limits を無視する")
     ap.add_argument("--limits", default="mcp_server=60,tool_package=30,app=8",
@@ -344,6 +348,11 @@ def main() -> int:
     ap.add_argument("--tree-budget", type=float, default=180.0,
                     help="1 本の木の壁時計上限（秒）。超えた分は TRUNCATED として記録する")
     args = ap.parse_args()
+    suffix = f"_{args.label}" if args.label else ""
+    if args.evidence is None:
+        args.evidence = os.path.join(ROOT, "evidence", f"f0a{suffix}")
+    md_a = os.path.join(ROOT, "docs", f"f0a{suffix}.md")
+    md_c = os.path.join(ROOT, "docs", f"f0c{suffix}.md")
 
     jobs: list[tuple[str, str]] = []
     if args.trees:
@@ -412,6 +421,7 @@ def main() -> int:
             # 直す前の run と後の run を commit で区別して両方報告する。
             "analyzer_commit": _git_head(ROOT),
             "analyzer_dirty": _git_dirty(ROOT),
+            "label": args.label or None,
             "sample": os.path.relpath(args.sample, ROOT) if not args.trees else None,
             "limits": {p: (args.limit or limits.get(p, 0)) for p in sorted(by_pop)},
             "tree_budget_s": args.tree_budget,
@@ -430,8 +440,8 @@ def main() -> int:
     with open(os.path.join(args.evidence, "units.jsonl"), "w", encoding="utf-8") as fh:
         for r in unit_rows:
             fh.write(json.dumps(r, ensure_ascii=False, sort_keys=True) + "\n")
-    _write_md(by_pop, args.with_traced)
-    print(f"\nwrote {dest} (+ trees.jsonl / units.jsonl) / {F0A_MD} / {F0C_MD}")
+    _write_md(by_pop, args.with_traced, md_a, md_c)
+    print(f"\nwrote {dest} (+ trees.jsonl / units.jsonl) / {md_a} / {md_c}")
     _print_gates(by_pop)
     return 0
 
@@ -568,7 +578,9 @@ def _print_gates(by_pop: dict[str, PopStats]) -> None:
         print(f"  r_D {_fmt(s.r_d)}（粗い分母 {_fmt(s.r_d_crude)}） → {s.branch}")
 
 
-def _write_md(by_pop: dict[str, PopStats], with_trig: bool) -> None:
+def _write_md(
+    by_pop: dict[str, PopStats], with_trig: bool, f0a_md: str = F0A_MD, f0c_md: str = F0C_MD
+) -> None:
     lines = [
         "# F0a（真の床）",
         "",
@@ -657,7 +669,7 @@ def _write_md(by_pop: dict[str, PopStats], with_trig: bool) -> None:
                 f"{dict(sorted(s.trig_modes.items()))}",
                 "",
             ]
-    with open(F0A_MD, "w", encoding="utf-8") as fh:
+    with open(f0a_md, "w", encoding="utf-8") as fh:
         fh.write("\n".join(lines) + "\n")
 
     # -- F0c-1 -----------------------------------------------------------
@@ -693,7 +705,7 @@ def _write_md(by_pop: dict[str, PopStats], with_trig: bool) -> None:
         "§1 が F0c に負わせている callee 側反転の正当化は (i)+(iii) と §1.5 で行う。",
         "",
     ]
-    with open(F0C_MD, "w", encoding="utf-8") as fh:
+    with open(f0c_md, "w", encoding="utf-8") as fh:
         fh.write("\n".join(f0c) + "\n")
 
 
