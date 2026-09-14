@@ -421,6 +421,9 @@ def main() -> int:
             # 直す前の run と後の run を commit で区別して両方報告する。
             "analyzer_commit": _git_head(ROOT),
             "analyzer_dirty": _git_dirty(ROOT),
+            # **処理系の版も記録する。** 3.10 の `ast` は 3.12 構文（PEP 695 / 701）を
+            # parse できないので、同じ commit でも処理系で parse 失敗件数が変わる（D16）。
+            "python": sys.version.split()[0],
             "label": args.label or None,
             "sample": os.path.relpath(args.sample, ROOT) if not args.trees else None,
             "limits": {p: (args.limit or limits.get(p, 0)) for p in sorted(by_pop)},

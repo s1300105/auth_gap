@@ -236,3 +236,31 @@ config atom の源にモジュール定数を数えている（§2.3）ので、
   `opaque > remote > resolved` で合流する。**1 経路でも opaque ならそのサイトは
   opaque**（resolved を優先すると無言の false-clean になる）。
 - **この決定は結果を見る前に固定したので、結果によって行 / サイトを選び直さない。**
+
+## D16. 野外 run 2 以降は解析器を Python 3.12 で走らせる（run 1 の 3.10 は残す）
+
+- **状況。** run 1 の parse 失敗 91 ファイルのうち 67 件は PEP 695（`type X = ...`、
+  `def f[T]`）と PEP 701（f-string 内の同種引用符）で、**解析器を 3.10 で走らせて
+  いるから読めない**だけだった（`uv python find 3.12` の 3.12.13 で再 parse すると
+  全件 parse できる。`evidence/f0a/parse_failures.json` の `parses_in_newer_python`）。
+  野外の MCP サーバは新しい Python で書かれていることが多く、この損失は偏りを持つ
+  （新しいコードほど落ちる）。
+- **仕様との関係。** §5.3 は「**Python 3.10+**」であり、3.12 で走らせるのは仕様内。
+  前身の実測が 3.10.12 だったのは前身の事情。
+- **3.12 に替えても較正結果が変わらないことを確かめた**（2026-09-14、`authgap/` は
+  commit `9c2bb11` と同一）:
+
+  | 確認 | 3.10.12 | 3.12.13 |
+  |---|---|---|
+  | B3a 支配 mutant | 8/8 | 8/8 |
+  | B3b 付録 G | 15/15 | 15/15 |
+  | 実装変異の生存 | 1/15 | 1/15（同じ `no_finally_copies`） |
+  | pytest | 70 passed | 70 passed（`-W error::DeprecationWarning`） |
+  | 両側条件 | 7/7、厳密 0/7、INJECT 1/7 | 同じ |
+  | `scan corpus/A1__fixed` の 4 出力 | — | volatile を除いてバイト同一 |
+
+- **決定。** run 2 以降は `.venv312`（`uv venv .venv312 --python 3.12`）で走らせ、
+  `run_meta.python` に版を記録する。**run 1（3.10）はそのまま残し、run 2 と並べる。**
+  run 1 と run 2 の差には「解析器の修正」と「処理系の変更」が混ざるので、
+  **処理系だけを替えた run（解析器は run 1 と同一）も取って差を分解する。**
+- **3.12 でも読めない 18 件**（雛形 5、壊れたファイル 13）は parse 失敗として残る。
