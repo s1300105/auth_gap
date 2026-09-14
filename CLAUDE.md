@@ -49,9 +49,22 @@
   `strong-path` が `weak` に落ちる。
 - **同一キーの衝突で MODEL 行を落とさない**（両側比較で変化が消える）。
 - **形状語彙の語が本体に出るだけでは検証子にしない。** `split` や `Path()` は
-  値の変換であって検証ではない。
+  値の変換であって検証ではない。**これは Def 5 のゲート等級の話。** §6 F0a の
+  validator 形状は**構文的**で語の出現で数える（仕様どおり。混同して点検基準を
+  作ったことがある — D17）。
 - **コーパスの pin は SHA 一致を検証する。** 浅い fetch は黙って default branch に
-  落ちる。
+  落ちる。**中断した worktree は HEAD が一致したまま空**なので、checkout の完了
+  （sparse パターン設定済み・作業木が index と一致）も確かめる。
+- **ソースは `ast.parse` にバイト列で渡す。** 文字列で読むと BOM 付きファイルが
+  parse 失敗として黙って消える。
+- **末尾名だけの解決を「やめる」と真の経路が消える。** 受け手型で裏付けられない
+  解決は、降りたうえで効果の確度に `opaque(unresolved)` を合流する（D17 の改訂）。
+- **列の分岐合流で要素を捨てない。** 形だけ残すと argv0 のリテラルが列全体の
+  主体（MODEL）になる。共通の先頭は要素ごとに join する。
+- **解析器を直したら `scripts/diff_effects.py` で較正対の効果行を突き合わせる。**
+  受け入れテストが「両側 7/7」のまま通っても、経路の効果行は黙って消えうる。
+- **`.gitignore` で親ディレクトリごと除外すると `!` の例外が効かない。**
+  `evidence/*` と書く。
 
 ## 手順
 
@@ -69,6 +82,14 @@ uv pip install --python .venv/bin/python -r requirements.txt
 .venv/bin/python scripts/ablation.py <木> ...                        # §3 の交差行
 .venv/bin/python -m authgap probe <木>                               # F0a
 .venv/bin/python -m authgap scan <木> --determinism 3                # 決定論
+
+# 解析器を直したら（コミット前に）
+.venv/bin/python scripts/diff_effects.py --before <直す前の commit> corpus/A9__vuln corpus/A9__fixed corpus/A18__vuln corpus/A18__fixed
+
+# 野外 F0a（D14 / D16）。run 2 以降は Python 3.12
+uv venv .venv312 --python 3.12 && uv pip install --python .venv312/bin/python -r requirements.txt
+.venv312/bin/python -u scripts/f0a.py --sample docs/corpus_sample.json --label run2
+.venv/bin/python scripts/compare_f0a_runs.py                          # run の差を処理系 / 解析器に分解
 ```
 
 **手検証の入口は `docs/verification_guide.md`。**

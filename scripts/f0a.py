@@ -426,6 +426,9 @@ def main() -> int:
             "python": sys.version.split()[0],
             "label": args.label or None,
             "sample": os.path.relpath(args.sample, ROOT) if not args.trees else None,
+            # **標本ファイルの中身で run を結び付ける。** パスだけだと、後で標本を
+            # 引き直したときにどの内容で測ったか分からなくなる。
+            "sample_sha256": _sha256(args.sample) if not args.trees else None,
             "limits": {p: (args.limit or limits.get(p, 0)) for p in sorted(by_pop)},
             "tree_budget_s": args.tree_budget,
         },
@@ -480,6 +483,13 @@ def _git_head(path: str) -> str | None:
 
     p = subprocess.run(["git", "rev-parse", "HEAD"], cwd=path, capture_output=True, text=True)
     return p.stdout.strip() if p.returncode == 0 else None
+
+
+def _sha256(path: str) -> str:
+    import hashlib
+
+    with open(path, "rb") as fh:
+        return hashlib.sha256(fh.read()).hexdigest()
 
 
 def _git_dirty(path: str) -> bool | None:

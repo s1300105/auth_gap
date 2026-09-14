@@ -56,7 +56,13 @@ APP_FRAME: tuple[tuple[str, str], ...] = (
     ("gptme/gptme", "§4 のケーススタディ 3 件のうちの 1 つ。in-tree の ToolSpec レジストリ"),
     ("TransformerOptimus/SuperAGI", "同上。RESTRICTED モードの承認リストを出荷している"),
     ("OpenHands/agent-sdk", "同上。ConfirmationPolicy.should_confirm を持つ"),
-    ("OpenManus/OpenManus", "§2.6 の負例 fixture F5/F6/F7 の出所"),
+    (
+        "FoundationAgents/OpenManus",
+        "§2.6 の負例 fixture F5/F6/F7 の出所（app/tool/python_execute.py・bash.py・"
+        "str_replace_editor.py）。**旧記載 `OpenManus/OpenManus` は RL 用の別 repo"
+        "（OpenManus-RL へ転送される）で、この選定根拠に合わない名前の取り違えだった**"
+        "（D17。run 1 / run1py312 / run2 のアプリ母集団にはその別 repo が入っている）",
+    ),
     ("microsoft/autogen", "登録 API 経由の dispatch。assumed 側の対照"),
     ("crewAIInc/crewAI", "同上"),
     ("Significant-Gravitas/AutoGPT", "CommandRegistry による実行時 dispatch（D10 の測定対象）"),
