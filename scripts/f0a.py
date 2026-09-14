@@ -54,6 +54,13 @@ GATE_OPAQUE = 0.40
 BRANCH_HIGH = 0.20
 BRANCH_LOW = 0.05
 
+#: 確度の合流順（`authgap.ir.prov_merge` と同じ。**resolved を優先しない**）。
+_PROV_RANK = {"resolved": 0, "remote": 1, "opaque": 2}
+
+
+def _merge_prov_kind(old: str | None, new: str) -> str:
+    return new if old is None or _PROV_RANK[new] > _PROV_RANK[old] else old
+
 
 @dataclass
 class PopStats:
@@ -94,6 +101,12 @@ class PopStats:
     #: 制御位置の確度（主 slot 限定 / 全 slot）。
     slots_primary: Counter = field(default_factory=Counter)
     slots_all: Counter = field(default_factory=Counter)
+    #: **サイト単位**（(木, relpath, lineno, kind) → 合流した確度）。効果行は呼び出し
+    #: 経路ごとに複製されるので、行で数えると少数のサイトに重みが集中する。
+    #: 合流は `prov_merge` と同じ優先順 `opaque > remote > resolved`。
+    site_resolution: dict = field(default_factory=dict)
+    #: (木, relpath, lineno, kind, slot) → 合流した確度。
+    site_slots: dict = field(default_factory=dict)
     #: rubric 1c。
     rubric1c_units: int = 0
     rubric1c_no_validator: int = 0
@@ -112,9 +125,22 @@ class PopStats:
 
     @property
     def in_tree_resolution_ratio(self) -> float | None:
-        """`resolved / (resolved + opaque + remote)`（**効果サイト**の解決率）。"""
+        """`resolved / (resolved + opaque + remote)`（**効果行**単位。併記用）。"""
         total = sum(self.resolution.values())
         return self.ratio(self.resolution["resolved"], total)
+
+    @property
+    def in_tree_resolution_ratio_sites(self) -> float | None:
+        """同じ比を**効果サイト**単位で（§1 の文言どおり。§10 の関門はこれで判定する）。"""
+        c = Counter(self.site_resolution.values())
+        return self.ratio(c["resolved"], sum(c.values()))
+
+    def opaque_ratio_sites(self, primary: bool = True) -> float | None:
+        """`opaque / (resolved + opaque)` をサイト × slot 単位で。`remote` は分母に入れない。"""
+        c = Counter(
+            kind for key, kind in self.site_slots.items() if not primary or key[4] in PRIMARY_SLOTS
+        )
+        return self.ratio(c["opaque"], c["resolved"] + c["opaque"])
 
     @property
     def remote_ratio(self) -> float | None:
@@ -198,8 +224,14 @@ class PopStats:
                 "r_D_crude": self.r_d_crude,
                 "branch": self.branch,
             },
+            "n_effect_rows": sum(self.resolution.values()),
+            "n_effect_sites": len(self.site_resolution),
+            "resolution_sites": dict(sorted(Counter(self.site_resolution.values()).items())),
+            "in_tree_resolution_ratio_sites": self.in_tree_resolution_ratio_sites,
             "in_tree_resolution_ratio": self.in_tree_resolution_ratio,
             "remote_ratio": self.remote_ratio,
+            "opaque_ratio_primary_slots_sites": self.opaque_ratio_sites(True),
+            "opaque_ratio_all_slots_sites": self.opaque_ratio_sites(False),
             "opaque_ratio_primary_slots": self.opaque_ratio(True),
             "opaque_ratio_all_slots": self.opaque_ratio(False),
             "validator_holding_ratio": self.validator_holding,
@@ -224,11 +256,14 @@ def accumulate(stats: PopStats, res: RunResult, rubric: frozenset[str], with_tri
     stats.truncations += len(res.tree.cap_hits) + len(res.wall_clock_truncations)
     stats.budget_skipped += res.tree_budget_skipped
     d_op = res.tree.d_op
+    tree = os.path.basename(res.tree.src_root)
     for u in res.tree.units:
-        _accumulate_unit(stats, u, d_op, rubric, with_trig)
+        _accumulate_unit(stats, u, d_op, rubric, with_trig, tree)
 
 
-def _accumulate_unit(stats: PopStats, u: UnitReport, d_op, rubric, with_trig: bool) -> None:
+def _accumulate_unit(
+    stats: PopStats, u: UnitReport, d_op, rubric, with_trig: bool, tree: str = ""
+) -> None:
     stats.n_units += 1
     for s in u.validator_shapes:
         stats.shapes[s] += 1
@@ -249,12 +284,18 @@ def _accumulate_unit(stats: PopStats, u: UnitReport, d_op, rubric, with_trig: bo
     for e in u.effects:
         stats.n_effects[e.kind] += 1
         stats.resolution[e.resolution.kind] += 1
+        site = (tree, e.relpath, e.lineno, e.kind)
+        stats.site_resolution[site] = _merge_prov_kind(
+            stats.site_resolution.get(site), e.resolution.kind
+        )
         for r in e.resolution.reasons:
             stats.resolution_by_cause[r] += 1
         for slot, v in e.control_slots().items():
             stats.slots_all[v.prov.kind] += 1
             if slot in PRIMARY_SLOTS:
                 stats.slots_primary[v.prov.kind] += 1
+            sk = site + (slot,)
+            stats.site_slots[sk] = _merge_prov_kind(stats.site_slots.get(sk), v.prov.kind)
     if u.val is not None:
         for r in u.val.opaque_reasons:
             stats.resolution_by_cause[r] += 1
@@ -512,14 +553,18 @@ def _le(x: float | None, thr: float) -> str:
 def _print_gates(by_pop: dict[str, PopStats]) -> None:
     print("\n=== §10 の関門 ===")
     for p, s in sorted(by_pop.items()):
-        itr = s.in_tree_resolution_ratio
+        # **関門はサイト単位で判定する**（D15）。行単位は下に併記する。
+        itr = s.in_tree_resolution_ratio_sites
         vh = s.validator_holding
-        op = s.opaque_ratio(True)
+        op = s.opaque_ratio_sites(True)
         print(f"[{p}] 木 {s.n_trees}（未取得 {s.n_trees_missing} / 解析失敗 {s.n_trees_failed} / "
               f"ユニット 0 件 {s.n_trees_no_units}） ユニット {s.n_units}")
         print(f"  in_tree_resolution_ratio {_fmt(itr)}  (>= 50%): {_ge(itr, GATE_IN_TREE_RESOLUTION)}")
         print(f"  validator 保有            {_fmt(vh)}  (>= 5%):  {_ge(vh, GATE_VALIDATOR_HOLDING)}")
         print(f"  opaque 率（主 slot）      {_fmt(op)}  (<= 40%): {_le(op, GATE_OPAQUE)}")
+        print(f"  （行単位: resolution {_fmt(s.in_tree_resolution_ratio)} / "
+              f"opaque {_fmt(s.opaque_ratio(True))}。サイト {len(s.site_resolution)} / "
+              f"行 {sum(s.resolution.values())}）")
         print(f"  r_D {_fmt(s.r_d)}（粗い分母 {_fmt(s.r_d_crude)}） → {s.branch}")
 
 
@@ -550,12 +595,16 @@ def _write_md(by_pop: dict[str, PopStats], with_trig: bool) -> None:
             "",
             "| 指標 | 値 | 関門 | 判定 |",
             "|---|---|---|---|",
-            f"| `in_tree_resolution_ratio` | {_fmt(s.in_tree_resolution_ratio)} | ≥ 50% | "
-            f"{_ge(s.in_tree_resolution_ratio, GATE_IN_TREE_RESOLUTION)} |",
+            f"| `in_tree_resolution_ratio`（**サイト単位**、{len(s.site_resolution)} サイト） | "
+            f"{_fmt(s.in_tree_resolution_ratio_sites)} | ≥ 50% | "
+            f"{_ge(s.in_tree_resolution_ratio_sites, GATE_IN_TREE_RESOLUTION)} |",
+            f"| 同（行単位、{sum(s.resolution.values())} 行、併記） | "
+            f"{_fmt(s.in_tree_resolution_ratio)} | — | — |",
             f"| validator 保有ツール | {_fmt(s.validator_holding)} | ≥ 5% | "
             f"{_ge(s.validator_holding, GATE_VALIDATOR_HOLDING)} |",
-            f"| opaque 率（主 slot 7 種） | {_fmt(s.opaque_ratio(True))} | ≤ 40% | "
-            f"{_le(s.opaque_ratio(True), GATE_OPAQUE)} |",
+            f"| opaque 率（主 slot 7 種、**サイト単位**） | {_fmt(s.opaque_ratio_sites(True))} | ≤ 40% | "
+            f"{_le(s.opaque_ratio_sites(True), GATE_OPAQUE)} |",
+            f"| opaque 率（主 slot 7 種、行単位、併記） | {_fmt(s.opaque_ratio(True))} | — | — |",
             f"| opaque 率（全 slot、併記） | {_fmt(s.opaque_ratio(False))} | — | — |",
             f"| `remote` 率（**関門ではない**） | {_fmt(s.remote_ratio)} | — | — |",
             "",

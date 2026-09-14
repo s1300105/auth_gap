@@ -276,6 +276,40 @@ AuthGap を実際より良く見せる。**
   `opaque / (resolved + opaque)`。**`remote` は分母に入れない。**
   粗い分母（全 slot）の値も `opaque_ratio_all_slots` に併記される。
 
+### 3.1 野外標本での F0a（§6 標本設計 / §10 の A5 関門）
+
+```bash
+.venv/bin/python scripts/fetch_frame.py                  # MCP サーバ母集団（2299 件）
+.venv/bin/python scripts/fetch_frame.py --method toolpkg # ツールパッケージ母集団（2722 件）
+.venv/bin/python scripts/sample_corpus.py               # seed 20260909（動かさない）
+.venv/bin/python scripts/fetch_corpus.py --spec docs/corpus_sample.json --jobs 6
+.venv/bin/python -u scripts/f0a.py --sample docs/corpus_sample.json
+```
+
+**確かめること:**
+
+1. **標本が seed で再現すること。** `sample_corpus.py` を再実行して
+   `docs/corpus_sample.json` の差分が出ないこと（`sampled_at` は `sampling.md` にしか無い）。
+2. **pin が SHA で一致していること。** `docs/frame.csv` の `commit_sha` と
+   `evidence/f0a/trees.jsonl` の `commit_sha` が木ごとに一致すること。
+3. **母集団ごとの上限は「取得できた木を抽出順に先頭から」数えている。**
+   `trees.jsonl` の `status=missing` は枠を消費せず繰り上げ、
+   `status=analysis_failed` は繰り上げずに残る（道具の失敗を隠さない）。
+4. **分母を 2 通り見る。** 効果行は呼び出し経路ごとに複製されるので、
+   `in_tree_resolution_ratio`（行単位。実装どおり）と
+   `in_tree_resolution_ratio_sites`（(木, relpath, lineno, kind) で重複除去。
+   §1 の「効果サイト」の文言どおり）の両方が出る。**差が大きい母集団では
+   少数のサイトに行が集中している**ので、論文にはどちらの分母かを必ず書く。
+5. **`run_meta.analyzer_commit` を控える。** 野外データを見た後で解析器を直した
+   場合は run を分けて両方を報告する（`docs/decisions.md` D14）。
+6. **1 件ずつ辿る。** `evidence/f0a/units.jsonl` はユニット 1 行で、効果ごとに
+   `relpath:lineno`、`resolution` とその理由、slot ごとの確度を持つ。
+   `scripts/sample_f0a_checks.py` が seed 20260914 で 6 層（opaque / resolved の
+   効果サイト、危険効果あり、効果なし、validator 形状あり、`D_kind` あり）から
+   検証標本を抜くので、その各件を原ソース（`corpus/<木>/<relpath>`）で読み、
+   解析器の主張が正しいかを確かめる。**機械による事前点検の分類は
+   `evidence/f0a/check_results.json` にあるが、それは C2 のラベルではない。**
+
 ---
 
 ## 4. 決定論（§5.2）
