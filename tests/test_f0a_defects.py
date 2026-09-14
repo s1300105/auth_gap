@@ -1099,6 +1099,47 @@ def test_bare_call_prefers_same_module_definition(tmp_path):
     assert _effects(_unit(_run(tmp_path, SAME_NAME_TWO_MODULES), "search"), "NET")
 
 
+# ---------------------------------------------------------------------------
+# 12. tools_list の入れ子関数を拾うようにしたことで、同じ関数が 2 ユニットに数えられる（run 3 で発見）
+# ---------------------------------------------------------------------------
+
+#: 野外（w-giak__mnemo-lite の api/mnemo_mcp/server.py:2098 と :2145）と同じ形。登録した
+#: ツール名を**ログの `tools=[...]` キーワード**に並べるので、tools_list 規則がこれを拾う。
+REGISTERED_AND_LISTED = FASTMCP_HEAD + """\
+import logging
+import sqlite3
+
+logger = logging.getLogger(__name__)
+
+def register_indexing_components(server):
+    @server.tool()
+    async def get_indexing_errors(repository: str, limit: int = 50) -> str:
+        conn = sqlite3.connect("idx.db")
+        return str(conn.execute("SELECT * FROM errors WHERE repo = ?", (repository,)).fetchall())
+
+    logger.info(
+        "mcp.components.indexing.registered",
+        tools=["get_indexing_status", "get_indexing_errors", "retry_indexing"],
+    )
+
+register_indexing_components(mcp)
+"""
+
+
+def test_registered_and_listed_precondition(tmp_path):
+    res = _run(tmp_path, {"server.py": REGISTERED_AND_LISTED})
+    assert [u for u in res.tree.units if u.unit.tool_name == "get_indexing_errors"]
+
+
+@DEFECT
+def test_function_registered_by_decorator_and_listed_is_one_unit(tmp_path):
+    """デコレータで登録されたツール関数が、同じファイルの `tools` の文字列リストにも名前が出るとき、
+    **1 つのユニット**として数える。`find_tools_list_units` の既出判定が qualname と末尾名を
+    比べていたので、入れ子関数（qualname は `外側.内側`）は既出と判定されず、`mcp` と
+    `tools-list` の 2 ユニットになっていた（ユニット数と危険効果ユニット数の過大計上）。"""
+    _unit(_run(tmp_path, {"server.py": REGISTERED_AND_LISTED}), "get_indexing_errors")
+
+
 def test_catalog_forms_precondition(tmp_path):
     _unit(_run(tmp_path, {"a/c.py": AUTOGPT}, population="app"), "web_search_legacy")
     _unit(_run(tmp_path, {"b/t.py": TOOLS_LIST}, population="tool_package"), "web_lookup")
