@@ -1,0 +1,104 @@
+{
+  "n_pairs": 7,
+  "n_two_sided_pass_any_change": 1,
+  "n_two_sided_pass_by_disappearance": 0,
+  "note": "Semgrep CE は手続き内 taint のみ。(a) 部分表と (b) 全行表の差は機能境界であって実装の不備ではない（§6 / §1.5.4）",
+  "pairs": [
+    {
+      "cleared": false,
+      "errors": [],
+      "fixed_only": [],
+      "n_both": 1,
+      "n_fixed_only": 0,
+      "n_vuln_only": 0,
+      "pair_id": "A1",
+      "two_sided_pass_any_change": false,
+      "two_sided_pass_by_disappearance": false,
+      "vuln_only": []
+    },
+    {
+      "cleared": false,
+      "errors": [],
+      "fixed_only": [],
+      "n_both": 3,
+      "n_fixed_only": 0,
+      "n_vuln_only": 0,
+      "pair_id": "A18",
+      "two_sided_pass_any_change": false,
+      "two_sided_pass_by_disappearance": false,
+      "vuln_only": []
+    },
+    {
+      "cleared": false,
+      "errors": [],
+      "fixed_only": [],
+      "n_both": 1,
+      "n_fixed_only": 0,
+      "n_vuln_only": 0,
+      "pair_id": "A2",
+      "two_sided_pass_any_change": false,
+      "two_sided_pass_by_disappearance": false,
+      "vuln_only": []
+    },
+    {
+      "cleared": false,
+      "errors": [],
+      "fixed_only": [],
+      "n_both": 1,
+      "n_fixed_only": 0,
+      "n_vuln_only": 0,
+      "pair_id": "A3",
+      "two_sided_pass_any_change": false,
+      "two_sided_pass_by_disappearance": false,
+      "vuln_only": []
+    },
+    {
+      "cleared": false,
+      "errors": [],
+      "fixed_only": [],
+      "n_both": 1,
+      "n_fixed_only": 0,
+      "n_vuln_only": 0,
+      "pair_id": "A4",
+      "two_sided_pass_any_change": false,
+      "two_sided_pass_by_disappearance": false,
+      "vuln_only": []
+    },
+    {
+      "cleared": false,
+      "errors": [],
+      "fixed_only": [],
+      "n_both": 11,
+      "n_fixed_only": 0,
+      "n_vuln_only": 0,
+      "pair_id": "A5",
+      "two_sided_pass_any_change": false,
+      "two_sided_pass_by_disappearance": false,
+      "vuln_only": []
+    },
+    {
+      "cleared": false,
+      "errors": [
+        "Syntax error at line src/praisonai-agents/reproduce_issue_878_simple.py:162:\n `silent` was unexpected",
+        "Syntax error at line src/praisonai-agents/test_all_optimizations.py:181:\n `silent` was unexpected",
+        "Syntax error at line src/praisonai-agents/test_callback_fix.py:2:\n `\"\"\"Test script to verify callbacks work with output=\"silent\"\"\"\"` was unexpected",
+        "Syntax error at line src/praisonai-agents/test_issue_877.py:39:\n `verbose` was unexpected",
+        "Syntax error at line src/praisonai-agents/reproduce_issue_878_simple.py:162:\n `silent` was unexpected",
+        "Syntax error at line src/praisonai-agents/test_all_optimizations.py:181:\n `silent` was unexpected",
+        "Syntax error at line src/praisonai-agents/test_callback_fix.py:2:\n `\"\"\"Test script to verify callbacks work with output=\"silent\"\"\"\"` was unexpected",
+        "Syntax error at line src/praisonai-agents/test_issue_877.py:39:\n `verbose` was unexpected"
+      ],
+      "fixed_only": [
+        "src/praisonai-agents/praisonaiagents/tools/ast_grep_tool.py::ast_grep_rewrite::authgap-r2-param-to-spawn"
+      ],
+      "n_both": 94,
+      "n_fixed_only": 1,
+      "n_vuln_only": 0,
+      "pair_id": "A9",
+      "two_sided_pass_any_change": true,
+      "two_sided_pass_by_disappearance": false,
+      "vuln_only": []
+    }
+  ],
+  "rules": "baselines/semgrep_authgap_source.yaml"
+}

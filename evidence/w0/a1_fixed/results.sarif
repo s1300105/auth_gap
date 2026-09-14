@@ -1,0 +1,649 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/fetch/src/mcp_server_fetch/server.py"
+                },
+                "region": {
+                  "startLine": 77
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "UNKNOWN NET@- via httpx.AsyncClient.get (proxy); chain=check_may_autonomously_fetch_url"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "NET",
+            "resolution": "opaque",
+            "rule_w": false,
+            "slot": null,
+            "unit_id": "mcp-lowlevel-v1:serve.call_tool:b2b24f181bcb",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "check_may_autonomously_fetch_url"
+            ]
+          },
+          "ruleId": "UNKNOWN"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/fetch/src/mcp_server_fetch/server.py"
+                },
+                "region": {
+                  "startLine": 77
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "UNKNOWN NET@url.host via httpx.AsyncClient.get (proxy); chain=check_may_autonomously_fetch_url"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "NET",
+            "resolution": "opaque",
+            "rule_w": false,
+            "slot": "url.host",
+            "unit_id": "mcp-lowlevel-v1:serve.call_tool:b2b24f181bcb",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "check_may_autonomously_fetch_url"
+            ]
+          },
+          "ruleId": "UNKNOWN:url.host"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/fetch/src/mcp_server_fetch/server.py"
+                },
+                "region": {
+                  "startLine": 121
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "UNKNOWN NET@- via httpx.AsyncClient.get (proxy); chain=fetch_url"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "NET",
+            "resolution": "opaque",
+            "rule_w": false,
+            "slot": null,
+            "unit_id": "mcp-lowlevel-v1:serve.call_tool:b2b24f181bcb",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "fetch_url"
+            ]
+          },
+          "ruleId": "UNKNOWN"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/fetch/src/mcp_server_fetch/server.py"
+                },
+                "region": {
+                  "startLine": 121
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "UNKNOWN NET@url.host via httpx.AsyncClient.get (proxy); chain=fetch_url"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "NET",
+            "resolution": "opaque",
+            "rule_w": false,
+            "slot": "url.host",
+            "unit_id": "mcp-lowlevel-v1:serve.call_tool:b2b24f181bcb",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "fetch_url"
+            ]
+          },
+          "ruleId": "UNKNOWN:url.host"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/git/src/mcp_server_git/server.py"
+                },
+                "region": {
+                  "startLine": 110
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "UNKNOWN SPAWN@- via git.Git.status (proxy); chain=git_status"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "SPAWN",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": null,
+            "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "git_status"
+            ]
+          },
+          "ruleId": "UNKNOWN"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/git/src/mcp_server_git/server.py"
+                },
+                "region": {
+                  "startLine": 113
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "UNKNOWN SPAWN@- via git.Git.diff (proxy); chain=git_diff_unstaged"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "SPAWN",
+            "resolution": "opaque",
+            "rule_w": false,
+            "slot": null,
+            "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "git_diff_unstaged"
+            ]
+          },
+          "ruleId": "UNKNOWN"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/git/src/mcp_server_git/server.py"
+                },
+                "region": {
+                  "startLine": 113
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "UNKNOWN SPAWN@argv[*] via git.Git.diff (proxy); chain=git_diff_unstaged"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "SPAWN",
+            "resolution": "opaque",
+            "rule_w": false,
+            "slot": "argv[*]",
+            "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "git_diff_unstaged"
+            ]
+          },
+          "ruleId": "UNKNOWN:argv[*]"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/git/src/mcp_server_git/server.py"
+                },
+                "region": {
+                  "startLine": 116
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "UNKNOWN SPAWN@- via git.Git.diff (proxy); chain=git_diff_staged"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "SPAWN",
+            "resolution": "opaque",
+            "rule_w": false,
+            "slot": null,
+            "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "git_diff_staged"
+            ]
+          },
+          "ruleId": "UNKNOWN"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/git/src/mcp_server_git/server.py"
+                },
+                "region": {
+                  "startLine": 116
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "UNKNOWN SPAWN@argv[*] via git.Git.diff (proxy); chain=git_diff_staged"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "SPAWN",
+            "resolution": "opaque",
+            "rule_w": false,
+            "slot": "argv[*]",
+            "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "git_diff_staged"
+            ]
+          },
+          "ruleId": "UNKNOWN:argv[*]"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/git/src/mcp_server_git/server.py"
+                },
+                "region": {
+                  "startLine": 124
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "UNKNOWN SPAWN@- via git.Git.diff (proxy); chain=git_diff"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "SPAWN",
+            "resolution": "opaque",
+            "rule_w": false,
+            "slot": null,
+            "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "git_diff"
+            ]
+          },
+          "ruleId": "UNKNOWN"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/git/src/mcp_server_git/server.py"
+                },
+                "region": {
+                  "startLine": 132
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "UNKNOWN SPAWN@- via git.Git.add (proxy); chain=git_add"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "SPAWN",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": null,
+            "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "git_add"
+            ]
+          },
+          "ruleId": "UNKNOWN"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/git/src/mcp_server_git/server.py"
+                },
+                "region": {
+                  "startLine": 134
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "UNKNOWN FS_WRITE@- via git.IndexFile.add (proxy); chain=git_add"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": null,
+            "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "git_add"
+            ]
+          },
+          "ruleId": "UNKNOWN"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/git/src/mcp_server_git/server.py"
+                },
+                "region": {
+                  "startLine": 134
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT FS_WRITE@path via git.IndexFile.add (proxy); chain=git_add"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "git_add"
+            ]
+          },
+          "ruleId": "GAP_INJECT:path"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/git/src/mcp_server_git/server.py"
+                },
+                "region": {
+                  "startLine": 151
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "UNKNOWN SPAWN@- via git.Git.log (proxy); chain=git_log"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "SPAWN",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": null,
+            "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "git_log"
+            ]
+          },
+          "ruleId": "UNKNOWN"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/git/src/mcp_server_git/server.py"
+                },
+                "region": {
+                  "startLine": 192
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "UNKNOWN SPAWN@- via git.Git.checkout (proxy); chain=git_checkout"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "SPAWN",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": null,
+            "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "git_checkout"
+            ]
+          },
+          "ruleId": "UNKNOWN"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/git/src/mcp_server_git/server.py"
+                },
+                "region": {
+                  "startLine": 265
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "UNKNOWN SPAWN@- via git.Git.branch (proxy); chain=git_branch"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "SPAWN",
+            "resolution": "opaque",
+            "rule_w": false,
+            "slot": null,
+            "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "git_branch"
+            ]
+          },
+          "ruleId": "UNKNOWN"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/git/src/mcp_server_git/server.py"
+                },
+                "region": {
+                  "startLine": 265
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "UNKNOWN SPAWN@argv[*] via git.Git.branch (proxy); chain=git_branch"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "SPAWN",
+            "resolution": "opaque",
+            "rule_w": false,
+            "slot": "argv[*]",
+            "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "git_branch"
+            ]
+          },
+          "ruleId": "UNKNOWN:argv[*]"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "informationUri": "https://github.com/s1300105/auth_gap",
+          "name": "AuthGap",
+          "rules": [
+            {
+              "fullDescription": {
+                "text": "GAP_INJECT on slot path"
+              },
+              "id": "GAP_INJECT:path",
+              "shortDescription": {
+                "text": "GAP_INJECT"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "UNKNOWN on slot None"
+              },
+              "id": "UNKNOWN",
+              "shortDescription": {
+                "text": "UNKNOWN"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "UNKNOWN on slot argv[*]"
+              },
+              "id": "UNKNOWN:argv[*]",
+              "shortDescription": {
+                "text": "UNKNOWN"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "UNKNOWN on slot url.host"
+              },
+              "id": "UNKNOWN:url.host",
+              "shortDescription": {
+                "text": "UNKNOWN"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}

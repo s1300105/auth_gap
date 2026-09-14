@@ -1,0 +1,3894 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [
+    {
+      "candidates": [
+        "ErrorData",
+        "McpError"
+      ],
+      "form": "if_chain",
+      "lineno": 87,
+      "opaque_reason": null,
+      "relpath": "src/fetch/src/mcp_server_fetch/server.py",
+      "resolution": "resolved",
+      "selector": "response.status_code",
+      "selector_is_model": true
+    }
+  ],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 3,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 16,
+      "validator_shapes": 11,
+      "weak_reasons": 19
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "fdd8b29431eedb1a1ac18c3565faa58b8142274d5b9497abd70c4d3a1e397557",
+      "gate_vocabulary": "1fe451f94e978bf23c639a9c14b4dd6b42b10d4f82a7c8a2e08af2cde3d4d6a2",
+      "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+    }
+  },
+  "gate_verdict_counts": {
+    "DOM": 10,
+    "NODOM(non_binding_gate)": 16
+  },
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.164,
+    "run_id": "w0-a1-fixed",
+    "src_root": "/home/yudai/Project/research/Master_Project/authgap/corpus/A1__fixed"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "effects": [
+        {
+          "entry_lineno": 235,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 77,
+          "relpath": "src/fetch/src/mcp_server_fetch/server.py",
+          "required_by": [
+            "A16"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "httpx.AsyncClient.get",
+          "slots": {
+            "url.host": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            }
+          },
+          "sub_kind": "NET",
+          "witness_chain": [
+            "check_may_autonomously_fetch_url"
+          ]
+        },
+        {
+          "entry_lineno": 237,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 121,
+          "relpath": "src/fetch/src/mcp_server_fetch/server.py",
+          "required_by": [
+            "A16"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "httpx.AsyncClient.get",
+          "slots": {
+            "url.host": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            }
+          },
+          "sub_kind": "NET",
+          "witness_chain": [
+            "fetch_url"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "lowlevel_v1_decorator",
+        "pin": {
+          "name": "mcp",
+          "source": "src/time/uv.lock",
+          "spec": null,
+          "status": "lockfile",
+          "version": "1.0.0"
+        },
+        "reason": "版 1.0.0 は [1.10, 2.0) の外",
+        "verdict": "not_enforced"
+      },
+      "gate": {
+        "0:url.host": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "check_may_autonomously_fetch_url",
+              "node": 9,
+              "recognition": "V",
+              "subjects": [
+                "url",
+                "user_agent_autonomous"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "fetch_url",
+              "node": 11,
+              "recognition": "V",
+              "subjects": [
+                "url",
+                "user_agent_autonomous"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L235"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:url.host": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "check_may_autonomously_fetch_url",
+              "node": 9,
+              "recognition": "V",
+              "subjects": [
+                "url",
+                "user_agent_autonomous"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "fetch_url",
+              "node": 11,
+              "recognition": "V",
+              "subjects": [
+                "url",
+                "user_agent_autonomous"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L235"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 11,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 9,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 11,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:url.host": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:url.host": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL"
+      },
+      "req_val": {
+        "0:url.host": "MODEL",
+        "1:url.host": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 77,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/fetch/src/mcp_server_fetch/server.py",
+          "site": "httpx.AsyncClient.get",
+          "unit_id": "mcp-lowlevel-v1:serve.call_tool:b2b24f181bcb",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 77,
+          "relpath": "src/fetch/src/mcp_server_fetch/server.py",
+          "site": "httpx.AsyncClient.get",
+          "slot": "url.host",
+          "unit_id": "mcp-lowlevel-v1:serve.call_tool:b2b24f181bcb",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 121,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/fetch/src/mcp_server_fetch/server.py",
+          "site": "httpx.AsyncClient.get",
+          "unit_id": "mcp-lowlevel-v1:serve.call_tool:b2b24f181bcb",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 121,
+          "relpath": "src/fetch/src/mcp_server_fetch/server.py",
+          "site": "httpx.AsyncClient.get",
+          "slot": "url.host",
+          "unit_id": "mcp-lowlevel-v1:serve.call_tool:b2b24f181bcb",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "entry_kind": "lowlevel_v1",
+        "framework": "mcp-lowlevel-v1",
+        "is_async": true,
+        "lineno": 224,
+        "module": "src.fetch.src.mcp_server_fetch.server",
+        "params": [
+          {
+            "index": 0,
+            "name": "name"
+          },
+          {
+            "annotation": "dict",
+            "index": 1,
+            "name": "arguments"
+          }
+        ],
+        "qualname": "serve.call_tool",
+        "relpath": "src/fetch/src/mcp_server_fetch/server.py",
+        "schema_hash": "b2b24f181bcb",
+        "tool_name": null,
+        "unit_id": "mcp-lowlevel-v1:serve.call_tool:b2b24f181bcb"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": []
+      },
+      "alias_facts": [
+        {
+          "root": "arguments[\"repo_path\"]",
+          "site": "src/git/src/mcp_server_git/server.py:L381",
+          "transform": "Path()"
+        },
+        {
+          "root": "arguments[\"repo_path\"]",
+          "site": "src/git/src/mcp_server_git/server.py:L227",
+          "transform": "Path.resolve"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {
+        "DEFAULT_CONTEXT_LINES": null
+      },
+      "effects": [
+        {
+          "entry_lineno": 391,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "proxy"
+            }
+          },
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 110,
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "required_by": [
+            "A1",
+            "A3",
+            "A4",
+            "F1",
+            "F2"
+          ],
+          "resolution": "resolved",
+          "site": "git.Git.status",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "git",
+                "k": "Atom"
+              }
+            },
+            "cwd": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "arguments[\"repo_path\"]"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "resolved",
+                  "roots": [
+                    "arguments[\"repo_path\"]"
+                  ],
+                  "shape": {
+                    "formal": "arguments",
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "git_status"
+          ]
+        },
+        {
+          "entry_lineno": 398,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "proxy"
+            }
+          },
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 113,
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "required_by": [
+            "A1",
+            "A3",
+            "A4",
+            "F1",
+            "F2"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "git.Git.diff",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "git",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "items": [
+                  {
+                    "attrs": [
+                      "joined"
+                    ],
+                    "prin": "OP",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "shape": {
+                      "items": [
+                        {
+                          "prin": "OP",
+                          "prov": "resolved",
+                          "shape": {
+                            "const": "--unified=",
+                            "k": "Atom"
+                          }
+                        },
+                        {
+                          "prin": "OP",
+                          "prov": "opaque",
+                          "prov_reasons": [
+                            "unresolved"
+                          ],
+                          "shape": {
+                            "k": "Unknown"
+                          }
+                        }
+                      ],
+                      "k": "Str"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            },
+            "cwd": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "arguments[\"repo_path\"]"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "resolved",
+                  "roots": [
+                    "arguments[\"repo_path\"]"
+                  ],
+                  "shape": {
+                    "formal": "arguments",
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "git_diff_unstaged"
+          ]
+        },
+        {
+          "entry_lineno": 405,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "proxy"
+            }
+          },
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 116,
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "required_by": [
+            "A1",
+            "A3",
+            "A4",
+            "F1",
+            "F2"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "git.Git.diff",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "git",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "items": [
+                  {
+                    "attrs": [
+                      "joined"
+                    ],
+                    "prin": "OP",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "shape": {
+                      "items": [
+                        {
+                          "prin": "OP",
+                          "prov": "resolved",
+                          "shape": {
+                            "const": "--unified=",
+                            "k": "Atom"
+                          }
+                        },
+                        {
+                          "prin": "OP",
+                          "prov": "opaque",
+                          "prov_reasons": [
+                            "unresolved"
+                          ],
+                          "shape": {
+                            "k": "Unknown"
+                          }
+                        }
+                      ],
+                      "k": "Str"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "--cached",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            },
+            "cwd": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "arguments[\"repo_path\"]"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "resolved",
+                  "roots": [
+                    "arguments[\"repo_path\"]"
+                  ],
+                  "shape": {
+                    "formal": "arguments",
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "git_diff_staged"
+          ]
+        },
+        {
+          "entry_lineno": 412,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "proxy"
+            }
+          },
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 124,
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "required_by": [
+            "A1",
+            "A3",
+            "A4",
+            "F1",
+            "F2"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "git.Git.diff",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "git",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "arguments[\"target\"]"
+              ],
+              "shape": {
+                "items": [
+                  {
+                    "attrs": [
+                      "joined"
+                    ],
+                    "prin": "OP",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "shape": {
+                      "items": [
+                        {
+                          "prin": "OP",
+                          "prov": "resolved",
+                          "shape": {
+                            "const": "--unified=",
+                            "k": "Atom"
+                          }
+                        },
+                        {
+                          "prin": "OP",
+                          "prov": "opaque",
+                          "prov_reasons": [
+                            "unresolved"
+                          ],
+                          "shape": {
+                            "k": "Unknown"
+                          }
+                        }
+                      ],
+                      "k": "Str"
+                    }
+                  },
+                  {
+                    "prin": "MODEL",
+                    "prov": "resolved",
+                    "roots": [
+                      "arguments[\"target\"]"
+                    ],
+                    "shape": {
+                      "formal": "arguments",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            },
+            "cwd": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "arguments[\"repo_path\"]"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "resolved",
+                  "roots": [
+                    "arguments[\"repo_path\"]"
+                  ],
+                  "shape": {
+                    "formal": "arguments",
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "git_diff"
+          ]
+        },
+        {
+          "entry_lineno": 426,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "proxy"
+            }
+          },
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 132,
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "required_by": [
+            "A1",
+            "A3",
+            "A4",
+            "F1",
+            "F2"
+          ],
+          "resolution": "resolved",
+          "site": "git.Git.add",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "git",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": ".",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            },
+            "cwd": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "arguments[\"repo_path\"]"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "resolved",
+                  "roots": [
+                    "arguments[\"repo_path\"]"
+                  ],
+                  "shape": {
+                    "formal": "arguments",
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "git_add"
+          ]
+        },
+        {
+          "entry_lineno": 426,
+          "form": "proxy",
+          "kind": "FS_WRITE",
+          "lineno": 134,
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "required_by": [
+            "A3"
+          ],
+          "resolution": "resolved",
+          "site": "git.IndexFile.add",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "arguments[\"files\"]"
+              ],
+              "shape": {
+                "formal": "arguments",
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "git_add"
+          ]
+        },
+        {
+          "entry_lineno": 441,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "proxy"
+            }
+          },
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 151,
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "required_by": [
+            "A1",
+            "A3",
+            "A4",
+            "F1",
+            "F2"
+          ],
+          "resolution": "resolved",
+          "site": "git.Git.log",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "git",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "items": [],
+                      "k": "Seq"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            },
+            "cwd": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "arguments[\"repo_path\"]"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "resolved",
+                  "roots": [
+                    "arguments[\"repo_path\"]"
+                  ],
+                  "shape": {
+                    "formal": "arguments",
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "git_log"
+          ]
+        },
+        {
+          "entry_lineno": 464,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "proxy"
+            }
+          },
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 192,
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "required_by": [
+            "A1",
+            "A3",
+            "A4",
+            "F1",
+            "F2"
+          ],
+          "resolution": "resolved",
+          "site": "git.Git.checkout",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "git",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "arguments[\"branch_name\"]"
+              ],
+              "shape": {
+                "items": [
+                  {
+                    "prin": "MODEL",
+                    "prov": "resolved",
+                    "roots": [
+                      "arguments[\"branch_name\"]"
+                    ],
+                    "shape": {
+                      "formal": "arguments",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            },
+            "cwd": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "arguments[\"repo_path\"]"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "resolved",
+                  "roots": [
+                    "arguments[\"repo_path\"]"
+                  ],
+                  "shape": {
+                    "formal": "arguments",
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "git_checkout"
+          ]
+        },
+        {
+          "entry_lineno": 478,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "proxy"
+            }
+          },
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 265,
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "required_by": [
+            "A1",
+            "A3",
+            "A4",
+            "F1",
+            "F2"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "git.Git.branch",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "git",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "shape": {
+                      "items": [],
+                      "k": "Seq"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "shape": {
+                      "items": [],
+                      "k": "Seq"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            },
+            "cwd": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "arguments[\"repo_path\"]"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "resolved",
+                  "roots": [
+                    "arguments[\"repo_path\"]"
+                  ],
+                  "shape": {
+                    "formal": "arguments",
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "git_branch"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "lowlevel_v1_decorator",
+        "pin": {
+          "name": "mcp",
+          "source": "src/time/uv.lock",
+          "spec": null,
+          "status": "lockfile",
+          "version": "1.0.0"
+        },
+        "reason": "版 1.0.0 は [1.10, 2.0) の外",
+        "verdict": "not_enforced"
+      },
+      "gate": {
+        "0:argv0": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:cwd": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "grade": "OP",
+            "verdict": "DOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [
+            4
+          ],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "gated"
+            }
+          ],
+          "req": "OP"
+        },
+        "1:argv0": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 11,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:argv[*]": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 11,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:cwd": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "grade": "OP",
+            "verdict": "DOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [
+            4
+          ],
+          "per_copy": [
+            {
+              "node": 11,
+              "status": "gated"
+            }
+          ],
+          "req": "OP"
+        },
+        "2:argv0": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 14,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2:argv[*]": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 14,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2:cwd": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "grade": "OP",
+            "verdict": "DOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [
+            4
+          ],
+          "per_copy": [
+            {
+              "node": 14,
+              "status": "gated"
+            }
+          ],
+          "req": "OP"
+        },
+        "3:argv0": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 17,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "3:argv[*]": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "grade": "OP",
+            "verdict": "DOM",
+            "witness": "L389"
+          },
+          "notes": [],
+          "passing": [
+            6
+          ],
+          "per_copy": [
+            {
+              "node": 17,
+              "status": "gated"
+            }
+          ],
+          "req": "OP"
+        },
+        "3:cwd": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "grade": "OP",
+            "verdict": "DOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [
+            4
+          ],
+          "per_copy": [
+            {
+              "node": 17,
+              "status": "gated"
+            }
+          ],
+          "req": "OP"
+        },
+        "4:argv0": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 23,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "4:argv[*]": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 23,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "4:cwd": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "grade": "OP",
+            "verdict": "DOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [
+            4
+          ],
+          "per_copy": [
+            {
+              "node": 23,
+              "status": "gated"
+            }
+          ],
+          "req": "OP"
+        },
+        "5:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 23,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "6:argv0": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 29,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "6:argv[*]": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 29,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "6:cwd": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "grade": "OP",
+            "verdict": "DOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [
+            4
+          ],
+          "per_copy": [
+            {
+              "node": 29,
+              "status": "gated"
+            }
+          ],
+          "req": "OP"
+        },
+        "7:argv0": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 35,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "7:argv[*]": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "grade": "OP",
+            "verdict": "DOM",
+            "witness": "L389"
+          },
+          "notes": [],
+          "passing": [
+            6
+          ],
+          "per_copy": [
+            {
+              "node": 35,
+              "status": "gated"
+            }
+          ],
+          "req": "OP"
+        },
+        "7:cwd": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "grade": "OP",
+            "verdict": "DOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [
+            4
+          ],
+          "per_copy": [
+            {
+              "node": 35,
+              "status": "gated"
+            }
+          ],
+          "req": "OP"
+        },
+        "8:argv0": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 41,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "8:argv[*]": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 41,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "8:cwd": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_repo_path",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "repo_path",
+                "repository"
+              ],
+              "value_grade": "strong-path"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "atom": {
+                "default": 3,
+                "default_closed": null,
+                "name": "DEFAULT_CONTEXT_LINES",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "git_diff",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            },
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "git_checkout",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "arguments"
+              ],
+              "value_grade": "strong-token"
+            }
+          ],
+          "gate": {
+            "grade": "OP",
+            "verdict": "DOM",
+            "witness": "L384"
+          },
+          "notes": [],
+          "passing": [
+            4
+          ],
+          "per_copy": [
+            {
+              "node": 41,
+              "status": "gated"
+            }
+          ],
+          "req": "OP"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 8,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 11,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 14,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "3": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 17,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "4": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 23,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "5": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 23,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "6": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 29,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "7": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 35,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "8": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 41,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:cwd": {
+          "grade": "strong-path",
+          "weak_reason": null
+        },
+        "1:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:cwd": {
+          "grade": "strong-path",
+          "weak_reason": null
+        },
+        "2:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "2:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "2:cwd": {
+          "grade": "strong-path",
+          "weak_reason": null
+        },
+        "3:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "3:argv[*]": {
+          "grade": "strong-token",
+          "weak_reason": null
+        },
+        "3:cwd": {
+          "grade": "strong-path",
+          "weak_reason": null
+        },
+        "4:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "4:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "4:cwd": {
+          "grade": "strong-path",
+          "weak_reason": null
+        },
+        "5:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "6:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "6:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "6:cwd": {
+          "grade": "strong-path",
+          "weak_reason": null
+        },
+        "7:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "7:argv[*]": {
+          "grade": "strong-token",
+          "weak_reason": null
+        },
+        "7:cwd": {
+          "grade": "strong-path",
+          "weak_reason": null
+        },
+        "8:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "8:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "8:cwd": {
+          "grade": "strong-path",
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL",
+        "2": "MODEL",
+        "3": "MODEL",
+        "4": "MODEL",
+        "5": "MODEL",
+        "6": "MODEL",
+        "7": "MODEL",
+        "8": "MODEL"
+      },
+      "req_val": {
+        "0:argv0": "MODEL",
+        "0:cwd": "OP",
+        "1:argv0": "MODEL",
+        "1:argv[*]": "MODEL",
+        "1:cwd": "OP",
+        "2:argv0": "MODEL",
+        "2:argv[*]": "MODEL",
+        "2:cwd": "OP",
+        "3:argv0": "MODEL",
+        "3:argv[*]": "OP",
+        "3:cwd": "OP",
+        "4:argv0": "MODEL",
+        "4:argv[*]": "MODEL",
+        "4:cwd": "OP",
+        "5:path": "MODEL",
+        "6:argv0": "MODEL",
+        "6:argv[*]": "MODEL",
+        "6:cwd": "OP",
+        "7:argv0": "MODEL",
+        "7:argv[*]": "OP",
+        "7:cwd": "OP",
+        "8:argv0": "MODEL",
+        "8:argv[*]": "MODEL",
+        "8:cwd": "OP"
+      },
+      "rows": [
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 110,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "site": "git.Git.status",
+          "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 113,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "site": "git.Git.diff",
+          "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 113,
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "site": "git.Git.diff",
+          "slot": "argv[*]",
+          "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 116,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "site": "git.Git.diff",
+          "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 116,
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "site": "git.Git.diff",
+          "slot": "argv[*]",
+          "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 124,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "site": "git.Git.diff",
+          "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 132,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "site": "git.Git.add",
+          "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "FS_WRITE",
+          "lineno": 134,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "site": "git.IndexFile.add",
+          "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "FS_WRITE",
+          "lineno": 134,
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "site": "git.IndexFile.add",
+          "slot": "path",
+          "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+          "verdicts": [
+            "GAP_INJECT"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 151,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "site": "git.Git.log",
+          "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 192,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "site": "git.Git.checkout",
+          "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 265,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "site": "git.Git.branch",
+          "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "SPAWN",
+          "lineno": 265,
+          "relpath": "src/git/src/mcp_server_git/server.py",
+          "site": "git.Git.branch",
+          "slot": "argv[*]",
+          "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "entry_kind": "lowlevel_v1",
+        "framework": "mcp-lowlevel-v1",
+        "is_async": true,
+        "lineno": 380,
+        "module": "src.git.src.mcp_server_git.server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "name"
+          },
+          {
+            "annotation": "dict",
+            "index": 1,
+            "name": "arguments"
+          }
+        ],
+        "qualname": "serve.call_tool",
+        "relpath": "src/git/src/mcp_server_git/server.py",
+        "schema_hash": "965af40077db",
+        "tool_name": null,
+        "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db"
+      },
+      "validator_shapes": [
+        "ctor_path"
+      ]
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "effects": [],
+      "enforcement": {
+        "path": "lowlevel_v1_decorator",
+        "pin": {
+          "name": "mcp",
+          "source": "src/time/uv.lock",
+          "spec": null,
+          "status": "lockfile",
+          "version": "1.0.0"
+        },
+        "reason": "版 1.0.0 は [1.10, 2.0) の外",
+        "verdict": "not_enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "entry_kind": "lowlevel_v1",
+        "framework": "mcp-lowlevel-v1",
+        "is_async": true,
+        "lineno": 171,
+        "module": "src.time.src.mcp_server_time.server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "name"
+          },
+          {
+            "annotation": "dict",
+            "index": 1,
+            "name": "arguments"
+          }
+        ],
+        "qualname": "serve.call_tool",
+        "relpath": "src/time/src/mcp_server_time/server.py",
+        "schema_hash": "965af40077db",
+        "tool_name": null,
+        "unit_id": "mcp-lowlevel-v1:serve.call_tool:965af40077db"
+      },
+      "validator_shapes": []
+    }
+  ]
+}

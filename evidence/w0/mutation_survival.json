@@ -1,0 +1,175 @@
+{
+  "acceptance": "生存 <= 2 (§2.5.6)",
+  "n_mutations": 15,
+  "n_survived": 1,
+  "predecessor_reference": "56 テスト時代の実装変異 15 件中 9〜10 件が生存。HEAD での生存数は未知",
+  "rows": [
+    {
+      "description": "支配規則の反転（常に支配とみなす）",
+      "killed_by": [
+        "m2_or_polarity:verdict"
+      ],
+      "mutation": "dominates_always_true",
+      "n_killed_by": 1,
+      "survived": false
+    },
+    {
+      "description": "支配規則の反転（常に非支配とみなす）",
+      "killed_by": [
+        "g01_exit_prefix:verdict",
+        "g02_or_failure_conjunction:verdict",
+        "g03_await_bare_approval:verdict",
+        "g04_walrus_test:verdict",
+        "g05_try_revalidate_reraise:verdict",
+        "g06_except_swallows_approval:reason"
+      ],
+      "mutation": "dominates_always_false",
+      "n_killed_by": 13,
+      "survived": false
+    },
+    {
+      "description": "(G-ii) を落とし支配だけでゲートとみなす",
+      "killed_by": [
+        "g06_except_swallows_approval:verdict",
+        "g09_suppress_absorbs_approval:verdict",
+        "g12_effect_in_finally:verdict",
+        "m3_reversed_polarity:verdict",
+        "m8_effect_on_false_branch:verdict"
+      ],
+      "mutation": "drop_G_ii",
+      "n_killed_by": 5,
+      "survived": false
+    },
+    {
+      "description": "`CFG∖{g}` の除去をやめる",
+      "killed_by": [
+        "g10_loop_continue_allowlist:verdict"
+      ],
+      "mutation": "no_cfg_removal",
+      "n_killed_by": 1,
+      "survived": false
+    },
+    {
+      "description": "拒否後継を全後継にする",
+      "killed_by": [
+        "g01_exit_prefix:verdict",
+        "g02_or_failure_conjunction:verdict",
+        "g03_await_bare_approval:verdict",
+        "g04_walrus_test:verdict",
+        "g05_try_revalidate_reraise:verdict",
+        "g07_comprehension_filter:verdict"
+      ],
+      "mutation": "deny_all_successors",
+      "n_killed_by": 10,
+      "survived": false
+    },
+    {
+      "description": "拒否後継から例外辺を落とす",
+      "killed_by": [
+        "g03_await_bare_approval:verdict",
+        "g05_try_revalidate_reraise:verdict",
+        "g06_except_swallows_approval:reason",
+        "g08_context_manager_approval:verdict",
+        "g09_suppress_absorbs_approval:reason",
+        "g12_effect_in_finally:reason"
+      ],
+      "mutation": "deny_ignores_exc",
+      "n_killed_by": 6,
+      "survived": false
+    },
+    {
+      "description": "述語のセンスを常に肯定にする",
+      "killed_by": [
+        "g10_loop_continue_allowlist:verdict",
+        "g15_req_occ_vs_req_val:verdict"
+      ],
+      "mutation": "sense_always_positive",
+      "n_killed_by": 2,
+      "survived": false
+    },
+    {
+      "description": "主語一致を削除する",
+      "killed_by": [
+        "g11_non_binding_subject:verdict"
+      ],
+      "mutation": "no_subject_match",
+      "n_killed_by": 1,
+      "survived": false
+    },
+    {
+      "description": "OPAQUE を NODOM に潰す",
+      "killed_by": [
+        "g13_dynamic_registry:verdict"
+      ],
+      "mutation": "opaque_squashed_to_nodom",
+      "n_killed_by": 1,
+      "survived": false
+    },
+    {
+      "description": "推定で A にする（ゲート要約を省く）",
+      "killed_by": [
+        "m1_binding_only:verdict"
+      ],
+      "mutation": "assume_approval",
+      "n_killed_by": 1,
+      "survived": false
+    },
+    {
+      "description": "`finally` 複製を抑止する",
+      "killed_by": [],
+      "mutation": "no_finally_copies",
+      "n_killed_by": 0,
+      "survived": true
+    },
+    {
+      "description": "例外辺を削除する",
+      "killed_by": [
+        "g03_await_bare_approval:verdict",
+        "g05_try_revalidate_reraise:verdict",
+        "g06_except_swallows_approval:reason",
+        "g08_context_manager_approval:verdict",
+        "g09_suppress_absorbs_approval:reason",
+        "g12_effect_in_finally:reason"
+      ],
+      "mutation": "no_exception_edges",
+      "n_killed_by": 6,
+      "survived": false
+    },
+    {
+      "description": "cap の記録を削除する",
+      "killed_by": [
+        "m7_cfg_cap:row TRUNCATED",
+        "m7_cfg_cap:row OPAQUE(cfg_cap)"
+      ],
+      "mutation": "no_cap_record",
+      "n_killed_by": 2,
+      "survived": false
+    },
+    {
+      "description": "parse 失敗の記録を削除する",
+      "killed_by": [
+        "m6_parse_failure:row parse_failure"
+      ],
+      "mutation": "no_parse_failure_record",
+      "n_killed_by": 1,
+      "survived": false
+    },
+    {
+      "description": "`not` の脱糖を削除する",
+      "killed_by": [
+        "g01_exit_prefix:verdict",
+        "g02_or_failure_conjunction:grade",
+        "g03_await_bare_approval:verdict",
+        "g04_walrus_test:verdict",
+        "g06_except_swallows_approval:reason",
+        "g08_context_manager_approval:verdict"
+      ],
+      "mutation": "not_desugaring_removed",
+      "n_killed_by": 10,
+      "survived": false
+    }
+  ],
+  "survived": [
+    "no_finally_copies"
+  ]
+}

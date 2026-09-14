@@ -200,8 +200,11 @@ config atom の源にモジュール定数を数えている（§2.3）ので、
 
 **決定。**
 
-1. **run 1 = commit `9c2bb11` の解析器で F0a を測る。** 関門の判定はまず run 1 で
-   出す（`evidence/f0a/f0a.json` の `run_meta.analyzer_commit`）。
+1. **run 1 = `authgap/` が commit `9c2bb11` と同一の解析器で F0a を測る。**
+   実行時の HEAD は `730c948`（スクリプトと文書だけが違う。
+   `git diff 9c2bb11 730c948 -- authgap` は空）で、これが
+   `evidence/f0a/f0a.json` の `run_meta.analyzer_commit` に入っている。
+   関門の判定はまず run 1 で出す。
 2. run 1 のユニット行を**読む前に**、検証標本の抽出手続き
    `scripts/sample_f0a_checks.py`（seed 20260914、6 層、効果サイトは
    (木, relpath, lineno, kind) で重複除去）をコミットする。検証対象を結果を

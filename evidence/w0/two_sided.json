@@ -1,0 +1,1040 @@
+{
+  "accepted_reasons": [
+    "approval-add",
+    "exec-mode-change",
+    "normalisation-add",
+    "principal-demotion",
+    "selector-narrowing",
+    "sink-substitution",
+    "validator-add"
+  ],
+  "coords": [
+    "kind",
+    "principal",
+    "grade",
+    "weak_reason",
+    "req_occ",
+    "req_val",
+    "exec_mode",
+    "dispatch_resolution"
+  ],
+  "n_pairs": 7,
+  "n_two_sided_pass": 7,
+  "n_verdict_clearing_pairs_inject": 1,
+  "n_verdict_clearing_pairs_strict": 0,
+  "na_reasons": [
+    "denylist-broadening",
+    "dependency-bump",
+    "feature-removal",
+    "no-fix",
+    "parser-coverage",
+    "redirect-rescope",
+    "sink-removal",
+    "tool-delete"
+  ],
+  "pairs": [
+    {
+      "changed_paths": [
+        {
+          "n_sites": 1,
+          "path": "git_add"
+        },
+        {
+          "n_sites": 1,
+          "path": "git_branch"
+        },
+        {
+          "n_sites": 1,
+          "path": "git_checkout"
+        },
+        {
+          "n_sites": 1,
+          "path": "git_diff"
+        },
+        {
+          "n_sites": 1,
+          "path": "git_diff_staged"
+        },
+        {
+          "n_sites": 1,
+          "path": "git_diff_unstaged"
+        },
+        {
+          "n_sites": 1,
+          "path": "git_log"
+        },
+        {
+          "n_sites": 1,
+          "path": "git_status"
+        }
+      ],
+      "changed_sites": [
+        {
+          "diffs": {
+            "grade": [
+              null,
+              "strong-path"
+            ],
+            "req_val": [
+              "MODEL",
+              "OP"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": "strong-path",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "OP",
+            "weak_reason": null
+          },
+          "site": "SPAWN@git.Git.add#cwd [git_add]",
+          "vuln": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": null,
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": null
+          }
+        },
+        {
+          "diffs": {
+            "grade": [
+              null,
+              "strong-path"
+            ],
+            "req_val": [
+              "MODEL",
+              "OP"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": "strong-path",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "OP",
+            "weak_reason": null
+          },
+          "site": "SPAWN@git.Git.branch#cwd [git_branch]",
+          "vuln": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": null,
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": null
+          }
+        },
+        {
+          "diffs": {
+            "grade": [
+              null,
+              "strong-path"
+            ],
+            "req_val": [
+              "MODEL",
+              "OP"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": "strong-path",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "OP",
+            "weak_reason": null
+          },
+          "site": "SPAWN@git.Git.checkout#cwd [git_checkout]",
+          "vuln": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": null,
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": null
+          }
+        },
+        {
+          "diffs": {
+            "grade": [
+              null,
+              "strong-path"
+            ],
+            "req_val": [
+              "MODEL",
+              "OP"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": "strong-path",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "OP",
+            "weak_reason": null
+          },
+          "site": "SPAWN@git.Git.diff#cwd [git_diff]",
+          "vuln": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": null,
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": null
+          }
+        },
+        {
+          "diffs": {
+            "grade": [
+              null,
+              "strong-path"
+            ],
+            "req_val": [
+              "MODEL",
+              "OP"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": "strong-path",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "OP",
+            "weak_reason": null
+          },
+          "site": "SPAWN@git.Git.diff#cwd [git_diff_staged]",
+          "vuln": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": null,
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": null
+          }
+        },
+        {
+          "diffs": {
+            "grade": [
+              null,
+              "strong-path"
+            ],
+            "req_val": [
+              "MODEL",
+              "OP"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": "strong-path",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "OP",
+            "weak_reason": null
+          },
+          "site": "SPAWN@git.Git.diff#cwd [git_diff_unstaged]",
+          "vuln": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": null,
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": null
+          }
+        },
+        {
+          "diffs": {
+            "grade": [
+              null,
+              "strong-path"
+            ],
+            "req_val": [
+              "MODEL",
+              "OP"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": "strong-path",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "OP",
+            "weak_reason": null
+          },
+          "site": "SPAWN@git.Git.log#cwd [git_log]",
+          "vuln": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": null,
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": null
+          }
+        },
+        {
+          "diffs": {
+            "grade": [
+              null,
+              "strong-path"
+            ],
+            "req_val": [
+              "MODEL",
+              "OP"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": "strong-path",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "OP",
+            "weak_reason": null
+          },
+          "site": "SPAWN@git.Git.status#cwd [git_status]",
+          "vuln": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": null,
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": null
+          }
+        }
+      ],
+      "fixed_root": "/home/yudai/Project/research/Master_Project/authgap/corpus/A1__fixed",
+      "n_changed_paths": 8,
+      "n_unchanged_paths": 2,
+      "n_verdict_clearing_paths": 0,
+      "only_fixed": [],
+      "only_vuln": [],
+      "pair_cleared_inject": false,
+      "pair_cleared_strict": false,
+      "pair_id": "A1",
+      "still_gap_inject_paths": [
+        "git_add"
+      ],
+      "still_gap_paths": [
+        "git_add",
+        "git_branch",
+        "git_checkout",
+        "git_diff",
+        "git_diff_staged",
+        "git_diff_unstaged",
+        "git_log",
+        "git_status"
+      ],
+      "two_sided_pass": true,
+      "verdict_clearing_paths": [],
+      "vuln_root": "/home/yudai/Project/research/Master_Project/authgap/corpus/A1__vuln"
+    },
+    {
+      "changed_paths": [
+        {
+          "n_sites": 1,
+          "path": "SQLChatAgent.run_query"
+        }
+      ],
+      "changed_sites": [
+        {
+          "diffs": {
+            "grade": [
+              null,
+              "weak"
+            ],
+            "weak_reason": [
+              null,
+              "statement_type_only"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "assumed",
+            "exec_mode": null,
+            "grade": "weak",
+            "kind": "DB",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": "statement_type_only"
+          },
+          "site": "DB@sqlalchemy.text#sql [SQLChatAgent.run_query]",
+          "vuln": {
+            "dispatch_resolution": "assumed",
+            "exec_mode": null,
+            "grade": null,
+            "kind": "DB",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": null
+          }
+        }
+      ],
+      "fixed_root": "/home/yudai/Project/research/Master_Project/authgap/corpus/A18__fixed",
+      "n_changed_paths": 1,
+      "n_unchanged_paths": 10,
+      "n_verdict_clearing_paths": 0,
+      "only_fixed": [],
+      "only_vuln": [],
+      "pair_cleared_inject": false,
+      "pair_cleared_strict": false,
+      "pair_id": "A18",
+      "still_gap_inject_paths": [
+        "SQLChatAgent.run_query"
+      ],
+      "still_gap_paths": [
+        "SQLChatAgent.run_query"
+      ],
+      "two_sided_pass": true,
+      "verdict_clearing_paths": [],
+      "vuln_root": "/home/yudai/Project/research/Master_Project/authgap/corpus/A18__vuln"
+    },
+    {
+      "changed_paths": [
+        {
+          "n_sites": 1,
+          "path": "git_checkout"
+        },
+        {
+          "n_sites": 1,
+          "path": "git_diff"
+        }
+      ],
+      "changed_sites": [
+        {
+          "diffs": {
+            "grade": [
+              null,
+              "strong-token"
+            ],
+            "req_val": [
+              "MODEL",
+              "OP"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": "strong-token",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "OP",
+            "weak_reason": null
+          },
+          "site": "SPAWN@git.Git.checkout#argv[*] [git_checkout]",
+          "vuln": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": null,
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": null
+          }
+        },
+        {
+          "diffs": {
+            "grade": [
+              null,
+              "strong-token"
+            ],
+            "req_val": [
+              "MODEL",
+              "OP"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": "strong-token",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "OP",
+            "weak_reason": null
+          },
+          "site": "SPAWN@git.Git.diff#argv[*] [git_diff]",
+          "vuln": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": null,
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": null
+          }
+        }
+      ],
+      "fixed_root": "/home/yudai/Project/research/Master_Project/authgap/corpus/A2__fixed",
+      "n_changed_paths": 2,
+      "n_unchanged_paths": 8,
+      "n_verdict_clearing_paths": 0,
+      "only_fixed": [],
+      "only_vuln": [],
+      "pair_cleared_inject": false,
+      "pair_cleared_strict": false,
+      "pair_id": "A2",
+      "still_gap_inject_paths": [
+        "git_checkout",
+        "git_diff"
+      ],
+      "still_gap_paths": [
+        "git_checkout",
+        "git_diff"
+      ],
+      "two_sided_pass": true,
+      "verdict_clearing_paths": [],
+      "vuln_root": "/home/yudai/Project/research/Master_Project/authgap/corpus/A2__vuln"
+    },
+    {
+      "changed_paths": [
+        {
+          "n_sites": 2,
+          "path": "git_add"
+        }
+      ],
+      "changed_sites": [
+        {
+          "diffs": {
+            "presence": [
+              "present",
+              "absent"
+            ]
+          },
+          "fixed": null,
+          "site": "FS_WRITE@git.IndexFile.add#path [git_add]",
+          "vuln": {
+            "dispatch_resolution": "traced",
+            "exec_mode": null,
+            "grade": null,
+            "kind": "FS_WRITE",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": null
+          }
+        },
+        {
+          "diffs": {
+            "principal": [
+              "OP",
+              "MODEL"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": null,
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": null
+          },
+          "site": "SPAWN@git.Git.add#argv[*] [git_add]",
+          "vuln": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": null,
+            "kind": "SPAWN",
+            "principal": "OP",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": null
+          }
+        }
+      ],
+      "fixed_root": "/home/yudai/Project/research/Master_Project/authgap/corpus/A3__fixed",
+      "n_changed_paths": 1,
+      "n_unchanged_paths": 9,
+      "n_verdict_clearing_paths": 0,
+      "only_fixed": [],
+      "only_vuln": [],
+      "pair_cleared_inject": false,
+      "pair_cleared_strict": false,
+      "pair_id": "A3",
+      "still_gap_inject_paths": [
+        "git_add"
+      ],
+      "still_gap_paths": [
+        "git_add"
+      ],
+      "two_sided_pass": true,
+      "verdict_clearing_paths": [],
+      "vuln_root": "/home/yudai/Project/research/Master_Project/authgap/corpus/A3__vuln"
+    },
+    {
+      "changed_paths": [
+        {
+          "n_sites": 1,
+          "path": "git_add"
+        }
+      ],
+      "changed_sites": [
+        {
+          "diffs": {
+            "grade": [
+              null,
+              "strong-path"
+            ],
+            "req_val": [
+              "MODEL",
+              "OP"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": "strong-path",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "OP",
+            "weak_reason": null
+          },
+          "site": "SPAWN@git.Git.add#argv[*] [git_add]",
+          "vuln": {
+            "dispatch_resolution": "traced",
+            "exec_mode": false,
+            "grade": null,
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": null
+          }
+        }
+      ],
+      "fixed_root": "/home/yudai/Project/research/Master_Project/authgap/corpus/A4__fixed",
+      "n_changed_paths": 1,
+      "n_unchanged_paths": 9,
+      "n_verdict_clearing_paths": 0,
+      "only_fixed": [],
+      "only_vuln": [],
+      "pair_cleared_inject": true,
+      "pair_cleared_strict": false,
+      "pair_id": "A4",
+      "still_gap_inject_paths": [],
+      "still_gap_paths": [
+        "git_add"
+      ],
+      "two_sided_pass": true,
+      "verdict_clearing_paths": [],
+      "vuln_root": "/home/yudai/Project/research/Master_Project/authgap/corpus/A4__vuln"
+    },
+    {
+      "changed_paths": [
+        {
+          "n_sites": 3,
+          "path": "execute_shell"
+        },
+        {
+          "n_sites": 3,
+          "path": "execute_shell_popen"
+        }
+      ],
+      "changed_sites": [
+        {
+          "diffs": {
+            "presence": [
+              "absent",
+              "present"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "assumed",
+            "exec_mode": "config-conditional",
+            "grade": "weak",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": "first_token"
+          },
+          "site": "SPAWN@subprocess.run#argv0 [execute_shell]",
+          "vuln": null
+        },
+        {
+          "diffs": {
+            "presence": [
+              "absent",
+              "present"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "assumed",
+            "exec_mode": "config-conditional",
+            "grade": "weak",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": "first_token"
+          },
+          "site": "SPAWN@subprocess.run#argv[*] [execute_shell]",
+          "vuln": null
+        },
+        {
+          "diffs": {
+            "exec_mode": [
+              true,
+              "config-conditional"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "assumed",
+            "exec_mode": "config-conditional",
+            "grade": "weak",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": "first_token"
+          },
+          "site": "SPAWN@subprocess.run#shell_string [execute_shell]",
+          "vuln": {
+            "dispatch_resolution": "assumed",
+            "exec_mode": true,
+            "grade": "weak",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": "first_token"
+          }
+        },
+        {
+          "diffs": {
+            "presence": [
+              "absent",
+              "present"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "assumed",
+            "exec_mode": "config-conditional",
+            "grade": "weak",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": "first_token"
+          },
+          "site": "SPAWN@subprocess.Popen#argv0 [execute_shell_popen]",
+          "vuln": null
+        },
+        {
+          "diffs": {
+            "presence": [
+              "absent",
+              "present"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "assumed",
+            "exec_mode": "config-conditional",
+            "grade": "weak",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": "first_token"
+          },
+          "site": "SPAWN@subprocess.Popen#argv[*] [execute_shell_popen]",
+          "vuln": null
+        },
+        {
+          "diffs": {
+            "exec_mode": [
+              true,
+              "config-conditional"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "assumed",
+            "exec_mode": "config-conditional",
+            "grade": "weak",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": "first_token"
+          },
+          "site": "SPAWN@subprocess.Popen#shell_string [execute_shell_popen]",
+          "vuln": {
+            "dispatch_resolution": "assumed",
+            "exec_mode": true,
+            "grade": "weak",
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": "first_token"
+          }
+        }
+      ],
+      "fixed_root": "/home/yudai/Project/research/Master_Project/authgap/corpus/A5__fixed",
+      "n_changed_paths": 2,
+      "n_unchanged_paths": 13,
+      "n_verdict_clearing_paths": 0,
+      "only_fixed": [],
+      "only_vuln": [],
+      "pair_cleared_inject": false,
+      "pair_cleared_strict": false,
+      "pair_id": "A5",
+      "still_gap_inject_paths": [
+        "execute_shell",
+        "execute_shell_popen"
+      ],
+      "still_gap_paths": [
+        "execute_shell",
+        "execute_shell_popen"
+      ],
+      "two_sided_pass": true,
+      "verdict_clearing_paths": [],
+      "vuln_root": "/home/yudai/Project/research/Master_Project/authgap/corpus/A5__vuln"
+    },
+    {
+      "changed_paths": [
+        {
+          "n_sites": 2,
+          "path": "ast_grep_rewrite"
+        },
+        {
+          "n_sites": 1,
+          "path": "create_directories_for_file"
+        },
+        {
+          "n_sites": 2,
+          "path": "write_file"
+        }
+      ],
+      "changed_sites": [
+        {
+          "diffs": {
+            "req_occ": [
+              "MODEL",
+              "USER"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "assumed",
+            "exec_mode": false,
+            "grade": null,
+            "kind": "SPAWN",
+            "principal": "OP",
+            "req_occ": "USER",
+            "req_val": "MODEL",
+            "weak_reason": null
+          },
+          "site": "SPAWN@subprocess.run#argv0 [ast_grep_rewrite]",
+          "vuln": {
+            "dispatch_resolution": "assumed",
+            "exec_mode": false,
+            "grade": null,
+            "kind": "SPAWN",
+            "principal": "OP",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": null
+          }
+        },
+        {
+          "diffs": {
+            "req_occ": [
+              "MODEL",
+              "USER"
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "assumed",
+            "exec_mode": false,
+            "grade": null,
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "USER",
+            "req_val": "MODEL",
+            "weak_reason": null
+          },
+          "site": "SPAWN@subprocess.run#argv[*] [ast_grep_rewrite]",
+          "vuln": {
+            "dispatch_resolution": "assumed",
+            "exec_mode": false,
+            "grade": null,
+            "kind": "SPAWN",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": null
+          }
+        },
+        {
+          "diffs": {
+            "grade": [
+              "weak",
+              "strong-path"
+            ],
+            "req_val": [
+              "MODEL",
+              "OP"
+            ],
+            "weak_reason": [
+              "no_symlink_resolution",
+              null
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "traced",
+            "exec_mode": null,
+            "grade": "strong-path",
+            "kind": "FS_WRITE",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "OP",
+            "weak_reason": null
+          },
+          "site": "FS_WRITE@os.makedirs#path [create_directories_for_file]",
+          "vuln": {
+            "dispatch_resolution": "traced",
+            "exec_mode": null,
+            "grade": "weak",
+            "kind": "FS_WRITE",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": "no_symlink_resolution"
+          }
+        },
+        {
+          "diffs": {
+            "grade": [
+              "weak",
+              "strong-path"
+            ],
+            "req_val": [
+              "MODEL",
+              "OP"
+            ],
+            "weak_reason": [
+              "no_symlink_resolution",
+              null
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "traced",
+            "exec_mode": null,
+            "grade": "strong-path",
+            "kind": "FS_READ",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "OP",
+            "weak_reason": null
+          },
+          "site": "FS_READ@builtins.open#path [write_file]",
+          "vuln": {
+            "dispatch_resolution": "traced",
+            "exec_mode": null,
+            "grade": "weak",
+            "kind": "FS_READ",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": "no_symlink_resolution"
+          }
+        },
+        {
+          "diffs": {
+            "grade": [
+              "weak",
+              "strong-path"
+            ],
+            "req_val": [
+              "MODEL",
+              "OP"
+            ],
+            "weak_reason": [
+              "no_symlink_resolution",
+              null
+            ]
+          },
+          "fixed": {
+            "dispatch_resolution": "traced",
+            "exec_mode": null,
+            "grade": "strong-path",
+            "kind": "FS_WRITE",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "OP",
+            "weak_reason": null
+          },
+          "site": "FS_WRITE@builtins.open#path [write_file]",
+          "vuln": {
+            "dispatch_resolution": "traced",
+            "exec_mode": null,
+            "grade": "weak",
+            "kind": "FS_WRITE",
+            "principal": "MODEL",
+            "req_occ": "MODEL",
+            "req_val": "MODEL",
+            "weak_reason": "no_symlink_resolution"
+          }
+        }
+      ],
+      "fixed_root": "/home/yudai/Project/research/Master_Project/authgap/corpus/A9__fixed",
+      "n_changed_paths": 3,
+      "n_unchanged_paths": 23,
+      "n_verdict_clearing_paths": 0,
+      "only_fixed": [],
+      "only_vuln": [],
+      "pair_cleared_inject": false,
+      "pair_cleared_strict": false,
+      "pair_id": "A9",
+      "still_gap_inject_paths": [
+        "ast_grep_rewrite"
+      ],
+      "still_gap_paths": [
+        "ast_grep_rewrite",
+        "create_directories_for_file",
+        "write_file"
+      ],
+      "two_sided_pass": true,
+      "verdict_clearing_paths": [],
+      "vuln_root": "/home/yudai/Project/research/Master_Project/authgap/corpus/A9__vuln"
+    }
+  ]
+}

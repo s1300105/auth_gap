@@ -1,0 +1,1549 @@
+{
+  "fixtures/dominance_mutants": [
+    {
+      "actual": {
+        "case": "m1_binding_only",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 16,
+        "effect_nodes": [
+          5
+        ],
+        "file": "m1_binding_only.py",
+        "grade": null,
+        "notes": [],
+        "reason": "no_gate",
+        "rows": [],
+        "score": {
+          "candidates": [
+            {
+              "form": "approval",
+              "name": "confirm",
+              "node": 3,
+              "recognition": "not_a_gate",
+              "subjects": [
+                "name"
+              ]
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L14"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 5,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "NODOM",
+        "witness": "L14",
+        "witness_line": 14
+      },
+      "case": "m1_binding_only",
+      "expected": {
+        "grade": null,
+        "not_verdict": "DOM",
+        "reason": null,
+        "requires_rows": [],
+        "verdict": null,
+        "witness_line": 14
+      },
+      "hole": "`ok = confirm(name)` の束縛のみで無条件 dispatch",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "m2_or_polarity",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 15,
+        "effect_nodes": [
+          3
+        ],
+        "file": "m2_or_polarity.py",
+        "grade": null,
+        "notes": [],
+        "reason": "no_gate",
+        "rows": [],
+        "score": {
+          "candidates": [
+            {
+              "form": "approval",
+              "grade": "USER",
+              "name": "confirm",
+              "node": 4,
+              "recognition": "A-c",
+              "subjects": [
+                "name"
+              ]
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L14"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "NODOM",
+        "witness": "L14",
+        "witness_line": 14
+      },
+      "case": "m2_or_polarity",
+      "expected": {
+        "grade": null,
+        "not_verdict": "DOM",
+        "reason": null,
+        "requires_rows": [],
+        "verdict": null,
+        "witness_line": 14
+      },
+      "hole": "`if trusted or confirm(name):`（`or` の極性）",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "m3_reversed_polarity",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 11,
+        "effect_nodes": [
+          3
+        ],
+        "file": "m3_reversed_polarity.py",
+        "grade": null,
+        "notes": [],
+        "reason": "deny_reaches_effect",
+        "rows": [],
+        "score": {
+          "candidates": [
+            {
+              "atom": {
+                "default": "{'git_log', 'git_show'}",
+                "default_closed": true,
+                "name": "ALLOWED_TOOLS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "is_allowed",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "name"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "deny_reaches_effect",
+            "verdict": "NODOM",
+            "witness": "L10"
+          },
+          "notes": [
+            "escaping_deny=3"
+          ],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "NODOM",
+        "witness": "L10",
+        "witness_line": 10
+      },
+      "case": "m3_reversed_polarity",
+      "expected": {
+        "grade": null,
+        "not_verdict": "DOM",
+        "reason": null,
+        "requires_rows": [],
+        "verdict": null,
+        "witness_line": 10
+      },
+      "hole": "`if not is_allowed(name): tool.run()`（極性逆）",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "m4_file_level_gate",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 15,
+        "effect_nodes": [
+          3
+        ],
+        "file": "m4_file_level_gate.py",
+        "grade": null,
+        "notes": [],
+        "reason": "no_gate",
+        "rows": [],
+        "score": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "NODOM",
+        "witness": null,
+        "witness_line": null
+      },
+      "case": "m4_file_level_gate",
+      "expected": {
+        "grade": null,
+        "not_verdict": "DOM",
+        "reason": null,
+        "requires_rows": [],
+        "verdict": null,
+        "witness_line": null
+      },
+      "hole": "無関係な関数の `human_in_the_loop=False`（file-level gate の誤検出）",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "m5_same_name_other_module",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 17,
+        "effect_nodes": [
+          3
+        ],
+        "file": "m5_same_name_other_module.py",
+        "grade": null,
+        "notes": [],
+        "reason": "no_gate",
+        "rows": [],
+        "score": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "NODOM",
+        "witness": null,
+        "witness_line": null
+      },
+      "case": "m5_same_name_other_module",
+      "expected": {
+        "grade": null,
+        "not_verdict": "DOM",
+        "reason": null,
+        "requires_rows": [],
+        "verdict": null,
+        "witness_line": null
+      },
+      "hole": "別モジュールの同名クラスにゲートがあり、当該ユニットの連結経路上には無い形",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "m6_parse_failure",
+        "coordinate": "occ",
+        "dispatch_candidates": [],
+        "dispatch_resolution": "n/a",
+        "effect_line": null,
+        "effect_nodes": [],
+        "file": "m6_parse_failure.py.broken",
+        "grade": null,
+        "notes": [
+          "parse 失敗。**黙って捨てず行として出す。**"
+        ],
+        "reason": "no_gate",
+        "rows": [
+          "parse_failure"
+        ],
+        "score": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [],
+          "req": "MODEL"
+        },
+        "subjects": [],
+        "verdict": "NODOM",
+        "witness": null,
+        "witness_line": null
+      },
+      "case": "m6_parse_failure",
+      "expected": {
+        "grade": null,
+        "not_verdict": "DOM",
+        "reason": null,
+        "requires_rows": [
+          "parse_failure"
+        ],
+        "verdict": null,
+        "witness_line": null
+      },
+      "hole": "parse 失敗ファイルの黙殺",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "m7_cfg_cap",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 2117,
+        "effect_nodes": [
+          2103
+        ],
+        "file": "m7_cfg_cap.py",
+        "grade": null,
+        "notes": [],
+        "reason": "cfg_cap",
+        "rows": [
+          "OPAQUE(cfg_cap)",
+          "TRUNCATED"
+        ],
+        "score": {
+          "candidates": [],
+          "gate": {
+            "reason": "cfg_cap",
+            "verdict": "OPAQUE",
+            "witness": "L2117"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 2103,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "OPAQUE",
+        "witness": "L2117",
+        "witness_line": 2117
+      },
+      "case": "m7_cfg_cap",
+      "expected": {
+        "grade": null,
+        "not_verdict": "DOM",
+        "reason": null,
+        "requires_rows": [
+          "TRUNCATED",
+          "OPAQUE(cfg_cap)"
+        ],
+        "verdict": null,
+        "witness_line": null
+      },
+      "hole": "node/深さ cap 到達での黙示 clear",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "m8_effect_on_false_branch",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 12,
+        "effect_nodes": [
+          5
+        ],
+        "file": "m8_effect_on_false_branch.py",
+        "grade": null,
+        "notes": [],
+        "reason": "deny_reaches_effect",
+        "rows": [],
+        "score": {
+          "candidates": [
+            {
+              "form": "approval",
+              "grade": "USER",
+              "name": "confirm",
+              "node": 4,
+              "recognition": "A-c",
+              "subjects": [
+                "name"
+              ]
+            }
+          ],
+          "gate": {
+            "reason": "deny_reaches_effect",
+            "verdict": "NODOM",
+            "witness": "L10"
+          },
+          "notes": [
+            "escaping_deny=5"
+          ],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 5,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "NODOM",
+        "witness": "L10",
+        "witness_line": 10
+      },
+      "case": "m8_effect_on_false_branch",
+      "expected": {
+        "grade": null,
+        "not_verdict": "DOM",
+        "reason": null,
+        "requires_rows": [],
+        "verdict": null,
+        "witness_line": 10
+      },
+      "hole": "ガード偽側の分岐に dispatch がある形",
+      "ok": true,
+      "why": []
+    }
+  ],
+  "fixtures/gates": [
+    {
+      "actual": {
+        "case": "g01_exit_prefix",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 17,
+        "effect_nodes": [
+          6
+        ],
+        "file": "g01_exit_prefix.py",
+        "grade": "OP",
+        "notes": [],
+        "reason": null,
+        "rows": [],
+        "score": {
+          "candidates": [
+            {
+              "atom": {
+                "default": "{'git_log', 'git_show'}",
+                "default_closed": true,
+                "name": "ALLOWED_TOOLS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "is_allowed",
+              "node": 5,
+              "recognition": "V",
+              "subjects": [
+                "name"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "grade": "OP",
+            "verdict": "DOM",
+            "witness": "L14"
+          },
+          "notes": [],
+          "passing": [
+            5
+          ],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "gated"
+            }
+          ],
+          "req": "OP"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "DOM",
+        "witness": "L14",
+        "witness_line": 14
+      },
+      "case": "g01_exit_prefix",
+      "expected": {
+        "grade": "OP",
+        "not_verdict": null,
+        "reason": null,
+        "requires_rows": [],
+        "verdict": "DOM",
+        "witness_line": 14
+      },
+      "hole": "exit 前に 1 文（`_is_exit_body` の全 exit 要求）",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "g02_or_failure_conjunction",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 16,
+        "effect_nodes": [
+          6
+        ],
+        "file": "g02_or_failure_conjunction.py",
+        "grade": "USER",
+        "notes": [],
+        "reason": null,
+        "rows": [],
+        "score": {
+          "candidates": [
+            {
+              "atom": {
+                "default": "{'git_log', 'git_show'}",
+                "default_closed": true,
+                "name": "ALLOWED_TOOLS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "ALLOWED_TOOLS",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "name"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "approval",
+              "grade": "USER",
+              "name": "confirm",
+              "node": 5,
+              "recognition": "A-c",
+              "subjects": [
+                "name"
+              ]
+            }
+          ],
+          "gate": {
+            "grade": "USER",
+            "verdict": "DOM",
+            "witness": "L14"
+          },
+          "notes": [],
+          "passing": [
+            4,
+            5
+          ],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "gated"
+            }
+          ],
+          "req": "USER"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "DOM",
+        "witness": "L14",
+        "witness_line": 14
+      },
+      "case": "g02_or_failure_conjunction",
+      "expected": {
+        "grade": "USER",
+        "not_verdict": null,
+        "reason": null,
+        "requires_rows": [],
+        "verdict": "DOM",
+        "witness_line": 14
+      },
+      "hole": "`or` の失敗連言",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "g03_await_bare_approval",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 11,
+        "effect_nodes": [
+          4
+        ],
+        "file": "g03_await_bare_approval.py",
+        "grade": "USER",
+        "notes": [],
+        "reason": null,
+        "rows": [],
+        "score": {
+          "candidates": [
+            {
+              "form": "approval",
+              "grade": "USER",
+              "name": "require_approval",
+              "node": 3,
+              "recognition": "A-b",
+              "subjects": [
+                "name"
+              ]
+            }
+          ],
+          "gate": {
+            "grade": "USER",
+            "verdict": "DOM",
+            "witness": "L10"
+          },
+          "notes": [],
+          "passing": [
+            3
+          ],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "gated"
+            }
+          ],
+          "req": "USER"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "DOM",
+        "witness": "L10",
+        "witness_line": 10
+      },
+      "case": "g03_await_bare_approval",
+      "expected": {
+        "grade": "USER",
+        "not_verdict": null,
+        "reason": null,
+        "requires_rows": [],
+        "verdict": "DOM",
+        "witness_line": 10
+      },
+      "hole": "`await` した承認割り込みの裸文",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "g04_walrus_test",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 12,
+        "effect_nodes": [
+          5
+        ],
+        "file": "g04_walrus_test.py",
+        "grade": "USER",
+        "notes": [],
+        "reason": null,
+        "rows": [],
+        "score": {
+          "candidates": [
+            {
+              "form": "approval",
+              "grade": "USER",
+              "name": "confirm",
+              "node": 4,
+              "recognition": "A-c",
+              "subjects": [
+                "name"
+              ]
+            }
+          ],
+          "gate": {
+            "grade": "USER",
+            "verdict": "DOM",
+            "witness": "L10"
+          },
+          "notes": [],
+          "passing": [
+            4
+          ],
+          "per_copy": [
+            {
+              "node": 5,
+              "status": "gated"
+            }
+          ],
+          "req": "USER"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "DOM",
+        "witness": "L10",
+        "witness_line": 10
+      },
+      "case": "g04_walrus_test",
+      "expected": {
+        "grade": "USER",
+        "not_verdict": null,
+        "reason": null,
+        "requires_rows": [],
+        "verdict": "DOM",
+        "witness_line": 10
+      },
+      "hole": "walrus を含む test",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "g05_try_revalidate_reraise",
+        "coordinate": "val",
+        "dispatch_candidates": [],
+        "dispatch_resolution": "n/a",
+        "effect_line": 17,
+        "effect_nodes": [
+          6
+        ],
+        "file": "g05_try_revalidate_reraise.py",
+        "grade": "OP",
+        "notes": [],
+        "reason": null,
+        "rows": [],
+        "score": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "OP",
+              "name": "validate_path",
+              "node": 5,
+              "recognition": "V",
+              "subjects": [
+                "ROOT",
+                "path"
+              ],
+              "value_grade": "strong-path"
+            }
+          ],
+          "gate": {
+            "grade": "OP",
+            "verdict": "DOM",
+            "witness": "L14"
+          },
+          "notes": [],
+          "passing": [
+            5
+          ],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "gated"
+            }
+          ],
+          "req": "OP"
+        },
+        "subjects": [
+          "ROOT",
+          "path",
+          "safe",
+          "validate_path"
+        ],
+        "verdict": "DOM",
+        "witness": "L14",
+        "witness_line": 14
+      },
+      "case": "g05_try_revalidate_reraise",
+      "expected": {
+        "grade": "OP",
+        "not_verdict": null,
+        "reason": null,
+        "requires_rows": [],
+        "verdict": "DOM",
+        "witness_line": 14
+      },
+      "hole": "try/except でパス検証が再送出",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "g06_except_swallows_approval",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 17,
+        "effect_nodes": [
+          6
+        ],
+        "file": "g06_except_swallows_approval.py",
+        "grade": null,
+        "notes": [],
+        "reason": "deny_reaches_effect",
+        "rows": [],
+        "score": {
+          "candidates": [
+            {
+              "form": "approval",
+              "grade": "USER",
+              "name": "require_approval",
+              "node": 5,
+              "recognition": "A-b",
+              "subjects": [
+                "name"
+              ]
+            }
+          ],
+          "gate": {
+            "reason": "deny_reaches_effect",
+            "verdict": "NODOM",
+            "witness": "L14"
+          },
+          "notes": [
+            "escaping_deny=3"
+          ],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "NODOM",
+        "witness": "L14",
+        "witness_line": 14
+      },
+      "case": "g06_except_swallows_approval",
+      "expected": {
+        "grade": null,
+        "not_verdict": null,
+        "reason": "deny_reaches_effect",
+        "requires_rows": [],
+        "verdict": "NODOM",
+        "witness_line": 14
+      },
+      "hole": "承認の例外が except で握り潰される",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "g07_comprehension_filter",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 11,
+        "effect_nodes": [
+          5
+        ],
+        "file": "g07_comprehension_filter.py",
+        "grade": "OP",
+        "notes": [
+          "内包表記の別 CFG で採点した（§2.5.1）"
+        ],
+        "reason": null,
+        "rows": [],
+        "score": {
+          "candidates": [
+            {
+              "atom": {
+                "default": "{'git_log', 'git_show'}",
+                "default_closed": true,
+                "name": "ALLOWED_TOOLS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "is_allowed",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "n"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "grade": "OP",
+            "verdict": "DOM",
+            "witness": "L11"
+          },
+          "notes": [],
+          "passing": [
+            4
+          ],
+          "per_copy": [
+            {
+              "node": 5,
+              "status": "gated"
+            }
+          ],
+          "req": "OP"
+        },
+        "subjects": [
+          "n"
+        ],
+        "verdict": "DOM",
+        "witness": "L11",
+        "witness_line": 11
+      },
+      "case": "g07_comprehension_filter",
+      "expected": {
+        "grade": "OP",
+        "not_verdict": null,
+        "reason": null,
+        "requires_rows": [],
+        "verdict": "DOM",
+        "witness_line": 11
+      },
+      "hole": "内包表記の `if` フィルタ",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "g08_context_manager_approval",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 13,
+        "effect_nodes": [
+          6
+        ],
+        "file": "g08_context_manager_approval.py",
+        "grade": "USER",
+        "notes": [],
+        "reason": null,
+        "rows": [],
+        "score": {
+          "candidates": [
+            {
+              "form": "approval",
+              "grade": "USER",
+              "name": "gw.require_approval",
+              "node": 4,
+              "recognition": "A-b",
+              "subjects": [
+                "name"
+              ]
+            }
+          ],
+          "gate": {
+            "grade": "USER",
+            "verdict": "DOM",
+            "witness": "L12"
+          },
+          "notes": [],
+          "passing": [
+            4
+          ],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "gated"
+            }
+          ],
+          "req": "USER"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "DOM",
+        "witness": "L12",
+        "witness_line": 12
+      },
+      "case": "g08_context_manager_approval",
+      "expected": {
+        "grade": "USER",
+        "not_verdict": null,
+        "reason": null,
+        "requires_rows": [],
+        "verdict": "DOM",
+        "witness_line": 12
+      },
+      "hole": "CM 形の承認ゲート（`Gateway.require_approval`、木内解決可）",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "g09_suppress_absorbs_approval",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 16,
+        "effect_nodes": [
+          6
+        ],
+        "file": "g09_suppress_absorbs_approval.py",
+        "grade": null,
+        "notes": [],
+        "reason": "deny_reaches_effect",
+        "rows": [],
+        "score": {
+          "candidates": [
+            {
+              "form": "approval",
+              "grade": "USER",
+              "name": "require_approval",
+              "node": 5,
+              "recognition": "A-b",
+              "subjects": [
+                "name"
+              ]
+            }
+          ],
+          "gate": {
+            "reason": "deny_reaches_effect",
+            "verdict": "NODOM",
+            "witness": "L15"
+          },
+          "notes": [
+            "escaping_deny=4"
+          ],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "NODOM",
+        "witness": "L15",
+        "witness_line": 15
+      },
+      "case": "g09_suppress_absorbs_approval",
+      "expected": {
+        "grade": null,
+        "not_verdict": null,
+        "reason": "deny_reaches_effect",
+        "requires_rows": [],
+        "verdict": "NODOM",
+        "witness_line": 15
+      },
+      "hole": "`contextlib.suppress` が承認を吸収",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "g10_loop_continue_allowlist",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 17,
+        "effect_nodes": [
+          8
+        ],
+        "file": "g10_loop_continue_allowlist.py",
+        "grade": "OP",
+        "notes": [],
+        "reason": null,
+        "rows": [],
+        "score": {
+          "candidates": [
+            {
+              "atom": {
+                "default": "{'git_log', 'git_show'}",
+                "default_closed": true,
+                "name": "ALLOWED_TOOLS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "ALLOWED_TOOLS",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "name"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "grade": "OP",
+            "verdict": "DOM",
+            "witness": "L15"
+          },
+          "notes": [],
+          "passing": [
+            7
+          ],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "gated"
+            }
+          ],
+          "req": "OP"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "DOM",
+        "witness": "L15",
+        "witness_line": 15
+      },
+      "case": "g10_loop_continue_allowlist",
+      "expected": {
+        "grade": "OP",
+        "not_verdict": null,
+        "reason": null,
+        "requires_rows": [],
+        "verdict": "DOM",
+        "witness_line": 15
+      },
+      "hole": "ループ内 `continue` の allowlist",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "g11_non_binding_subject",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 20,
+        "effect_nodes": [
+          5
+        ],
+        "file": "g11_non_binding_subject.py",
+        "grade": null,
+        "notes": [],
+        "reason": "non_binding_gate",
+        "rows": [],
+        "score": {
+          "candidates": [
+            {
+              "atom": {
+                "default": "{'git_log', 'git_show'}",
+                "default_closed": true,
+                "name": "ALLOWED_TOOLS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "self.gw.is_allowed",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "self",
+                "self.gw",
+                "self.gw.default_tool"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L18"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 5,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "NODOM",
+        "witness": "L18",
+        "witness_line": 18
+      },
+      "case": "g11_non_binding_subject",
+      "expected": {
+        "grade": null,
+        "not_verdict": null,
+        "reason": "non_binding_gate",
+        "requires_rows": [],
+        "verdict": "NODOM",
+        "witness_line": 18
+      },
+      "hole": "主語不一致（`Gateway.is_allowed(self.default_tool)`）",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "g12_effect_in_finally",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "_run_tool",
+          "_run_tool"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 19,
+        "effect_nodes": [
+          4,
+          6
+        ],
+        "file": "g12_effect_in_finally.py",
+        "grade": null,
+        "notes": [],
+        "reason": "deny_reaches_effect",
+        "rows": [],
+        "score": {
+          "candidates": [
+            {
+              "form": "approval",
+              "grade": "USER",
+              "name": "require_approval",
+              "node": 5,
+              "recognition": "A-b",
+              "subjects": [
+                "name"
+              ]
+            }
+          ],
+          "gate": {
+            "reason": "deny_reaches_effect",
+            "verdict": "NODOM",
+            "witness": "L17"
+          },
+          "notes": [
+            "escaping_deny=4"
+          ],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            },
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "NODOM",
+        "witness": "L17",
+        "witness_line": 17
+      },
+      "case": "g12_effect_in_finally",
+      "expected": {
+        "grade": null,
+        "not_verdict": null,
+        "reason": "deny_reaches_effect",
+        "requires_rows": [],
+        "verdict": "NODOM",
+        "witness_line": 17
+      },
+      "hole": "効果が `finally` 側にある",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "g13_dynamic_registry",
+        "coordinate": "occ",
+        "dispatch_candidates": [],
+        "dispatch_resolution": "opaque",
+        "effect_line": 16,
+        "effect_nodes": [
+          5
+        ],
+        "file": "g13_dynamic_registry.py",
+        "grade": null,
+        "notes": [],
+        "reason": "dynamic_registry",
+        "rows": [],
+        "score": {
+          "candidates": [],
+          "gate": {
+            "reason": "dynamic_registry",
+            "verdict": "OPAQUE",
+            "witness": "L15"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 5,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "OPAQUE",
+        "witness": "L15",
+        "witness_line": 15
+      },
+      "case": "g13_dynamic_registry",
+      "expected": {
+        "grade": null,
+        "not_verdict": null,
+        "reason": "dynamic_registry",
+        "requires_rows": [],
+        "verdict": "OPAQUE",
+        "witness_line": 15
+      },
+      "hole": "木内で解決できないレジストリ（`Gateway.plugins.get(name)`）",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "g14_alt_entry",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "run_shell"
+        ],
+        "dispatch_resolution": "resolved",
+        "effect_line": 27,
+        "effect_nodes": [
+          6
+        ],
+        "file": "g14_alt_entry.py",
+        "grade": null,
+        "notes": [],
+        "reason": "alt_entry",
+        "rows": [],
+        "score": {
+          "candidates": [],
+          "gate": {
+            "reason": "alt_entry",
+            "verdict": "NODOM",
+            "witness": "L19"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "subjects": [
+          "tc",
+          "tc.name"
+        ],
+        "verdict": "NODOM",
+        "witness": "L19",
+        "witness_line": 19
+      },
+      "case": "g14_alt_entry",
+      "expected": {
+        "grade": null,
+        "not_verdict": null,
+        "reason": "alt_entry",
+        "requires_rows": [],
+        "verdict": "NODOM",
+        "witness_line": 19
+      },
+      "hole": "第 2 のユニット入口（無ガード）",
+      "ok": true,
+      "why": []
+    },
+    {
+      "actual": {
+        "case": "g15_req_occ_vs_req_val",
+        "coordinate": "occ",
+        "dispatch_candidates": [
+          "git_log"
+        ],
+        "dispatch_resolution": "n/a",
+        "effect_line": 18,
+        "effect_nodes": [
+          5
+        ],
+        "file": "g15_req_occ_vs_req_val.py",
+        "grade": "OP",
+        "notes": [],
+        "reason": null,
+        "rows": [],
+        "score": {
+          "candidates": [
+            {
+              "atom": {
+                "default": "{'git_log', 'git_show'}",
+                "default_closed": true,
+                "name": "ALLOWED_TOOLS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "OP",
+              "name": "ALLOWED_TOOLS",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "name"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "grade": "OP",
+            "verdict": "DOM",
+            "witness": "L16"
+          },
+          "notes": [],
+          "passing": [
+            4
+          ],
+          "per_copy": [
+            {
+              "node": 5,
+              "status": "gated"
+            }
+          ],
+          "req": "OP"
+        },
+        "subjects": [
+          "name"
+        ],
+        "verdict": "DOM",
+        "witness": "L16",
+        "witness_line": 16
+      },
+      "case": "g15_req_occ_vs_req_val",
+      "expected": {
+        "grade": "OP",
+        "not_verdict": null,
+        "reason": null,
+        "requires_rows": [],
+        "verdict": "DOM",
+        "witness_line": 16
+      },
+      "hole": "最弱等級 / `req_occ` と `req_val` の分離",
+      "ok": true,
+      "why": []
+    }
+  ]
+}
