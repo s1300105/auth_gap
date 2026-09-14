@@ -112,9 +112,15 @@ def fetch(t: Target, depth: int = 1) -> tuple[Optional[Fetched], Optional[str]]:
     dest = os.path.join(CORPUS, t.name.replace("/", "_").replace("@", "__"))
     if os.path.isdir(os.path.join(dest, ".git")) or os.path.isfile(os.path.join(dest, ".git")):
         code, out = _run(["git", "rev-parse", "HEAD"], cwd=dest)
-        if code == 0 and _sha_matches(t.ref, out.strip()):
+        if code == 0 and _sha_matches(t.ref, out.strip()) and _checkout_complete(dest):
             return _describe(t, dest, out.strip()), None
         _run(["git", "worktree", "remove", "--force", dest], cwd=_cache_dir(t.repo))
+        if os.path.isdir(dest):
+            # worktree として登録されていない残骸（中断時）も消す。
+            import shutil
+
+            shutil.rmtree(dest)
+        _run(["git", "worktree", "prune"], cwd=_cache_dir(t.repo))
 
     cache, err = ensure_cache(t.repo)
     if cache is None:
@@ -157,6 +163,22 @@ def fetch(t: Target, depth: int = 1) -> tuple[Optional[Fetched], Optional[str]]:
     if not _sha_matches(t.ref, sha):
         return None, f"{t.name}: ref {t.ref} と HEAD {sha} が前方一致しない"
     return _describe(t, dest, sha), None
+
+
+def _checkout_complete(dest: str) -> bool:
+    """worktree の checkout が最後まで終わっているか。
+
+    **HEAD の一致だけでは足りない。** `worktree add --no-checkout` の直後に
+    中断すると HEAD は要求 SHA を指したまま中身が空で、`git status` には
+    staged deletion が並ぶ。これを完了扱いすると、その木は「ユニット 0 件」
+    （フレームの雑音）として数えられ、**ユニットが黙って消える**。
+    sparse パターンが設定済みで、作業木が index と一致していることを要求する。
+    """
+    code, sparse = _run(["git", "sparse-checkout", "list"], cwd=dest)
+    if code != 0 or not sparse.strip():
+        return False
+    code, status = _run(["git", "status", "--porcelain", "--untracked-files=no"], cwd=dest)
+    return code == 0 and not status.strip()
 
 
 def _sha_matches(ref: str, sha: str) -> bool:

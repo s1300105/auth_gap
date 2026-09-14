@@ -61,6 +61,10 @@ class PopStats:
 
     population: str
     n_trees: int = 0
+    #: 取得できていない木（`corpus/` に無い）。**抽出順で次を繰り上げる**ので
+    #: 上限の枠を消費しない。件数は残す。
+    n_trees_missing: int = 0
+    #: 解析中に例外で落ちた木。**繰り上げない**（道具の失敗を置き換えで隠さない）。
     n_trees_failed: int = 0
     #: 解析できたがユニットが 1 件も無かった木。
     #: **フレームの雑音を測る量である**（code search で集めた母集団には
@@ -165,6 +169,7 @@ class PopStats:
         return {
             "population": self.population,
             "n_trees": self.n_trees,
+            "n_trees_missing_promoted": self.n_trees_missing,
             "n_trees_failed": self.n_trees_failed,
             "n_trees_no_units": self.n_trees_no_units,
             "n_units": self.n_units,
@@ -290,7 +295,11 @@ def main() -> int:
     ap.add_argument("--with-traced", action="store_true",
                     help="trig を計算する。**A5 の run では使わない**（§5.1）")
     ap.add_argument("--evidence", default=os.path.join(ROOT, "evidence", "f0a"))
-    ap.add_argument("--limit", type=int, default=0, help="母集団ごとの上限（§6 の 60 / 30 / 8）")
+    ap.add_argument("--limit", type=int, default=0,
+                    help="全母集団に同じ上限を掛ける（煙試験用）。指定すると --limits を無視する")
+    ap.add_argument("--limits", default="mcp_server=60,tool_package=30,app=8",
+                    help="母集団ごとの上限（§6 の標本設計 60 / 30 / 8）。"
+                         "**取得できた木を抽出順に先頭から数える**（失敗は繰り上げ）")
     ap.add_argument("--tree-budget", type=float, default=180.0,
                     help="1 本の木の壁時計上限（秒）。超えた分は TRUNCATED として記録する")
     args = ap.parse_args()
@@ -307,15 +316,21 @@ def main() -> int:
                 path = os.path.join(ROOT, "corpus", t["name"])
                 jobs.append((path, t.get("population", "mcp_server")))
 
+    limits = _parse_limits(args.limits) if not args.limit else {}
     rubric = load_rubric_1c()
     by_pop: dict[str, PopStats] = {}
     seen: dict[str, int] = {}
+    tree_rows: list[dict] = []
+    unit_rows: list[dict] = []
     for path, pop in jobs:
         st = by_pop.setdefault(pop, PopStats(pop))
-        if args.limit and seen.get(pop, 0) >= args.limit:
+        cap = args.limit or limits.get(pop, 0)
+        if cap and seen.get(pop, 0) >= cap:
             continue
-        if not os.path.isdir(path):
-            st.n_trees_failed += 1
+        if not _tree_ready(path):
+            # **取得できていない木は枠を消費しない**（抽出順で次を繰り上げる）。
+            st.n_trees_missing += 1
+            tree_rows.append({"tree": os.path.basename(path), "population": pop, "status": "missing"})
             continue
         seen[pop] = seen.get(pop, 0) + 1
         t0 = time.monotonic()
@@ -330,15 +345,36 @@ def main() -> int:
             )
         except Exception as exc:  # 1 本の失敗で全体を落とさない。**件数として残す。**
             st.n_trees_failed += 1
+            tree_rows.append({
+                "tree": os.path.basename(path), "population": pop, "status": "analysis_failed",
+                "error": f"{type(exc).__name__}: {exc}",
+            })
             print(f"FAIL {path}: {type(exc).__name__}: {exc}", file=sys.stderr)
             continue
         accumulate(st, res, rubric, args.with_traced)
+        tree_rows.append(_tree_row(path, pop, res))
+        unit_rows.extend(_unit_rows(path, pop, res, rubric))
         print(f"  {os.path.basename(path):48s} units={len(res.tree.units):4d} "
               f"{time.monotonic() - t0:5.1f}s")
 
+    for pop in sorted(by_pop):
+        cap = args.limit or limits.get(pop, 0)
+        if cap and seen.get(pop, 0) < cap:
+            print(f"**[{pop}] 目標 {cap} 本に届かない（解析 {seen.get(pop, 0)} 本）。**"
+                  "取得を待つか、割り増し分が尽きたかを確認すること", file=sys.stderr)
+
     out = {
         "schema": "authgap/f0a/v1",
-        "run_at": _dt.datetime.now().astimezone().isoformat(timespec="seconds"),
+        "run_meta": {
+            "run_at": _dt.datetime.now().astimezone().isoformat(timespec="seconds"),
+            # **どの解析器で測ったか。** 野外データを見た後で解析器を直したら、
+            # 直す前の run と後の run を commit で区別して両方報告する。
+            "analyzer_commit": _git_head(ROOT),
+            "analyzer_dirty": _git_dirty(ROOT),
+            "sample": os.path.relpath(args.sample, ROOT) if not args.trees else None,
+            "limits": {p: (args.limit or limits.get(p, 0)) for p in sorted(by_pop)},
+            "tree_budget_s": args.tree_budget,
+        },
         "traced_ratio": None if not args.with_traced else "別 run で計測（母集団別）",
         "populations": {p: s.to_json() for p, s in sorted(by_pop.items())},
     }
@@ -346,14 +382,131 @@ def main() -> int:
     dest = os.path.join(args.evidence, "f0a.json")
     with open(dest, "w", encoding="utf-8") as fh:
         fh.write(canonical_json(out))
+    # **手検証用の行データ。** 集計値だけでは学生が 1 件ずつ辿れない。
+    with open(os.path.join(args.evidence, "trees.jsonl"), "w", encoding="utf-8") as fh:
+        for r in tree_rows:
+            fh.write(json.dumps(r, ensure_ascii=False, sort_keys=True) + "\n")
+    with open(os.path.join(args.evidence, "units.jsonl"), "w", encoding="utf-8") as fh:
+        for r in unit_rows:
+            fh.write(json.dumps(r, ensure_ascii=False, sort_keys=True) + "\n")
     _write_md(by_pop, args.with_traced)
-    print(f"\nwrote {dest} / {F0A_MD} / {F0C_MD}")
+    print(f"\nwrote {dest} (+ trees.jsonl / units.jsonl) / {F0A_MD} / {F0C_MD}")
     _print_gates(by_pop)
     return 0
 
 
+def _parse_limits(spec: str) -> dict[str, int]:
+    out: dict[str, int] = {}
+    for part in spec.split(","):
+        if not part.strip():
+            continue
+        k, v = part.split("=")
+        out[k.strip()] = int(v)
+    return out
+
+
+def _tree_ready(path: str) -> bool:
+    """木が取得済みで checkout が完了しているか（`fetch_corpus._checkout_complete`）。
+
+    **ディレクトリの有無だけで判断しない。** 中断した worktree は空のまま残り、
+    解析すると「ユニット 0 件」になって雑音率を押し上げる。
+    """
+    if not os.path.isdir(path):
+        return False
+    if not os.path.exists(os.path.join(path, ".git")):
+        return True  # git 管理外の木（`--trees` で直接渡したもの）
+    sys.path.insert(0, os.path.join(ROOT, "scripts"))
+    from fetch_corpus import _checkout_complete
+
+    return _checkout_complete(path)
+
+
+def _git_head(path: str) -> str | None:
+    import subprocess
+
+    p = subprocess.run(["git", "rev-parse", "HEAD"], cwd=path, capture_output=True, text=True)
+    return p.stdout.strip() if p.returncode == 0 else None
+
+
+def _git_dirty(path: str) -> bool | None:
+    """解析器（`authgap/`）に未コミットの変更があるか。"""
+    import subprocess
+
+    p = subprocess.run(
+        ["git", "status", "--porcelain", "--", "authgap"], cwd=path, capture_output=True, text=True
+    )
+    return bool(p.stdout.strip()) if p.returncode == 0 else None
+
+
+def _tree_row(path: str, pop: str, res: RunResult) -> dict:
+    return {
+        "tree": os.path.basename(path),
+        "population": pop,
+        "status": "analyzed",
+        "commit_sha": _git_head(path),
+        "n_units": len(res.tree.units),
+        "n_tool_literals": res.tree.n_tool_literals,
+        "parse_failures": len(res.tree.parse_failures),
+        "cap_hits": len(res.tree.cap_hits),
+        "units_skipped_by_tree_budget": res.tree_budget_skipped,
+        "d_op_source": res.tree.d_op.source if res.tree.d_op is not None else None,
+    }
+
+
+def _unit_rows(path: str, pop: str, res: RunResult, rubric: frozenset[str]) -> list[dict]:
+    """1 ユニット 1 行。**集計に入った判断を全部そのまま出す**（手で辿れるように）。"""
+    rows = []
+    d_op = res.tree.d_op
+    for u in res.tree.units:
+        dangerous = [e for e in u.effects if e.kind in DANGEROUS_KINDS]
+        rows.append({
+            "tree": os.path.basename(path),
+            "population": pop,
+            "unit_id": u.unit.unit_id,
+            "tool_name": u.unit.tool_name,
+            "framework": u.unit.framework,
+            "entry_kind": u.unit.entry_kind,
+            "relpath": u.unit.relpath,
+            "lineno": getattr(u.unit.node, "lineno", None),
+            "effects": [
+                {
+                    "kind": e.kind,
+                    "form": e.form,
+                    "relpath": e.relpath,
+                    "lineno": e.lineno,
+                    "resolution": e.resolution.kind,
+                    "resolution_reasons": list(e.resolution.reasons),
+                    "db_rule": e.db_rule,
+                    "slots": {s: v.prov.kind for s, v in sorted(e.control_slots().items())},
+                }
+                for e in u.effects
+            ],
+            "dangerous": bool(dangerous),
+            "dangerous_fp_excluded": any(e.db_rule != "db_unresolved" for e in dangerous),
+            "validator_shapes": list(u.validator_shapes),
+            "gate_predicate_present": u.gate_predicate_present,
+            "config_atoms": {k: v for k, v in sorted(u.config_atoms.items())},
+            "annotations_present": u.unit.annotations is not None,
+            "D_kind": u.d_kind.to_json(),
+            "D_op_covers": bool(d_op is not None and d_op.covers(u.unit.tool_name)),
+            "rubric1c": u.unit.tool_name in rubric,
+            "notes": list(u.notes),
+        })
+    return rows
+
+
 def _fmt(x: float | None) -> str:
     return "—" if x is None else f"{x:.1%}"
+
+
+def _ge(x: float | None, thr: float) -> str:
+    """関門 `x >= thr`。**分母 0 は × ではなく「不明」**（黙って不合格に倒さない）。"""
+    return "不明" if x is None else ("○" if x >= thr else "×")
+
+
+def _le(x: float | None, thr: float) -> str:
+    """関門 `x <= thr`。`0.0` を偽値として扱わない（`x or 1` は 0% を不合格にする）。"""
+    return "不明" if x is None else ("○" if x <= thr else "×")
 
 
 def _print_gates(by_pop: dict[str, PopStats]) -> None:
@@ -362,14 +515,11 @@ def _print_gates(by_pop: dict[str, PopStats]) -> None:
         itr = s.in_tree_resolution_ratio
         vh = s.validator_holding
         op = s.opaque_ratio(True)
-        print(f"[{p}] 木 {s.n_trees}（失敗 {s.n_trees_failed} / ユニット 0 件 "
-              f"{s.n_trees_no_units}） ユニット {s.n_units}")
-        print(f"  in_tree_resolution_ratio {_fmt(itr)}  (>= 50%): "
-              f"{'○' if itr is not None and itr >= GATE_IN_TREE_RESOLUTION else '×'}")
-        print(f"  validator 保有            {_fmt(vh)}  (>= 5%):  "
-              f"{'○' if vh is not None and vh >= GATE_VALIDATOR_HOLDING else '×'}")
-        print(f"  opaque 率（主 slot）      {_fmt(op)}  (<= 40%): "
-              f"{'○' if op is not None and op <= GATE_OPAQUE else '×'}")
+        print(f"[{p}] 木 {s.n_trees}（未取得 {s.n_trees_missing} / 解析失敗 {s.n_trees_failed} / "
+              f"ユニット 0 件 {s.n_trees_no_units}） ユニット {s.n_units}")
+        print(f"  in_tree_resolution_ratio {_fmt(itr)}  (>= 50%): {_ge(itr, GATE_IN_TREE_RESOLUTION)}")
+        print(f"  validator 保有            {_fmt(vh)}  (>= 5%):  {_ge(vh, GATE_VALIDATOR_HOLDING)}")
+        print(f"  opaque 率（主 slot）      {_fmt(op)}  (<= 40%): {_le(op, GATE_OPAQUE)}")
         print(f"  r_D {_fmt(s.r_d)}（粗い分母 {_fmt(s.r_d_crude)}） → {s.branch}")
 
 
@@ -392,7 +542,8 @@ def _write_md(by_pop: dict[str, PopStats], with_trig: bool) -> None:
         lines += [
             f"## 母集団: {p}",
             "",
-            f"木 {s.n_trees} 本（取得 / 解析に失敗 {s.n_trees_failed} 本、"
+            f"解析した木 {s.n_trees} 本（未取得で繰り上げ {s.n_trees_missing} 本、"
+            f"解析中の例外 {s.n_trees_failed} 本、"
             f"ユニット 0 件 {s.n_trees_no_units} 本 = **フレームの雑音**）、"
             f"ユニット {s.n_units}、危険効果を持つユニット {s.n_dangerous}"
             f"（偽陽性クラス除外後 {s.n_dangerous_clean}）",
@@ -400,11 +551,11 @@ def _write_md(by_pop: dict[str, PopStats], with_trig: bool) -> None:
             "| 指標 | 値 | 関門 | 判定 |",
             "|---|---|---|---|",
             f"| `in_tree_resolution_ratio` | {_fmt(s.in_tree_resolution_ratio)} | ≥ 50% | "
-            f"{'○' if (s.in_tree_resolution_ratio or 0) >= GATE_IN_TREE_RESOLUTION else '×'} |",
+            f"{_ge(s.in_tree_resolution_ratio, GATE_IN_TREE_RESOLUTION)} |",
             f"| validator 保有ツール | {_fmt(s.validator_holding)} | ≥ 5% | "
-            f"{'○' if (s.validator_holding or 0) >= GATE_VALIDATOR_HOLDING else '×'} |",
+            f"{_ge(s.validator_holding, GATE_VALIDATOR_HOLDING)} |",
             f"| opaque 率（主 slot 7 種） | {_fmt(s.opaque_ratio(True))} | ≤ 40% | "
-            f"{'○' if (s.opaque_ratio(True) or 1) <= GATE_OPAQUE else '×'} |",
+            f"{_le(s.opaque_ratio(True), GATE_OPAQUE)} |",
             f"| opaque 率（全 slot、併記） | {_fmt(s.opaque_ratio(False))} | — | — |",
             f"| `remote` 率（**関門ではない**） | {_fmt(s.remote_ratio)} | — | — |",
             "",
