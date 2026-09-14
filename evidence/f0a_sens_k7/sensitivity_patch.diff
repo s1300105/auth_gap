@@ -1,0 +1,13 @@
+--- a/authgap/val/engine.py
++++ b/authgap/val/engine.py
+@@ -757,7 +757,9 @@
+             return []
+         last = name.split(".")[-1]
+         # **import 表で指したモジュール / 同じモジュールの定義を先に引く**（D17 改訂 3）。
+-        pinned = self._pinned_candidates(node, dotted, last, scope)
++        # SENSITIVITY-ONLY PATCH (K7, not committed): look up the imported name, not the local alias
++        pin_name = dotted.rpartition(".")[2] if isinstance(node.func, ast.Name) and dotted and "." in dotted else last
++        pinned = self._pinned_candidates(node, dotted, pin_name, scope)
+         if pinned is not None:
+             pinned_cands, ambiguous = pinned
+             self._by_name_hint = self._pinned_ambiguous = ambiguous

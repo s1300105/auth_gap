@@ -360,6 +360,12 @@ AuthGap を実際より良く見せる。**
    改訂 5 が直した形は標本の 98 木に無かった）。関門の数字は run 5 と同じだが、報告には欠陥を
    直した版の run 6 を使う。レビューと修正の繰り返しは D19 で止める（5 回目のレビューの結果と、
    凍結したか既知の欠陥として報告するかは `docs/decisions.md` D19 に書く）。
+   **結果: 凍結しない**（5 回目のレビューで確認 4・棄却 0）。既知の欠陥 K1〜K7 は
+   `pytest tests/test_f0a_defects.py -k known -rx` の xfail で 1 件ずつ再現できる。**K7（別名つき
+   from-import で木内の関数へ降りない）は標本の 32 木に構文上の候補があり、run 6 の数字に効いている**
+   ので、run 6 の数字を書くときは K7 の感度分析（D19 の「結果」）を必ず併記する。形ごとの候補数は
+   `scripts/scan_known_defect_forms.py --self-test` で走査器を確かめてから
+   `scripts/scan_known_defect_forms.py` で数え直せる。K7 を直すかは `docs/open_questions.md` O6。
    各 run の `run_meta` に解析器の commit、Python の版、標本の sha256（run2 以降）がある。
    **関門の率は点推定だけで読まない**（D18）:
    ```bash

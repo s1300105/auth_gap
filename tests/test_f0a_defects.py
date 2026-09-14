@@ -1969,3 +1969,39 @@ def test_known_deep_module_dict_url_is_not_op_resolved(tmp_path):
     改訂 5 より前から。改訂 3 / 4 の `_opaque_deep` の限界）。"""
     h = _slot(_unit(_run(tmp_path, {"s.py": DEEP_MODULE_DICT_URL}), "forecast"), "NET", "url.host")
     assert not (h.prin == Prin.OP and h.prov.kind == "resolved")
+
+
+_ALIAS_NET = "import requests\n\ndef fetch_url(url):\n    return requests.get(url).text\n"
+
+
+def _alias_import_files(form: str) -> dict:
+    """`from X import fetch_url as http_get` で木内の関数を呼ぶ形。`plain` は別名なしの対照。"""
+    if form == "absolute":
+        imp, call = "from net import fetch_url as http_get", "http_get(url)"
+        return {"net.py": _ALIAS_NET, "server.py": FASTMCP_HEAD + imp + f"\n\n@mcp.tool()\ndef fetch(url: str) -> str:\n    return {call}\n"}
+    imp, call = (
+        ("from .net import fetch_url", "fetch_url(url)") if form == "plain" else ("from .net import fetch_url as http_get", "http_get(url)")
+    )
+    return {
+        "pkg/__init__.py": "",
+        "pkg/net.py": _ALIAS_NET,
+        "pkg/server.py": FASTMCP_HEAD + imp + f"\n\n@mcp.tool()\ndef fetch(url: str) -> str:\n    return {call}\n",
+    }
+
+
+def test_known_alias_import_precondition(tmp_path):
+    """別名なしなら、import した木内の関数へ降りて NET 行（url.host = MODEL）が出る。"""
+    u = _unit(_run(tmp_path, _alias_import_files("plain")), "fetch")
+    assert _slot(u, "NET", "url.host").prin == Prin.MODEL
+
+
+@KNOWN
+@pytest.mark.parametrize("form", ["relative", "absolute"])
+def test_known_aliased_from_import_descends_into_in_tree_function(tmp_path, form):
+    """`from .net import fetch_url as http_get; http_get(url)` で、import 表は `pkg.net.fetch_url` を正しく引くが、
+    定義を探す名前に呼び出し式の局所の別名 `http_get` を使うので 0 候補になり、被呼び出しへ降りない。
+    helper の中の効果行が丸ごと消える（**効果行の消失**。最初の解析器の commit からある欠陥で、改訂 5 の
+    退行ではない）。5 回目のレビューの drops_crashes 観点が指摘した。**標本に構文上の候補が多数ある**
+    （F0a の 98 木中 32 木・693 箇所。到達するかは見ていない上限値）ので、run 6 の数字に効いている。
+    `docs/decisions.md` D19 の「結果」の K7。"""
+    assert _effects(_unit(_run(tmp_path, _alias_import_files(form)), "fetch"), "NET")
