@@ -493,6 +493,89 @@ def create_fallback_agent(Agent):
 """
 
 
+# ---------------------------------------------------------------------------
+# 9. 0662b39 のレビューで再現した false-clean（D17 の修正が新たに作ったもの）
+# ---------------------------------------------------------------------------
+
+GLOBAL_REBOUND = FASTMCP_HEAD + """\
+import subprocess
+
+CMD = "echo hello"
+ALLOWED_HOSTS = ["api.example.com"]
+
+@mcp.tool()
+def configure(cmd: str, host: str) -> str:
+    global CMD
+    CMD = cmd
+    ALLOWED_HOSTS.append(host)
+    return "ok"
+
+@mcp.tool()
+def run_it() -> str:
+    return subprocess.run(CMD, shell=True, capture_output=True, text=True).stdout
+
+@mcp.tool()
+def first_host() -> str:
+    import requests
+    return requests.get("https://" + ALLOWED_HOSTS[0] + "/v1").text
+"""
+
+
+def test_global_rebound_precondition(tmp_path):
+    res = _run(tmp_path, {"s.py": GLOBAL_REBOUND})
+    assert _effects(_unit(res, "run_it"), "SPAWN")
+    assert _effects(_unit(res, "first_host"), "NET")
+
+
+@DEFECT
+def test_module_name_rebound_by_global_is_not_constant(tmp_path):
+    """別のツールが `global CMD; CMD = cmd` で書き換える名前を定数（OP / resolved）にしない。
+
+    モジュール直下の代入だけを読むと、MODEL の書き込みを見落として resolved の OP に
+    なる（false-clean）。**書き込みのある名前は読まない**（従来の opaque(unresolved) に戻す）。
+    """
+    u = _unit(_run(tmp_path, {"s.py": GLOBAL_REBOUND}), "run_it")
+    cmd = _slot(u, "SPAWN", "shell_string")
+    assert not (cmd.prin == Prin.OP and cmd.prov.kind == "resolved")
+
+
+@DEFECT
+def test_module_container_mutated_elsewhere_is_not_constant(tmp_path):
+    """別のツールが `ALLOWED_HOSTS.append(host)` で変更する列を定数の列にしない。"""
+    u = _unit(_run(tmp_path, {"s.py": GLOBAL_REBOUND}), "first_host")
+    host = _slot(u, "NET", "url.host")
+    assert not (host.prin == Prin.OP and host.prov.kind == "resolved")
+
+
+URL_TEMPLATE = FASTMCP_HEAD + """\
+import requests
+
+@mcp.tool()
+def fetch_pct(scheme: str, host: str) -> str:
+    return requests.get("%s://%s/api" % (scheme, host)).text
+
+@mcp.tool()
+def fetch_fmt(host: str) -> str:
+    return requests.get("https://{}/api".format(host)).text
+"""
+
+
+def test_url_template_precondition(tmp_path):
+    res = _run(tmp_path, {"s.py": URL_TEMPLATE})
+    assert _effects(_unit(res, "fetch_pct"), "NET")
+    assert _effects(_unit(res, "fetch_fmt"), "NET")
+
+
+@pytest.mark.parametrize("tool", [pytest.param("fetch_pct", marks=DEFECT), pytest.param("fetch_fmt", marks=DEFECT)])
+def test_url_split_does_not_cut_host_from_template_placeholder(tmp_path, tool):
+    """書式テンプレートの `%s` / `{}` を host のリテラルとして切り出さない（§2.6 の分割規則は
+    **権威部の文字列そのものがリテラル**のときだけ OP にする）。"""
+    u = _unit(_run(tmp_path, {"s.py": URL_TEMPLATE}), tool)
+    host = _slot(u, "NET", "url.host")
+    assert not (host.prin == Prin.OP and host.prov.kind == "resolved" and isinstance(host.const, str)
+                and any(ph in host.const for ph in ("%", "{", "}")))
+
+
 def test_catalog_forms_precondition(tmp_path):
     _unit(_run(tmp_path, {"a/c.py": AUTOGPT}, population="app"), "web_search_legacy")
     _unit(_run(tmp_path, {"b/t.py": TOOLS_LIST}, population="tool_package"), "web_lookup")
