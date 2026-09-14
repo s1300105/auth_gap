@@ -342,6 +342,9 @@ def main() -> int:
                          "docs/f0a_<label>.md と evidence/f0a_<label>/ に書く（D14）")
     ap.add_argument("--limit", type=int, default=0,
                     help="全母集団に同じ上限を掛ける（煙試験用）。指定すると --limits を無視する")
+    ap.add_argument("--populations", default="",
+                    help="この母集団だけを測る（カンマ区切り。例: app）。**上限 0 は「無制限」の意味"
+                         "なので、母集団を外すときは --limits ではなくこれを使う**")
     ap.add_argument("--limits", default="mcp_server=60,tool_package=30,app=8",
                     help="母集団ごとの上限（§6 の標本設計 60 / 30 / 8）。"
                          "**取得できた木を抽出順に先頭から数える**（失敗は繰り上げ）")
@@ -367,6 +370,9 @@ def main() -> int:
                 jobs.append((path, t.get("population", "mcp_server")))
 
     limits = _parse_limits(args.limits) if not args.limit else {}
+    only = {p.strip() for p in args.populations.split(",") if p.strip()}
+    if only:
+        jobs = [(path, pop) for path, pop in jobs if pop in only]
     rubric = load_rubric_1c()
     by_pop: dict[str, PopStats] = {}
     seen: dict[str, int] = {}
