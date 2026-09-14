@@ -1382,3 +1382,324 @@ def test_autogpt_command_keyword_form(tmp_path):
 
 def test_tools_list_nested_function(tmp_path):
     _unit(_run(tmp_path, {"t.py": TOOLS_LIST}, population="tool_package"), "web_research")
+
+
+# ---------------------------------------------------------------------------
+# 14. ea35672（改訂 4）の 4 回目の敵対的レビュー:
+#     (a) opaque に落としたモジュール値の定数を、効果側がリテラルとして読む（false-clean）
+#     (b) 同名の定義が複数あると被呼び出しへ降りず、helper の中の効果行が消える（行の消失）
+# ---------------------------------------------------------------------------
+
+_REBOUND_URL_HEAD = FASTMCP_HEAD + """\
+import requests
+
+BASE_URL = "https://api.example.com/v1"
+TEMPLATE = "https://api.github.com/repos/{}"
+"""
+
+_REBOUND_URL_SETTER = """
+@mcp.tool()
+def set_base(url: str, template: str) -> str:
+    global BASE_URL, TEMPLATE
+    BASE_URL = url
+    TEMPLATE = template
+    return "ok"
+"""
+
+_REBOUND_URL_READERS = """
+@mcp.tool()
+def fetch_whole() -> str:
+    return requests.get(BASE_URL).text
+
+@mcp.tool()
+def fetch_concat(path: str) -> str:
+    return requests.get(BASE_URL + "/items/" + path).text
+
+@mcp.tool()
+def fetch_fstr(path: str) -> str:
+    return requests.get(f"{BASE_URL}/items/{path}").text
+
+@mcp.tool()
+def fetch_fmt(repo: str) -> str:
+    return requests.get(TEMPLATE.format(repo)).text
+"""
+
+_REBOUND_STAR_HEAD = FASTMCP_HEAD + """\
+import requests
+
+API = "https://api.example.com/v1/"
+
+@mcp.tool()
+def get_item(path: str) -> str:
+    return requests.get(API + path).text
+"""
+
+_REBOUND_STAR_EXEC = """
+@mcp.tool()
+def run_python(code: str) -> str:
+    exec(code, globals())
+    return "ok"
+"""
+
+_REBOUND_IMPORT_SERVER_HEAD = FASTMCP_HEAD + """\
+import requests
+from .config import BASE
+
+@mcp.tool()
+def get_item(path: str) -> str:
+    return requests.get(BASE + path).text
+"""
+
+_REBOUND_IMPORT_SETTER = """
+@mcp.tool()
+def set_base(base: str) -> str:
+    global BASE
+    BASE = base
+    return "ok"
+"""
+
+
+_REBOUND_PARTS_HEAD = FASTMCP_HEAD + """\
+import requests
+
+HOST = "https://api.example.com"
+VERSION = "/v1"
+BASE = HOST + VERSION
+FBASE = f"{HOST}/v2"
+"""
+
+_REBOUND_PARTS_SETTER = """
+@mcp.tool()
+def set_base(url: str) -> str:
+    global BASE, FBASE
+    BASE = url
+    FBASE = url
+    return "ok"
+"""
+
+_REBOUND_PARTS_READERS = """
+@mcp.tool()
+def get_concat(path: str) -> str:
+    return requests.get(BASE + "/" + path).text
+
+@mcp.tool()
+def get_fstr(path: str) -> str:
+    return requests.get(FBASE + "/" + path).text
+"""
+
+
+def _rebound_url_files(form: str, rebound: bool) -> tuple[dict, tuple[str, ...]]:
+    """`(ファイル, NET を読む tool)`。`rebound=False` は書き換えの無い対照。"""
+    if form == "global":
+        body = _REBOUND_URL_HEAD + (_REBOUND_URL_SETTER if rebound else "") + _REBOUND_URL_READERS
+        return {"s.py": body}, ("fetch_whole", "fetch_concat", "fetch_fstr", "fetch_fmt")
+    if form == "parts":
+        # 再束縛される名前の値が、別のモジュール定数を連結した Str（part ごとに確度を持つ）である形
+        body = _REBOUND_PARTS_HEAD + (_REBOUND_PARTS_SETTER if rebound else "") + _REBOUND_PARTS_READERS
+        return {"s.py": body}, ("get_concat", "get_fstr")
+    if form == "star":
+        return {"s.py": _REBOUND_STAR_HEAD + (_REBOUND_STAR_EXEC if rebound else "")}, ("get_item",)
+    return {
+        "app/__init__.py": "",
+        "app/config.py": 'BASE = "https://api.example.com/"\n',
+        "app/server.py": _REBOUND_IMPORT_SERVER_HEAD + (_REBOUND_IMPORT_SETTER if rebound else ""),
+    }, ("get_item",)
+
+
+def test_rebound_url_precondition(tmp_path):
+    """書き換えが無ければ、どの形も url.host を OP の定数に分割する（分割の経路に届いている）。
+    書き換えのある fixture でも NET 行は出る（ユニットと sink は見つかっている）。"""
+    for form in ("global", "parts", "star", "import"):
+        files, tools = _rebound_url_files(form, rebound=False)
+        res = _run(tmp_path / form / "control", files)
+        for tool in tools:
+            h = _slot(_unit(res, tool), "NET", "url.host")
+            assert h.prin == Prin.OP and h.prov.kind == "resolved" and h.const, (form, tool)
+        files, tools = _rebound_url_files(form, rebound=True)
+        res = _run(tmp_path / form / "rebound", files)
+        for tool in tools:
+            assert _effects(_unit(res, tool), "NET"), (form, tool)
+
+
+@DEFECT
+@pytest.mark.parametrize(
+    "form,tool",
+    [
+        ("global", "fetch_whole"),
+        ("global", "fetch_concat"),
+        ("global", "fetch_fstr"),
+        ("global", "fetch_fmt"),
+        ("parts", "get_concat"),
+        ("parts", "get_fstr"),
+        ("star", "get_item"),
+        ("import", "get_item"),
+    ],
+)
+def test_rebound_module_url_is_not_split_into_op_resolved_host(tmp_path, form, tool):
+    """MODEL が `global` / `exec(..., globals())` / 読む側の再束縛で書き換えるベース URL から、
+    §2.6 の分割で url.host = OP / resolved の定数を切り出さない。改訂 4 は再束縛される名前を
+    「型と主体を保ったまま opaque」で読むようにしたが、`_opaque_deep` が定数を残し、`_split_url` が
+    その定数から確度を捨てて RESOLVED の host を作っていた（4 回目のレビュー、2 観点が独立に指摘）。"""
+    files, _tools = _rebound_url_files(form, rebound=True)
+    u = _unit(_run(tmp_path, files), tool)
+    rows = _effects(u, "NET")
+    assert rows
+    for e in rows:
+        h = e.control_slots().get("url.host")
+        assert h is not None
+        assert not (h.prin == Prin.OP and h.prov.kind == "resolved")
+        assert e.resolution.kind != "resolved"
+
+
+REBOUND_MODES = FASTMCP_HEAD + """\
+import subprocess
+
+USE_SHELL = False
+MODE = "r"
+
+@mcp.tool()
+def configure(use_shell: bool, mode: str) -> str:
+    global USE_SHELL, MODE
+    USE_SHELL = use_shell
+    MODE = mode
+    return "ok"
+
+@mcp.tool()
+def run_cmd(cmd: str) -> str:
+    return subprocess.run(cmd, shell=USE_SHELL, capture_output=True, text=True).stdout
+
+@mcp.tool()
+def touch(path: str) -> str:
+    with open(path, MODE) as f:
+        return "ok"
+"""
+
+
+def test_rebound_modes_precondition(tmp_path):
+    res = _run(tmp_path, {"s.py": REBOUND_MODES})
+    assert _effects(_unit(res, "run_cmd"), "SPAWN")
+    assert _effects(_unit(res, "touch"), "FS_READ")
+
+
+@DEFECT
+def test_rebound_shell_flag_keeps_shell_string_row(tmp_path):
+    """`shell=USE_SHELL` の USE_SHELL を MODEL が書き換えるなら、shell=True 側の行（shell_string）を
+    落とさない。opaque に落とした値の定数 False を `_exec_mode` がリテラルとして読み、SPAWN 行の
+    片側が消えていた（4 回目のレビュー、false-clean）。"""
+    rows = _effects(_unit(_run(tmp_path, {"s.py": REBOUND_MODES}), "run_cmd"), "SPAWN")
+    assert any("shell_string" in e.control_slots() for e in rows)
+
+
+@DEFECT
+def test_rebound_open_mode_keeps_fs_write_row(tmp_path):
+    """`open(path, MODE)` の MODE を MODEL が書き換えるなら、FS_WRITE の行を落とさない
+    （`_mode_is_write` が opaque の定数 "r" を読んでいた。4 回目のレビュー、false-clean）。"""
+    assert _effects(_unit(_run(tmp_path, {"s.py": REBOUND_MODES}), "touch"), "FS_WRITE")
+
+
+_PIN_SINK_HELPER = """\
+import subprocess
+
+def run_command(cmd):
+    return subprocess.run(cmd, shell=True, capture_output=True, text=True).stdout
+"""
+
+_PIN_SINK_TOOL = """
+@mcp.tool()
+def shell(cmd: str) -> str:
+    return run_command(cmd)
+"""
+
+_PIN_UNRELATED_NESTED = """
+def build_cli():
+    def run_command(args):
+        return args
+    return run_command
+"""
+
+PIN_SINK_IF_ELSE = FASTMCP_HEAD + """\
+import subprocess
+import sys
+
+if sys.platform == "win32":
+    def run_command(cmd):
+        return subprocess.run(["cmd", "/c", cmd]).stdout
+else:
+    def run_command(cmd):
+        return subprocess.run(cmd, shell=True).stdout
+
+@mcp.tool()
+def shell(cmd: str) -> str:
+    return run_command(cmd)
+"""
+
+PIN_SINK_IF_ONLY = FASTMCP_HEAD + """\
+import subprocess
+
+def run_command(cmd):
+    return subprocess.run(cmd, shell=True).stdout
+
+@mcp.tool()
+def shell(cmd: str) -> str:
+    return run_command(cmd)
+"""
+
+
+def _pin_sink_files(form: str, control: bool) -> dict:
+    """helper の中に sink がある形。`control=True` は同名の余分な定義を除いた対照。"""
+    extra = "" if control else _PIN_UNRELATED_NESTED
+    if form == "nested_unrelated":
+        return {"server.py": FASTMCP_HEAD + _PIN_SINK_HELPER + _PIN_SINK_TOOL + extra}
+    if form == "if_else":
+        return {"server.py": PIN_SINK_IF_ONLY if control else PIN_SINK_IF_ELSE}
+    if form == "import_nested_unrelated":
+        return {
+            "helpers.py": _PIN_SINK_HELPER,
+            "server.py": FASTMCP_HEAD + "from helpers import run_command\n" + _PIN_SINK_TOOL + extra,
+        }
+    # module_attr_nested: `helpers.run_command(...)` と、helpers.py の別の関数の中の同名 def
+    helper_extra = "" if control else "\ndef make_runner():\n    def run_command(cmd):\n        return cmd\n    return run_command\n"
+    return {
+        "helpers.py": _PIN_SINK_HELPER + helper_extra,
+        "server.py": FASTMCP_HEAD + """\
+import helpers
+
+@mcp.tool()
+def shell(cmd: str) -> str:
+    return helpers.run_command(cmd)
+""",
+    }
+
+
+_PIN_SINK_FORMS = ["nested_unrelated", "if_else", "import_nested_unrelated", "module_attr_nested"]
+
+
+def test_pin_sink_forms_precondition(tmp_path):
+    """余分な同名の定義が無ければ、helper の中の shell=True の SPAWN 行が出る。"""
+    for form in _PIN_SINK_FORMS:
+        u = _unit(_run(tmp_path / form, _pin_sink_files(form, control=True)), "shell")
+        assert any("shell_string" in e.control_slots() for e in _effects(u, "SPAWN")), form
+
+
+@DEFECT
+@pytest.mark.parametrize("form", _PIN_SINK_FORMS)
+def test_same_name_definitions_do_not_drop_helper_effect_rows(tmp_path, form):
+    """呼び出し側から見えない同名の入れ子 def（別の関数の中）、if / else の 2 つの def、import した名前と
+    読む側の無関係な入れ子 def、モジュール属性越しの呼び出しと helper 側の入れ子 def。どの形でも
+    helper の中の shell=True の SPAWN 行を落とさない。改訂 4 の `_pinned_function` はモジュール内の
+    同名の def を入れ子まで数えて pin をやめ、末尾名の木全体検索も 2 候補で降りなかった
+    （4 回目のレビュー、8f24cbd では出ていた行が消えた）。"""
+    u = _unit(_run(tmp_path, _pin_sink_files(form, control=False)), "shell")
+    assert any("shell_string" in e.control_slots() for e in _effects(u, "SPAWN"))
+
+
+@DEFECT
+def test_if_else_definitions_keep_rows_of_both_branches_as_opaque(tmp_path):
+    """どちらの def が効くかを決めない（flow-insensitive）。両方の分岐の SPAWN 行を出し、
+    どれを採ったかが名前だけで決まらないので行の確度は resolved にしない。"""
+    u = _unit(_run(tmp_path, _pin_sink_files("if_else", control=False)), "shell")
+    rows = _effects(u, "SPAWN")
+    assert any("shell_string" in e.control_slots() for e in rows)
+    argv0 = [e.control_slots()["argv0"] for e in rows if "argv0" in e.control_slots()]
+    assert any(v.shape.const == "cmd" for v in argv0 if hasattr(v.shape, "const"))
+    assert all(e.resolution.kind != "resolved" for e in rows)
