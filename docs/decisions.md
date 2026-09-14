@@ -281,7 +281,7 @@ analyzer_wrong をそのまま欠陥と読まない。** 仕様の定義に照�
 | モジュール大域の名前を読まない（OPQ 8 件） | precision loss | Def 4（木内で解決できる）、§2.3 の config atom の源 |
 | `os.environ` 読み出しを config として扱わない（OPQ 4 件） | precision loss | §2.3 の config atom の源 4 種 |
 | BOM 付きファイルを parse 失敗にする（6 件） | false-clean（ユニットが消える） | §5.2 |
-| `@mcp.tool(annotations=...)` を読まない、低レベル MCP の `Tool(...)` と結び付かない、明示の `annotations=None` を unreadable にする | D の過小評価 / `D_unknown` の過大 | Def 6 |
+| `@mcp.tool(annotations=...)` を読まない、明示の `annotations=None` を unreadable にする | D の過小評価 / `D_unknown` の過大 | Def 6（3 形のパーサ、読めない形だけが `D_unknown`） |
 | AutoGPT `@command` の名前 list 形・キーワード形、`tools=[...]` の入れ子関数 | false-clean（ユニットが消える） | R2 カタログにある形（D12） |
 
 **直さない:**

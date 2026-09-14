@@ -44,6 +44,23 @@
 - **暫定**: **push していない。** ローカルに 11 コミット。
   推奨は「private で作成し、C1（開示の 90 日時計の起点）まで private を維持」。
 
+## O5. 低レベル MCP ハンドラと annotation の join（Def 6 に規則が無い）
+
+- **状況**: Def 6 の join 規則は「エントリとは**ツール名文字列の完全一致**で join」。
+  低レベル MCP（`@server.call_tool()`）のユニットは 1 つのハンドラが複数ツールを
+  名前分岐で捌くので、ユニットに 1 つのツール名が無い（`tool_name=None`、
+  `dispatch_names` に複数）。野外では `mastermind` の `workbench_read_mcp` が
+  `list_tools` で `Tool(name=..., annotations=ToolAnnotations(readOnlyHint=True))` を
+  返しているが、どのユニットにも結び付かない（`docs/f0a_checks.md` の annotation 節）。
+- **決め方の候補**:
+  (a) 仕様どおり「未 join 行」として報告するだけ（現状）。
+  (b) ハンドラの分岐ごとにユニットを分け、各分岐をツール名で join する。
+  (c) ハンドラ単位のまま、全 dispatch 名の上界の結び（最も弱い宣言。1 つでも無ければ `⊥`）。
+- **なぜ実装側で決めないか**: (b) はユニットの定義（§5.1 の unit id、§3 の交差行の
+  数え方）を変える。(c) は Def 6 に無い合成規則を足す。**どちらも F0a の標本を
+  見た後に足すと測定集合で規則を選ぶことになる。**
+- **暫定**: (a)。r_kind の分子に入らない。低レベル MCP の未 join 行の件数を報告する。
+
 ---
 
 ## 参考: 質問ではなく作業として残っているもの
