@@ -6,15 +6,16 @@
 
 * ``run1``       — 解析器 9c2bb11 相当 / Python 3.10（直す前）
 * ``run1py312``  — 解析器は run1 と同一 / Python 3.12（処理系だけ替えた）
-* ``run5``       — 解析器を D17 / 改訂 2 / 改訂 3 / 改訂 4 で修正（ea35672）/ Python 3.12
+* ``run6``       — 解析器を D17 / 改訂 2〜5 で修正（150e06a）/ Python 3.12
 
-``run1py312 - run1`` が処理系の効果、``run5 - run1py312`` が解析器の修正の効果である。
+``run1py312 - run1`` が処理系の効果、``run6 - run1py312`` が解析器の修正の効果である。
 **どちらか一方の run だけを報告しない**（D14）。
 
-``run2``（0662b39）、``run3``（854f71b）、``run4``（8f24cbd）は**中間状態として残す**。どれも
-敵対的レビューや run 間の突き合わせで false-clean が見つかった版なので、関門の数字には
-使わない（D17 改訂 2 / 3 / 4）。解析器を凍結する条件は D19。並べたいときは引数で渡す:
-``python scripts/compare_f0a_runs.py run3=evidence/f0a_run3/f0a.json run4=evidence/f0a_run4/f0a.json run5=evidence/f0a_run5/f0a.json``
+``run2``（0662b39）、``run3``（854f71b）、``run4``（8f24cbd）、``run5``（ea35672）は**中間状態として
+残す**。どれも敵対的レビューや run 間の突き合わせで false-clean / 効果行の消失が見つかった版なので、
+関門の数字には使わない（D17 改訂 2〜5）。改訂 5 の後は D19 により繰り返しを止める（5 回目の
+レビューの結果で、凍結か、既知の欠陥を明記した報告かが決まる）。並べたいときは引数で渡す:
+``python scripts/compare_f0a_runs.py run4=evidence/f0a_run4/f0a.json run5=evidence/f0a_run5/f0a.json run6=evidence/f0a_run6/f0a.json``
 
 出力: `docs/f0a_runs.md`
 
@@ -112,7 +113,7 @@ def main(argv: list[str]) -> int:
         "**同じ標本を同じ手続きで測った run だけを並べる。** 差の分解:",
         "",
         "* `run1py312 − run1` = **処理系の変更**（3.10 → 3.12。解析器は同一）",
-        "* `run2 − run1py312` = **解析器の修正**（D17。処理系は同一）",
+        "* `（3 列目の run）− run1py312` = **解析器の修正**（D17 / 改訂 2〜5。処理系は同一）",
         "",
         "**どちらか一方の run だけを論文に書かない。** 関門の閾値は §10 の値で固定。",
         "",

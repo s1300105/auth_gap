@@ -64,3 +64,12 @@
 | run5 | tool_package | 30 | `in_tree_resolution_ratio_sites` | 40.0% | [17.4%, 53.8%] | >= 50% | × | **境界**（区間が閾値を跨ぐ） |
 | run5 | tool_package | 30 | `opaque_ratio_primary_slots_sites` | 27.2% | [10.3%, 47.5%] | <= 40% | ○ | **境界**（区間が閾値を跨ぐ） |
 | run5 | tool_package | 30 | `validator_holding_ratio` | 3.3% | [1.4%, 7.1%] | >= 5% | × | **境界**（区間が閾値を跨ぐ） |
+| run6 | app | 8 | `in_tree_resolution_ratio_sites` | 19.3% | [0.0%, 20.7%] | >= 50% | × | 区間も同じ側 |
+| run6 | app | 8 | `opaque_ratio_primary_slots_sites` | 45.3% | [23.4%, 100.0%] | <= 40% | × | **境界**（区間が閾値を跨ぐ） |
+| run6 | app | 8 | `validator_holding_ratio` | 6.5% | [0.0%, 16.2%] | >= 5% | ○ | **境界**（区間が閾値を跨ぐ） |
+| run6 | mcp_server | 60 | `in_tree_resolution_ratio_sites` | 33.6% | [18.6%, 51.3%] | >= 50% | × | **境界**（区間が閾値を跨ぐ） |
+| run6 | mcp_server | 60 | `opaque_ratio_primary_slots_sites` | 43.5% | [20.8%, 68.0%] | <= 40% | × | **境界**（区間が閾値を跨ぐ） |
+| run6 | mcp_server | 60 | `validator_holding_ratio` | 4.4% | [2.4%, 7.4%] | >= 5% | × | **境界**（区間が閾値を跨ぐ） |
+| run6 | tool_package | 30 | `in_tree_resolution_ratio_sites` | 40.0% | [17.4%, 53.8%] | >= 50% | × | **境界**（区間が閾値を跨ぐ） |
+| run6 | tool_package | 30 | `opaque_ratio_primary_slots_sites` | 27.2% | [10.3%, 47.5%] | <= 40% | ○ | **境界**（区間が閾値を跨ぐ） |
+| run6 | tool_package | 30 | `validator_holding_ratio` | 3.3% | [1.4%, 7.1%] | >= 5% | × | **境界**（区間が閾値を跨ぐ） |
