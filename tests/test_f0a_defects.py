@@ -1140,6 +1140,140 @@ def test_function_registered_by_decorator_and_listed_is_one_unit(tmp_path):
     _unit(_run(tmp_path, {"server.py": REGISTERED_AND_LISTED}), "get_indexing_errors")
 
 
+# ---------------------------------------------------------------------------
+# 13. 8f24cbd（改訂 3）の 3 回目の敵対的レビュー: _pinned_function が再定義と入れ子の束縛を見ない
+# ---------------------------------------------------------------------------
+
+PIN_OVERLOAD = FASTMCP_HEAD + """\
+import subprocess
+from typing import overload
+
+@overload
+def build_command(cmd: str) -> str: ...
+@overload
+def build_command(cmd: list) -> str: ...
+def build_command(cmd):
+    return cmd if isinstance(cmd, str) else " ".join(cmd)
+
+@mcp.tool()
+def run_cmd(cmd: str) -> str:
+    return subprocess.run(build_command(cmd), shell=True, capture_output=True, text=True).stdout
+"""
+
+PIN_REDEFINED = FASTMCP_HEAD + """\
+import subprocess
+
+def normalize(cmd):
+    return "true"
+
+def normalize(cmd):
+    return cmd.strip()
+
+@mcp.tool()
+def run_cmd(cmd: str) -> str:
+    subprocess.run(normalize(cmd), shell=True)
+    return "ok"
+"""
+
+PIN_IF_ELSE = FASTMCP_HEAD + """\
+import subprocess
+import sys
+
+if sys.platform == "win32":
+    def normalize(cmd):
+        return "cmd /c exit 0"
+else:
+    def normalize(cmd):
+        return cmd.strip()
+
+@mcp.tool()
+def run_cmd(cmd: str) -> str:
+    subprocess.run(normalize(cmd), shell=True)
+    return "ok"
+"""
+
+PIN_IMPORT_SHADOWED = {
+    "app/__init__.py": "",
+    "app/helpers.py": "def normalize(cmd):\n    return \"true\"\n",
+    "app/server.py": FASTMCP_HEAD + """\
+import subprocess
+from .helpers import normalize
+
+def normalize(cmd):
+    return cmd.strip()
+
+@mcp.tool()
+def run_cmd(cmd: str) -> str:
+    subprocess.run(normalize(cmd), shell=True)
+    return "ok"
+""",
+}
+
+PIN_NESTED_HANDLER = """\
+import subprocess
+from mcp.server import Server
+
+def prepare(cmd):
+    return "echo ready"
+
+async def serve():
+    server = Server("x")
+
+    def prepare(cmd):
+        return cmd
+
+    @server.call_tool()
+    async def call_tool(name, arguments):
+        subprocess.run(prepare(arguments["cmd"]), shell=True)
+        return []
+"""
+
+
+def _pin_files(form: str) -> dict:
+    return {
+        "overload": {"s.py": PIN_OVERLOAD},
+        "redefined": {"s.py": PIN_REDEFINED},
+        "if_else": {"s.py": PIN_IF_ELSE},
+        "import_shadowed": PIN_IMPORT_SHADOWED,
+    }[form]
+
+
+def test_pin_forms_precondition(tmp_path):
+    for form in ("overload", "redefined", "if_else", "import_shadowed"):
+        assert _effects(_unit(_run(tmp_path / form, _pin_files(form)), "run_cmd"), "SPAWN")
+    res = _run(tmp_path / "nested", {"server.py": PIN_NESTED_HANDLER})
+    handlers = [u for u in res.tree.units if u.unit.qualname == "serve.call_tool"]
+    assert handlers and _effects(handlers[0], "SPAWN")
+
+
+@pytest.mark.parametrize(
+    "form",
+    [
+        pytest.param("overload", marks=DEFECT),
+        pytest.param("redefined", marks=DEFECT),
+        pytest.param("if_else", marks=DEFECT),
+        pytest.param("import_shadowed", marks=DEFECT),
+    ],
+)
+def test_pinned_call_does_not_pick_one_of_several_definitions(tmp_path, form):
+    """同じモジュールに同名の定義が複数ある（`@overload` のスタブ、単純な再定義、if / else の def、
+    import を上書きするローカル def）とき、最初の 1 つに決め打ちしない。索引は module 付きの引きで
+    最初の定義しか返さないので、「一意」の判定が空回りしていた（3 回目のレビュー）。"""
+    u = _unit(_run(tmp_path, _pin_files(form)), "run_cmd")
+    v = _slot(u, "SPAWN", "shell_string")
+    assert not (v.prin == Prin.OP and v.prov.kind == "resolved")
+
+
+@DEFECT
+def test_pinned_bare_name_respects_enclosing_function_definition(tmp_path):
+    """`serve()` の中の低レベル MCP ハンドラが呼ぶ `prepare(...)` は `serve.prepare` であって、
+    モジュール直下の同名の `prepare` ではない（Python のスコープ規則）。"""
+    res = _run(tmp_path, {"server.py": PIN_NESTED_HANDLER})
+    u = [u for u in res.tree.units if u.unit.qualname == "serve.call_tool"][0]
+    v = _slot(u, "SPAWN", "shell_string")
+    assert not (v.prin == Prin.OP and v.prov.kind == "resolved")
+
+
 def test_catalog_forms_precondition(tmp_path):
     _unit(_run(tmp_path, {"a/c.py": AUTOGPT}, population="app"), "web_search_legacy")
     _unit(_run(tmp_path, {"b/t.py": TOOLS_LIST}, population="tool_package"), "web_lookup")
