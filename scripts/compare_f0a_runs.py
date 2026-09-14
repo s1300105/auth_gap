@@ -6,14 +6,15 @@
 
 * ``run1``       — 解析器 9c2bb11 相当 / Python 3.10（直す前）
 * ``run1py312``  — 解析器は run1 と同一 / Python 3.12（処理系だけ替えた）
-* ``run3``       — 解析器を D17 と D17 改訂 2 で修正（854f71b）/ Python 3.12
+* ``run4``       — 解析器を D17 / 改訂 2 / 改訂 3 で修正（8f24cbd）/ Python 3.12
 
-``run1py312 - run1`` が処理系の効果、``run3 - run1py312`` が解析器の修正の効果である。
+``run1py312 - run1`` が処理系の効果、``run4 - run1py312`` が解析器の修正の効果である。
 **どちらか一方の run だけを報告しない**（D14）。
 
-``run2``（0662b39、D17 の最初の修正）は**中間状態として残す**。敵対的レビューで
-false-clean 5 系統が見つかった版なので、関門の数字には使わない（D17 改訂 2）。
-並べたいときは引数で渡す: ``python scripts/compare_f0a_runs.py run2=evidence/f0a_run2/f0a.json run3=evidence/f0a_run3/f0a.json``
+``run2``（0662b39）と ``run3``（854f71b）は**中間状態として残す**。どちらも敵対的レビューや
+run 間の突き合わせで false-clean が見つかった版なので、関門の数字には使わない
+（D17 改訂 2 / 3）。並べたいときは引数で渡す:
+``python scripts/compare_f0a_runs.py run2=evidence/f0a_run2/f0a.json run3=evidence/f0a_run3/f0a.json run4=evidence/f0a_run4/f0a.json``
 
 出力: `docs/f0a_runs.md`
 
@@ -35,7 +36,7 @@ OUT = os.path.join(ROOT, "docs", "f0a_runs.md")
 DEFAULT_RUNS = (
     ("run1", "evidence/f0a/f0a.json"),
     ("run1py312", "evidence/f0a_run1py312/f0a.json"),
-    ("run3", "evidence/f0a_run3/f0a.json"),
+    ("run4", "evidence/f0a_run4/f0a.json"),
 )
 
 #: §10 の関門（`scripts/f0a.py` と同じ値。**動かさない**）。
