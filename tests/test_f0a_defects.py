@@ -527,7 +527,6 @@ def test_global_rebound_precondition(tmp_path):
     assert _effects(_unit(res, "first_host"), "NET")
 
 
-@DEFECT
 def test_module_name_rebound_by_global_is_not_constant(tmp_path):
     """別のツールが `global CMD; CMD = cmd` で書き換える名前を定数（OP / resolved）にしない。
 
@@ -539,7 +538,6 @@ def test_module_name_rebound_by_global_is_not_constant(tmp_path):
     assert not (cmd.prin == Prin.OP and cmd.prov.kind == "resolved")
 
 
-@DEFECT
 def test_module_container_mutated_elsewhere_is_not_constant(tmp_path):
     """別のツールが `ALLOWED_HOSTS.append(host)` で変更する列を定数の列にしない。"""
     u = _unit(_run(tmp_path, {"s.py": GLOBAL_REBOUND}), "first_host")
@@ -566,7 +564,7 @@ def test_url_template_precondition(tmp_path):
     assert _effects(_unit(res, "fetch_fmt"), "NET")
 
 
-@pytest.mark.parametrize("tool", [pytest.param("fetch_pct", marks=DEFECT), pytest.param("fetch_fmt", marks=DEFECT)])
+@pytest.mark.parametrize("tool", ["fetch_pct", "fetch_fmt"])
 def test_url_split_does_not_cut_host_from_template_placeholder(tmp_path, tool):
     """書式テンプレートの `%s` / `{}` を host のリテラルとして切り出さない（§2.6 の分割規則は
     **権威部の文字列そのものがリテラル**のときだけ OP にする）。"""
@@ -591,7 +589,6 @@ def test_url_prefix_var_precondition(tmp_path):
     assert _effects(_unit(_run(tmp_path, {"s.py": URL_PREFIX_VAR}), "fetch_host"), "NET")
 
 
-@DEFECT
 def test_url_split_non_literal_first_needs_authority_end(tmp_path):
     """parts[0] が非リテラルでも、その直後が `/` `?` `#` で始まるリテラルでなければ
     権威部の終端が分からないので分割しない（`f"{prefix}{host}/v1"` の host は MODEL）。"""
@@ -622,7 +619,7 @@ def test_env_write_precondition(tmp_path):
         assert _effects(_unit(res, name), "SPAWN")
 
 
-@pytest.mark.parametrize("tool", [pytest.param("run_subscript", marks=DEFECT), pytest.param("run_get", marks=DEFECT)])
+@pytest.mark.parametrize("tool", ["run_subscript", "run_get"])
 def test_env_read_after_model_write_is_not_config(tmp_path, tool):
     """`os.environ["K"] = cmd` の後の読み戻しを config（OP / resolved）にしない。"""
     u = _unit(_run(tmp_path, {"s.py": ENV_WRITE}), tool)
@@ -675,7 +672,6 @@ def test_external_class_precondition(tmp_path):
     _unit(_run(tmp_path / "b", EXTERNAL_BASE_SAME_NAME), "ask")
 
 
-@DEFECT
 def test_external_import_does_not_construct_intree_class_with_same_module_tail(tmp_path):
     """`from requests.sessions import Session` を木内の `tools/sessions.py` の Session と
     取り違えて `__init__` を実行しない（到達しない SPAWN を出さない）。"""
@@ -683,7 +679,6 @@ def test_external_import_does_not_construct_intree_class_with_same_module_tail(t
     assert not _effects(u, "SPAWN")
 
 
-@DEFECT
 def test_external_base_does_not_run_intree_init_with_same_name(tmp_path):
     """`class Query(pydantic.BaseModel)` の基底を木内の同名クラスと取り違えて `__init__` を実行しない。"""
     u = _unit(_run(tmp_path, EXTERNAL_BASE_SAME_NAME), "ask")
@@ -757,11 +752,11 @@ def test_module_write_variants_precondition(tmp_path):
 @pytest.mark.parametrize(
     "tool,kind,slot",
     [
-        pytest.param("run_setting", "SPAWN", "shell_string", marks=DEFECT, id="container_written_by_other_tool"),
+        pytest.param("run_setting", "SPAWN", "shell_string", id="container_written_by_other_tool"),
         # 現状 `cfg.BASE_URL` 自体を解決しない（opaque のまま）ので欠陥ではなく**番人**。
         # モジュール属性を読むようにしたとき、他モジュールからの書き込みを見落とさないため。
         pytest.param("fetch_base", "NET", "url.host", id="module_attr_written_from_other_module"),
-        pytest.param("run_env", "SPAWN", "shell_string", marks=DEFECT, id="environ_written_in_other_module"),
+        pytest.param("run_env", "SPAWN", "shell_string", id="environ_written_in_other_module"),
     ],
 )
 def test_written_module_state_is_not_constant(tmp_path, tool, kind, slot):
@@ -771,7 +766,6 @@ def test_written_module_state_is_not_constant(tmp_path, tool, kind, slot):
     assert not (v.prin == Prin.OP and v.prov.kind == "resolved")
 
 
-@DEFECT
 def test_nested_function_outer_local_shadows_module_constant(tmp_path):
     """入れ子関数が読む `COMMAND` は外側関数の局所変数（MODEL）であり、同名のモジュール定数ではない。"""
     u = _unit(_run(tmp_path, MODULE_WRITE_VARIANTS), "nested_shadow")

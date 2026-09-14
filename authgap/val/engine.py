@@ -433,8 +433,12 @@ class ValEngine:
 
     def _ev_Attribute(self, node, env, scope, res, depth, chain) -> Value:
         if resolve_call_name(node, scope) == "os.environ":
-            # 環境変数は config atom の源（§2.3）→ OP / resolved（D17）。
-            return _environ_map()
+            # 環境変数は config atom の源（§2.3）→ OP / resolved（D17）。**ただしこの関数で
+            # 書き込んだ値は読み戻しに含め**、木内のどこかで非定数を書き込むなら config と
+            # みなさない（D17 改訂 2。書き込みを無視すると MODEL が OP になる）。
+            base = _environ_map(self._environ_written_in_tree())
+            written = env.get("os.environ")
+            return value_join(base, written) if written is not None else base
         path = access_path(node)
         if path is not None:
             v = env.get(path)
@@ -841,8 +845,11 @@ class ValEngine:
         """
         k = self.opt.k
         if dotted in _ENVIRON_READS:
+            item = _environ_item(self._environ_written_in_tree())
+            written = env.get("os.environ")
+            if written is not None:
+                item = value_join(item, _element_of(written))  # この関数で書いた値の読み戻し
             default = args[1] if len(args) > 1 else kwargs.get("default")
-            item = _environ_item()
             return value_join(item, default) if default is not None else item
         if not isinstance(node.func, ast.Attribute) or receiver is None:
             return None
@@ -898,10 +905,17 @@ class ValEngine:
             mod, _, last = target.rpartition(".")
             if not mod:
                 return None  # `import os` の `os` はモジュールであって値ではない
-            mpath = self.index.resolve_module_path(mod)
-            if mpath is None:
-                return None
-            module, attr = self.index.module_name(mpath), last
+            strict = self.index.resolve_module_strict(mod)
+            if strict is None:
+                return None  # 外部パッケージを末尾成分一致で木内モジュールと取り違えない
+            if name in self._module_writes(scope.module):
+                return None  # 読む側のモジュールで import した名前が変更される
+            module, attr = strict, last
+        # **木内のどこかで書き換えられる名前は定数として読まない**（D17 改訂 2）:
+        # 関数内の `global` 再束縛、関数の局所変数（入れ子関数が掴む同名の外側変数を含む）、
+        # コンテナ / 属性の変更、他モジュールからの `m.NAME = ...`。
+        if attr in self._module_writes(module) or (module, attr) in self._tree_attr_writes():
+            return None
         key = (module, attr)
         if key in self._module_values:
             return self._module_values[key]
@@ -943,16 +957,16 @@ class ValEngine:
                 return None
             name, module = func.id, scope.module
             if dotted is not None:  # import された名前
-                mpath = self.index.resolve_module_path(dotted.rpartition(".")[0]) if "." in dotted else None
-                if mpath is None:
-                    return None
-                module = self.index.module_name(mpath)
+                strict = self.index.resolve_module_strict(dotted.rpartition(".")[0]) if "." in dotted else None
+                if strict is None:
+                    return None  # 外部パッケージを木内の同名モジュールと取り違えない（D17 改訂 2）
+                module = strict
         elif isinstance(func, ast.Attribute) and dotted is not None and "." in dotted:
             name = func.attr
-            mpath = self.index.resolve_module_path(dotted.rpartition(".")[0])
-            if mpath is None:
+            strict = self.index.resolve_module_strict(dotted.rpartition(".")[0])
+            if strict is None:
                 return None
-            module = self.index.module_name(mpath)
+            module = strict
         else:
             return None
         cd = self.index.get_class(name, module, strict=True)
@@ -996,7 +1010,7 @@ class ValEngine:
             hits = [f for f in self.index.lookup_function(f"{c.name}.__init__", c.module) if f.module == c.module]
             if hits:
                 return hits[0]
-            todo += [self.index.get_class(b.split(".")[-1], c.module) for b in c.bases]
+            todo += self._base_classes(c)  # **基底は import 表で厳密に引く**（D17 改訂 2）
         return None
 
     def _class_family(self, classes) -> set[str]:
@@ -1011,8 +1025,78 @@ class ValEngine:
                 out.add(c)
                 cd = self.index.get_class(c)
                 if cd is not None:
-                    nxt += [b.split(".")[-1] for b in cd.bases]
+                    nxt += [b.name for b in self._base_classes(cd)]
             frontier = nxt
+        return out
+
+    # -- D17 改訂 2: 木内の書き込みを見る / import と基底を厳密に引く ---------------
+
+    def _module_writes(self, module: str) -> frozenset[str]:
+        """モジュール内で書き換えられる名前（索引ごとに記憶化）。:class:`_WriteScan` を参照。"""
+        cache = self.index.__dict__.setdefault("_authgap_module_writes", {})
+        if module not in cache:
+            path = self.index.resolve_module_path(module)
+            tree = self.index.parse(path) if path is not None else None
+            scan = _WriteScan()
+            if tree is not None:
+                scan.visit(tree)
+            cache[module] = frozenset(scan.names)
+        return cache[module]
+
+    def _tree_attr_writes(self) -> frozenset[tuple[str, str]]:
+        """木全体で `m.NAME = ...` のように**モジュール属性として**書き換えられる `(module, NAME)`。"""
+        cache = self.index.__dict__
+        if "_authgap_tree_attr_writes" not in cache:
+            out: set[tuple[str, str]] = set()
+            for path in self.index.py_files():
+                tree = self.index.parse(path)
+                if tree is None:
+                    continue
+                mscope = self.index.module_scope(path)
+                for alias, attr in _attr_stores(tree):
+                    target = mscope.lookup(alias)
+                    strict = self.index.resolve_module_strict(target) if target else None
+                    if strict is not None:
+                        out.add((strict, attr))
+            cache["_authgap_tree_attr_writes"] = frozenset(out)
+        return cache["_authgap_tree_attr_writes"]
+
+    def _environ_written_in_tree(self) -> bool:
+        """木内のどこかで `os.environ` に**非定数**を書き込むか（書き込むなら環境変数を config とみなさない）。"""
+        cache = self.index.__dict__
+        if "_authgap_environ_written" not in cache:
+            written = False
+            for path in self.index.py_files():
+                tree = self.index.parse(path)
+                if tree is not None and _writes_environ(tree, self.index.module_scope(path)):
+                    written = True
+                    break
+            cache["_authgap_environ_written"] = written
+        return cache["_authgap_environ_written"]
+
+    def _base_classes(self, cd) -> list:
+        """クラスの基底を、そのクラスのモジュールの import 表で**厳密に**解決する。
+
+        名前だけで引くと `class Query(pydantic.BaseModel)` の基底を木内の同名 `BaseModel` と
+        取り違え、その `__init__` を実行する（D17 改訂 2）。外部の基底は結果に入らない。
+        """
+        path = self.index.resolve_module_path(cd.module)
+        mscope = self.index.module_scope(path) if path is not None else None
+        out = []
+        for b in cd.bases:
+            head, _, rest = b.partition(".")
+            last = b.split(".")[-1]
+            target = mscope.lookup(head) if mscope is not None else None
+            if target is not None:
+                full = f"{target}.{rest}" if rest else target
+                mod = self.index.resolve_module_strict(full.rpartition(".")[0])
+                hit = self.index.get_class(last, mod, strict=True) if mod else None
+            elif not rest:
+                hit = self.index.get_class(b, cd.module, strict=True)
+            else:
+                hit = None
+            if hit is not None:
+                out.append(hit)
         return out
 
     def _seed_params(self, callee: FuncDef, args, kwargs, receiver) -> dict[str, Value]:
@@ -1050,13 +1134,199 @@ def _fake_call(func_node: ast.AST) -> ast.Call:
 _ENVIRON_READS: frozenset[str] = frozenset({"os.environ.get", "os.getenv", "os.environ.setdefault"})
 
 
-def _environ_item() -> Value:
+def _environ_item(written_in_tree: bool = False) -> Value:
+    """環境変数 1 つの値。**木内で非定数を書き込むなら config とみなさず opaque**（D17 改訂 2）。"""
+    if written_in_tree:
+        return Value(Prin.OP, opaque("unresolved"), Atom())
     return Value(Prin.OP, RESOLVED, Atom())
 
 
-def _environ_map() -> Value:
-    """`os.environ` そのもの。添字 / `.get` の値は OP / resolved。"""
-    return Value(Prin.OP, RESOLVED, Map((), _environ_item()))
+def _environ_map(written_in_tree: bool = False) -> Value:
+    """`os.environ` そのもの。添字 / `.get` の値は OP / resolved（木内で書き込まれなければ）。"""
+    item = _environ_item(written_in_tree)
+    return Value(Prin.OP, item.prov, Map((), item))
+
+
+#: 受け手を変更するメソッド（モジュール水準の状態の書き換えを見つけるため）。
+_MUTATOR_METHODS: frozenset[str] = frozenset(
+    {
+        "append", "extend", "insert", "add", "update", "setdefault", "pop", "popitem",
+        "remove", "discard", "clear", "sort", "reverse", "appendleft", "extendleft",
+        "__setitem__", "__delitem__",
+    }
+)
+
+
+def _root_name(node: ast.AST) -> Optional[str]:
+    """`a.b[c].d` の根の名前 `a`。"""
+    cur = node
+    while isinstance(cur, (ast.Attribute, ast.Subscript)):
+        cur = cur.value
+    return cur.id if isinstance(cur, ast.Name) else None
+
+
+class _WriteScan(ast.NodeVisitor):
+    """モジュール内で**書き換えられる名前**を集める（flow-insensitive な集合なので訪問順は問わない）。
+
+    * 関数内の `global` / `nonlocal` 宣言の名前
+    * 関数内で束縛される名前（仮引数・代入先・for / with の束縛）。入れ子関数が掴む外側の局所変数が
+      同名のモジュール定数と取り違えられるのを防ぐ
+    * どこであれ、根の名前が変更される形（`X[...] = `、`X.a = `、`del X[...]`、`X.append(...)` など）
+    """
+
+    def __init__(self) -> None:
+        self.names: set[str] = set()
+        self._depth = 0
+
+    def _args(self, args: ast.arguments) -> None:
+        for a in list(args.posonlyargs) + list(args.args) + list(args.kwonlyargs):
+            self.names.add(a.arg)
+        for a in (args.vararg, args.kwarg):
+            if a is not None:
+                self.names.add(a.arg)
+
+    def visit_FunctionDef(self, node) -> None:
+        self._args(node.args)
+        self._depth += 1
+        self.generic_visit(node)
+        self._depth -= 1
+
+    visit_AsyncFunctionDef = visit_FunctionDef
+
+    def visit_Lambda(self, node) -> None:
+        self._args(node.args)
+        self._depth += 1
+        self.generic_visit(node)
+        self._depth -= 1
+
+    def visit_Global(self, node) -> None:
+        self.names.update(node.names)
+
+    visit_Nonlocal = visit_Global
+
+    def visit_Name(self, node) -> None:
+        if self._depth and isinstance(node.ctx, (ast.Store, ast.Del)):
+            self.names.add(node.id)
+
+    def visit_Subscript(self, node) -> None:
+        if isinstance(node.ctx, (ast.Store, ast.Del)):
+            root = _root_name(node.value)
+            if root:
+                self.names.add(root)
+        self.generic_visit(node)
+
+    def visit_Attribute(self, node) -> None:
+        if isinstance(node.ctx, (ast.Store, ast.Del)):
+            root = _root_name(node.value)
+            if root:
+                self.names.add(root)
+        self.generic_visit(node)
+
+    def visit_Call(self, node) -> None:
+        if isinstance(node.func, ast.Attribute) and node.func.attr in _MUTATOR_METHODS:
+            root = _root_name(node.func.value)
+            if root:
+                self.names.add(root)
+        self.generic_visit(node)
+
+
+def _attr_stores(tree: ast.AST) -> list[tuple[str, str]]:
+    """`alias.NAME = ...` / `alias.NAME[...] = ...` / `alias.NAME.append(...)` / `setattr(alias, "NAME", v)`。"""
+    out: list[tuple[str, str]] = []
+
+    class _V(ast.NodeVisitor):
+        def visit_Attribute(self, node) -> None:
+            if isinstance(node.ctx, (ast.Store, ast.Del)) and isinstance(node.value, ast.Name):
+                out.append((node.value.id, node.attr))
+            self.generic_visit(node)
+
+        def visit_Subscript(self, node) -> None:
+            base = node.value
+            if (
+                isinstance(node.ctx, (ast.Store, ast.Del))
+                and isinstance(base, ast.Attribute)
+                and isinstance(base.value, ast.Name)
+            ):
+                out.append((base.value.id, base.attr))
+            self.generic_visit(node)
+
+        def visit_Call(self, node) -> None:
+            f = node.func
+            if (
+                isinstance(f, ast.Attribute)
+                and f.attr in _MUTATOR_METHODS
+                and isinstance(f.value, ast.Attribute)
+                and isinstance(f.value.value, ast.Name)
+            ):
+                out.append((f.value.value.id, f.value.attr))
+            if (
+                isinstance(f, ast.Name)
+                and f.id == "setattr"
+                and len(node.args) >= 2
+                and isinstance(node.args[0], ast.Name)
+                and isinstance(node.args[1], ast.Constant)
+                and isinstance(node.args[1].value, str)
+            ):
+                out.append((node.args[0].id, node.args[1].value))
+            self.generic_visit(node)
+
+    _V().visit(tree)
+    return out
+
+
+#: `os.environ` へ書き込む呼び出し。
+_ENVIRON_WRITES: frozenset[str] = frozenset(
+    {"os.environ.update", "os.environ.setdefault", "os.putenv", "os.environ.__setitem__"}
+)
+
+
+def _is_constant_expr(node: ast.AST) -> bool:
+    if isinstance(node, ast.Constant):
+        return True
+    if isinstance(node, ast.Dict):
+        return all(v is not None and _is_constant_expr(v) for v in node.values)
+    return False
+
+
+def _writes_environ(tree: ast.AST, scope: Scope) -> bool:
+    """このモジュールが `os.environ` に**非定数**を書き込むか。"""
+    found = False
+
+    class _V(ast.NodeVisitor):
+        def _targets(self, targets, value) -> None:
+            nonlocal found
+            for t in targets:
+                if (
+                    isinstance(t, ast.Subscript)
+                    and resolve_call_name(t.value, scope) == "os.environ"
+                    and (value is None or not _is_constant_expr(value))
+                ):
+                    found = True
+
+        def visit_Assign(self, node) -> None:
+            self._targets(node.targets, node.value)
+            self.generic_visit(node)
+
+        def visit_AugAssign(self, node) -> None:
+            self._targets([node.target], None)
+            self.generic_visit(node)
+
+        def visit_AnnAssign(self, node) -> None:
+            self._targets([node.target], node.value)
+            self.generic_visit(node)
+
+        def visit_Call(self, node) -> None:
+            nonlocal found
+            if resolve_call_name(node.func, scope) in _ENVIRON_WRITES:
+                vals = list(node.args[1:] if len(node.args) > 1 else node.args) + [
+                    kw.value for kw in node.keywords
+                ]
+                if any(not _is_constant_expr(v) for v in vals):
+                    found = True
+            self.generic_visit(node)
+
+    _V().visit(tree)
+    return found
 
 
 def _module_assignments(body: list, name: str) -> list[ast.AST]:

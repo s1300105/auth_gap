@@ -231,6 +231,21 @@ class SourceIndex:
             seen.add(ident)
             yield cd
 
+    def resolve_module_strict(self, dotted: str) -> Optional[str]:
+        """import の dotted モジュール名を木内モジュールの dotted 名へ**厳密に**解決する。
+
+        :meth:`resolve_module_path` は末尾成分だけの一致にも落ちるので、外部パッケージ
+        （`requests.sessions`）を木内の `tools/sessions.py` と取り違える。木内モジュールの
+        dotted 名が import 名と一致するか `.<import 名>` で終わるときだけ採る（D17 改訂 2）。
+        """
+        if not dotted:
+            return None
+        path = self.resolve_module_path(dotted)
+        if path is None:
+            return None
+        name = self.module_name(path)
+        return name if name == dotted or name.endswith("." + dotted) else None
+
     def get_class(
         self, name: str, module: Optional[str] = None, strict: bool = False
     ) -> Optional[ClassDef]:

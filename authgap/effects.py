@@ -277,6 +277,11 @@ def _concat_values(vals: list[Value]) -> Value:
     return Value(prin, prov_merge(*[v.prov for v in vals]), Str(tuple(vals)), frozenset(), roots)
 
 
+def _has_placeholder(text: str) -> bool:
+    """書式テンプレートのプレースホルダ（`%s` / `{}` / `{name}`）を含むか。"""
+    return "%" in text or "{" in text or "}" in text
+
+
 def _split_url(v: Value) -> dict[str, Value]:
     """§2.6 の URL slot 分割規則。
 
@@ -310,6 +315,10 @@ def _split_url(v: Value) -> dict[str, Value]:
             cut = len(after)
         else:
             return {"url.host": v}
+        if _has_placeholder(text[:i]) or _has_placeholder(after[:cut]):
+            # 書式テンプレート（`"%s://%s/api" % ...` / `"https://{}/x".format(...)`）の
+            # プレースホルダは host のリテラルではない（D17 改訂 2。切り出すと MODEL の host を OP と誤る）。
+            return {"url.host": v}
         out = {
             "url.scheme": Value(Prin.OP, RESOLVED, Atom(const=text[:i])),
             "url.host": Value(Prin.OP, RESOLVED, Atom(const=after[:cut])),
@@ -318,7 +327,10 @@ def _split_url(v: Value) -> dict[str, Value]:
         if remainder:
             out["url.path"] = _concat_values(remainder)
         return out
-    if rest and not any(isinstance(p.const, str) and "://" in p.const for p in rest):
+    authority_ends = bool(rest) and isinstance(rest[0].const, str) and rest[0].const[:1] in ("/", "?", "#")
+    if authority_ends and not any(isinstance(p.const, str) and "://" in p.const for p in rest):
+        # 直後が `/` `?` `#` で始まるリテラルのときだけ、権威部の終端が part の境界にあると言える。
+        # そうでなければ（`f"{prefix}{host}/v1"`）host がどの part に入るか分からない（D17 改訂 2）。
         return {"url.host": first, "url.path": _concat_values(rest)}
     return {"url.host": v}
 

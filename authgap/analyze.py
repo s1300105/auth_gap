@@ -246,8 +246,9 @@ def _annotated_class(index: SourceIndex, ann: Optional[ast.AST], module: str, ms
     if target is not None:
         full = f"{target}.{rest}" if rest else target
         mod = full.rpartition(".")[0]
-        mpath = index.resolve_module_path(mod) if mod else None
-        return index.get_class(last, index.module_name(mpath), strict=True) if mpath else None
+        # 外部パッケージを末尾成分一致で木内モジュールと取り違えない（D17 改訂 2）
+        mname = index.resolve_module_strict(mod) if mod else None
+        return index.get_class(last, mname, strict=True) if mname else None
     return index.get_class(last, module, strict=True)
 
 

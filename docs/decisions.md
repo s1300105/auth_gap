@@ -344,6 +344,31 @@ analyzer_wrong をそのまま欠陥と読まない。** 仕様の定義に照�
 なっていた（A9 `ast_grep_rewrite`）。共通の先頭を要素ごとに join し、はみ出しを tail に
 畳むようにした（`test_branch_join_keeps_argv0_literal`）。
 
+**改訂 2（2026-09-14、0662b39 の敵対的レビューによる）: D17 の修正そのものが
+false-clean を 5 系統作っていた。** 観点別の点検者 4 名が指摘し、独立の検証者が最小
+fixture で再現した 8 件（棄却 0）と、検証者が見つけた変形を、すべて修正より先に
+`tests/test_f0a_defects.py` に固定してから直した。
+
+| 系統 | 何が起きていたか | 誤りの向き | 直し方 |
+|---|---|---|---|
+| モジュール水準の束縛 | 直下の代入だけを join したので、関数内の `global X; X = model`、別ツールの `SETTINGS["k"] = model`、入れ子関数が掴む同名の外側局所変数を見落とし、**定数の OP / resolved** にした（以前は opaque） | false-clean（verdict が消える） | 関数内で束縛・`global` 宣言される名前、どこかで変更される名前、他モジュールから `m.NAME = ...` と書かれる名前は読まない（`_WriteScan`、`_tree_attr_writes`） |
+| `os.environ` | env を見る前に config 値へ短絡したので、同じ関数で書いた MODEL の読み戻しが OP になり、別モジュールの書き込みも無視した | false-clean（MODEL → OP） | 読み戻しに env の書き込みを含める。木内のどこかで非定数を書き込むなら環境変数を config とみなさず opaque |
+| URL 分割（テンプレート） | `"%s://%s/api" % (...)` / `"https://{}/x".format(...)` のプレースホルダを host のリテラルとして切り出した | false-clean（MODEL の host を OP） | scheme / host の文字列に `%` `{` `}` があれば分割しない |
+| URL 分割（非リテラル枝） | `f"{prefix}{host}/v1"`（prefix は scheme だけ）で url.host を prefix にした | false-clean | 直後が `/?#` で始まるリテラルのときだけ分割する |
+| 木内クラスの構築 | 外部 import（`requests.sessions`）を末尾成分一致で木内の `sessions.py` と取り違え、基底（`pydantic.BaseModel`）を名前だけで木内の同名クラスと取り違えて `__init__` を実行した | false-alarm（到達しない resolved の効果） | import 名と木内モジュールの dotted 名が一致するか `.<import 名>` で終わるときだけ採る（`resolve_module_strict`）。基底もクラスのモジュールの import 表で厳密に引く |
+
+**精度の代償（書いておく）:** 木内で非定数を `os.environ` に書き込む木では、すべての
+環境変数の読み出しが opaque に戻る（`main()` で CLI 引数を書き込むだけの木も含む）。
+モジュール水準の名前も、同名の局所変数がどこかの関数にあるだけで読まなくなる。
+**どちらも resolved を opaque に戻す向きで、clean を作らない。**
+
+**どうして最初に見落としたか:** D17 の修正は「解決できるのに opaque」を減らす向きの
+変更で、較正対の受け入れテストも効果行の突き合わせも「消える」側を見ていた。
+**opaque → resolved に変わった行が正しく resolved かは、突き合わせだけでは分からない**
+（`diff_effects.py` は「slot 変化」として出すが、向きの判断は読む人に任せている）。
+解決率を上げる変更は、敵対的レビューで「resolved にしてよい根拠」を 1 件ずつ崩しに
+行く必要がある。
+
 **フレームの誤り（直す。結果とは独立の事実誤認）:** `APP_FRAME` の
 `OpenManus/OpenManus` は RL 用の openmanus_rl で、選定根拠に書いた「§2.6 の負例
 F5/F6/F7 の出所」（FoundationAgents 版 `app/tool/python_execute.py` ほか）ではない。
