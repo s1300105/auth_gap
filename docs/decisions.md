@@ -276,7 +276,7 @@ analyzer_wrong をそのまま欠陥と読まない。** 仕様の定義に照�
 |---|---|---|
 | `list.append` 等を受け手への書き込みとして扱わない（RES[7]） | **false-clean** | §2.6「決して clean に潰さない」 |
 | 受け手型が付かず sink を落とす: 局所変数の `Path`、callee クラスの `__init__` で束縛した `self` フィールド、木内関数の戻り値注釈、クロージャ変数（NOE[1,4,6,10,11]） | **false-clean** | §2.6 の heap / Obj.fields / 受け手アクセスパス |
-| 受け手型なしで末尾名が唯一の関数へ解決する（EFF[6]） | false-alarm | Def 4「木内で解決できない呼び出しは `opaque(unresolved)`」 |
+| 受け手型なしで末尾名が唯一の関数へ解決する（EFF[6]） | false-alarm | Def 4「木内で解決できない呼び出しは `opaque(unresolved)`」。**直し方を改訂（下記）** |
 | URL slot 分割規則が未実装（OPQ 9 件） | precision loss | §2.6 の URL 分割規則（falsifiable な形で書かれている） |
 | モジュール大域の名前を読まない（OPQ 8 件） | precision loss | Def 4（木内で解決できる）、§2.3 の config atom の源 |
 | `os.environ` 読み出しを config として扱わない（OPQ 4 件） | precision loss | §2.3 の config atom の源 4 種 |
@@ -301,6 +301,30 @@ analyzer_wrong をそのまま欠陥と読まない。** 仕様の定義に照�
    （ユニット 0 件の木 26 本中 9 本 + 混在 2 本）。カタログの拡張は月 10 の指紋凍結前に、
    標本外の根拠（フレームワークの公式文書）で行う。
 4. **3.12 構文**は D16（処理系の変更）で扱い、解析器の修正とは分けて報告する。
+
+**改訂（2026-09-14、較正対の差分による）: 末尾名だけの解決は「やめる」のではなく
+「opaque にする」。** 最初は受け手型の無いメソッド呼び出しを解決しない（降りない）
+ように直したが、較正対 A9 / A18 の効果行を直す前後で突き合わせたところ、**真の経路が
+消えていた**:
+
+- A18（langroid）`LanceDocChatAgent.query_plan` → `self.vecdb.compute_from_docs` の
+  `compile` / `eval`（`vecdb: LanceDB` は `VectorStore` の派生で、受け手型が推論できない
+  だけ）
+- A9（PraisonAI）`acp_*` → `ActionOrchestrator.apply_plan` → `_apply_step` の `subprocess.run`
+- A9 `stt` → `AudioAgent.transcribe` の `open`
+
+一方で消えて正しかったのはテストの模擬クラス 1 件（`MockSpeechResponse.stream_to_file`）
+だけだった。**効果を落とすのは false-clean で、EFF[6] の false-alarm より重い**（§2.6
+「決して drop しない」）。したがって: 末尾名で一意に決まるなら降りて効果を出すが、その
+経路の上の行の確度に `opaque(unresolved)` を合流する（resolved と数えない）。EFF[6] は
+「resolved の誤った効果」から「opaque の効果」に変わる。この改訂は
+`tests/test_f0a_defects.py` の `test_untyped_receiver_by_name_hop_*` が固定する。
+
+**同じ差分で見つけた退行（直した）:** `append` を受け手への書き込みとして扱うように
+したことで、`cmd = ["sg", ...]; if f: cmd.append(x)` の分岐合流が長さの違う列の join に
+なり、`_shape_join` が要素を全部捨てて argv0 のリテラル `"sg"` が列全体（MODEL）に
+なっていた（A9 `ast_grep_rewrite`）。共通の先頭を要素ごとに join し、はみ出しを tail に
+畳むようにした（`test_branch_join_keeps_argv0_literal`）。
 
 **フレームの誤り（直す。結果とは独立の事実誤認）:** `APP_FRAME` の
 `OpenManus/OpenManus` は RL 用の openmanus_rl で、選定根拠に書いた「§2.6 の負例

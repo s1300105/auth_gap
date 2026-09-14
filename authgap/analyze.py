@@ -178,6 +178,9 @@ def _seed(unit: Unit, index: Optional[SourceIndex] = None) -> dict[str, Value]:
         cls = unit.qualname.split(".")[0]
         fields = _self_fields(index, cls, unit.module) if index is not None else ()
         seed["self"] = Value(Prin.OP, RESOLVED, Obj((cls,), fields))
+    if index is not None:
+        for name, v in _closure_seed(index, unit).items():
+            seed.setdefault(name, v)
     if unit.message_param:
         # langroid 形: MODEL 値は `ToolMessage` 派生クラスのフィールドにある。
         fields = tuple(
@@ -191,6 +194,61 @@ def _seed(unit: Unit, index: Optional[SourceIndex] = None) -> dict[str, Value]:
             Prin.OP, RESOLVED, Obj((unit.message_class or "ToolMessage",), fields)
         )
     return seed
+
+
+def _closure_seed(index: SourceIndex, unit: Unit) -> dict[str, Value]:
+    """入れ子関数の入口が掴む、外側の関数の仮引数を種付ける（D17）。
+
+    `def register(mcp, store: Store): @mcp.tool() def post(text): store.post(text)` の
+    `store` は入口の仮引数ではないので種が無く、受け手型が付かずに sink を落としていた
+    （野外 NOE[11]、false-clean）。**MODEL にはしない**（ツール引数ではない）。
+    注釈が木内クラス（同じモジュールか import 先）なら `Obj((C,), fields)`、それ以外は
+    注釈の文字列から形だけを種付ける。外側の関数の本体で代入された自由変数は扱わない。
+    """
+    from .ir import Obj
+    from .val.engine import _seed_from_annotation
+
+    out: dict[str, Value] = {}
+    parent_qual = unit.qualname.rpartition(".")[0]
+    if not parent_qual:
+        return out
+    parents = [f for f in index.lookup_function(parent_qual, unit.module) if f.module == unit.module]
+    if len(parents) != 1:
+        return out
+    fn_args = getattr(parents[0].node, "args", None)
+    if fn_args is None:
+        return out
+    own = {p.name for p in unit.params}
+    path = index.resolve_module_path(unit.module)
+    mscope = index.module_scope(path) if path is not None else None
+    for a in list(fn_args.posonlyargs) + list(fn_args.args) + list(fn_args.kwonlyargs):
+        if a.arg in own or a.arg in ("self", "cls"):
+            continue
+        cd = _annotated_class(index, a.annotation, unit.module, mscope)
+        if cd is not None:
+            out[a.arg] = Value(Prin.OP, RESOLVED, Obj((cd.name,), _self_fields(index, cd.name, cd.module)))
+        else:
+            out[a.arg] = _seed_from_annotation(a)
+    return out
+
+
+def _annotated_class(index: SourceIndex, ann: Optional[ast.AST], module: str, mscope: Optional[Scope]):
+    """注釈が指す木内クラス（同じモジュールか import 先）。**名前だけで引かない。**"""
+    if isinstance(ann, ast.Constant) and isinstance(ann.value, str):
+        text: Optional[str] = ann.value.strip()
+    else:
+        text = dotted_of(ann) if ann is not None else None
+    if not text:
+        return None
+    head, _, rest = text.partition(".")
+    last = text.split(".")[-1]
+    target = mscope.lookup(head) if mscope is not None else None
+    if target is not None:
+        full = f"{target}.{rest}" if rest else target
+        mod = full.rpartition(".")[0]
+        mpath = index.resolve_module_path(mod) if mod else None
+        return index.get_class(last, index.module_name(mpath), strict=True) if mpath else None
+    return index.get_class(last, module, strict=True)
 
 
 #: `__init__` の解析結果を使い回すための記憶化。

@@ -176,6 +176,10 @@ class CallEvent:
     #: 手続き間で見つけた効果を入口の支配判定に載せるために要る（§2.5.4 の連結経路）。
     #: 深さ 0 の呼び出しでは自分自身の行。
     entry_site: int = 0
+    #: 受け手型が分からず**末尾名だけで**降りた経路の上の呼び出しか（D17）。
+    #: 効果は出すが確度に `opaque(unresolved)` を合流する。**末尾に置く**（位置引数で
+    #: 作る箇所の順序を崩さない）。
+    by_name: bool = False
 
 
 @dataclass
@@ -221,6 +225,13 @@ class ValEngine:
         self._active: set[str] = set()
         #: 深さ 0 の呼び出し位置のスタック（入口 CFG 上の行）。
         self._entry_sites: list[int] = []
+        #: モジュール水準の束縛の記憶化 `(module, name) -> Value | None`（D17）。
+        self._module_values: dict[tuple[str, str], Optional[Value]] = {}
+        self._module_active: set[tuple[str, str]] = set()
+        #: いま末尾名だけで降りた経路の中にいるか（入れ子の深さ）。
+        self._by_name_depth = 0
+        #: 直前の `_resolve_in_tree` が末尾名だけで決めたか。
+        self._by_name_hint = False
 
     # -- 入口 -------------------------------------------------------------
 
@@ -412,11 +423,18 @@ class ValEngine:
         v = env.get(node.id)
         if v is not None:
             return v
-        # モジュール定数かもしれない。読めなければ opaque(unresolved)。
+        # モジュール水準の束縛（定数・大域インスタンス・環境変数の読み出し）。
+        # **木内で解決できる名前を opaque(unresolved) にしない**（Def 4、D17）。
+        mv = self._module_value(scope, node.id, res)
+        if mv is not None:
+            return mv
         res.note_opaque("unresolved")
         return Value(Prin.OP, opaque("unresolved"), Atom(formal=node.id))
 
     def _ev_Attribute(self, node, env, scope, res, depth, chain) -> Value:
+        if resolve_call_name(node, scope) == "os.environ":
+            # 環境変数は config atom の源（§2.3）→ OP / resolved（D17）。
+            return _environ_map()
         path = access_path(node)
         if path is not None:
             v = env.get(path)
@@ -602,9 +620,15 @@ class ValEngine:
             depth=depth,
             chain=chain,
             entry_site=self._entry_sites[-1] if self._entry_sites else getattr(node, "lineno", 0),
+            by_name=self._by_name_depth > 0,
         )
         if self.on_call is not None:
             self.on_call(event)
+
+        # (0) 組込みの値操作: 環境変数の読み出し、`sep.join(xs)`、コンテナへの書き込み（D17）
+        value = self._builtin_value_op(node, dotted, receiver, receiver_path, args, kwargs, env)
+        if value is not None:
+            return value
 
         # (1) TRANSFER 表（深さを消費しない）
         value = self._apply_transfer(node, dotted, receiver, args, kwargs, res, scope)
@@ -622,7 +646,17 @@ class ValEngine:
         # (4) 木内のユーザ定義関数（深さを消費する）
         callee = self._resolve_in_tree(node, dotted, receiver)
         if callee is not None:
-            return self._descend(callee, node, args, kwargs, receiver, env, scope, res, depth, chain)
+            by_name = self._by_name_hint
+            if by_name:
+                res.note_opaque("unresolved")
+            return self._descend(
+                callee, node, args, kwargs, receiver, env, scope, res, depth, chain, by_name=by_name
+            )
+
+        # (5) 木内クラスの構築 `C(...)`（`__init__` を実行するので深さを消費する）
+        built = self._construct_in_tree(node, dotted, args, kwargs, scope, res, depth, chain)
+        if built is not None:
+            return built
 
         res.note_opaque("unresolved")
         return Value(
@@ -664,6 +698,7 @@ class ValEngine:
 
     def _resolve_in_tree(self, node, dotted: Optional[str], receiver: Optional[Value]) -> Optional[FuncDef]:
         """木内のユーザ定義関数へ解決する。**同名メソッドを無条件に採らない。**"""
+        self._by_name_hint = False
         name = dotted_of(node.func)
         if name is None:
             return None
@@ -682,27 +717,46 @@ class ValEngine:
             cands = narrowed
         if len(cands) != 1:
             return None  # 絞れないものは opaque(unresolved) に落とす
-        return cands[0]
+        chosen = cands[0]
+        if want_method and chosen.classname is not None:
+            typed = receiver is not None and isinstance(receiver.shape, Obj)
+            if not typed or chosen.classname not in self._class_family(receiver.shape.classes):
+                # **受け手型で裏付けられない、末尾名だけの解決**（D17 の改訂）。
+                # 降りないと真の経路（langroid の `compute_from_docs` の eval など）が消える
+                # ので降りるが、呼び出し側がその経路の効果を `opaque(unresolved)` にする。
+                self._by_name_hint = True
+        return chosen
 
     def _descend(
-        self, callee: FuncDef, node, args, kwargs, receiver, env, scope, res, depth, chain
+        self, callee: FuncDef, node, args, kwargs, receiver, env, scope, res, depth, chain, by_name: bool = False
     ) -> Value:
+        value, _sub = self._descend_env(callee, node, args, kwargs, receiver, res, depth, chain, by_name)
+        return value
+
+    def _descend_env(
+        self, callee: FuncDef, node, args, kwargs, receiver, res, depth, chain, by_name: bool = False
+    ) -> tuple[Value, Optional[Env]]:
+        """被呼び出しの本体を実行し、`(戻り値, 実行後の env)` を返す。
+
+        深さ・再帰・cap で降りなかったときの env は `None`。木内クラスの構築は
+        `__init__` 実行後の env から `self.<name>` を読む（D17）。
+        """
         if depth + 1 > self.opt.max_depth:
             res.note_opaque("depth")
             res.cap_hits.append("depth")
-            return Value(Prin.OP, opaque("depth"), Unknown(), frozenset(), _roots_all(args))
+            return Value(Prin.OP, opaque("depth"), Unknown(), frozenset(), _roots_all(args)), None
         if callee.key in self._active:
             res.note_opaque("recursion")
-            return Value(Prin.OP, opaque("recursion"), Unknown(), frozenset(), _roots_all(args))
+            return Value(Prin.OP, opaque("recursion"), Unknown(), frozenset(), _roots_all(args)), None
         if len(self._summaries) >= self.opt.summary_cap:
             res.note_opaque("cap")
             res.cap_hits.append("summary_cap")
-            return Value(Prin.OP, opaque("cap"), Unknown(), frozenset(), _roots_all(args))
+            return Value(Prin.OP, opaque("cap"), Unknown(), frozenset(), _roots_all(args)), None
 
         path = self.index.resolve_module_path(callee.module)
         if path is None:
             res.note_opaque("unresolved")
-            return Value(Prin.OP, opaque("unresolved"), Unknown(), frozenset(), _roots_all(args))
+            return Value(Prin.OP, opaque("unresolved"), Unknown(), frozenset(), _roots_all(args)), None
         callee_scope = self.index.function_scope(path, callee.node)
         seed = self._seed_params(callee, args, kwargs, receiver)
         self._summaries[callee.key] = self._summaries.get(callee.key, 0) + 1
@@ -712,6 +766,8 @@ class ValEngine:
             self._entry_sites.append(getattr(node, "lineno", 0))
             pushed = True
         sub = Env(seed)
+        if by_name:
+            self._by_name_depth += 1
         try:
             self._exec_body(
                 getattr(callee.node, "body", []),
@@ -723,10 +779,12 @@ class ValEngine:
             )
         finally:
             self._active.discard(callee.key)
+            if by_name:
+                self._by_name_depth -= 1
             if pushed:
                 self._entry_sites.pop()
         ret = sub.get("<return>")
-        return ret if ret is not None else Value(Prin.OP, RESOLVED, Unknown())
+        return (ret if ret is not None else Value(Prin.OP, RESOLVED, Unknown())), sub
 
     def _descend_indirect(self, node, dotted, args, kwargs, env, scope, res, depth, chain) -> Value:
         """`multiprocessing.Process(target=f, args=(...))` 越しの到達。
@@ -766,6 +824,197 @@ class ValEngine:
             callee, node, inner_args, {}, None, env, scope, res, depth, chain + ("<indirect>",)
         )
 
+    # -- D17: 組込みの値操作 / モジュール水準の束縛 / 木内クラスの構築 ----------
+
+    def _builtin_value_op(
+        self, node, dotted, receiver, receiver_path, args, kwargs, env
+    ) -> Optional[Value]:
+        """TRANSFER 表より先に見る組込みの値操作（D17）。
+
+        * `os.environ.get` / `os.getenv`: config atom の源（§2.3）→ OP / resolved。
+          既定値の引数があれば join する（既定が MODEL なら MODEL のまま）。
+        * `sep.join(xs)`: **主語は区切り文字だが値は xs の要素から来る。** 区切り文字を
+          主語にすると xs に入った MODEL が消える（false-clean）。
+        * `xs.append(v)` / `insert` / `extend`、コンテナ形の `add` / `update`: 受け手への
+          書き込み。**戻り値を捨てるだけにすると v の MODEL が消える**（野外 RES[7]）。
+          木内クラスの同名メソッド（受け手が `Obj`）は通常の解決に回す。
+        """
+        k = self.opt.k
+        if dotted in _ENVIRON_READS:
+            default = args[1] if len(args) > 1 else kwargs.get("default")
+            item = _environ_item()
+            return value_join(item, default) if default is not None else item
+        if not isinstance(node.func, ast.Attribute) or receiver is None:
+            return None
+        attr = node.func.attr
+        if attr == "join" and len(args) == 1 and not kwargs and (
+            isinstance(receiver.shape, Str) or isinstance(receiver.const, str)
+        ):
+            return _str_join(receiver, args[0], k)
+        if receiver_path is None or isinstance(receiver.shape, Obj):
+            return None
+        container = isinstance(receiver.shape, (Seq, Argv, Map))
+        items: Optional[list[Value]] = None
+        if attr in ("append", "appendleft") and len(args) == 1:
+            items = [args[0]]
+        elif attr == "insert" and len(args) == 2:
+            items = [args[1]]
+        elif attr == "extend" and len(args) == 1:
+            items = _items_of(args[0])
+        elif container and attr == "add" and len(args) == 1:
+            items = [args[0]]
+        elif container and attr == "update" and (args or kwargs):
+            items = []
+            for src in list(args) + [kwargs[key] for key in sorted(kwargs)]:
+                items += _items_of(src)
+        if items is None:
+            return None
+        new = receiver
+        for it in items:
+            new = _append_tail(new, it, k)
+        env.set(receiver_path, new)
+        if not container:
+            # 形の分からない受け手: 書き込みは反映し（MODEL を落とさない）、呼び出し自体は
+            # 通常の解決に回す（その結果の opaque も記録される）。
+            return None
+        return Value(Prin.OP, RESOLVED, Atom(const=None))
+
+    def _module_value(self, scope: Scope, name: str, res: ValResult) -> Optional[Value]:
+        """モジュール水準の束縛を読む（Def 4 / §2.3、D17）。
+
+        * 同じモジュールの直下（`if` / `try` / `with` の中を含む）にある代入の **join**
+          （flow-insensitive。どの代入が効くかを決めない）
+        * `from m import NAME` は m の同名束縛を 1 段だけ追う
+        * 関数内で束縛される名前（`scope.local_bindings`）は読まない
+        * **評価中の呼び出し事象は効果にしない**（モジュール初期化はユニットから到達しない）
+
+        束縛が無ければ `None`（呼び出し側が `opaque(unresolved)` にする）。
+        """
+        if name in scope.local_bindings:
+            return None
+        module, attr = scope.module, name
+        target = scope.lookup(name)
+        if target is not None:
+            mod, _, last = target.rpartition(".")
+            if not mod:
+                return None  # `import os` の `os` はモジュールであって値ではない
+            mpath = self.index.resolve_module_path(mod)
+            if mpath is None:
+                return None
+            module, attr = self.index.module_name(mpath), last
+        key = (module, attr)
+        if key in self._module_values:
+            return self._module_values[key]
+        if key in self._module_active:
+            res.note_opaque("recursion")
+            return Value(Prin.OP, opaque("recursion"), Unknown())
+        path = self.index.resolve_module_path(module)
+        tree = self.index.parse(path) if path is not None else None
+        rhs = _module_assignments(tree.body, attr) if tree is not None else []
+        if not rhs or path is None:
+            self._module_values[key] = None
+            return None
+        self._module_active.add(key)
+        saved = self.on_call
+        self.on_call = None
+        out: Optional[Value] = None
+        try:
+            mscope = self.index.module_scope(path)
+            for expr in rhs:
+                v = self._eval(expr, Env(), mscope, res, 0, (f"<module:{module}>",))
+                out = v if out is None else value_join(out, v)
+        finally:
+            self.on_call = saved
+            self._module_active.discard(key)
+        self._module_values[key] = out
+        return out
+
+    def _construct_in_tree(self, node, dotted, args, kwargs, scope, res, depth, chain) -> Optional[Value]:
+        """木内クラスの構築 `C(...)` を `Obj((C,), fields)` にする（§2.6 の Obj.fields、D17）。
+
+        `__init__` を**実引数で**実行し、`self.<name>` に書かれた値を `fields` にする。
+        クラスは同じモジュールの定義か import で指したモジュールの定義に限り、
+        **名前だけで他モジュールの同名クラスを採らない**（`get_class(strict=True)`）。
+        `__init__` の実行は木内の被呼び出しなので深さを 1 消費する。
+        """
+        func = node.func
+        if isinstance(func, ast.Name):
+            if func.id in scope.local_bindings:
+                return None
+            name, module = func.id, scope.module
+            if dotted is not None:  # import された名前
+                mpath = self.index.resolve_module_path(dotted.rpartition(".")[0]) if "." in dotted else None
+                if mpath is None:
+                    return None
+                module = self.index.module_name(mpath)
+        elif isinstance(func, ast.Attribute) and dotted is not None and "." in dotted:
+            name = func.attr
+            mpath = self.index.resolve_module_path(dotted.rpartition(".")[0])
+            if mpath is None:
+                return None
+            module = self.index.module_name(mpath)
+        else:
+            return None
+        cd = self.index.get_class(name, module, strict=True)
+        if cd is None:
+            return None
+        init = self._find_init(cd)
+        fields: dict[str, Value] = {}
+        if init is None:
+            # dataclass / pydantic 形: 注釈つきクラス変数の順に実引数を割り当てる
+            declared = [
+                st.target.id
+                for st in cd.node.body
+                if isinstance(st, ast.AnnAssign) and isinstance(st.target, ast.Name)
+            ]
+            for i, fname in enumerate(declared):
+                if i < len(args):
+                    fields[fname] = args[i]
+                elif fname in kwargs:
+                    fields[fname] = kwargs[fname]
+            return Value(Prin.OP, RESOLVED, Obj((cd.name,), tuple(sorted(fields.items()))))
+        receiver = Value(Prin.OP, RESOLVED, Obj((cd.name,), ()))
+        value, sub = self._descend_env(init, node, args, kwargs, receiver, res, depth, chain)
+        if sub is None:
+            # 深さ・再帰・cap で降りなかった。型だけ持ち、確度は降りなかった理由を運ぶ。
+            return Value(Prin.OP, value.prov, Obj((cd.name,), ()))
+        for key, v in sub.items():
+            rest = key[len("self."):] if key.startswith("self.") else None
+            if rest and "." not in rest:
+                fields[rest] = v
+        return Value(Prin.OP, RESOLVED, Obj((cd.name,), tuple(sorted(fields.items()))))
+
+    def _find_init(self, cd) -> Optional[FuncDef]:
+        """`__init__` を自クラス → 基底（3 段まで）の順に探す。"""
+        seen: set[tuple[str, str]] = set()
+        todo = [cd]
+        while todo and len(seen) < 4:
+            c = todo.pop(0)
+            if c is None or (c.module, c.name) in seen:
+                continue
+            seen.add((c.module, c.name))
+            hits = [f for f in self.index.lookup_function(f"{c.name}.__init__", c.module) if f.module == c.module]
+            if hits:
+                return hits[0]
+            todo += [self.index.get_class(b.split(".")[-1], c.module) for b in c.bases]
+        return None
+
+    def _class_family(self, classes) -> set[str]:
+        """受け手クラスとその基底（3 段まで）の名前。継承したメソッドを解決するため。"""
+        out: set[str] = set()
+        frontier = [c.split(".")[-1] for c in classes]
+        for _ in range(3):
+            nxt: list[str] = []
+            for c in frontier:
+                if c in out:
+                    continue
+                out.add(c)
+                cd = self.index.get_class(c)
+                if cd is not None:
+                    nxt += [b.split(".")[-1] for b in cd.bases]
+            frontier = nxt
+        return out
+
     def _seed_params(self, callee: FuncDef, args, kwargs, receiver) -> dict[str, Value]:
         """呼び出し先の仮引数に実引数を割り当てる。"""
         seed: dict[str, Value] = {}
@@ -795,6 +1044,64 @@ _MATCH = getattr(ast, "Match", None)
 
 def _fake_call(func_node: ast.AST) -> ast.Call:
     return ast.Call(func=func_node, args=[], keywords=[])
+
+
+#: 環境変数の読み出し（config atom の源。§2.3）。
+_ENVIRON_READS: frozenset[str] = frozenset({"os.environ.get", "os.getenv", "os.environ.setdefault"})
+
+
+def _environ_item() -> Value:
+    return Value(Prin.OP, RESOLVED, Atom())
+
+
+def _environ_map() -> Value:
+    """`os.environ` そのもの。添字 / `.get` の値は OP / resolved。"""
+    return Value(Prin.OP, RESOLVED, Map((), _environ_item()))
+
+
+def _module_assignments(body: list, name: str) -> list[ast.AST]:
+    """モジュール直下の `name = ...` / `name: T = ...` の右辺（`if` / `try` / `with` の中も見る）。"""
+    out: list[ast.AST] = []
+    for st in body:
+        if isinstance(st, ast.Assign):
+            if any(isinstance(t, ast.Name) and t.id == name for t in st.targets):
+                out.append(st.value)
+        elif isinstance(st, ast.AnnAssign):
+            if isinstance(st.target, ast.Name) and st.target.id == name and st.value is not None:
+                out.append(st.value)
+        elif isinstance(st, (ast.If, ast.Try, ast.With, ast.AsyncWith, getattr(ast, "TryStar", ast.Try))):
+            inner = (
+                list(getattr(st, "body", []))
+                + list(getattr(st, "orelse", []))
+                + list(getattr(st, "finalbody", []))
+            )
+            for h in getattr(st, "handlers", []):
+                inner += list(h.body)
+            out += _module_assignments(inner, name)
+    return out
+
+
+def _items_of(v: Value) -> list[Value]:
+    """列の要素（tail を含む）。列の形でなければ代表値 1 つ。"""
+    if isinstance(v.shape, (Seq, Argv, Map)):
+        items = list(_elements(v))
+        if v.shape.tail is not None:
+            items.append(v.shape.tail)
+        return items
+    return [_element_of(v)]
+
+
+def _str_join(sep: Value, seq: Value, k: int) -> Value:
+    """`sep.join(seq)`。値の主体と確度は**要素**と区切り文字の両方から採る。"""
+    items = _items_of(seq)
+    if not items:
+        return Value(Prin.OP, RESOLVED, Atom(const=""))
+    parts: list[Value] = []
+    for i, it in enumerate(items):
+        if i:
+            parts.append(sep)
+        parts.append(it)
+    return _make_str(parts, k)
 
 
 # --------------------------------------------------------------------------
@@ -954,7 +1261,8 @@ def _append_tail(cur: Optional[Value], value: Value, k: int) -> Value:
     if isinstance(cur.shape, (Seq, Argv)):
         elems = list(cur.shape.elems)
         tail = cur.shape.tail
-        if len(elems) < k:
+        if len(elems) < k and tail is None:
+            # **tail がある列の後ろに elems として足さない**（位置が確定しなくなる）。
             elems.append(value)
         else:
             tail = value if tail is None else value_join(tail, value)

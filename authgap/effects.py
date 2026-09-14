@@ -23,7 +23,7 @@ from .catalog.sinks import (
     db_execute_rule,
     is_interpreter,
 )
-from .ir import REMOTE, RESOLVED, Argv, Atom, Obj, Path, Prin, Prov, Seq, Str, Value, prov_merge
+from .ir import REMOTE, RESOLVED, Argv, Atom, Obj, Path, Prin, Prov, Seq, Str, Value, opaque, prov_merge
 from .val import CallEvent
 
 #: 効果本体が木の外（別プロセス / HTTP の向こう）にある受け手型。
@@ -170,14 +170,18 @@ def _max_prin(vals: list[Value]) -> Prin:
     return out
 
 
-def _resolution_of(slots: dict[str, Value], receiver: Optional[Value]) -> Prov:
-    """行の確度。**`remote` は行単位**（F7 の明記事項）。"""
+def _resolution_of(slots: dict[str, Value], receiver: Optional[Value], by_name: bool = False) -> Prov:
+    """行の確度。**`remote` は行単位**（F7 の明記事項）。
+
+    :param by_name: 受け手型が分からず**末尾名だけで**木内メソッドへ降りた経路の上の行。
+        効果は落とさずに出すが、到達の根拠が名前一致なので `opaque(unresolved)` を合流する
+        （D17。落とすと langroid の `compute_from_docs` の eval のような真の経路が消える）。
+    """
     if receiver is not None and isinstance(receiver.shape, Obj):
         if set(receiver.shape.classes) & REMOTE_RECEIVER_TYPES:
             return REMOTE
-    if not slots:
-        return RESOLVED
-    return prov_merge(*[v.prov for v in slots.values()])
+    out = prov_merge(*[v.prov for v in slots.values()]) if slots else RESOLVED
+    return prov_merge(out, opaque("unresolved")) if by_name else out
 
 
 def _mode_is_write(ev: CallEvent, row: SinkRow) -> Optional[bool]:
@@ -241,6 +245,96 @@ def _is_policy_path(v: Optional[Value]) -> bool:
     return any(pat in str(text) for pat in POLICY_FILE_PATTERNS)
 
 
+def _receiver_typed_key(ev: CallEvent) -> Optional[str]:
+    """受け手の値の形から sink 名を作る（D17）。
+
+    `resolve_call_name` は受け手が局所変数だと `None` を返すので、`p.write_text(...)` の
+    `p` が `Path` 形でも sink 表に当たらず、**FS 効果を落としていた**（野外 NOE[1,10]）。
+    """
+    if ev.receiver is None or not isinstance(ev.node.func, ast.Attribute):
+        return None
+    method = ev.node.func.attr
+    if isinstance(ev.receiver.shape, Path):
+        key = f"pathlib.Path.{method}"
+        return key if key in DIRECT_SINKS else None
+    if isinstance(ev.receiver.shape, Obj):
+        for cls in sorted(ev.receiver.shape.classes):
+            key = f"{cls}.{method}"
+            if key in DIRECT_SINKS:
+                return key
+    return None
+
+
+def _concat_values(vals: list[Value]) -> Value:
+    if len(vals) == 1:
+        return vals[0]
+    prin = Prin.OP
+    roots: frozenset[str] = frozenset()
+    for v in vals:
+        if v.prin > prin:
+            prin = v.prin
+        roots |= v.roots
+    return Value(prin, prov_merge(*[v.prov for v in vals]), Str(tuple(vals)), frozenset(), roots)
+
+
+def _split_url(v: Value) -> dict[str, Value]:
+    """§2.6 の URL slot 分割規則。
+
+    * url の値が `Str(parts)` で parts[0] がリテラルであり、`://` を含み、その後に
+      `/` `?` `#` のいずれかを含む → `url.scheme` と `url.host` をそのリテラルから切り出し
+      `principal = OP`。残り（リテラルの残部と後続の part）は `url.path`。
+      権威部の終端が**次のリテラルの先頭**にある形（`"https://api.x" + "/search"`）も同じ。
+    * parts[0] が非リテラル → `url.host = parts[0]`（その part の主体）。残りは `url.path`。
+      **ただし後続のリテラルに `://` があれば分割しない**（`f"{proto}://{host}/x"` で
+      host を proto の主体にすると MODEL の host を OP と誤る。false-clean を作らない）。
+    * それ以外（権威部の終端がリテラル内に無い、相対 URL など）は分割しない。
+    """
+    if isinstance(v.shape, Str):
+        parts = list(v.shape.parts)
+        tail = v.shape.tail
+    else:
+        parts, tail = [v], None
+    if not parts:
+        return {"url.host": v}
+    first, rest = parts[0], parts[1:] + ([tail] if tail is not None else [])
+    text = first.const if isinstance(first.const, str) else None
+    if text is not None:
+        i = text.find("://")
+        if i < 0:
+            return {"url.host": v}
+        after = text[i + 3 :]
+        cuts = [after.index(c) for c in "/?#" if c in after]
+        if cuts:
+            cut = min(cuts)
+        elif rest and isinstance(rest[0].const, str) and rest[0].const[:1] in ("/", "?", "#"):
+            cut = len(after)
+        else:
+            return {"url.host": v}
+        out = {
+            "url.scheme": Value(Prin.OP, RESOLVED, Atom(const=text[:i])),
+            "url.host": Value(Prin.OP, RESOLVED, Atom(const=after[:cut])),
+        }
+        remainder = ([Value(Prin.OP, RESOLVED, Atom(const=after[cut:]))] if after[cut:] else []) + rest
+        if remainder:
+            out["url.path"] = _concat_values(remainder)
+        return out
+    if rest and not any(isinstance(p.const, str) and "://" in p.const for p in rest):
+        return {"url.host": first, "url.path": _concat_values(rest)}
+    return {"url.host": v}
+
+
+def _split_url_slots(slots: dict[str, Value]) -> dict[str, Value]:
+    """`url.host` に束縛された URL 全体を §2.6 の規則で分割する。既存の slot は上書きしない。"""
+    host = slots.get("url.host")
+    if host is None:
+        return slots
+    out = {k: s for k, s in slots.items() if k != "url.host"}
+    for k, s in _split_url(host).items():
+        if k == "url.host" or k not in out:
+            out[k] = s
+    return dict(sorted(out.items()))
+
+
 # --------------------------------------------------------------------------
 # 抽出
 # --------------------------------------------------------------------------
@@ -271,7 +365,7 @@ class EffectExtractor:
     # -- (a) 直接 ---------------------------------------------------------
 
     def _direct(self, ev: CallEvent) -> bool:
-        key = _suffix_match(ev.dotted, DIRECT_SINKS)
+        key = _suffix_match(ev.dotted, DIRECT_SINKS) or _receiver_typed_key(ev)
         if key is None:
             return False
         made = False
@@ -329,6 +423,8 @@ class EffectExtractor:
                 slots[slot] = v
         if not slots:
             return None
+        if kind == "NET":
+            slots = _split_url_slots(slots)
         eff = Effect(
             kind=kind,
             site=key,
@@ -339,7 +435,7 @@ class EffectExtractor:
             slots=slots,
             sub_kind=_sub_kind(kind, slots),
             exec_mode=exec_mode,
-            resolution=_resolution_of(slots, ev.receiver),
+            resolution=_resolution_of(slots, ev.receiver, ev.by_name),
             witness_chain=ev.chain,
             write_policy=(kind == "FS_WRITE" and _is_policy_path(slots.get("path"))),
             required_by=row.required_by,
@@ -385,6 +481,8 @@ class EffectExtractor:
         if not slots:
             return None
         kind = row.kind
+        if kind == "NET":
+            slots = _split_url_slots(slots)
         db_rule = None
         if kind == "DB" and method in ("execute", "executemany"):
             db_rule = db_execute_rule(frozenset(getattr(ev.receiver.shape, "classes", ())))
@@ -403,7 +501,7 @@ class EffectExtractor:
             exec_mode={"shell": {"prin": "OP", "const": False, "source": "proxy"}}
             if kind == "SPAWN"
             else {},
-            resolution=_resolution_of(slots, ev.receiver),
+            resolution=_resolution_of(slots, ev.receiver, ev.by_name),
             witness_chain=ev.chain,
             db_rule=db_rule,
             required_by=row.required_by,
@@ -487,7 +585,7 @@ class EffectExtractor:
                     relpath=ev.relpath,
                     slots={slot_name: payload},
                     sub_kind=_sub_kind(kind, {slot_name: payload}),
-                    resolution=_resolution_of({slot_name: payload}, recv),
+                    resolution=_resolution_of({slot_name: payload}, recv, ev.by_name),
                     witness_chain=ev.chain,
                     required_by=row.required_by,
                 )

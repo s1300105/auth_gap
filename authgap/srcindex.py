@@ -231,12 +231,22 @@ class SourceIndex:
             seen.add(ident)
             yield cd
 
-    def get_class(self, name: str, module: Optional[str] = None) -> Optional[ClassDef]:
+    def get_class(
+        self, name: str, module: Optional[str] = None, strict: bool = False
+    ) -> Optional[ClassDef]:
+        """クラス定義を引く。
+
+        :param strict: 真なら `module` 内の定義だけを返し、**名前だけの一致に落とさない**。
+            木内クラスの構築 `C(...)` と注釈による型付けはこれを使う（名前だけで引くと
+            別モジュールの同名クラスの `__init__` を実行してしまう。D17）。
+        """
         self.build()
         if module is not None:
             hit = self._classes.get(f"{module}:{name}")
             if hit is not None:
                 return hit
+        if strict:
+            return None
         return self._classes.get(name)
 
     def lookup_function(self, qualname: str, module: Optional[str] = None) -> list[FuncDef]:

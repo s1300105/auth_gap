@@ -472,6 +472,16 @@ def _shape_join(a: Shape, b: Shape) -> Shape:
         if a.const == b.const and a.formal == b.formal:
             return a
         return Atom()
+    if isinstance(a, (Seq, Argv)) and type(a) is type(b):
+        # **共通の先頭は要素ごとに join し、はみ出した要素は tail に畳む**（D17）。
+        # 形だけ残して要素を捨てると、`cmd = ["sg", ...]; if f: cmd.append(x)` の合流で
+        # argv0 のリテラル "sg" が消え、argv0 が列全体（MODEL）になる（A9 で発生）。
+        n = min(len(a.elems), len(b.elems))
+        prefix = tuple(value_join(x, y) for x, y in zip(a.elems[:n], b.elems[:n], strict=True))
+        tail: Optional[Value] = None
+        for extra in list(a.elems[n:]) + list(b.elems[n:]) + [t for t in (a.tail, b.tail) if t is not None]:
+            tail = extra if tail is None else value_join(tail, extra)
+        return type(a)(prefix, tail)
     if a.kind() == b.kind():
         # 同種だが中身が違う: 要素は畳んで Unknown 側に倒さず、形だけ残す。
         if isinstance(a, Str):

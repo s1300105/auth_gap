@@ -88,13 +88,11 @@ def test_list_append_precondition(tmp_path):
     assert _effects(_unit(res, "filter_logs"), "DB")
 
 
-@DEFECT
 def test_list_append_keeps_model_in_params(tmp_path):
     res = _run(tmp_path, {"server.py": LIST_APPEND})
     assert _slot(_unit(res, "query_logs"), "DB", "params").prin == Prin.MODEL
 
 
-@DEFECT
 def test_str_join_keeps_model_from_iterable(tmp_path):
     """`" AND ".join(clauses)` の主語は区切り文字だが、値は clauses の中身から来る。"""
     res = _run(tmp_path, {"server.py": LIST_APPEND})
@@ -172,25 +170,21 @@ def test_receiver_precondition(tmp_path):
         _unit(res, name)
 
 
-@DEFECT
 def test_local_path_receiver_finds_fs_read(tmp_path):
     res = _run(tmp_path, {"s.py": LOCAL_PATH})
     assert _effects(_unit(res, "scan_project"), "FS_READ")
 
 
-@DEFECT
 def test_module_instance_self_field_finds_db(tmp_path):
     res = _run(tmp_path, {"s.py": MODULE_INSTANCE})
     assert _effects(_unit(res, "post_message"), "DB")
 
 
-@DEFECT
 def test_intree_return_value_receiver_finds_fs_write(tmp_path):
     res = _run(tmp_path, {"s.py": RETURN_ANNOTATION})
     assert _effects(_unit(res, "submit"), "FS_WRITE")
 
 
-@DEFECT
 def test_closure_variable_receiver_finds_db(tmp_path):
     res = _run(tmp_path, {"s.py": CLOSURE_VAR})
     assert _effects(_unit(res, "post"), "DB")
@@ -224,11 +218,68 @@ def test_name_only_precondition(tmp_path):
     _unit(_run(tmp_path, NAME_ONLY), "take_screenshot")
 
 
-@DEFECT
-def test_untyped_receiver_does_not_resolve_by_tail_name(tmp_path):
-    """Def 4: 木内で解決できない呼び出しは `opaque(unresolved)`。名前だけで他クラスへ飛ばない。"""
+def test_untyped_receiver_by_name_hop_is_opaque(tmp_path):
+    """受け手型なしで末尾名だけで降りた経路の効果は **resolved にしない**（D17 の改訂）。
+
+    当初は「降りない」を期待にしていたが、較正対の差分で真の経路が消えることが分かった
+    （langroid `LanceDocChatAgent.query_plan` → `VectorStore.compute_from_docs` の
+    `eval`、PraisonAI の `acp_*` → `ActionOrchestrator._apply_step` の `subprocess.run`）。
+    **効果を落とすと false-clean** なので、降りたうえで `opaque(unresolved)` を合流する。
+    """
     res = _run(tmp_path, NAME_ONLY)
-    assert not _effects(_unit(res, "take_screenshot"), "SPAWN")
+    spawns = _effects(_unit(res, "take_screenshot"), "SPAWN")
+    assert all(e.resolution.kind == "opaque" and "unresolved" in e.resolution.reasons for e in spawns)
+
+
+BY_NAME_TRUE_PATH = FASTMCP_HEAD + """\
+class VectorStore:
+    def compute_from_docs(self, docs, calc: str) -> str:
+        return str(eval(calc))
+
+class LanceDB(VectorStore):
+    pass
+
+class DocAgent:
+    def __init__(self, config):
+        self.vecdb = config.make_store()
+
+    def query_plan(self, calc: str) -> str:
+        return self.vecdb.compute_from_docs([], calc)
+
+@mcp.tool()
+def plan(calc: str) -> str:
+    agent = DocAgent(None)
+    return agent.query_plan(calc)
+"""
+
+
+def test_untyped_receiver_by_name_hop_keeps_effect(tmp_path):
+    """受け手 `self.vecdb` の型が推論できなくても、名前で一意に決まる経路の EXEC は落とさない。"""
+    u = _unit(_run(tmp_path, {"s.py": BY_NAME_TRUE_PATH}), "plan")
+    execs = _effects(u, "EXEC")
+    assert execs, "名前で一意に決まる木内メソッドの EXEC が消えた（false-clean）"
+    assert all(e.resolution.kind == "opaque" for e in execs)
+
+
+BRANCH_APPEND = FASTMCP_HEAD + """\
+import subprocess
+
+@mcp.tool()
+def rewrite(pattern: str, path: str, dry_run: bool = True) -> str:
+    cmd = ["sg", "--pattern", pattern]
+    if not dry_run:
+        cmd.append("--update-all")
+    cmd.append(path)
+    return subprocess.run(cmd, capture_output=True, text=True).stdout
+"""
+
+
+def test_branch_join_keeps_argv0_literal(tmp_path):
+    """分岐で長さの違う列が合流しても、共通の先頭（argv0 の "sg"）は保つ（A9 で退行した形）。"""
+    u = _unit(_run(tmp_path, {"s.py": BRANCH_APPEND}), "rewrite")
+    argv0 = _slot(u, "SPAWN", "argv0")
+    assert argv0.prin == Prin.OP and argv0.const == "sg"
+    assert _slot(u, "SPAWN", "argv[*]").prin == Prin.MODEL
 
 
 # ---------------------------------------------------------------------------
@@ -248,7 +299,6 @@ def test_url_split_precondition(tmp_path):
     assert _effects(_unit(_run(tmp_path, {"s.py": URL_SPLIT}), "get_messages"), "NET")
 
 
-@DEFECT
 def test_url_host_from_literal_authority_is_op(tmp_path):
     """parts[0] がリテラルで `://` の後に `/` を含む → url.host は OP（§2.6）。"""
     u = _unit(_run(tmp_path, {"s.py": URL_SPLIT}), "get_messages")
@@ -308,9 +358,9 @@ def test_module_names_precondition(tmp_path):
 @pytest.mark.parametrize(
     "source,tool",
     [
-        pytest.param(MODULE_CONST, "search", marks=DEFECT, id="module_constant"),
-        pytest.param(ENV_MODULE, "issues", marks=DEFECT, id="module_environ"),
-        pytest.param(ENV_LOCAL, "token", marks=DEFECT, id="local_environ"),
+        pytest.param(MODULE_CONST, "search", id="module_constant"),
+        pytest.param(ENV_MODULE, "issues", id="module_environ"),
+        pytest.param(ENV_LOCAL, "token", id="local_environ"),
     ],
 )
 def test_url_host_from_config_is_op_resolved(tmp_path, source, tool):
