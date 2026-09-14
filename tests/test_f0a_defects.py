@@ -576,6 +576,120 @@ def test_url_split_does_not_cut_host_from_template_placeholder(tmp_path, tool):
                 and any(ph in host.const for ph in ("%", "{", "}")))
 
 
+URL_PREFIX_VAR = FASTMCP_HEAD + """\
+import os
+import requests
+
+@mcp.tool()
+def fetch_host(host: str) -> str:
+    prefix = os.environ.get("PREFIX", "https://")
+    return requests.get(f"{prefix}{host}/v1").text
+"""
+
+
+def test_url_prefix_var_precondition(tmp_path):
+    assert _effects(_unit(_run(tmp_path, {"s.py": URL_PREFIX_VAR}), "fetch_host"), "NET")
+
+
+@DEFECT
+def test_url_split_non_literal_first_needs_authority_end(tmp_path):
+    """parts[0] が非リテラルでも、その直後が `/` `?` `#` で始まるリテラルでなければ
+    権威部の終端が分からないので分割しない（`f"{prefix}{host}/v1"` の host は MODEL）。"""
+    u = _unit(_run(tmp_path, {"s.py": URL_PREFIX_VAR}), "fetch_host")
+    host = _slot(u, "NET", "url.host")
+    assert not (host.prin == Prin.OP and host.prov.kind == "resolved")
+
+
+ENV_WRITE = FASTMCP_HEAD + """\
+import os
+import subprocess
+
+@mcp.tool()
+def run_subscript(cmd: str) -> str:
+    os.environ["USER_CMD"] = cmd
+    return subprocess.run(os.environ["USER_CMD"], shell=True, capture_output=True, text=True).stdout
+
+@mcp.tool()
+def run_get(cmd: str) -> str:
+    os.environ["USER_CMD"] = cmd
+    return subprocess.run(os.environ.get("USER_CMD"), shell=True, capture_output=True, text=True).stdout
+"""
+
+
+def test_env_write_precondition(tmp_path):
+    res = _run(tmp_path, {"s.py": ENV_WRITE})
+    for name in ("run_subscript", "run_get"):
+        assert _effects(_unit(res, name), "SPAWN")
+
+
+@pytest.mark.parametrize("tool", [pytest.param("run_subscript", marks=DEFECT), pytest.param("run_get", marks=DEFECT)])
+def test_env_read_after_model_write_is_not_config(tmp_path, tool):
+    """`os.environ["K"] = cmd` の後の読み戻しを config（OP / resolved）にしない。"""
+    u = _unit(_run(tmp_path, {"s.py": ENV_WRITE}), tool)
+    cmd = _slot(u, "SPAWN", "shell_string")
+    assert not (cmd.prin == Prin.OP and cmd.prov.kind == "resolved")
+
+
+EXTERNAL_IMPORT_SAME_TAIL = {
+    "app/server.py": FASTMCP_HEAD + """\
+from requests.sessions import Session
+
+@mcp.tool()
+def fetch(url: str) -> str:
+    s = Session()
+    return url
+""",
+    "tools/sessions.py": """\
+import subprocess
+
+class Session:
+    def __init__(self):
+        subprocess.run(["rm", "-rf", "/tmp/cache"])
+""",
+}
+
+EXTERNAL_BASE_SAME_NAME = {
+    "app/server.py": FASTMCP_HEAD + """\
+from pydantic import BaseModel
+
+class Query(BaseModel):
+    text: str
+
+@mcp.tool()
+def ask(text: str) -> str:
+    q = Query(text)
+    return q.text
+""",
+    "legacy/models.py": """\
+import subprocess
+
+class BaseModel:
+    def __init__(self, *args):
+        subprocess.run(["make", "clean"])
+""",
+}
+
+
+def test_external_class_precondition(tmp_path):
+    _unit(_run(tmp_path / "a", EXTERNAL_IMPORT_SAME_TAIL), "fetch")
+    _unit(_run(tmp_path / "b", EXTERNAL_BASE_SAME_NAME), "ask")
+
+
+@DEFECT
+def test_external_import_does_not_construct_intree_class_with_same_module_tail(tmp_path):
+    """`from requests.sessions import Session` を木内の `tools/sessions.py` の Session と
+    取り違えて `__init__` を実行しない（到達しない SPAWN を出さない）。"""
+    u = _unit(_run(tmp_path, EXTERNAL_IMPORT_SAME_TAIL), "fetch")
+    assert not _effects(u, "SPAWN")
+
+
+@DEFECT
+def test_external_base_does_not_run_intree_init_with_same_name(tmp_path):
+    """`class Query(pydantic.BaseModel)` の基底を木内の同名クラスと取り違えて `__init__` を実行しない。"""
+    u = _unit(_run(tmp_path, EXTERNAL_BASE_SAME_NAME), "ask")
+    assert not _effects(u, "SPAWN")
+
+
 def test_catalog_forms_precondition(tmp_path):
     _unit(_run(tmp_path, {"a/c.py": AUTOGPT}, population="app"), "web_search_legacy")
     _unit(_run(tmp_path, {"b/t.py": TOOLS_LIST}, population="tool_package"), "web_lookup")
