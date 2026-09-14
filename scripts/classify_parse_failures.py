@@ -60,10 +60,20 @@ def classify(path: str) -> tuple[str, str]:
     return "other_invalid", loc
 
 
+def parses_with(python: str, path: str) -> bool:
+    """別の処理系（例: 3.12）の `ast` で parse できるか。**字面の分類を確かめる手段。**"""
+    import subprocess
+
+    code = "import ast,sys; ast.parse(open(sys.argv[1],'rb').read())"
+    return subprocess.run([python, "-c", code, path], capture_output=True).returncode == 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--trees", default=os.path.join(ROOT, "evidence", "f0a", "trees.jsonl"))
     ap.add_argument("--out", default=os.path.join(ROOT, "evidence", "f0a", "parse_failures.json"))
+    ap.add_argument("--newer-python", default=None,
+                    help="新しい処理系で再 parse して字面の分類を確かめる（例: `uv python find 3.12`）")
     args = ap.parse_args()
 
     rows = []
@@ -85,6 +95,7 @@ def main() -> int:
                 "category": cat,
                 "failing_line": loc,
                 "has_tool_marker": bool(TOOL_MARKERS.search(text)),
+                "parses_in_newer_python": parses_with(args.newer_python, p) if args.newer_python else None,
             })
     by_cat = collections.Counter(r["category"] for r in rows)
     by_pop = collections.Counter((r["population"], r["category"]) for r in rows)
@@ -93,6 +104,10 @@ def main() -> int:
         "by_category": dict(sorted(by_cat.items())),
         "by_population_category": {f"{p}:{c}": n for (p, c), n in sorted(by_pop.items())},
         "n_with_tool_marker": sum(r["has_tool_marker"] for r in rows),
+        "newer_python": _version(args.newer_python) if args.newer_python else None,
+        "n_parses_in_newer_python": (
+            sum(bool(r["parses_in_newer_python"]) for r in rows) if args.newer_python else None
+        ),
         "files": rows,
     }
     with open(args.out, "w", encoding="utf-8") as fh:
@@ -103,6 +118,13 @@ def main() -> int:
         if r["has_tool_marker"]:
             print("TOOL MARKER:", r["tree"], r["relpath"], r["category"])
     return 0
+
+
+def _version(python: str) -> str:
+    import subprocess
+
+    p = subprocess.run([python, "--version"], capture_output=True, text=True)
+    return (p.stdout or p.stderr).strip()
 
 
 if __name__ == "__main__":
