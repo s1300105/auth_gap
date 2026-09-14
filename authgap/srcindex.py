@@ -121,7 +121,10 @@ class SourceIndex:
         rel = self.relpath(path)
         tree: Optional[ast.Module]
         try:
-            with open(path, encoding="utf-8") as fh:
+            # **バイト列で渡す。** `open(encoding="utf-8")` で文字列にすると先頭の
+            # BOM（U+FEFF）が残り、3.10 でも 3.12 でも SyntaxError になる。
+            # `ast.parse` はバイト列なら BOM と PEP 263 の coding 宣言を処理する。
+            with open(path, "rb") as fh:
                 src = fh.read()
             tree = ast.parse(src, filename=path)
         except (OSError, SyntaxError, ValueError, RecursionError):

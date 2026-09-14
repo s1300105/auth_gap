@@ -258,6 +258,72 @@ def _positional_str(call: Optional[ast.Call], idx: Optional[int]) -> Optional[st
     return a.value if isinstance(a, ast.Constant) and isinstance(a.value, str) else None
 
 
+def _kwarg_node(call: Optional[ast.Call], key: str) -> Optional[ast.AST]:
+    if call is None:
+        return None
+    for kw in call.keywords:
+        if kw.arg == key:
+            return kw.value
+    return None
+
+
+def _is_name_decl(node: ast.AST) -> bool:
+    """名前の宣言として読める形: 定数、または文字列定数 / 名前だけを要素に持つ list / tuple。"""
+    if isinstance(node, ast.Constant):
+        return True
+    if isinstance(node, (ast.List, ast.Tuple)) and node.elts:
+        return all(
+            isinstance(e, ast.Name) or (isinstance(e, ast.Constant) and isinstance(e.value, str))
+            for e in node.elts
+        )
+    return False
+
+
+def _has_catalog_signature(call: Optional[ast.Call], rule: EntryRule) -> bool:
+    """`require_positional` を持つ規則（AutoGPT `@command`）の呼び出し形か。
+
+    * 位置形: `@command("name", "desc", {...})` / `@command(["a", "b"], "desc", {...})`
+    * キーワード形: `@command(names=[...], description=..., parameters={...})`
+    """
+    if call is None:
+        return False
+    if len(call.args) >= (rule.require_positional or 0) and call.args:
+        if _is_name_decl(call.args[rule.name_arg or 0]):
+            return True
+    if rule.names_kwarg and rule.schema_kwarg:
+        names = _kwarg_node(call, rule.names_kwarg)
+        schema = _kwarg_node(call, rule.schema_kwarg)
+        if names is not None and schema is not None and _is_name_decl(names):
+            return True
+    return False
+
+
+def _first_listed_name(call: Optional[ast.Call], rule: EntryRule) -> Optional[str]:
+    """名前の list（位置 `name_arg` か `names_kwarg`）の最初の文字列定数。"""
+    if call is None:
+        return None
+    nodes: list[ast.AST] = []
+    if rule.name_arg is not None and rule.name_arg < len(call.args):
+        nodes.append(call.args[rule.name_arg])
+    if rule.names_kwarg:
+        kw = _kwarg_node(call, rule.names_kwarg)
+        if kw is not None:
+            nodes.append(kw)
+    for n in nodes:
+        if isinstance(n, (ast.List, ast.Tuple)):
+            for e in n.elts:
+                if isinstance(e, ast.Constant) and isinstance(e.value, str):
+                    return e.value
+    return None
+
+
+def _dict_keys(node: Optional[ast.AST]) -> Optional[frozenset[str]]:
+    if not isinstance(node, ast.Dict):
+        return None
+    out = {k.value for k in node.keys if isinstance(k, ast.Constant) and isinstance(k.value, str)}
+    return frozenset(out) if out else None
+
+
 def _schema_keys(call: Optional[ast.Call], idx: Optional[int]) -> Optional[frozenset[str]]:
     """デコレータのスキーマ辞書のキー（= モデルが埋める引数名）。
 
@@ -303,20 +369,28 @@ def find_units(index: SourceIndex) -> list[Unit]:
             rule = _match_decorator(name)
             if rule is None:
                 continue
-            if rule.require_positional:
+            if rule.require_positional and not _has_catalog_signature(call, rule):
                 # **末尾名が同じ別のデコレータと取り違えない。**
-                # `@click.command()` は位置引数を取らないので落ちる。
-                if call is None or len(call.args) < rule.require_positional:
-                    continue
-                if not isinstance(call.args[rule.name_arg or 0], ast.Constant):
-                    continue
+                # `@click.command()` は位置引数も `names=` / `parameters=` も取らないので落ちる。
+                continue
             tool_name = (
                 _kwarg_str(call, "name")
                 or _positional_str(call, rule.name_arg)
+                or _first_listed_name(call, rule)
                 or fd.qualname.split(".")[-1]
             )
             params = params_of(fd.node, rule.exclude_params)
             declared = _schema_keys(call, rule.schema_arg)
+            if declared is None and rule.schema_kwarg:
+                declared = _dict_keys(_kwarg_node(call, rule.schema_kwarg))
+            # **デコレータの `annotations=` はエントリ自身の宣言**（Def 6 の 3 形）。
+            # 読まないと `@mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))` が
+            # `⊥` になり r_kind を過小に数える（D17）。
+            ann_node = _kwarg_node(call, "annotations")
+            ann: Optional[dict] = None
+            ann_form: Optional[str] = None
+            if ann_node is not None:
+                ann, ann_form, _malformed = _read_annotations(ann_node)
             if declared is not None:
                 # **スキーマ辞書に無い仮引数は MODEL としない。**
                 # 実行文脈（`agent` など）を MODEL に数えると、フレームワークが
@@ -335,6 +409,8 @@ def find_units(index: SourceIndex) -> list[Unit]:
                     node=fd.node,
                     params=params,
                     tool_name=tool_name,
+                    annotations=ann,
+                    annotation_form=ann_form,
                     is_async=fd.is_async,
                 )
             )
@@ -390,11 +466,13 @@ def find_tools_list_units(index: SourceIndex, already: frozenset[str] | set[str]
     **木内のユーザ定義関数に一意に解決できる要素だけを採る。** 名前だけで
     拾うと同名の無関係な関数まで入口になり、母集団が膨らむ。
     """
-    names: set[str] = set()
+    #: 名前 → それを参照しているファイル（同名が複数あるときの絞り込みに使う）。
+    names: dict[str, set[str]] = {}
     for path in index.py_files():
         tree = index.parse(path)
         if tree is None:
             continue
+        rel = index.relpath(path)
         for node in ast.walk(tree):
             elts: list = []
             if isinstance(node, ast.Call):
@@ -416,18 +494,26 @@ def find_tools_list_units(index: SourceIndex, already: frozenset[str] | set[str]
             for e in elts:
                 n = dotted_of(e)
                 if n:
-                    names.add(n.split(".")[-1])
+                    names.setdefault(n.split(".")[-1], set()).add(rel)
                 elif isinstance(e, ast.Constant) and isinstance(e.value, str):
                     # `tools=["ast_grep_search", "ast_grep_rewrite"]` の文字列形。
-                    names.add(e.value)
+                    names.setdefault(e.value, set()).add(rel)
 
     out: list[Unit] = []
     seen: set[str] = set()
     for name in sorted(names):
         if name in already:
             continue
-        fds = index.lookup_function(name)
-        fds = [f for f in fds if f.qualname == name]
+        # **入れ子関数も採る**（qualname は `外側.内側` なので完全一致では落ちる。D17）。
+        # メソッドは採らない（従来どおり）。
+        fds = [
+            f
+            for f in index.lookup_function(name)
+            if f.qualname.split(".")[-1] == name and f.classname is None
+        ]
+        if len(fds) > 1:
+            # 同名が複数あれば、その名前を tools に並べているファイルの定義に絞る。
+            fds = [f for f in fds if f.relpath in names[name]]
         if len(fds) != 1:
             continue  # 一意に解決できないものは採らない
         fd = fds[0]
@@ -734,6 +820,11 @@ def find_tool_literals(index: SourceIndex) -> list[ToolLiteral]:
 def _read_annotations(node: Optional[ast.AST]) -> tuple[Optional[dict], str, tuple[str, ...]]:
     if node is None:
         return None, "absent", ()
+    if isinstance(node, ast.Constant) and node.value is None:
+        # **`annotations=None` は読める明示の「無い」**であり `⊥`。読めない形
+        # （`D_unknown`）ではない。unreadable にすると同名ツールの `D_unknown` を
+        # 過大に数える（野外 run 1 で 5 件）。
+        return None, "absent", ()
     malformed: list[str] = []
     values: dict[str, Any] = {}
 
@@ -791,6 +882,10 @@ def join_annotations(units: list[Unit], literals: list[ToolLiteral]) -> tuple[in
     used: set[str] = set()
     for u in units:
         key = u.tool_name
+        if u.annotation_form is not None:
+            # **エントリ自身（デコレータの `annotations=`）が宣言している。**
+            # 木内の同名 `Tool(...)` リテラルで上書きしない。
+            continue
         if key and key in by_name:
             lit = by_name[key]
             u.annotations = lit.annotations

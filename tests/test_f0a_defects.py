@@ -336,7 +336,6 @@ def test_bom_precondition(tmp_path):
     assert not res.tree.parse_failures
 
 
-@DEFECT
 def test_bom_file_is_parsed(tmp_path):
     res = _run(tmp_path, {"s.py": b"\xef\xbb\xbf" + BOM_SOURCE.encode()})  # UTF-8 の BOM
     assert not res.tree.parse_failures
@@ -379,7 +378,7 @@ def test_annotations_precondition(tmp_path):
         _unit(res, name)
 
 
-@pytest.mark.parametrize("tool", [pytest.param("read_file", marks=DEFECT), pytest.param("read_file_dict", marks=DEFECT)])
+@pytest.mark.parametrize("tool", ["read_file", "read_file_dict"])
 def test_decorator_annotations_kwarg_is_read(tmp_path, tool):
     """`@mcp.tool(annotations=...)` はエントリ自身の宣言（Def 6 の 3 形）。"""
     u = _unit(_run(tmp_path, {"s.py": DECORATOR_ANNOTATIONS}), tool)
@@ -387,7 +386,6 @@ def test_decorator_annotations_kwarg_is_read(tmp_path, tool):
     assert u.d_kind.upper == frozenset({"FS_READ", "NET"})
 
 
-@DEFECT
 def test_explicit_none_annotations_is_bottom_not_unknown(tmp_path):
     """`annotations=None` は読める明示の「無い」→ `⊥`。読めない形（`D_unknown`）ではない。"""
     u = _unit(_run(tmp_path, {"s.py": EXPLICIT_NONE}), "add")
@@ -450,18 +448,15 @@ def test_catalog_forms_precondition(tmp_path):
     _unit(_run(tmp_path, {"b/t.py": TOOLS_LIST}, population="tool_package"), "web_lookup")
 
 
-@DEFECT
 def test_autogpt_command_name_list_form(tmp_path):
     """現行 AutoGPT classic は第 1 引数を名前の list で渡す（`["web_search", "search"]`）。"""
     _unit(_run(tmp_path, {"c.py": AUTOGPT}, population="app"), "web_search")
 
 
-@DEFECT
 def test_autogpt_command_keyword_form(tmp_path):
     """同じく `@command(names=[...], description=..., parameters={...})`（野外 20 箇所）。"""
     _unit(_run(tmp_path, {"c.py": AUTOGPT}, population="app"), "todo_add")
 
 
-@DEFECT
 def test_tools_list_nested_function(tmp_path):
     _unit(_run(tmp_path, {"t.py": TOOLS_LIST}, population="tool_package"), "web_research")

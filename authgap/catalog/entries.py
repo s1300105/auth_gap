@@ -116,6 +116,10 @@ class EntryRule:
     #: これがあるとき、辞書のキーに無い仮引数は `val = MODEL` としない。
     #: 名前のブラックリストより強い根拠である（機械可読な宣言だから）。
     schema_arg: Optional[int] = None
+    #: 名前をキーワードで渡す形のキーワード名（`@command(names=[...], ...)`）。
+    names_kwarg: Optional[str] = None
+    #: スキーマ辞書をキーワードで渡す形のキーワード名（`parameters={...}`）。
+    schema_kwarg: Optional[str] = None
     note: str = ""
 
 
@@ -183,6 +187,11 @@ ENTRY_RULES: tuple[EntryRule, ...] = (
         name_arg=0,
         schema_arg=2,
         require_positional=3,
+        # 現行 AutoGPT classic は第 1 引数を名前の list で渡す形（`["web_search", "search"]`）
+        # と、`names=[...]` / `parameters={...}` のキーワード形も使う（D17。野外 run 1 で
+        # それぞれ 54 件 / 28 件がユニットにならなかった）。
+        names_kwarg="names",
+        schema_kwarg="parameters",
         note="@command(名前, 説明, {param: JSONSchema(...)}, enabled=...)。"
         "**第 3 引数の辞書がモデルの埋める引数を機械可読に宣言している**ので、"
         "そこに無い仮引数（`agent` など）は MODEL としない",
