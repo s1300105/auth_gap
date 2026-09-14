@@ -246,6 +246,23 @@ class SourceIndex:
         name = self.module_name(path)
         return name if name == dotted or name.endswith("." + dotted) else None
 
+    def resolve_import_module(self, from_module: str, dotted: str) -> Optional[str]:
+        """import 文が指す木内モジュールを、**同じパッケージの相対 import を先に**、次に厳密な
+        絶対解決で引く（D17 改訂 3）。
+
+        import 表（`_collect_imports`）は相対 import の点を捨てる（`from .base import X` も
+        `from base import X` も `base.X`、`from . import X` は `X`）。木に同名の `base` モジュールが
+        複数あると、厳密な絶対解決だけでは同じパッケージの `<pkg>.base` を選べない。
+        `dotted` が空（`from . import X`）なら親パッケージを指す。
+        """
+        pkg = from_module.rpartition(".")[0]
+        candidate = (f"{pkg}.{dotted}" if dotted else pkg) if pkg else None
+        if candidate:
+            path = self.resolve_module_path(candidate)
+            if path is not None and self.module_name(path) == candidate:
+                return candidate
+        return self.resolve_module_strict(dotted) if dotted else None
+
     def get_class(
         self, name: str, module: Optional[str] = None, strict: bool = False
     ) -> Optional[ClassDef]:

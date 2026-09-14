@@ -574,7 +574,7 @@ def test_url_split_does_not_cut_host_from_template_placeholder(tmp_path, tool):
                 and any(ph in host.const for ph in ("%", "{", "}")))
 
 
-@pytest.mark.parametrize("tool", ["fetch_pct", pytest.param("fetch_fmt", marks=DEFECT)])
+@pytest.mark.parametrize("tool", ["fetch_pct", "fetch_fmt"])
 def test_url_template_host_is_not_op_resolved(tmp_path, tool):
     """**上のテストは弱すぎた**（プレースホルダの定数だけを見ていた）。host は MODEL なので、
     分割しなくても url.host が OP / resolved であってはならない。`.format` は TRANSFER 表が
@@ -636,9 +636,9 @@ def test_mutated_module_objects_precondition(tmp_path):
 @pytest.mark.parametrize(
     "tool,kind",
     [
-        pytest.param("query_rows", "DB", marks=DEFECT),
-        pytest.param("fetch", "NET", marks=DEFECT),
-        pytest.param("post_message", "DB", marks=DEFECT),
+        ("query_rows", "DB"),
+        ("fetch", "NET"),
+        ("post_message", "DB"),
     ],
 )
 def test_mutated_module_object_keeps_effect_rows(tmp_path, tool, kind):
@@ -690,7 +690,7 @@ def test_relative_base_precondition(tmp_path):
     _unit(res, "inherited_method")
 
 
-@pytest.mark.parametrize("tool", [pytest.param("own_method", marks=DEFECT), pytest.param("inherited_method", marks=DEFECT)])
+@pytest.mark.parametrize("tool", ["own_method", "inherited_method"])
 def test_relative_import_base_init_fields_keep_effects(tmp_path, tool):
     """`from .base import BaseTool`（木に別の `pkg/base.py` もある）の基底の `__init__` が作る
     `self.conn` 経由の DB 効果を落とさない。import 表が相対 import の点を捨てるので、厳密化で
@@ -731,10 +731,10 @@ def test_transfer_args_precondition(tmp_path):
 @pytest.mark.parametrize(
     "tool,kind,slot",
     [
-        pytest.param("run_fmt_kw", "SPAWN", "shell_string", marks=DEFECT, id="str_format_kwarg"),
-        pytest.param("read_join", "FS_READ", "path", marks=DEFECT, id="os_path_join_second_arg"),
-        pytest.param("fetch_join", "NET", "url.host", marks=DEFECT, id="urljoin_second_arg"),
-        pytest.param("fetch_replace", "NET", "url.host", marks=DEFECT, id="str_replace_new"),
+        pytest.param("run_fmt_kw", "SPAWN", "shell_string", id="str_format_kwarg"),
+        pytest.param("read_join", "FS_READ", "path", id="os_path_join_second_arg"),
+        pytest.param("fetch_join", "NET", "url.host", id="urljoin_second_arg"),
+        pytest.param("fetch_replace", "NET", "url.host", id="str_replace_new"),
     ],
 )
 def test_transfer_keeps_model_from_non_subject_args(tmp_path, tool, kind, slot):
@@ -809,10 +809,10 @@ def test_write_aliases_precondition(tmp_path):
 @pytest.mark.parametrize(
     "sub,tool",
     [
-        pytest.param("helper", "run_helper_setting", marks=DEFECT, id="write_via_helper_function"),
-        pytest.param("alias", "run_alias_setting", marks=DEFECT, id="write_via_local_alias"),
-        pytest.param("alias", "run_globals_cmd", marks=DEFECT, id="write_via_globals"),
-        pytest.param("envalias", "run_env_alias", marks=DEFECT, id="environ_write_via_alias"),
+        pytest.param("helper", "run_helper_setting", id="write_via_helper_function"),
+        pytest.param("alias", "run_alias_setting", id="write_via_local_alias"),
+        pytest.param("alias", "run_globals_cmd", id="write_via_globals"),
+        pytest.param("envalias", "run_env_alias", id="environ_write_via_alias"),
     ],
 )
 def test_writes_through_aliases_are_not_constant(tmp_path, sub, tool):
@@ -823,7 +823,6 @@ def test_writes_through_aliases_are_not_constant(tmp_path, sub, tool):
     assert not (v.prin == Prin.OP and v.prov.kind == "resolved")
 
 
-@DEFECT
 def test_deep_unrelated_file_does_not_crash_write_scan(tmp_path):
     """木の無関係なファイルに深い AST（550 項の連結）があっても、書き込み走査の再帰で
     RecursionError を出して木 1 本の出力を全部落とさない。"""
@@ -1088,7 +1087,6 @@ def test_same_name_two_modules_precondition(tmp_path):
     _unit(res, "search")
 
 
-@DEFECT
 def test_module_alias_call_resolves_in_imported_module(tmp_path):
     """`import spotify_api as sp; sp.get_followed_artists(...)` は import 先のモジュールの
     関数である。末尾名だけで木全体を引くと、別ファイルの同名関数と衝突して解決を失い、
@@ -1096,7 +1094,6 @@ def test_module_alias_call_resolves_in_imported_module(tmp_path):
     assert _effects(_unit(_run(tmp_path, SAME_NAME_TWO_MODULES), "followed"), "NET")
 
 
-@DEFECT
 def test_bare_call_prefers_same_module_definition(tmp_path):
     """局所束縛も import も無い素の名前 `_helper(q)` は、同じモジュールの定義を指す。"""
     assert _effects(_unit(_run(tmp_path, SAME_NAME_TWO_MODULES), "search"), "NET")

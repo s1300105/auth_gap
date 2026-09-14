@@ -247,7 +247,7 @@ def _annotated_class(index: SourceIndex, ann: Optional[ast.AST], module: str, ms
         full = f"{target}.{rest}" if rest else target
         mod = full.rpartition(".")[0]
         # 外部パッケージを末尾成分一致で木内モジュールと取り違えない（D17 改訂 2）
-        mname = index.resolve_module_strict(mod) if mod else None
+        mname = index.resolve_import_module(module, mod)
         return index.get_class(last, mname, strict=True) if mname else None
     return index.get_class(last, module, strict=True)
 

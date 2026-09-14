@@ -369,6 +369,30 @@ fixture で再現した 8 件（棄却 0）と、検証者が見つけた変形�
 解決率を上げる変更は、敵対的レビューで「resolved にしてよい根拠」を 1 件ずつ崩しに
 行く必要がある。
 
+**改訂 3（2026-09-14、854f71b の 2 回目の敵対的レビューと run 3 による）: 改訂 2 の直し方が
+効きすぎて効果行を落とし、残っていた false-clean もあった。** 3 観点（残る false-clean /
+クラッシュ・性能・決定論 / 効きすぎ）の点検で 5 件を確認（棄却 0）。run 3 の突き合わせで
+1 件を自分で見つけた。すべて修正より先に `tests/test_f0a_defects.py` の 10・11 節に固定した。
+
+| 系統 | 何が起きていたか | 誤りの向き | 直し方 |
+|---|---|---|---|
+| 変更されるモジュール水準のオブジェクト | 改訂 2 が `conn.row_factory = ...` / `session.headers.update(...)` を「書き込み」とみなして名前を読まなくしたので、受け手の型が消え **DB / NET の効果行ごと消えた** | false-clean（drop） | 再束縛（関数内の束縛・`global`・`m.NAME = ...`・`globals()` / `vars()` / `exec`）だけを「読まない」にし、**コンテナ / オブジェクトは常に型と主体を保ったまま確度を opaque に落とす**（`_opaque_deep`）。別名・補助関数経由の変更（`c = CONFIG; c[k] = ...`、`_put(d, k, v)`）もこれで resolved の定数にならない |
+| 相対 import の基底 | import 表が相対の点を捨てるので、厳密化で `from .base import BaseTool` を同じパッケージの `base` と区別できず、基底の `__init__` の `self.conn` 経由の効果が消えた | false-clean（drop） | `SourceIndex.resolve_import_module`: 同じパッケージの `<pkg>.<name>` を先に、無ければ厳密な絶対解決。`from . import X` は親パッケージ |
+| TRANSFER 表の実引数 | 変換が subject（受け手 / 第 0 引数）の主体しか採らず、`"ls {d}".format(d=d)` / `os.path.join("/data", name)` / `urljoin(base, url)` / `tpl.replace("H", host)` の MODEL を捨てた（改訂 2 以前からの欠陥。改訂 2 の `.format` の修正は**テストが弱くて効いていないのを見逃した**） | false-clean（MODEL → OP） | subject 以外の実引数の主体・確度・root を結果に入れる。非リテラルの実引数が混ざる文字列変換は形を捨てる（テンプレートのリテラルを host として切り出させない） |
+| `os.environ` の別名 | `env = os.environ; env["K"] = cmd` を書き込みとして検出しなかった | false-clean | `os.environ` を名前に束縛する形を書き込みとみなす（複製 `dict(os.environ)` / `.copy()` / `{**os.environ}` は除く） |
+| 再帰の走査 | 木全体を走査する再帰の NodeVisitor が、無関係なファイルの深い式（550 項の連結）で RecursionError を出し、**木 1 本の出力を全部落とした** | クラッシュ（全ユニットが消える） | 明示的なスタックで走査する（`_iter_nodes`） |
+| 同名関数による解決の喪失（run 3 で発見） | `import spotify_api as sp; sp.get_followed_artists(...)` を末尾名だけで木全体から引いていたので、BOM を直して parse できるようになった別ファイルの同名関数と衝突し、NET 効果が 6 ユニットで消えた | false-clean（drop） | import 表で指したモジュール / 同じモジュールの定義を先に引く（`_pinned_function`）。末尾名の木全体検索はその後 |
+
+**確認:** 較正対 A9 / A18 の効果行を 854f71b と突き合わせて消えた行 0、w-jitz10__spotify_mcp は
+0 → 40 行。受け入れ（B3a 8/8、B3b 15/15、実装変異の生存 1/15、両側 7/7 で変化サイトは
+evidence/w0 と同一）と決定論は不変。
+
+**記録する限界（新たに受け入れたもの）:** `os.environ` を関数に渡してその中で書き換える形、
+`setattr(sys.modules[...], ...)` による再束縛は見ない。モジュール水準のコンテナ / オブジェクトは
+書き込みの有無にかかわらず opaque になる（resolved → opaque の向きで clean を作らない）。
+相対 import の判定は「同じパッケージに同名モジュールがあればそれ」で、絶対 import が
+同名の兄弟モジュールと衝突する木では誤りうる。
+
 **フレームの誤り（直す。結果とは独立の事実誤認）:** `APP_FRAME` の
 `OpenManus/OpenManus` は RL 用の openmanus_rl で、選定根拠に書いた「§2.6 の負例
 F5/F6/F7 の出所」（FoundationAgents 版 `app/tool/python_execute.py` ほか）ではない。

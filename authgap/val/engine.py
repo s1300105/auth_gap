@@ -648,7 +648,7 @@ class ValEngine:
             return self._descend_indirect(node, dotted, args, kwargs, env, scope, res, depth, chain)
 
         # (4) 木内のユーザ定義関数（深さを消費する）
-        callee = self._resolve_in_tree(node, dotted, receiver)
+        callee = self._resolve_in_tree(node, dotted, receiver, scope)
         if callee is not None:
             by_name = self._by_name_hint
             if by_name:
@@ -680,33 +680,46 @@ class ValEngine:
         if row is None:
             return None
         subject = receiver if row.subject == "receiver" else (args[0] if args else Value())
+        # **subject 以外の実引数も結果の主体・確度・root に入れる**（D17 改訂 3）。捨てると
+        # `"ls {d}".format(d=d)` / `os.path.join("/data", name)` / `urljoin(base, url)` の MODEL が
+        # OP / resolved になる（`"ls " + d` と違う結果になる。false-clean）。
+        rest_args = list(args) if row.subject == "receiver" else list(args[1:])
+        others = rest_args + [kwargs[k] for k in sorted(kwargs)]
+        prin, prov, roots = subject.prin, subject.prov, subject.roots
+        for v in others:
+            if v.prin > prin:
+                prin = v.prin
+            prov = prov_merge(prov, v.prov)
+            roots = roots | v.roots
         shape = subject.shape
         if row.shape == "path":
             shape = Path(base=subject) if not isinstance(subject.shape, Path) else subject.shape
         elif row.shape == "str":
-            shape = Str((subject,))
+            # 非リテラルの実引数が混ざる文字列は形を捨てる。テンプレートのリテラルを URL の host
+            # として切り出させない（`"https://{}/x".format(host)`、`urljoin(base, url)`）。
+            shape = Str((subject,)) if all(v.is_literal() for v in others) else Atom()
         elif row.shape == "seq":
             shape = Seq((), subject)
         elif row.shape == "atom":
             shape = Atom()
-        out = Value(
-            subject.prin,
-            subject.prov,
-            shape,
-            subject.attrs | frozenset(row.attrs),
-            subject.roots,
-        )
+        out = Value(prin, prov, shape, subject.attrs | frozenset(row.attrs), roots)
         for root in sorted(subject.roots):
             res.alias_facts.append(AliasFact(root, f"{scope.relpath}:L{getattr(node, 'lineno', 0)}", row.transform))
         return out
 
-    def _resolve_in_tree(self, node, dotted: Optional[str], receiver: Optional[Value]) -> Optional[FuncDef]:
+    def _resolve_in_tree(
+        self, node, dotted: Optional[str], receiver: Optional[Value], scope: Optional[Scope] = None
+    ) -> Optional[FuncDef]:
         """木内のユーザ定義関数へ解決する。**同名メソッドを無条件に採らない。**"""
         self._by_name_hint = False
         name = dotted_of(node.func)
         if name is None:
             return None
         last = name.split(".")[-1]
+        # **import 表で指したモジュール / 同じモジュールの定義を先に引く**（D17 改訂 3）。
+        pinned = self._pinned_function(node, dotted, last, scope)
+        if pinned is not None:
+            return pinned
         cands = self.index.lookup_function(last)
         if not cands:
             return None
@@ -905,16 +918,19 @@ class ValEngine:
             mod, _, last = target.rpartition(".")
             if not mod:
                 return None  # `import os` の `os` はモジュールであって値ではない
-            strict = self.index.resolve_module_strict(mod)
+            strict = self.index.resolve_import_module(scope.module, mod)
             if strict is None:
                 return None  # 外部パッケージを末尾成分一致で木内モジュールと取り違えない
             if name in self._module_writes(scope.module):
-                return None  # 読む側のモジュールで import した名前が変更される
+                return None  # 読む側のモジュールで import した名前が再束縛される
             module, attr = strict, last
-        # **木内のどこかで書き換えられる名前は定数として読まない**（D17 改訂 2）:
+        # **木内のどこかで再束縛される名前は定数として読まない**（D17 改訂 2 / 3）:
         # 関数内の `global` 再束縛、関数の局所変数（入れ子関数が掴む同名の外側変数を含む）、
-        # コンテナ / 属性の変更、他モジュールからの `m.NAME = ...`。
-        if attr in self._module_writes(module) or (module, attr) in self._tree_attr_writes():
+        # 他モジュールからの `m.NAME = ...`、`globals()` / `vars()` / `exec` を使うモジュール（"*"）。
+        # **コンテナ / オブジェクトの変更はここで弾かない**（型が消えて効果行ごと落ちる）。
+        # 代わりに下で確度を opaque に落とす。
+        writes = self._module_writes(module)
+        if attr in writes or "*" in writes or (module, attr) in self._tree_attr_writes():
             return None
         key = (module, attr)
         if key in self._module_values:
@@ -940,6 +956,10 @@ class ValEngine:
         finally:
             self.on_call = saved
             self._module_active.discard(key)
+        if out is not None and not _is_immutable_value(out):
+            # コンテナ / オブジェクトは別名・補助関数・他モジュールから構文で追えない形で変更されうる。
+            # **型と主体は保ち、確度だけ opaque に落とす**（効果行を落とさず、resolved の定数にもしない）。
+            out = _opaque_deep(out)
         self._module_values[key] = out
         return out
 
@@ -956,14 +976,14 @@ class ValEngine:
             if func.id in scope.local_bindings:
                 return None
             name, module = func.id, scope.module
-            if dotted is not None:  # import された名前
-                strict = self.index.resolve_module_strict(dotted.rpartition(".")[0]) if "." in dotted else None
+            if dotted is not None:  # import された名前（`from . import C` は親パッケージ）
+                strict = self.index.resolve_import_module(scope.module, dotted.rpartition(".")[0])
                 if strict is None:
                     return None  # 外部パッケージを木内の同名モジュールと取り違えない（D17 改訂 2）
                 module = strict
         elif isinstance(func, ast.Attribute) and dotted is not None and "." in dotted:
             name = func.attr
-            strict = self.index.resolve_module_strict(dotted.rpartition(".")[0])
+            strict = self.index.resolve_import_module(scope.module, dotted.rpartition(".")[0])
             if strict is None:
                 return None
             module = strict
@@ -1032,15 +1052,12 @@ class ValEngine:
     # -- D17 改訂 2: 木内の書き込みを見る / import と基底を厳密に引く ---------------
 
     def _module_writes(self, module: str) -> frozenset[str]:
-        """モジュール内で書き換えられる名前（索引ごとに記憶化）。:class:`_WriteScan` を参照。"""
+        """モジュール内で再束縛されうる名前（索引ごとに記憶化）。:func:`_scan_module_writes` を参照。"""
         cache = self.index.__dict__.setdefault("_authgap_module_writes", {})
         if module not in cache:
             path = self.index.resolve_module_path(module)
             tree = self.index.parse(path) if path is not None else None
-            scan = _WriteScan()
-            if tree is not None:
-                scan.visit(tree)
-            cache[module] = frozenset(scan.names)
+            cache[module] = _scan_module_writes(tree) if tree is not None else frozenset()
         return cache[module]
 
     def _tree_attr_writes(self) -> frozenset[tuple[str, str]]:
@@ -1055,7 +1072,7 @@ class ValEngine:
                 mscope = self.index.module_scope(path)
                 for alias, attr in _attr_stores(tree):
                     target = mscope.lookup(alias)
-                    strict = self.index.resolve_module_strict(target) if target else None
+                    strict = self.index.resolve_import_module(self.index.module_name(path), target) if target else None
                     if strict is not None:
                         out.add((strict, attr))
             cache["_authgap_tree_attr_writes"] = frozenset(out)
@@ -1089,7 +1106,7 @@ class ValEngine:
             target = mscope.lookup(head) if mscope is not None else None
             if target is not None:
                 full = f"{target}.{rest}" if rest else target
-                mod = self.index.resolve_module_strict(full.rpartition(".")[0])
+                mod = self.index.resolve_import_module(cd.module, full.rpartition(".")[0])
                 hit = self.index.get_class(last, mod, strict=True) if mod else None
             elif not rest:
                 hit = self.index.get_class(b, cd.module, strict=True)
@@ -1098,6 +1115,36 @@ class ValEngine:
             if hit is not None:
                 out.append(hit)
         return out
+
+    def _pinned_function(self, node, dotted, last: str, scope: Optional[Scope]) -> Optional[FuncDef]:
+        """呼び出し名が import 表または同じモジュールで**一意に**指す木内の関数（メソッドは除く）。
+
+        末尾名だけで木全体を引くと、同名の関数が別ファイルに増えただけで 2 候補になり解決を
+        失う（run 3 の spotify_mcp で `sp.get_followed_artists` の NET 効果が消えた。false-clean）。
+        """
+        if scope is None:
+            return None
+        module: Optional[str] = None
+        func = node.func
+        if isinstance(func, ast.Name):
+            if func.id in scope.local_bindings:
+                return None
+            if dotted is None:
+                module = scope.module  # 同じモジュールで定義された素の名前
+            elif "." in dotted:
+                module = self.index.resolve_import_module(scope.module, dotted.rpartition(".")[0])
+        elif isinstance(func, ast.Attribute) and dotted is not None and "." in dotted:
+            head = dotted_of(func.value)
+            if head is not None and scope.lookup(head.split(".")[0]) is not None:  # モジュール別名の属性
+                module = self.index.resolve_import_module(scope.module, dotted.rpartition(".")[0])
+        if module is None:
+            return None
+        hits = [
+            f
+            for f in self.index.lookup_function(last, module)
+            if f.module == module and f.classname is None and f.qualname == last
+        ]
+        return hits[0] if len(hits) == 1 else None
 
     def _seed_params(self, callee: FuncDef, args, kwargs, receiver) -> dict[str, Value]:
         """呼び出し先の仮引数に実引数を割り当てる。"""
@@ -1147,130 +1194,69 @@ def _environ_map(written_in_tree: bool = False) -> Value:
     return Value(Prin.OP, item.prov, Map((), item))
 
 
-#: 受け手を変更するメソッド（モジュール水準の状態の書き換えを見つけるため）。
-_MUTATOR_METHODS: frozenset[str] = frozenset(
-    {
-        "append", "extend", "insert", "add", "update", "setdefault", "pop", "popitem",
-        "remove", "discard", "clear", "sort", "reverse", "appendleft", "extendleft",
-        "__setitem__", "__delitem__",
-    }
-)
+def _iter_nodes(tree: ast.AST):
+    """`(node, parent, 関数の入れ子の深さ)` を**再帰せずに**列挙する。
+
+    集合を集める用途専用（訪問順は問わない）。再帰の NodeVisitor は、木の無関係なファイルに
+    ある深い式（数百項の連結）で RecursionError を出し、木 1 本の出力を全部落とした（D17 改訂 3）。
+    """
+    stack: list[tuple[ast.AST, Optional[ast.AST], int]] = [(tree, None, 0)]
+    while stack:
+        node, parent, fdepth = stack.pop()
+        yield node, parent, fdepth
+        inner = fdepth + 1 if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)) else fdepth
+        for child in ast.iter_child_nodes(node):
+            stack.append((child, node, inner))
 
 
-def _root_name(node: ast.AST) -> Optional[str]:
-    """`a.b[c].d` の根の名前 `a`。"""
-    cur = node
-    while isinstance(cur, (ast.Attribute, ast.Subscript)):
-        cur = cur.value
-    return cur.id if isinstance(cur, ast.Name) else None
-
-
-class _WriteScan(ast.NodeVisitor):
-    """モジュール内で**書き換えられる名前**を集める（flow-insensitive な集合なので訪問順は問わない）。
+def _scan_module_writes(tree: ast.AST) -> frozenset[str]:
+    """モジュールで**再束縛**されうる名前。`"*"` はどの名前も再束縛されうる（動的な名前空間操作）。
 
     * 関数内の `global` / `nonlocal` 宣言の名前
     * 関数内で束縛される名前（仮引数・代入先・for / with の束縛）。入れ子関数が掴む外側の局所変数が
       同名のモジュール定数と取り違えられるのを防ぐ
-    * どこであれ、根の名前が変更される形（`X[...] = `、`X.a = `、`del X[...]`、`X.append(...)` など）
+    * `globals()` / 引数なしの `vars()` / `exec` を呼ぶモジュールは `"*"`
+
+    **コンテナ / オブジェクトの変更（`X[k] = v`、`X.a = v`、`X.append(v)`）はここでは集めない。**
+    変更を「読まない」にすると受け手の型が消えて効果行ごと消える（D17 改訂 3）。別名や補助関数を
+    経由した変更も構文では追い切れないので、コンテナ / オブジェクトのモジュール水準の値は常に
+    確度を opaque に落とす（`_opaque_deep`）。`setattr(sys.modules[...], ...)` は見ない（限界）。
     """
-
-    def __init__(self) -> None:
-        self.names: set[str] = set()
-        self._depth = 0
-
-    def _args(self, args: ast.arguments) -> None:
-        for a in list(args.posonlyargs) + list(args.args) + list(args.kwonlyargs):
-            self.names.add(a.arg)
-        for a in (args.vararg, args.kwarg):
-            if a is not None:
-                self.names.add(a.arg)
-
-    def visit_FunctionDef(self, node) -> None:
-        self._args(node.args)
-        self._depth += 1
-        self.generic_visit(node)
-        self._depth -= 1
-
-    visit_AsyncFunctionDef = visit_FunctionDef
-
-    def visit_Lambda(self, node) -> None:
-        self._args(node.args)
-        self._depth += 1
-        self.generic_visit(node)
-        self._depth -= 1
-
-    def visit_Global(self, node) -> None:
-        self.names.update(node.names)
-
-    visit_Nonlocal = visit_Global
-
-    def visit_Name(self, node) -> None:
-        if self._depth and isinstance(node.ctx, (ast.Store, ast.Del)):
-            self.names.add(node.id)
-
-    def visit_Subscript(self, node) -> None:
-        if isinstance(node.ctx, (ast.Store, ast.Del)):
-            root = _root_name(node.value)
-            if root:
-                self.names.add(root)
-        self.generic_visit(node)
-
-    def visit_Attribute(self, node) -> None:
-        if isinstance(node.ctx, (ast.Store, ast.Del)):
-            root = _root_name(node.value)
-            if root:
-                self.names.add(root)
-        self.generic_visit(node)
-
-    def visit_Call(self, node) -> None:
-        if isinstance(node.func, ast.Attribute) and node.func.attr in _MUTATOR_METHODS:
-            root = _root_name(node.func.value)
-            if root:
-                self.names.add(root)
-        self.generic_visit(node)
+    names: set[str] = set()
+    for node, _parent, fdepth in _iter_nodes(tree):
+        if isinstance(node, (ast.Global, ast.Nonlocal)):
+            names.update(node.names)
+        elif isinstance(node, ast.arg) and fdepth:
+            names.add(node.arg)
+        elif isinstance(node, ast.Name) and fdepth and isinstance(node.ctx, (ast.Store, ast.Del)):
+            names.add(node.id)
+        elif isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+            fid = node.func.id
+            if fid in ("globals", "exec") or (fid == "vars" and not node.args):
+                names.add("*")
+    return frozenset(names)
 
 
 def _attr_stores(tree: ast.AST) -> list[tuple[str, str]]:
-    """`alias.NAME = ...` / `alias.NAME[...] = ...` / `alias.NAME.append(...)` / `setattr(alias, "NAME", v)`。"""
+    """モジュール属性の**再束縛**: `alias.NAME = ...` / `del alias.NAME` / `setattr(alias, "NAME", v)`。再帰しない。"""
     out: list[tuple[str, str]] = []
-
-    class _V(ast.NodeVisitor):
-        def visit_Attribute(self, node) -> None:
-            if isinstance(node.ctx, (ast.Store, ast.Del)) and isinstance(node.value, ast.Name):
-                out.append((node.value.id, node.attr))
-            self.generic_visit(node)
-
-        def visit_Subscript(self, node) -> None:
-            base = node.value
-            if (
-                isinstance(node.ctx, (ast.Store, ast.Del))
-                and isinstance(base, ast.Attribute)
-                and isinstance(base.value, ast.Name)
-            ):
-                out.append((base.value.id, base.attr))
-            self.generic_visit(node)
-
-        def visit_Call(self, node) -> None:
-            f = node.func
-            if (
-                isinstance(f, ast.Attribute)
-                and f.attr in _MUTATOR_METHODS
-                and isinstance(f.value, ast.Attribute)
-                and isinstance(f.value.value, ast.Name)
-            ):
-                out.append((f.value.value.id, f.value.attr))
-            if (
-                isinstance(f, ast.Name)
-                and f.id == "setattr"
-                and len(node.args) >= 2
-                and isinstance(node.args[0], ast.Name)
-                and isinstance(node.args[1], ast.Constant)
-                and isinstance(node.args[1].value, str)
-            ):
-                out.append((node.args[0].id, node.args[1].value))
-            self.generic_visit(node)
-
-    _V().visit(tree)
+    for node, _parent, _depth in _iter_nodes(tree):
+        if (
+            isinstance(node, ast.Attribute)
+            and isinstance(node.ctx, (ast.Store, ast.Del))
+            and isinstance(node.value, ast.Name)
+        ):
+            out.append((node.value.id, node.attr))
+        elif (
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id == "setattr"
+            and len(node.args) >= 2
+            and isinstance(node.args[0], ast.Name)
+            and isinstance(node.args[1], ast.Constant)
+            and isinstance(node.args[1].value, str)
+        ):
+            out.append((node.args[0].id, node.args[1].value))
     return out
 
 
@@ -1289,44 +1275,59 @@ def _is_constant_expr(node: ast.AST) -> bool:
 
 
 def _writes_environ(tree: ast.AST, scope: Scope) -> bool:
-    """このモジュールが `os.environ` に**非定数**を書き込むか。"""
-    found = False
+    """このモジュールが `os.environ` に**非定数**を書き込みうるか。再帰しない。
 
-    class _V(ast.NodeVisitor):
-        def _targets(self, targets, value) -> None:
-            nonlocal found
+    字面の `os.environ[k] = v` と書き込みメソッドに加え、**`env = os.environ` のような別名への
+    束縛**も書き込みとみなす（別名経由の書き込みを構文で追い切れないため。D17 改訂 3）。
+    `{**os.environ}` / `dict(os.environ)` / `os.environ.copy()` は複製なので書き込みではない。
+    `os.environ` そのものを関数に渡してその中で書き換える形は見ない（限界として記録）。
+    """
+    for node, _parent, _depth in _iter_nodes(tree):
+        if isinstance(node, (ast.Assign, ast.AnnAssign)):
+            targets = node.targets if isinstance(node, ast.Assign) else [node.target]
             for t in targets:
                 if (
                     isinstance(t, ast.Subscript)
                     and resolve_call_name(t.value, scope) == "os.environ"
-                    and (value is None or not _is_constant_expr(value))
+                    and (node.value is None or not _is_constant_expr(node.value))
                 ):
-                    found = True
+                    return True
+            if node.value is not None and resolve_call_name(node.value, scope) == "os.environ":
+                return True
+        elif isinstance(node, ast.AugAssign):
+            if isinstance(node.target, ast.Subscript) and resolve_call_name(node.target.value, scope) == "os.environ":
+                return True
+        elif isinstance(node, ast.NamedExpr):
+            if resolve_call_name(node.value, scope) == "os.environ":
+                return True
+        elif isinstance(node, ast.Call) and resolve_call_name(node.func, scope) in _ENVIRON_WRITES:
+            vals = list(node.args[1:] if len(node.args) > 1 else node.args) + [kw.value for kw in node.keywords]
+            if any(not _is_constant_expr(v) for v in vals):
+                return True
+    return False
 
-        def visit_Assign(self, node) -> None:
-            self._targets(node.targets, node.value)
-            self.generic_visit(node)
 
-        def visit_AugAssign(self, node) -> None:
-            self._targets([node.target], None)
-            self.generic_visit(node)
+def _is_immutable_value(v: Value) -> bool:
+    """別名経由で変更されない値（スカラー・文字列・パス）か。コンテナ / オブジェクト / 形不明は偽。"""
+    return isinstance(v.shape, (Atom, Str, Path))
 
-        def visit_AnnAssign(self, node) -> None:
-            self._targets([node.target], node.value)
-            self.generic_visit(node)
 
-        def visit_Call(self, node) -> None:
-            nonlocal found
-            if resolve_call_name(node.func, scope) in _ENVIRON_WRITES:
-                vals = list(node.args[1:] if len(node.args) > 1 else node.args) + [
-                    kw.value for kw in node.keywords
-                ]
-                if any(not _is_constant_expr(v) for v in vals):
-                    found = True
-            self.generic_visit(node)
-
-    _V().visit(tree)
-    return found
+def _opaque_deep(v: Value, depth: int = 2) -> Value:
+    """値とその要素 / フィールドの確度に `opaque(unresolved)` を合流する。**形と主体は保つ**
+    （受け手の型が残るので proxy sink の効果行は落ちない）。列と辞書には「まだ見ていない要素」を
+    表す opaque の tail を足す（別の場所で追加されたキーを読む形のため）。"""
+    unknown = Value(Prin.OP, opaque("unresolved"), Unknown())
+    s = v.shape
+    if depth > 0:
+        if isinstance(s, (Seq, Argv)):
+            tail = _opaque_deep(s.tail, depth - 1) if s.tail is not None else unknown
+            s = type(s)(tuple(_opaque_deep(e, depth - 1) for e in s.elems), tail)
+        elif isinstance(s, Map):
+            tail = _opaque_deep(s.tail, depth - 1) if s.tail is not None else unknown
+            s = Map(tuple((k, _opaque_deep(e, depth - 1)) for k, e in s.entries), tail)
+        elif isinstance(s, Obj):
+            s = Obj(s.classes, tuple((k, _opaque_deep(e, depth - 1)) for k, e in s.fields))
+    return Value(v.prin, prov_merge(v.prov, opaque("unresolved")), s, v.attrs, v.roots)
 
 
 def _module_assignments(body: list, name: str) -> list[ast.AST]:
