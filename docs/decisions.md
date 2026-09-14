@@ -264,3 +264,47 @@ config atom の源にモジュール定数を数えている（§2.3）ので、
   run 1 と run 2 の差には「解析器の修正」と「処理系の変更」が混ざるので、
   **処理系だけを替えた run（解析器は run 1 と同一）も取って差を分解する。**
 - **3.12 でも読めない 18 件**（雛形 5、壊れたファイル 13）は parse 失敗として残る。
+
+## D17. 事前点検の所見のうち「直すもの」と「直さないもの」
+
+根拠: `docs/f0a_checks.md`（`evidence/f0a/check_results.json`）。**点検者の
+analyzer_wrong をそのまま欠陥と読まない。** 仕様の定義に照らして振り分けた。
+
+**直す（仕様がすでに要求している挙動、またはカタログにある形の取りこぼし）:**
+
+| 所見 | 誤りの向き | 仕様の根拠 |
+|---|---|---|
+| `list.append` 等を受け手への書き込みとして扱わない（RES[7]） | **false-clean** | §2.6「決して clean に潰さない」 |
+| 受け手型が付かず sink を落とす: 局所変数の `Path`、callee クラスの `__init__` で束縛した `self` フィールド、木内関数の戻り値注釈、クロージャ変数（NOE[1,4,6,10,11]） | **false-clean** | §2.6 の heap / Obj.fields / 受け手アクセスパス |
+| 受け手型なしで末尾名が唯一の関数へ解決する（EFF[6]） | false-alarm | Def 4「木内で解決できない呼び出しは `opaque(unresolved)`」 |
+| URL slot 分割規則が未実装（OPQ 9 件） | precision loss | §2.6 の URL 分割規則（falsifiable な形で書かれている） |
+| モジュール大域の名前を読まない（OPQ 8 件） | precision loss | Def 4（木内で解決できる）、§2.3 の config atom の源 |
+| `os.environ` 読み出しを config として扱わない（OPQ 4 件） | precision loss | §2.3 の config atom の源 4 種 |
+| BOM 付きファイルを parse 失敗にする（6 件） | false-clean（ユニットが消える） | §5.2 |
+| `@mcp.tool(annotations=...)` を読まない、低レベル MCP の `Tool(...)` と結び付かない、明示の `annotations=None` を unreadable にする | D の過小評価 / `D_unknown` の過大 | Def 6 |
+| AutoGPT `@command` の名前 list 形・キーワード形、`tools=[...]` の入れ子関数 | false-clean（ユニットが消える） | R2 カタログにある形（D12） |
+
+**直さない:**
+
+1. **VAL 層の 13 件（`split` / `Path()` / 正規化の `startswith` を形状と数える）。**
+   §6 F0a の validator 形状は**構文的**であり、語彙（月 3 凍結、11 語）に `split` と
+   `ctor_path` を含む。点検プロンプトは「拒否の形で使われているか」を基準にしたので
+   仕様より厳しい。**解析器は仕様どおりである。** この 13/20 は「構文的形状の保有が
+   実際の検証の保有を表さない率」という**妥当性の注記**として本文に書く
+   （§10 の「validator 保有 ≥ 5%」はこの構文的な量で判定する。定義は動かさない）。
+2. **unit id の衝突**（同じツールが 5 ファイルに複製）。§5.1 は unit id を
+   `framework:qualified_name:schema_hash` と定義し「ファイル移動に安定」を意図している。
+   複製されたサーバが同じ id になるのは定義どおり。
+3. **カタログに無いツールの形**（llama-index `FunctionTool.from_defaults`、SuperAGI の
+   `_execute`、OpenHands の `ToolDefinition` など）。**F0a の標本を見てカタログを
+   広げると測定集合で調整することになる。** 取りこぼしとして件数を報告する
+   （ユニット 0 件の木 26 本中 9 本 + 混在 2 本）。カタログの拡張は月 10 の指紋凍結前に、
+   標本外の根拠（フレームワークの公式文書）で行う。
+4. **3.12 構文**は D16（処理系の変更）で扱い、解析器の修正とは分けて報告する。
+
+**フレームの誤り（直す。結果とは独立の事実誤認）:** `APP_FRAME` の
+`OpenManus/OpenManus` は RL 用の openmanus_rl で、選定根拠に書いた「§2.6 の負例
+F5/F6/F7 の出所」（FoundationAgents 版 `app/tool/python_execute.py` ほか）ではない。
+選定根拠が偽なので、根拠どおりの repo に置き換える。**置き換えは結果を見て選び
+直したのではなく、名前の取り違えの訂正である**が、run 1 には誤った repo が入って
+いることを run 1 の表の注記に残す。

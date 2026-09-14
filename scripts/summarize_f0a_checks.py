@@ -88,8 +88,20 @@ def write_md(sample: dict, data: dict, accepted: list[dict], problems: list[str]
         "",
     ]
     lines += [f"- {p}" for p in problems] or ["- なし"]
-    lines += ["", "## 層ごとの判定", "", "| 層 | 件数 | analyzer_correct | analyzer_wrong | by_design_scope | undecidable |",
-              "|---|---|---|---|---|---|"]
+    lines += [
+        "",
+        "## 読み方の注意（`docs/decisions.md` D17）",
+        "",
+        "- **VAL 層の analyzer_wrong は解析器の欠陥ではない。** 点検プロンプトは",
+        "  「拒否の形で使われているか」を基準にしたが、§6 F0a の validator 形状は",
+        "  **構文的**で、語彙に `split` と `ctor_path` を含む。この層の数は",
+        "  「構文的形状の保有が実際の検証を表さない率」として読む。",
+        "- unit id の衝突（同じツールの複製）は §5.1 の定義どおり。",
+        "- カタログに無いツールの形は直さず、取りこぼしとして件数を報告する。",
+        "",
+        "## 層ごとの判定", "", "| 層 | 件数 | analyzer_correct | analyzer_wrong | by_design_scope | undecidable |",
+        "|---|---|---|---|---|---|",
+    ]
     by_layer: dict[str, collections.Counter] = collections.defaultdict(collections.Counter)
     for r in accepted:
         by_layer[r["stratum"]][r["verdict"]] += 1
