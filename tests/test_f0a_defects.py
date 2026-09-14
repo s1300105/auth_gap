@@ -1131,7 +1131,6 @@ def test_registered_and_listed_precondition(tmp_path):
     assert [u for u in res.tree.units if u.unit.tool_name == "get_indexing_errors"]
 
 
-@DEFECT
 def test_function_registered_by_decorator_and_listed_is_one_unit(tmp_path):
     """デコレータで登録されたツール関数が、同じファイルの `tools` の文字列リストにも名前が出るとき、
     **1 つのユニット**として数える。`find_tools_list_units` の既出判定が qualname と末尾名を
@@ -1249,10 +1248,10 @@ def test_pin_forms_precondition(tmp_path):
 @pytest.mark.parametrize(
     "form",
     [
-        pytest.param("overload", marks=DEFECT),
-        pytest.param("redefined", marks=DEFECT),
-        pytest.param("if_else", marks=DEFECT),
-        pytest.param("import_shadowed", marks=DEFECT),
+        "overload",
+        "redefined",
+        "if_else",
+        "import_shadowed",
     ],
 )
 def test_pinned_call_does_not_pick_one_of_several_definitions(tmp_path, form):
@@ -1264,7 +1263,6 @@ def test_pinned_call_does_not_pick_one_of_several_definitions(tmp_path, form):
     assert not (v.prin == Prin.OP and v.prov.kind == "resolved")
 
 
-@DEFECT
 def test_pinned_bare_name_respects_enclosing_function_definition(tmp_path):
     """`serve()` の中の低レベル MCP ハンドラが呼ぶ `prepare(...)` は `serve.prepare` であって、
     モジュール直下の同名の `prepare` ではない（Python のスコープ規則）。"""
@@ -1305,7 +1303,7 @@ def test_module_objects_with_exec_precondition(tmp_path):
         _unit(res, name)
 
 
-@pytest.mark.parametrize("tool,kind", [pytest.param("fetch", "NET", marks=DEFECT), pytest.param("query", "DB", marks=DEFECT)])
+@pytest.mark.parametrize("tool,kind", [("fetch", "NET"), ("query", "DB")])
 def test_dynamic_namespace_module_keeps_object_effect_rows(tmp_path, tool, kind):
     """`exec` / `globals()` を含むモジュールでも、モジュール水準のオブジェクトを受け手にする効果行を
     落とさない。改訂 3 の `"*"`（どの名前も再束縛されうる）が名前を読まない側に倒したので、受け手の型が
@@ -1313,7 +1311,6 @@ def test_dynamic_namespace_module_keeps_object_effect_rows(tmp_path, tool, kind)
     assert _effects(_unit(_run(tmp_path, {"s.py": MODULE_OBJECTS_WITH_EXEC}), tool), kind)
 
 
-@DEFECT
 def test_deep_expression_read_by_tool_does_not_crash_tree(tmp_path):
     """tool が 550 項の連結式を読んでも、val エンジンの `_eval` の再帰で RecursionError を出して
     木 1 本の出力（無関係な tool の行を含む）を全部落とさない。"""
@@ -1356,7 +1353,7 @@ def test_format_constant_host_precondition(tmp_path):
 
 @pytest.mark.parametrize(
     "tool,host",
-    [pytest.param("fmt", "api.github.com", marks=DEFECT), pytest.param("fmtkw", "api.weather.com", marks=DEFECT)],
+    [("fmt", "api.github.com"), ("fmtkw", "api.weather.com")],
 )
 def test_format_template_with_literal_authority_splits_host(tmp_path, tool, host):
     """権威部の終端が最初のプレースホルダより前のリテラルにある `.format` テンプレートは、f 文字列と

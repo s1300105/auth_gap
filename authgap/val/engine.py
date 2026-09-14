@@ -477,6 +477,20 @@ class ValEngine:
         return self._eval(node.value, env, scope, res, depth, chain)
 
     def _ev_BinOp(self, node, env, scope, res, depth, chain) -> Value:
+        if isinstance(node.op, ast.Add) and isinstance(node.left, ast.BinOp) and isinstance(node.left.op, ast.Add):
+            # 左結合の長い `a + b + c + ...` は**再帰せずに**畳む（D17 改訂 4）。1 項ごとに 2 フレーム
+            # 積むと数百項で RecursionError になり、木 1 本の出力を全部落とした（3 回目のレビュー）。
+            operands = []
+            cur = node
+            while isinstance(cur, ast.BinOp) and isinstance(cur.op, ast.Add):
+                operands.append(cur.right)
+                cur = cur.left
+            operands.append(cur)
+            operands.reverse()
+            acc = self._eval(operands[0], env, scope, res, depth, chain)
+            for operand in operands[1:]:
+                acc = self._concat(acc, self._eval(operand, env, scope, res, depth, chain))
+            return acc
         left = self._eval(node.left, env, scope, res, depth, chain)
         right = self._eval(node.right, env, scope, res, depth, chain)
         if isinstance(node.op, ast.Div) and isinstance(left.shape, Path):
@@ -697,7 +711,18 @@ class ValEngine:
         elif row.shape == "str":
             # 非リテラルの実引数が混ざる文字列は形を捨てる。テンプレートのリテラルを URL の host
             # として切り出させない（`"https://{}/x".format(host)`、`urljoin(base, url)`）。
-            shape = Str((subject,)) if all(v.is_literal() for v in others) else Atom()
+            if all(v.is_literal() for v in others):
+                shape = Str((subject,))
+            elif row.transform == "str.format" and isinstance(subject.const, str) and "{" in subject.const:
+                # テンプレートの**最初のプレースホルダより前のリテラルは保つ**（D17 改訂 4）。
+                # `"https://api.github.com/repos/{}".format(a)` の host を f 文字列と同じく切り出せる
+                # ように。残りは実引数の主体・確度を持つ 1 つの part（3 回目のレビュー、精度の損失）。
+                head = subject.const[: subject.const.index("{")]
+                tail_part = Value(prin, prov, Unknown(), frozenset(), roots)
+                head_part = (Value(Prin.OP, RESOLVED, Atom(const=head)),) if head else ()
+                shape = Str(head_part + (tail_part,))
+            else:
+                shape = Atom()
         elif row.shape == "seq":
             shape = Seq((), subject)
         elif row.shape == "atom":
@@ -913,6 +938,7 @@ class ValEngine:
         if name in scope.local_bindings:
             return None
         module, attr = scope.module, name
+        reader_rebinds = False
         target = scope.lookup(name)
         if target is not None:
             mod, _, last = target.rpartition(".")
@@ -921,8 +947,8 @@ class ValEngine:
             strict = self.index.resolve_import_module(scope.module, mod)
             if strict is None:
                 return None  # 外部パッケージを末尾成分一致で木内モジュールと取り違えない
-            if name in self._module_writes(scope.module):
-                return None  # 読む側のモジュールで import した名前が再束縛される
+            # 読む側のモジュールで import した名前が再束縛されるなら、値は読むが確度を opaque に落とす。
+            reader_rebinds = name in self._module_writes(scope.module)
             module, attr = strict, last
         # **木内のどこかで再束縛される名前は定数として読まない**（D17 改訂 2 / 3）:
         # 関数内の `global` 再束縛、関数の局所変数（入れ子関数が掴む同名の外側変数を含む）、
@@ -930,11 +956,13 @@ class ValEngine:
         # **コンテナ / オブジェクトの変更はここで弾かない**（型が消えて効果行ごと落ちる）。
         # 代わりに下で確度を opaque に落とす。
         writes = self._module_writes(module)
-        if attr in writes or "*" in writes or (module, attr) in self._tree_attr_writes():
-            return None
+        # **読まないのではなく、型と主体を保ったまま確度を opaque に落とす**（D17 改訂 4）。
+        # None を返すと受け手の型が消え、`exec` / `globals()` を含むモジュールのオブジェクトを受け手に
+        # する効果行が丸ごと消えた（3 回目のレビュー）。opaque は clean ではない（§2.6）。
+        rebound = attr in writes or "*" in writes or (module, attr) in self._tree_attr_writes()
         key = (module, attr)
         if key in self._module_values:
-            return self._module_values[key]
+            return _reader_view(self._module_values[key], reader_rebinds)
         if key in self._module_active:
             res.note_opaque("recursion")
             return Value(Prin.OP, opaque("recursion"), Unknown())
@@ -956,12 +984,12 @@ class ValEngine:
         finally:
             self.on_call = saved
             self._module_active.discard(key)
-        if out is not None and not _is_immutable_value(out):
+        if out is not None and (rebound or not _is_immutable_value(out)):
             # コンテナ / オブジェクトは別名・補助関数・他モジュールから構文で追えない形で変更されうる。
             # **型と主体は保ち、確度だけ opaque に落とす**（効果行を落とさず、resolved の定数にもしない）。
             out = _opaque_deep(out)
         self._module_values[key] = out
-        return out
+        return _reader_view(out, reader_rebinds)
 
     def _construct_in_tree(self, node, dotted, args, kwargs, scope, res, depth, chain) -> Optional[Value]:
         """木内クラスの構築 `C(...)` を `Obj((C,), fields)` にする（§2.6 の Obj.fields、D17）。
@@ -1139,12 +1167,24 @@ class ValEngine:
                 module = self.index.resolve_import_module(scope.module, dotted.rpartition(".")[0])
         if module is None:
             return None
-        hits = [
-            f
-            for f in self.index.lookup_function(last, module)
-            if f.module == module and f.classname is None and f.qualname == last
-        ]
-        return hits[0] if len(hits) == 1 else None
+        # **一意性は全定義で判定する**（D17 改訂 4）。`lookup_function(name, module)` は索引の
+        # setdefault で最初の定義 1 件しか返さないので、再定義・if / else の def・`@overload` の
+        # スタブを見落として最初の定義に決め打ちしていた（3 回目のレビュー、false-clean）。
+        same = [f for f in self.index.lookup_function(last) if f.module == module and f.classname is None]
+        top = [f for f in same if f.qualname == last]
+        if len(top) != 1 or len(same) != 1:
+            # 同名の定義が複数ある、または同じモジュールに同名の入れ子 def がある（入れ子ハンドラから
+            # 見えるのは外側関数の def かもしれない）。どれが効くかを決めない。
+            return None
+        mpath = self.index.resolve_module_path(module)
+        tree = self.index.parse(mpath) if mpath is not None else None
+        if tree is None or last in self.index.module_scope(mpath).module_imports or _module_assignments(tree.body, last):
+            return None  # 同じモジュールで import や代入でも束縛される
+        if isinstance(func, ast.Name) and dotted is not None and module != scope.module:
+            # import した名前を、読む側のモジュールが def で上書きしていないか
+            if any(f.module == scope.module and f.classname is None for f in self.index.lookup_function(last)):
+                return None
+        return top[0]
 
     def _seed_params(self, callee: FuncDef, args, kwargs, receiver) -> dict[str, Value]:
         """呼び出し先の仮引数に実引数を割り当てる。"""
@@ -1305,6 +1345,11 @@ def _writes_environ(tree: ast.AST, scope: Scope) -> bool:
             if any(not _is_constant_expr(v) for v in vals):
                 return True
     return False
+
+
+def _reader_view(v: Optional[Value], reader_rebinds: bool) -> Optional[Value]:
+    """読む側のモジュールで名前が再束縛されるときは、記憶化した値の確度を opaque に落として返す。"""
+    return _opaque_deep(v) if (reader_rebinds and v is not None) else v
 
 
 def _is_immutable_value(v: Value) -> bool:

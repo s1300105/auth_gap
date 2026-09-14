@@ -450,7 +450,7 @@ def find_units(index: SourceIndex) -> list[Unit]:
 
     units += find_lowlevel_units(index)
     units += find_toolmessage_units(index)
-    units += find_tools_list_units(index, {u.qualname for u in units})
+    units += find_tools_list_units(index, {u.qualname for u in units}, {(u.module, u.qualname) for u in units})
     units.sort(key=lambda u: (u.relpath, u.qualname, u.framework))
     return units
 
@@ -460,7 +460,11 @@ def find_units(index: SourceIndex) -> list[Unit]:
 # --------------------------------------------------------------------------
 
 
-def find_tools_list_units(index: SourceIndex, already: frozenset[str] | set[str] = frozenset()) -> list[Unit]:
+def find_tools_list_units(
+    index: SourceIndex,
+    already: frozenset[str] | set[str] = frozenset(),
+    registered: frozenset[tuple[str, str]] | set[tuple[str, str]] = frozenset(),
+) -> list[Unit]:
     """`Agent(tools=[f, g])` / `tools = [f, g]` の要素を入口にする。
 
     **木内のユーザ定義関数に一意に解決できる要素だけを採る。** 名前だけで
@@ -517,6 +521,11 @@ def find_tools_list_units(index: SourceIndex, already: frozenset[str] | set[str]
         if len(fds) != 1:
             continue  # 一意に解決できないものは採らない
         fd = fds[0]
+        if (fd.module, fd.qualname) in registered:
+            # **ほかの規則ですでにユニットになった関数を 2 つ目のユニットにしない**（D17 改訂 4）。
+            # `@mcp.tool()` で登録した入れ子関数の名前をログの `tools=[...]` に並べる形で、同じ関数が
+            # mcp と tools-list の 2 ユニットに数えられていた（ユニット数と危険効果ユニット数の過大計上）。
+            continue
         if fd.key in seen:
             continue
         seen.add(fd.key)

@@ -100,20 +100,26 @@ def run(cfg: RunConfig) -> RunResult:
             budget_hit = True
             continue
         t0 = time.monotonic()
-        if cfg.full:
-            report: UnitReport = analyze_unit_full(
-                index,
-                unit,
-                trig_index,
-                d_op,
-                rubric_1c=rubric,
-                exposure_supplied=bool(cfg.exposure_file),
-                prev_unit=prev.join(unit.unit_id) if prev else None,
-                options=cfg.options,
-                arm=cfg.arm,
-            )
-        else:
-            report = analyze_unit_f0a(index, unit, cfg.options)
+        try:
+            if cfg.full:
+                report: UnitReport = analyze_unit_full(
+                    index,
+                    unit,
+                    trig_index,
+                    d_op,
+                    rubric_1c=rubric,
+                    exposure_supplied=bool(cfg.exposure_file),
+                    prev_unit=prev.join(unit.unit_id) if prev else None,
+                    options=cfg.options,
+                    arm=cfg.arm,
+                )
+            else:
+                report = analyze_unit_f0a(index, unit, cfg.options)
+        except RecursionError:
+            # **1 ユニットの深い AST で木全体を落とさない**（D17 改訂 4）。そのユニットは解析できなかった
+            # ことを TRUNCATED(recursion) として残し、件数に数える（黙って落とさない）。
+            report = UnitReport(unit=unit, notes=["TRUNCATED(recursion)"])
+            res.wall_clock_truncations.append(f"TRUNCATED(recursion):{unit.unit_id}")
         if time.monotonic() - t0 > WALL_CLOCK_CAP:
             res.wall_clock_truncations.append(unit.unit_id)
             report.notes.append("TRUNCATED(wall_clock)")
