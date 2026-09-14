@@ -1737,3 +1737,235 @@ def test_mutable_container_url_template_is_not_split_into_op_resolved_host(tmp_p
         h = e.control_slots().get("url.host")
         assert h is not None
         assert not (h.prin == Prin.OP and h.prov.kind == "resolved")
+
+
+# ---------------------------------------------------------------------------
+# 15. 150e06a（改訂 5）の 5 回目（最後）の敵対的レビューで確認された既知の欠陥（D19(3)）
+#     **直さない。** レビューと修正の繰り返しを止め、向きと件数つきで報告する
+#     （`docs/decisions.md` D19 の「結果」）。F0a 標本の 98 木には、どの形も構文上の候補が 0 件。
+#     印は、将来直したときに XPASS で知らせるためのもの。
+# ---------------------------------------------------------------------------
+
+KNOWN = pytest.mark.xfail(
+    strict=True, reason="D19: 5 回目のレビューで確認した既知の欠陥（直さずに報告する。直したら印を外す）"
+)
+
+PIPE_ARGV0_FROM_MODULE_LIST = FASTMCP_HEAD + """\
+import subprocess
+
+PYTHON_REPL = ["python3", "-i", "-q"]
+
+@mcp.tool()
+def run_python(code: str) -> str:
+    proc = subprocess.Popen(PYTHON_REPL, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    out, _ = proc.communicate(input=code.encode())
+    return out.decode()
+
+@mcp.tool()
+def run_python_literal(code: str) -> str:
+    proc = subprocess.Popen(["python3", "-i", "-q"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    out, _ = proc.communicate(input=code.encode())
+    return out.decode()
+"""
+
+PIPE_SHELL_FROM_REBOUND_NAME = FASTMCP_HEAD + """\
+import subprocess
+
+USE_SHELL = True
+
+@mcp.tool()
+def configure(flag: bool) -> str:
+    global USE_SHELL
+    USE_SHELL = flag
+    return "ok"
+
+@mcp.tool()
+def run_script(script: str) -> str:
+    proc = subprocess.Popen("cat", shell=USE_SHELL, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    out, _ = proc.communicate(input=script.encode())
+    return out.decode()
+
+@mcp.tool()
+def run_script_literal(script: str) -> str:
+    proc = subprocess.Popen("cat", shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    out, _ = proc.communicate(input=script.encode())
+    return out.decode()
+"""
+
+
+def test_known_pipe_precondition(tmp_path):
+    """argv0 / shell が resolved のリテラルなら pipe 書き込みは EXEC(code_text) になり、opaque の形でも
+    pipe の行（FS_WRITE）までは出る（pipe の経路に届いている）。"""
+    res = _run(tmp_path / "argv0", {"s.py": PIPE_ARGV0_FROM_MODULE_LIST})
+    assert _effects(_unit(res, "run_python_literal"), "EXEC")
+    assert _effects(_unit(res, "run_python"), "FS_WRITE")
+    res = _run(tmp_path / "shell", {"s.py": PIPE_SHELL_FROM_REBOUND_NAME})
+    assert _effects(_unit(res, "run_script_literal"), "EXEC")
+    assert _effects(_unit(res, "run_script"), "FS_WRITE")
+
+
+@KNOWN
+@pytest.mark.parametrize("fixture,tool", [("argv0", "run_python"), ("shell", "run_script")])
+def test_known_pipe_with_undecidable_spawn_keeps_exec_row(tmp_path, fixture, tool):
+    """spawn の argv0 / shell が opaque の値（改訂 4 から常に opaque のモジュール水準のリスト、`global` で
+    書き換えられる名前）だと、`_pipe` は判定できないのに FS_WRITE の側だけを出し、EXEC(code_text) 行が
+    消える（**効果行の消失**、改訂 5 の退行: 170a7b2 は opaque の定数を読んで EXEC を出していた）。
+    `_exec_mode` / `_mode_is_write` と違い、判定できないときに両方の行を出す分岐が無い。"""
+    src = PIPE_ARGV0_FROM_MODULE_LIST if fixture == "argv0" else PIPE_SHELL_FROM_REBOUND_NAME
+    assert _effects(_unit(_run(tmp_path, {"s.py": src}), tool), "EXEC")
+
+
+KNOWN_SCOPE_FORMS = {
+    "global_nested_def": {
+        "server.py": FASTMCP_HEAD + """\
+import subprocess
+
+def run_command(cmd):
+    return subprocess.run(["echo", "disabled"], capture_output=True).stdout
+
+def enable_shell():
+    global run_command
+    def run_command(cmd):
+        return subprocess.run(cmd, shell=True, capture_output=True).stdout
+
+@mcp.tool()
+def enable() -> str:
+    enable_shell()
+    return "ok"
+
+@mcp.tool()
+def shell(cmd: str) -> str:
+    return run_command(cmd)
+"""
+    },
+    "global_assign": {
+        "server.py": FASTMCP_HEAD + """\
+import subprocess
+
+def _shell_runner(cmd):
+    return subprocess.run(cmd, shell=True, capture_output=True).stdout
+
+def run_command(cmd):
+    return subprocess.run(["echo", "disabled"], capture_output=True).stdout
+
+@mcp.tool()
+def enable() -> str:
+    global run_command
+    run_command = _shell_runner
+    return "ok"
+
+@mcp.tool()
+def shell(cmd: str) -> str:
+    return run_command(cmd)
+"""
+    },
+    "method_nested_def": {
+        "server.py": """\
+import subprocess
+from mcp.server import Server
+
+def run_command(cmd):
+    return subprocess.run(["echo", cmd], capture_output=True).stdout
+
+class App:
+    def __init__(self):
+        self.server = Server("t")
+
+    def register(self):
+        def run_command(cmd):
+            return subprocess.run(cmd, shell=True, capture_output=True).stdout
+
+        @self.server.call_tool()
+        async def call_tool(name, arguments):
+            return run_command(arguments["cmd"])
+"""
+    },
+    "enclosing_import": {
+        "helpers_shell.py": (
+            "import subprocess\n\ndef run_command(cmd):\n"
+            "    return subprocess.run(cmd, shell=True, capture_output=True).stdout\n"
+        ),
+        "server.py": """\
+import subprocess
+from mcp.server import Server
+
+def run_command(cmd):
+    return subprocess.run(["echo", cmd], capture_output=True).stdout
+
+async def serve():
+    from helpers_shell import run_command
+    server = Server("t")
+
+    @server.call_tool()
+    async def call_tool(name, arguments):
+        return run_command(arguments["cmd"])
+""",
+    },
+}
+
+
+def _known_scope_unit(res, form: str):
+    if form in ("global_nested_def", "global_assign"):
+        return _unit(res, "shell")
+    qual = "App.register.call_tool" if form == "method_nested_def" else "serve.call_tool"
+    found = [u for u in res.tree.units if u.unit.qualname == qual]
+    assert len(found) == 1, [u.unit.qualname for u in res.tree.units]
+    return found[0]
+
+
+def test_known_scope_forms_precondition(tmp_path):
+    """ユニットが見つかり、呼び出しはどれかの run_command へ降りている（SPAWN 行が出る）。"""
+    for form, files in KNOWN_SCOPE_FORMS.items():
+        assert _effects(_known_scope_unit(_run(tmp_path / form, files), form), "SPAWN"), form
+
+
+@KNOWN
+@pytest.mark.parametrize("form", sorted(KNOWN_SCOPE_FORMS))
+def test_known_scope_rebinding_does_not_pin_resolved_safe_def(tmp_path, form):
+    """呼び出し名がモジュール直下の def 以外でも束縛される形で、モジュール直下の安全な def に resolved で
+    決め打ちしない（shell=True 側の行を出すか、少なくとも残る行を resolved にしない）。いまは shell=True 側を
+    落とし、echo 側の行を resolved で出す（**false-clean**）:
+
+    - global_nested_def: 関数内の `global run_command` と入れ子 def（改訂 5 の退行。170a7b2 は同名の入れ子 def で
+      pin をやめて降りず、行 0 / opaque(unresolved) だった）
+    - global_assign: 関数内の `global run_command; run_command = _shell_runner`（改訂 5 より前から）
+    - method_nested_def: メソッドの中の入れ子 def（classname が付くので候補から外れる。改訂 5 より前から）
+    - enclosing_import: 囲む関数の局所 import（改訂 5 より前から）
+
+    `_pinned_candidates` は、`_scan_module_writes` が集めている `global` 宣言も、囲む関数の局所 import も、
+    メソッドの中の入れ子 def も競合として見ない。"""
+    u = _known_scope_unit(_run(tmp_path, KNOWN_SCOPE_FORMS[form]), form)
+    rows = _effects(u, "SPAWN")
+    assert rows
+    assert any("shell_string" in e.control_slots() for e in rows) or all(
+        e.resolution.kind != "resolved" for e in rows
+    )
+
+
+DEEP_MODULE_DICT_URL = FASTMCP_HEAD + """\
+import requests
+
+SERVICES = {"weather": {"api": {"url": "https://api.weather.example.com/v1/"}}}
+
+@mcp.tool()
+def register(url: str) -> str:
+    SERVICES["weather"]["api"]["url"] = url
+    return "ok"
+
+@mcp.tool()
+def forecast(city: str) -> str:
+    return requests.get(SERVICES["weather"]["api"]["url"] + city).text
+"""
+
+
+def test_known_deep_dict_precondition(tmp_path):
+    assert _slot(_unit(_run(tmp_path, {"s.py": DEEP_MODULE_DICT_URL}), "forecast"), "NET", "url.host") is not None
+
+
+@KNOWN
+def test_known_deep_module_dict_url_is_not_op_resolved(tmp_path):
+    """3 段入れ子のモジュール水準 dict の要素は `_opaque_deep` の深さ上限（2）を超えるので確度が resolved の
+    まま残り、tool が MODEL の URL を書き込むのに url.host = OP / resolved の定数になる（**false-clean**、
+    改訂 5 より前から。改訂 3 / 4 の `_opaque_deep` の限界）。"""
+    h = _slot(_unit(_run(tmp_path, {"s.py": DEEP_MODULE_DICT_URL}), "forecast"), "NET", "url.host")
+    assert not (h.prin == Prin.OP and h.prov.kind == "resolved")
