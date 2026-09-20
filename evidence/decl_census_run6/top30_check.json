@@ -1,0 +1,57 @@
+{
+ "_note": "GitHub search_repositories: topic:mcp-server language:Python, stars 降順の上位 30（total_count 10,781）。各 repo に \"ToolAnnotations\" language:Python の code search を当てた（2026-09-20）。**結果を見た後に行った追加調査（探索的）。枠が違うので r_D と比べない。**",
+ "frame": "topic:mcp-server language:Python sort=stars (top 30)",
+ "n_repos": 30,
+ "excluded": [
+  "modelcontextprotocol/python-sdk（SDK 自身）"
+ ],
+ "declaring": [
+  "D4Vinci/Scrapling",
+  "oraios/serena",
+  "OpenByteInc/QuantDinger",
+  "awslabs/mcp",
+  "Klavis-AI/klavis",
+  "Zipstack/unstract",
+  "haris-musa/excel-mcp-server",
+  "JerBouma/FinanceToolkit",
+  "atilaahmettaner/tradingview-mcp"
+ ],
+ "not_declaring": [
+  "sansan0/TrendRadar",
+  "assafelovic/gpt-researcher",
+  "1Panel-dev/MaxKB",
+  "modelscope/FunASR",
+  "Evil0ctal/Douyin_TikTok_Download_API",
+  "wanshuiyin/Auto-claude-code-research-in-sleep",
+  "budtmo/docker-android",
+  "yusufkaraaslan/Skill_Seekers",
+  "mrexodia/ida-pro-mcp",
+  "tadata-org/fastapi_mcp",
+  "0x4m4/hexstrike-ai",
+  "Agents365-ai/drawio-skill",
+  "firerpa/lamda",
+  "MinishLab/semble",
+  "vitali87/code-graph-rag",
+  "open-webui/mcpo",
+  "evalstate/fast-agent",
+  "stickerdaniel/linkedin-mcp-server",
+  "davepoon/buildwithclaude",
+  "huangjunsen0406/py-xiaozhi"
+ ],
+ "rate": "9/29 = 31.0%（SDK を除く）",
+ "official_servers": "modelcontextprotocol/servers の Python サーバで \"annotations\" を含むファイル: src/git, src/time の 2 件",
+ "caveats": [
+  "星数上位は成熟したプロジェクトに偏る（fastapi_mcp / mcpo のような変換器・プロキシは宣言しない）",
+  "\"ToolAnnotations\" の語の有無で数えた（明示 hint の有無ではない）",
+  "topic:mcp-server は自己申告のトピックで、docs/population.md の枠（import 文の code search）と別"
+ ],
+ "spec_quotes_from_schema_2025-03-26": {
+  "ToolAnnotations.description": "Additional properties describing a Tool to clients.\n\nNOTE: all properties in ToolAnnotations are **hints**.\nThey are not guaranteed to provide a faithful description of\ntool behavior (including descriptive properties like `title`).\n\nClients should never make tool use decisions based on ToolAnnotations\nreceived from untrusted servers.",
+  "destructiveHint.description": "If true, the tool may perform destructive updates to its environment.\nIf false, the tool performs only additive updates.\n\n(This property is meaningful only when `readOnlyHint == false`)\n\nDefault: true",
+  "idempotentHint.description": "If true, calling the tool repeatedly with the same arguments\nwill have no additional effect on the its environment.\n\n(This property is meaningful only when `readOnlyHint == false`)\n\nDefault: false",
+  "openWorldHint.description": "If true, this tool may interact with an \"open world\" of external\nentities. If false, the tool's domain of interaction is closed.\nFor example, the world of a web search tool is open, whereas that\nof a memory tool is not.\n\nDefault: true",
+  "readOnlyHint.description": "If true, the tool does not modify its environment.\n\nDefault: false",
+  "title.description": "A human-readable title for the tool.",
+  "Tool.annotations.description": "Optional additional tool information."
+ }
+}

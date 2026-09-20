@@ -398,6 +398,31 @@ TypeScript 側の hint 語は Python の 2〜3 倍で、宣言の慣行は TypeS
 （本解析器は Python のみ）。この部分母集団を対象にするなら**第 2 の枠として事前登録
 してから抽出する**（事後の絞り込みは事後選択）。決定は O14（学生）。
 
+#### (e) 追加の照合（**結果 (d) を見た後に行った探索的な調査**。枠が違うので r_D と比べない）
+
+学生の疑問「もっと宣言を持つ repo はあるはず。推奨されているのでは」への確認
+（`evidence/decl_census_run6/top30_check.json`）:
+
+- **標本内の再確認**: 97 木の `@x.tool(...)` デコレータ 1,506 個（47 木）のうち
+  `annotations=` を渡すものは 2 個（同梱 SDK のテスト）。JSON / YAML / TS 側にも
+  自前の宣言は無い（hint 語が出る JSON はベンチマーク fixture と MCP schema の複製）。
+  **標本内で宣言が無いのは数え方の問題ではない。**
+- **別の枠での宣言率**: `topic:mcp-server language:Python`（10,781 repo）を星数順に
+  上位 30 取り、SDK 自身を除く 29 repo に `ToolAnnotations` の有無を当てると
+  **9/29 = 31%** が使っている（Scrapling、serena、awslabs/mcp、Klavis、
+  excel-mcp-server、FinanceToolkit、tradingview-mcp、QuantDinger、unstract）。
+  公式 `modelcontextprotocol/servers` の Python サーバでも git / time が使う。
+- **読み**: 宣言は「推奨されているのに誰も書かない」のではなく、**成熟した /
+  組織が保守するサーバでは 3 割程度が書き、code search の import 文で拾った
+  標本（小規模・チュートリアル・生成コードが多い）ではほぼ書かれない**。
+  つまり r_D = 0.0% は **標本の枠の性質**であり、母集団の定義を
+  「星数 / 保守されているサーバ」に変えれば D を持つ部分母集団は取れる。
+  それは第 2 の枠として事前登録してから抽出する（O14）。
+- 仕様の原文（`schema.json` 2025-03-26 の `ToolAnnotations` の説明）は
+  `top30_check.json` に転記した。annotation は任意の **hint** であり、クライアントは
+  信頼できないサーバの hint に基づいて判断してはならないとされる（= 宣言は
+  「守られる保証の無い自己申告」で、AuthGap が D と M を比べる動機そのもの）。
+
 ## 3. 併記規則
 
 1. **§2.2 の 3 分母 × §2.3 の 2 分母 = 6 通りをすべて計算し、すべて報告する。**
