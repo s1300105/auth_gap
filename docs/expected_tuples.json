@@ -72,8 +72,13 @@
   "A18": {
    "vuln": "A18__vuln", "fixed": "A18__fixed", "population": "tool_package",
    "source": "sql: grade None -> unknown（sqlglot 文型 allowlist）",
-   "changes": [
+   "_revision": "2026-09-20（docs/preregistration.md §5 #5）: 転記元の triage 文は D1（2026-09-09、weak 理由 `statement_type_only` の新設）より前に書かれており、D1 自身が A18 の形を `weak(statement_type_only)` と定めている。d2b501a の転記は `to: \"unknown\"` で、D1 と食い違っていた（転記の誤り）。最初の照合（腕 C、D25 後）では A18 だけがこれで落ち 7/8 だった。両方の値を記録する: 転記どおりなら 7/8、D1 どおりに直せば 8/8。",
+   "_original_changes": [
     {"slot": "sql", "coord": "grade", "from": null, "to": "unknown", "min_sites": 1}
+   ],
+   "changes": [
+    {"slot": "sql", "coord": "grade", "from": null, "to": "weak", "min_sites": 1},
+    {"slot": "sql", "coord": "weak_reason", "from": null, "to": "statement_type_only", "min_sites": 1}
    ]
   }
  }

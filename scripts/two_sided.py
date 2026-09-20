@@ -7,6 +7,19 @@
     effect kind | val 主体 | gate grade・reason | req_occ | req_val |
     exec mode | DISPATCH 候補集合の resolution
 
+**分子は 3 列で出す**（`docs/preregistration.md` §5 #2 (a)。片方だけ出さない）:
+
+* `pass_preregistered`（**主指標**）: `docs/expected_tuples.json` に事前登録した
+  変化が、**その向きで**（脆弱側 `from` → 修正側 `to`）、期待した位置に
+  `min_sites` 件以上起きていること。逆向きの対（修正版 → 脆弱版）は定義上通らない。
+* `pass_coord_match`: 期待した座標が期待した位置で動いた（向きと値は問わない）。
+* `pass_any_change`: 8 座標のどれかが値として違う（旧来の分子）。
+  **`open` を `Path.read_text` に書き換えただけの対や逆向きの対も通す**ので、
+  「修正を検出した」とは読めない。併記のためだけに残す。
+
+厳密 ⊆ 座標 ⊆ any-change。期待表に無い対は `None`（未測定）で、False にして
+安全側に倒さない。
+
 **副次指標（必須）**: 両側通過対のうち、修正版で verdict が GAP から外れる対の数
 （verdict-clearing 数）を必ず併記する。タプル変化のみで通過した対と区別せずに
 報告すると「修正を検出した」と誤読される。
@@ -51,6 +64,17 @@ sys.path.insert(0, ROOT)
 
 from authgap.report import manifest_json  # noqa: E402
 from authgap.runner import RunConfig, run  # noqa: E402
+
+#: 事前登録した期待タプル（`docs/cve_triage.csv` の `expected_tuple_change` の機械可読版）。
+EXPECTED_TUPLES = os.path.join(ROOT, "docs", "expected_tuples.json")
+
+
+def load_expected(path: str = EXPECTED_TUPLES) -> dict[str, dict]:
+    """`{pair_id: {"vuln", "fixed", "population", "changes", "unchanged"?}}`。無ければ空。"""
+    if not os.path.isfile(path):
+        return {}
+    with open(path, encoding="utf-8") as fh:
+        return json.load(fh)["pairs"]
 
 #: 両側条件が見る座標（§6 T1.1）。
 TUPLE_COORDS = (
@@ -206,10 +230,38 @@ class PairResult:
     still_gap: list[str] = field(default_factory=list)
     #: 同じく、修正側にまだ `GAP_INJECT` が残っているもの。
     still_gap_inject: list[str] = field(default_factory=list)
+    #: 事前登録した期待（`docs/expected_tuples.json` の 1 対分）。無ければ None。
+    expected: Optional[dict] = None
+    #: 期待との照合結果（`match_expected` の出力）。expected が無ければ None。
+    preregistered: Optional[dict] = None
 
     @property
     def two_sided(self) -> bool:
+        """旧来の分子（any-change）。`pass_any_change` と同じ。"""
         return bool(self.changed_paths)
+
+    @property
+    def pass_any_change(self) -> bool:
+        return self.two_sided
+
+    @property
+    def pass_preregistered(self) -> Optional[bool]:
+        """**主指標**。期待表に無い対は None（未測定）。"""
+        if self.preregistered is None:
+            return None
+        return bool(self.preregistered["strict"])
+
+    @property
+    def pass_coord_match(self) -> Optional[bool]:
+        if self.preregistered is None:
+            return None
+        return bool(self.preregistered["coord"])
+
+    @property
+    def preregistered_misses(self) -> list[str]:
+        if self.preregistered is None:
+            return []
+        return list(self.preregistered["misses"])
 
     @property
     def pair_cleared(self) -> bool:
@@ -255,6 +307,11 @@ class PairResult:
             "still_gap_inject_paths": sorted(self.still_gap_inject),
             "pair_cleared_strict": self.pair_cleared,
             "pair_cleared_inject": self.pair_cleared_inject,
+            # 3 列（prereg §5 #2 (a)）。
+            "pass_preregistered": self.pass_preregistered,
+            "pass_coord_match": self.pass_coord_match,
+            "pass_any_change": self.pass_any_change,
+            "preregistered": self.preregistered,
         }
 
     # 旧名（テストと既存の呼び出し向け）。
@@ -267,10 +324,114 @@ def _chain_label(chain: tuple) -> str:
     return "->".join(chain) if chain else "-"
 
 
-def compare(pair_id: str, vuln: str, fixed: str, population: str, arm: str = "C") -> PairResult:
+@dataclass
+class SiteRecord:
+    """両版に存在する経路の下の 1 サイト（片側に無ければ `None`）。照合の単位。"""
+
+    kind: str
+    site: str
+    slot: Optional[str]
+    path: str
+    vuln: Optional[dict]
+    fixed: Optional[dict]
+
+    @property
+    def label(self) -> str:
+        return f"{self.kind}@{self.site}#{self.slot}"
+
+    def value(self, side: str, coord: str):
+        t = self.vuln if side == "vuln" else self.fixed
+        if coord == "presence":
+            return "present" if t is not None else "absent"
+        return None if t is None else t.get(coord)
+
+
+def _site_matches(rec: SiteRecord, cond: dict) -> bool:
+    """期待の絞り込み（`docs/expected_tuples.json` の `_semantics`）。"""
+    if "site" in cond and not rec.label.startswith(cond["site"]):
+        return False
+    if "slot" in cond and rec.slot != cond["slot"]:
+        return False
+    if "path" in cond and cond["path"] not in rec.path:
+        return False
+    return True
+
+
+def match_expected(records: list[SiteRecord], expected: dict) -> dict:
+    """期待表 1 対分を `records` に当てる。
+
+    戻り値: ``{"strict": bool, "coord": bool, "changes": [...], "unchanged": [...], "misses": [...]}``
+
+    * `strict`（= `pass_preregistered`）: すべての `changes` について、条件に合う
+      サイトのうち **`from` → `to` がこの向きで起きた**ものが `min_sites` 件以上。
+      `unchanged` は両側で `value` に等しいものが `min_sites` 件以上。
+    * `coord`（= `pass_coord_match`）: 同じ位置で当該座標の値が**何かしら違う**
+      ものが `min_sites` 件以上（向きも値も問わない）。`unchanged` は両側で
+      等しい（値は問わない）ものが `min_sites` 件以上。
+    """
+    misses: list[str] = []
+    strict = True
+    coord_ok = True
+    out_changes = []
+    for c in expected.get("changes", []):
+        cands = [r for r in records if _site_matches(r, c)]
+        n_strict = sum(
+            1 for r in cands if r.value("vuln", c["coord"]) == c["from"] and r.value("fixed", c["coord"]) == c["to"]
+        )
+        n_coord = sum(1 for r in cands if r.value("vuln", c["coord"]) != r.value("fixed", c["coord"]))
+        ok_s, ok_c = n_strict >= c["min_sites"], n_coord >= c["min_sites"]
+        strict &= ok_s
+        coord_ok &= ok_c
+        desc = {k: c[k] for k in ("site", "slot", "path") if k in c}
+        out_changes.append(
+            {"cond": desc, "coord": c["coord"], "from": c["from"], "to": c["to"], "min_sites": c["min_sites"],
+             "n_candidates": len(cands), "n_strict": n_strict, "n_coord": n_coord, "ok_strict": ok_s, "ok_coord": ok_c}
+        )
+        if not ok_s:
+            got = sorted({f"{r.value('vuln', c['coord'])}->{r.value('fixed', c['coord'])}" for r in cands})
+            misses.append(f"{desc} {c['coord']} {c['from']}->{c['to']} x{c['min_sites']}: strict {n_strict} (観測 {got})")
+    out_unchanged = []
+    for u in expected.get("unchanged", []):
+        cands = [r for r in records if _site_matches(r, u)]
+        n_strict = sum(
+            1 for r in cands if r.value("vuln", u["coord"]) == u["value"] and r.value("fixed", u["coord"]) == u["value"]
+        )
+        n_coord = sum(1 for r in cands if r.value("vuln", u["coord"]) == r.value("fixed", u["coord"]))
+        ok_s, ok_c = n_strict >= u["min_sites"], n_coord >= u["min_sites"]
+        strict &= ok_s
+        coord_ok &= ok_c
+        desc = {k: u[k] for k in ("site", "slot", "path") if k in u}
+        out_unchanged.append(
+            {"cond": desc, "coord": u["coord"], "value": u["value"], "min_sites": u["min_sites"],
+             "n_candidates": len(cands), "n_strict": n_strict, "n_coord": n_coord, "ok_strict": ok_s, "ok_coord": ok_c}
+        )
+        if not ok_s:
+            misses.append(f"{desc} {u['coord']} == {u['value']!r} x{u['min_sites']} (不変): {n_strict}")
+    return {"strict": strict, "coord": coord_ok, "changes": out_changes, "unchanged": out_unchanged, "misses": misses}
+
+
+def compare(
+    pair_id: str,
+    vuln: str,
+    fixed: str,
+    population: str,
+    arm: str = "C",
+    expected: Optional[dict] = None,
+    expected_path: str = EXPECTED_TUPLES,
+) -> PairResult:
+    """1 対を採点する。
+
+    `expected` を省くと `expected_path` の表から `pair_id` で引く。表に無い対は
+    `pass_preregistered` / `pass_coord_match` が None（未測定）になる。
+    逆向きの対を試すときは `expected=` を明示して渡す（`pair_id` では引かない）。
+    """
     a = collect(vuln, population, arm)
     b = collect(fixed, population, arm)
     res = PairResult(pair_id, vuln, fixed)
+    if expected is None:
+        expected = load_expected(expected_path).get(pair_id)
+    res.expected = expected
+    records: list[SiteRecord] = []
 
     def by_path(rows: dict[tuple, SideRow]) -> dict[str, dict[tuple, SideRow]]:
         out: dict[str, dict[tuple, SideRow]] = {}
@@ -291,6 +452,13 @@ def compare(pair_id: str, vuln: str, fixed: str, population: str, arm: str = "C"
         for key in sorted(set(sa) | set(sb), key=lambda k: tuple(str(x) for x in k)):
             ra, rb = sa.get(key), sb.get(key)
             label = f"{key[0]}@{key[1]}#{key[2]} [{path}]"
+            records.append(
+                SiteRecord(
+                    kind=key[0], site=key[1], slot=key[2], path=path,
+                    vuln=None if ra is None else ra.tuple_view(),
+                    fixed=None if rb is None else rb.tuple_view(),
+                )
+            )
             if ra is None:
                 site_diffs.append({"site": label, "diffs": {"presence": ["absent", "present"]},
                                    "vuln": None, "fixed": rb.tuple_view()})
@@ -317,6 +485,8 @@ def compare(pair_id: str, vuln: str, fixed: str, population: str, arm: str = "C"
             res.verdict_clearing.append(path)
         if inj_b:
             res.still_gap_inject.append(path)
+    if expected is not None:
+        res.preregistered = match_expected(records, expected)
     return res
 
 
@@ -328,7 +498,10 @@ def main() -> int:
     ap.add_argument("--population", default="mcp_server")
     ap.add_argument("--spec", help="docs/corpus_spec.json 形式。`<id>@vuln` / `<id>@fixed` を対にする")
     ap.add_argument("--json")
+    ap.add_argument("--arm", default="C", help="解析の腕（C / C0 / A / B）。判別実験 (b) は C0")
+    ap.add_argument("--expected", default=EXPECTED_TUPLES, help="事前登録した期待タプルの表")
     args = ap.parse_args()
+    expected_all = load_expected(args.expected)
 
     pairs: list[tuple[str, str, str, str]] = []
     if args.spec:
@@ -351,6 +524,17 @@ def main() -> int:
                         sides["vuln"].get("population", "mcp_server"),
                     )
                 )
+        # 期待表にあって spec に無い CVE（A10 = A9 と修正コミットを共有）は、
+        # その corpus が揃っていれば CVE 単位の行として足す。**A9 と A10 は同じ
+        # 2 木を読む**ので、木の対としては 7、CVE としては 8 になる。
+        have = {pid for pid, _, _, _ in pairs}
+        for pid, e in sorted(expected_all.items()):
+            if pid in have:
+                continue
+            v = os.path.join(ROOT, "corpus", e["vuln"])
+            f = os.path.join(ROOT, "corpus", e["fixed"])
+            if os.path.isdir(v) and os.path.isdir(f):
+                pairs.append((pid, v, f, e.get("population", "mcp_server")))
     # `--population` は spec に population が無い対の既定値としてだけ使う。
     if args.vuln and args.fixed:
         pairs.append((args.pair, args.vuln, args.fixed, args.population))
@@ -362,9 +546,14 @@ def main() -> int:
         if not (os.path.isdir(v) and os.path.isdir(f)):
             print(f"SKIP {pid}: コーパスが無い（{v} / {f}）", file=sys.stderr)
             continue
-        r = compare(pid, v, f, pop)
+        r = compare(pid, v, f, pop, arm=args.arm, expected=expected_all.get(pid), expected_path=args.expected)
         results.append(r)
-        print(f"\n=== {pid} : 両側通過 = {r.two_sided} ===")
+        print(
+            f"\n=== {pid} [腕 {args.arm}] : 事前登録照合 = {r.pass_preregistered} / "
+            f"座標一致 = {r.pass_coord_match} / any-change = {r.pass_any_change} ==="
+        )
+        for m in r.preregistered_misses:
+            print(f"    未達: {m}")
         print(f"  変化した経路 {len(r.changed_paths)} / 不変 {r.unchanged_paths} "
               f"/ 脆弱側のみ {len(r.only_vuln)} / 修正側のみ {len(r.only_fixed)}")
         for c in r.changed_sites[:14]:
@@ -384,7 +573,16 @@ def main() -> int:
     n_pass = sum(1 for r in results if r.two_sided)
     n_cleared = sum(1 for r in results if r.pair_cleared)
     n_cleared_inj = sum(1 for r in results if r.pair_cleared_inject)
-    print(f"\n両側通過 {n_pass}/{len(results)} 対")
+    measured = [r for r in results if r.pass_preregistered is not None]
+    n_strict = sum(1 for r in measured if r.pass_preregistered)
+    n_coord = sum(1 for r in measured if r.pass_coord_match)
+    n_trees = len({(r.vuln_root, r.fixed_root) for r in results})
+    print(f"\n[腕 {args.arm}] 対 = {len(results)}（CVE 単位。木の対は {n_trees}）")
+    print(f"両側通過（3 列、prereg §5 #2 (a)）: 事前登録照合 {n_strict}/{len(measured)} ｜ "
+          f"座標一致 {n_coord}/{len(measured)} ｜ any-change {n_pass}/{len(results)}")
+    if len(measured) < len(results):
+        print(f"  期待表に無い対 {len(results) - len(measured)}（未測定。False にしない）")
+    print("**主指標は事前登録照合。any-change は逆向きの対や sink 名の置換だけの対も通すので併記にとどめる**")
     print(f"verdict-clearing（必須併記）: 厳密 {n_cleared}/{n_pass} / "
           f"INJECT 座標のみ {n_cleared_inj}/{n_pass}")
     print("**タプル変化のみで通過した対と区別せずに報告すると「修正を検出した」と誤読される**")
@@ -400,8 +598,13 @@ def main() -> int:
                     "accepted_reasons": sorted(ACCEPTED_REASONS),
                     "na_reasons": sorted(NA_REASONS),
                     "coords": list(TUPLE_COORDS),
+                    "arm": args.arm,
                     "n_pairs": len(results),
+                    "n_tree_pairs": n_trees,
                     "n_two_sided_pass": n_pass,
+                    "n_pass_preregistered": n_strict,
+                    "n_pass_coord_match": n_coord,
+                    "n_measured": len(measured),
                     "n_verdict_clearing_pairs_strict": n_cleared,
                     "n_verdict_clearing_pairs_inject": n_cleared_inj,
                     "pairs": [r.to_json() for r in results],

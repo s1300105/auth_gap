@@ -44,7 +44,9 @@ def _cmp(pair_id: str, v: str, f: str, pop: str, **kw):
     return _CACHE[key]
 
 
-DEFECT = pytest.mark.xfail(strict=True, reason="prereg §5 #2 (a): 未実装（修正コミットでこの印を外す）")
+#: cf75fd7 で `DEFECT`（xfail strict）として置き、実装で 7 対 + 逆向き 4 対 + noop が XPASS に
+#: なったので印を外した。A18 だけは期待表の転記誤り（`docs/preregistration.md` §5 #5）で
+#: 落ち、記録つきで表を直した。以後は回帰テストである。
 
 EXPECTED = json.load(open(os.path.join(ROOT, "docs", "expected_tuples.json"), encoding="utf-8"))["pairs"]
 
@@ -93,7 +95,6 @@ def test_precondition_any_change_still_passes(pair):
 # --------------------------------------------------------------------------
 
 
-@DEFECT
 @pytest.mark.parametrize("pair", sorted(EXPECTED))
 def test_preregistered_direction_passes(pair):
     """`pass_preregistered` が `docs/expected_tuples.json` の向きつき照合で True。"""
@@ -103,7 +104,6 @@ def test_preregistered_direction_passes(pair):
     assert res.pass_preregistered is True, f"{pair}: {getattr(res, 'preregistered_misses', None)}"
 
 
-@DEFECT
 @pytest.mark.parametrize("pair", sorted(EXPECTED))
 def test_any_change_is_reported_alongside(pair):
     """3 列（厳密一致 / 座標一致 / any-change）が**併記**される。片方だけ出さない。
@@ -130,7 +130,6 @@ def test_any_change_is_reported_alongside(pair):
 # --------------------------------------------------------------------------
 
 
-@DEFECT
 @pytest.mark.parametrize("pair", ("A1", "A2", "A4", "A10"))
 def test_reversed_pair_does_not_pass_preregistered(pair):
     """修正版を脆弱側に、脆弱版を修正側に置いた対は `pass_preregistered` が False。
@@ -151,7 +150,6 @@ def test_reversed_pair_does_not_pass_preregistered(pair):
 # --------------------------------------------------------------------------
 
 
-@DEFECT
 def test_unrelated_coordinate_change_does_not_pass_preregistered(tmp_path):
     """検証を足さずに `open` を `Path.read_text` に置き換えただけの対。
 
