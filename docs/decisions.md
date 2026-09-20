@@ -7,7 +7,73 @@
 **仕様書本体は書き換えていない。** 仕様書は設計の記録として残し、
 食い違いはここと `docs/cve_triage.csv` に併記する。
 
-最終更新 2026-09-20（D20 を追加）。
+最終更新 2026-09-20（D21 を追加）。
+
+---
+
+## D21. Def 5 の値検証等級を 1 経路に統一する（両方向の誤りを直す）
+
+**本項は「直すと決めた」記録である。期待値は `tests/test_value_grade.py` に
+修正より先にコミットした**（`CLAUDE.md` 規則 5）。結果は末尾の「結果」に追記する。
+
+### 事実（8 ケースで再現。`tests/test_value_grade.py` の fixture）
+
+同一の Def 5 strong-path 条件を満たす検証子が、**書いた場所で等級が変わる**。
+
+| ケース | 形 | 修正前の等級 | 修正前の verdict | Def 5 の期待 | 誤りの向き |
+|---|---|---|---|---|---|
+| a1 | inline `realpath` + `commonpath` | `weak(no_symlink_resolution)` | GAP_INJECT | `strong-path` | **false-dirty** |
+| a2 | inline `Path.resolve` + `is_relative_to` | `weak(no_symlink_resolution)` | GAP_INJECT | `strong-path` | **false-dirty** |
+| a3 | inline `realpath` + `startswith(base+os.sep)` | `weak(prefix_no_canon)` | GAP_INJECT | `strong-path` | **false-dirty** |
+| b1 | helper が `realpath(root)` だけ通し、検査対象も sink も生の `path` | **`strong-path`** | **なし** | `weak(no_symlink_resolution)` | **false-clean** |
+| b2 | `join(realpath(ROOT), path)` | `weak(prefix_no_canon)` | GAP_INJECT | weak | 正しい |
+| b3 | 正規化した値を使わず生の値を sink へ | `weak(prefix_no_canon)` | GAP_INJECT | weak | 正しい |
+| c1 | 検証なし | `None` | GAP_INJECT | `None` | 正しい |
+| c2 | 付録 G `_prelude.validate_path` と同じヘルパー形 | `strong-path` | なし | `strong-path` | 正しい |
+
+**b1 が最も重い。** `_validate_root_only` は `os.path.realpath(root)` しか通さず
+`os.path.commonpath([path, base])` で**生の `path`** を照合するので
+`/srv/data/../../etc/passwd` がそのまま通るが、現行の解析器はこれを clear する。
+
+### 原因
+
+Def 5 が 1 つなのに、実装が**互いに矛盾する 2 つの近似**になっている。
+
+1. **inline 経路** `gate.py: _call_candidate` は形状 1 つを
+   `_grade_from_shape` に渡し、docstring どおり「単独で strong にはしない」ので
+   **構造的に weak 止まり**。囲み関数の本体をまとめて採点する経路が無い。
+2. **helper 経路** `gate.py: _value_grade` は本体に現れた正規化子名の集合
+   （`_transform_names`）と包含述語名の集合（`_containment_forms`）の**積**だけで
+   strong-path を返す。どの値に適用されたかを見ない。
+3. `analyze.py: _grade_of` は `value_grade.startswith("strong")` なら即 return し、
+   `Value.attrs` も `ValResult.alias_facts` も参照しない。
+   `validators.py: strong_path_requirements` と `ROOT_EQUAL_STEPS` は
+   **定義のみで呼び出し元が 0 件**である。
+
+**val は既に必要な証拠を出している。** `TRANSFERS` は symlink 解決子に
+`canon_class="symlink"` と `attrs=("canonicalised",)` を持ち、
+`engine.py` は `(root, site, transform)` を `alias_facts` に記録している。
+**gate 側がそれを読んでいないだけである。**
+
+### 決定
+
+**strong-path を返す前に val の証拠で裏づける。** 判定を 1 か所に集約する:
+
+* 条件 1（canonical alias の存在）= `alias_facts` に
+  `root ∈ value.roots` かつ symlink 系 transform の行があること。
+* root-equal = sink に届く値そのものが `canonicalised` 属性を持つこと。
+
+この 2 条件は 8 ケースすべてを正しく分離する（b1 は canon 属性を持たず、
+b2 は root `path` の alias を持たない）。**symlink 系 transform の集合は
+`TRANSFERS` の `canon_class == "symlink"` から導出し、新しい語彙を作らない。**
+
+inline 経路は `_grade_from_shape` をやめ、囲み関数の本体に対して helper 経路と
+同じ採点を行う。**inline を strong に到達可能にするのは false-clean 方向の変更
+なので**（`CLAUDE.md`）、上の 2 条件による裏づけと敵対的レビューを必須とする。
+
+### 結果
+
+（修正コミットで追記する。）
 
 ---
 
