@@ -11,6 +11,39 @@
 
 ---
 
+## D32. O15 / O16 の学生の決定: `r_D` の分子は上界を動かす明示、追記型の FS_WRITE は矛盾に数えない
+
+### 学生の決定（2026-09-20、チャット）
+
+- **O15**: `r_D` の分子は「上界を動かす明示」（`readOnlyHint==true` /
+  `destructiveHint==false`）。母集団 v2 では 53.3%。`openWorldHint==true` 単独の
+  明示（80.0%）は「annotation を書く習慣の普及率」として併記する。
+  実装（`scripts/f0a.py`）はこのままで、`dparse.parse_d_kind` の docstring を
+  実装に合わせて直す。
+- **O16**: sink カタログで**削除・上書き型**と**追記型**の FS_WRITE を分け、
+  `destructiveHint==false` の宣言に対しては削除・上書き型だけを CONTRADICTION に
+  数える（`readOnlyHint==true` に対しては従来どおり FS_WRITE 全部）。
+
+### 規則（実装より先に書く。`docs/preregistration.md` §5 #7 に逸脱として記録）
+
+- sink 表の FS_WRITE 行に属性 `destructive` を足す（**kind / slot の語彙は変えない**）:
+  - 削除・上書き型（True）: `os.remove` / `os.unlink` / `os.rmdir` / `os.rename` /
+    `os.replace` / `os.chmod` / `shutil.rmtree` / `shutil.copy*` / `shutil.move` /
+    `shutil.unpack_archive` / `pathlib.Path.unlink` / `pathlib.Path.write_text` /
+    `pathlib.Path.write_bytes`
+  - 追記型（False）: `os.mkdir` / `os.makedirs` / `os.symlink` / `pathlib.Path.mkdir`
+  - mode 依存（`open` / `io.open` / `pathlib.Path.open`）: mode に `w` または `+` を
+    含めば True、`a` / `x` だけなら False、**mode が読めなければ True 扱い**
+    （推定で clean にしない。false-dirty 側）。
+- CONTRADICTION: `readOnlyHint==true` の明示 → EXEC / SPAWN / FS_WRITE のすべて。
+  `destructiveHint==false` の明示（readOnly は明示していない）→ EXEC / SPAWN、
+  および `destructive` が False **でない** FS_WRITE。
+- **これは結果（D31 の 32 件）を見た後の定義変更**である。母集団 v2 の
+  CONTRADICTION を数え直し、変更前（80 件）と変更後を併記する。
+- 期待値は `fixtures/destructive_sinks` に実装より先に置く。
+
+---
+
 ## D31. 母集団 v2 の full scan と `r_prev`: 宣言との差は CONTRADICTION に現れる（16/87 木）
 
 - **いつ**: 2026-09-20。D30 の 87 木で full scan（`evidence/scan_v2_run1/`）と

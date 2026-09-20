@@ -286,7 +286,7 @@
 
 ---
 
-## O15. `r_D` の分子の定義が実装内で食い違う（上界を動かす明示 53.3% / 明示 1 つでも 80.0%）
+## O15. `r_D` の分子の定義が実装内で食い違う（上界を動かす明示 53.3% / 明示 1 つでも 80.0%）— **解決（D32: 上界を動かす明示）**
 
 - **要る情報**: 仕様書 §10 :1121〜1124 の `r_kind` の定義を、`D_kind ≠ ⊥`（上界を
   動かす明示: `readOnlyHint==true` / `destructiveHint==false`）と読むか、
@@ -299,7 +299,7 @@
 
 ---
 
-## O16. `destructiveHint==false` の宣言に対して、追記型の FS_WRITE を CONTRADICTION に数えるか
+## O16. `destructiveHint==false` の宣言に対して、追記型の FS_WRITE を CONTRADICTION に数えるか — **解決（D32: 案 (a)、削除・上書き型だけ）**
 
 - **要る情報**: Def 7 の CONTRADICTION の読み。`authgap/dparse.py: d_kind_from` は
   destructiveHint==false の上界に FS_WRITE（追記型）と DB を含めるが、
