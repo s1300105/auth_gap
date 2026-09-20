@@ -1,0 +1,8741 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 995,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.add_pr_comment",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 995,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.add_pr_comment",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 969,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "index": 1,
+      "name": "pr_id"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "content"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 3,
+      "name": "file_path"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 4,
+      "name": "line"
+     }
+    ],
+    "qualname": "add_pr_comment",
+    "relpath": "python/src/server.py",
+    "schema_hash": "3b5a25af79a1",
+    "tool_name": "add_pr_comment",
+    "unit_id": "mcp:add_pr_comment:3b5a25af79a1"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1022,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.approve_pr",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1022,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.approve_pr",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1011,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "index": 1,
+      "name": "pr_id"
+     }
+    ],
+    "qualname": "approve_pr",
+    "relpath": "python/src/server.py",
+    "schema_hash": "ba4904559bb6",
+    "tool_name": "approve_pr",
+    "unit_id": "mcp:approve_pr:ba4904559bb6"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 838,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.compare_commits",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 838,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.compare_commits",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 826,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "base"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "head"
+     }
+    ],
+    "qualname": "compare_commits",
+    "relpath": "python/src/server.py",
+    "schema_hash": "220003a4f6af",
+    "tool_name": "compare_commits",
+    "unit_id": "mcp:compare_commits:220003a4f6af"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1432,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.create_branch_restriction",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1432,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.create_branch_restriction",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1401,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "kind"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 2,
+      "name": "pattern"
+     },
+     {
+      "annotation": "str",
+      "default": "'glob'",
+      "index": 3,
+      "name": "branch_match_kind"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 4,
+      "name": "branch_type"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 5,
+      "name": "value"
+     }
+    ],
+    "qualname": "create_branch_restriction",
+    "relpath": "python/src/server.py",
+    "schema_hash": "15f565254f21",
+    "tool_name": "create_branch_restriction",
+    "unit_id": "mcp:create_branch_restriction:15f565254f21"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "state",
+     "site": "python/src/server.py:L915",
+     "transform": "str.upper"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 920,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.create_commit_status",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 920,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.create_commit_status",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 888,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "commit"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "state"
+     },
+     {
+      "annotation": "str",
+      "index": 3,
+      "name": "key"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 4,
+      "name": "url"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 5,
+      "name": "name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 6,
+      "name": "description"
+     }
+    ],
+    "qualname": "create_commit_status",
+    "relpath": "python/src/server.py",
+    "schema_hash": "9d58d0364e4d",
+    "tool_name": "create_commit_status",
+    "unit_id": "mcp:create_commit_status:9d58d0364e4d"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 579,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.create_pipeline_variable",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 579,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.create_pipeline_variable",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 560,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "key"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "value"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "secured"
+     }
+    ],
+    "qualname": "create_pipeline_variable",
+    "relpath": "python/src/server.py",
+    "schema_hash": "ebb10b4dd69d",
+    "tool_name": "create_pipeline_variable",
+    "unit_id": "mcp:create_pipeline_variable:ebb10b4dd69d"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 235,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.create_pull_request",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 235,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.create_pull_request",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 213,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "title"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "source_branch"
+     },
+     {
+      "annotation": "str",
+      "default": "'main'",
+      "index": 3,
+      "name": "destination_branch"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 4,
+      "name": "description"
+     },
+     {
+      "annotation": "bool",
+      "default": "True",
+      "index": 5,
+      "name": "close_source_branch"
+     }
+    ],
+    "qualname": "create_pull_request",
+    "relpath": "python/src/server.py",
+    "schema_hash": "0365479c8120",
+    "tool_name": "create_pull_request",
+    "unit_id": "mcp:create_pull_request:0365479c8120"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 128,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.create_repository",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 128,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.create_repository",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 110,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "project_key"
+     },
+     {
+      "annotation": "bool",
+      "default": "True",
+      "index": 2,
+      "name": "is_private"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 3,
+      "name": "description"
+     }
+    ],
+    "qualname": "create_repository",
+    "relpath": "python/src/server.py",
+    "schema_hash": "043389b501bf",
+    "tool_name": "create_repository",
+    "unit_id": "mcp:create_repository:043389b501bf"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1344,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.create_tag",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1344,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.create_tag",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1326,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "target"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 3,
+      "name": "message"
+     }
+    ],
+    "qualname": "create_tag",
+    "relpath": "python/src/server.py",
+    "schema_hash": "a00d1fe07e09",
+    "tool_name": "create_tag",
+    "unit_id": "mcp:create_tag:a00d1fe07e09"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1246,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.create_webhook",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1246,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.create_webhook",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1222,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "url"
+     },
+     {
+      "annotation": "list",
+      "index": 2,
+      "name": "events"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 3,
+      "name": "description"
+     },
+     {
+      "annotation": "bool",
+      "default": "True",
+      "index": 4,
+      "name": "active"
+     }
+    ],
+    "qualname": "create_webhook",
+    "relpath": "python/src/server.py",
+    "schema_hash": "0f360593cb79",
+    "tool_name": "create_webhook",
+    "unit_id": "mcp:create_webhook:0f360593cb79"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1082,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.decline_pr",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1082,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.decline_pr",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1071,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "index": 1,
+      "name": "pr_id"
+     }
+    ],
+    "qualname": "decline_pr",
+    "relpath": "python/src/server.py",
+    "schema_hash": "ba4904559bb6",
+    "tool_name": "decline_pr",
+    "unit_id": "mcp:decline_pr:ba4904559bb6"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1460,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.delete_branch_restriction",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1460,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.delete_branch_restriction",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1449,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "index": 1,
+      "name": "restriction_id"
+     }
+    ],
+    "qualname": "delete_branch_restriction",
+    "relpath": "python/src/server.py",
+    "schema_hash": "7cd431cbbfa7",
+    "tool_name": "delete_branch_restriction",
+    "unit_id": "mcp:delete_branch_restriction:7cd431cbbfa7"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1704,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.delete_group_permission",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1704,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.delete_group_permission",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1693,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "group_slug"
+     }
+    ],
+    "qualname": "delete_group_permission",
+    "relpath": "python/src/server.py",
+    "schema_hash": "de055106e4d7",
+    "tool_name": "delete_group_permission",
+    "unit_id": "mcp:delete_group_permission:de055106e4d7"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 628,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.delete_pipeline_variable",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 628,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.delete_pipeline_variable",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 617,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "variable_uuid"
+     }
+    ],
+    "qualname": "delete_pipeline_variable",
+    "relpath": "python/src/server.py",
+    "schema_hash": "513341339c89",
+    "tool_name": "delete_pipeline_variable",
+    "unit_id": "mcp:delete_pipeline_variable:513341339c89"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 156,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.delete_repository",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 156,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.delete_repository",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 144,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     }
+    ],
+    "qualname": "delete_repository",
+    "relpath": "python/src/server.py",
+    "schema_hash": "13c114f4e6d6",
+    "tool_name": "delete_repository",
+    "unit_id": "mcp:delete_repository:13c114f4e6d6"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1371,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.delete_tag",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1371,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.delete_tag",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1360,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "tag_name"
+     }
+    ],
+    "qualname": "delete_tag",
+    "relpath": "python/src/server.py",
+    "schema_hash": "4856466ee0de",
+    "tool_name": "delete_tag",
+    "unit_id": "mcp:delete_tag:4856466ee0de"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1616,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.delete_user_permission",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1616,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.delete_user_permission",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1605,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "selected_user"
+     }
+    ],
+    "qualname": "delete_user_permission",
+    "relpath": "python/src/server.py",
+    "schema_hash": "28a808a43fd8",
+    "tool_name": "delete_user_permission",
+    "unit_id": "mcp:delete_user_permission:28a808a43fd8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1296,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.delete_webhook",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1296,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.delete_webhook",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1285,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "webhook_uuid"
+     }
+    ],
+    "qualname": "delete_webhook",
+    "relpath": "python/src/server.py",
+    "schema_hash": "1f993fbf3c61",
+    "tool_name": "delete_webhook",
+    "unit_id": "mcp:delete_webhook:1f993fbf3c61"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 756,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_branch",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 756,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_branch",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 745,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "branch_name"
+     }
+    ],
+    "qualname": "get_branch",
+    "relpath": "python/src/server.py",
+    "schema_hash": "80c1ebf88490",
+    "tool_name": "get_branch",
+    "unit_id": "mcp:get_branch:80c1ebf88490"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 816,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_commit",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 816,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_commit",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 805,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "commit"
+     }
+    ],
+    "qualname": "get_commit",
+    "relpath": "python/src/server.py",
+    "schema_hash": "c32a44e2265d",
+    "tool_name": "get_commit",
+    "unit_id": "mcp:get_commit:c32a44e2265d"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 862,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "commit"
+     },
+     {
+      "annotation": "int",
+      "default": "20",
+      "index": 2,
+      "name": "limit"
+     }
+    ],
+    "qualname": "get_commit_statuses",
+    "relpath": "python/src/server.py",
+    "schema_hash": "a3bca7a29f8a",
+    "tool_name": "get_commit_statuses",
+    "unit_id": "mcp:get_commit_statuses:a3bca7a29f8a"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1155,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_environment",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1155,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_environment",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1144,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "environment_uuid"
+     }
+    ],
+    "qualname": "get_environment",
+    "relpath": "python/src/server.py",
+    "schema_hash": "7f66b58903c2",
+    "tool_name": "get_environment",
+    "unit_id": "mcp:get_environment:7f66b58903c2"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1488,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 252,
+     "relpath": "python/src/bitbucket_client.py",
+     "required_by": [
+      "A16"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.get",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_file_content",
+      "BitbucketClient._request_text"
+     ]
+    },
+    {
+     "entry_lineno": 1488,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 252,
+     "relpath": "python/src/bitbucket_client.py",
+     "required_by": [
+      "A16"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.get",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_file_content",
+      "BitbucketClient._request_text"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1470,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "path"
+     },
+     {
+      "annotation": "str",
+      "default": "'main'",
+      "index": 2,
+      "name": "ref"
+     }
+    ],
+    "qualname": "get_file_content",
+    "relpath": "python/src/server.py",
+    "schema_hash": "5837bd5828c5",
+    "tool_name": "get_file_content",
+    "unit_id": "mcp:get_file_content:5837bd5828c5"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1657,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_group_permission",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1657,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_group_permission",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1646,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "group_slug"
+     }
+    ],
+    "qualname": "get_group_permission",
+    "relpath": "python/src/server.py",
+    "schema_hash": "de055106e4d7",
+    "tool_name": "get_group_permission",
+    "unit_id": "mcp:get_group_permission:de055106e4d7"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 425,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_pipeline",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 425,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_pipeline",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 414,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "pipeline_uuid"
+     }
+    ],
+    "qualname": "get_pipeline",
+    "relpath": "python/src/server.py",
+    "schema_hash": "3c0c2dc3e3d0",
+    "tool_name": "get_pipeline",
+    "unit_id": "mcp:get_pipeline:3c0c2dc3e3d0"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 483,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 252,
+     "relpath": "python/src/bitbucket_client.py",
+     "required_by": [
+      "A16"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.get",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_pipeline_logs",
+      "BitbucketClient._request_text"
+     ]
+    },
+    {
+     "entry_lineno": 483,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 252,
+     "relpath": "python/src/bitbucket_client.py",
+     "required_by": [
+      "A16"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.get",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_pipeline_logs",
+      "BitbucketClient._request_text"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 455,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "pipeline_uuid"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "step_uuid"
+     }
+    ],
+    "qualname": "get_pipeline_logs",
+    "relpath": "python/src/server.py",
+    "schema_hash": "bdb85ac31812",
+    "tool_name": "get_pipeline_logs",
+    "unit_id": "mcp:get_pipeline_logs:bdb85ac31812"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 550,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_pipeline_variable",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 550,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_pipeline_variable",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 539,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "variable_uuid"
+     }
+    ],
+    "qualname": "get_pipeline_variable",
+    "relpath": "python/src/server.py",
+    "schema_hash": "513341339c89",
+    "tool_name": "get_pipeline_variable",
+    "unit_id": "mcp:get_pipeline_variable:513341339c89"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1103,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 252,
+     "relpath": "python/src/bitbucket_client.py",
+     "required_by": [
+      "A16"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.get",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_pr_diff",
+      "BitbucketClient._request_text"
+     ]
+    },
+    {
+     "entry_lineno": 1103,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 252,
+     "relpath": "python/src/bitbucket_client.py",
+     "required_by": [
+      "A16"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.get",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_pr_diff",
+      "BitbucketClient._request_text"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1092,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "index": 1,
+      "name": "pr_id"
+     }
+    ],
+    "qualname": "get_pr_diff",
+    "relpath": "python/src/server.py",
+    "schema_hash": "ba4904559bb6",
+    "tool_name": "get_pr_diff",
+    "unit_id": "mcp:get_pr_diff:ba4904559bb6"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 667,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_project",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 667,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_project",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 657,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "project_key"
+     }
+    ],
+    "qualname": "get_project",
+    "relpath": "python/src/server.py",
+    "schema_hash": "56bf7d131b6a",
+    "tool_name": "get_project",
+    "unit_id": "mcp:get_project:56bf7d131b6a"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 265,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_pull_request",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 265,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_pull_request",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 254,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "index": 1,
+      "name": "pr_id"
+     }
+    ],
+    "qualname": "get_pull_request",
+    "relpath": "python/src/server.py",
+    "schema_hash": "ba4904559bb6",
+    "tool_name": "get_pull_request",
+    "unit_id": "mcp:get_pull_request:ba4904559bb6"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 100,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_repository",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 100,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_repository",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 90,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     }
+    ],
+    "qualname": "get_repository",
+    "relpath": "python/src/server.py",
+    "schema_hash": "13c114f4e6d6",
+    "tool_name": "get_repository",
+    "unit_id": "mcp:get_repository:13c114f4e6d6"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1569,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_user_permission",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1569,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_user_permission",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1558,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "selected_user"
+     }
+    ],
+    "qualname": "get_user_permission",
+    "relpath": "python/src/server.py",
+    "schema_hash": "28a808a43fd8",
+    "tool_name": "get_user_permission",
+    "unit_id": "mcp:get_user_permission:28a808a43fd8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1275,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_webhook",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1275,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.get_webhook",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1264,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "webhook_uuid"
+     }
+    ],
+    "qualname": "get_webhook",
+    "relpath": "python/src/server.py",
+    "schema_hash": "1f993fbf3c61",
+    "tool_name": "get_webhook",
+    "unit_id": "mcp:get_webhook:1f993fbf3c61"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1381,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 1,
+      "name": "limit"
+     }
+    ],
+    "qualname": "list_branch_restrictions",
+    "relpath": "python/src/server.py",
+    "schema_hash": "31c76468bdf8",
+    "tool_name": "list_branch_restrictions",
+    "unit_id": "mcp:list_branch_restrictions:31c76468bdf8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 725,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 1,
+      "name": "limit"
+     }
+    ],
+    "qualname": "list_branches",
+    "relpath": "python/src/server.py",
+    "schema_hash": "31c76468bdf8",
+    "tool_name": "list_branches",
+    "unit_id": "mcp:list_branches:31c76468bdf8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 778,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "branch"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "path"
+     },
+     {
+      "annotation": "int",
+      "default": "20",
+      "index": 3,
+      "name": "limit"
+     }
+    ],
+    "qualname": "list_commits",
+    "relpath": "python/src/server.py",
+    "schema_hash": "dee86cc70066",
+    "tool_name": "list_commits",
+    "unit_id": "mcp:list_commits:dee86cc70066"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1172,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "environment_uuid"
+     },
+     {
+      "annotation": "int",
+      "default": "20",
+      "index": 2,
+      "name": "limit"
+     }
+    ],
+    "qualname": "list_deployment_history",
+    "relpath": "python/src/server.py",
+    "schema_hash": "8adfa400f468",
+    "tool_name": "list_deployment_history",
+    "unit_id": "mcp:list_deployment_history:8adfa400f468"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1503,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 1,
+      "name": "path"
+     },
+     {
+      "annotation": "str",
+      "default": "'main'",
+      "index": 2,
+      "name": "ref"
+     },
+     {
+      "annotation": "int",
+      "default": "100",
+      "index": 3,
+      "name": "limit"
+     }
+    ],
+    "qualname": "list_directory",
+    "relpath": "python/src/server.py",
+    "schema_hash": "6056aa64fcf0",
+    "tool_name": "list_directory",
+    "unit_id": "mcp:list_directory:6056aa64fcf0"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1124,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "default": "20",
+      "index": 1,
+      "name": "limit"
+     }
+    ],
+    "qualname": "list_environments",
+    "relpath": "python/src/server.py",
+    "schema_hash": "ba3c95f256ae",
+    "tool_name": "list_environments",
+    "unit_id": "mcp:list_environments:ba3c95f256ae"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1626,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 1,
+      "name": "limit"
+     }
+    ],
+    "qualname": "list_group_permissions",
+    "relpath": "python/src/server.py",
+    "schema_hash": "31c76468bdf8",
+    "tool_name": "list_group_permissions",
+    "unit_id": "mcp:list_group_permissions:31c76468bdf8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 517,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 1,
+      "name": "limit"
+     }
+    ],
+    "qualname": "list_pipeline_variables",
+    "relpath": "python/src/server.py",
+    "schema_hash": "31c76468bdf8",
+    "tool_name": "list_pipeline_variables",
+    "unit_id": "mcp:list_pipeline_variables:31c76468bdf8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 435,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "default": "10",
+      "index": 1,
+      "name": "limit"
+     }
+    ],
+    "qualname": "list_pipelines",
+    "relpath": "python/src/server.py",
+    "schema_hash": "6675ad982584",
+    "tool_name": "list_pipelines",
+    "unit_id": "mcp:list_pipelines:6675ad982584"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 943,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "index": 1,
+      "name": "pr_id"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 2,
+      "name": "limit"
+     }
+    ],
+    "qualname": "list_pr_comments",
+    "relpath": "python/src/server.py",
+    "schema_hash": "7371bf8ebbc9",
+    "tool_name": "list_pr_comments",
+    "unit_id": "mcp:list_pr_comments:7371bf8ebbc9"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 638,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 0,
+      "name": "limit"
+     }
+    ],
+    "qualname": "list_projects",
+    "relpath": "python/src/server.py",
+    "schema_hash": "ef8ad6551a7f",
+    "tool_name": "list_projects",
+    "unit_id": "mcp:list_projects:ef8ad6551a7f"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "state",
+     "site": "python/src/server.py:L292",
+     "transform": "str.upper"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 275,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "default": "'OPEN'",
+      "index": 1,
+      "name": "state"
+     },
+     {
+      "annotation": "int",
+      "default": "20",
+      "index": 2,
+      "name": "limit"
+     }
+    ],
+    "qualname": "list_pull_requests",
+    "relpath": "python/src/server.py",
+    "schema_hash": "e42f6ba01967",
+    "tool_name": "list_pull_requests",
+    "unit_id": "mcp:list_pull_requests:e42f6ba01967"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "search",
+     "site": "python/src/utils.py:L140",
+     "transform": "str.replace"
+    },
+    {
+     "root": "search",
+     "site": "python/src/utils.py:L142",
+     "transform": "str.replace"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 197,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.list_repositories",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 197,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.list_repositories",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 163,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 0,
+      "name": "project_key"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "search"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "query"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 3,
+      "name": "limit"
+     }
+    ],
+    "qualname": "list_repositories",
+    "relpath": "python/src/server.py",
+    "schema_hash": "817152ad52ee",
+    "tool_name": "list_repositories",
+    "unit_id": "mcp:list_repositories:817152ad52ee"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1306,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 1,
+      "name": "limit"
+     }
+    ],
+    "qualname": "list_tags",
+    "relpath": "python/src/server.py",
+    "schema_hash": "31c76468bdf8",
+    "tool_name": "list_tags",
+    "unit_id": "mcp:list_tags:31c76468bdf8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1538,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 1,
+      "name": "limit"
+     }
+    ],
+    "qualname": "list_user_permissions",
+    "relpath": "python/src/server.py",
+    "schema_hash": "31c76468bdf8",
+    "tool_name": "list_user_permissions",
+    "unit_id": "mcp:list_user_permissions:31c76468bdf8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1202,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 1,
+      "name": "limit"
+     }
+    ],
+    "qualname": "list_webhooks",
+    "relpath": "python/src/server.py",
+    "schema_hash": "31c76468bdf8",
+    "tool_name": "list_webhooks",
+    "unit_id": "mcp:list_webhooks:31c76468bdf8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "merge_strategy",
+     "site": "python/src/server.py:L330",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 335,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.merge_pull_request",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 335,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.merge_pull_request",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 309,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "index": 1,
+      "name": "pr_id"
+     },
+     {
+      "annotation": "str",
+      "default": "'merge_commit'",
+      "index": 2,
+      "name": "merge_strategy"
+     },
+     {
+      "annotation": "bool",
+      "default": "True",
+      "index": 3,
+      "name": "close_source_branch"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 4,
+      "name": "message"
+     }
+    ],
+    "qualname": "merge_pull_request",
+    "relpath": "python/src/server.py",
+    "schema_hash": "bdf3d81774b7",
+    "tool_name": "merge_pull_request",
+    "unit_id": "mcp:merge_pull_request:bdf3d81774b7"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1061,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.request_changes_pr",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1061,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.request_changes_pr",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1050,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "index": 1,
+      "name": "pr_id"
+     }
+    ],
+    "qualname": "request_changes_pr",
+    "relpath": "python/src/server.py",
+    "schema_hash": "ba4904559bb6",
+    "tool_name": "request_changes_pr",
+    "unit_id": "mcp:request_changes_pr:ba4904559bb6"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 504,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.stop_pipeline",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 504,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.stop_pipeline",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 493,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "pipeline_uuid"
+     }
+    ],
+    "qualname": "stop_pipeline",
+    "relpath": "python/src/server.py",
+    "schema_hash": "3c0c2dc3e3d0",
+    "tool_name": "stop_pipeline",
+    "unit_id": "mcp:stop_pipeline:3c0c2dc3e3d0"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 397,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.trigger_pipeline",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 397,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.trigger_pipeline",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 356,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "branch"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "commit"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 3,
+      "name": "custom_pipeline"
+     },
+     {
+      "annotation": "Optional[list]",
+      "default": "None",
+      "index": 4,
+      "name": "variables"
+     }
+    ],
+    "qualname": "trigger_pipeline",
+    "relpath": "python/src/server.py",
+    "schema_hash": "efb03e8c3ee5",
+    "tool_name": "trigger_pipeline",
+    "unit_id": "mcp:trigger_pipeline:efb03e8c3ee5"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1043,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.unapprove_pr",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1043,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.unapprove_pr",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1032,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "int",
+      "index": 1,
+      "name": "pr_id"
+     }
+    ],
+    "qualname": "unapprove_pr",
+    "relpath": "python/src/server.py",
+    "schema_hash": "ba4904559bb6",
+    "tool_name": "unapprove_pr",
+    "unit_id": "mcp:unapprove_pr:ba4904559bb6"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1683,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.update_group_permission",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1683,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.update_group_permission",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1667,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "group_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "permission"
+     }
+    ],
+    "qualname": "update_group_permission",
+    "relpath": "python/src/server.py",
+    "schema_hash": "11b006155329",
+    "tool_name": "update_group_permission",
+    "unit_id": "mcp:update_group_permission:11b006155329"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 606,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.update_pipeline_variable",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 606,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.update_pipeline_variable",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 590,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "variable_uuid"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "value"
+     }
+    ],
+    "qualname": "update_pipeline_variable",
+    "relpath": "python/src/server.py",
+    "schema_hash": "8fa0a1ddd6e4",
+    "tool_name": "update_pipeline_variable",
+    "unit_id": "mcp:update_pipeline_variable:8fa0a1ddd6e4"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 703,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.update_repository",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 703,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.update_repository",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 680,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "project_key"
+     },
+     {
+      "annotation": "Optional[bool]",
+      "default": "None",
+      "index": 2,
+      "name": "is_private"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 3,
+      "name": "description"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 4,
+      "name": "name"
+     }
+    ],
+    "qualname": "update_repository",
+    "relpath": "python/src/server.py",
+    "schema_hash": "b8be1977fbe9",
+    "tool_name": "update_repository",
+    "unit_id": "mcp:update_repository:b8be1977fbe9"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 1595,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.update_user_permission",
+      "BitbucketClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 1595,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 160,
+     "relpath": "python/src/bitbucket_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BitbucketClient.update_user_permission",
+      "BitbucketClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1579,
+    "module": "python.src.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo_slug"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "selected_user"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "permission"
+     }
+    ],
+    "qualname": "update_user_permission",
+    "relpath": "python/src/server.py",
+    "schema_hash": "f6ef8ccbb8fa",
+    "tool_name": "update_user_permission",
+    "unit_id": "mcp:update_user_permission:f6ef8ccbb8fa"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

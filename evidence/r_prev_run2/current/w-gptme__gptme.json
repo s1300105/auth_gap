@@ -1,0 +1,993 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": false,
+  "deny": [
+   "d1",
+   "d2",
+   "disabled",
+   "disabled-hook",
+   "my-hook",
+   "server2",
+   "test-server",
+   "test-stdio-server"
+  ],
+  "excluded_files": [],
+  "source": "in_tree_exposure"
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 69,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "gptme/cli/onboard.py",
+   "resolution": "opaque",
+   "selector": "provider",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "list_available_providers",
+    "logger.warning"
+   ],
+   "form": "if_chain",
+   "lineno": 108,
+   "opaque_reason": null,
+   "relpath": "gptme/cli/onboard.py",
+   "resolution": "resolved",
+   "selector": "provider",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 118,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "gptme/cli/onboard.py",
+   "resolution": "opaque",
+   "selector": "provider",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "cast",
+    "get_recommended_model"
+   ],
+   "form": "if_chain",
+   "lineno": 181,
+   "opaque_reason": null,
+   "relpath": "gptme/cli/onboard.py",
+   "resolution": "resolved",
+   "selector": "provider",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "cast",
+    "console.print",
+    "get_recommended_model"
+   ],
+   "form": "if_chain",
+   "lineno": 208,
+   "opaque_reason": null,
+   "relpath": "gptme/cli/onboard.py",
+   "resolution": "resolved",
+   "selector": "provider",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "choice.lower"
+   ],
+   "form": "if_chain",
+   "lineno": 236,
+   "opaque_reason": null,
+   "relpath": "gptme/cli/onboard.py",
+   "resolution": "resolved",
+   "selector": "choice.lower()",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "cast",
+    "get_recommended_model"
+   ],
+   "form": "if_chain",
+   "lineno": 249,
+   "opaque_reason": null,
+   "relpath": "gptme/cli/onboard.py",
+   "resolution": "resolved",
+   "selector": "provider",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 370,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "gptme/cli/setup.py",
+   "resolution": "opaque",
+   "selector": "provider",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 372,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "gptme/cli/setup.py",
+   "resolution": "opaque",
+   "selector": "provider",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "api_table.add_row"
+   ],
+   "form": "if_chain",
+   "lineno": 375,
+   "opaque_reason": null,
+   "relpath": "gptme/cli/setup.py",
+   "resolution": "resolved",
+   "selector": "provider",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 108,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "gptme/commands/account.py",
+   "resolution": "opaque",
+   "selector": "choice",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 278,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "gptme/hooks/__init__.py",
+   "resolution": "opaque",
+   "selector": "hook_name",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 104,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "gptme/llm/llm_anthropic.py",
+   "resolution": "opaque",
+   "selector": "messages[i]['role']",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "parsed_block.append"
+   ],
+   "form": "if_chain",
+   "lineno": 838,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_anthropic.py",
+   "resolution": "resolved",
+   "selector": "block.type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "parsed_block.append"
+   ],
+   "form": "if_chain",
+   "lineno": 840,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_anthropic.py",
+   "resolution": "resolved",
+   "selector": "block.type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "parsed_block.append"
+   ],
+   "form": "if_chain",
+   "lineno": 846,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_anthropic.py",
+   "resolution": "resolved",
+   "selector": "block.type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "cast",
+    "isinstance",
+    "logger.warning"
+   ],
+   "form": "match",
+   "lineno": 936,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_anthropic.py",
+   "resolution": "resolved",
+   "selector": "chunk.type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "cast",
+    "hasattr",
+    "isinstance",
+    "logger.warning"
+   ],
+   "form": "match",
+   "lineno": 953,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_anthropic.py",
+   "resolution": "resolved",
+   "selector": "chunk.type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "cast",
+    "getattr",
+    "isinstance",
+    "logger.warning"
+   ],
+   "form": "match",
+   "lineno": 978,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_anthropic.py",
+   "resolution": "resolved",
+   "selector": "chunk.type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "match",
+   "lineno": 998,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "gptme/llm/llm_anthropic.py",
+   "resolution": "opaque",
+   "selector": "chunk.type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "_partial_stream_metadata",
+    "cast"
+   ],
+   "form": "match",
+   "lineno": 1001,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_anthropic.py",
+   "resolution": "resolved",
+   "selector": "chunk.type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "_record_usage",
+    "cast"
+   ],
+   "form": "match",
+   "lineno": 1017,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_anthropic.py",
+   "resolution": "resolved",
+   "selector": "chunk.type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "match",
+   "lineno": 1022,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "gptme/llm/llm_anthropic.py",
+   "resolution": "opaque",
+   "selector": "chunk.type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "_extract_thinking_content",
+    "dict",
+    "extract_tool_uses_from_assistant_message",
+    "final_content.append",
+    "final_content.extend",
+    "isinstance",
+    "logger.debug",
+    "part.strip"
+   ],
+   "form": "if_chain",
+   "lineno": 1111,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_anthropic.py",
+   "resolution": "resolved",
+   "selector": "message['role']",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "Message"
+   ],
+   "form": "if_chain",
+   "lineno": 1290,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_anthropic.py",
+   "resolution": "resolved",
+   "selector": "message.role",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "cast",
+    "isinstance",
+    "item.get"
+   ],
+   "form": "if_chain",
+   "lineno": 1461,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_anthropic.py",
+   "resolution": "resolved",
+   "selector": "msg['role']",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "filtered_parts.append",
+    "isinstance",
+    "part.get",
+    "text_content.strip"
+   ],
+   "form": "if_chain",
+   "lineno": 1470,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_anthropic.py",
+   "resolution": "resolved",
+   "selector": "part.get('type')",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "getattr",
+   "lineno": 92,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "gptme/llm/llm_openai.py",
+   "resolution": "opaque",
+   "selector": "self._cls_name",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [
+    "last_message.concat"
+   ],
+   "form": "if_chain",
+   "lineno": 763,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_openai.py",
+   "resolution": "resolved",
+   "selector": "last_message.role",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "_extract_responses_reasoning",
+    "logger.debug",
+    "result.append"
+   ],
+   "form": "if_chain",
+   "lineno": 1140,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_openai.py",
+   "resolution": "resolved",
+   "selector": "item_type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "_obj_get",
+    "result.append"
+   ],
+   "form": "if_chain",
+   "lineno": 1144,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_openai.py",
+   "resolution": "resolved",
+   "selector": "item_type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "_obj_get",
+    "result.append"
+   ],
+   "form": "if_chain",
+   "lineno": 1149,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_openai.py",
+   "resolution": "resolved",
+   "selector": "item_type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "_obj_get",
+    "result.append"
+   ],
+   "form": "if_chain",
+   "lineno": 1152,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_openai.py",
+   "resolution": "resolved",
+   "selector": "part_type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "_obj_get",
+    "result.append"
+   ],
+   "form": "if_chain",
+   "lineno": 1154,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_openai.py",
+   "resolution": "resolved",
+   "selector": "part_type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "isinstance",
+    "result.append",
+    "tool_call.function.name.strip",
+    "tool_call.id.strip"
+   ],
+   "form": "if_chain",
+   "lineno": 1232,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_openai.py",
+   "resolution": "resolved",
+   "selector": "choice.finish_reason",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "followup_content.append",
+    "isinstance",
+    "msg.get",
+    "msg.pop",
+    "process_image_file"
+   ],
+   "form": "if_chain",
+   "lineno": 2030,
+   "opaque_reason": null,
+   "relpath": "gptme/llm/llm_openai.py",
+   "resolution": "resolved",
+   "selector": "'call_id'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 205,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "gptme/tools/autocompact/context_provider.py",
+   "resolution": "opaque",
+   "selector": "name",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 811,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "gptme/tools/computer_transport.py",
+   "resolution": "opaque",
+   "selector": "current",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 507,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "scripts/generate_sounds.py",
+   "resolution": "opaque",
+   "selector": "args.sound",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "getattr",
+   "lineno": 150,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_agent_service_timeouts.py",
+   "resolution": "opaque",
+   "selector": "method",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 140,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_commands.py",
+   "resolution": "opaque",
+   "selector": "'testcmd'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 154,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_commands.py",
+   "resolution": "opaque",
+   "selector": "'testcmd'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 166,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_commands.py",
+   "resolution": "opaque",
+   "selector": "'testcmd'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 1476,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_eval_behavioral_solutions.py",
+   "resolution": "opaque",
+   "selector": "'conventional commit message'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 1477,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_eval_behavioral_solutions.py",
+   "resolution": "opaque",
+   "selector": "'config.py not committed'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 1478,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_eval_behavioral_solutions.py",
+   "resolution": "opaque",
+   "selector": "'tests pass'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "getattr",
+   "lineno": 163,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_knowledge.py",
+   "resolution": "opaque",
+   "selector": "delete_func",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 197,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_mcp_server.py",
+   "resolution": "opaque",
+   "selector": "types.ListToolsRequest",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 219,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_mcp_server.py",
+   "resolution": "opaque",
+   "selector": "types.ListToolsRequest",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 235,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_mcp_server.py",
+   "resolution": "opaque",
+   "selector": "types.CallToolRequest",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 274,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_mcp_server.py",
+   "resolution": "opaque",
+   "selector": "types.CallToolRequest",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 325,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_mcp_server.py",
+   "resolution": "opaque",
+   "selector": "types.CallToolRequest",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 326,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_mcp_server.py",
+   "resolution": "opaque",
+   "selector": "types.CallToolRequest",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 366,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_mcp_server.py",
+   "resolution": "opaque",
+   "selector": "types.CallToolRequest",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 410,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_mcp_server.py",
+   "resolution": "opaque",
+   "selector": "types.CallToolRequest",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 443,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_mcp_server.py",
+   "resolution": "opaque",
+   "selector": "types.CallToolRequest",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 496,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_mcp_server.py",
+   "resolution": "opaque",
+   "selector": "types.CallToolRequest",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "getattr",
+   "lineno": 430,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_memory_index_policy.py",
+   "resolution": "opaque",
+   "selector": "operation",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "getattr",
+   "lineno": 430,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_memory_index_policy.py",
+   "resolution": "opaque",
+   "selector": "operation",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 67,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_server_v2_tool_confirmation.py",
+   "resolution": "opaque",
+   "selector": "'get_tool_id'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 187,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_server_v2_tool_confirmation.py",
+   "resolution": "opaque",
+   "selector": "'get_tool_id'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 175,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_skill_commands.py",
+   "resolution": "opaque",
+   "selector": "'skill:demo'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 300,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_skill_commands.py",
+   "resolution": "opaque",
+   "selector": "'skill:demo'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 319,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_skill_commands.py",
+   "resolution": "opaque",
+   "selector": "'skill:demo'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 361,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_skill_commands.py",
+   "resolution": "opaque",
+   "selector": "'skill:demo'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 375,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_skill_commands.py",
+   "resolution": "opaque",
+   "selector": "'skill:demo'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 457,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_skill_commands.py",
+   "resolution": "opaque",
+   "selector": "'skill:demo'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 463,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_skill_commands.py",
+   "resolution": "opaque",
+   "selector": "'skill:skill:demo'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "getattr",
+   "lineno": 796,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_tools.py",
+   "resolution": "opaque",
+   "selector": "lambda : True",
+   "selector_is_model": false
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "app",
+ "schema": "authgap/v1",
+ "truncations": [
+  {
+   "cap": "ast_node_cap",
+   "count": 20973,
+   "relpath": "tests/test_server_v2.py"
+  },
+  {
+   "cap": "ast_node_cap",
+   "count": 31385,
+   "relpath": "tests/test_subagent_unit.py"
+  }
+ ],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "tools_list",
+    "framework": "tools-list",
+    "is_async": false,
+    "lineno": 73,
+    "module": "gptme.cli.cmd_chats",
+    "params": [],
+    "qualname": "chats",
+    "relpath": "gptme/cli/cmd_chats.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "chats",
+    "unit_id": "tools-list:chats:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "lowlevel_v1_decorator",
+    "pin": {
+     "name": "mcp",
+     "source": "poetry.lock",
+     "spec": null,
+     "status": "lockfile",
+     "version": "1.28.1"
+    },
+    "reason": "版 1.28.1 は [1.10, 2.0) にある",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "lowlevel_v1",
+    "framework": "mcp-lowlevel-v1",
+    "is_async": true,
+    "lineno": 161,
+    "module": "gptme.mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "name"
+     },
+     {
+      "annotation": "dict",
+      "index": 1,
+      "name": "arguments"
+     }
+    ],
+    "qualname": "GptmeMCPServer._setup_handlers.handle_call_tool",
+    "relpath": "gptme/mcp/server.py",
+    "schema_hash": "965af40077db",
+    "tool_name": null,
+    "unit_id": "mcp-lowlevel-v1:GptmeMCPServer._setup_handlers.handle_call_tool:965af40077db"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "tools_list",
+    "framework": "tools-list",
+    "is_async": false,
+    "lineno": 428,
+    "module": "tests.test_memory_index_policy",
+    "params": [],
+    "qualname": "test_managed_reader_waits_for_supersede_transaction.read",
+    "relpath": "tests/test_memory_index_policy.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "read",
+    "unit_id": "tools-list:test_managed_reader_waits_for_supersede_transaction.read:d36d5fd42096"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

@@ -1,0 +1,407 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 363,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "backend/algorithm/settings_store.py",
+   "resolution": "opaque",
+   "selector": "name",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 13,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_pipeline_api_progress.py",
+   "resolution": "opaque",
+   "selector": "'progress_callback'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 13,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_pipeline_api_progress.py",
+   "resolution": "opaque",
+   "selector": "'progress_callback'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 14,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_pipeline_api_progress.py",
+   "resolution": "opaque",
+   "selector": "'media_ready_callback'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 14,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_pipeline_api_progress.py",
+   "resolution": "opaque",
+   "selector": "'media_ready_callback'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 15,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_pipeline_api_progress.py",
+   "resolution": "opaque",
+   "selector": "'progress_callback'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 15,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_pipeline_api_progress.py",
+   "resolution": "opaque",
+   "selector": "'progress_callback'",
+   "selector_is_model": false
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "target_dir",
+     "site": "mcp_server/videodevour_library_mcp.py:L130",
+     "transform": "Path()"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 118,
+    "module": "mcp_server.videodevour_library_mcp",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "doc_id"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "scope"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 2,
+      "name": "target_dir"
+     }
+    ],
+    "qualname": "export_article",
+    "relpath": "mcp_server/videodevour_library_mcp.py",
+    "schema_hash": "4f4728b44bed",
+    "tool_name": "export_article",
+    "unit_id": "mcp:export_article:4f4728b44bed"
+   },
+   "validator_shapes": [
+    "ctor_path"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "target_dir",
+     "site": "mcp_server/videodevour_library_mcp.py:L145",
+     "transform": "Path()"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 138,
+    "module": "mcp_server.videodevour_library_mcp",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 0,
+      "name": "target_dir"
+     }
+    ],
+    "qualname": "export_library",
+    "relpath": "mcp_server/videodevour_library_mcp.py",
+    "schema_hash": "afb9c88cb652",
+    "tool_name": "export_library",
+    "unit_id": "mcp:export_library:afb9c88cb652"
+   },
+   "validator_shapes": [
+    "ctor_path"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 83,
+    "module": "mcp_server.videodevour_library_mcp",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "doc_id"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "scope"
+     }
+    ],
+    "qualname": "get_article",
+    "relpath": "mcp_server/videodevour_library_mcp.py",
+    "schema_hash": "a4f02e3512ea",
+    "tool_name": "get_article",
+    "unit_id": "mcp:get_article:a4f02e3512ea"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 102,
+    "module": "mcp_server.videodevour_library_mcp",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "'all'",
+      "index": 0,
+      "name": "scope"
+     }
+    ],
+    "qualname": "list_library",
+    "relpath": "mcp_server/videodevour_library_mcp.py",
+    "schema_hash": "bf8b32f7d75c",
+    "tool_name": "list_library",
+    "unit_id": "mcp:list_library:bf8b32f7d75c"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 59,
+    "module": "mcp_server.videodevour_library_mcp",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "query"
+     },
+     {
+      "annotation": "str",
+      "default": "'all'",
+      "index": 1,
+      "name": "scope"
+     },
+     {
+      "annotation": "int",
+      "default": "5",
+      "index": 2,
+      "name": "top_k"
+     }
+    ],
+    "qualname": "search_library",
+    "relpath": "mcp_server/videodevour_library_mcp.py",
+    "schema_hash": "cf8aab7b249a",
+    "tool_name": "search_library",
+    "unit_id": "mcp:search_library:cf8aab7b249a"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

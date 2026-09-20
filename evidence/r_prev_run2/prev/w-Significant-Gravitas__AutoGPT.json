@@ -1,0 +1,1419 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 1595,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "autogpt_platform/backend/backend/api/features/chat/service.py",
+   "resolution": "opaque",
+   "selector": "tool_name",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 1597,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "autogpt_platform/backend/backend/api/features/chat/service.py",
+   "resolution": "opaque",
+   "selector": "tool_name",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "arguments.get",
+    "len"
+   ],
+   "form": "if_chain",
+   "lineno": 1617,
+   "opaque_reason": null,
+   "relpath": "autogpt_platform/backend/backend/api/features/chat/service.py",
+   "resolution": "resolved",
+   "selector": "tool_name",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "arguments.get",
+    "len"
+   ],
+   "form": "if_chain",
+   "lineno": 1632,
+   "opaque_reason": null,
+   "relpath": "autogpt_platform/backend/backend/api/features/chat/service.py",
+   "resolution": "resolved",
+   "selector": "tool_name",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 1672,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "autogpt_platform/backend/backend/api/features/store/db.py",
+   "resolution": "opaque",
+   "selector": "AgentApprovalData",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 1697,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "autogpt_platform/backend/backend/api/features/store/db.py",
+   "resolution": "opaque",
+   "selector": "AgentRejectionData",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 272,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "autogpt_platform/backend/backend/api/ws_api.py",
+   "resolution": "opaque",
+   "selector": "message.method",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 110,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "autogpt_platform/backend/backend/blocks/branching.py",
+   "resolution": "opaque",
+   "selector": "operator",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [
+    "ToolCall",
+    "ToolContentBlock",
+    "json.dumps",
+    "tool_calls.append"
+   ],
+   "form": "if_chain",
+   "lineno": 729,
+   "opaque_reason": null,
+   "relpath": "autogpt_platform/backend/backend/blocks/llm.py",
+   "resolution": "resolved",
+   "selector": "content_block.type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 191,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "autogpt_platform/backend/backend/blocks/perplexity.py",
+   "resolution": "opaque",
+   "selector": "'annotations'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 652,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "autogpt_platform/backend/backend/data/model.py",
+   "resolution": "opaque",
+   "selector": "(CP, CT)",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 908,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "autogpt_platform/backend/backend/executor/manager.py",
+   "resolution": "opaque",
+   "selector": "NodeExecutionEntry",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 36,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "autogpt_platform/backend/backend/integrations/webhooks/__init__.py",
+   "resolution": "opaque",
+   "selector": "provider_name",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 216,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "classic/forge/forge/components/code_executor/code_executor.py",
+   "resolution": "opaque",
+   "selector": "result.returncode",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 276,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "classic/forge/forge/components/web/selenium.py",
+   "resolution": "opaque",
+   "selector": "self.config.web_browser",
+   "selector_is_model": false
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "app",
+ "schema": "authgap/v1",
+ "truncations": [
+  {
+   "cap": "ast_node_cap",
+   "count": 24248,
+   "relpath": "autogpt_platform/backend/backend/blocks/google/sheets.py"
+  }
+ ],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "logger": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 155,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 209,
+     "relpath": "classic/forge/forge/components/code_executor/code_executor.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "python",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "python",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-B",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq",
+        "tail": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "formal": "args",
+          "k": "Atom"
+         }
+        }
+       }
+      },
+      "cwd": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "CodeExecutorComponent.execute_python_file"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "recursion",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": true,
+    "lineno": 131,
+    "module": "classic.forge.forge.components.code_executor.code_executor",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "code"
+     }
+    ],
+    "qualname": "CodeExecutorComponent.execute_python_code",
+    "relpath": "classic/forge/forge/components/code_executor/code_executor.py",
+    "schema_hash": "86e1f5bf4d97",
+    "tool_name": "execute_python_code",
+    "unit_id": "autogpt:CodeExecutorComponent.execute_python_code:86e1f5bf4d97"
+   },
+   "validator_shapes": [
+    "exists"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "logger": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 209,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 209,
+     "relpath": "classic/forge/forge/components/code_executor/code_executor.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "shape_from": {
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "python",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "MODEL",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "roots": [
+        "args"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "python",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-B",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq",
+        "tail": {
+         "prin": "MODEL",
+         "prov": "resolved",
+         "roots": [
+          "args"
+         ],
+         "shape": {
+          "formal": "args",
+          "k": "Atom"
+         }
+        }
+       }
+      },
+      "cwd": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV"
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "recursion",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 179,
+    "module": "classic.forge.forge.components.code_executor.code_executor",
+    "params": [
+     {
+      "annotation": "str | Path",
+      "index": 1,
+      "name": "filename"
+     },
+     {
+      "annotation": "list[str]",
+      "default": "[]",
+      "index": 2,
+      "name": "args"
+     }
+    ],
+    "qualname": "CodeExecutorComponent.execute_python_file",
+    "relpath": "classic/forge/forge/components/code_executor/code_executor.py",
+    "schema_hash": "51c5eca392ec",
+    "tool_name": "execute_python_file",
+    "unit_id": "autogpt:CodeExecutorComponent.execute_python_file:51c5eca392ec"
+   },
+   "validator_shapes": [
+    "containment",
+    "exists"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "command_line",
+     "site": "classic/forge/forge/components/code_executor/code_executor.py:L241",
+     "transform": "shlex.split"
+    },
+    {
+     "root": "command_line",
+     "site": "classic/forge/forge/components/code_executor/code_executor.py:L285",
+     "transform": "shlex.split"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 284,
+     "exec_mode": {
+      "shell": {
+       "prin": "OP",
+       "source": "config-conditional",
+       "value": {
+        "prin": "OP",
+        "prov": "resolved",
+        "shape": {
+         "k": "Atom"
+        }
+       }
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 284,
+     "relpath": "classic/forge/forge/components/code_executor/code_executor.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "shell_string": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "shell_string": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "command_line"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV"
+    },
+    {
+     "entry_lineno": 284,
+     "exec_mode": {
+      "shell": {
+       "prin": "OP",
+       "source": "config-conditional",
+       "value": {
+        "prin": "OP",
+        "prov": "resolved",
+        "shape": {
+         "k": "Atom"
+        }
+       }
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 284,
+     "relpath": "classic/forge/forge/components/code_executor/code_executor.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "argv0": "annotation",
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "command_line"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "argv[*]": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "command_line"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV"
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "recursion",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 261,
+    "module": "classic.forge.forge.components.code_executor.code_executor",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "command_line"
+     }
+    ],
+    "qualname": "CodeExecutorComponent.execute_shell",
+    "relpath": "classic/forge/forge/components/code_executor/code_executor.py",
+    "schema_hash": "eb546e55bc10",
+    "tool_name": "execute_shell",
+    "unit_id": "autogpt:CodeExecutorComponent.execute_shell:eb546e55bc10"
+   },
+   "validator_shapes": [
+    "containment",
+    "shlex_split",
+    "split"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "command_line",
+     "site": "classic/forge/forge/components/code_executor/code_executor.py:L241",
+     "transform": "shlex.split"
+    },
+    {
+     "root": "command_line",
+     "site": "classic/forge/forge/components/code_executor/code_executor.py:L333",
+     "transform": "shlex.split"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 332,
+     "exec_mode": {
+      "shell": {
+       "prin": "OP",
+       "source": "config-conditional",
+       "value": {
+        "prin": "OP",
+        "prov": "resolved",
+        "shape": {
+         "k": "Atom"
+        }
+       }
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 332,
+     "relpath": "classic/forge/forge/components/code_executor/code_executor.py",
+     "required_by": [
+      "F6"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "shell_string": "annotation"
+     },
+     "site": "subprocess.Popen",
+     "slots": {
+      "shell_string": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "command_line"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV"
+    },
+    {
+     "entry_lineno": 332,
+     "exec_mode": {
+      "shell": {
+       "prin": "OP",
+       "source": "config-conditional",
+       "value": {
+        "prin": "OP",
+        "prov": "resolved",
+        "shape": {
+         "k": "Atom"
+        }
+       }
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 332,
+     "relpath": "classic/forge/forge/components/code_executor/code_executor.py",
+     "required_by": [
+      "F6"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "argv0": "annotation",
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.Popen",
+     "slots": {
+      "argv0": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "command_line"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "argv[*]": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "command_line"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV"
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "recursion",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 307,
+    "module": "classic.forge.forge.components.code_executor.code_executor",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "command_line"
+     }
+    ],
+    "qualname": "CodeExecutorComponent.execute_shell_popen",
+    "relpath": "classic/forge/forge/components/code_executor/code_executor.py",
+    "schema_hash": "eb546e55bc10",
+    "tool_name": "execute_shell_popen",
+    "unit_id": "autogpt:CodeExecutorComponent.execute_shell_popen:eb546e55bc10"
+   },
+   "validator_shapes": [
+    "containment",
+    "shlex_split",
+    "split"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "filename",
+     "site": "classic/forge/forge/components/file_manager/file_manager.py:L163",
+     "transform": "dirname"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": true,
+    "lineno": 153,
+    "module": "classic.forge.forge.components.file_manager.file_manager",
+    "params": [
+     {
+      "annotation": "str | Path",
+      "index": 1,
+      "name": "filename"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "contents"
+     }
+    ],
+    "qualname": "FileManagerComponent.write_to_file",
+    "relpath": "classic/forge/forge/components/file_manager/file_manager.py",
+    "schema_hash": "a9c367ddb955",
+    "tool_name": "write_file",
+    "unit_id": "autogpt:FileManagerComponent.write_to_file:a9c367ddb955"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 75,
+    "module": "classic.forge.forge.components.system.system",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "reason"
+     }
+    ],
+    "qualname": "SystemComponent.finish",
+    "relpath": "classic/forge/forge/components/system/system.py",
+    "schema_hash": "10683236048d",
+    "tool_name": "finish",
+    "unit_id": "autogpt:SystemComponent.finish:10683236048d"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 27,
+    "module": "classic.forge.forge.components.user_interaction.user_interaction",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "question"
+     }
+    ],
+    "qualname": "UserInteractionComponent.ask_user",
+    "relpath": "classic/forge/forge/components/user_interaction/user_interaction.py",
+    "schema_hash": "10c226c89cd2",
+    "tool_name": "ask_user",
+    "unit_id": "autogpt:UserInteractionComponent.ask_user:10c226c89cd2"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "recursion",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 138,
+    "module": "classic.forge.forge.components.web.search",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "query"
+     },
+     {
+      "annotation": "int",
+      "default": "8",
+      "index": 2,
+      "name": "num_results"
+     }
+    ],
+    "qualname": "WebSearchComponent.google",
+    "relpath": "classic/forge/forge/components/web/search.py",
+    "schema_hash": "d0292543a1e8",
+    "tool_name": "google",
+    "unit_id": "autogpt:WebSearchComponent.google:d0292543a1e8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "query",
+     "site": "classic/forge/forge/components/web/search.py:L91",
+     "transform": "json.dumps"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 76,
+    "module": "classic.forge.forge.components.web.search",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "query"
+     },
+     {
+      "annotation": "int",
+      "default": "8",
+      "index": 2,
+      "name": "num_results"
+     }
+    ],
+    "qualname": "WebSearchComponent.web_search",
+    "relpath": "classic/forge/forge/components/web/search.py",
+    "schema_hash": "d0292543a1e8",
+    "tool_name": "web_search",
+    "unit_id": "autogpt:WebSearchComponent.web_search:d0292543a1e8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "BrowserOptions": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 157,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 356,
+     "relpath": "classic/forge/forge/components/web/selenium.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlretrieve",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "clients2.google.com",
+        "k": "Atom"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/service/update2/crx?response=redirect&prodversion=99.0&acceptformat=crx3&x=id%3D",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "https",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "WebSeleniumComponent.open_page_in_browser",
+      "WebSeleniumComponent._sideload_chrome_extensions"
+     ]
+    },
+    {
+     "entry_lineno": 157,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 356,
+     "relpath": "classic/forge/forge/components/web/selenium.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlretrieve",
+     "slots": {
+      "content": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "https://clients2.google.com/service/update2/crx?response=redirect&prodversion=99.0&acceptformat=crx3&x=id%3D",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      },
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "WebSeleniumComponent.open_page_in_browser",
+      "WebSeleniumComponent._sideload_chrome_extensions"
+     ]
+    },
+    {
+     "entry_lineno": 157,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 356,
+     "relpath": "classic/forge/forge/components/web/selenium.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlretrieve",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "clients2.google.com",
+        "k": "Atom"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/service/update2/crx?response=redirect&prodversion=99.0&acceptformat=crx3&x=id%3D",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "https",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "WebSeleniumComponent.open_page_in_browser",
+      "WebSeleniumComponent._sideload_chrome_extensions"
+     ]
+    },
+    {
+     "entry_lineno": 157,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 356,
+     "relpath": "classic/forge/forge/components/web/selenium.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlretrieve",
+     "slots": {
+      "content": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "https://clients2.google.com/service/update2/crx?response=redirect&prodversion=99.0&acceptformat=crx3&x=id%3D",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      },
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "WebSeleniumComponent.open_page_in_browser",
+      "WebSeleniumComponent._sideload_chrome_extensions"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "recursion",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": true,
+    "lineno": 138,
+    "module": "classic.forge.forge.components.web.selenium",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "url"
+     },
+     {
+      "annotation": "list[str]",
+      "default": "[]",
+      "index": 2,
+      "name": "topics_of_interest"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "get_raw_content"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 4,
+      "name": "question"
+     }
+    ],
+    "qualname": "WebSeleniumComponent.read_webpage",
+    "relpath": "classic/forge/forge/components/web/selenium.py",
+    "schema_hash": "3658c3e6c3fd",
+    "tool_name": "read_webpage",
+    "unit_id": "autogpt:WebSeleniumComponent.read_webpage:3658c3e6c3fd"
+   },
+   "validator_shapes": [
+    "split"
+   ]
+  }
+ ]
+}

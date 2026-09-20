@@ -297,3 +297,44 @@ def test_r_prev_uses_the_preregistered_denominator(new_root, prev_manifest):
     assert st.n_dangerous_with_prev_available == 3
     assert st.r_prev == pytest.approx(2 / 3)
     assert st.n_trees_with_prev == 1
+
+
+def test_probe_mode_sets_d_prev_joined(tmp_path):
+    """probe 経路（full=False）でも `--prev-manifest` の join が `d_prev_joined` に立つ。
+
+    D22 の配線後も runner の probe 経路は prev を読まず、`scripts/r_prev.py` の run1 で
+    木ごとの join が全木 0 と表示された（集計は unit id 一致で数えていたので正しかった）。
+    黙って無視される形だったので回帰として固定する（D27）。
+    """
+    import json as _json
+    import textwrap as _tw
+
+    from authgap.report import manifest_json
+    from authgap.runner import RunConfig, run
+
+    src = _tw.dedent('''
+        from mcp.server.fastmcp import FastMCP
+        mcp = FastMCP("t")
+
+        @mcp.tool()
+        def read(path: str) -> str:
+            with open(path) as f:
+                return f.read()
+    ''')
+    prev_dir = tmp_path / "prev"
+    prev_dir.mkdir()
+    (prev_dir / "server.py").write_text(src, encoding="utf-8")
+    cur_dir = tmp_path / "cur"
+    cur_dir.mkdir()
+    (cur_dir / "server.py").write_text(src, encoding="utf-8")
+
+    prev_res = run(RunConfig(src_root=str(prev_dir), population="mcp_server", full=False))
+    man = tmp_path / "prev.json"
+    man.write_text(_json.dumps(manifest_json(prev_res, run_id="t", volatile=False)), encoding="utf-8")
+
+    cur = run(RunConfig(src_root=str(cur_dir), population="mcp_server", full=False, prev_manifest=str(man)))
+    assert cur.tree.units, "ユニットが無い"
+    assert all(u.d_prev_joined for u in cur.tree.units), [u.unit.unit_id for u in cur.tree.units]
+    # 前リリースを渡さなければ立たない。
+    cur2 = run(RunConfig(src_root=str(cur_dir), population="mcp_server", full=False))
+    assert not any(u.d_prev_joined for u in cur2.tree.units)
