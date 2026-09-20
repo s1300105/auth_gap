@@ -1,0 +1,80 @@
+{
+ "_note": "docs/cve_triage.csv の expected_tuple_change（日本語の散文）を機械可読に転記したもの。**意味は変えていない。** 仕様書 §7.2 A3 が成果物として挙げる docs/expected_tuples.md に相当する。scripts/two_sided.py の pass_preregistered はこの表と照合する。**期待値なので採点器より先にコミットする**（CLAUDE.md 規則 5）。転記元の散文は各対の source に残す。",
+ "_semantics": {
+  "pass_preregistered": "changes のすべてについて、条件に合うサイトが min_sites 件以上あり、各サイトで coord の値が脆弱側 from → 修正側 to に**この向きで**変わっていること。逆向き（修正側→脆弱側）は定義上通らない。unchanged は両側で同じ値であること。",
+  "site": "'KIND@site#slot' の前方一致。省略可。",
+  "slot": "制御位置の名前。省略可。",
+  "path": "経路ラベル（呼び出し連鎖）に含まれる文字列。省略可。",
+  "coord": "kind / principal / grade / weak_reason / req_occ / req_val / exec_mode / dispatch_resolution / presence。presence の値は present / absent。",
+  "from_to": "null は「等級なし」（tuple_view の None）。"
+ },
+ "pairs": {
+  "A1": {
+   "vuln": "A1__vuln", "fixed": "A1__fixed", "population": "mcp_server",
+   "source": "cwd: grade none -> strong-path; req_val MODEL -> OP（8 経路）",
+   "changes": [
+    {"slot": "cwd", "coord": "grade", "from": null, "to": "strong-path", "min_sites": 8},
+    {"slot": "cwd", "coord": "req_val", "from": "MODEL", "to": "OP", "min_sites": 8}
+   ]
+  },
+  "A2": {
+   "vuln": "A2__vuln", "fixed": "A2__fixed", "population": "mcp_server",
+   "source": "argv[*]: grade none -> strong-token; req_val MODEL -> OP（git_checkout と git_diff の 2 経路）",
+   "changes": [
+    {"slot": "argv[*]", "path": "git_checkout", "coord": "grade", "from": null, "to": "strong-token", "min_sites": 1},
+    {"slot": "argv[*]", "path": "git_diff", "coord": "grade", "from": null, "to": "strong-token", "min_sites": 1},
+    {"slot": "argv[*]", "coord": "req_val", "from": "MODEL", "to": "OP", "min_sites": 2}
+   ]
+  },
+  "A3": {
+   "vuln": "A3__vuln", "fixed": "A3__fixed", "population": "mcp_server",
+   "source": "FS_WRITE@git.IndexFile.add#path が消え、SPAWN@git.Git.add#argv[*] の主体が OP -> MODEL に変わる",
+   "changes": [
+    {"site": "FS_WRITE@git.IndexFile.add#path", "coord": "presence", "from": "present", "to": "absent", "min_sites": 1},
+    {"site": "SPAWN@git.Git.add#argv[*]", "coord": "principal", "from": "OP", "to": "MODEL", "min_sites": 1}
+   ]
+  },
+  "A4": {
+   "vuln": "A4__vuln", "fixed": "A4__fixed", "population": "mcp_server",
+   "source": "argv[*] [git_add]: 検証なし -> strong-path、req_val MODEL -> OP",
+   "changes": [
+    {"slot": "argv[*]", "path": "git_add", "coord": "grade", "from": null, "to": "strong-path", "min_sites": 1},
+    {"slot": "argv[*]", "path": "git_add", "coord": "req_val", "from": "MODEL", "to": "OP", "min_sites": 1}
+   ]
+  },
+  "A5": {
+   "vuln": "A5__vuln", "fixed": "A5__fixed", "population": "app",
+   "source": "shell_string: exec_mode True -> config-conditional。argv0 と argv[*] の行が増える。weak 理由は両側とも first_token",
+   "changes": [
+    {"slot": "shell_string", "coord": "exec_mode", "from": true, "to": "config-conditional", "min_sites": 1},
+    {"slot": "argv0", "coord": "presence", "from": "absent", "to": "present", "min_sites": 1},
+    {"slot": "argv[*]", "coord": "presence", "from": "absent", "to": "present", "min_sites": 1}
+   ],
+   "unchanged": [
+    {"slot": "shell_string", "coord": "weak_reason", "value": "first_token", "min_sites": 1}
+   ]
+  },
+  "A9": {
+   "vuln": "A9__vuln", "fixed": "A9__fixed", "population": "tool_package",
+   "source": "req_occ(SPAWN@subprocess.run#argv[*]) MODEL -> USER",
+   "changes": [
+    {"site": "SPAWN@subprocess.run#argv[*]", "coord": "req_occ", "from": "MODEL", "to": "USER", "min_sites": 1}
+   ]
+  },
+  "A10": {
+   "vuln": "A9__vuln", "fixed": "A9__fixed", "population": "tool_package",
+   "source": "path: weak(no_symlink_resolution) -> strong-path、req_val MODEL -> OP（A9 と同一の修正コミット。corpus は A9 を共有）",
+   "changes": [
+    {"slot": "path", "coord": "grade", "from": "weak", "to": "strong-path", "min_sites": 1},
+    {"slot": "path", "coord": "req_val", "from": "MODEL", "to": "OP", "min_sites": 1}
+   ]
+  },
+  "A18": {
+   "vuln": "A18__vuln", "fixed": "A18__fixed", "population": "tool_package",
+   "source": "sql: grade None -> unknown（sqlglot 文型 allowlist）",
+   "changes": [
+    {"slot": "sql", "coord": "grade", "from": null, "to": "unknown", "min_sites": 1}
+   ]
+  }
+ }
+}

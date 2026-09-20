@@ -301,3 +301,81 @@ def test_helper_strong_stays_strong(units):
     assert grade == "strong-path", f"c2: grade={grade!r} weak_reason={weak_reason!r}"
     assert units["c2_helper_strong"].req_val.get(SLOT) is Req.OP
     assert _verdicts(units, "c2_helper_strong") == set()
+
+
+# --------------------------------------------------------------------------
+# D. 等級潰し腕 C0（`docs/preregistration.md` §5 #2 の判別実験 (b)）
+#
+# **期待は判別実験の判定規則（prereg §5 #2）から書き、実装より先にコミットする。**
+#
+# C0 = 「位置をゲートする値検証子（form=value の候補が主語一致で束縛され、
+# sink を支配している）があれば、**等級に関係なく** req_val = OP」。
+# 腕 A / B と同じく**同一の解析経路を通り、座標を 1 つ止めるだけ**である。
+# 別の実装を書いてはならない（analyze.py の ARMS の規則）。
+#
+# C − C0（C で GAP、C0 で clear になる位置）が「等級づけが verdict を動かした
+# 位置」である。この fixture 集合での事前登録した期待値は {b1, b2}:
+#   b1 helper が root だけ正規化（weak）… C: MODEL / C0: OP
+#   b2 join 後の正規化（weak）…………… C: MODEL / C0: OP
+# a1〜a3 / b3 / c2 は C でも strong なので差が出ず、c1 は検証子が無いので
+# C0 でも MODEL のまま。**b3 は O8 の限界で C でも strong なので C − C0 に入らない。**
+# --------------------------------------------------------------------------
+
+C0_DEFECT = pytest.mark.xfail(strict=True, reason="prereg §5 #2 (b): 腕 C0 は未実装（修正コミットでこの印を外す）")
+
+
+@pytest.fixture(scope="module")
+def units_c0(tmp_path_factory):
+    root = tmp_path_factory.mktemp("value_grade_c0")
+    (root / "server.py").write_text(textwrap.dedent(SOURCE), encoding="utf-8")
+    res = run(RunConfig(src_root=str(root), population="mcp_server", full=True, arm="C0"))
+    return {u.unit.tool_name: u for u in res.tree.units}
+
+
+#: (tool, C の req_val, C0 の req_val)。prereg §5 #2 (b) の期待値。
+C_VS_C0 = (
+    ("a1_inline_commonpath", Req.OP, Req.OP),
+    ("a2_inline_relative_to", Req.OP, Req.OP),
+    ("a3_inline_startswith_sep", Req.OP, Req.OP),
+    ("b1_helper_root_only", Req.MODEL, Req.OP),
+    ("b2_join_after_canon", Req.MODEL, Req.OP),
+    ("b3_canon_unused", Req.OP, Req.OP),
+    ("c1_no_validator", Req.MODEL, Req.MODEL),
+    ("c2_helper_strong", Req.OP, Req.OP),
+)
+
+
+@pytest.mark.parametrize("tool,req_c,req_c0", C_VS_C0)
+def test_precondition_arm_c_req_val(units, tool, req_c, req_c0):
+    """前提: 腕 C（完全版）の req_val が期待どおり（D21 の結果と一致）。"""
+    assert units[tool].req_val.get(SLOT) is req_c, f"{tool}: C の req_val={units[tool].req_val.get(SLOT)}"
+
+
+@C0_DEFECT
+@pytest.mark.parametrize("tool,req_c,req_c0", C_VS_C0)
+def test_arm_c0_collapses_grade(units_c0, tool, req_c, req_c0):
+    """腕 C0 では、束縛された値検証子があれば等級に関係なく req_val = OP。"""
+    assert units_c0[tool].req_val.get(SLOT) is req_c0, f"{tool}: C0 の req_val={units_c0[tool].req_val.get(SLOT)}"
+
+
+@C0_DEFECT
+def test_c_minus_c0_is_exactly_b1_b2(units, units_c0):
+    """C − C0 = {b1, b2}。**等級づけが verdict を動かした位置はこの 2 つだけ。**
+
+    これが空なら「等級づけは verdict に寄与していない」であり、
+    prereg §5 #2 の判定規則により等級づけを主張から降ろす。
+    """
+    diff = sorted(
+        t for t, _, _ in C_VS_C0
+        if units[t].req_val.get(SLOT) is Req.MODEL and units_c0[t].req_val.get(SLOT) is Req.OP
+    )
+    assert diff == ["b1_helper_root_only", "b2_join_after_canon"], diff
+
+
+@C0_DEFECT
+def test_arm_c0_is_a_known_arm():
+    """`ARMS` に C0 が入り、未知の腕は依然として例外になる。"""
+    from authgap.analyze import ARMS
+
+    assert "C0" in ARMS
+    assert set(ARMS) == {"A", "B", "C", "C0"}
