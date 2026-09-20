@@ -285,6 +285,119 @@ Def 6 の本文が「直前リリース」を第一の定義としており、�
 
 ---
 
+### 2.8 宣言 D の全数調査（**数える前に書く**。2026-09-20）
+
+**目的**: run6 の r_D = 0.0%（annotations 保有 1/2621）が「野外に宣言が無い」のか
+「D パーサが見落としている」のかを分ける。**r_D の定義（§10、Def 6）は変えない。**
+ここで数えるのは「宣言らしい文字列 / 構文の出現」であり、D_kind の値ではない。
+
+#### (a) 段 A: run6 の 98 木での全数調査（パーサの再現率）
+
+- **対象**: run6 と同じ 98 木・同じ commit（`evidence/f0a_run6/trees.jsonl` の
+  `commit_sha`）。取得は `scripts/fetch_corpus.fetch`（SHA 一致検証つき）。
+- **数える形（族ごとに別々に数え、合算しない）**:
+  1. `mcp_hint_key`: `readOnlyHint` / `destructiveHint` / `idempotentHint` /
+     `openWorldHint` のいずれかの語（文字列検索。JSON / dict / kwarg のどれでも）。
+  2. `mcp_ToolAnnotations`: `ToolAnnotations` の語。
+  3. `mcp_annotations_kwarg`（AST）: 呼び出しの keyword `annotations=` で、被呼び出し名の
+     末尾が `tool` / `Tool` / `add_tool` / `ToolDefinition` のもの（`annotations=None` も
+     数え、値の種類 = `ToolAnnotations` 呼び出し / dict / Name / None / その他 を記録）。
+  4. `openhands_ToolDefinition`: `ToolDefinition(` の語（OpenHands。R2 カタログ外）。
+  5. `agno_confirmation`: `requires_confirmation` / `external_execution` の語
+     （agno の承認宣言。D_kind ではないが「承認が要る」という開発者宣言）。
+  6. `openai_needs_approval`: `needs_approval` / `require_approval` の語。
+- **分母**: 木（98）、Python ファイル（parse できたもの）、および
+  `scripts/denominators.py: path_class` による **src / non-src（tests・examples・
+  vendored・docs）** の別。**同梱 SDK（`mcp` パッケージ自身の複製、`site-packages`、
+  `node_modules`、`.venv`）は non-src。**
+- **パーサとの突き合わせ**: 族 3 のヒットのうち、`entries.find_tool_literals` /
+  デコレータ読み取り（`entries.py:386`）が `annotations` として読んだ数
+  （run6 は 1）との差を、木ごとに **「パーサが読んだ / 読めなかった（形）/
+  R2 カタログ外の入口」** に分類する。
+- **判定規則（結果を見る前に書く）**:
+  - 族 1〜3 の src 側ヒットが **1 木でも**パーサ未読なら → パーサの再現率の欠陥として
+    D28 で直し、r_D を**同じ 98 木で**測り直す（run6 の公表値は据え置き、D20 と同じ）。
+  - src 側ヒットが 0（non-src のみ）なら → 「この枠（GitHub code search 由来の公開
+    Python MCP サーバ）の自前コードには宣言が無い」が立つ。r_D = 0.0% はパーサの
+    欠陥ではない。
+  - 族 4〜6 のヒットは R2 カタログ / Def 6 の外なので r_D を動かさない。件数を
+    「Def 6 が扱わない宣言」として記録し、Def 6 の拡張は別途判断（学生）。
+
+#### (b) 段 B: 生態系全体（標本の外。**枠が違うので r_D と比べない**）
+
+- GitHub code search（`docs/population.md` と同じ手段・同じ上限。1 クエリ最大
+  1000 件、`total_count` は下限としてのみ使う）で次を数え、取得日時を記録する:
+  - Python: `"readOnlyHint" language:Python`、`"ToolAnnotations" language:Python`、
+    `"destructiveHint" language:Python`、`"openWorldHint" language:Python`
+  - TypeScript / JavaScript: 同じ 4 語（宣言が **どの言語圏に**あるかを見る）
+  - 参照値: 枠のクエリ `"from mcp.server" language:Python` 等の件数（`population.md`）
+- **読み方（結果を見る前に書く）**: Python 側で宣言を含むファイル数が枠（2299 件）に
+  対して小さければ、「宣言との差」を主張できる母集団は Python 公開 MCP サーバの中に
+  **小さな部分母集団としてしか存在しない**。その部分母集団だけを標本にすることは
+  **母集団の定義の変更**であり、やるなら第 2 の枠として事前登録してから抽出する
+  （事後に絞ると事後選択）。TypeScript 側に多ければ、「宣言 vs 実効」の研究対象は
+  言語の選択で決まっていたことを本文に書く（本解析器は Python のみ）。
+
+#### (c) 数えた後にしてはいけないこと
+
+- 族の定義や分母を値を見てから変えない（変えるなら §5 に逸脱として記録）。
+- 段 B の件数を r_D の分子や分母に流用しない。
+- パーサ未読が見つかった場合、run6 の公表値を書き換えない（再測定を run として足す）。
+
+#### (d) 結果（2026-09-20。(a)(b) の規則は数えた後に変えていない）
+
+**段 A**（97/98 木。`w-archsec-emman__financial-orchestrator` は消滅、O9）
+`evidence/decl_census_run6/`（`scripts/declaration_census.py`）:
+
+| 族 | 総ヒット | src | src の木 | non-src | non-src の木 |
+|---|---|---|---|---|---|
+| `mcp_hint_key` | 389 | 169 | 5 | 220 | 12 |
+| `mcp_ToolAnnotations` | 229 | 76 | 4 | 153 | 8 |
+| `mcp_annotations_kwarg`（AST） | 46 | 12 | 3 | 34 | 7 |
+| `openhands_ToolDefinition` | 4 | 2 | 2 | 2 | 1 |
+| `agno_confirmation` | 47 | 43 | 3 | 4 | 1 |
+| `openai_needs_approval` | 127 | 55 | 5 | 72 | 10 |
+
+**判定規則の適用**: 族 1〜3 の src ヒットがある木 5、うちパーサ未読 5 → 規則どおり
+**`parser_recall_defect` が発火した。** ただし 5 木のヒットを目視で分類すると:
+
+| 木 | 中身 | 分類 |
+|---|---|---|
+| `w-OpenHands__agent-sdk` | `ToolDefinition(... annotations=ToolAnnotations(readOnlyHint=..., destructiveHint=...))` が `openhands-tools/*/definition.py` 15 ファイル + SDK 自身の `ToolAnnotations` モデル定義 | **本物の宣言だが R2 カタログ外の枠組み**（app 母集団） |
+| `w-mastermindx-market-intelligence__mastermind` | 低レベル `mcp_types.Tool(annotations=ToolAnnotations(...))` 4 サーバ。明示（`readOnlyHint=True`）は 1 リテラルで `name` が文字列リテラルでない | **O5**（低レベルハンドラと名前 join できない）+ 名前が非リテラル |
+| `w-ancientdev0x__nanodistill` | `types.Tool(annotations=<属性参照>)`、hint はレジストリのデータ構造にある | 間接形（データフローが要る） |
+| `w-Significant-Gravitas__AutoGPT` | `copilot/sdk/tool_adapter.py`（別 SDK へ変換するアダプタ） | 変換器（宣言の生成側ではない） |
+| `w-gptme__gptme` | `mcp_adapter.py` / `cli_confirm.py`（hint を**読む**側） | 消費者 |
+
+つまり「パーサが認識する形を読み損ねた」ものは無く、**未読の原因は R2 カタログの
+範囲（OpenHands）と Def 6 の join 規則の欠落（O5）**である。run6 の 1/2621 は
+同梱 MCP SDK のテスト（`tests/server/test_lowlevel_tool_annotations.py`）だった。
+
+**探索的補助**（`scripts/declaration_join_probe.py`、`join_probe.json`。**r_D の定義は
+変えていない**）: 97 木の `Tool(...)` リテラル 676 のうち明示 hint を持つものは **2**
+（上の SDK テスト 1 + mastermind 1）。低レベルハンドラの `dispatch_names` で join する
+規則を入れても明示宣言を持つユニットは 1/2533 のまま（mastermind の 1 件は名前が
+非リテラルで join できない）。**O5 を直しても、この枠では r_D は 0 のままである。**
+
+**段 B**（`github_counts.json`、GitHub API の `total_count`。ファイル単位の参考値で、
+fork と vendored の複製を含む。母集団の数として本文に書かない）:
+
+| 語 | Python | TypeScript |
+|---|---|---|
+| `readOnlyHint` | 28,928 | 79,744 |
+| `ToolAnnotations` | 22,144 | 9,120 |
+| `destructiveHint` | 19,328 | 53,504 |
+| `openWorldHint` | 15,616 | 50,112 |
+| `annotations=ToolAnnotations(`（呼び出し形） | 9,328 | — |
+| 参照: `from mcp.server` | 172,544 | — |
+
+読み（(b) に書いた規則どおり）: Python 側で呼び出し形の宣言を含むファイルは枠の
+参照値に対して約 5%（9,328 / 172,544、ファイル単位・参考値）。**宣言との差を主張
+できる母集団は、公開 Python MCP サーバの中の小さな部分母集団としてしか存在しない。**
+TypeScript 側の hint 語は Python の 2〜3 倍で、宣言の慣行は TypeScript 圏に偏る
+（本解析器は Python のみ）。この部分母集団を対象にするなら**第 2 の枠として事前登録
+してから抽出する**（事後の絞り込みは事後選択）。決定は O14（学生）。
+
 ## 3. 併記規則
 
 1. **§2.2 の 3 分母 × §2.3 の 2 分母 = 6 通りをすべて計算し、すべて報告する。**
