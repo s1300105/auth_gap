@@ -135,9 +135,11 @@ def d_kind_from(ann: Optional[dict], form: Optional[str]) -> DKind:
     `destructiveHint==true` 単独 / `openWorldHint==false` 単独は、明示されていても
     `D_kind = ⊥` のままとする。
 
-    したがって `r_kind` の分子は「`readOnlyHint==true` / `destructiveHint==false` /
-    `openWorldHint==true` のいずれかを明示したユニット」であって
-    「`annotations=` を持つユニット」ではない。
+    したがって `r_kind` の分子は「`readOnlyHint==true` / `destructiveHint==false` の
+    いずれかを明示した（= 上界を動かす）ユニット」であって「`annotations=` を持つ
+    ユニット」ではない。`openWorldHint==true` 単独の明示は `explicit` に残るが
+    上界を動かさないので分子に入れない（学生の決定 O15、D32。`scripts/f0a.py` は
+    `D_kind ≠ ⊥` で数える）。
     """
     if form == "unreadable":
         return DKind(unknown=True)
@@ -184,12 +186,32 @@ def d_kind_from(ann: Optional[dict], form: Optional[str]) -> DKind:
     )
 
 
-def contradiction(dk: DKind, effect_kinds: set[str]) -> bool:
-    """`CONTRADICTION(e)`: `readOnlyHint==true` または `destructiveHint==false` を
-    **明示**しているのに M に WRITE / EXEC がある（Def 7）。"""
-    if not ({"readOnlyHint", "destructiveHint"} & set(dk.explicit)):
+def contradiction(dk: DKind, effects) -> bool:
+    """`CONTRADICTION(e)`: 明示した宣言に反する効果が M にある（Def 7、D32）。
+
+    * `readOnlyHint==true` の明示 → EXEC / SPAWN / FS_WRITE のすべて。
+    * `destructiveHint==false` の明示（readOnly は明示していない）→ EXEC / SPAWN、
+      および `destructive` が False **でない** FS_WRITE（削除・上書き型、または
+      mode が読めず不明のもの。追記型 `mkdir` / `open('a')` は宣言内）。
+
+    `effects` は `Effect` の列。後方互換で kind の文字列集合も受け付ける
+    （その場合は FS_WRITE を削除・上書き型として扱う = 従来の規則）。
+    """
+    explicit = set(dk.explicit)
+    if not ({"readOnlyHint", "destructiveHint"} & explicit):
         return False
-    return bool(effect_kinds & {"EXEC", "SPAWN", "FS_WRITE"})
+    read_only = "readOnlyHint" in explicit
+    for e in effects:
+        kind = e if isinstance(e, str) else e.kind
+        if kind in ("EXEC", "SPAWN"):
+            return True
+        if kind == "FS_WRITE":
+            if read_only:
+                return True
+            destructive = True if isinstance(e, str) else getattr(e, "destructive", None)
+            if destructive is not False:
+                return True
+    return False
 
 
 # --------------------------------------------------------------------------

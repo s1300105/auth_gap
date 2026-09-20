@@ -16,7 +16,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FIXTURE = os.path.join(ROOT, "fixtures", "destructive_sinks")
 EXPECTED = json.load(open(os.path.join(FIXTURE, "expected.json"), encoding="utf-8"))["tools"]
 
-DEFECT = pytest.mark.xfail(strict=True, reason="D32 / prereg §5 #7: 未実装（修正コミットでこの印を外す）")
+#: 564c81d で xfail(strict) の DEFECT として置き、実装で 10 件すべてが XPASS になったので印を外した。
 
 
 @pytest.fixture(scope="module")
@@ -37,20 +37,14 @@ def test_precondition_effect_exists(units, tool):
     _effect(units[tool], EXPECTED[tool]["site"])
 
 
-@DEFECT
 @pytest.mark.parametrize("tool", sorted(EXPECTED))
 def test_destructive_attribute(units, tool):
     e = _effect(units[tool], EXPECTED[tool]["site"])
     assert getattr(e, "destructive", "missing") == EXPECTED[tool]["destructive"], e.to_json()
 
 
-#: 現行の規則で既に期待どおりのもの（宣言なし / readOnly）には印を付けない。
-#: 追記型を矛盾に数えている nd_mkdir / nd_append だけが未達。
-_VERDICT_DEFECTS = {"nd_mkdir", "nd_append"}
-
-
 @pytest.mark.parametrize(
-    "tool", [pytest.param(t, marks=[DEFECT] if t in _VERDICT_DEFECTS else [], id=t) for t in sorted(EXPECTED)]
+    "tool", [pytest.param(t, id=t) for t in sorted(EXPECTED)]
 )
 def test_contradiction_verdict(units, tool):
     u = units[tool]

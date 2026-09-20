@@ -138,6 +138,11 @@ class SinkRow:
     mode_pos: Optional[int] = None
     #: 副 kind を固定できる場合。
     sub_kind: Optional[str] = None
+    #: FS_WRITE の性質（D32 / prereg §5 #7）: True = 削除・上書き型、False = 追記型、
+    #: None = mode 依存（`open` 系。mode から `effects._mode_destructive` が決める）。
+    #: **kind / slot の語彙ではなく属性。** `destructiveHint==false` の宣言に対する
+    #: CONTRADICTION は True（または不明）の行にだけ立てる。
+    destructive: Optional[bool] = None
     note: str = ""
     required_by: tuple[str, ...] = ()
 
@@ -313,22 +318,16 @@ DIRECT_SINKS: dict[str, tuple[SinkRow, ...]] = _rows(
         mode_kw="mode",
         mode_pos=0,
     ),
-    SinkRow(
-        "pathlib.Path.write_text",
-        "FS_WRITE",
-        {"path": ArgRef(proj="receiver"), "content": A(0)},
+    SinkRow("pathlib.Path.write_text", "FS_WRITE", {"path": ArgRef(proj="receiver"), "content": A(0)}, destructive=True,
         required_by=("F7",),
     ),
-    SinkRow(
-        "pathlib.Path.write_bytes",
-        "FS_WRITE",
-        {"path": ArgRef(proj="receiver"), "content": A(0)},
+    SinkRow("pathlib.Path.write_bytes", "FS_WRITE", {"path": ArgRef(proj="receiver"), "content": A(0)}, destructive=True,
         required_by=("F7",),
     ),
     SinkRow("pathlib.Path.read_text", "FS_READ", {"path": ArgRef(proj="receiver")}),
     SinkRow("pathlib.Path.read_bytes", "FS_READ", {"path": ArgRef(proj="receiver")}),
-    SinkRow("pathlib.Path.unlink", "FS_WRITE", {"path": ArgRef(proj="receiver")}),
-    SinkRow("pathlib.Path.mkdir", "FS_WRITE", {"path": ArgRef(proj="receiver")}),
+    SinkRow("pathlib.Path.unlink", "FS_WRITE", {"path": ArgRef(proj="receiver")}, destructive=True),
+    SinkRow("pathlib.Path.mkdir", "FS_WRITE", {"path": ArgRef(proj="receiver")}, destructive=False),
     SinkRow(
         "pathlib.Path.glob",
         "FS_READ",
@@ -346,21 +345,21 @@ DIRECT_SINKS: dict[str, tuple[SinkRow, ...]] = _rows(
     SinkRow("glob.iglob", "FS_READ", {"path": A(0)}, required_by=("B2",)),
     SinkRow("os.listdir", "FS_READ", {"path": A(0)}),
     SinkRow("os.walk", "FS_READ", {"path": A(0)}),
-    SinkRow("os.remove", "FS_WRITE", {"path": A(0)}),
-    SinkRow("os.unlink", "FS_WRITE", {"path": A(0)}),
-    SinkRow("os.rmdir", "FS_WRITE", {"path": A(0)}),
-    SinkRow("os.makedirs", "FS_WRITE", {"path": A(0)}),
-    SinkRow("os.mkdir", "FS_WRITE", {"path": A(0)}),
-    SinkRow("os.rename", "FS_WRITE", {"path": A(1)}),
-    SinkRow("os.replace", "FS_WRITE", {"path": A(1)}),
-    SinkRow("os.chmod", "FS_WRITE", {"path": A(0)}),
-    SinkRow("os.symlink", "FS_WRITE", {"path": A(1)}),
-    SinkRow("shutil.rmtree", "FS_WRITE", {"path": A(0)}),
-    SinkRow("shutil.copy", "FS_WRITE", {"path": A(1), "content": A(0)}),
-    SinkRow("shutil.copy2", "FS_WRITE", {"path": A(1), "content": A(0)}),
-    SinkRow("shutil.copyfile", "FS_WRITE", {"path": A(1), "content": A(0)}),
-    SinkRow("shutil.move", "FS_WRITE", {"path": A(1), "content": A(0)}),
-    SinkRow("shutil.unpack_archive", "FS_WRITE", {"path": A(1), "content": A(0)}),
+    SinkRow("os.remove", "FS_WRITE", {"path": A(0)}, destructive=True),
+    SinkRow("os.unlink", "FS_WRITE", {"path": A(0)}, destructive=True),
+    SinkRow("os.rmdir", "FS_WRITE", {"path": A(0)}, destructive=True),
+    SinkRow("os.makedirs", "FS_WRITE", {"path": A(0)}, destructive=False),
+    SinkRow("os.mkdir", "FS_WRITE", {"path": A(0)}, destructive=False),
+    SinkRow("os.rename", "FS_WRITE", {"path": A(1)}, destructive=True),
+    SinkRow("os.replace", "FS_WRITE", {"path": A(1)}, destructive=True),
+    SinkRow("os.chmod", "FS_WRITE", {"path": A(0)}, destructive=True),
+    SinkRow("os.symlink", "FS_WRITE", {"path": A(1)}, destructive=False),
+    SinkRow("shutil.rmtree", "FS_WRITE", {"path": A(0)}, destructive=True),
+    SinkRow("shutil.copy", "FS_WRITE", {"path": A(1), "content": A(0)}, destructive=True),
+    SinkRow("shutil.copy2", "FS_WRITE", {"path": A(1), "content": A(0)}, destructive=True),
+    SinkRow("shutil.copyfile", "FS_WRITE", {"path": A(1), "content": A(0)}, destructive=True),
+    SinkRow("shutil.move", "FS_WRITE", {"path": A(1), "content": A(0)}, destructive=True),
+    SinkRow("shutil.unpack_archive", "FS_WRITE", {"path": A(1), "content": A(0)}, destructive=True),
     # -- NET ----------------------------------------------------------------
     SinkRow(
         "requests.get",

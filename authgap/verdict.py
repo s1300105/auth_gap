@@ -139,7 +139,6 @@ def decide(inp: UnitVerdictInput) -> list[Row]:
     制御位置を持たない効果は `slot=None` の行を 1 本だけ出す。
     """
     rows: list[Row] = []
-    effect_kinds = {e.kind for e in inp.effects}
 
     for i, eff in enumerate(inp.effects):
         # 低レベルハンドラは効果ごとに帰属先ツールの D_kind で判定する（§2.9）。
@@ -147,7 +146,7 @@ def decide(inp: UnitVerdictInput) -> list[Row]:
         dk = inp.d_kind_by_effect.get(i, inp.d_kind)
         d_layers = _layers_present(inp, dk)
         contradiction_flag = (
-            _contradiction_of(dk, {eff.kind}) if i in inp.d_kind_by_effect else _contradiction(inp, effect_kinds)
+            _contradiction_of(dk, [eff]) if i in inp.d_kind_by_effect else _contradiction(inp, inp.effects)
         )
         # **行の確度で判定する。** ユニットのどこかで opaque が立ったことを
         # 全行に伝播させると、解決できている行まで UNKNOWN になり、
@@ -251,14 +250,14 @@ def _inject_coordinate(
         row.rule_w = weak
 
 
-def _contradiction(inp: UnitVerdictInput, effect_kinds: set[str]) -> bool:
-    return _contradiction_of(inp.d_kind, effect_kinds)
+def _contradiction(inp: UnitVerdictInput, effects) -> bool:
+    return _contradiction_of(inp.d_kind, effects)
 
 
-def _contradiction_of(dk: DKind, effect_kinds: set[str]) -> bool:
+def _contradiction_of(dk: DKind, effects) -> bool:
     from .dparse import contradiction as _c
 
-    return _c(dk, effect_kinds)
+    return _c(dk, effects)
 
 
 def _layers_present(inp: UnitVerdictInput, dk: Optional[DKind] = None) -> tuple[str, ...]:

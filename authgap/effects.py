@@ -64,6 +64,9 @@ class Effect:
     #: FS_WRITE の path がポリシーファイルに解決される（**マニフェスト属性。
     #: verdict を持たない**）。
     write_policy: bool = False
+    #: FS_WRITE の性質（D32）: True = 削除・上書き、False = 追記、None = 不明。
+    #: `destructiveHint==false` に対する CONTRADICTION は False 以外に立つ。
+    destructive: Optional[bool] = None
     #: 非 DB の `.execute()` の機械判定結果（`db` / `db_unresolved`）。
     db_rule: Optional[str] = None
     #: この行が依存する sink 表の行（triage 表と突き合わせるため）。
@@ -92,6 +95,8 @@ class Effect:
             d["shape_from"] = dict(sorted(self.shape_from.items()))
         if self.write_policy:
             d["write_policy"] = True
+        if self.kind == "FS_WRITE":
+            d["destructive"] = self.destructive
         if self.db_rule:
             d["db_rule"] = self.db_rule
         if self.required_by:
@@ -199,6 +204,29 @@ def _mode_is_write(ev: CallEvent, row: SinkRow) -> Optional[bool]:
     const = node.const
     if isinstance(const, str):
         return any(c in const for c in "wax+")
+    return None
+
+
+def _mode_destructive(ev: CallEvent, row: SinkRow) -> Optional[bool]:
+    """`open(path, mode)` の mode から削除・上書き型か追記型かを決める（D32）。
+
+    `w` / `+` を含めば上書き（True）、`a` / `x` だけなら追記（False）、
+    **読めなければ None**（呼び出し側で True 扱い = 推定で clean にしない）。
+    """
+    node: Optional[Value] = None
+    if row.mode_kw and row.mode_kw in ev.kwargs:
+        node = ev.kwargs[row.mode_kw]
+    elif row.mode_pos is not None and row.mode_pos < len(ev.args):
+        node = ev.args[row.mode_pos]
+    if node is None:
+        return False  # 既定 "r"（書き込みではない）
+    const = node.const
+    if isinstance(const, str):
+        if "w" in const or "+" in const:
+            return True
+        if "a" in const or "x" in const:
+            return False
+        return False
     return None
 
 
@@ -459,6 +487,11 @@ class EffectExtractor:
             write_policy=(kind == "FS_WRITE" and _is_policy_path(slots.get("path"))),
             required_by=row.required_by,
         )
+        if kind == "FS_WRITE":
+            if row.mode_kw is not None or row.mode_pos is not None:
+                eff.destructive = _mode_destructive(ev, row)
+            else:
+                eff.destructive = row.destructive
         return eff
 
     # -- (b) proxy --------------------------------------------------------
