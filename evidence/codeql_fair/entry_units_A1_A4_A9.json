@@ -1,0 +1,6800 @@
+{
+ "A1__vuln": [
+  {
+   "relpath": "src/git/src/mcp_server_git/server.py",
+   "qualname": "serve.call_tool",
+   "entry_kind": "lowlevel_v1",
+   "params": [
+    "name",
+    "arguments"
+   ],
+   "dangerous": true
+  }
+ ],
+ "A1__fixed": [
+  {
+   "relpath": "src/git/src/mcp_server_git/server.py",
+   "qualname": "serve.call_tool",
+   "entry_kind": "lowlevel_v1",
+   "params": [
+    "name",
+    "arguments"
+   ],
+   "dangerous": true
+  }
+ ],
+ "A4__vuln": [
+  {
+   "relpath": "src/git/src/mcp_server_git/server.py",
+   "qualname": "serve.call_tool",
+   "entry_kind": "lowlevel_v1",
+   "params": [
+    "name",
+    "arguments"
+   ],
+   "dangerous": true
+  }
+ ],
+ "A4__fixed": [
+  {
+   "relpath": "src/git/src/mcp_server_git/server.py",
+   "qualname": "serve.call_tool",
+   "entry_kind": "lowlevel_v1",
+   "params": [
+    "name",
+    "arguments"
+   ],
+   "dangerous": true
+  }
+ ],
+ "A9__vuln": [
+  {
+   "relpath": "examples/catalog/template_finder_agent.py",
+   "qualname": "get_template_details_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "name"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/catalog/template_finder_agent.py",
+   "qualname": "list_all_templates_tool",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/catalog/template_finder_agent.py",
+   "qualname": "search_templates_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/guardrail_example_fixed.py",
+   "qualname": "get_url_context",
+   "entry_kind": "tools_list",
+   "params": [
+    "url"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/middleware/basic_middleware.py",
+   "qualname": "get_weather",
+   "entry_kind": "decorator",
+   "params": [
+    "city"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/middleware/injected_state.py",
+   "qualname": "show_context",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/performance/lite_agent_example.py",
+   "qualname": "example_with_tools.add_numbers",
+   "entry_kind": "decorator",
+   "params": [
+    "a",
+    "b"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/performance/lite_agent_example.py",
+   "qualname": "example_with_tools.multiply_numbers",
+   "entry_kind": "decorator",
+   "params": [
+    "a",
+    "b"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/agents/code-agent.py",
+   "qualname": "analyze_code_complexity",
+   "entry_kind": "tools_list",
+   "params": [
+    "code"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/agents/code-agent.py",
+   "qualname": "run_python_code",
+   "entry_kind": "tools_list",
+   "params": [
+    "code"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/python/agents/math-agent.py",
+   "qualname": "basic_calculator",
+   "entry_kind": "tools_list",
+   "params": [
+    "expression"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/python/agents/math-agent.py",
+   "qualname": "calculate_statistics",
+   "entry_kind": "tools_list",
+   "params": [
+    "numbers"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/agents/math-agent.py",
+   "qualname": "solve_quadratic",
+   "entry_kind": "tools_list",
+   "params": [
+    "a",
+    "b",
+    "c"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/concepts/reasoning-extraction.py",
+   "qualname": "save_reasoning_chain",
+   "entry_kind": "tools_list",
+   "params": [
+    "chain"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/python/custom_tools/latency_tracker_tool.py",
+   "qualname": "latency_tracking_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "action",
+    "phase",
+    "request_id"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/handoff/handoff_customer_service.py",
+   "qualname": "get_faq_answer",
+   "entry_kind": "tools_list",
+   "params": [
+    "question"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/lite_agent_example.py",
+   "qualname": "example_with_tools.add_numbers",
+   "entry_kind": "decorator",
+   "params": [
+    "a",
+    "b"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/mcp/custom-python-server.py",
+   "qualname": "get_stock_price",
+   "entry_kind": "decorator",
+   "params": [
+    "ticker"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/mcp/multiple-mcp-servers.py",
+   "qualname": "my_custom_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/monitoring/08_custom_tools_monitoring.py",
+   "qualname": "call_external_api",
+   "entry_kind": "decorator",
+   "params": [
+    "endpoint",
+    "method",
+    "payload"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/monitoring/08_custom_tools_monitoring.py",
+   "qualname": "file_operation",
+   "entry_kind": "decorator",
+   "params": [
+    "operation",
+    "filename",
+    "content"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/monitoring/08_custom_tools_monitoring.py",
+   "qualname": "process_data",
+   "entry_kind": "decorator",
+   "params": [
+    "data",
+    "operation"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/monitoring/08_custom_tools_monitoring.py",
+   "qualname": "query_database",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "database"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/plugin_template/src/praisonai_example_plugin/__init__.py",
+   "qualname": "reverse_text",
+   "entry_kind": "decorator",
+   "params": [
+    "text"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/01_basic_state_management.py",
+   "qualname": "add_feature",
+   "entry_kind": "tools_list",
+   "params": [
+    "feature_name"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/01_basic_state_management.py",
+   "qualname": "check_budget_health",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/01_basic_state_management.py",
+   "qualname": "display_project_status",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/01_basic_state_management.py",
+   "qualname": "update_project_stage",
+   "entry_kind": "tools_list",
+   "params": [
+    "new_stage"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/02_state_in_tool_functions.py",
+   "qualname": "generate_report",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/02_state_in_tool_functions.py",
+   "qualname": "log_error",
+   "entry_kind": "tools_list",
+   "params": [
+    "error_type",
+    "error_message"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/02_state_in_tool_functions.py",
+   "qualname": "process_data_batch",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/02_state_in_tool_functions.py",
+   "qualname": "track_progress",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/02_state_in_tool_functions.py",
+   "qualname": "update_configuration",
+   "entry_kind": "tools_list",
+   "params": [
+    "key",
+    "value"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "check_budget_status",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "check_performance",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "continue_development",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "expand_features",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "generate_decision_report",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "maintain_current_setup",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "optimize_performance",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "reduce_costs",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "scale_infrastructure",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/04_session_state_persistence.py",
+   "qualname": "check_processing_status",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/04_session_state_persistence.py",
+   "qualname": "generate_session_report",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/04_session_state_persistence.py",
+   "qualname": "process_customer_data",
+   "entry_kind": "tools_list",
+   "params": [
+    "customer_id"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/04_session_state_persistence.py",
+   "qualname": "save_checkpoint",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/04_session_state_persistence.py",
+   "qualname": "simulate_long_task",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/05_loop_control_with_state.py",
+   "qualname": "collect_paginated_data",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/05_loop_control_with_state.py",
+   "qualname": "generate_loop_report",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/05_loop_control_with_state.py",
+   "qualname": "process_batch",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/05_loop_control_with_state.py",
+   "qualname": "process_retry_batch",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/05_loop_control_with_state.py",
+   "qualname": "validate_collected_items",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/06_advanced_state_operations.py",
+   "qualname": "aggregate_distributed_state",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/06_advanced_state_operations.py",
+   "qualname": "calculate_derived_metrics",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/06_advanced_state_operations.py",
+   "qualname": "generate_advanced_report",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/06_advanced_state_operations.py",
+   "qualname": "handle_state_transactions",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/06_advanced_state_operations.py",
+   "qualname": "implement_state_cache",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/06_advanced_state_operations.py",
+   "qualname": "manage_nested_state",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/06_advanced_state_operations.py",
+   "qualname": "manage_state_versioning",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/workflow-state-example.py",
+   "qualname": "analysis_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "research_data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/workflow-state-example.py",
+   "qualname": "research_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "topic",
+    "num_sources"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/tools/langchain/agentql-toolkit.py",
+   "qualname": "extract_web_data_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "url",
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/tools/langchain/brave-search.py",
+   "qualname": "search_brave",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/tools/langchain/exa-search.py",
+   "qualname": "search_and_contents",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/tools/langchain/jina-search.py",
+   "qualname": "invoke_jina_search",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/tools/trafilatura/trafilatura_example.py",
+   "qualname": "agent_example.extract_content_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "url"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/tools/trafilatura/trafilatura_example.py",
+   "qualname": "agent_example.extract_metadata_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "url"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/adaptive-learning.py",
+   "qualname": "adapt_difficulty",
+   "entry_kind": "tools_list",
+   "params": [
+    "performance"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/adaptive-learning.py",
+   "qualname": "assess_student_level",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/adaptive-learning.py",
+   "qualname": "evaluate_performance",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/adaptive-learning.py",
+   "qualname": "generate_content",
+   "entry_kind": "tools_list",
+   "params": [
+    "level"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/climate-impact.py",
+   "qualname": "analyze_urban_factors",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/climate-impact.py",
+   "qualname": "collect_environmental_data",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/climate-impact.py",
+   "qualname": "generate_adaptation_strategies",
+   "entry_kind": "tools_list",
+   "params": [
+    "predictions"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/climate-impact.py",
+   "qualname": "model_microclimate",
+   "entry_kind": "tools_list",
+   "params": [
+    "env_data",
+    "urban_factors"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/climate-impact.py",
+   "qualname": "predict_impacts",
+   "entry_kind": "tools_list",
+   "params": [
+    "models"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/crypto-validator.py",
+   "qualname": "analyze_cryptographic_scheme",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/crypto-validator.py",
+   "qualname": "assess_implementation",
+   "entry_kind": "tools_list",
+   "params": [
+    "scheme",
+    "benchmarks"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/crypto-validator.py",
+   "qualname": "simulate_quantum_attacks",
+   "entry_kind": "tools_list",
+   "params": [
+    "scheme"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/crypto-validator.py",
+   "qualname": "validate_compliance",
+   "entry_kind": "tools_list",
+   "params": [
+    "scheme",
+    "assessment"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/customer-service.py",
+   "qualname": "classify_query",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/customer-service.py",
+   "qualname": "evaluate_satisfaction",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/customer-service.py",
+   "qualname": "handle_query",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/customer-service.py",
+   "qualname": "optimize_response",
+   "entry_kind": "tools_list",
+   "params": [
+    "satisfaction"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/defi-market-maker.py",
+   "qualname": "analyze_market_conditions",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/defi-market-maker.py",
+   "qualname": "assess_risks",
+   "entry_kind": "tools_list",
+   "params": [
+    "arbitrage",
+    "optimizations"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/defi-market-maker.py",
+   "qualname": "detect_arbitrage",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/defi-market-maker.py",
+   "qualname": "execute_trades",
+   "entry_kind": "tools_list",
+   "params": [
+    "arbitrage",
+    "risks"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/defi-market-maker.py",
+   "qualname": "optimize_liquidity",
+   "entry_kind": "tools_list",
+   "params": [
+    "market_conditions"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/disaster-recovery.py",
+   "qualname": "assess_emergency_level",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/disaster-recovery.py",
+   "qualname": "assess_resources",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/disaster-recovery.py",
+   "qualname": "check_network_status",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/disaster-recovery.py",
+   "qualname": "execute_distribution",
+   "entry_kind": "tools_list",
+   "params": [
+    "plan"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/disaster-recovery.py",
+   "qualname": "generate_distribution_plan",
+   "entry_kind": "tools_list",
+   "params": [
+    "priorities"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/disaster-recovery.py",
+   "qualname": "monitor_effectiveness",
+   "entry_kind": "tools_list",
+   "params": [
+    "execution_results"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/disaster-recovery.py",
+   "qualname": "prioritize_needs",
+   "entry_kind": "tools_list",
+   "params": [
+    "emergency",
+    "resources"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/domain-context-solution.py",
+   "qualname": "create_domain_aware_tools.query_api_ninjas",
+   "entry_kind": "tools_list",
+   "params": [
+    "domain_param"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/python/usecases/domain-context-solution.py",
+   "qualname": "create_domain_aware_tools.query_crtsh",
+   "entry_kind": "tools_list",
+   "params": [
+    "domain_param"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/python/usecases/domain-context-solution.py",
+   "qualname": "create_domain_aware_tools.query_fofa",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/python/usecases/domain-context-solution.py",
+   "qualname": "create_domain_aware_tools.query_networkcalc",
+   "entry_kind": "tools_list",
+   "params": [
+    "domain_param"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/python/usecases/domain-context-solution.py",
+   "qualname": "create_domain_aware_tools.query_whoxy",
+   "entry_kind": "tools_list",
+   "params": [
+    "email_or_org"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/python/usecases/emergency-response.py",
+   "qualname": "assess_emergency",
+   "entry_kind": "tools_list",
+   "params": [
+    "incident"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/emergency-response.py",
+   "qualname": "dispatch_resources",
+   "entry_kind": "tools_list",
+   "params": [
+    "severity"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/emergency-response.py",
+   "qualname": "monitor_response",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/fraud-detection.py",
+   "qualname": "analyze_transaction",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/fraud-detection.py",
+   "qualname": "check_patterns",
+   "entry_kind": "tools_list",
+   "params": [
+    "transaction"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/fraud-detection.py",
+   "qualname": "generate_alert",
+   "entry_kind": "tools_list",
+   "params": [
+    "verification",
+    "patterns"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/fraud-detection.py",
+   "qualname": "verify_identity",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/healthcare-diagnosis.py",
+   "qualname": "analyze_medical_history",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/healthcare-diagnosis.py",
+   "qualname": "analyze_symptoms",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/healthcare-diagnosis.py",
+   "qualname": "generate_diagnosis",
+   "entry_kind": "tools_list",
+   "params": [
+    "symptoms",
+    "lab_results",
+    "history"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/healthcare-diagnosis.py",
+   "qualname": "process_lab_results",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/healthcare-diagnosis.py",
+   "qualname": "recommend_treatment",
+   "entry_kind": "tools_list",
+   "params": [
+    "diagnosis"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/medicine-protocol.py",
+   "qualname": "analyze_drug_interactions",
+   "entry_kind": "tools_list",
+   "params": [
+    "genetic_data",
+    "patient_history"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/medicine-protocol.py",
+   "qualname": "analyze_genetic_markers",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/medicine-protocol.py",
+   "qualname": "evaluate_patient_history",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/medicine-protocol.py",
+   "qualname": "generate_protocol",
+   "entry_kind": "tools_list",
+   "params": [
+    "genetic_data",
+    "interactions"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/medicine-protocol.py",
+   "qualname": "simulate_effectiveness",
+   "entry_kind": "tools_list",
+   "params": [
+    "protocol"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/multilingual-content.py",
+   "qualname": "adapt_content",
+   "entry_kind": "tools_list",
+   "params": [
+    "issues"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/multilingual-content.py",
+   "qualname": "check_cultural_context",
+   "entry_kind": "tools_list",
+   "params": [
+    "translations"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/multilingual-content.py",
+   "qualname": "generate_base_content",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/multilingual-content.py",
+   "qualname": "quality_check",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/multilingual-content.py",
+   "qualname": "translate_content",
+   "entry_kind": "tools_list",
+   "params": [
+    "content"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/neural-architecture.py",
+   "qualname": "analyze_hardware_constraints",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/neural-architecture.py",
+   "qualname": "estimate_performance",
+   "entry_kind": "tools_list",
+   "params": [
+    "architecture",
+    "hyperparams"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/neural-architecture.py",
+   "qualname": "generate_architecture_candidates",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/neural-architecture.py",
+   "qualname": "optimize_deployment",
+   "entry_kind": "tools_list",
+   "params": [
+    "architecture",
+    "performance"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/neural-architecture.py",
+   "qualname": "optimize_hyperparameters",
+   "entry_kind": "tools_list",
+   "params": [
+    "architecture"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/predictive-maintenance.py",
+   "qualname": "analyze_performance",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/predictive-maintenance.py",
+   "qualname": "collect_sensor_data",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/predictive-maintenance.py",
+   "qualname": "detect_anomalies",
+   "entry_kind": "tools_list",
+   "params": [
+    "sensor_data",
+    "performance"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/predictive-maintenance.py",
+   "qualname": "predict_failures",
+   "entry_kind": "tools_list",
+   "params": [
+    "anomalies"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/predictive-maintenance.py",
+   "qualname": "schedule_maintenance",
+   "entry_kind": "tools_list",
+   "params": [
+    "predictions"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/quantum-optimiser.py",
+   "qualname": "analyze_quantum_circuit",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/quantum-optimiser.py",
+   "qualname": "identify_optimization_opportunities",
+   "entry_kind": "tools_list",
+   "params": [
+    "metrics"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/quantum-optimiser.py",
+   "qualname": "simulate_optimization",
+   "entry_kind": "tools_list",
+   "params": [
+    "opportunities"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/quantum-optimiser.py",
+   "qualname": "validate_results",
+   "entry_kind": "tools_list",
+   "params": [
+    "benchmarks"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/research-assistant.py",
+   "qualname": "analyze_research_papers",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/research-assistant.py",
+   "qualname": "design_experiment",
+   "entry_kind": "tools_list",
+   "params": [
+    "gaps"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/research-assistant.py",
+   "qualname": "identify_knowledge_gaps",
+   "entry_kind": "tools_list",
+   "params": [
+    "papers"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/research-assistant.py",
+   "qualname": "predict_impact",
+   "entry_kind": "tools_list",
+   "params": [
+    "experiments",
+    "validations"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/research-assistant.py",
+   "qualname": "validate_methodology",
+   "entry_kind": "tools_list",
+   "params": [
+    "experiments"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/smart-city.py",
+   "qualname": "analyze_patterns",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/smart-city.py",
+   "qualname": "implement_changes",
+   "entry_kind": "tools_list",
+   "params": [
+    "optimizations"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/smart-city.py",
+   "qualname": "monitor_feedback",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/smart-city.py",
+   "qualname": "monitor_utilities",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/smart-city.py",
+   "qualname": "optimize_resources",
+   "entry_kind": "tools_list",
+   "params": [
+    "readings",
+    "patterns"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/space-mission.py",
+   "qualname": "analyze_mission_parameters",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/space-mission.py",
+   "qualname": "calculate_resource_requirements",
+   "entry_kind": "tools_list",
+   "params": [
+    "params"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/space-mission.py",
+   "qualname": "optimize_allocation",
+   "entry_kind": "tools_list",
+   "params": [
+    "requirements",
+    "contingencies"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/space-mission.py",
+   "qualname": "plan_contingencies",
+   "entry_kind": "tools_list",
+   "params": [
+    "requirements"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/space-mission.py",
+   "qualname": "simulate_mission_scenarios",
+   "entry_kind": "tools_list",
+   "params": [
+    "allocation"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/supply-chain.py",
+   "qualname": "analyze_supply_impact",
+   "entry_kind": "tools_list",
+   "params": [
+    "event"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/supply-chain.py",
+   "qualname": "generate_mitigation_strategies",
+   "entry_kind": "tools_list",
+   "params": [
+    "impact"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/supply-chain.py",
+   "qualname": "monitor_global_events",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/vulnerability-detection.py",
+   "qualname": "analyze_attack_vectors",
+   "entry_kind": "tools_list",
+   "params": [
+    "pattern"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/vulnerability-detection.py",
+   "qualname": "generate_signatures",
+   "entry_kind": "tools_list",
+   "params": [
+    "results"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/vulnerability-detection.py",
+   "qualname": "scan_code_patterns",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/vulnerability-detection.py",
+   "qualname": "simulate_exploitation",
+   "entry_kind": "tools_list",
+   "params": [
+    "vectors"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/vulnerability-detection.py",
+   "qualname": "validate_findings",
+   "entry_kind": "tools_list",
+   "params": [
+    "signatures"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/scientific_writing/scientific_writer.py",
+   "qualname": "format_citation",
+   "entry_kind": "decorator",
+   "params": [
+    "authors",
+    "year",
+    "title",
+    "venue"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/scientific_writing/scientific_writer.py",
+   "qualname": "format_latex_section",
+   "entry_kind": "decorator",
+   "params": [
+    "title",
+    "content"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/08_custom_tools_monitoring.py",
+   "qualname": "call_external_api",
+   "entry_kind": "decorator",
+   "params": [
+    "endpoint",
+    "method",
+    "payload"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/08_custom_tools_monitoring.py",
+   "qualname": "file_operation",
+   "entry_kind": "decorator",
+   "params": [
+    "operation",
+    "filename",
+    "content"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/08_custom_tools_monitoring.py",
+   "qualname": "process_data",
+   "entry_kind": "decorator",
+   "params": [
+    "data",
+    "operation"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/08_custom_tools_monitoring.py",
+   "qualname": "query_database",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "database"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/autoagents-tavily.py",
+   "qualname": "tavily",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/benchmarks/real_benchmark.py",
+   "qualname": "get_time",
+   "entry_kind": "tools_list",
+   "params": [
+    "timezone"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/benchmarks/tools_benchmark.py",
+   "qualname": "sample_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "city"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/handoff-test.py",
+   "qualname": "check_refund_policy",
+   "entry_kind": "tools_list",
+   "params": [
+    "item_type"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/handoff-test.py",
+   "qualname": "create_ticket",
+   "entry_kind": "tools_list",
+   "params": [
+    "issue_description",
+    "priority"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/handoff-test.py",
+   "qualname": "diagnose_issue",
+   "entry_kind": "tools_list",
+   "params": [
+    "description"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/handoff-test.py",
+   "qualname": "track_shipment",
+   "entry_kind": "tools_list",
+   "params": [
+    "tracking_number"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/agent/execution_mixin.py",
+   "qualname": "ExecutionMixin._launch_mcp_server.execute_agent_task",
+   "entry_kind": "decorator",
+   "params": [
+    "prompt"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/agent/sandbox_mixin.py",
+   "qualname": "SandboxMixin._get_code_execution_tools.execute_python_code",
+   "entry_kind": "decorator",
+   "params": [
+    "code"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/agent/sandbox_mixin.py",
+   "qualname": "SandboxMixin._get_code_execution_tools.execute_shell_command",
+   "entry_kind": "decorator",
+   "params": [
+    "command"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/agents/agents.py",
+   "qualname": "AgentTeam.launch.execute_workflow_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/mcp/mcp_server.py",
+   "qualname": "ToolsMCPServer._register_tool_with_fastmcp.tool_wrapper",
+   "entry_kind": "decorator",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/a2ui_tools.py",
+   "qualname": "send_a2ui_messages",
+   "entry_kind": "decorator",
+   "params": [
+    "messages"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/ast_grep_tool.py",
+   "qualname": "ast_grep_rewrite",
+   "entry_kind": "tools_list",
+   "params": [
+    "pattern",
+    "replacement",
+    "lang",
+    "path",
+    "dry_run"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/ast_grep_tool.py",
+   "qualname": "ast_grep_scan",
+   "entry_kind": "tools_list",
+   "params": [
+    "path",
+    "rule_file"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/ast_grep_tool.py",
+   "qualname": "ast_grep_search",
+   "entry_kind": "tools_list",
+   "params": [
+    "pattern",
+    "lang",
+    "path",
+    "json_output"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/decorator.py",
+   "qualname": "tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "func",
+    "name",
+    "description",
+    "version",
+    "availability",
+    "dynamic_schema_overrides",
+    "retry_policy"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/duckduckgo_tools.py",
+   "qualname": "duckduckgo",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/email_tools.py",
+   "qualname": "list_emails",
+   "entry_kind": "tools_list",
+   "params": [
+    "limit"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/email_tools.py",
+   "qualname": "read_email",
+   "entry_kind": "tools_list",
+   "params": [
+    "message_id"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/email_tools.py",
+   "qualname": "reply_email",
+   "entry_kind": "tools_list",
+   "params": [
+    "message_id",
+    "body"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/email_tools.py",
+   "qualname": "send_email",
+   "entry_kind": "tools_list",
+   "params": [
+    "to",
+    "subject",
+    "body",
+    "cc",
+    "bcc"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/email_tools.py",
+   "qualname": "smtp_read_inbox",
+   "entry_kind": "tools_list",
+   "params": [
+    "limit",
+    "folder"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/email_tools.py",
+   "qualname": "smtp_send_email",
+   "entry_kind": "tools_list",
+   "params": [
+    "to",
+    "subject",
+    "body",
+    "cc",
+    "bcc"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/exa_tools.py",
+   "qualname": "exa_search",
+   "entry_kind": "tools_list",
+   "params": [
+    "query",
+    "num_results",
+    "type",
+    "category",
+    "include_domains",
+    "exclude_domains",
+    "start_published_date",
+    "end_published_date"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/github_tools.py",
+   "qualname": "github_commit_and_push",
+   "entry_kind": "decorator",
+   "params": [
+    "commit_message"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/github_tools.py",
+   "qualname": "github_create_branch",
+   "entry_kind": "decorator",
+   "params": [
+    "branch_name"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/github_tools.py",
+   "qualname": "github_create_pull_request",
+   "entry_kind": "decorator",
+   "params": [
+    "title",
+    "body",
+    "head_branch",
+    "base_branch"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/learning.py",
+   "qualname": "search_learning",
+   "entry_kind": "tools_list",
+   "params": [
+    "query",
+    "category",
+    "limit",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/learning.py",
+   "qualname": "store_learning",
+   "entry_kind": "tools_list",
+   "params": [
+    "content",
+    "category",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/memory.py",
+   "qualname": "search_memory",
+   "entry_kind": "tools_list",
+   "params": [
+    "query",
+    "limit",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/python_tools.py",
+   "qualname": "disassemble_code",
+   "entry_kind": "tools_list",
+   "params": [
+    "code"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/python_tools.py",
+   "qualname": "execute_code",
+   "entry_kind": "tools_list",
+   "params": [
+    "code",
+    "globals_dict",
+    "locals_dict",
+    "timeout",
+    "max_output_size",
+    "sandbox_mode"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/python_tools.py",
+   "qualname": "format_code",
+   "entry_kind": "tools_list",
+   "params": [
+    "code",
+    "style",
+    "line_length"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/python_tools.py",
+   "qualname": "lint_code",
+   "entry_kind": "tools_list",
+   "params": [
+    "code"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/searxng_tools.py",
+   "qualname": "searxng_search",
+   "entry_kind": "tools_list",
+   "params": [
+    "query",
+    "max_results",
+    "searxng_url"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/tavily_tools.py",
+   "qualname": "tavily_extract",
+   "entry_kind": "tools_list",
+   "params": [
+    "urls",
+    "include_images",
+    "extract_depth"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/web_crawl_tools.py",
+   "qualname": "web_crawl",
+   "entry_kind": "tools_list",
+   "params": [
+    "urls",
+    "provider"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/youdotcom_tools.py",
+   "qualname": "ydc_search",
+   "entry_kind": "tools_list",
+   "params": [
+    "query",
+    "count",
+    "freshness",
+    "country",
+    "language",
+    "offset",
+    "safesearch",
+    "livecrawl",
+    "livecrawl_formats"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/test_fix_verification.py",
+   "qualname": "simple_tool",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/test_self_reflection_with_tools_verification.py",
+   "qualname": "simple_calculator",
+   "entry_kind": "tools_list",
+   "params": [
+    "operation",
+    "a",
+    "b"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/test_user_code_pattern.py",
+   "qualname": "google_web_search_llm",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/test_validation_feedback.py",
+   "qualname": "test_example_two.mock_web_search",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/crewai-tools-example.py",
+   "qualname": "InternetSearchTool._run",
+   "entry_kind": "method",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/error/test_error_recovery_live.py",
+   "qualname": "TestGracefulDegradationLive.test_agent_graceful_degradation_real.advanced_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "task"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/error/test_error_recovery_live.py",
+   "qualname": "TestGracefulDegradationLive.test_agent_graceful_degradation_real.basic_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "task"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/error/test_error_recovery_live.py",
+   "qualname": "TestMultiStepErrorRecoveryLive.test_agent_complex_error_recovery_real.recovery_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/error/test_error_recovery_live.py",
+   "qualname": "TestMultiStepErrorRecoveryLive.test_agent_complex_error_recovery_real.step_one_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/error/test_error_recovery_live.py",
+   "qualname": "TestMultiStepErrorRecoveryLive.test_agent_complex_error_recovery_real.step_two_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/error/test_error_recovery_live.py",
+   "qualname": "TestNetworkErrorRecoveryLive.test_agent_network_resilience_real.network_dependent_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/error/test_error_recovery_live.py",
+   "qualname": "TestToolErrorRecoveryLive.test_agent_tool_failure_recovery_real.backup_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "input_data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/error/test_error_recovery_live.py",
+   "qualname": "TestToolErrorRecoveryLive.test_agent_tool_failure_recovery_real.unreliable_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "input_data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/mcp/test_mcp_integration_live.py",
+   "qualname": "TestMCPErrorHandlingLive.test_agent_mcp_connection_errors_real.fallback_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/mcp/test_mcp_integration_live.py",
+   "qualname": "TestMCPErrorHandlingLive.test_agent_mcp_connection_errors_real.unreliable_mcp_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/mcp/test_mcp_integration_live.py",
+   "qualname": "TestMCPMultiServerLive.test_agent_multiple_mcp_servers_real.mcp_server_a_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/mcp/test_mcp_integration_live.py",
+   "qualname": "TestMCPMultiServerLive.test_agent_multiple_mcp_servers_real.mcp_server_b_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "task"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/mcp/test_mcp_integration_live.py",
+   "qualname": "TestMCPStreamingLive.test_agent_mcp_streaming_real.mcp_streaming_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "prompt"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/mcp/test_mcp_integration_live.py",
+   "qualname": "TestMCPToolsLive.test_agent_mcp_tools_real.mcp_stock_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "symbol"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/mcp/test_mcp_integration_live.py",
+   "qualname": "TestMCPToolsLive.test_agent_mcp_tools_real.mcp_weather_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "location"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/memory/test_memory_integration_live.py",
+   "qualname": "TestMemoryWithToolsLive.test_agent_memory_with_tools_real.calculate",
+   "entry_kind": "decorator",
+   "params": [
+    "expression"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/memory/test_memory_integration_live.py",
+   "qualname": "TestMemoryWithToolsLive.test_agent_memory_with_tools_real.save_note",
+   "entry_kind": "decorator",
+   "params": [
+    "note"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/test_agent_decomposition_real.py",
+   "qualname": "calculate_vault_code",
+   "entry_kind": "decorator",
+   "params": [
+    "base_number",
+    "multiplier"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/test_agent_decomposition_real.py",
+   "qualname": "echo_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "message"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/test_agent_decomposition_real.py",
+   "qualname": "get_weather",
+   "entry_kind": "decorator",
+   "params": [
+    "city"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/test_loop_guardrails.py",
+   "qualname": "another_broken_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "input_data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/test_loop_guardrails.py",
+   "qualname": "broken_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/test_loop_issue.py",
+   "qualname": "another_broken_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/test_loop_issue.py",
+   "qualname": "broken_weather_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "location"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/test_real_features.py",
+   "qualname": "TestRealAgentWithAPI.test_agent_with_tool.get_current_time",
+   "entry_kind": "decorator",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/tools/test_tools_integration_live.py",
+   "qualname": "TestMultiToolAgentLive.test_agent_with_multiple_tools_real.calculate",
+   "entry_kind": "decorator",
+   "params": [
+    "expression"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/tools/test_tools_integration_live.py",
+   "qualname": "TestMultiToolAgentLive.test_agent_with_multiple_tools_real.execute_python",
+   "entry_kind": "decorator",
+   "params": [
+    "code"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/tools/test_tools_integration_live.py",
+   "qualname": "TestMultiToolAgentLive.test_agent_with_multiple_tools_real.web_search",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/tools/test_tools_integration_live.py",
+   "qualname": "TestPythonExecutionToolLive.test_agent_with_python_execution_real.execute_python",
+   "entry_kind": "decorator",
+   "params": [
+    "code"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/tools/test_tools_integration_live.py",
+   "qualname": "TestToolErrorHandlingLive.test_agent_tool_error_recovery_real.backup_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "input_data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/tools/test_tools_integration_live.py",
+   "qualname": "TestToolErrorHandlingLive.test_agent_tool_error_recovery_real.failing_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "input_data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/tools/test_tools_integration_live.py",
+   "qualname": "TestWebSearchToolLive.test_agent_with_web_search_real.web_search",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/mcp-basic.py",
+   "qualname": "stock_price_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "symbol"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/mcp-sse-direct-server.py",
+   "qualname": "get_greeting",
+   "entry_kind": "decorator",
+   "params": [
+    "name"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/mcp-sse-direct-server.py",
+   "qualname": "get_weather",
+   "entry_kind": "decorator",
+   "params": [
+    "city"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/repetitive-manual-agents.py",
+   "qualname": "get_next_task",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/repetitive-manual-agents.py",
+   "qualname": "update_task_status",
+   "entry_kind": "tools_list",
+   "params": [
+    "loop_id",
+    "new_status"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/smoke_core_phase_a_real.py",
+   "qualname": "main.echo",
+   "entry_kind": "tools_list",
+   "params": [
+    "text"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_based_workflow_example.py",
+   "qualname": "analyze_data_quality",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_based_workflow_example.py",
+   "qualname": "check_state_conditions",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_based_workflow_example.py",
+   "qualname": "clean_data_based_on_state",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_based_workflow_example.py",
+   "qualname": "generate_report_from_state",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_based_workflow_example.py",
+   "qualname": "process_batch_with_state",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_management_example.py",
+   "qualname": "add_feature_to_project",
+   "entry_kind": "tools_list",
+   "params": [
+    "feature_name",
+    "estimated_cost"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_management_example.py",
+   "qualname": "check_project_status",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_management_example.py",
+   "qualname": "implement_next_feature",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_management_example.py",
+   "qualname": "initialize_project_state",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_management_example.py",
+   "qualname": "retrieve_session_history",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_with_memory_example.py",
+   "qualname": "add_conversation_turn",
+   "entry_kind": "tools_list",
+   "params": [
+    "speaker",
+    "message"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_with_memory_example.py",
+   "qualname": "analyze_conversation_patterns",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_with_memory_example.py",
+   "qualname": "initialize_conversation_state",
+   "entry_kind": "tools_list",
+   "params": [
+    "user_name",
+    "topic"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_with_memory_example.py",
+   "qualname": "retrieve_user_history",
+   "entry_kind": "tools_list",
+   "params": [
+    "user_name"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_with_memory_example.py",
+   "qualname": "search_conversation_memory",
+   "entry_kind": "tools_list",
+   "params": [
+    "query",
+    "speaker"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_with_memory_example.py",
+   "qualname": "summarize_and_save_state",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_architectural_fixes.py",
+   "qualname": "TestGap2ParallelToolExecution.test_parallel_vs_sequential_performance.slow_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "duration"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_architectural_fixes.py",
+   "qualname": "TestRealAgenticIntegration.test_real_agent_with_architectural_fixes.get_news",
+   "entry_kind": "decorator",
+   "params": [
+    "topic"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_architectural_fixes.py",
+   "qualname": "TestRealAgenticIntegration.test_real_agent_with_architectural_fixes.get_time",
+   "entry_kind": "decorator",
+   "params": [
+    "timezone"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_architectural_fixes.py",
+   "qualname": "TestRealAgenticIntegration.test_real_agent_with_architectural_fixes.get_weather",
+   "entry_kind": "decorator",
+   "params": [
+    "location"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_multiple_mcp_tools.py",
+   "qualname": "mock_mcp_filesystem",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_multiple_mcp_tools.py",
+   "qualname": "mock_mcp_with_tools",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_multiple_mcp_tools.py",
+   "qualname": "mock_mcp_with_tools.get_current_time",
+   "entry_kind": "tools_list",
+   "params": [
+    "timezone"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_multiple_mcp_tools.py",
+   "qualname": "sample_function",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_multiple_mcp_tools.py",
+   "qualname": "time_mcp",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_parallel_tools.py",
+   "qualname": "fetch_analytics_data",
+   "entry_kind": "decorator",
+   "params": [
+    "metric"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_parallel_tools.py",
+   "qualname": "fetch_config_data",
+   "entry_kind": "decorator",
+   "params": [
+    "config_key"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_parallel_tools.py",
+   "qualname": "fetch_user_data",
+   "entry_kind": "decorator",
+   "params": [
+    "user_id"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_plugin_system.py",
+   "qualname": "TestAgentIntegration.test_agent_execute_decorated_tool.subtract",
+   "entry_kind": "decorator",
+   "params": [
+    "a",
+    "b"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_plugin_system.py",
+   "qualname": "TestAgentIntegration.test_agent_with_decorated_tool.multiply",
+   "entry_kind": "decorator",
+   "params": [
+    "a",
+    "b"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_plugin_system.py",
+   "qualname": "TestToolDecorator.test_decorated_function_callable_both_ways.greet",
+   "entry_kind": "decorator",
+   "params": [
+    "name",
+    "greeting"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_plugin_system.py",
+   "qualname": "TestToolDecorator.test_decorated_function_has_schema.calculate",
+   "entry_kind": "decorator",
+   "params": [
+    "a",
+    "b",
+    "operation"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_plugin_system.py",
+   "qualname": "TestToolDecorator.test_decorated_function_is_basetool.my_func",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_plugin_system.py",
+   "qualname": "TestToolDecorator.test_decorator_with_args.search",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_plugin_system.py",
+   "qualname": "TestToolDecorator.test_decorator_without_args.my_search",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_plugin_system.py",
+   "qualname": "TestToolValidation.test_decorated_tool_passes_validation.my_search",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_self_reflection_comprehensive.py",
+   "qualname": "duckduckgo_search",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_tool_schema_parity.py",
+   "qualname": "TestBasicToolSchemaValidation.test_function_tool_schema_parity.test_function",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "count"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_tool_schema_parity.py",
+   "qualname": "TestRealAgenticScenario.test_tool_schema_agent_integration.echo_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "message"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_tool_schema_parity.py",
+   "qualname": "TestToolListValidation.test_duplicate_tool_names_error.tool_one",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_tool_schema_parity.py",
+   "qualname": "TestToolListValidation.test_duplicate_tool_names_error.tool_two",
+   "entry_kind": "decorator",
+   "params": [
+    "y"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_tool_schema_parity.py",
+   "qualname": "TestToolListValidation.test_valid_tool_list.tool_one",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_tool_schema_parity.py",
+   "qualname": "TestToolListValidation.test_valid_tool_list.tool_two",
+   "entry_kind": "decorator",
+   "params": [
+    "y"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/agent/test_agent_trace.py",
+   "qualname": "TestAgentToolTraceEmission.test_agent_emits_tool_call_events.test_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/context/test_cache_optimization.py",
+   "qualname": "test_tool_schema_sorting.apple_tool",
+   "entry_kind": "decorator",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/context/test_cache_optimization.py",
+   "qualname": "test_tool_schema_sorting.middle_tool",
+   "entry_kind": "decorator",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/context/test_cache_optimization.py",
+   "qualname": "test_tool_schema_sorting.zebra_tool",
+   "entry_kind": "decorator",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_circuit_breaker.py",
+   "qualname": "test_circuit_breaker_real_agentic.protected_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestAgentToolExecution.test_agent_injects_state_to_tools.show_state",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestAsyncInjection.test_async_tool_injection.async_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestBackwardCompatibility.test_existing_tool_schema_unchanged.legacy_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "count"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestBackwardCompatibility.test_existing_tools_still_work.legacy_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "count"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestInjectionZeroOverhead.test_no_injected_params_no_overhead.simple_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestInjectionZeroOverhead.test_schema_generation_fast.my_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "a",
+    "b",
+    "c",
+    "d"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestToolDecoratorInjection.test_injected_params_not_in_schema.my_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestToolDecoratorInjection.test_injected_params_not_required.my_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestToolDecoratorInjection.test_tool_decorator_detects_injected.my_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestToolExecutionInjection.test_injected_dict_state.my_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestToolExecutionInjection.test_injected_state_provided_at_runtime.my_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_protocols.py",
+   "qualname": "TestToolProtocol.test_function_tool_satisfies_protocol.my_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_decorator_retry.py",
+   "qualname": "TestToolDecoratorRetryPolicy.test_mixed_tools_retry_policies.tool_a",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_decorator_retry.py",
+   "qualname": "TestToolDecoratorRetryPolicy.test_mixed_tools_retry_policies.tool_b",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_decorator_retry.py",
+   "qualname": "TestToolDecoratorRetryPolicy.test_mixed_tools_retry_policies.tool_c",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_decorator_retry.py",
+   "qualname": "TestToolDecoratorRetryPolicy.test_tool_decorator_with_retry_policy.test_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_decorator_retry.py",
+   "qualname": "TestToolDecoratorRetryPolicy.test_tool_decorator_without_retry_policy.test_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_decorator_retry.py",
+   "qualname": "TestToolDecoratorRetryPolicy.test_tool_with_retry_policy_used_by_agent.special_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_agentic.py",
+   "qualname": "TestRetryPolicyAgentic.test_agent_with_flaky_tool_real_llm.flaky_web_search",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_agentic.py",
+   "qualname": "TestRetryPolicyAgentic.test_agent_with_non_retryable_tool_real_llm.restricted_database_query",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_agentic.py",
+   "qualname": "TestRetryPolicyAgentic.test_agent_with_tool_level_retry_policy_real_llm.fallback_api",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_agentic.py",
+   "qualname": "TestRetryPolicyAgentic.test_agent_with_tool_level_retry_policy_real_llm.primary_api",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_agentic.py",
+   "qualname": "TestRetryPolicyAgentic.test_async_agent_with_retry_real_llm.async_weather_api",
+   "entry_kind": "decorator",
+   "params": [
+    "location"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_integration.py",
+   "qualname": "TestRetryPolicyPrecedence.test_agent_level_policy_precedence.test_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_integration.py",
+   "qualname": "TestRetryPolicyPrecedence.test_default_policy_fallback.test_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_integration.py",
+   "qualname": "TestRetryPolicyPrecedence.test_tool_level_policy_precedence.test_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_integration.py",
+   "qualname": "TestSyncRetryIntegration.test_sync_retry_hook_emission.failing_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_integration.py",
+   "qualname": "TestSyncRetryIntegration.test_sync_retry_non_retryable_error.permission_denied_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_integration.py",
+   "qualname": "TestSyncRetryIntegration.test_sync_retry_with_timeout_error.flaky_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/tools/test_availability_gating.py",
+   "qualname": "test_availability_check_exception_handling.failing_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/tools/test_availability_gating.py",
+   "qualname": "test_list_available_tools_module_function.test_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/tools/test_availability_gating.py",
+   "qualname": "test_registry_list_available_tools.available_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/tools/test_availability_gating.py",
+   "qualname": "test_registry_list_available_tools.unavailable_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/tools/test_availability_gating.py",
+   "qualname": "test_tool_availability_with_env_var.env_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/tools/test_availability_gating.py",
+   "qualname": "test_tool_decorator_no_availability.default_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/tools/test_availability_gating.py",
+   "qualname": "test_tool_decorator_with_availability.available_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/tools/test_availability_gating.py",
+   "qualname": "test_tool_decorator_with_unavailable.unavailable_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/workflow-test-agents.py",
+   "qualname": "print_data",
+   "entry_kind": "tools_list",
+   "params": [
+    "data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/workflow-test-agents.py",
+   "qualname": "upload_to_huggingface",
+   "entry_kind": "tools_list",
+   "params": [
+    "data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/weather_server.py",
+   "qualname": "get_weather",
+   "entry_kind": "decorator",
+   "params": [
+    "location"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.acp_create_file",
+   "entry_kind": "tools_list",
+   "params": [
+    "filepath",
+    "content"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.acp_delete_file",
+   "entry_kind": "tools_list",
+   "params": [
+    "filepath"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.acp_edit_file",
+   "entry_kind": "tools_list",
+   "params": [
+    "filepath",
+    "new_content"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.acp_execute_command",
+   "entry_kind": "tools_list",
+   "params": [
+    "command",
+    "cwd"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.list_files",
+   "entry_kind": "tools_list",
+   "params": [
+    "directory",
+    "pattern"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.lsp_find_definition",
+   "entry_kind": "tools_list",
+   "params": [
+    "symbol",
+    "file_path"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.lsp_find_references",
+   "entry_kind": "tools_list",
+   "params": [
+    "symbol",
+    "file_path"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.lsp_get_diagnostics",
+   "entry_kind": "tools_list",
+   "params": [
+    "file_path"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.lsp_list_symbols",
+   "entry_kind": "tools_list",
+   "params": [
+    "file_path"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.read_file",
+   "entry_kind": "tools_list",
+   "params": [
+    "filepath"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/code/tools/execute_command.py",
+   "qualname": "execute_command",
+   "entry_kind": "tools_list",
+   "params": [
+    "command",
+    "cwd",
+    "workspace",
+    "timeout",
+    "capture_output",
+    "shell",
+    "env"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/code/tools/write_file.py",
+   "qualname": "write_file",
+   "entry_kind": "tools_list",
+   "params": [
+    "path",
+    "content",
+    "workspace",
+    "create_directories",
+    "backup",
+    "strip_code_fences",
+    "encoding"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/history_store.py",
+   "qualname": "create_history_tools.history_get",
+   "entry_kind": "tools_list",
+   "params": [
+    "agent_id",
+    "run_id",
+    "start_turn",
+    "end_turn"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/history_store.py",
+   "qualname": "create_history_tools.history_search",
+   "entry_kind": "tools_list",
+   "params": [
+    "query",
+    "agent_id",
+    "run_id",
+    "max_results"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/history_store.py",
+   "qualname": "create_history_tools.history_tail",
+   "entry_kind": "tools_list",
+   "params": [
+    "agent_id",
+    "run_id",
+    "count"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/queue.py",
+   "qualname": "create_artifact_tools.artifact_chunk",
+   "entry_kind": "tools_list",
+   "params": [
+    "artifact_path",
+    "start_line",
+    "end_line"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/queue.py",
+   "qualname": "create_artifact_tools.artifact_grep",
+   "entry_kind": "tools_list",
+   "params": [
+    "artifact_path",
+    "pattern",
+    "context_lines",
+    "max_matches"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/queue.py",
+   "qualname": "create_artifact_tools.artifact_head",
+   "entry_kind": "tools_list",
+   "params": [
+    "artifact_path",
+    "lines"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/queue.py",
+   "qualname": "create_artifact_tools.artifact_list",
+   "entry_kind": "tools_list",
+   "params": [
+    "run_id",
+    "agent_id",
+    "tool_name"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/queue.py",
+   "qualname": "create_artifact_tools.artifact_tail",
+   "entry_kind": "tools_list",
+   "params": [
+    "artifact_path",
+    "lines"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/terminal_logger.py",
+   "qualname": "create_terminal_tools.terminal_commands",
+   "entry_kind": "tools_list",
+   "params": [
+    "agent_id",
+    "run_id",
+    "last_n"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/terminal_logger.py",
+   "qualname": "create_terminal_tools.terminal_grep",
+   "entry_kind": "tools_list",
+   "params": [
+    "pattern",
+    "agent_id",
+    "run_id",
+    "max_matches"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/terminal_logger.py",
+   "qualname": "create_terminal_tools.terminal_tail",
+   "entry_kind": "tools_list",
+   "params": [
+    "agent_id",
+    "run_id",
+    "lines"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/mcp_server/tool_index.py",
+   "qualname": "create_mcp_tools.mcp_describe_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "server",
+    "tool"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/mcp_server/tool_index.py",
+   "qualname": "create_mcp_tools.mcp_list_tools",
+   "entry_kind": "tools_list",
+   "params": [
+    "server"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/mcp_server/tool_index.py",
+   "qualname": "create_mcp_tools.mcp_search_tools",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/tools/audio.py",
+   "qualname": "create_stt_tool.stt",
+   "entry_kind": "decorator",
+   "params": [
+    "audio_path",
+    "language"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/tools/audio.py",
+   "qualname": "create_tts_tool.tts",
+   "entry_kind": "decorator",
+   "params": [
+    "text",
+    "voice"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/tools/skill_manage.py",
+   "qualname": "skill_manage",
+   "entry_kind": "decorator",
+   "params": [
+    "action",
+    "name",
+    "content",
+    "old_string",
+    "new_string",
+    "file_path",
+    "category",
+    "replace_all"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/tests/integration/smoke_w1_robust.py",
+   "qualname": "test_session_context_visible_to_tool.whoami",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/tests/integration/test_self_improving_loop.py",
+   "qualname": "test_self_improving_agent_loop.isolated_skill_manage",
+   "entry_kind": "tools_list",
+   "params": [
+    "action",
+    "name",
+    "content",
+    "old_string",
+    "new_string",
+    "file_path",
+    "category",
+    "replace_all"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/tests/source/autogen_langchain_tools.py",
+   "qualname": "CircumferenceTool._run",
+   "entry_kind": "method",
+   "params": [
+    "radius"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/tests/source/crewai_tools.py",
+   "qualname": "internet_search_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/tests/tools/internet_search.py",
+   "qualname": "internet_search_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/tests/unit/gateway/test_gateway_approval_agentic.py",
+   "qualname": "dangerous_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "path"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/tests/unit/test_ollama_fix.py",
+   "qualname": "test_agent_tool_parameter_logic.dummy_tool",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/tests/yaml_example.py",
+   "qualname": "InternetSearchTool._run",
+   "entry_kind": "method",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  }
+ ],
+ "A9__fixed": [
+  {
+   "relpath": "examples/catalog/template_finder_agent.py",
+   "qualname": "get_template_details_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "name"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/catalog/template_finder_agent.py",
+   "qualname": "list_all_templates_tool",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/catalog/template_finder_agent.py",
+   "qualname": "search_templates_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/guardrail_example_fixed.py",
+   "qualname": "get_url_context",
+   "entry_kind": "tools_list",
+   "params": [
+    "url"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/middleware/basic_middleware.py",
+   "qualname": "get_weather",
+   "entry_kind": "decorator",
+   "params": [
+    "city"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/middleware/injected_state.py",
+   "qualname": "show_context",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/performance/lite_agent_example.py",
+   "qualname": "example_with_tools.add_numbers",
+   "entry_kind": "decorator",
+   "params": [
+    "a",
+    "b"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/performance/lite_agent_example.py",
+   "qualname": "example_with_tools.multiply_numbers",
+   "entry_kind": "decorator",
+   "params": [
+    "a",
+    "b"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/agents/code-agent.py",
+   "qualname": "analyze_code_complexity",
+   "entry_kind": "tools_list",
+   "params": [
+    "code"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/agents/code-agent.py",
+   "qualname": "run_python_code",
+   "entry_kind": "tools_list",
+   "params": [
+    "code"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/python/agents/math-agent.py",
+   "qualname": "basic_calculator",
+   "entry_kind": "tools_list",
+   "params": [
+    "expression"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/python/agents/math-agent.py",
+   "qualname": "calculate_statistics",
+   "entry_kind": "tools_list",
+   "params": [
+    "numbers"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/agents/math-agent.py",
+   "qualname": "solve_quadratic",
+   "entry_kind": "tools_list",
+   "params": [
+    "a",
+    "b",
+    "c"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/concepts/reasoning-extraction.py",
+   "qualname": "save_reasoning_chain",
+   "entry_kind": "tools_list",
+   "params": [
+    "chain"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/python/custom_tools/latency_tracker_tool.py",
+   "qualname": "latency_tracking_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "action",
+    "phase",
+    "request_id"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/handoff/handoff_customer_service.py",
+   "qualname": "get_faq_answer",
+   "entry_kind": "tools_list",
+   "params": [
+    "question"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/lite_agent_example.py",
+   "qualname": "example_with_tools.add_numbers",
+   "entry_kind": "decorator",
+   "params": [
+    "a",
+    "b"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/mcp/custom-python-server.py",
+   "qualname": "get_stock_price",
+   "entry_kind": "decorator",
+   "params": [
+    "ticker"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/mcp/multiple-mcp-servers.py",
+   "qualname": "my_custom_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/monitoring/08_custom_tools_monitoring.py",
+   "qualname": "call_external_api",
+   "entry_kind": "decorator",
+   "params": [
+    "endpoint",
+    "method",
+    "payload"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/monitoring/08_custom_tools_monitoring.py",
+   "qualname": "file_operation",
+   "entry_kind": "decorator",
+   "params": [
+    "operation",
+    "filename",
+    "content"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/monitoring/08_custom_tools_monitoring.py",
+   "qualname": "process_data",
+   "entry_kind": "decorator",
+   "params": [
+    "data",
+    "operation"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/monitoring/08_custom_tools_monitoring.py",
+   "qualname": "query_database",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "database"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/plugin_template/src/praisonai_example_plugin/__init__.py",
+   "qualname": "reverse_text",
+   "entry_kind": "decorator",
+   "params": [
+    "text"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/01_basic_state_management.py",
+   "qualname": "add_feature",
+   "entry_kind": "tools_list",
+   "params": [
+    "feature_name"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/01_basic_state_management.py",
+   "qualname": "check_budget_health",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/01_basic_state_management.py",
+   "qualname": "display_project_status",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/01_basic_state_management.py",
+   "qualname": "update_project_stage",
+   "entry_kind": "tools_list",
+   "params": [
+    "new_stage"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/02_state_in_tool_functions.py",
+   "qualname": "generate_report",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/02_state_in_tool_functions.py",
+   "qualname": "log_error",
+   "entry_kind": "tools_list",
+   "params": [
+    "error_type",
+    "error_message"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/02_state_in_tool_functions.py",
+   "qualname": "process_data_batch",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/02_state_in_tool_functions.py",
+   "qualname": "track_progress",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/02_state_in_tool_functions.py",
+   "qualname": "update_configuration",
+   "entry_kind": "tools_list",
+   "params": [
+    "key",
+    "value"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "check_budget_status",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "check_performance",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "continue_development",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "expand_features",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "generate_decision_report",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "maintain_current_setup",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "optimize_performance",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "reduce_costs",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/03_conditional_task_execution.py",
+   "qualname": "scale_infrastructure",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/04_session_state_persistence.py",
+   "qualname": "check_processing_status",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/04_session_state_persistence.py",
+   "qualname": "generate_session_report",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/04_session_state_persistence.py",
+   "qualname": "process_customer_data",
+   "entry_kind": "tools_list",
+   "params": [
+    "customer_id"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/04_session_state_persistence.py",
+   "qualname": "save_checkpoint",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/04_session_state_persistence.py",
+   "qualname": "simulate_long_task",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/05_loop_control_with_state.py",
+   "qualname": "collect_paginated_data",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/05_loop_control_with_state.py",
+   "qualname": "generate_loop_report",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/05_loop_control_with_state.py",
+   "qualname": "process_batch",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/05_loop_control_with_state.py",
+   "qualname": "process_retry_batch",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/05_loop_control_with_state.py",
+   "qualname": "validate_collected_items",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/06_advanced_state_operations.py",
+   "qualname": "aggregate_distributed_state",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/06_advanced_state_operations.py",
+   "qualname": "calculate_derived_metrics",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/06_advanced_state_operations.py",
+   "qualname": "generate_advanced_report",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/06_advanced_state_operations.py",
+   "qualname": "handle_state_transactions",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/06_advanced_state_operations.py",
+   "qualname": "implement_state_cache",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/06_advanced_state_operations.py",
+   "qualname": "manage_nested_state",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/06_advanced_state_operations.py",
+   "qualname": "manage_state_versioning",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/workflow-state-example.py",
+   "qualname": "analysis_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "research_data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/stateful/workflow-state-example.py",
+   "qualname": "research_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "topic",
+    "num_sources"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/tools/langchain/agentql-toolkit.py",
+   "qualname": "extract_web_data_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "url",
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/tools/langchain/brave-search.py",
+   "qualname": "search_brave",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/tools/langchain/exa-search.py",
+   "qualname": "search_and_contents",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/tools/langchain/jina-search.py",
+   "qualname": "invoke_jina_search",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/tools/trafilatura/trafilatura_example.py",
+   "qualname": "agent_example.extract_content_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "url"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/tools/trafilatura/trafilatura_example.py",
+   "qualname": "agent_example.extract_metadata_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "url"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/adaptive-learning.py",
+   "qualname": "adapt_difficulty",
+   "entry_kind": "tools_list",
+   "params": [
+    "performance"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/adaptive-learning.py",
+   "qualname": "assess_student_level",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/adaptive-learning.py",
+   "qualname": "evaluate_performance",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/adaptive-learning.py",
+   "qualname": "generate_content",
+   "entry_kind": "tools_list",
+   "params": [
+    "level"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/climate-impact.py",
+   "qualname": "analyze_urban_factors",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/climate-impact.py",
+   "qualname": "collect_environmental_data",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/climate-impact.py",
+   "qualname": "generate_adaptation_strategies",
+   "entry_kind": "tools_list",
+   "params": [
+    "predictions"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/climate-impact.py",
+   "qualname": "model_microclimate",
+   "entry_kind": "tools_list",
+   "params": [
+    "env_data",
+    "urban_factors"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/climate-impact.py",
+   "qualname": "predict_impacts",
+   "entry_kind": "tools_list",
+   "params": [
+    "models"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/crypto-validator.py",
+   "qualname": "analyze_cryptographic_scheme",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/crypto-validator.py",
+   "qualname": "assess_implementation",
+   "entry_kind": "tools_list",
+   "params": [
+    "scheme",
+    "benchmarks"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/crypto-validator.py",
+   "qualname": "simulate_quantum_attacks",
+   "entry_kind": "tools_list",
+   "params": [
+    "scheme"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/crypto-validator.py",
+   "qualname": "validate_compliance",
+   "entry_kind": "tools_list",
+   "params": [
+    "scheme",
+    "assessment"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/customer-service.py",
+   "qualname": "classify_query",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/customer-service.py",
+   "qualname": "evaluate_satisfaction",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/customer-service.py",
+   "qualname": "handle_query",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/customer-service.py",
+   "qualname": "optimize_response",
+   "entry_kind": "tools_list",
+   "params": [
+    "satisfaction"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/defi-market-maker.py",
+   "qualname": "analyze_market_conditions",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/defi-market-maker.py",
+   "qualname": "assess_risks",
+   "entry_kind": "tools_list",
+   "params": [
+    "arbitrage",
+    "optimizations"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/defi-market-maker.py",
+   "qualname": "detect_arbitrage",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/defi-market-maker.py",
+   "qualname": "execute_trades",
+   "entry_kind": "tools_list",
+   "params": [
+    "arbitrage",
+    "risks"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/defi-market-maker.py",
+   "qualname": "optimize_liquidity",
+   "entry_kind": "tools_list",
+   "params": [
+    "market_conditions"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/disaster-recovery.py",
+   "qualname": "assess_emergency_level",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/disaster-recovery.py",
+   "qualname": "assess_resources",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/disaster-recovery.py",
+   "qualname": "check_network_status",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/disaster-recovery.py",
+   "qualname": "execute_distribution",
+   "entry_kind": "tools_list",
+   "params": [
+    "plan"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/disaster-recovery.py",
+   "qualname": "generate_distribution_plan",
+   "entry_kind": "tools_list",
+   "params": [
+    "priorities"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/disaster-recovery.py",
+   "qualname": "monitor_effectiveness",
+   "entry_kind": "tools_list",
+   "params": [
+    "execution_results"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/disaster-recovery.py",
+   "qualname": "prioritize_needs",
+   "entry_kind": "tools_list",
+   "params": [
+    "emergency",
+    "resources"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/domain-context-solution.py",
+   "qualname": "create_domain_aware_tools.query_api_ninjas",
+   "entry_kind": "tools_list",
+   "params": [
+    "domain_param"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/python/usecases/domain-context-solution.py",
+   "qualname": "create_domain_aware_tools.query_crtsh",
+   "entry_kind": "tools_list",
+   "params": [
+    "domain_param"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/python/usecases/domain-context-solution.py",
+   "qualname": "create_domain_aware_tools.query_fofa",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/python/usecases/domain-context-solution.py",
+   "qualname": "create_domain_aware_tools.query_networkcalc",
+   "entry_kind": "tools_list",
+   "params": [
+    "domain_param"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/python/usecases/domain-context-solution.py",
+   "qualname": "create_domain_aware_tools.query_whoxy",
+   "entry_kind": "tools_list",
+   "params": [
+    "email_or_org"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "examples/python/usecases/emergency-response.py",
+   "qualname": "assess_emergency",
+   "entry_kind": "tools_list",
+   "params": [
+    "incident"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/emergency-response.py",
+   "qualname": "dispatch_resources",
+   "entry_kind": "tools_list",
+   "params": [
+    "severity"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/emergency-response.py",
+   "qualname": "monitor_response",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/fraud-detection.py",
+   "qualname": "analyze_transaction",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/fraud-detection.py",
+   "qualname": "check_patterns",
+   "entry_kind": "tools_list",
+   "params": [
+    "transaction"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/fraud-detection.py",
+   "qualname": "generate_alert",
+   "entry_kind": "tools_list",
+   "params": [
+    "verification",
+    "patterns"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/fraud-detection.py",
+   "qualname": "verify_identity",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/healthcare-diagnosis.py",
+   "qualname": "analyze_medical_history",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/healthcare-diagnosis.py",
+   "qualname": "analyze_symptoms",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/healthcare-diagnosis.py",
+   "qualname": "generate_diagnosis",
+   "entry_kind": "tools_list",
+   "params": [
+    "symptoms",
+    "lab_results",
+    "history"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/healthcare-diagnosis.py",
+   "qualname": "process_lab_results",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/healthcare-diagnosis.py",
+   "qualname": "recommend_treatment",
+   "entry_kind": "tools_list",
+   "params": [
+    "diagnosis"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/medicine-protocol.py",
+   "qualname": "analyze_drug_interactions",
+   "entry_kind": "tools_list",
+   "params": [
+    "genetic_data",
+    "patient_history"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/medicine-protocol.py",
+   "qualname": "analyze_genetic_markers",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/medicine-protocol.py",
+   "qualname": "evaluate_patient_history",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/medicine-protocol.py",
+   "qualname": "generate_protocol",
+   "entry_kind": "tools_list",
+   "params": [
+    "genetic_data",
+    "interactions"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/medicine-protocol.py",
+   "qualname": "simulate_effectiveness",
+   "entry_kind": "tools_list",
+   "params": [
+    "protocol"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/multilingual-content.py",
+   "qualname": "adapt_content",
+   "entry_kind": "tools_list",
+   "params": [
+    "issues"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/multilingual-content.py",
+   "qualname": "check_cultural_context",
+   "entry_kind": "tools_list",
+   "params": [
+    "translations"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/multilingual-content.py",
+   "qualname": "generate_base_content",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/multilingual-content.py",
+   "qualname": "quality_check",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/multilingual-content.py",
+   "qualname": "translate_content",
+   "entry_kind": "tools_list",
+   "params": [
+    "content"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/neural-architecture.py",
+   "qualname": "analyze_hardware_constraints",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/neural-architecture.py",
+   "qualname": "estimate_performance",
+   "entry_kind": "tools_list",
+   "params": [
+    "architecture",
+    "hyperparams"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/neural-architecture.py",
+   "qualname": "generate_architecture_candidates",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/neural-architecture.py",
+   "qualname": "optimize_deployment",
+   "entry_kind": "tools_list",
+   "params": [
+    "architecture",
+    "performance"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/neural-architecture.py",
+   "qualname": "optimize_hyperparameters",
+   "entry_kind": "tools_list",
+   "params": [
+    "architecture"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/predictive-maintenance.py",
+   "qualname": "analyze_performance",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/predictive-maintenance.py",
+   "qualname": "collect_sensor_data",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/predictive-maintenance.py",
+   "qualname": "detect_anomalies",
+   "entry_kind": "tools_list",
+   "params": [
+    "sensor_data",
+    "performance"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/predictive-maintenance.py",
+   "qualname": "predict_failures",
+   "entry_kind": "tools_list",
+   "params": [
+    "anomalies"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/predictive-maintenance.py",
+   "qualname": "schedule_maintenance",
+   "entry_kind": "tools_list",
+   "params": [
+    "predictions"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/quantum-optimiser.py",
+   "qualname": "analyze_quantum_circuit",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/quantum-optimiser.py",
+   "qualname": "identify_optimization_opportunities",
+   "entry_kind": "tools_list",
+   "params": [
+    "metrics"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/quantum-optimiser.py",
+   "qualname": "simulate_optimization",
+   "entry_kind": "tools_list",
+   "params": [
+    "opportunities"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/quantum-optimiser.py",
+   "qualname": "validate_results",
+   "entry_kind": "tools_list",
+   "params": [
+    "benchmarks"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/research-assistant.py",
+   "qualname": "analyze_research_papers",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/research-assistant.py",
+   "qualname": "design_experiment",
+   "entry_kind": "tools_list",
+   "params": [
+    "gaps"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/research-assistant.py",
+   "qualname": "identify_knowledge_gaps",
+   "entry_kind": "tools_list",
+   "params": [
+    "papers"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/research-assistant.py",
+   "qualname": "predict_impact",
+   "entry_kind": "tools_list",
+   "params": [
+    "experiments",
+    "validations"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/research-assistant.py",
+   "qualname": "validate_methodology",
+   "entry_kind": "tools_list",
+   "params": [
+    "experiments"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/smart-city.py",
+   "qualname": "analyze_patterns",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/smart-city.py",
+   "qualname": "implement_changes",
+   "entry_kind": "tools_list",
+   "params": [
+    "optimizations"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/smart-city.py",
+   "qualname": "monitor_feedback",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/smart-city.py",
+   "qualname": "monitor_utilities",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/smart-city.py",
+   "qualname": "optimize_resources",
+   "entry_kind": "tools_list",
+   "params": [
+    "readings",
+    "patterns"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/space-mission.py",
+   "qualname": "analyze_mission_parameters",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/space-mission.py",
+   "qualname": "calculate_resource_requirements",
+   "entry_kind": "tools_list",
+   "params": [
+    "params"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/space-mission.py",
+   "qualname": "optimize_allocation",
+   "entry_kind": "tools_list",
+   "params": [
+    "requirements",
+    "contingencies"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/space-mission.py",
+   "qualname": "plan_contingencies",
+   "entry_kind": "tools_list",
+   "params": [
+    "requirements"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/space-mission.py",
+   "qualname": "simulate_mission_scenarios",
+   "entry_kind": "tools_list",
+   "params": [
+    "allocation"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/supply-chain.py",
+   "qualname": "analyze_supply_impact",
+   "entry_kind": "tools_list",
+   "params": [
+    "event"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/supply-chain.py",
+   "qualname": "generate_mitigation_strategies",
+   "entry_kind": "tools_list",
+   "params": [
+    "impact"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/supply-chain.py",
+   "qualname": "monitor_global_events",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/vulnerability-detection.py",
+   "qualname": "analyze_attack_vectors",
+   "entry_kind": "tools_list",
+   "params": [
+    "pattern"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/vulnerability-detection.py",
+   "qualname": "generate_signatures",
+   "entry_kind": "tools_list",
+   "params": [
+    "results"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/vulnerability-detection.py",
+   "qualname": "scan_code_patterns",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/vulnerability-detection.py",
+   "qualname": "simulate_exploitation",
+   "entry_kind": "tools_list",
+   "params": [
+    "vectors"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/python/usecases/vulnerability-detection.py",
+   "qualname": "validate_findings",
+   "entry_kind": "tools_list",
+   "params": [
+    "signatures"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/scientific_writing/scientific_writer.py",
+   "qualname": "format_citation",
+   "entry_kind": "decorator",
+   "params": [
+    "authors",
+    "year",
+    "title",
+    "venue"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "examples/scientific_writing/scientific_writer.py",
+   "qualname": "format_latex_section",
+   "entry_kind": "decorator",
+   "params": [
+    "title",
+    "content"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/08_custom_tools_monitoring.py",
+   "qualname": "call_external_api",
+   "entry_kind": "decorator",
+   "params": [
+    "endpoint",
+    "method",
+    "payload"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/08_custom_tools_monitoring.py",
+   "qualname": "file_operation",
+   "entry_kind": "decorator",
+   "params": [
+    "operation",
+    "filename",
+    "content"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/08_custom_tools_monitoring.py",
+   "qualname": "process_data",
+   "entry_kind": "decorator",
+   "params": [
+    "data",
+    "operation"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/08_custom_tools_monitoring.py",
+   "qualname": "query_database",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "database"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/autoagents-tavily.py",
+   "qualname": "tavily",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/benchmarks/real_benchmark.py",
+   "qualname": "get_time",
+   "entry_kind": "tools_list",
+   "params": [
+    "timezone"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/benchmarks/tools_benchmark.py",
+   "qualname": "sample_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "city"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/handoff-test.py",
+   "qualname": "check_refund_policy",
+   "entry_kind": "tools_list",
+   "params": [
+    "item_type"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/handoff-test.py",
+   "qualname": "create_ticket",
+   "entry_kind": "tools_list",
+   "params": [
+    "issue_description",
+    "priority"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/handoff-test.py",
+   "qualname": "diagnose_issue",
+   "entry_kind": "tools_list",
+   "params": [
+    "description"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/handoff-test.py",
+   "qualname": "track_shipment",
+   "entry_kind": "tools_list",
+   "params": [
+    "tracking_number"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/agent/execution_mixin.py",
+   "qualname": "ExecutionMixin._launch_mcp_server.execute_agent_task",
+   "entry_kind": "decorator",
+   "params": [
+    "prompt"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/agent/sandbox_mixin.py",
+   "qualname": "SandboxMixin._get_code_execution_tools.execute_python_code",
+   "entry_kind": "decorator",
+   "params": [
+    "code"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/agent/sandbox_mixin.py",
+   "qualname": "SandboxMixin._get_code_execution_tools.execute_shell_command",
+   "entry_kind": "decorator",
+   "params": [
+    "command"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/agents/agents.py",
+   "qualname": "AgentTeam.launch.execute_workflow_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/mcp/mcp_server.py",
+   "qualname": "ToolsMCPServer._register_tool_with_fastmcp.tool_wrapper",
+   "entry_kind": "decorator",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/a2ui_tools.py",
+   "qualname": "send_a2ui_messages",
+   "entry_kind": "decorator",
+   "params": [
+    "messages"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/ast_grep_tool.py",
+   "qualname": "ast_grep_rewrite",
+   "entry_kind": "tools_list",
+   "params": [
+    "pattern",
+    "replacement",
+    "lang",
+    "path",
+    "dry_run"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/ast_grep_tool.py",
+   "qualname": "ast_grep_scan",
+   "entry_kind": "tools_list",
+   "params": [
+    "path",
+    "rule_file"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/ast_grep_tool.py",
+   "qualname": "ast_grep_search",
+   "entry_kind": "tools_list",
+   "params": [
+    "pattern",
+    "lang",
+    "path",
+    "json_output"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/decorator.py",
+   "qualname": "tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "func",
+    "name",
+    "description",
+    "version",
+    "availability",
+    "dynamic_schema_overrides",
+    "retry_policy"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/duckduckgo_tools.py",
+   "qualname": "duckduckgo",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/email_tools.py",
+   "qualname": "list_emails",
+   "entry_kind": "tools_list",
+   "params": [
+    "limit"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/email_tools.py",
+   "qualname": "read_email",
+   "entry_kind": "tools_list",
+   "params": [
+    "message_id"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/email_tools.py",
+   "qualname": "reply_email",
+   "entry_kind": "tools_list",
+   "params": [
+    "message_id",
+    "body"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/email_tools.py",
+   "qualname": "send_email",
+   "entry_kind": "tools_list",
+   "params": [
+    "to",
+    "subject",
+    "body",
+    "cc",
+    "bcc"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/email_tools.py",
+   "qualname": "smtp_read_inbox",
+   "entry_kind": "tools_list",
+   "params": [
+    "limit",
+    "folder"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/email_tools.py",
+   "qualname": "smtp_send_email",
+   "entry_kind": "tools_list",
+   "params": [
+    "to",
+    "subject",
+    "body",
+    "cc",
+    "bcc"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/exa_tools.py",
+   "qualname": "exa_search",
+   "entry_kind": "tools_list",
+   "params": [
+    "query",
+    "num_results",
+    "type",
+    "category",
+    "include_domains",
+    "exclude_domains",
+    "start_published_date",
+    "end_published_date"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/github_tools.py",
+   "qualname": "github_commit_and_push",
+   "entry_kind": "decorator",
+   "params": [
+    "commit_message"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/github_tools.py",
+   "qualname": "github_create_branch",
+   "entry_kind": "decorator",
+   "params": [
+    "branch_name"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/github_tools.py",
+   "qualname": "github_create_pull_request",
+   "entry_kind": "decorator",
+   "params": [
+    "title",
+    "body",
+    "head_branch",
+    "base_branch"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/learning.py",
+   "qualname": "search_learning",
+   "entry_kind": "tools_list",
+   "params": [
+    "query",
+    "category",
+    "limit",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/learning.py",
+   "qualname": "store_learning",
+   "entry_kind": "tools_list",
+   "params": [
+    "content",
+    "category",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/memory.py",
+   "qualname": "search_memory",
+   "entry_kind": "tools_list",
+   "params": [
+    "query",
+    "limit",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/python_tools.py",
+   "qualname": "disassemble_code",
+   "entry_kind": "tools_list",
+   "params": [
+    "code"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/python_tools.py",
+   "qualname": "execute_code",
+   "entry_kind": "tools_list",
+   "params": [
+    "code",
+    "globals_dict",
+    "locals_dict",
+    "timeout",
+    "max_output_size",
+    "sandbox_mode"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/python_tools.py",
+   "qualname": "format_code",
+   "entry_kind": "tools_list",
+   "params": [
+    "code",
+    "style",
+    "line_length"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/python_tools.py",
+   "qualname": "lint_code",
+   "entry_kind": "tools_list",
+   "params": [
+    "code"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/searxng_tools.py",
+   "qualname": "searxng_search",
+   "entry_kind": "tools_list",
+   "params": [
+    "query",
+    "max_results",
+    "searxng_url"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/tavily_tools.py",
+   "qualname": "tavily_extract",
+   "entry_kind": "tools_list",
+   "params": [
+    "urls",
+    "include_images",
+    "extract_depth"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/web_crawl_tools.py",
+   "qualname": "web_crawl",
+   "entry_kind": "tools_list",
+   "params": [
+    "urls",
+    "provider"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/praisonaiagents/tools/youdotcom_tools.py",
+   "qualname": "ydc_search",
+   "entry_kind": "tools_list",
+   "params": [
+    "query",
+    "count",
+    "freshness",
+    "country",
+    "language",
+    "offset",
+    "safesearch",
+    "livecrawl",
+    "livecrawl_formats"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai-agents/test_fix_verification.py",
+   "qualname": "simple_tool",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/test_self_reflection_with_tools_verification.py",
+   "qualname": "simple_calculator",
+   "entry_kind": "tools_list",
+   "params": [
+    "operation",
+    "a",
+    "b"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/test_user_code_pattern.py",
+   "qualname": "google_web_search_llm",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/test_validation_feedback.py",
+   "qualname": "test_example_two.mock_web_search",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/crewai-tools-example.py",
+   "qualname": "InternetSearchTool._run",
+   "entry_kind": "method",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/error/test_error_recovery_live.py",
+   "qualname": "TestGracefulDegradationLive.test_agent_graceful_degradation_real.advanced_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "task"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/error/test_error_recovery_live.py",
+   "qualname": "TestGracefulDegradationLive.test_agent_graceful_degradation_real.basic_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "task"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/error/test_error_recovery_live.py",
+   "qualname": "TestMultiStepErrorRecoveryLive.test_agent_complex_error_recovery_real.recovery_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/error/test_error_recovery_live.py",
+   "qualname": "TestMultiStepErrorRecoveryLive.test_agent_complex_error_recovery_real.step_one_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/error/test_error_recovery_live.py",
+   "qualname": "TestMultiStepErrorRecoveryLive.test_agent_complex_error_recovery_real.step_two_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/error/test_error_recovery_live.py",
+   "qualname": "TestNetworkErrorRecoveryLive.test_agent_network_resilience_real.network_dependent_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/error/test_error_recovery_live.py",
+   "qualname": "TestToolErrorRecoveryLive.test_agent_tool_failure_recovery_real.backup_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "input_data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/error/test_error_recovery_live.py",
+   "qualname": "TestToolErrorRecoveryLive.test_agent_tool_failure_recovery_real.unreliable_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "input_data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/mcp/test_mcp_integration_live.py",
+   "qualname": "TestMCPErrorHandlingLive.test_agent_mcp_connection_errors_real.fallback_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/mcp/test_mcp_integration_live.py",
+   "qualname": "TestMCPErrorHandlingLive.test_agent_mcp_connection_errors_real.unreliable_mcp_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/mcp/test_mcp_integration_live.py",
+   "qualname": "TestMCPMultiServerLive.test_agent_multiple_mcp_servers_real.mcp_server_a_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/mcp/test_mcp_integration_live.py",
+   "qualname": "TestMCPMultiServerLive.test_agent_multiple_mcp_servers_real.mcp_server_b_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "task"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/mcp/test_mcp_integration_live.py",
+   "qualname": "TestMCPStreamingLive.test_agent_mcp_streaming_real.mcp_streaming_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "prompt"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/mcp/test_mcp_integration_live.py",
+   "qualname": "TestMCPToolsLive.test_agent_mcp_tools_real.mcp_stock_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "symbol"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/mcp/test_mcp_integration_live.py",
+   "qualname": "TestMCPToolsLive.test_agent_mcp_tools_real.mcp_weather_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "location"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/memory/test_memory_integration_live.py",
+   "qualname": "TestMemoryWithToolsLive.test_agent_memory_with_tools_real.calculate",
+   "entry_kind": "decorator",
+   "params": [
+    "expression"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/memory/test_memory_integration_live.py",
+   "qualname": "TestMemoryWithToolsLive.test_agent_memory_with_tools_real.save_note",
+   "entry_kind": "decorator",
+   "params": [
+    "note"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/test_agent_decomposition_real.py",
+   "qualname": "calculate_vault_code",
+   "entry_kind": "decorator",
+   "params": [
+    "base_number",
+    "multiplier"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/test_agent_decomposition_real.py",
+   "qualname": "echo_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "message"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/test_agent_decomposition_real.py",
+   "qualname": "get_weather",
+   "entry_kind": "decorator",
+   "params": [
+    "city"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/test_loop_guardrails.py",
+   "qualname": "another_broken_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "input_data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/test_loop_guardrails.py",
+   "qualname": "broken_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/test_loop_issue.py",
+   "qualname": "another_broken_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/test_loop_issue.py",
+   "qualname": "broken_weather_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "location"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/test_real_features.py",
+   "qualname": "TestRealAgentWithAPI.test_agent_with_tool.get_current_time",
+   "entry_kind": "decorator",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/tools/test_tools_integration_live.py",
+   "qualname": "TestMultiToolAgentLive.test_agent_with_multiple_tools_real.calculate",
+   "entry_kind": "decorator",
+   "params": [
+    "expression"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/tools/test_tools_integration_live.py",
+   "qualname": "TestMultiToolAgentLive.test_agent_with_multiple_tools_real.execute_python",
+   "entry_kind": "decorator",
+   "params": [
+    "code"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/tools/test_tools_integration_live.py",
+   "qualname": "TestMultiToolAgentLive.test_agent_with_multiple_tools_real.web_search",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/tools/test_tools_integration_live.py",
+   "qualname": "TestPythonExecutionToolLive.test_agent_with_python_execution_real.execute_python",
+   "entry_kind": "decorator",
+   "params": [
+    "code"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/tools/test_tools_integration_live.py",
+   "qualname": "TestToolErrorHandlingLive.test_agent_tool_error_recovery_real.backup_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "input_data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/tools/test_tools_integration_live.py",
+   "qualname": "TestToolErrorHandlingLive.test_agent_tool_error_recovery_real.failing_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "input_data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/integration/tools/test_tools_integration_live.py",
+   "qualname": "TestWebSearchToolLive.test_agent_with_web_search_real.web_search",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/mcp-basic.py",
+   "qualname": "stock_price_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "symbol"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/mcp-sse-direct-server.py",
+   "qualname": "get_greeting",
+   "entry_kind": "decorator",
+   "params": [
+    "name"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/mcp-sse-direct-server.py",
+   "qualname": "get_weather",
+   "entry_kind": "decorator",
+   "params": [
+    "city"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/repetitive-manual-agents.py",
+   "qualname": "get_next_task",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/repetitive-manual-agents.py",
+   "qualname": "update_task_status",
+   "entry_kind": "tools_list",
+   "params": [
+    "loop_id",
+    "new_status"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/smoke_core_phase_a_real.py",
+   "qualname": "main.echo",
+   "entry_kind": "tools_list",
+   "params": [
+    "text"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_based_workflow_example.py",
+   "qualname": "analyze_data_quality",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_based_workflow_example.py",
+   "qualname": "check_state_conditions",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_based_workflow_example.py",
+   "qualname": "clean_data_based_on_state",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_based_workflow_example.py",
+   "qualname": "generate_report_from_state",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_based_workflow_example.py",
+   "qualname": "process_batch_with_state",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_management_example.py",
+   "qualname": "add_feature_to_project",
+   "entry_kind": "tools_list",
+   "params": [
+    "feature_name",
+    "estimated_cost"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_management_example.py",
+   "qualname": "check_project_status",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_management_example.py",
+   "qualname": "implement_next_feature",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_management_example.py",
+   "qualname": "initialize_project_state",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_management_example.py",
+   "qualname": "retrieve_session_history",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_with_memory_example.py",
+   "qualname": "add_conversation_turn",
+   "entry_kind": "tools_list",
+   "params": [
+    "speaker",
+    "message"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_with_memory_example.py",
+   "qualname": "analyze_conversation_patterns",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_with_memory_example.py",
+   "qualname": "initialize_conversation_state",
+   "entry_kind": "tools_list",
+   "params": [
+    "user_name",
+    "topic"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_with_memory_example.py",
+   "qualname": "retrieve_user_history",
+   "entry_kind": "tools_list",
+   "params": [
+    "user_name"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_with_memory_example.py",
+   "qualname": "search_conversation_memory",
+   "entry_kind": "tools_list",
+   "params": [
+    "query",
+    "speaker"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/state_with_memory_example.py",
+   "qualname": "summarize_and_save_state",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_architectural_fixes.py",
+   "qualname": "TestGap2ParallelToolExecution.test_parallel_vs_sequential_performance.slow_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "duration"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_architectural_fixes.py",
+   "qualname": "TestRealAgenticIntegration.test_real_agent_with_architectural_fixes.get_news",
+   "entry_kind": "decorator",
+   "params": [
+    "topic"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_architectural_fixes.py",
+   "qualname": "TestRealAgenticIntegration.test_real_agent_with_architectural_fixes.get_time",
+   "entry_kind": "decorator",
+   "params": [
+    "timezone"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_architectural_fixes.py",
+   "qualname": "TestRealAgenticIntegration.test_real_agent_with_architectural_fixes.get_weather",
+   "entry_kind": "decorator",
+   "params": [
+    "location"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_multiple_mcp_tools.py",
+   "qualname": "mock_mcp_filesystem",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_multiple_mcp_tools.py",
+   "qualname": "mock_mcp_with_tools",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_multiple_mcp_tools.py",
+   "qualname": "mock_mcp_with_tools.get_current_time",
+   "entry_kind": "tools_list",
+   "params": [
+    "timezone"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_multiple_mcp_tools.py",
+   "qualname": "sample_function",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_multiple_mcp_tools.py",
+   "qualname": "time_mcp",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_parallel_tools.py",
+   "qualname": "fetch_analytics_data",
+   "entry_kind": "decorator",
+   "params": [
+    "metric"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_parallel_tools.py",
+   "qualname": "fetch_config_data",
+   "entry_kind": "decorator",
+   "params": [
+    "config_key"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_parallel_tools.py",
+   "qualname": "fetch_user_data",
+   "entry_kind": "decorator",
+   "params": [
+    "user_id"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_plugin_system.py",
+   "qualname": "TestAgentIntegration.test_agent_execute_decorated_tool.subtract",
+   "entry_kind": "decorator",
+   "params": [
+    "a",
+    "b"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_plugin_system.py",
+   "qualname": "TestAgentIntegration.test_agent_with_decorated_tool.multiply",
+   "entry_kind": "decorator",
+   "params": [
+    "a",
+    "b"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_plugin_system.py",
+   "qualname": "TestToolDecorator.test_decorated_function_callable_both_ways.greet",
+   "entry_kind": "decorator",
+   "params": [
+    "name",
+    "greeting"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_plugin_system.py",
+   "qualname": "TestToolDecorator.test_decorated_function_has_schema.calculate",
+   "entry_kind": "decorator",
+   "params": [
+    "a",
+    "b",
+    "operation"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_plugin_system.py",
+   "qualname": "TestToolDecorator.test_decorated_function_is_basetool.my_func",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_plugin_system.py",
+   "qualname": "TestToolDecorator.test_decorator_with_args.search",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_plugin_system.py",
+   "qualname": "TestToolDecorator.test_decorator_without_args.my_search",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_plugin_system.py",
+   "qualname": "TestToolValidation.test_decorated_tool_passes_validation.my_search",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_self_reflection_comprehensive.py",
+   "qualname": "duckduckgo_search",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_tool_schema_parity.py",
+   "qualname": "TestBasicToolSchemaValidation.test_function_tool_schema_parity.test_function",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "count"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_tool_schema_parity.py",
+   "qualname": "TestRealAgenticScenario.test_tool_schema_agent_integration.echo_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "message"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_tool_schema_parity.py",
+   "qualname": "TestToolListValidation.test_duplicate_tool_names_error.tool_one",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_tool_schema_parity.py",
+   "qualname": "TestToolListValidation.test_duplicate_tool_names_error.tool_two",
+   "entry_kind": "decorator",
+   "params": [
+    "y"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_tool_schema_parity.py",
+   "qualname": "TestToolListValidation.test_valid_tool_list.tool_one",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/test_tool_schema_parity.py",
+   "qualname": "TestToolListValidation.test_valid_tool_list.tool_two",
+   "entry_kind": "decorator",
+   "params": [
+    "y"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/agent/test_agent_trace.py",
+   "qualname": "TestAgentToolTraceEmission.test_agent_emits_tool_call_events.test_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/context/test_cache_optimization.py",
+   "qualname": "test_tool_schema_sorting.apple_tool",
+   "entry_kind": "decorator",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/context/test_cache_optimization.py",
+   "qualname": "test_tool_schema_sorting.middle_tool",
+   "entry_kind": "decorator",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/context/test_cache_optimization.py",
+   "qualname": "test_tool_schema_sorting.zebra_tool",
+   "entry_kind": "decorator",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_circuit_breaker.py",
+   "qualname": "test_circuit_breaker_real_agentic.protected_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestAgentToolExecution.test_agent_injects_state_to_tools.show_state",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestAsyncInjection.test_async_tool_injection.async_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestBackwardCompatibility.test_existing_tool_schema_unchanged.legacy_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "count"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestBackwardCompatibility.test_existing_tools_still_work.legacy_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "count"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestInjectionZeroOverhead.test_no_injected_params_no_overhead.simple_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestInjectionZeroOverhead.test_schema_generation_fast.my_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "a",
+    "b",
+    "c",
+    "d"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestToolDecoratorInjection.test_injected_params_not_in_schema.my_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestToolDecoratorInjection.test_injected_params_not_required.my_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestToolDecoratorInjection.test_tool_decorator_detects_injected.my_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestToolExecutionInjection.test_injected_dict_state.my_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_injected_state.py",
+   "qualname": "TestToolExecutionInjection.test_injected_state_provided_at_runtime.my_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query",
+    "state"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_protocols.py",
+   "qualname": "TestToolProtocol.test_function_tool_satisfies_protocol.my_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_decorator_retry.py",
+   "qualname": "TestToolDecoratorRetryPolicy.test_mixed_tools_retry_policies.tool_a",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_decorator_retry.py",
+   "qualname": "TestToolDecoratorRetryPolicy.test_mixed_tools_retry_policies.tool_b",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_decorator_retry.py",
+   "qualname": "TestToolDecoratorRetryPolicy.test_mixed_tools_retry_policies.tool_c",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_decorator_retry.py",
+   "qualname": "TestToolDecoratorRetryPolicy.test_tool_decorator_with_retry_policy.test_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_decorator_retry.py",
+   "qualname": "TestToolDecoratorRetryPolicy.test_tool_decorator_without_retry_policy.test_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_decorator_retry.py",
+   "qualname": "TestToolDecoratorRetryPolicy.test_tool_with_retry_policy_used_by_agent.special_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_agentic.py",
+   "qualname": "TestRetryPolicyAgentic.test_agent_with_flaky_tool_real_llm.flaky_web_search",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_agentic.py",
+   "qualname": "TestRetryPolicyAgentic.test_agent_with_non_retryable_tool_real_llm.restricted_database_query",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_agentic.py",
+   "qualname": "TestRetryPolicyAgentic.test_agent_with_tool_level_retry_policy_real_llm.fallback_api",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_agentic.py",
+   "qualname": "TestRetryPolicyAgentic.test_agent_with_tool_level_retry_policy_real_llm.primary_api",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_agentic.py",
+   "qualname": "TestRetryPolicyAgentic.test_async_agent_with_retry_real_llm.async_weather_api",
+   "entry_kind": "decorator",
+   "params": [
+    "location"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_integration.py",
+   "qualname": "TestRetryPolicyPrecedence.test_agent_level_policy_precedence.test_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_integration.py",
+   "qualname": "TestRetryPolicyPrecedence.test_default_policy_fallback.test_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_integration.py",
+   "qualname": "TestRetryPolicyPrecedence.test_tool_level_policy_precedence.test_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_integration.py",
+   "qualname": "TestSyncRetryIntegration.test_sync_retry_hook_emission.failing_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_integration.py",
+   "qualname": "TestSyncRetryIntegration.test_sync_retry_non_retryable_error.permission_denied_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/test_tool_retry_integration.py",
+   "qualname": "TestSyncRetryIntegration.test_sync_retry_with_timeout_error.flaky_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/tools/test_availability_gating.py",
+   "qualname": "test_availability_check_exception_handling.failing_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/tools/test_availability_gating.py",
+   "qualname": "test_list_available_tools_module_function.test_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/tools/test_availability_gating.py",
+   "qualname": "test_registry_list_available_tools.available_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/tools/test_availability_gating.py",
+   "qualname": "test_registry_list_available_tools.unavailable_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/tools/test_availability_gating.py",
+   "qualname": "test_tool_availability_with_env_var.env_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/tools/test_availability_gating.py",
+   "qualname": "test_tool_decorator_no_availability.default_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/tools/test_availability_gating.py",
+   "qualname": "test_tool_decorator_with_availability.available_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/unit/tools/test_availability_gating.py",
+   "qualname": "test_tool_decorator_with_unavailable.unavailable_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "x"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/workflow-test-agents.py",
+   "qualname": "print_data",
+   "entry_kind": "tools_list",
+   "params": [
+    "data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/tests/workflow-test-agents.py",
+   "qualname": "upload_to_huggingface",
+   "entry_kind": "tools_list",
+   "params": [
+    "data"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai-agents/weather_server.py",
+   "qualname": "get_weather",
+   "entry_kind": "decorator",
+   "params": [
+    "location"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.acp_create_file",
+   "entry_kind": "tools_list",
+   "params": [
+    "filepath",
+    "content"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.acp_delete_file",
+   "entry_kind": "tools_list",
+   "params": [
+    "filepath"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.acp_edit_file",
+   "entry_kind": "tools_list",
+   "params": [
+    "filepath",
+    "new_content"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.acp_execute_command",
+   "entry_kind": "tools_list",
+   "params": [
+    "command",
+    "cwd"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.list_files",
+   "entry_kind": "tools_list",
+   "params": [
+    "directory",
+    "pattern"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.lsp_find_definition",
+   "entry_kind": "tools_list",
+   "params": [
+    "symbol",
+    "file_path"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.lsp_find_references",
+   "entry_kind": "tools_list",
+   "params": [
+    "symbol",
+    "file_path"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.lsp_get_diagnostics",
+   "entry_kind": "tools_list",
+   "params": [
+    "file_path"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.lsp_list_symbols",
+   "entry_kind": "tools_list",
+   "params": [
+    "file_path"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/cli/features/agent_tools.py",
+   "qualname": "create_agent_centric_tools.read_file",
+   "entry_kind": "tools_list",
+   "params": [
+    "filepath"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/code/tools/execute_command.py",
+   "qualname": "execute_command",
+   "entry_kind": "tools_list",
+   "params": [
+    "command",
+    "cwd",
+    "workspace",
+    "timeout",
+    "capture_output",
+    "shell",
+    "env"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/code/tools/write_file.py",
+   "qualname": "write_file",
+   "entry_kind": "tools_list",
+   "params": [
+    "path",
+    "content",
+    "workspace",
+    "create_directories",
+    "backup",
+    "strip_code_fences",
+    "encoding"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/history_store.py",
+   "qualname": "create_history_tools.history_get",
+   "entry_kind": "tools_list",
+   "params": [
+    "agent_id",
+    "run_id",
+    "start_turn",
+    "end_turn"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/history_store.py",
+   "qualname": "create_history_tools.history_search",
+   "entry_kind": "tools_list",
+   "params": [
+    "query",
+    "agent_id",
+    "run_id",
+    "max_results"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/history_store.py",
+   "qualname": "create_history_tools.history_tail",
+   "entry_kind": "tools_list",
+   "params": [
+    "agent_id",
+    "run_id",
+    "count"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/queue.py",
+   "qualname": "create_artifact_tools.artifact_chunk",
+   "entry_kind": "tools_list",
+   "params": [
+    "artifact_path",
+    "start_line",
+    "end_line"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/queue.py",
+   "qualname": "create_artifact_tools.artifact_grep",
+   "entry_kind": "tools_list",
+   "params": [
+    "artifact_path",
+    "pattern",
+    "context_lines",
+    "max_matches"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/queue.py",
+   "qualname": "create_artifact_tools.artifact_head",
+   "entry_kind": "tools_list",
+   "params": [
+    "artifact_path",
+    "lines"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/queue.py",
+   "qualname": "create_artifact_tools.artifact_list",
+   "entry_kind": "tools_list",
+   "params": [
+    "run_id",
+    "agent_id",
+    "tool_name"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/queue.py",
+   "qualname": "create_artifact_tools.artifact_tail",
+   "entry_kind": "tools_list",
+   "params": [
+    "artifact_path",
+    "lines"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/terminal_logger.py",
+   "qualname": "create_terminal_tools.terminal_commands",
+   "entry_kind": "tools_list",
+   "params": [
+    "agent_id",
+    "run_id",
+    "last_n"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/terminal_logger.py",
+   "qualname": "create_terminal_tools.terminal_grep",
+   "entry_kind": "tools_list",
+   "params": [
+    "pattern",
+    "agent_id",
+    "run_id",
+    "max_matches"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/context/terminal_logger.py",
+   "qualname": "create_terminal_tools.terminal_tail",
+   "entry_kind": "tools_list",
+   "params": [
+    "agent_id",
+    "run_id",
+    "lines"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/mcp_server/tool_index.py",
+   "qualname": "create_mcp_tools.mcp_describe_tool",
+   "entry_kind": "tools_list",
+   "params": [
+    "server",
+    "tool"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/mcp_server/tool_index.py",
+   "qualname": "create_mcp_tools.mcp_list_tools",
+   "entry_kind": "tools_list",
+   "params": [
+    "server"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/mcp_server/tool_index.py",
+   "qualname": "create_mcp_tools.mcp_search_tools",
+   "entry_kind": "tools_list",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/praisonai/tools/audio.py",
+   "qualname": "create_stt_tool.stt",
+   "entry_kind": "decorator",
+   "params": [
+    "audio_path",
+    "language"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/tools/audio.py",
+   "qualname": "create_tts_tool.tts",
+   "entry_kind": "decorator",
+   "params": [
+    "text",
+    "voice"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/praisonai/tools/skill_manage.py",
+   "qualname": "skill_manage",
+   "entry_kind": "decorator",
+   "params": [
+    "action",
+    "name",
+    "content",
+    "old_string",
+    "new_string",
+    "file_path",
+    "category",
+    "replace_all"
+   ],
+   "dangerous": true
+  },
+  {
+   "relpath": "src/praisonai/tests/integration/smoke_w1_robust.py",
+   "qualname": "test_session_context_visible_to_tool.whoami",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/tests/integration/test_self_improving_loop.py",
+   "qualname": "test_self_improving_agent_loop.isolated_skill_manage",
+   "entry_kind": "tools_list",
+   "params": [
+    "action",
+    "name",
+    "content",
+    "old_string",
+    "new_string",
+    "file_path",
+    "category",
+    "replace_all"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/tests/source/autogen_langchain_tools.py",
+   "qualname": "CircumferenceTool._run",
+   "entry_kind": "method",
+   "params": [
+    "radius"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/tests/source/crewai_tools.py",
+   "qualname": "internet_search_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/tests/tools/internet_search.py",
+   "qualname": "internet_search_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/tests/unit/gateway/test_gateway_approval_agentic.py",
+   "qualname": "dangerous_tool",
+   "entry_kind": "decorator",
+   "params": [
+    "path"
+   ],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/tests/unit/test_ollama_fix.py",
+   "qualname": "test_agent_tool_parameter_logic.dummy_tool",
+   "entry_kind": "tools_list",
+   "params": [],
+   "dangerous": false
+  },
+  {
+   "relpath": "src/praisonai/tests/yaml_example.py",
+   "qualname": "InternetSearchTool._run",
+   "entry_kind": "method",
+   "params": [
+    "query"
+   ],
+   "dangerous": false
+  }
+ ]
+}

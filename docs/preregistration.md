@@ -347,6 +347,65 @@ Def 6 の本文が「直前リリース」を第一の定義としており、�
 | 4 | 2026-09-20 | **判別実験 (c) の結果と、公平な比較の規則**（**この行の規則は結果を見る前に書く**） | (c) は CodeQL `py/path-injection` を既定の source model のまま当てる | **結果（既定 source model）**: A1 脆弱 0 / 修正 0、A4 脆弱 0 / 修正 0、A9-A10 脆弱 2 / 修正 2（2 件とも `examples/python/api/secondary-market-research-api.py` の FastAPI 経路で、A10 の `write_file` とは無関係。両側で同一）。**3 対とも第 4 類型「その構文を被覆しない」**: 既定の source は remote flow source（Flask / FastAPI 等）であり、MCP ツール引数も praisonai のツール関数引数も source にならない。よって #2 の判定規則の前提（CodeQL が A10 脆弱側を clear するか両側判別するか）が**成立せず、(c) は判別に使えない**。**規則 #4（公平な比較。未実施）**: source を AuthGap と同じ入口集合にした CodeQL クエリ（`PathInjectionCustomizations::Source` を拡張し、`docs/corpus_spec.json` の各木で AuthGap が入口と認識したユニットの引数を source にする）で同じ 3 対を回し、同じ 4 類型で記録する。判定規則は #2 と同じ（CodeQL が A10 脆弱側の `abspath + startswith` を clear（第 2 類型）→ 等級づけを章に、両側判別 → 降ろす）。**source を揃えても第 4 類型になった場合**（sink model が `open` / `os.makedirs` を被覆しないなど）は、(c) を「決定不能」として記録し、(a)(b) だけで #2 の規則を適用する | 既定の CodeQL は MCP ツール引数を source にしないので、比較が「解析器の差」ではなく「入口モデルの有無の差」を測ってしまう。**入口を揃えないと等級づけの主張と無関係な差が出る** | 既定 source model での 6 木の結果（上）。**規則 #4 の実行結果はまだ見ていない** |
 | 5 | 2026-09-20 | **A18 の期待タプル**（`docs/expected_tuples.json`、`d2b501a`） | `sql: grade None → unknown` | `sql: grade None → weak` かつ `weak_reason None → statement_type_only` | 転記元 `docs/cve_triage.csv` の `expected_tuple_change` は D1（2026-09-09、語彙改訂で `statement_type_only` を新設）より前の文で、D1 自身が A18 の形を「値そのものは自由な SQL のままなので strong ではなく、拒否リストでもない」= `weak(statement_type_only)` と定めている。転記が D1 を反映していなかった（**転記の誤り**であり、解析器の出力に合わせた変更ではない。根拠は D1 の日付）。**結果を見た後の変更なので両方の値を報告する**: 転記どおり 7/8、D1 どおり 8/8 | 判別実験 (a) の最初の照合（腕 C、D25 後）で A18 だけが落ちた: 観測 `None → weak(statement_type_only)`。他の 7 対は事前登録照合・座標一致・any-change とも通過。逆向き 4 対と `open → read_text` の対は事前登録照合で不通過（期待どおり） |
 
+### 5.1 判別実験の結果（2026-09-20。#2 の規則を、結果を見た後に変えていない）
+
+すべて D25（`2d981de`）後の解析器。木の対 7 = CVE 8（A9 と A10 が corpus を共有）。
+
+**(a) 分子の照合（腕 C）**
+
+| 列 | 値 | 備考 |
+|---|---|---|
+| 事前登録照合（主指標） | **7/8**（転記どおり）/ **8/8**（D1 どおり、#5） | 落ちたのは A18 の転記誤りだけ |
+| 座標一致 | 8/8 | |
+| any-change（旧） | 8/8 | 逆向き 4 対（A1/A2/A4/A10）と `open → read_text` の対も通す |
+| 厳密 verdict-clearing | 0/8 | `GAP_SELECT` は値検証では消えない（従来どおり） |
+| INJECT verdict-clearing | 1/8（A4） | 従来どおり |
+
+逆向き 4 対と `open → read_text` の対は事前登録照合で**不通過**（`tests/test_two_sided_preregistered.py`）。
+
+**(b) 等級潰し腕 C0 との差**
+
+| 列 | 腕 C | 腕 C0 | C − C0 |
+|---|---|---|---|
+| 事前登録照合 | 7/8（8/8） | 6/8（7/8） | **{A10}** |
+| 座標一致 | 8/8 | 7/8 | **{A10}** |
+| any-change | 8/8 | 8/8 | ∅ |
+
+A10 の差は `path` 3 位置の `req_val MODEL → OP`。C0 では**脆弱側も OP** になる
+（脆弱側の `abspath + startswith` を「検証子あり」として OP に潰す = 二値モデルは
+脆弱側を clear する）。`grade weak → strong-path` は両腕で残るので any-change では
+差が出ない。A1 / A4 は脆弱側に検証子が無いので C0 は何も変えない。
+**C − C0 = {A10} は事前登録照合と座標一致でのみ現れる。** 分子を (a) で直したことが
+(b) の結果を作っている（(a) の分子は #2 で C0 を回す前に事前登録した）。
+
+**(c) CodeQL `py/path-injection`**（`evidence/codeql_fair/`）
+
+| 対 | 既定 source（#2 (c)） | 入口を揃えた source（#4） | 類型 |
+|---|---|---|---|
+| A1 | 脆弱 0 / 修正 0 | 脆弱 0 / 修正 1 | **第 4（被覆しない）**。修正側の 1 件は修正で足した `repo_path.resolve()` 自身が sink として報告されたもの（`Path.resolve` は CodeQL の path-injection sink）。CVE の sink（`git.Git.*` の `cwd`）は sink でない |
+| A4 | 脆弱 0 / 修正 0 | 脆弱 1 / 修正 2 | **第 4**。同じく `.resolve()` 由来（A1 の修正が A4 脆弱側に既にある + A4 の修正で 1 件増）。`repo.git.add` の argv は sink でない |
+| A9-A10 | 脆弱 2 / 修正 2（無関係な FastAPI 経路） | 脆弱 24 / 修正 24、**A10 の `write_file` 経路 8 件が両側で同一** | **第 3（修正側 clear 不能）**。`is_path_within_directory`（helper の `abspath`/`realpath` + `startswith`）を sanitizer と認識せず、脆弱側も修正側も報告する |
+
+**判定規則（#2）の適用**
+
+- 前提「`C − C0` に A10 が残る」: **成立**（事前登録照合・座標一致）。
+- 枝 1「CodeQL が A10 脆弱側の `abspath + startswith` を clear する」: **不成立**（脆弱側を報告する）。
+- 枝 2「`C − C0 = ∅`、または CodeQL も A10 を両側判別」: **不成立**（両側とも報告 = 判別しない）。
+
+**規則はどちらの枝にも当たらない。** 第 3 類型（両側とも報告）を、規則を書いたとき
+想定していなかった。post-hoc の読みは 2 つあり、**ここでは決めない**
+（`docs/open_questions.md` O12、`docs/decisions.md` D26）:
+
+- (α) CodeQL は修正を認識できず両側を報告する。等級づけは既存道具に無い判別
+  （脆弱 = GAP、修正 = clear）を与える → 章に立てる側。
+- (β) 規則が「章に立てる」条件として置いたのは「二値モデル / CodeQL が脆弱側を
+  false-clean にする」ことであり、それは観測されなかった → 事前登録した形では
+  示せない。降ろす側。
+
+どちらの読みでも、**判別の根拠は較正対 1 対（A10）**である。#2 を書いた時点で
+「A10 が等級だけで分かれた唯一の検証済み対」と記録しており、標本の小ささは新しい
+情報ではないが、章に立てるならこの n = 1 を本文に書く。
+
 ---
 
 ## 6. 未決（学生の判断が要る）
