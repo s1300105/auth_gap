@@ -53,3 +53,18 @@ def test_contradiction_verdict(units, tool):
     assert rows, f"{tool}: {site} の行が無い"
     has = any("CONTRADICTION" in r.verdicts for r in rows)
     assert has == EXPECTED[tool]["contradiction"], [(r.effect.site, sorted(r.verdicts)) for r in rows]
+
+
+#: 混在ユニット（rmtree + makedirs）: 行ごとの判定。**現行はユニット水準の旗を全 WRITE 行に付ける**ので未達。
+MIXED_DEFECT = pytest.mark.xfail(strict=True, reason="D32: CONTRADICTION を効果ごとに判定（未実装）")
+
+
+@MIXED_DEFECT
+def test_mixed_unit_rows_are_judged_per_effect(units):
+    u = units["nd_mixed"]
+    exp = EXPECTED["nd_mixed"]
+    for spec in [exp] + exp["other_rows"]:
+        rows = [r for r in u.rows if r.effect.site == spec["site"] and r.effect.kind == "FS_WRITE"]
+        assert rows, spec["site"]
+        has = any("CONTRADICTION" in r.verdicts for r in rows)
+        assert has == spec["contradiction"], (spec["site"], [(r.effect.site, sorted(r.verdicts)) for r in rows])

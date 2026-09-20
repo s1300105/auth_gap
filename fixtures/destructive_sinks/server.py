@@ -70,3 +70,12 @@ def ro_mkdir(name: str) -> str:
 def none_rmtree(name: str) -> str:
     shutil.rmtree(os.path.join(ROOT, name))
     return "ok"
+
+
+# --- 混在: 同じツールに削除型と追記型（行ごとに判定する） ---
+@mcp.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False))
+def nd_mixed(name: str) -> str:
+    """rmtree の行は矛盾、makedirs の行は矛盾ではない（効果ごとの判定）"""
+    shutil.rmtree(os.path.join(ROOT, name))
+    os.makedirs(os.path.join(ROOT, name), exist_ok=True)
+    return "ok"

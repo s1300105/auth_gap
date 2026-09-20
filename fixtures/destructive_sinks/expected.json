@@ -1,13 +1,58 @@
 {
  "_note": "D32 / prereg §5 #7 の規則から書いた期待値。実装より先にコミットする。",
  "tools": {
-  "nd_mkdir":        {"site": "os.makedirs",        "destructive": false, "contradiction": false},
-  "nd_append":       {"site": "builtins.open",      "destructive": false, "contradiction": false},
-  "nd_overwrite":    {"site": "builtins.open",      "destructive": true,  "contradiction": true},
-  "nd_rmtree":       {"site": "shutil.rmtree",      "destructive": true,  "contradiction": true},
-  "nd_unknown_mode": {"site": "builtins.open",      "destructive": null,  "contradiction": true},
-  "nd_write_text":   {"site": "pathlib.Path.write_text", "destructive": true, "contradiction": true},
-  "ro_mkdir":        {"site": "os.makedirs",        "destructive": false, "contradiction": true},
-  "none_rmtree":     {"site": "shutil.rmtree",      "destructive": true,  "contradiction": false}
+  "nd_mkdir": {
+   "site": "os.makedirs",
+   "destructive": false,
+   "contradiction": false
+  },
+  "nd_append": {
+   "site": "builtins.open",
+   "destructive": false,
+   "contradiction": false
+  },
+  "nd_overwrite": {
+   "site": "builtins.open",
+   "destructive": true,
+   "contradiction": true
+  },
+  "nd_rmtree": {
+   "site": "shutil.rmtree",
+   "destructive": true,
+   "contradiction": true
+  },
+  "nd_unknown_mode": {
+   "site": "builtins.open",
+   "destructive": null,
+   "contradiction": true
+  },
+  "nd_write_text": {
+   "site": "pathlib.Path.write_text",
+   "destructive": true,
+   "contradiction": true
+  },
+  "ro_mkdir": {
+   "site": "os.makedirs",
+   "destructive": false,
+   "contradiction": true
+  },
+  "none_rmtree": {
+   "site": "shutil.rmtree",
+   "destructive": true,
+   "contradiction": false
+  },
+  "nd_mixed": {
+   "site": "shutil.rmtree",
+   "destructive": true,
+   "contradiction": true,
+   "other_rows": [
+    {
+     "site": "os.makedirs",
+     "destructive": false,
+     "contradiction": false
+    }
+   ],
+   "_note": "CONTRADICTION は効果ごと（Def 7 の CONTRADICTION(e)）。ユニット内の別の効果が矛盾しても追記型の行には立てない"
+  }
  }
 }
