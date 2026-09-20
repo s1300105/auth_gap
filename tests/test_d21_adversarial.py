@@ -49,8 +49,8 @@ KNOWN_HELPER_DECOY = pytest.mark.xfail(
 #: Def 5 条件 (iii)（述語の他方の被演算子が定数 / config root / os.getcwd()）は未実装。
 #: `ALLOWED_OPERANDS` / `DOWNGRADES.tainted` の参照が 0 件。O10。
 KNOWN_COND_III = pytest.mark.xfail(strict=True, reason="O10: Def 5 条件 (iii) は未実装")
-#: D21 の退行（現 HEAD で false-clean）。**修正コミットでこの印を外す。**
-DEFECT = pytest.mark.xfail(strict=True, reason="D21 退行（false-clean）。D25 で直す")
+#: D21 の退行 30 形は fe620c6 で `DEFECT`（xfail strict）として凍結し、D25 の修正で
+#: 30 形すべてが XPASS になったので印を外した。以後は回帰テストである。
 
 SOURCE = '''\
 import logging
@@ -560,7 +560,7 @@ CONTROL_SLOT = {
 def _params(names):
     out = []
     for n in names:
-        marks = [KNOWN[n]] if n in KNOWN else [DEFECT]
+        marks = [KNOWN[n]] if n in KNOWN else []
         out.append(pytest.param(n, marks=marks, id=n))
     return out
 

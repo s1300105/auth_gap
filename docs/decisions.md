@@ -11,6 +11,72 @@
 
 ---
 
+## D25. D21 の inline 採点を撤回し、裏づけを全 root に、strong-path をパス領域に限る
+
+- **いつ決めたか（正直に書く）: D21 の敵対的レビューの結果（29 件の false-clean）を
+  見た後。** 修正の動機は post-hoc だが、期待値（`tests/test_d21_adversarial.py`、
+  `fe620c6`）は修正より先にコミットした（規則 5）。
+- **事実**: D21「結果」節のとおり。false-clean 29 件、うち 25 件が D21 由来。
+  凍結済みの受け入れ関門は 1 件も捕まえていない。
+
+### 決定
+
+1. **変更 A（`gate.py: _grade_inline`）を撤回する。** inline 形（ツール本体に直接
+   書かれた述語）は `_grade_from_shape` の単一形状採点に戻し、weak 止まりにする。
+   Def 5 を inline で満たす形（`tests/test_value_grade.py` A 群 a1〜a3）は再び
+   strong-path にならない。**この誤りの向きは false-dirty（安全側）**であり、
+   `xfail(strict=True)` に戻して O8 に統合した。
+2. **`analyze.py: _strong_path_backed` を「制御値の MODEL root すべて」に
+   canonical alias を要求する形にする**（M2）。D21 の「どれか 1 つ」は、
+   `join(real, name)` のように検証済み引数と未検証引数が合流した値で検証済み側の
+   裏づけを未検証側に移していた（R10 / R12 / R17 / R19、§3-3 / §3-4）。
+3. **`sinks.py: PATH_DOMAIN_SLOTS`（`path` / `cwd` / `argv0` / `argv[i]` /
+   `argv[*]`）を定義し、それ以外の位置の strong-path は `req_val` を動かさない**
+   （M3）。落とす先は `unknown`。weak 理由語彙（22 語、月 6 凍結）に「領域不一致」
+   の語は無く、凍結後に語彙を足さない（`docs/preregistration.md` §5 に逸脱として
+   足さずに済む選択）。`strong-token` が効果側（argv 実行か）を確かめるのと同じ
+   非対称を埋めた。`argv[*]` を含めるのは較正対 A4（`git_add` の `argv[*]` が
+   strong-path）のためで、要素がパスでありうる位置は残す。
+4. **直せない形は未解決として記録する**: 条件 (ii)・root-equal・inline の strong
+   （O8、拡張）、条件 (iii)（O10、新設）、helper 本体の袋詰め採点と値の同一性を
+   見ない裏づけ（O11、新設）。同テストの x01 / x03 が xfail で凍結している。
+
+### なぜ (B) 完全実装ではなく撤回か
+
+レビューの「出す条件」は二択だった: (A) 撤回、(B) 決定文どおりの完全実装
+（root-equal・条件 (ii)・領域一致・全 root）。(B) は候補述語 1 つに対して
+「その述語が sink を支配し、canonical alias そのものに当たり、他方の被演算子が
+定数で、sink に届く値が root-equal」を val の値の同一性で確かめる設計を要する。
+現在の `alias_facts` は root 粒度で値の同一性を持たず（R15）、`_value_grade` は
+集合しか受け取らず適用順序を表現できず（R18）、レビューの実測では root-equal を
+`canonicalised` 属性で取ると較正対 A4（手続き間の形）の INJECT clearing が
+1/7 → 0/7 に退行する。**設計をやり直す間、false-clean を出荷し続けない**ために
+安全側へ戻す。(B) は改めて期待値を先に置き、敵対的レビューを通してから入れる。
+
+### 誤りの向きの収支
+
+| | D21 前 | D21 | D25 |
+|---|---|---|---|
+| inline で Def 5 を満たす形（a1〜a3） | false-dirty | 正 | **false-dirty** |
+| inline の退行 25 形 | 正（GAP） | **false-clean** | 正（GAP） |
+| helper の root 和 / 領域漏れ（x02 / x04 / x05 / x06） | **false-clean** | **false-clean** | 正（GAP） |
+| helper のデコイ（x01）/ 条件 (iii)（x03） | **false-clean** | **false-clean** | **false-clean**（O8 / O10 / O11 に記録） |
+
+### 結果
+
+- `tests/test_d21_adversarial.py`: 30 形が XPASS（印を外した）、x01 / x03 は xfail のまま、
+  対照 3 形（helper 基準形の `path` / `argv[*]` / `cwd`）は strong-path のまま。
+- `tests/test_value_grade.py`: A 群 6 件が xfail（false-dirty に戻る）、B / C 群は不変。
+  C0 の fixture 期待は {b1, b2} → {a1, a2, a3, b1, b2, b3}（`docs/preregistration.md`
+  §5 #3）。
+- 受け入れ関門: `check_gates.py` 23/23 OK（B3a 8/8・B3b 15/15）、変異 生存 1/15、
+  `pytest tests/` 全通過。
+- 較正対（`scripts/two_sided.py`、腕 C）: any-change 8/8（CVE 単位。木の対は 7、A9 と A10 が corpus を共有）、厳密（全 GAP 解消）0/8、INJECT 座標 1/8（A4）。**D25 前（`654bca2`）と同一。** 較正対の修正側の strong-path はすべて helper 形（A1 `cwd`、A4 `argv[*]`、A10 `path`）なので inline 採点の撤回は効かず、パス領域の位置なので領域検査も効かない（対照 c01〜c03 と同じ）。事前登録照合の 3 列は判別実験 (a) の実装（次のコミット）で出す
+- 腕 C0（判別実験 (b)）: any-change は C と同じ 8/8。**A10 の `path` 3 位置は C0 で `req_val` が OP → OP（脆弱側も OP）になり、変化は `grade weak → strong-path` だけになる**（事前登録した期待は `req_val MODEL → OP` を含むので、事前登録照合では C0 で落ちる = A10 ∈ C − C0）。A1 / A4 は脆弱側に検証子が無いので C0 で何も変わらず C − C0 に入らない。A18 は C0 で `req_val MODEL → OP`（weak な文型 allowlist を C0 が OP に潰す）になるが `GAP_INJECT` は残る。撤回前の探針（§5 #3 の記録）と同じ結論
+- `scripts/diff_effects.py --before fe620c6`（14 木）: 14 木すべて 行数不変、消えた 0 / 増えた 0 / slot 変化 0（A1〜A4 各 9 行、A5 22 行、A9 121 行、A18 18 行）。等級の変更は効果行を動かさない（動かしてはいけない）
+
+---
+
 ## D24. 枠組みは今は変えない。判別実験と `r_prev` の後に仕様書自身の規則で選ぶ
 
 ### 学生の決定（2026-09-20、チャット）
@@ -333,9 +399,33 @@ inline 経路は `_grade_from_shape` をやめ、囲み関数の本体に対し�
 同じ採点を行う。**inline を strong に到達可能にするのは false-clean 方向の変更
 なので**（`CLAUDE.md`）、上の 2 条件による裏づけと敵対的レビューを必須とする。
 
-### 結果
+### 結果（2026-09-20 追記。**方向 = false-clean の退行**）
 
-（修正コミットで追記する。）
+- 修正コミット `d745cb2` で A 群 8/8 が XPASS になり、凍結済みの受け入れ関門
+  （B3a 8/8・B3b 15/15・変異 1/15・two_sided 7/7・厳密 0/7・INJECT 1/7・
+  `diff_effects` 14 木 0/0/0）は**すべて通過した**。
+- しかし `CLAUDE.md` の規則（opaque → resolved / weak → strong 方向の変更は敵対的
+  レビューを通す）に従って行った敵対的レビュー（2026-09-20、94 エージェント、
+  3 レンズ = 再現 / 攻撃成立 / D21 由来）で、**実際に木の外を読める・任意コマンドが
+  動くのに `verdicts` が空になる false-clean を 29 件**確認した。うち **25 件は
+  D21 が新たに入れた退行**（修正前は `GAP_INJECT`）、4 件は D21 以前からある
+  helper 経路の欠陥。全件を `tests/test_d21_adversarial.py` に凍結した（`fe620c6`）。
+- 機構は 4 つ（詳細は同テストの docstring）: **M1** `_grade_inline` の袋詰め採点
+  （囲み関数の本体全体を `ast.walk` で集め、CFG も支配も主語も適用順序も見ない）、
+  **M2** `_strong_path_backed` の存在量化（root の「どれか 1 つ」）、**M3** 領域不一致
+  （パス包含の等級が `shell_string` / `sql` / `code_text` / `url.host` を clear）、
+  **M4** 死んだ語彙（`ROOT_EQUAL_STEPS` / `ALLOWED_OPERANDS` / `post_check_append` の
+  参照 0 件）。
+- **上の「決定」が挙げた裏づけ 2 条件のうち実装したのは条件 1 だけ**で、root-equal
+  （条件 2）は未実装のまま出荷していた。`_grade_inline` の docstring 自身が「片方だけを
+  入れてはならない」と書いた状態そのものである。決定文と実装の食い違いを、
+  受け入れ関門は 1 件も捕まえなかった。
+- 条件 (iii) の未実装は本項にも `docs/open_questions.md` にも記録が無かった
+  （規則 4 違反。黙って clear 側に倒していた）。
+- **処置は D25**（変更 A の撤回 + M2 の全 root 要求 + M3 の領域検査）。
+  b1 の修正（条件 1 の裏づけ）は残すが、その成立根拠は「root `path` の alias が
+  無い」という偶発的な性質であり、同じ root への無関係な `realpath` 1 行で反転する
+  （同テスト x01、O8 / O11）。**D21 が「直した」と記録した範囲は実際より狭い。**
 
 ---
 

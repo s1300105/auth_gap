@@ -838,9 +838,7 @@ def find_gate_candidates(
 
         # 2) 呼び出し形
         for call in _calls_in(subject_expr):
-            cand = _call_candidate(
-                nid, node.kind, call, scope, index, summaries, depth, tree, cfg.func
-            )
+            cand = _call_candidate(nid, node.kind, call, scope, index, summaries, depth, tree)
             if cand is None:
                 continue
             if node.kind == "test":
@@ -944,7 +942,6 @@ def _call_candidate(
     summaries: SummaryCache,
     depth: int,
     tree,
-    enclosing_fn: Optional[ast.AST] = None,
 ) -> Optional[GateCandidate]:
     name = dotted_of(call.func)
     if name is None:
@@ -998,7 +995,14 @@ def _call_candidate(
         if shape is not None:
             subjects = subjects | subject_names(call.func.value)
     if shape is not None and shape in PREDICATE_SHAPES:
-        grade, weak = _grade_inline(enclosing_fn, scope, shape)
+        # **inline 形は単一形状からしか等級を出さない（weak 止まり）。**
+        # D21 は囲み関数の本体全体を helper と同じ規則で採点する `_grade_inline`
+        # を入れたが、CFG も支配も主語も適用順序も見ない袋詰め採点なので、
+        # ログ用の realpath 1 行や死に分岐の検査が別の述語に strong-path を貸し、
+        # false-clean を 25 形入れた（`tests/test_d21_adversarial.py`、D25）。
+        # Def 5 を inline で満たす形が weak に留まる誤り（false-dirty、安全側）は
+        # `docs/open_questions.md` O8 に未解決として残す。
+        grade, weak = _grade_from_shape(shape)
         cand = _value_candidate(nid, name, call, subjects, grade, weak, None, tree)
         cand.subject_exprs = tuple(call.args) + (
             (call.func.value,) if isinstance(call.func, ast.Attribute) else ()
@@ -1052,52 +1056,12 @@ def _subjects_for_checked(
 PREDICATE_SHAPES: frozenset[str] = frozenset({"containment", "prefix", "exists"})
 
 
-def _grade_inline(
-    enclosing_fn: Optional[ast.AST], scope: Scope, shape: str
-) -> tuple[Optional[str], Optional[str]]:
-    """ツール本体に inline で書かれた述語を、**helper 経路と同じ規則で**採点する。
-
-    Def 5 の strong-path は 3 条件であって「検証子をどこに書いたか」を区別しない。
-    それなのに helper 経路（:func:`_value_grade` を `FuncSummary` 経由で使う）と
-    inline 経路（旧 :func:`_grade_from_shape`）が別の近似になっていたため、
-    同じ論理でも本体に書くと weak 止まり、関数に切り出すと strong-path という
-    反転が起きていた（`docs/decisions.md` D21）。ここで両者を 1 つの規則に寄せる。
-
-    **採点の対象は述語 1 つではなく囲み関数の本体全体である。** `_value_grade` が
-    「正規化子の集合 × 包含述語の集合」で決める規則をそのまま当てるため、
-    helper 経路と同じ過大近似をここでも引き受ける。**その過大さは
-    `analyze._strong_path_backed` が val の証拠（canonical alias と
-    `canonicalised` 属性）で打ち消す。** 片方だけを入れてはならない:
-    本関数だけなら false-clean が増え、裏づけだけなら inline は weak のままになる。
-
-    囲み関数が取れないとき（`enclosing_fn is None`）は旧来どおり単一形状から
-    決める。**推定で strong にはしない。**
-    """
-    if enclosing_fn is None:
-        return _grade_from_shape(shape)
-    shapes, _ = _shapes_in(enclosing_fn, scope)
-    transforms = _transform_names(enclosing_fn, scope)
-    containments = _containment_forms(enclosing_fn, scope)
-    grade, weak = _value_grade(
-        transforms,
-        containments,
-        shapes,
-        enclosing_fn,
-        _is_first_token_check(enclosing_fn, scope),
-        _is_statement_type_check(enclosing_fn, scope),
-    )
-    if grade is None and weak is None:
-        # 本体をまとめて見ても領域が決まらなかった。**当該述語の形状に戻す**
-        # （`exists` だけの検証子などが等級を失わないように）。
-        return _grade_from_shape(shape)
-    return grade, weak
-
-
 def _grade_from_shape(shape: str) -> tuple[str, Optional[str]]:
     """単一形状だけから決まる等級。**単独で strong にはしない。**
 
-    :func:`_grade_inline` が囲み関数を取れないとき、および本体をまとめて見ても
-    領域が決まらなかったときの退避先。
+    inline 形（ツール本体に直接書かれた述語）の等級はここでしか決まらない。
+    strong-path に上げるには Def 5 の (i)(ii)(iii) と root-equal を**当該述語と
+    sink に届く値について**確かめる必要があり、それは未実装（O8）。
     """
     if shape == "prefix":
         return "weak", "prefix_no_canon"

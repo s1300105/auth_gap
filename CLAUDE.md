@@ -31,6 +31,7 @@
 | ゲート側 NODOM | 同 `GATE_NODOM_REASONS` | 4 |
 | val 側 opaque | 同 `VAL_OPAQUE_REASONS`。**ゲート側とは別語彙** | 8 |
 | 効果 kind と slot | `authgap/catalog/sinks.py: SLOTS` | 7 kind |
+| パス領域の slot（strong-path が効く位置） | 同 `PATH_DOMAIN_SLOTS`（D25） | 5 |
 
 **語彙外の値は構築時に例外になる。** `DomResult(DomKind.NODOM, "made_up")` は
 `ValueError`。

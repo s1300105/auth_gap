@@ -21,7 +21,7 @@ from typing import Any, Optional
 
 from .catalog import validators as V
 from .catalog.entries import APPROVAL_INTERRUPTS
-from .catalog.sinks import DANGEROUS_KINDS, PRIMARY_SLOTS
+from .catalog.sinks import DANGEROUS_KINDS, PATH_DOMAIN_SLOTS, PRIMARY_SLOTS
 from .catalog.transfers import SYMLINK_RESOLVERS
 from .cfgbuild import build_cfg
 from .dominance import compute_dominators
@@ -461,7 +461,7 @@ def analyze_unit_full(
         # 実装（`verdict.py` が Def 7 の `req_val = MODEL` を上書きする既知の
         # 欠陥）にぶら下がる。規則 W を Def 7 どおりに直した瞬間に b1 型の
         # false-clean が戻るので、**req 側も同じ根拠で落とす。**
-        slot_cands = _demote_unbacked_strong(cands, value, alias_facts)
+        slot_cands = _demote_unbacked_strong(cands, value, alias_facts, slot)
         if arm == "C0":
             # 腕 C0: 値検証子の**等級を潰す**。form=value の候補はすべて `Req.OP` に
             # する（strong / weak / unknown の別を見ない）。主語一致と支配は
@@ -473,7 +473,7 @@ def analyze_unit_full(
         sc = score_gates(cfg, dom, slot_cands, nodes, "val", subjects)
         report.req_val[(i, slot)] = sc.req
         report.gate_results[(i, slot)] = sc.to_json()
-        report.grades[(i, slot)] = _grade_of(sc.passing, sc.candidates, value, report.effects[i])
+        report.grades[(i, slot)] = _grade_of(sc.passing, sc.candidates, value, report.effects[i], slot)
 
     from .dparse import drift as _drift
 
@@ -645,12 +645,17 @@ def _strong_path_backed(value: Value, alias_facts) -> bool:
     存在する」ことを要求する。ゲート側は本体に現れた形状の集合しか見ないので
     （`gate.py: _value_grade`）、`realpath` が**どの値に**適用されたかを
     区別できない。val の canonical-alias 表 `(root, site, transform)` が
-    その区別を持っているので、ここで突き合わせる（D21）。
+    root の粒度でその区別を持っているので、ここで突き合わせる（D21）。
 
-    **この検査だけでは Def 5 の条件 (ii) は確かめられない**（包含述語が
-    canonical alias そのものに適用されたか）。条件 (ii) を満たさない形は
-    `tests/test_value_grade.py` の b3 として凍結し、未解決として
-    `docs/open_questions.md` O8 に記録した。**黙って安全側に倒さない。**
+    **制御値の MODEL root すべてに要求する（D25）。** D21 は「どれか 1 つ」で
+    よしとしていたため、`join(real, name)` のように検証済み引数と未検証引数が
+    合流した値では、検証済み側の裏づけが未検証側に移って false-clean になった
+    （`tests/test_d21_adversarial.py` R10 / R12 / R17 / R19、§3-3 / §3-4）。
+
+    **これでも条件 (ii) は確かめられない**（包含述語が canonical alias
+    そのものに適用されたか、裏づけの realpath が sink に届く値と同一か）。
+    root 一致だけなので、同じ root への無関係な `realpath`（ログ用など）1 行で
+    裏づけが立つ（同 x01、O8 / O11）。**黙って安全側に倒さず未解決として記録する。**
 
     root が空の値（定数 / OP 由来）は主体が MODEL でないので等級が verdict を
     動かさない。ここで weak に落とすと規則 W の経路に無関係な行が増えるため、
@@ -659,13 +664,22 @@ def _strong_path_backed(value: Value, alias_facts) -> bool:
     roots = value.roots
     if not roots:
         return True
-    return any(a.root in roots and a.transform in SYMLINK_RESOLVERS for a in alias_facts)
+    backed_roots = {a.root for a in alias_facts if a.transform in SYMLINK_RESOLVERS}
+    return all(r in backed_roots for r in roots)
 
 
 def _demote_unbacked_strong(
-    cands: list[GateCandidate], value: Value, alias_facts
+    cands: list[GateCandidate], value: Value, alias_facts, slot: Optional[str] = None
 ) -> list[GateCandidate]:
     """val の証拠が裏づけない `strong-path` 候補を `weak` に落とす（D21）。
+
+    **パス領域でない位置の `strong-path` も落とす（D25、M3）。** Def 5 の
+    strong-path が保証するのは「値がパスとして root の下にある」ことだけで、
+    `shell_string` / `sql` / `code_text` / `url.host` の位置では何も保証しない
+    （`sinks.py: PATH_DOMAIN_SLOTS`）。`strong-token` が `_grade_of` で効果側
+    （argv 実行か）を確かめるのと同じ非対称を埋める。落とす先は `unknown`
+    （検証子は束縛されているが、この位置の等級としては判定不能）。weak 理由語彙
+    （22 語、凍結）に「領域不一致」の語は無く、凍結後に語彙を足さない。
 
     **`score_gates` に渡す前に落とすこと。** 等級の表示だけを直して候補の
     `grade`（`Req.OP`）を残すと `req_val` が OP のままになり、行が GAP として
@@ -678,13 +692,17 @@ def _demote_unbacked_strong(
     """
     if not cands:
         return cands
+    path_domain = slot is None or slot in PATH_DOMAIN_SLOTS
     backed = _strong_path_backed(value, alias_facts)
-    if backed:
+    if backed and path_domain:
         return cands
     out: list[GateCandidate] = []
     for c in cands:
         if c.form == "value" and c.value_grade == "strong-path":
-            c = replace(c, grade=REQ_BOTTOM, value_grade="weak", weak_reason="no_symlink_resolution")
+            if not path_domain:
+                c = replace(c, grade=REQ_BOTTOM, value_grade="unknown", weak_reason=None)
+            else:
+                c = replace(c, grade=REQ_BOTTOM, value_grade="weak", weak_reason="no_symlink_resolution")
         out.append(c)
     return out
 
@@ -694,6 +712,7 @@ def _grade_of(
     candidates: list[GateCandidate],
     value: Value,
     effect: Optional[Effect] = None,
+    slot: Optional[str] = None,
 ) -> tuple[Optional[str], Optional[str]]:
     """位置の等級と weak 理由。**strong は推定で出さない。**
 
@@ -712,6 +731,10 @@ def _grade_of(
             # 要求する。検証子の本体からは分からないので効果側で確かめる。
             if _is_argv_exec(effect):
                 return "strong-token", None
+            return "unknown", None
+        if c.value_grade == "strong-path" and slot is not None and slot not in PATH_DOMAIN_SLOTS:
+            # 領域不一致（D25）。`_demote_unbacked_strong` で落としているので
+            # 通常ここには来ないが、等級の表示側でも同じ規則を守る。
             return "unknown", None
         if c.value_grade and c.value_grade.startswith("strong"):
             return c.value_grade, None

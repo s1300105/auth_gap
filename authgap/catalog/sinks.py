@@ -29,6 +29,14 @@ SLOTS: dict[str, tuple[str, ...]] = {
 
 KINDS: tuple[str, ...] = tuple(SLOTS.keys())
 
+#: **パス領域の slot**。Def 5 の strong-path（symlink 解決 + 包含述語）が
+#: 保証するのは「値がパスとして root の下にある」ことだけなので、等級が
+#: `req_val = OP` を動かせるのはこの位置に限る。`shell_string` / `sql` /
+#: `code_text` / `url.*` にパス包含の等級を当てると、コマンド注入・SQLi・eval・
+#: SSRF が clear される（D25、`tests/test_d21_adversarial.py` R22〜R25）。
+#: `argv[*]` / `argv0` は要素がパスでありうるので含める（較正対 A4 の git_add）。
+PATH_DOMAIN_SLOTS: frozenset[str] = frozenset({"path", "cwd", "argv0", "argv[i]", "argv[*]"})
+
 #: 主 slot 7 種（§6 の opaque 率と C2 のラベリングはこれに限定できる）。
 PRIMARY_SLOTS: frozenset[str] = frozenset(
     {"code_text", "argv0", "argv[*]", "shell_string", "path", "url.host", "sql"}

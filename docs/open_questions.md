@@ -111,29 +111,83 @@
 
 ---
 
-## O8. Def 5 の条件 (ii) を手続き間で検査できない（D21 の残り）
+## O8. Def 5 の条件 (ii) と root-equal が未実装。inline 形は一律 weak、helper 形は袋詰め採点（D21 / D25 の残り）
 
-- **要る情報**: 条件 (ii) を実装するか、限界として本文に書くかの判断。
-  **実装側では決められない**（月 6 のゲート語彙凍結と held-out の設計に関わる）。
-- **背景**: D21 で strong-path を val の証拠で裏づけるようにしたが、
-  裏づけられたのは Def 5 の条件 (i)（制御引数の root に symlink 解決子を通った
-  canonical alias が存在する）だけである。条件 (ii)（**同じ root の canonical
-  alias に包含述語が適用され**、その述語が sink をゲートする）は未実装。
+- **要る情報**: 条件 (ii)・root-equal・inline 形の strong-path を実装するか、
+  限界として本文に書くかの判断。**実装側では決められない**（月 6 のゲート語彙
+  凍結と held-out の設計に関わる。実装するなら B3 の主語一致の上に載せる必要がある）。
+- **背景**: D21 で strong-path を val の証拠で裏づけるようにしたが、裏づけられた
+  のは Def 5 の条件 (i)（制御引数の root に symlink 解決子を通った canonical alias が
+  存在する）だけである。D21 は同時に inline 形を囲み関数の本体全体で採点するように
+  したが、その袋詰め採点が false-clean を 25 形入れたことが敵対的レビューで確定し、
+  **D25 で撤回した**。現状:
+  - **inline 形は一律 weak**（`gate.py: _grade_from_shape`）。Def 5 を inline で
+    満たす形（`tests/test_value_grade.py` a1〜a3）も weak になる。
+    **誤りの向きは false-dirty（安全側）**。野外での出現率は未測定。
+  - **helper 形は本体の形状集合で採点**（`gate.py: _value_grade`）し、条件 (i) を
+    `alias_facts` の root 一致で裏づける（D25 で全 root 要求）。条件 (ii)（包含述語が
+    canonical alias **そのもの**に適用され、その述語が sink をゲートする）と
+    root-equal（`ROOT_EQUAL_STEPS`、sink に届く値と検査された alias の差）は
+    **未実装**。**誤りの向きは false-clean**。
 - **なぜ実装できなかったか**: (ii) は「包含述語のどのオペランドが canonical
-  alias か」を要求する。`ValResult.env` は最終 env なので、canonical alias が
-  callee の中にある形では残らない。**較正対 A4（`mcp-server-git` の `git_add`）が
-  その実例**で、`resolved = (repo_root / f).resolve()` は低レベル
-  `call_tool` ハンドラから降りた先の関数の中にある。env で (ii) を見ようとすると
-  この対が落ち、`n_verdict_clearing_pairs_inject` が 1/7 → 0/7 に下がることを
-  実測した（主指標の退行）。
-- **取りこぼす形**: 正規化はしているが**検査には使わず**生の値を照合する形。
-  `tests/test_value_grade.py` の `b3_canon_unused` に凍結し
-  `xfail(strict=True)` で印を付けた。誤りの向きは **false-clean**。
-  野外での出現率は未測定。
-- **暫定**: 条件 (i) のみで運用し、(ii) 未実装を限界として記録する。
-  実装するなら canonical alias の**サイト**（`AliasFact.site` の `relpath:Lnnn`）と
-  包含述語のサイトを突き合わせる案があるが、手続き間の主語一致が要るので
-  B3 の主語一致の実装に乗せる必要がある。
+  alias か」を要求する。`ValResult.env` は最終 env なので canonical alias が
+  callee の中にある形では残らず、`alias_facts` は root 粒度で**値の同一性を持たない**
+  （派生値・別の値への `realpath` でも同じ root の行が立つ）。**較正対 A4
+  （`mcp-server-git` の `git_add`）が手続き間の実例**で、`resolved =
+  (repo_root / f).resolve()` は低レベル `call_tool` ハンドラから降りた先の関数の中に
+  ある。root-equal を `canonicalised` 属性で見ようとするとこの対が落ち、
+  `n_verdict_clearing_pairs_inject` が 1/7 → 0/7 に下がることを実測した（主指標の
+  退行。D21 時と D21 レビュー時の 2 回）。
+- **取りこぼす形（すべて false-clean、凍結済み）**:
+  - `tests/test_d21_adversarial.py` **x01**: helper が root だけ `realpath` する b1 形に、
+    ツール本体で無関係な `realpath(path)`（ログ用）を 1 行足すと strong-path に反転する。
+    b1 を「直した」根拠は「root `path` の alias が無い」という偶発的性質だけである。
+  - 同レビュー R15 / R21 の helper 変種（検証済みの `commonpath([path, base])` 形が
+    デコイ 1 行で復活）、R16 の変種（commonpath 形・再束縛形・ループ形）。
+  - **check-then-canonicalise**（R18: 検査の後に `realpath`）は「正規化はしているが
+    検査には使わず」という従来の O8 の文言からは射程内と読めなかったが、同じ族である。
+- **暫定**: 条件 (i) + 全 root + 領域一致で運用し、(ii) / root-equal / inline を限界
+  として記録する。実装するなら、候補述語 1 つに対して「sink を支配する述語だけを
+  採点に使う」「述語の被演算子が canonical alias の**値**であることを val の site
+  つき事実で確かめる」「sink に届く値の root ⊆ 検査された値の root」を同時に入れ、
+  期待値を先に置いて敵対的レビューを通す（D25「なぜ (B) 完全実装ではなく撤回か」）。
+
+---
+
+## O10. Def 5 の条件 (iii)（述語の他方の被演算子）が未実装
+
+- **要る情報**: 実装するか、限界として本文に書くかの判断。
+- **背景**: `validators.py: ALLOWED_OPERANDS`（literal / config_root / os.getcwd）と
+  `DOWNGRADES` の `tainted`（述語オペランドが MODEL）は**定義のみで参照 0 件**。
+  `gate.py: _value_grade` は正規化子名と包含述語名の集合しか見ず、**オペランドを
+  一切見ない**。包含 root 自体がモデル引数（`base = realpath(workspace)`）でも
+  strong-path になる。`tests/test_d21_adversarial.py` **x03**（helper 形）に凍結
+  （inline 形 r11 は D25 で inline が一律 weak になったため GAP に戻ったが、
+  条件 (iii) を実装したからではない）。
+- **誤りの向き**: **false-clean**。`workspace="/"`, `rel="etc/passwd"` で `..` 遍歴
+  すら要らない。
+- **記録が無かったこと**: D21 の決定文にも本ファイルにも無かった（規則 4 違反）。
+  D21「結果」と D25 で記録した。
+- **暫定案**: val は述語オペランドの `Prin` を既に持っている。`_value_grade` に
+  「包含述語の他方の被演算子の root が MODEL なら `tainted` を当て strong にしない」
+  を足す（安全側の変更なので敵対的レビューは要らないが、較正対を必ず測る）。
+
+---
+
+## O11. helper 経路の袋詰め採点（`_value_grade` は本体の形状集合しか見ない）
+
+- **要る情報**: O8 と同じ判断。O8 と一体で決める。
+- **背景**: D21 レビューの M1 は inline に限らず、helper 経路 `gate.py: _value_grade`
+  も同じ「正規化子の集合 × 包含述語の集合」である。helper の本体に `realpath` と
+  境界つき `startswith` が**どこかに**あれば、適用対象も順序も支配も問わず
+  strong-path になる。D25 は inline 側だけを撤回し、helper 側は条件 (i) の全 root
+  裏づけ + 領域一致で運用している。
+- **誤りの向き**: **false-clean**。x01（デコイ 1 行）がその実例。
+- **なぜ helper 側を撤回しなかったか**: 較正対 A1 / A4 / A10 の修正側の strong-path
+  はすべて helper 形（`_validate_path` 等）であり、helper 側を一律 weak にすると
+  両側通過の分子（`docs/expected_tuples.json` の `grade → strong-path`）が全滅する。
+  **これは「較正対を守るために false-clean を残している」ことに等しい**ので、
+  隠さずここに書く。野外での x01 型の出現率は未測定。
 
 ---
 

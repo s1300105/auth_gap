@@ -2,8 +2,11 @@
 
 **期待は仕様 Def 5 の文言から書き、修正より先にコミットした**（コミット 7ed20db。
 `tests/test_f0a_defects.py` と同じ型で、8 件を `xfail(strict=True)` にしてあった）。
-**解析器の修正（D21）で 8 件すべてが XPASS になったので印を外した。**
-以後この 20 件は回帰テストである。
+解析器の修正（D21）で 8 件すべてが XPASS になったので印を外したが、**D21 の
+inline 採点（`_grade_inline`）は敵対的レビューで false-clean を 25 形入れたことが
+確定し、D25 で戻した**（`tests/test_d21_adversarial.py`）。A 群（inline で
+Def 5 を満たす形が strong-path になること）は再び未達で、`xfail(strict=True)` に
+戻す。**誤りの向きは false-dirty（安全側）**。B 群・C 群は回帰テストのまま。
 
 仕様 `AUTHGAP_BRIEF_v3.md` Def 5 の strong-path は 3 条件
 （`authgap/catalog/validators.py: strong_path_requirements`）:
@@ -20,8 +23,9 @@ identity / canonicalising_transform / OP リテラル segment 追加のみ」を
 
 * **false-dirty**: inline 形は `gate.py: _grade_from_shape` に落ちるため
   「単独で strong にはしない」規則で weak に固定され、Def 5 を満たす修正が
-  脆弱版と同じ等級になっていた（A 群）。→ `gate.py: _grade_inline` で
-  囲み関数の本体を helper 経路と同じ規則で採点するようにした。
+  脆弱版と同じ等級になっていた（A 群）。→ D21 は `_grade_inline` で囲み関数の
+  本体を helper 経路と同じ規則で採点したが、**その袋詰め採点が false-clean を
+  25 形入れた**ので D25 で戻した。A 群は未達のまま（O8 に統合）。
 * **false-clean**: ヘルパー経路 `gate.py: _value_grade` は本体に現れた形状の
   集合だけを見るので、条件 1（root の canonical alias）を検査せずに
   strong-path を返していた（B 群 b1）。**`..` 遍歴で抜けられる検証子が
@@ -50,6 +54,11 @@ from authgap.runner import RunConfig, run
 #: 条件 (i) を `alias_facts` で見るところまでしか行けていない。
 #: **黙って安全側に倒さず未解決として記録する**（`docs/open_questions.md` O8）。
 COND_II = pytest.mark.xfail(strict=True, reason="O8: Def 5 条件 (ii) は未実装")
+#: inline 形を strong-path にするには、当該述語が sink を支配し、canonical alias
+#: そのものに当たり（(ii)）、他方の被演算子が定数で（(iii)）、sink に届く値が
+#: root-equal であることを**その述語について**確かめる必要がある。D21 の袋詰め
+#: 採点はそれを飛ばして false-clean を作ったので戻した（D25）。未達 = false-dirty。
+INLINE_STRONG = pytest.mark.xfail(strict=True, reason="O8: inline 形の strong-path は未実装（D25 で D21 の袋詰め採点を撤回）")
 
 SOURCE = '''\
 import os
@@ -233,6 +242,7 @@ def test_precondition_b1_has_no_canonical_alias(units):
 # --------------------------------------------------------------------------
 
 
+@INLINE_STRONG
 @pytest.mark.parametrize("tool", ("a1_inline_commonpath", "a2_inline_relative_to", "a3_inline_startswith_sep"))
 def test_inline_form_is_strong_path(units, tool):
     grade, weak_reason = _grade(units, tool)
@@ -240,6 +250,7 @@ def test_inline_form_is_strong_path(units, tool):
     assert weak_reason is None
 
 
+@INLINE_STRONG
 @pytest.mark.parametrize("tool", ("a1_inline_commonpath", "a2_inline_relative_to", "a3_inline_startswith_sep"))
 def test_inline_form_clears_gap(units, tool):
     assert units[tool].req_val.get(SLOT) is Req.OP, f"{tool}: req_val={units[tool].req_val.get(SLOT)}"
@@ -270,14 +281,15 @@ def test_join_after_canon_is_not_strong(units):
     assert _verdicts(units, "b2_join_after_canon") == {"GAP_INJECT"}
 
 
-@COND_II
 def test_canon_unused_is_not_strong(units):
     """正規化した値を**検査に使わず**生の値を照合する形（Def 5 条件 (ii) 違反）。
 
     `real = realpath(path)` があるので条件 (i) は満たすが、包含述語
     （`path.startswith(...)`）は生の `path` に当たっており canonical alias に
-    当たっていない。**現在の実装は (i) までしか見ないので strong-path になる。**
-    条件 (ii) を満たさない形はここで凍結し、O8 として記録した。
+    当たっていない。D21 の inline 採点では (i) までしか見ないので strong-path に
+    なっていた（O8 で凍結）。**D25 で inline 採点を戻したので weak に戻る**が、
+    それは (ii) を実装したからではなく inline 形を一律 weak にしたからである。
+    helper 形の同形は `tests/test_d21_adversarial.py` x01 が O8/O11 として凍結する。
     """
     grade, _ = _grade(units, "b3_canon_unused")
     assert grade == "weak", f"b3: grade={grade!r}"
@@ -315,11 +327,19 @@ def test_helper_strong_stays_strong(units):
 # 別の実装を書いてはならない（analyze.py の ARMS の規則）。
 #
 # C − C0（C で GAP、C0 で clear になる位置）が「等級づけが verdict を動かした
-# 位置」である。この fixture 集合での事前登録した期待値は {b1, b2}:
+# 位置」である。この fixture 集合での事前登録した期待値は {b1, b2} だった:
 #   b1 helper が root だけ正規化（weak）… C: MODEL / C0: OP
 #   b2 join 後の正規化（weak）…………… C: MODEL / C0: OP
 # a1〜a3 / b3 / c2 は C でも strong なので差が出ず、c1 は検証子が無いので
-# C0 でも MODEL のまま。**b3 は O8 の限界で C でも strong なので C − C0 に入らない。**
+# C0 でも MODEL のまま、というのが d2b501a の期待だった。
+#
+# **D25 で D21 の inline 採点を撤回したため、a1〜a3 と b3 は C で weak（MODEL）に
+# 戻り、C − C0 = {a1, a2, a3, b1, b2, b3} になる。** これは結果を見て期待を
+# 動かしたのではなく、解析器の等級規則が変わった（inline 形は一律 weak）ことの
+# 機械的な帰結である。`docs/preregistration.md` §5 #3 に逸脱として記録した。
+# a1〜a3 が C − C0 に入るのは false-dirty（Def 5 を満たす形を weak と見ている）
+# の側なので、「等級づけが verdict を動かした位置」としては b1 / b2 と性質が違う。
+# 較正対での C − C0 は `scripts/two_sided.py --arm C0` で別に取る。
 # --------------------------------------------------------------------------
 
 @pytest.fixture(scope="module")
@@ -332,12 +352,12 @@ def units_c0(tmp_path_factory):
 
 #: (tool, C の req_val, C0 の req_val)。prereg §5 #2 (b) の期待値。
 C_VS_C0 = (
-    ("a1_inline_commonpath", Req.OP, Req.OP),
-    ("a2_inline_relative_to", Req.OP, Req.OP),
-    ("a3_inline_startswith_sep", Req.OP, Req.OP),
+    ("a1_inline_commonpath", Req.MODEL, Req.OP),  # D25: inline は weak（false-dirty 側）
+    ("a2_inline_relative_to", Req.MODEL, Req.OP),
+    ("a3_inline_startswith_sep", Req.MODEL, Req.OP),
     ("b1_helper_root_only", Req.MODEL, Req.OP),
     ("b2_join_after_canon", Req.MODEL, Req.OP),
-    ("b3_canon_unused", Req.OP, Req.OP),
+    ("b3_canon_unused", Req.MODEL, Req.OP),  # D25: inline は weak
     ("c1_no_validator", Req.MODEL, Req.MODEL),
     ("c2_helper_strong", Req.OP, Req.OP),
 )
@@ -355,9 +375,12 @@ def test_arm_c0_collapses_grade(units_c0, tool, req_c, req_c0):
     assert units_c0[tool].req_val.get(SLOT) is req_c0, f"{tool}: C0 の req_val={units_c0[tool].req_val.get(SLOT)}"
 
 
-def test_c_minus_c0_is_exactly_b1_b2(units, units_c0):
-    """C − C0 = {b1, b2}。**等級づけが verdict を動かした位置はこの 2 つだけ。**
+def test_c_minus_c0_is_exactly_a_and_b(units, units_c0):
+    """C − C0 = {a1, a2, a3, b1, b2, b3}（D25 後）。
 
+    d2b501a の期待は {b1, b2} だった。D25 で inline 形が一律 weak に戻ったため
+    a1〜a3 / b3 が加わった（上の注記）。**等級づけが「正しく」verdict を動かした
+    位置は依然 b1 / b2 の 2 つ**で、a1〜a3 は false-dirty 側の差である。
     これが空なら「等級づけは verdict に寄与していない」であり、
     prereg §5 #2 の判定規則により等級づけを主張から降ろす。
     """
@@ -365,7 +388,14 @@ def test_c_minus_c0_is_exactly_b1_b2(units, units_c0):
         t for t, _, _ in C_VS_C0
         if units[t].req_val.get(SLOT) is Req.MODEL and units_c0[t].req_val.get(SLOT) is Req.OP
     )
-    assert diff == ["b1_helper_root_only", "b2_join_after_canon"], diff
+    assert diff == [
+        "a1_inline_commonpath",
+        "a2_inline_relative_to",
+        "a3_inline_startswith_sep",
+        "b1_helper_root_only",
+        "b2_join_after_canon",
+        "b3_canon_unused",
+    ], diff
 
 
 def test_arm_c0_is_a_known_arm():
