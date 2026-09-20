@@ -74,6 +74,11 @@ class Unit:
     annotation_form: Optional[str] = None
     #: 低レベル経路のとき、ハンドラ内の name 分岐から得た候補名。
     dispatch_names: tuple[str, ...] = ()
+    #: 低レベル経路のとき、`dispatch_names` で join した `Tool(...)` リテラルの
+    #: 宣言（ツール名 → `(annotations, form)`）。`docs/preregistration.md` §2.9 (a)。
+    dispatch_annotations: dict[str, tuple[Optional[dict], str]] = field(default_factory=dict)
+    #: 同じファイルにあって名前が文字列リテラルでないため join できなかったリテラル数（§2.9 (d)）。
+    dispatch_unjoined: int = 0
     is_async: bool = False
     #: `toolmessage_handler` 形のとき、MODEL 値を運ぶ仮引数の名前（`msg`）。
     message_param: Optional[str] = None
@@ -122,6 +127,11 @@ class Unit:
             d["annotation_form"] = self.annotation_form
         if self.dispatch_names:
             d["dispatch_names"] = list(self.dispatch_names)
+        if self.dispatch_annotations:
+            d["dispatch_annotations"] = {
+                k: {"annotations": a, "form": f} for k, (a, f) in sorted(self.dispatch_annotations.items())
+            }
+            d["dispatch_unjoined"] = self.dispatch_unjoined
         if self.message_param:
             d["message_param"] = self.message_param
             d["message_class"] = self.message_class
@@ -901,6 +911,19 @@ def join_annotations(units: list[Unit], literals: list[ToolLiteral]) -> tuple[in
             u.annotation_form = lit.form
             joined += 1
             used.add(key)
+            continue
+        if key is None and u.dispatch_names:
+            # §2.9 (a): 低レベルハンドラは `dispatch_names`（本体の `name == "<literal>"`
+            # 分岐から得た候補名）でリテラルを join する。ハンドラの `annotations` は
+            # 立てない（1 ユニットが複数ツールを持つ）。効果ごとの帰属は
+            # `analyze.py` が支配判定で行う（§2.9 (b)）。
+            hit = {n: (by_name[n].annotations, by_name[n].form) for n in u.dispatch_names if n in by_name}
+            if hit:
+                u.dispatch_annotations = hit
+                used |= set(hit)
+                joined += 1
+            # §2.9 (d): 同じファイルの、名前が非リテラルのリテラルは join できない。件数を持つ。
+            u.dispatch_unjoined = sum(1 for lit in literals if not lit.name and lit.relpath == u.relpath)
     unjoined = len([lit for lit in literals if not lit.name or lit.name not in used])
     return joined, unjoined
 

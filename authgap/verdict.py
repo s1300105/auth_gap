@@ -125,6 +125,9 @@ class UnitVerdictInput:
     #: `effect index -> req_occ`（**`req_occ(e)` は効果ごと**。Def 5）。
     #: **既定値つきなので必ず末尾に置く**（位置引数の並びを崩さないため）。
     req_occ_by_effect: dict[int, Req] = field(default_factory=dict)
+    #: 低レベルハンドラ: `effect index -> 判定に使う D_kind`（§2.9。無ければ `d_kind`）。
+    d_kind_by_effect: dict[int, DKind] = field(default_factory=dict)
+
 
 
 def decide(inp: UnitVerdictInput) -> list[Row]:
@@ -137,10 +140,15 @@ def decide(inp: UnitVerdictInput) -> list[Row]:
     """
     rows: list[Row] = []
     effect_kinds = {e.kind for e in inp.effects}
-    d_layers = _layers_present(inp)
-    contradiction_flag = _contradiction(inp, effect_kinds)
 
     for i, eff in enumerate(inp.effects):
+        # 低レベルハンドラは効果ごとに帰属先ツールの D_kind で判定する（§2.9）。
+        # それ以外はユニットの D_kind と同じ（`d_kind_by_effect` が空）。
+        dk = inp.d_kind_by_effect.get(i, inp.d_kind)
+        d_layers = _layers_present(inp, dk)
+        contradiction_flag = (
+            _contradiction_of(dk, {eff.kind}) if i in inp.d_kind_by_effect else _contradiction(inp, effect_kinds)
+        )
         # **行の確度で判定する。** ユニットのどこかで opaque が立ったことを
         # 全行に伝播させると、解決できている行まで UNKNOWN になり、
         # opaque 率も §3 の交差行も測れなくなる。ユニット水準の opaque 理由は
@@ -178,6 +186,7 @@ def _select_coordinate(
     verdicts: set[str] = set()
     covered: Optional[str] = None
     notes: tuple[str, ...] = ()
+    dk = inp.d_kind_by_effect.get(i, inp.d_kind)
     if contradiction_flag and eff.kind in ("EXEC", "SPAWN", "FS_WRITE"):
         verdicts.add("CONTRADICTION")
     occ = inp.req_occ_by_effect.get(i, inp.req_occ)
@@ -185,7 +194,7 @@ def _select_coordinate(
         if inp.d_op.covers(inp.tool_name):
             verdicts.add("INVENTORY")
             covered = "op"
-        elif inp.d_kind.covers(eff.kind):
+        elif dk.covers(eff.kind):
             verdicts.add("INVENTORY")
             covered = "kind"
         else:
@@ -193,7 +202,7 @@ def _select_coordinate(
     elif inp.trig_mode == "assumed":
         # **`assumed` の trig では SELECT 行は GAP ではなくマニフェスト行。**
         notes = notes + ("select_manifest_only(assumed_trig)",)
-    if inp.drift_reasons and inp.d_kind.is_bottom and inp.d_op.is_bottom:
+    if inp.drift_reasons and dk.is_bottom and inp.d_op.is_bottom:
         verdicts.add("GAP_DRIFT")
         covered = covered or "prev"
         notes = notes + tuple(inp.drift_reasons)
@@ -234,7 +243,7 @@ def _inject_coordinate(
     # D_dom は実装条件を満たすまで常に ⊥（反証条件 F1）。
     # D_kind は kind の上界しか宣言せず**制御位置を宣言しないので INJECT を
     # 被覆しない**。宣言があることは行に記録するだけ。
-    if inp.d_kind.covers(eff.kind):
+    if inp.d_kind_by_effect.get(i, inp.d_kind).covers(eff.kind):
         row.notes = row.notes + (f"D_layer_present:kind:{eff.kind}",)
 
     if eff.kind in P0_KINDS or eff.kind in ("DB", "NET"):
@@ -243,21 +252,26 @@ def _inject_coordinate(
 
 
 def _contradiction(inp: UnitVerdictInput, effect_kinds: set[str]) -> bool:
+    return _contradiction_of(inp.d_kind, effect_kinds)
+
+
+def _contradiction_of(dk: DKind, effect_kinds: set[str]) -> bool:
     from .dparse import contradiction as _c
 
-    return _c(inp.d_kind, effect_kinds)
+    return _c(dk, effect_kinds)
 
 
-def _layers_present(inp: UnitVerdictInput) -> tuple[str, ...]:
+def _layers_present(inp: UnitVerdictInput, dk: Optional[DKind] = None) -> tuple[str, ...]:
+    dk = inp.d_kind if dk is None else dk
     out: list[str] = []
-    if not inp.d_kind.is_bottom:
+    if not dk.is_bottom:
         out.append("kind")
-    if inp.d_kind.present_no_bound:
+    if dk.present_no_bound:
         out.append("kind_no_bound")
     if not inp.d_op.is_bottom:
         out.append("op")
     if inp.drift_reasons:
         out.append("prev")
-    if inp.d_kind.unknown:
+    if dk.unknown:
         out.append("unknown")
     return tuple(out)

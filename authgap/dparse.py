@@ -80,6 +80,56 @@ class DKind:
 def parse_d_kind(unit: Unit) -> DKind:
     """ユニットの annotations から D_kind を作る（Def 6）。
 
+    低レベルハンドラ（`dispatch_annotations` を持つ）は、join した全ツールの
+    宣言の**積**（:func:`meet_d_kind`）をユニット水準の D_kind にする
+    （§2.9 (c)。効果ごとの帰属は `analyze.py`）。
+    """
+    if unit.dispatch_annotations and not unit.annotations:
+        return meet_d_kind([d_kind_from(a, f) for a, f in unit.dispatch_annotations.values()])
+    return d_kind_from(unit.annotations, unit.annotation_form)
+
+
+def parse_d_kind_by_tool(unit: Unit) -> dict[str, DKind]:
+    """低レベルハンドラの、join したツールごとの D_kind（§2.9 (a)）。"""
+    return {name: d_kind_from(a, f) for name, (a, f) in sorted(unit.dispatch_annotations.items())}
+
+
+def meet_d_kind(dks: list[DKind]) -> DKind:
+    """複数ツールに帰属する効果の判定に使う「最も厳しい宣言」（§2.9 (c)）。
+
+    * `upper`: どれか 1 つでも ⊥ なら ⊥（被覆しない = GAP_SELECT が出る側）、
+      全部に上界があればその**積**。
+    * `explicit` / `present_no_bound` / `malformed`: 和（CONTRADICTION は
+      どれか 1 つの明示宣言に反すれば立つ）。
+    * `unknown`: どれか 1 つでも読めなければ真。
+    * `open_world`: **全部**が宣言したときだけ真（P0 の緩和は保守的に）。
+
+    どの座標でも false-clean 側には倒れない（帰属先の各ツールで判定した結果の
+    和集合と同じ verdict になる）。
+    """
+    if not dks:
+        return DKind()
+    upper: Optional[frozenset[str]]
+    if any(d.upper is None for d in dks):
+        upper = None
+    else:
+        acc = set(dks[0].upper or ())
+        for d in dks[1:]:
+            acc &= set(d.upper or ())
+        upper = frozenset(acc)
+    return DKind(
+        upper=upper,
+        explicit=tuple(sorted({x for d in dks for x in d.explicit})),
+        present_no_bound=tuple(sorted({x for d in dks for x in d.present_no_bound})),
+        malformed=tuple(sorted({x for d in dks for x in d.malformed})),
+        unknown=any(d.unknown for d in dks),
+        open_world=all(d.open_world for d in dks),
+    )
+
+
+def d_kind_from(ann: Optional[dict], form: Optional[str]) -> DKind:
+    """annotations 1 つから D_kind を作る（Def 6。`parse_d_kind` の本体）。
+
     **上界を動かさないフィールドは D_kind を構成しない。**
     `title` / `idempotentHint` / `readOnlyHint==false` 単独 /
     `destructiveHint==true` 単独 / `openWorldHint==false` 単独は、明示されていても
@@ -89,9 +139,8 @@ def parse_d_kind(unit: Unit) -> DKind:
     `openWorldHint==true` のいずれかを明示したユニット」であって
     「`annotations=` を持つユニット」ではない。
     """
-    if unit.annotation_form == "unreadable":
+    if form == "unreadable":
         return DKind(unknown=True)
-    ann = unit.annotations
     if not ann:
         return DKind()
     explicit: list[str] = []

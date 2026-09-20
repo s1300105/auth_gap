@@ -44,7 +44,7 @@
 - **暫定**: **push していない。** コミットはローカルにだけある（数は `git rev-list --count HEAD`）。
   推奨は「private で作成し、C1（開示の 90 日時計の起点）まで private を維持」。
 
-## O5. 低レベル MCP ハンドラと annotation の join（Def 6 に規則が無い）
+## O5. 低レベル MCP ハンドラと annotation の join（Def 6 に規則が無い）— **解決（prereg §2.9、D29 の帰結として実装）**
 
 - **2026-09-20 追記（D28）**: 97 木で `dispatch_names` による join を探索的に入れても、
   明示 hint を持つユニットは 1/2533 のまま（`evidence/decl_census_run6/join_probe.json`）。

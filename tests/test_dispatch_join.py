@@ -23,7 +23,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FIXTURE = os.path.join(ROOT, "fixtures", "dispatch_join")
 EXPECTED = json.load(open(os.path.join(FIXTURE, "expected.json"), encoding="utf-8"))["units"]
 
-DEFECT = pytest.mark.xfail(strict=True, reason="prereg §2.9（O5）: 未実装（修正コミットでこの印を外す）")
+#: 8d1d2a9 で xfail(strict) の DEFECT として置き、実装で 5 件すべてが XPASS になったので印を外した。
 
 
 @pytest.fixture(scope="module")
@@ -78,7 +78,6 @@ def test_decorator_form_unchanged(units):
 # --------------------------------------------------------------------------
 
 
-@DEFECT
 def test_join_by_dispatch_names(units):
     u = units["call_tool"]
     dj = u.to_json().get("dispatch_join")
@@ -87,7 +86,6 @@ def test_join_by_dispatch_names(units):
     assert dj["unjoined_literals"] == EXPECTED["call_tool"]["dispatch_join"]["unjoined_literals"], dj
 
 
-@DEFECT
 def test_d_kind_by_tool(units):
     u = units["call_tool"]
     got = u.to_json().get("D_kind_by_tool")
@@ -104,7 +102,6 @@ def test_d_kind_by_tool(units):
 # --------------------------------------------------------------------------
 
 
-@DEFECT
 @pytest.mark.parametrize("site,kind", [("os.makedirs", "FS_WRITE"), ("builtins.open", "FS_READ"), ("builtins.open", "FS_WRITE")])
 def test_effect_attribution_and_verdicts(units, site, kind):
     u = units["call_tool"]

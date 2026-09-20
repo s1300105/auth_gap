@@ -24,8 +24,8 @@ from .catalog.entries import APPROVAL_INTERRUPTS
 from .catalog.sinks import DANGEROUS_KINDS, PATH_DOMAIN_SLOTS, PRIMARY_SLOTS
 from .catalog.transfers import SYMLINK_RESOLVERS
 from .cfgbuild import build_cfg
-from .dominance import compute_dominators
-from .dparse import DKind, DOp, parse_d_kind
+from .dominance import compute_dominators, gates
+from .dparse import DKind, DOp, meet_d_kind, parse_d_kind, parse_d_kind_by_tool
 from .effects import Effect, EffectExtractor
 from .entries import (
     Unit,  # noqa: F401
@@ -80,6 +80,12 @@ class UnitReport:
     #: F0a: 読んだ config atom（名前 → 既定が閉か）。
     config_atoms: dict[str, Optional[bool]] = field(default_factory=dict)
     d_kind: DKind = field(default_factory=DKind)
+    #: 低レベルハンドラ: join したツールごとの D_kind（§2.9 (a)）。
+    d_kind_by_tool: dict[str, DKind] = field(default_factory=dict)
+    #: 低レベルハンドラ: `effect index -> 帰属したツール名`（§2.9 (b)）。
+    dispatch_attribution: dict[int, tuple[str, ...]] = field(default_factory=dict)
+    #: 低レベルハンドラ: `effect index -> 判定に使う D_kind`（§2.9 (c) の積）。
+    d_kind_by_effect: dict[int, DKind] = field(default_factory=dict)
     trig: Optional[TrigResult] = None
     req_occ: Req = Req.MODEL
     #: `(effect index, slot) -> req_val`
@@ -141,6 +147,16 @@ class UnitReport:
             "d_prev_joined": self.d_prev_joined,
             "notes": sorted(set(self.notes)),
         }
+        if self.d_kind_by_tool:
+            d["D_kind_by_tool"] = {k: v.to_json() for k, v in sorted(self.d_kind_by_tool.items())}
+            d["dispatch_join"] = {
+                "tools": sorted(self.d_kind_by_tool),
+                "unjoined_literals": self.unit.dispatch_unjoined,
+                "attribution": {str(i): list(t) for i, t in sorted(self.dispatch_attribution.items())},
+                "effects_all_tools": sorted(
+                    i for i, t in self.dispatch_attribution.items() if set(t) == set(self.d_kind_by_tool)
+                ),
+            }
         if self.trig is not None:
             d["trig"] = self.trig.to_json()
         if self.occ_gate is not None:
@@ -182,6 +198,7 @@ def analyze_unit_f0a(
     report.gate_predicate_present = _gate_predicate_present(index, unit, scope)
     report.config_atoms = _config_atoms(index, unit, scope)
     report.d_kind = parse_d_kind(unit)
+    report.d_kind_by_tool = parse_d_kind_by_tool(unit)
     return report
 
 
@@ -408,6 +425,8 @@ def analyze_unit_full(
     dom = compute_dominators(cfg)
     cands = find_gate_candidates(cfg, scope, index, 0, SummaryCache(index))
     _attach_subject_roots(cands, report.val)
+    if report.d_kind_by_tool:
+        _attribute_effects_to_tools(report, cfg, dom)
 
     report.trig = trig_index.trig_for(unit)
     if arm == "B":
@@ -493,6 +512,7 @@ def analyze_unit_full(
             req_val=report.req_val,
             grades=report.grades,
             d_kind=report.d_kind,
+            d_kind_by_effect=dict(report.d_kind_by_effect),
             d_op=d_op,
             drift_reasons=drift_reasons,
             opaque_reasons=tuple(sorted(set(report.val.opaque_reasons))),
@@ -501,6 +521,47 @@ def analyze_unit_full(
         )
     )
     return report
+
+
+def _dispatch_test_names(expr: Optional[ast.AST]) -> frozenset[str]:
+    """test 式が `x == "<literal>"` / `x in ("a", "b")` なら、その文字列定数の集合。"""
+    if not isinstance(expr, ast.Compare) or len(expr.ops) != 1:
+        return frozenset()
+    op, comp = expr.ops[0], expr.comparators[0]
+    if isinstance(op, ast.Eq) and isinstance(comp, ast.Constant) and isinstance(comp.value, str):
+        return frozenset({comp.value})
+    if isinstance(op, ast.In) and isinstance(comp, (ast.Tuple, ast.List, ast.Set)):
+        return frozenset(e.value for e in comp.elts if isinstance(e, ast.Constant) and isinstance(e.value, str))
+    return frozenset()
+
+
+def _attribute_effects_to_tools(report: UnitReport, cfg, dom) -> None:
+    """§2.9 (b)(c): 低レベルハンドラの効果を、支配する `name == "<tool>"` 判定のツールに帰属する。
+
+    * 効果ノード `d` を **ゲートする**（`dominance.gates`: 支配し、偽側から `d` に
+      届かない）test ノードの文字列定数のうち、join したツール名に当たるものを集める。
+    * どの判定にも当たらない効果は、join した全ツールに帰属する（共通処理）。
+    * 判定に使う D_kind は帰属先の宣言の積（`meet_d_kind`）。false-clean 側に倒れない。
+
+    `match` 文の分岐は CFG の test ノードに文字列定数として現れないので、
+    その効果は全ツール帰属になる（保守的）。
+    """
+    tools = set(report.d_kind_by_tool)
+    for i, e in enumerate(report.effects):
+        nodes = cfg.nodes_for_line(e.entry_lineno) or []
+        attributed: set[str] = set()
+        for g, node in cfg.nodes.items():
+            if node.kind != "test":
+                continue
+            names = _dispatch_test_names(node.test_expr) & tools
+            if not names:
+                continue
+            if any(gates(cfg, dom, g, d).ok for d in nodes):
+                attributed |= names
+        if not attributed:
+            attributed = set(tools)
+        report.dispatch_attribution[i] = tuple(sorted(attributed))
+        report.d_kind_by_effect[i] = meet_d_kind([report.d_kind_by_tool[t] for t in sorted(attributed)])
 
 
 def _is_argv_exec(effect: Optional[Effect]) -> bool:

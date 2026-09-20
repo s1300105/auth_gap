@@ -96,6 +96,10 @@ class PopStats:
     n_d_union_clean: int = 0
     n_annotations_present: int = 0
     n_d_unknown: int = 0
+    #: 低レベルハンドラの join（prereg §2.9 (g)）。**ツール単位の併記値。**
+    n_units_with_dispatch_join: int = 0
+    n_tools_dispatched: int = 0
+    n_tools_declared_explicit: int = 0
     #: 発生ゲートの 4 形態別。
     occurrence_gates: Counter = field(default_factory=Counter)
     #: 制御位置の確度（主 slot 限定 / 全 slot）。
@@ -249,6 +253,10 @@ class PopStats:
                 "n_d_union_fp_excluded": self.n_d_union_clean,
                 "n_annotations_present": self.n_annotations_present,
                 "n_d_unknown": self.n_d_unknown,
+                # prereg §2.9 (g): ハンドラ join のツール単位の値（併記）
+                "n_units_with_dispatch_join": self.n_units_with_dispatch_join,
+                "n_tools_dispatched": self.n_tools_dispatched,
+                "n_tools_declared_explicit": self.n_tools_declared_explicit,
                 "r_kind_fp_excluded": self.r_kind,
                 "r_kind_crude": self.r_kind_crude,
                 "r_dom": 0.0,
@@ -343,6 +351,10 @@ def _accumulate_unit(
         stats.n_annotations_present += 1
     if u.d_kind.unknown:
         stats.n_d_unknown += 1
+    if u.d_kind_by_tool:
+        stats.n_units_with_dispatch_join += 1
+        stats.n_tools_dispatched += len(u.d_kind_by_tool)
+        stats.n_tools_declared_explicit += sum(1 for dk in u.d_kind_by_tool.values() if dk.explicit)
     if with_trig and u.trig is not None:
         stats.trig_modes[f"{u.unit.framework}:{u.trig.mode}"] += 1
 
