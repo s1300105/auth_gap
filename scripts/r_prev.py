@@ -171,9 +171,16 @@ def main() -> int:
                 print(f"  FAIL current scan {tree}: {exc}")
                 continue
             f0a.accumulate(st, cres, rubric, False, prev_ids=prev_ids)
-            n_join = sum(1 for u in cres.tree.units if u.d_prev_joined)
+            if which == "prev":
+                _write_manifest(cres, os.path.join(out_dir, "current", f"{tree}.json"))
+            # **木ごとの join は集計と同じ規則（unit id の完全一致）で数える。**
+            # `UnitReport.d_prev_joined` は runner の full 経路でしか立っていなかった
+            # （run1 で全木 0 と表示。runner 側も直した）。
+            joined = [u for u in cres.tree.units if u.unit.unit_id in prev_ids]
+            n_join = len(joined)
             n_dang = sum(1 for u in cres.tree.units if u.has_dangerous_effect)
-            n_join_dang = sum(1 for u in cres.tree.units if u.d_prev_joined and u.has_dangerous_effect)
+            n_join_dang = sum(1 for u in joined if u.has_dangerous_effect)
+            assert n_join == sum(1 for u in cres.tree.units if u.d_prev_joined), "runner の d_prev_joined と不一致"
             row[f"{which}_status"] = "ok"
             row["cur_n_units"] = len(cres.tree.units)
             row["cur_n_dangerous"] = n_dang

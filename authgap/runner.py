@@ -115,6 +115,10 @@ def run(cfg: RunConfig) -> RunResult:
                 )
             else:
                 report = analyze_unit_f0a(index, unit, cfg.options)
+                # D_prev の join は unit id の一致だけなので probe 経路でも立てる。
+                # 立てないと `--prev-manifest` が probe では黙って無視される（D22 の残り。
+                # `scripts/r_prev.py` の run1 で全木 0 と表示された）。
+                report.d_prev_joined = bool(prev) and prev.join(unit.unit_id) is not None
         except RecursionError:
             # **1 ユニットの深い AST で木全体を落とさない**（D17 改訂 4）。そのユニットは解析できなかった
             # ことを TRUNCATED(recursion) として残し、件数に数える（黙って落とさない）。

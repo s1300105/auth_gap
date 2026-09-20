@@ -43,11 +43,20 @@ SENSITIVITY_STEPS = 5
 
 
 def _run(cmd: list[str], cwd: Optional[str] = None, timeout: int = 600) -> tuple[int, str]:
+    """`(returncode, stdout)`。**stderr は混ぜない。**
+
+    2026-09-20 の手順 1 の実行では stdout + stderr を連結していたため、`git show` が
+    stderr に出した gc の案内（`See "git help gc" for manual housekeeping.`）がタグの
+    日付として記録され、文字列比較で最大になって crewAI の「直前リリース」が
+    2024 年の v0.5.2 に化けた（正しくは 1.15.21）。`docs/preregistration.md` §5 #6。
+    """
     try:
         p = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, timeout=timeout)
     except subprocess.TimeoutExpired:
         return 124, "timeout"
-    return p.returncode, (p.stdout or "") + (p.stderr or "")
+    if p.returncode != 0:
+        return p.returncode, (p.stdout or "") + (p.stderr or "")
+    return p.returncode, p.stdout or ""
 
 
 def is_release_tag(name: str) -> bool:
@@ -160,6 +169,9 @@ def resolve_tree(tree: str, repo: str, analyzed_sha: str, population: str) -> Tr
         if dc != 0:
             continue
         t.date = dout.strip().splitlines()[-1] if dout.strip() else ""
+        if not re.match(r"^\d{4}-\d\d-\d\dT", t.date):
+            # 日付でない文字列を日付として並べない（§5 #6 の再発防止）。
+            raise RuntimeError(f"{tree}: タグ {t.name} の日付が取れない: {t.date!r}")
         t.ancestor = True
         usable.append(t)
 

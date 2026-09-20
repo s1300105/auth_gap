@@ -1,0 +1,2787 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": false,
+  "deny": [
+   "auto_gptp_vicuna"
+  ],
+  "excluded_files": [],
+  "source": "in_tree_exposure"
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 129,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "autogpt/app.py",
+   "resolution": "opaque",
+   "selector": "'function'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 109,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "autogpt/commands/execute_code.py",
+   "resolution": "opaque",
+   "selector": "result.returncode",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "logger.debug",
+    "logger.info",
+    "time.sleep"
+   ],
+   "form": "if_chain",
+   "lineno": 96,
+   "opaque_reason": null,
+   "relpath": "autogpt/commands/image_gen.py",
+   "resolution": "resolved",
+   "selector": "'estimated_time'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 102,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "autogpt/commands/web_selenium.py",
+   "resolution": "opaque",
+   "selector": "agent.config.selenium_web_browser",
+   "selector_is_model": false
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "app",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "name",
+     "site": "autogpt/workspace/workspace.py:L116",
+     "transform": "Path()"
+    },
+    {
+     "root": "name",
+     "site": "autogpt/workspace/workspace.py:L116",
+     "transform": "Path.resolve"
+    },
+    {
+     "root": "name",
+     "site": "autogpt/workspace/workspace.py:L120",
+     "transform": "Path()"
+    },
+    {
+     "root": "name",
+     "site": "autogpt/workspace/workspace.py:L130",
+     "transform": "Path.resolve"
+    },
+    {
+     "root": "name",
+     "site": "autogpt/commands/execute_code.py:L95",
+     "transform": "Path()"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 48,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 48,
+     "relpath": "autogpt/commands/execute_code.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.makedirs",
+     "slots": {
+      "path": {
+       "attrs": [
+        "canonicalised"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE"
+    },
+    {
+     "entry_lineno": 60,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 60,
+     "relpath": "autogpt/commands/execute_code.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "attrs": [
+        "canonicalised"
+       ],
+       "prin": "MODEL",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "roots": [
+        "name"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE"
+    },
+    {
+     "entry_lineno": 63,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 103,
+     "relpath": "autogpt/commands/execute_code.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "shape_from": {
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "python",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "roots": [
+        "name"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "python",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "roots": [
+           "name"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "cwd": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "execute_python_file"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 35,
+    "module": "autogpt.commands.execute_code",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "code"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "name"
+     },
+     {
+      "annotation": "Agent",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 2,
+      "name": "agent"
+     }
+    ],
+    "qualname": "execute_python_code",
+    "relpath": "autogpt/commands/execute_code.py",
+    "schema_hash": "b669a98e0f66",
+    "tool_name": "execute_python_code",
+    "unit_id": "autogpt:execute_python_code:b669a98e0f66"
+   },
+   "validator_shapes": [
+    "containment",
+    "ctor_path"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "filename",
+     "site": "autogpt/commands/execute_code.py:L95",
+     "transform": "Path()"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 103,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 103,
+     "relpath": "autogpt/commands/execute_code.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "shape_from": {
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "python",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "roots": [
+        "filename"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "python",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "roots": [
+           "filename"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "cwd": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV"
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 79,
+    "module": "autogpt.commands.execute_code",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filename"
+     },
+     {
+      "annotation": "Agent",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 1,
+      "name": "agent"
+     }
+    ],
+    "qualname": "execute_python_file",
+    "relpath": "autogpt/commands/execute_code.py",
+    "schema_hash": "52d517db0229",
+    "tool_name": "execute_python_file",
+    "unit_id": "autogpt:execute_python_file:52d517db0229"
+   },
+   "validator_shapes": [
+    "containment",
+    "ctor_path",
+    "exists"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "command_line",
+     "site": "autogpt/commands/execute_code.py:L185",
+     "transform": "str.split"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {
+    "ALLOWLIST_CONTROL": true
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 230,
+     "exec_mode": {
+      "shell": {
+       "const": true,
+       "prin": "OP",
+       "source": "literal"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 230,
+     "relpath": "autogpt/commands/execute_code.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "shell_string": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "shell_string": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "command_line"
+       ],
+       "shape": {
+        "formal": "command_line",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV"
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 208,
+    "module": "autogpt.commands.execute_code",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "command_line"
+     },
+     {
+      "annotation": "Agent",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 1,
+      "name": "agent"
+     }
+    ],
+    "qualname": "execute_shell",
+    "relpath": "autogpt/commands/execute_code.py",
+    "schema_hash": "7580e767a81f",
+    "tool_name": "execute_shell",
+    "unit_id": "autogpt:execute_shell:7580e767a81f"
+   },
+   "validator_shapes": [
+    "containment"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {
+    "ALLOWLIST_CONTROL": true
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 278,
+     "exec_mode": {
+      "shell": {
+       "const": true,
+       "prin": "OP",
+       "source": "literal"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 278,
+     "relpath": "autogpt/commands/execute_code.py",
+     "required_by": [
+      "F6"
+     ],
+     "resolution": "resolved",
+     "site": "subprocess.Popen",
+     "slots": {
+      "shell_string": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "formal": "command_line",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV"
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 254,
+    "module": "autogpt.commands.execute_code",
+    "params": [
+     {
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 0,
+      "name": "command_line"
+     },
+     {
+      "annotation": "Agent",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 1,
+      "name": "agent"
+     }
+    ],
+    "qualname": "execute_shell_popen",
+    "relpath": "autogpt/commands/execute_code.py",
+    "schema_hash": "bdeca4030ad8",
+    "tool_name": "execute_shell_popen",
+    "unit_id": "autogpt:execute_shell_popen:bdeca4030ad8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "filename",
+     "site": "autogpt/commands/file_operations.py:L247",
+     "transform": "dirname"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 248,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 248,
+     "relpath": "autogpt/commands/file_operations.py",
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "os.makedirs",
+     "slots": {
+      "path": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "filename"
+       ],
+       "shape": {
+        "base": {
+         "prin": "MODEL",
+         "prov": "resolved",
+         "roots": [
+          "filename"
+         ],
+         "shape": {
+          "formal": "filename",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE"
+    },
+    {
+     "entry_lineno": 249,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 249,
+     "relpath": "autogpt/commands/file_operations.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "filename"
+       ],
+       "shape": {
+        "formal": "filename",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE"
+    },
+    {
+     "entry_lineno": 253,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 253,
+     "relpath": "autogpt/commands/file_operations.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "filename"
+       ],
+       "shape": {
+        "formal": "filename",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_READ"
+    },
+    {
+     "entry_lineno": 255,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 248,
+     "relpath": "autogpt/commands/file_operations.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.makedirs",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "log_operation",
+      "append_to_file"
+     ]
+    },
+    {
+     "entry_lineno": 255,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 249,
+     "relpath": "autogpt/commands/file_operations.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "log_operation",
+      "append_to_file"
+     ]
+    },
+    {
+     "entry_lineno": 255,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 253,
+     "relpath": "autogpt/commands/file_operations.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_READ",
+     "witness_chain": [
+      "log_operation",
+      "append_to_file"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "recursion",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 233,
+    "module": "autogpt.commands.file_operations",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filename"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "text"
+     },
+     {
+      "annotation": "Agent",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 2,
+      "name": "agent"
+     },
+     {
+      "annotation": "bool",
+      "default": "True",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 3,
+      "name": "should_log"
+     }
+    ],
+    "qualname": "append_to_file",
+    "relpath": "autogpt/commands/file_operations.py",
+    "schema_hash": "14dc4d1dd03d",
+    "tool_name": "append_to_file",
+    "unit_id": "autogpt:append_to_file:14dc4d1dd03d"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "Operation": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 282,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 31,
+     "relpath": "autogpt/commands/file_operations.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_READ",
+     "witness_chain": [
+      "is_duplicate_operation",
+      "file_operations_state",
+      "operations_from_log"
+     ]
+    },
+    {
+     "entry_lineno": 285,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 285,
+     "relpath": "autogpt/commands/file_operations.py",
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "os.remove",
+     "slots": {
+      "path": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "filename"
+       ],
+       "shape": {
+        "formal": "filename",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE"
+    },
+    {
+     "entry_lineno": 286,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 248,
+     "relpath": "autogpt/commands/file_operations.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.makedirs",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "log_operation",
+      "append_to_file"
+     ]
+    },
+    {
+     "entry_lineno": 286,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 249,
+     "relpath": "autogpt/commands/file_operations.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "log_operation",
+      "append_to_file"
+     ]
+    },
+    {
+     "entry_lineno": 286,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 253,
+     "relpath": "autogpt/commands/file_operations.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_READ",
+     "witness_chain": [
+      "log_operation",
+      "append_to_file"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "recursion",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 273,
+    "module": "autogpt.commands.file_operations",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filename"
+     },
+     {
+      "annotation": "Agent",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 1,
+      "name": "agent"
+     }
+    ],
+    "qualname": "delete_file",
+    "relpath": "autogpt/commands/file_operations.py",
+    "schema_hash": "52d517db0229",
+    "tool_name": "delete_file",
+    "unit_id": "autogpt:delete_file:52d517db0229"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "directory",
+     "site": "autogpt/commands/file_operations.py:L319",
+     "transform": "os.path.join"
+    },
+    {
+     "root": "directory",
+     "site": "autogpt/commands/file_operations.py:L318",
+     "transform": "relpath"
+    },
+    {
+     "root": "directory",
+     "site": "autogpt/commands/file_operations.py:L319",
+     "transform": "os.path.join"
+    },
+    {
+     "root": "directory",
+     "site": "autogpt/commands/file_operations.py:L318",
+     "transform": "relpath"
+    },
+    {
+     "root": "directory",
+     "site": "autogpt/commands/file_operations.py:L319",
+     "transform": "os.path.join"
+    },
+    {
+     "root": "directory",
+     "site": "autogpt/commands/file_operations.py:L318",
+     "transform": "relpath"
+    },
+    {
+     "root": "directory",
+     "site": "autogpt/commands/file_operations.py:L319",
+     "transform": "os.path.join"
+    },
+    {
+     "root": "directory",
+     "site": "autogpt/commands/file_operations.py:L318",
+     "transform": "relpath"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 314,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 314,
+     "relpath": "autogpt/commands/file_operations.py",
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "os.walk",
+     "slots": {
+      "path": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "directory"
+       ],
+       "shape": {
+        "formal": "directory",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_READ"
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 303,
+    "module": "autogpt.commands.file_operations",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "directory"
+     },
+     {
+      "annotation": "Agent",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 1,
+      "name": "agent"
+     }
+    ],
+    "qualname": "list_files",
+    "relpath": "autogpt/commands/file_operations.py",
+    "schema_hash": "b16118f11548",
+    "tool_name": "list_files",
+    "unit_id": "autogpt:list_files:b16118f11548"
+   },
+   "validator_shapes": [
+    "prefix"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "filename",
+     "site": "autogpt/commands/file_operations_utils.py:L153",
+     "transform": "str.lower"
+    },
+    {
+     "root": "filename",
+     "site": "autogpt/processing/text.py:L172",
+     "transform": "str.replace"
+    },
+    {
+     "root": "filename",
+     "site": "autogpt/processing/text.py:L185",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "extension_to_parser": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 139,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 140,
+     "relpath": "autogpt/commands/file_operations_utils.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "filename"
+       ],
+       "shape": {
+        "formal": "filename",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_READ",
+     "witness_chain": [
+      "read_textual_file",
+      "is_file_binary_fn"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 129,
+    "module": "autogpt.commands.file_operations",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filename"
+     },
+     {
+      "annotation": "Agent",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 1,
+      "name": "agent"
+     }
+    ],
+    "qualname": "read_file",
+    "relpath": "autogpt/commands/file_operations.py",
+    "schema_hash": "52d517db0229",
+    "tool_name": "read_file",
+    "unit_id": "autogpt:read_file:52d517db0229"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "filename",
+     "site": "autogpt/commands/file_operations.py:L207",
+     "transform": "dirname"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "Operation": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 204,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 31,
+     "relpath": "autogpt/commands/file_operations.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_READ",
+     "witness_chain": [
+      "is_duplicate_operation",
+      "file_operations_state",
+      "operations_from_log"
+     ]
+    },
+    {
+     "entry_lineno": 208,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 208,
+     "relpath": "autogpt/commands/file_operations.py",
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "os.makedirs",
+     "slots": {
+      "path": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "filename"
+       ],
+       "shape": {
+        "base": {
+         "prin": "MODEL",
+         "prov": "resolved",
+         "roots": [
+          "filename"
+         ],
+         "shape": {
+          "formal": "filename",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE"
+    },
+    {
+     "entry_lineno": 209,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 209,
+     "relpath": "autogpt/commands/file_operations.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "filename"
+       ],
+       "shape": {
+        "formal": "filename",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE"
+    },
+    {
+     "entry_lineno": 211,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 248,
+     "relpath": "autogpt/commands/file_operations.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.makedirs",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "log_operation",
+      "append_to_file"
+     ]
+    },
+    {
+     "entry_lineno": 211,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 249,
+     "relpath": "autogpt/commands/file_operations.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "log_operation",
+      "append_to_file"
+     ]
+    },
+    {
+     "entry_lineno": 211,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 253,
+     "relpath": "autogpt/commands/file_operations.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_READ",
+     "witness_chain": [
+      "log_operation",
+      "append_to_file"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "recursion",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 193,
+    "module": "autogpt.commands.file_operations",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filename"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "text"
+     },
+     {
+      "annotation": "Agent",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 2,
+      "name": "agent"
+     }
+    ],
+    "qualname": "write_to_file",
+    "relpath": "autogpt/commands/file_operations.py",
+    "schema_hash": "848663640dd9",
+    "tool_name": "write_to_file",
+    "unit_id": "autogpt:write_to_file:848663640dd9"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "url",
+     "site": "autogpt/commands/git_operations.py:L39",
+     "transform": "str.split"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 29,
+    "module": "autogpt.commands.git_operations",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "url"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "clone_path"
+     },
+     {
+      "annotation": "Agent",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 2,
+      "name": "agent"
+     }
+    ],
+    "qualname": "clone_repository",
+    "relpath": "autogpt/commands/git_operations.py",
+    "schema_hash": "93bbfced5fea",
+    "tool_name": "clone_repository",
+    "unit_id": "autogpt:clone_repository:93bbfced5fea"
+   },
+   "validator_shapes": [
+    "split"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 44,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 146,
+     "relpath": "autogpt/commands/image_gen.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ".jpg",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "generate_image_with_dalle"
+     ]
+    },
+    {
+     "entry_lineno": 47,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 76,
+     "relpath": "autogpt/commands/image_gen.py",
+     "required_by": [
+      "A16"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "requests.post",
+     "slots": {
+      "headers": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "entries": [
+         [
+          "Authorization",
+          {
+           "attrs": [
+            "joined"
+           ],
+           "prin": "OP",
+           "prov": "opaque",
+           "prov_reasons": [
+            "unresolved"
+           ],
+           "shape": {
+            "items": [
+             {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+               "const": "Bearer ",
+               "k": "Atom"
+              }
+             },
+             {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+               "unresolved"
+              ],
+              "shape": {
+               "k": "Unknown"
+              }
+             }
+            ],
+            "k": "Str"
+           }
+          }
+         ],
+         [
+          "X-Use-Cache",
+          {
+           "prin": "OP",
+           "prov": "resolved",
+           "shape": {
+            "const": "false",
+            "k": "Atom"
+           }
+          }
+         ]
+        ],
+        "k": "Map"
+       }
+      },
+      "url.host": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "api-inference.huggingface.co",
+        "k": "Atom"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "https",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "generate_image_with_hf"
+     ]
+    },
+    {
+     "entry_lineno": 47,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 112,
+     "relpath": "autogpt/config/ai_config.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ".jpg",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "generate_image_with_hf",
+      "AIConfig.save"
+     ]
+    },
+    {
+     "entry_lineno": 47,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 76,
+     "relpath": "autogpt/commands/image_gen.py",
+     "required_by": [
+      "A16"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "requests.post",
+     "slots": {
+      "headers": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "entries": [
+         [
+          "Authorization",
+          {
+           "attrs": [
+            "joined"
+           ],
+           "prin": "OP",
+           "prov": "opaque",
+           "prov_reasons": [
+            "unresolved"
+           ],
+           "shape": {
+            "items": [
+             {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+               "const": "Bearer ",
+               "k": "Atom"
+              }
+             },
+             {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+               "unresolved"
+              ],
+              "shape": {
+               "k": "Unknown"
+              }
+             }
+            ],
+            "k": "Str"
+           }
+          }
+         ],
+         [
+          "X-Use-Cache",
+          {
+           "prin": "OP",
+           "prov": "resolved",
+           "shape": {
+            "const": "false",
+            "k": "Atom"
+           }
+          }
+         ]
+        ],
+        "k": "Map"
+       }
+      },
+      "url.host": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "api-inference.huggingface.co",
+        "k": "Atom"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "https",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "generate_image_with_hf"
+     ]
+    },
+    {
+     "entry_lineno": 47,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 112,
+     "relpath": "autogpt/config/ai_config.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ".jpg",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "generate_image_with_hf",
+      "AIConfig.save"
+     ]
+    },
+    {
+     "entry_lineno": 50,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 177,
+     "relpath": "autogpt/commands/image_gen.py",
+     "required_by": [
+      "A16"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "requests.post",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "/sdapi/v1/txt2img",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "generate_image_with_sd_webui"
+     ]
+    },
+    {
+     "entry_lineno": 50,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 112,
+     "relpath": "autogpt/config/ai_config.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ".jpg",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "generate_image_with_sd_webui",
+      "AIConfig.save"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 30,
+    "module": "autogpt.commands.image_gen",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "prompt"
+     },
+     {
+      "annotation": "Agent",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 1,
+      "name": "agent"
+     },
+     {
+      "annotation": "int",
+      "default": "256",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 2,
+      "name": "size"
+     }
+    ],
+    "qualname": "generate_image",
+    "relpath": "autogpt/commands/image_gen.py",
+    "schema_hash": "036d608fddd0",
+    "tool_name": "generate_image",
+    "unit_id": "autogpt:generate_image:036d608fddd0"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 22,
+    "module": "autogpt.commands.task_statuses",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "reason"
+     },
+     {
+      "annotation": "Agent",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 1,
+      "name": "agent"
+     }
+    ],
+    "qualname": "task_complete",
+    "relpath": "autogpt/commands/task_statuses.py",
+    "schema_hash": "75c10208dc68",
+    "tool_name": "goals_accomplished",
+    "unit_id": "autogpt:task_complete:75c10208dc68"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 71,
+    "module": "autogpt.commands.web_search",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "query"
+     },
+     {
+      "annotation": "Agent",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 1,
+      "name": "agent"
+     },
+     {
+      "annotation": "int",
+      "default": "8",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 2,
+      "name": "num_results"
+     }
+    ],
+    "qualname": "google",
+    "relpath": "autogpt/commands/web_search.py",
+    "schema_hash": "eb2e4e957742",
+    "tool_name": "google",
+    "unit_id": "autogpt:google:eb2e4e957742"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "query",
+     "site": "autogpt/commands/web_search.py:L42",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "query",
+     "site": "autogpt/commands/web_search.py:L53",
+     "transform": "json.dumps"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 27,
+    "module": "autogpt.commands.web_search",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "query"
+     },
+     {
+      "annotation": "Agent",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 1,
+      "name": "agent"
+     },
+     {
+      "annotation": "int",
+      "default": "8",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 2,
+      "name": "num_results"
+     }
+    ],
+    "qualname": "web_search",
+    "relpath": "autogpt/commands/web_search.py",
+    "schema_hash": "eb2e4e957742",
+    "tool_name": "web_search",
+    "unit_id": "autogpt:web_search:eb2e4e957742"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "BrowserOptions": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 73,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 202,
+     "relpath": "autogpt/commands/web_selenium.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "receiver",
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "receiver",
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "receiver",
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/js/overlay.js",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "FS_READ",
+     "witness_chain": [
+      "add_header"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 55,
+    "module": "autogpt.commands.web_selenium",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "url"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "question"
+     },
+     {
+      "annotation": "Agent",
+      "excluded": "autogpt:not_in_tool_schema",
+      "index": 2,
+      "name": "agent"
+     }
+    ],
+    "qualname": "browse_website",
+    "relpath": "autogpt/commands/web_selenium.py",
+    "schema_hash": "4e22aebc9083",
+    "tool_name": "browse_website",
+    "unit_id": "autogpt:browse_website:4e22aebc9083"
+   },
+   "validator_shapes": [
+    "split"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "autogpt",
+    "is_async": false,
+    "lineno": 12,
+    "module": "tests.mocks.mock_commands",
+    "params": [
+     {
+      "annotation": "int",
+      "index": 0,
+      "name": "arg1"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "arg2"
+     }
+    ],
+    "qualname": "function_based",
+    "relpath": "tests/mocks/mock_commands.py",
+    "schema_hash": "c86f042de892",
+    "tool_name": "function_based",
+    "unit_id": "autogpt:function_based:c86f042de892"
+   },
+   "validator_shapes": []
+  }
+ ]
+}
