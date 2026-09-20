@@ -89,6 +89,9 @@ class UnitReport:
     #: `effect index -> req_occ のゲート 3 値`
     occ_gate_by_effect: dict[int, dict] = field(default_factory=dict)
     rows: list[Row] = field(default_factory=list)
+    #: D_prev（直前リリースの manifest）と unit id で join できたか。
+    #: **`r_prev` の分子。** Def 6 の join は unit id の完全一致のみ。
+    d_prev_joined: bool = False
     notes: list[str] = field(default_factory=list)
 
     # -- 集計用 ------------------------------------------------------------
@@ -130,6 +133,7 @@ class UnitReport:
             },
             "gate": {f"{i}:{s}": g for (i, s), g in sorted(self.gate_results.items())},
             "rows": [r.to_json() for r in self.rows],
+            "d_prev_joined": self.d_prev_joined,
             "notes": sorted(set(self.notes)),
         }
         if self.trig is not None:
@@ -459,6 +463,7 @@ def analyze_unit_full(
 
     from .dparse import drift as _drift
 
+    report.d_prev_joined = prev_unit is not None
     drift_reasons = tuple(
         _drift(prev_unit, {"effects": [e.to_json() for e in report.effects], "req_occ": report.req_occ.name})
     )

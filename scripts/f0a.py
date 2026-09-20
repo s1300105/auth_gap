@@ -107,6 +107,15 @@ class PopStats:
     site_resolution: dict = field(default_factory=dict)
     #: (木, relpath, lineno, kind, slot) → 合流した確度。
     site_slots: dict = field(default_factory=dict)
+    #: D_prev（D22）。**`r_prev` の分子。** join は unit id の完全一致のみ（Def 6）。
+    n_d_prev_join: int = 0
+    n_d_prev_join_dangerous: int = 0
+    #: 前リリースの manifest を供給できた木の数。Def 6 の適用条件
+    #: 「静的に取得できるリリースが 2 本以上あること」に対応する。
+    n_trees_with_prev: int = 0
+    #: 前リリースを供給できた木のユニット数（`r_prev` の分母に使う側）。
+    n_units_with_prev_available: int = 0
+    n_dangerous_with_prev_available: int = 0
     #: rubric 1c。
     rubric1c_units: int = 0
     rubric1c_no_validator: int = 0
@@ -180,6 +189,30 @@ class PopStats:
         return self.ratio(self.n_with_validator, self.n_units)
 
     @property
+    def r_prev(self) -> float | None:
+        """`r_prev` = 直前リリースと unit id で join できたユニットの割合（§10）。
+
+        **分母は `docs/preregistration.md` §2.2 の主分母**（危険効果を持つユニット）
+        に揃える。§10 が「分母はすべて危険効果を持つユニットであり、ツール全体
+        ではない」と明記しているため。粗い分母の値は :attr:`r_prev_crude` に出し、
+        **両方を必ず併記する**（preregistration.md §3）。
+
+        **分母は「前リリースを供給できた木のユニット」に限る。** 前リリースが
+        取れなかった木を分母に入れると、取得の失敗が「join できなかった」に
+        化けて `r_prev` が下がる。取得できた木の数は
+        :attr:`n_trees_with_prev` に別に出し、Def 6 の適用条件として報告する。
+
+        **未測定と 0 は違う。** 前リリースを 1 本も供給していない run では
+        分母が 0 なので `None`（未測定）を返す。
+        """
+        return self.ratio(self.n_d_prev_join_dangerous, self.n_dangerous_with_prev_available)
+
+    @property
+    def r_prev_crude(self) -> float | None:
+        """粗い分母（前リリースを供給できた木の全ユニット）。併記用。"""
+        return self.ratio(self.n_d_prev_join, self.n_units_with_prev_available)
+
+    @property
     def branch(self) -> str:
         """§10 の D 規則の分岐。**偽陽性クラスを除いた分母で判断する**（反証条件 F2）。"""
         r = self.r_d
@@ -235,6 +268,14 @@ class PopStats:
             "opaque_ratio_primary_slots": self.opaque_ratio(True),
             "opaque_ratio_all_slots": self.opaque_ratio(False),
             "validator_holding_ratio": self.validator_holding,
+            # D_prev（D22）。**未測定（None）と 0 は違う。**
+            "n_trees_with_prev": self.n_trees_with_prev,
+            "n_units_with_prev_available": self.n_units_with_prev_available,
+            "n_dangerous_with_prev_available": self.n_dangerous_with_prev_available,
+            "n_units_with_D_prev_join": self.n_d_prev_join,
+            "n_dangerous_with_D_prev_join": self.n_d_prev_join_dangerous,
+            "r_prev": self.r_prev,
+            "r_prev_crude": self.r_prev_crude,
             "rubric1c": {
                 "n_units": self.rubric1c_units,
                 "n_units_without_validator": self.rubric1c_no_validator,
@@ -247,7 +288,20 @@ class PopStats:
         }
 
 
-def accumulate(stats: PopStats, res: RunResult, rubric: frozenset[str], with_trig: bool) -> None:
+def accumulate(
+    stats: PopStats,
+    res: RunResult,
+    rubric: frozenset[str],
+    with_trig: bool,
+    prev_ids: frozenset[str] | None = None,
+) -> None:
+    """1 木分を母集団統計に足す。
+
+    `prev_ids` は直前リリースの manifest から読んだ unit id の集合（D22）。
+    **`None`（前リリースを供給していない）と `frozenset()`（供給したが
+    ユニットが 0）を区別する。** 前者は `r_prev` の分母に入れない
+    （取得の失敗を「join できなかった」に化けさせないため）。
+    """
     stats.n_trees += 1
     if not res.tree.units:
         stats.n_trees_no_units += 1
@@ -257,8 +311,20 @@ def accumulate(stats: PopStats, res: RunResult, rubric: frozenset[str], with_tri
     stats.budget_skipped += res.tree_budget_skipped
     d_op = res.tree.d_op
     tree = os.path.basename(res.tree.src_root)
+    if prev_ids is not None:
+        stats.n_trees_with_prev += 1
     for u in res.tree.units:
         _accumulate_unit(stats, u, d_op, rubric, with_trig, tree)
+        if prev_ids is None:
+            continue
+        dangerous = u.has_dangerous_effect
+        stats.n_units_with_prev_available += 1
+        if dangerous:
+            stats.n_dangerous_with_prev_available += 1
+        if u.unit.unit_id in prev_ids:
+            stats.n_d_prev_join += 1
+            if dangerous:
+                stats.n_d_prev_join_dangerous += 1
 
 
 def _accumulate_unit(

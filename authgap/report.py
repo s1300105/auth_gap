@@ -208,7 +208,10 @@ def probe_json(res: RunResult, corpus_id: str, traced_ratio_null: bool = True) -
         "n_units_with_D_op": sum(
             1 for u in units if tree.d_op is not None and tree.d_op.covers(u.unit.tool_name)
         ),
-        "n_units_with_D_prev_join": 0,
+        # **`r_prev` の分子**（D22）。0 の決め打ちだったので §10 の
+        # 「方向そのものを疑うべき条件」の 3 つ目が原理的に測れなかった。
+        "n_units_with_D_prev_join": sum(1 for u in units if u.d_prev_joined),
+        "n_units_with_D_prev_join_dangerous": sum(1 for u in dangerous if u.d_prev_joined),
         "d_layer_unknown": {
             "enforcement": sum(1 for v in res.enforcement.values() if v.verdict == "D_unknown"),
             "pattern": 0,

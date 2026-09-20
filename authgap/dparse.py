@@ -379,13 +379,32 @@ class DPrev:
 
     units: dict[str, dict] = field(default_factory=dict)
     source: Optional[str] = None
+    #: unit id を取れずに読み飛ばした行数。**0 でないなら報告する。**
+    skipped: int = 0
 
     @classmethod
     def load(cls, path: str) -> DPrev:
+        """`manifest.json` を読む。**unit id は `units[i]["unit"]["unit_id"]` にある。**
+
+        `report.py: _unit_manifest` は `UnitReport.to_json()` をそのまま出すので、
+        unit id はユニット直下ではなく `unit` ブロックの中である。直下を引いて
+        いたため、**自分の `scan` 出力を `--prev-manifest` に渡すと `KeyError` で
+        落ちていた**（D22）。自分の出力を自分で読めない層は一度も通っていない。
+
+        id を取れない行は**黙って捨てず** `skipped` に数える。join できない行を
+        0 件として扱うと `r_prev` の分母が静かに縮む。
+        """
         with open(path, encoding="utf-8") as fh:
             data = json.load(fh)
-        units = {u["unit_id"]: u for u in data.get("units", [])}
-        return cls(units, path)
+        units: dict[str, dict] = {}
+        skipped = 0
+        for u in data.get("units", []):
+            uid = (u.get("unit") or {}).get("unit_id")
+            if not uid:
+                skipped += 1
+                continue
+            units[uid] = u
+        return cls(units, path, skipped)
 
     def join(self, unit_id: str) -> Optional[dict]:
         return self.units.get(unit_id)
