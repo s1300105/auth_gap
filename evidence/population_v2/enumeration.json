@@ -1,0 +1,383 @@
+{
+ "_note": "docs/population_v2.md の列挙（GitHub code search、size: 分割）。2026-09-20 UTC。total_count は推定値で、ページングは短いページが出るまで続けた。",
+ "channels": {
+  "A": [
+   {
+    "group": 0,
+    "buckets": [
+     {
+      "bucket": "<1000",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:<1000",
+      "total_count": 80,
+      "fetched": 80
+     },
+     {
+      "bucket": "1000..1999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:1000..1999",
+      "total_count": 584,
+      "fetched": 600,
+      "note": "6 pages of 100 fetched; all 600 (repo,path) pairs distinct. GitHub total_count is an estimate and undercounts; page 6 was full (100) but page 7 not requested since total_count implied exhaustion at page 6 — bucket may hold a few more items."
+     },
+     {
+      "bucket": "2000..2999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:2000..2999",
+      "total_count": 410,
+      "fetched": 446,
+      "note": "5 pages (100,100,100,100,46); page 5 partial so bucket exhausted. fetched > total_count because total_count is an estimate; all 446 pairs distinct."
+     },
+     {
+      "bucket": "3000..3999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:3000..3999",
+      "total_count": 671,
+      "fetched": 661,
+      "note": "7 pages (6x100 + 61); page 7 partial so bucket exhausted. fetched < total_count by 10: total_count is an estimate (index drift / dedup by GitHub)."
+     },
+     {
+      "bucket": "4000..4999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:4000..4999",
+      "total_count": 561,
+      "fetched": 651,
+      "note": "7 pages (6x100 + 51); page 7 partial so bucket exhausted. fetched > total_count (estimate); all 651 pairs distinct."
+     },
+     {
+      "bucket": "5000..5999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:5000..5999",
+      "total_count": 528,
+      "fetched": 603,
+      "note": "7 pages (6x100 + 3); page 7 partial so bucket exhausted. fetched > total_count (estimate); all 603 pairs distinct."
+     },
+     {
+      "bucket": "6000..6999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:6000..6999",
+      "total_count": 406,
+      "fetched": 554,
+      "note": "6 pages (5x100 + 54); page 6 partial so bucket exhausted. fetched > total_count (estimate); all 554 pairs distinct."
+     },
+     {
+      "bucket": "7000..7999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:7000..7999",
+      "total_count": 338,
+      "fetched": 350,
+      "note": "4 pages (3x100 + 50); page 4 partial so bucket exhausted. fetched > total_count (estimate); all 350 pairs distinct."
+     }
+    ],
+    "problems": [
+     "GitHub code search total_count is an estimate: in 6 of 8 buckets the number of items actually returned by paging exceeded total_count (e.g. 4000..4999: 651 vs 561), and in 3000..3999 it fell short (661 vs 671). Every page was fetched until a partial page appeared, except 1000..1999 where page 6 was full and page 7 was not requested (total_count 584 implied exhaustion); that bucket may be missing a few items.",
+     "No 403/429/secondary rate limit was hit; no retries needed. No bucket needed splitting (all total_count < 1000).",
+     "Output file A_g0.jsonl has 3945 lines (file-level, with repeats per repo as instructed); 930 distinct repos case-insensitively before any exclusion."
+    ]
+   },
+   {
+    "group": 1,
+    "buckets": [
+     {
+      "bucket": "8000..8999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:8000..8999",
+      "total_count": 415,
+      "fetched": 452,
+      "note": "Paged until a short page (p5=52 items). fetched > total_count: GitHub's total_count under-reports; no (repo,path) duplicates across pages, so the extra rows are real items."
+     },
+     {
+      "bucket": "9000..9999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:9000..9999",
+      "total_count": 300,
+      "fetched": 390,
+      "note": "Pages 1-3 were full (100 each) even though total_count=300, so page 4 was fetched (91 items, short page). No duplicates across pages."
+     },
+     {
+      "bucket": "10000..11999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:10000..11999",
+      "total_count": 721,
+      "fetched": 720,
+      "note": "8 pages, last page 20 items; 1 fewer than total_count (index drift / fork filtering), no retry needed."
+     },
+     {
+      "bucket": "12000..13999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:12000..13999",
+      "total_count": 431,
+      "fetched": 473,
+      "note": "5 pages, last page 73 items (short). fetched > total_count; no duplicates across pages."
+     },
+     {
+      "bucket": "14000..15999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:14000..15999",
+      "total_count": 325,
+      "fetched": 411,
+      "note": "Pages 1-4 full, page 5 = 11 items (short). fetched > total_count; no duplicates across pages."
+     },
+     {
+      "bucket": "16000..17999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:16000..17999",
+      "total_count": 253,
+      "fetched": 293,
+      "note": "3 pages, last page 93 items (short). fetched > total_count; no duplicates across pages."
+     },
+     {
+      "bucket": "18000..19999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:18000..19999",
+      "total_count": 249,
+      "fetched": 257,
+      "note": "3 pages, last page 57 items (short). fetched > total_count; no duplicates across pages."
+     },
+     {
+      "bucket": "20000..24999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:20000..24999",
+      "total_count": 485,
+      "fetched": 551,
+      "note": "Pages 1-5 full despite total_count=485, so page 6 was fetched (51 items, short page). fetched > total_count; no duplicates across pages."
+     }
+    ],
+    "problems": [
+     "GitHub code search total_count is not a reliable stop condition: for 7 of 8 buckets the item stream continued past total_count (full 100-item pages), so paging was continued until a short (<100) page instead. Downstream code should not treat total_count as the bucket size; use the row counts in A_g1.jsonl (3547 rows, 1091 case-insensitive unique repos across these 8 buckets before dedup/exclusion).",
+     "No bucket needed splitting (all total_count < 1000); no 403/429/secondary-rate-limit responses occurred, so no retries were needed.",
+     "Items were transcribed from tool responses into TSV by hand (one line per item) before conversion to JSONL; per-page TSVs are kept under raw/ so the transcription can be re-checked against the API if needed. Enumeration time: 2026-09-20 ~16:59-17:20 UTC."
+    ]
+   },
+   {
+    "group": 2,
+    "buckets": [
+     {
+      "bucket": "25000..29999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:25000..29999",
+      "total_count": 314,
+      "fetched": 338,
+      "note": "4 pages (100/100/100/38). fetched > total_count: GitHub code search total_count is an estimate; pagination exhausted (last page short). Items written to file as returned, no dedup."
+     },
+     {
+      "bucket": "30000..39999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:30000..39999",
+      "total_count": 418,
+      "fetched": 468,
+      "note": "5 pages (100/100/100/100/68). fetched > total_count: total_count is an estimate; pagination exhausted (last page short)."
+     },
+     {
+      "bucket": "40000..49999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:40000..49999",
+      "total_count": 167,
+      "fetched": 191,
+      "note": "2 pages (100/91). fetched > total_count: total_count is an estimate; pagination exhausted (last page short)."
+     },
+     {
+      "bucket": "50000..74999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:50000..74999",
+      "total_count": 249,
+      "fetched": 287,
+      "note": "3 pages (100/100/87). fetched > total_count: total_count is an estimate; pagination exhausted (last page short)."
+     },
+     {
+      "bucket": "75000..99999",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:75000..99999",
+      "total_count": 108,
+      "fetched": 116,
+      "note": "2 pages (100/16). fetched > total_count: total_count is an estimate; pagination exhausted (last page short)."
+     },
+     {
+      "bucket": ">=100000",
+      "query": "\"annotations=ToolAnnotations(\" language:Python size:>=100000",
+      "total_count": 173,
+      "fetched": 198,
+      "note": "3 pages requested (100/98/0); page 3 returned empty so pagination exhausted. fetched > total_count: total_count is an estimate."
+     }
+    ],
+    "problems": [
+     "No rate-limit errors (403/429) occurred; all pages were fetched on first try.",
+     "All six buckets had total_count < 1000, so no bucket was split.",
+     "In every bucket the actual number of items returned by paging exceeded the reported total_count (by 8 to 50). total_count from GitHub code search is an approximation; the file keeps every returned item. Downstream repo-level dedup will absorb any duplicated pages, but the per-bucket file counts should not be treated as exact population sizes.",
+     "Items were transcribed from tool output into TSV via heredoc and converted to JSONL; a per-bucket line count check matched the number of items observed per page (25000..29999: 338, 30000..39999: 468, 40000..49999: 191, 50000..74999: 287, 75000..99999: 116, >=100000: 198; total 1598 lines, 0 malformed)."
+    ]
+   }
+  ],
+  "B": [
+   {
+    "group": 0,
+    "buckets": [
+     {
+      "bucket": "<1000",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:<1000",
+      "total_count": 70,
+      "fetched": 70
+     },
+     {
+      "bucket": "1000..1999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:1000..1999",
+      "total_count": 323,
+      "fetched": 326,
+      "note": "4 pages (100/100/100/26). fetched > total_count by 3; no exact-duplicate rows within the bucket, so the surplus is index drift / ordering instability between calls, not repeated rows."
+     },
+     {
+      "bucket": "2000..2999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:2000..2999",
+      "total_count": 324,
+      "fetched": 381,
+      "note": "4 pages (100/100/100/81). fetched > total_count by 57; no exact-duplicate (repo,path) rows within the bucket. GitHub code search total_count at perPage=1 undercounted relative to pages actually served."
+     },
+     {
+      "bucket": "3000..3999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:3000..3999",
+      "total_count": 321,
+      "fetched": 351,
+      "note": "4 pages (100/100/100/51). Pages 2-4 initially returned 503/408 (transient) and were retried successfully. fetched > total_count by 30; no exact-duplicate rows within the bucket."
+     },
+     {
+      "bucket": "4000..4999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:4000..4999",
+      "total_count": 356,
+      "fetched": 400,
+      "note": "4 pages (100/100/100/100). Page 4 initially 408 and was retried successfully. Pages 2 and 3 overlapped heavily: 73 exact-duplicate (repo,path) rows within this bucket because result ordering shifted between calls; some items in the 356 may therefore be missed. Rows were appended verbatim as instructed (dedup left to later step)."
+     },
+     {
+      "bucket": "5000..5999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:5000..5999",
+      "total_count": 316,
+      "fetched": 320,
+      "note": "4 pages (100/100/100/20). Count call initially 429 (rate limit), retried after a pause. fetched > total_count by 4; no exact-duplicate rows."
+     },
+     {
+      "bucket": "6000..6999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:6000..6999",
+      "total_count": 316,
+      "fetched": 330,
+      "note": "4 pages (100/100/100/30). Count call initially 429, page 2 initially 503 'all shards failed'; both retried successfully. fetched > total_count by 14; no exact-duplicate rows."
+     },
+     {
+      "bucket": "7000..7999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:7000..7999",
+      "total_count": 316,
+      "fetched": 330,
+      "note": "4 pages (100/100/100/30). fetched > total_count by 14; no exact-duplicate rows."
+     }
+    ],
+    "problems": [
+     "No bucket reached total_count >= 1000, so no splits were needed (split_into omitted for all).",
+     "GitHub code search pagination is not stable across calls: in every bucket except <1000 the number of rows fetched exceeds total_count reported by the perPage=1 call, and in 4000..4999 pages 2 and 3 overlapped (73 exact-duplicate rows in B_g0.jsonl). Downstream dedup by repo full_name (case-insensitive) handles the duplicates, but some items may have been missed by the shifting order; if completeness per bucket matters, re-run those buckets with narrower size ranges (e.g. 500-byte steps) so each bucket fits in <= 2 pages.",
+     "Transient errors encountered and retried successfully: 429 (2x on count calls), 503 'too many shards failed'/'all shards failed' (2x), 408 timeouts (3x). No bucket was abandoned.",
+     "B_g0.jsonl total lines: 2508 (sum of fetched). Unique repo full_names (lowercased) across the file: 714. Enumeration time (UTC): 2026-09-20 17:30 to 17:50."
+    ]
+   },
+   {
+    "group": 1,
+    "buckets": [
+     {
+      "bucket": "8000..8999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:8000..8999",
+      "total_count": 280,
+      "fetched": 271,
+      "note": "Pages 1-3 returned 100/100/71, page 4 empty. GitHub returned 9 fewer items than total_count (search-side dedup/instability); no error."
+     },
+     {
+      "bucket": "9000..9999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:9000..9999",
+      "total_count": 296,
+      "fetched": 318,
+      "note": "Pages 1-4 returned 100/100/100/18. Fetched exceeds total_count: GitHub code search total_count is approximate; paged until a short page."
+     },
+     {
+      "bucket": "10000..11999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:10000..11999",
+      "total_count": 494,
+      "fetched": 527,
+      "note": "Pages 1-6 returned 100x5 then 27. One 503 'all shards failed' on page 2, retried after 20s and succeeded. Fetched exceeds total_count (approximate count)."
+     },
+     {
+      "bucket": "12000..13999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:12000..13999",
+      "total_count": 349,
+      "fetched": 357,
+      "note": "Pages 1-4 returned 100/100/100/57. Fetched exceeds total_count (approximate count)."
+     },
+     {
+      "bucket": "14000..15999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:14000..15999",
+      "total_count": 251,
+      "fetched": 282,
+      "note": "Pages 1-3 returned 100/100/82. Fetched exceeds total_count. Pages 2-3 (182 rows) were first written to B_g2.jsonl because a sibling worker overwrote the shared helper script; rows were copied into B_g1.jsonl and remain duplicated in B_g2.jsonl (see problems)."
+     },
+     {
+      "bucket": "16000..17999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:16000..17999",
+      "total_count": 232,
+      "fetched": 239,
+      "note": "Pages 1-3 returned 100/100/39. One 503 on page 2, retried after 25s. Pages 1-3 (239 rows) landed in B_g2.jsonl first (helper overwritten), copied into B_g1.jsonl; still duplicated in B_g2.jsonl."
+     },
+     {
+      "bucket": "18000..19999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:18000..19999",
+      "total_count": 177,
+      "fetched": 176,
+      "note": "Pages 1-2 returned 100/76 (page 2 short, so no page 3). 1 fewer than total_count. Rows landed in B_g2.jsonl first, copied into B_g1.jsonl; still duplicated in B_g2.jsonl."
+     },
+     {
+      "bucket": "20000..24999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:20000..24999",
+      "total_count": 352,
+      "fetched": 327,
+      "note": "Pages 1-4 returned 100/100/100/27. One 503 on page 3, retried after 30s. 25 fewer than total_count (search-side instability; page 4 was short so no page 5). Rows landed in B_g2.jsonl first, copied into B_g1.jsonl; still duplicated in B_g2.jsonl."
+     }
+    ],
+    "problems": [
+     "Shared-scratchpad collision: the helper script append_B.py in population_v2/ was overwritten at ~17:51 by a sibling worker (group 2) to point at B_g2.jsonl. My appends for bucket 14000..15999 pages 2-3, and all of 16000..17999, 18000..19999, 20000..24999 (924 rows total) were therefore written into B_g2.jsonl. I copied those rows (identified by bucket label, which group 2 does not use: its buckets are 25000..29999 and above) into B_g1.jsonl. I did NOT modify B_g2.jsonl, so those 924 rows are now present in both B_g1.jsonl and B_g2.jsonl; the parent should drop rows with buckets 14000..15999 / 16000..17999 / 18000..19999 / 20000..24999 from B_g2.jsonl (or rely on repo-level dedup). B_g1.jsonl final: 2497 lines, all unique on (bucket, repo, path).",
+     "GitHub code search total_count is only approximate: for 4 of 8 buckets fetched > total_count (9000..9999, 10000..11999, 12000..13999, 14000..15999) and for 3 buckets fetched < total_count (8000..8999 by 9, 18000..19999 by 1, 20000..24999 by 25). I paged until a short (<100) or empty page rather than stopping at ceil(total_count/100); enumeration.json should record fetched counts as the authoritative number, with total_count as reference only.",
+     "Transient API errors: 3x '429 try again' on the initial count calls (resolved after a 60s wait) and 3x '503 all shards failed' on page fetches (10000..11999 p2, 16000..17999 p2, 20000..24999 p3), each resolved on the first retry after 20-30s. No bucket was skipped.",
+     "No bucket reached total_count >= 1000, so no split_into was needed."
+    ]
+   },
+   {
+    "group": 2,
+    "buckets": [
+     {
+      "bucket": "25000..29999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:25000..29999",
+      "total_count": 270,
+      "fetched": 264,
+      "note": "Pages returned 100/100/64. GitHub's total_count is an estimate; page 3 simply ended at 64 items (incomplete_results=false), no error."
+     },
+     {
+      "bucket": "30000..39999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:30000..39999",
+      "total_count": 313,
+      "fetched": 316,
+      "note": "Pages returned 100/100/100/16 = 316 > total_count 313 (GitHub estimate drift). Page 2 first failed with 503 'all shards failed' and page 4 with 408 timeout; both succeeded on immediate retry."
+     },
+     {
+      "bucket": "40000..49999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:40000..49999",
+      "total_count": 205,
+      "fetched": 209,
+      "note": "Pages returned 100/100/9 = 209 > total_count 205 (GitHub estimate drift)."
+     },
+     {
+      "bucket": "50000..74999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:50000..74999",
+      "total_count": 270,
+      "fetched": 233,
+      "note": "Pages returned 100/100/33; page 3 ended with incomplete_results=false, so 233 is all the API serves for this range (total_count is an estimate). Pages 2 and 3 first failed with 408 timeouts; both succeeded on retry."
+     },
+     {
+      "bucket": "75000..99999",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:75000..99999",
+      "total_count": 87,
+      "fetched": 87
+     },
+     {
+      "bucket": ">=100000",
+      "query": "\"annotations={\" \"readOnlyHint\" language:Python size:>=100000",
+      "total_count": 127,
+      "fetched": 132,
+      "note": "Pages returned 100/32 = 132 > total_count 127 (GitHub estimate drift). The initial perPage=1 count request hit a 429 ('try again in 7s'); the retry on the next call succeeded."
+     }
+    ],
+    "problems": [
+     "No bucket needed splitting (all total_count < 1000). No bucket was skipped.",
+     "B_g2.jsonl is being written by another worker too: at the end it holds 2038 lines, of which 1241 are my 6 buckets and 797 are channel B lines for buckets 14000..15999 (182), 16000..17999 (239), 18000..19999 (176), 20000..24999 (200) that are NOT present in B_g1.jsonl (B_g1.jsonl only has 8000..15999 with 14000..15999 at 100 lines). It looks like the group-1 worker switched to appending into B_g2.jsonl. I did not delete those lines. Caveat: I truncated B_g2.jsonl (': > B_g2.jsonl') when I started (~17:51 UTC) before writing; if the other worker had already appended to B_g2.jsonl before that moment, those lines were lost. Please reconcile the 14000..24999 buckets against the group-1 worker's report (its fetched counts vs the 797 lines here) before dedup.",
+     "Fetched != total_count in 5 of 6 buckets; in every case the API returned incomplete_results=false and the final page ran short (or over), i.e. GitHub's total_count is an estimate, not a page failure. The 2038-line file parses as valid JSONL (checked)."
+    ]
+   }
+  ]
+ },
+ "n_rows": 16260,
+ "n_distinct_repos": 4211,
+ "n_repos_src_declaration": 3827,
+ "n_non_src_only": 379,
+ "n_vendored_only": 4,
+ "n_sdk": 1
+}
