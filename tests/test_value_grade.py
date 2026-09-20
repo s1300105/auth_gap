@@ -1,8 +1,9 @@
 """Def 5 の値検証等級（strong-path）が「検証子の置き場所」で変わる欠陥の再現。
 
-**期待は仕様 Def 5 の文言から書き、修正より先にコミットする。** 未修正のものは
-`xfail(strict=True)` にしてあり、直ったら XPASS で失敗するので、その修正コミットで
-印を外す（`tests/test_f0a_defects.py` と同じ型）。
+**期待は仕様 Def 5 の文言から書き、修正より先にコミットした**（コミット 7ed20db。
+`tests/test_f0a_defects.py` と同じ型で、8 件を `xfail(strict=True)` にしてあった）。
+**解析器の修正（D21）で 8 件すべてが XPASS になったので印を外した。**
+以後この 20 件は回帰テストである。
 
 仕様 `AUTHGAP_BRIEF_v3.md` Def 5 の strong-path は 3 条件
 （`authgap/catalog/validators.py: strong_path_requirements`）:
@@ -19,11 +20,17 @@ identity / canonicalising_transform / OP リテラル segment 追加のみ」を
 
 * **false-dirty**: inline 形は `gate.py: _grade_from_shape` に落ちるため
   「単独で strong にはしない」規則で weak に固定され、Def 5 を満たす修正が
-  脆弱版と同じ等級になる（A 群）。
+  脆弱版と同じ等級になっていた（A 群）。→ `gate.py: _grade_inline` で
+  囲み関数の本体を helper 経路と同じ規則で採点するようにした。
 * **false-clean**: ヘルパー経路 `gate.py: _value_grade` は本体に現れた形状の
-  集合だけを見るので、条件 1（root の canonical alias）も root-equal も
-  検査せずに strong-path を返す（B 群 b1）。**`..` 遍歴で抜けられる検証子が
-  clear される。**
+  集合だけを見るので、条件 1（root の canonical alias）を検査せずに
+  strong-path を返していた（B 群 b1）。**`..` 遍歴で抜けられる検証子が
+  clear されていた。** → `analyze.py: _strong_path_backed` が val の
+  canonical-alias 表で条件 1 を裏づけ、`_demote_unbacked_strong` が
+  `score_gates` に渡す前に候補を落とす。
+
+**条件 2（包含述語が canonical alias そのものに当たるか）は未実装**で、
+b3 がその形である（O8）。
 
 出所: `docs/decisions.md` D21。
 """
@@ -37,7 +44,12 @@ import pytest
 from authgap.ir import Req
 from authgap.runner import RunConfig, run
 
-DEFECT = pytest.mark.xfail(strict=True, reason="D21: 未修正の欠陥（修正コミットでこの印を外す）")
+#: Def 5 の条件 (ii)（包含述語が canonical alias **そのもの**に適用されたか）は
+#: 現在の実装では確かめられない。手続き間に跨る形（較正対 A4 の `git_add` が
+#: その実例）では canonical alias が callee の中にあり最終 env に残らないので、
+#: 条件 (i) を `alias_facts` で見るところまでしか行けていない。
+#: **黙って安全側に倒さず未解決として記録する**（`docs/open_questions.md` O8）。
+COND_II = pytest.mark.xfail(strict=True, reason="O8: Def 5 条件 (ii) は未実装")
 
 SOURCE = '''\
 import os
@@ -221,7 +233,6 @@ def test_precondition_b1_has_no_canonical_alias(units):
 # --------------------------------------------------------------------------
 
 
-@DEFECT
 @pytest.mark.parametrize("tool", ("a1_inline_commonpath", "a2_inline_relative_to", "a3_inline_startswith_sep"))
 def test_inline_form_is_strong_path(units, tool):
     grade, weak_reason = _grade(units, tool)
@@ -229,7 +240,6 @@ def test_inline_form_is_strong_path(units, tool):
     assert weak_reason is None
 
 
-@DEFECT
 @pytest.mark.parametrize("tool", ("a1_inline_commonpath", "a2_inline_relative_to", "a3_inline_startswith_sep"))
 def test_inline_form_clears_gap(units, tool):
     assert units[tool].req_val.get(SLOT) is Req.OP, f"{tool}: req_val={units[tool].req_val.get(SLOT)}"
@@ -241,7 +251,6 @@ def test_inline_form_clears_gap(units, tool):
 # --------------------------------------------------------------------------
 
 
-@DEFECT
 def test_helper_without_canonical_alias_is_not_strong(units):
     """**false-clean。** `..` 遍歴で抜けられる検証子が strong-path で clear される。"""
     grade, weak_reason = _grade(units, "b1_helper_root_only")
@@ -249,7 +258,6 @@ def test_helper_without_canonical_alias_is_not_strong(units):
     assert weak_reason == "no_symlink_resolution", f"b1: weak_reason={weak_reason!r}"
 
 
-@DEFECT
 def test_helper_without_canonical_alias_keeps_gap(units):
     assert units["b1_helper_root_only"].req_val.get(SLOT) is Req.MODEL
     assert _verdicts(units, "b1_helper_root_only") == {"GAP_INJECT"}
@@ -262,8 +270,15 @@ def test_join_after_canon_is_not_strong(units):
     assert _verdicts(units, "b2_join_after_canon") == {"GAP_INJECT"}
 
 
+@COND_II
 def test_canon_unused_is_not_strong(units):
-    """正規化した値を使わず生の値を sink に渡す形（root-equal 違反。対照）。"""
+    """正規化した値を**検査に使わず**生の値を照合する形（Def 5 条件 (ii) 違反）。
+
+    `real = realpath(path)` があるので条件 (i) は満たすが、包含述語
+    （`path.startswith(...)`）は生の `path` に当たっており canonical alias に
+    当たっていない。**現在の実装は (i) までしか見ないので strong-path になる。**
+    条件 (ii) を満たさない形はここで凍結し、O8 として記録した。
+    """
     grade, _ = _grade(units, "b3_canon_unused")
     assert grade == "weak", f"b3: grade={grade!r}"
     assert _verdicts(units, "b3_canon_unused") == {"GAP_INJECT"}

@@ -16,12 +16,13 @@ root id は**入口引数の名前**を使う。解析はユニット単位な�
 from __future__ import annotations
 
 import ast
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any, Optional
 
 from .catalog import validators as V
 from .catalog.entries import APPROVAL_INTERRUPTS
 from .catalog.sinks import DANGEROUS_KINDS, PRIMARY_SLOTS
+from .catalog.transfers import SYMLINK_RESOLVERS
 from .cfgbuild import build_cfg
 from .dominance import compute_dominators
 from .dparse import DKind, DOp, parse_d_kind
@@ -31,7 +32,18 @@ from .entries import (
     params_of,
 )
 from .gate import GateCandidate, GateScore, SummaryCache, find_gate_candidates, score_gates
-from .ir import RESOLVED, DomKind, DomResult, Prin, Prov, Req, Value, prov_merge, req_meet
+from .ir import (
+    REQ_BOTTOM,
+    RESOLVED,
+    DomKind,
+    DomResult,
+    Prin,
+    Prov,
+    Req,
+    Value,
+    prov_merge,
+    req_meet,
+)
 from .srcindex import Scope, SourceIndex, dotted_of
 from .trig import TrigIndex, TrigResult
 from .val import Env, Options, ValEngine, ValResult, seed_model_param
@@ -427,13 +439,20 @@ def analyze_unit_full(
         report.occ_gate = report.occ_gate_by_effect[weakest]
 
     # -- req_val（制御位置ごと）-------------------------------------------
+    alias_facts = tuple(report.val.alias_facts) if report.val is not None else ()
     for i, slot, value in report.control_positions():
         nodes = cfg.nodes_for_line(report.effects[i].entry_lineno) or [cfg.exit]
         # root が空 = 定数 / OP 由来。**「主語が無い」のであって「未知」ではない**
         # ので、どの値検証も束縛しない番兵を渡す（空集合を渡すと主語一致が
         # 素通りして無関係な検証が等級として表示される）。
         subjects = value.roots or frozenset({"<no-root>"})
-        sc = score_gates(cfg, dom, cands, nodes, "val", subjects)
+        # **裏づけの無い strong-path は score_gates に渡す前に落とす**（D21）。
+        # 等級の表示だけを weak にして `req` を OP のまま残すと、GAP が規則 W の
+        # 実装（`verdict.py` が Def 7 の `req_val = MODEL` を上書きする既知の
+        # 欠陥）にぶら下がる。規則 W を Def 7 どおりに直した瞬間に b1 型の
+        # false-clean が戻るので、**req 側も同じ根拠で落とす。**
+        slot_cands = _demote_unbacked_strong(cands, value, alias_facts)
+        sc = score_gates(cfg, dom, slot_cands, nodes, "val", subjects)
         report.req_val[(i, slot)] = sc.req
         report.gate_results[(i, slot)] = sc.to_json()
         report.grades[(i, slot)] = _grade_of(sc.passing, sc.candidates, value, report.effects[i])
@@ -597,6 +616,58 @@ def _roots_of_expr(node, env) -> frozenset[str]:
     for sub in ast.iter_child_nodes(node) if node is not None else ():
         out2 |= _roots_of_expr(sub, env)
     return frozenset(out2)
+
+
+def _strong_path_backed(value: Value, alias_facts) -> bool:
+    """`strong-path` を val の証拠で裏づけられるか（Def 5 の条件 (i)）。
+
+    `authgap/catalog/validators.py: strong_path_requirements` の (i) は
+    「**制御引数の root について** symlink 解決子を通った canonical alias が
+    存在する」ことを要求する。ゲート側は本体に現れた形状の集合しか見ないので
+    （`gate.py: _value_grade`）、`realpath` が**どの値に**適用されたかを
+    区別できない。val の canonical-alias 表 `(root, site, transform)` が
+    その区別を持っているので、ここで突き合わせる（D21）。
+
+    **この検査だけでは Def 5 の条件 (ii) は確かめられない**（包含述語が
+    canonical alias そのものに適用されたか）。条件 (ii) を満たさない形は
+    `tests/test_value_grade.py` の b3 として凍結し、未解決として
+    `docs/open_questions.md` O8 に記録した。**黙って安全側に倒さない。**
+
+    root が空の値（定数 / OP 由来）は主体が MODEL でないので等級が verdict を
+    動かさない。ここで weak に落とすと規則 W の経路に無関係な行が増えるため、
+    裏づけ済みとして扱う。
+    """
+    roots = value.roots
+    if not roots:
+        return True
+    return any(a.root in roots and a.transform in SYMLINK_RESOLVERS for a in alias_facts)
+
+
+def _demote_unbacked_strong(
+    cands: list[GateCandidate], value: Value, alias_facts
+) -> list[GateCandidate]:
+    """val の証拠が裏づけない `strong-path` 候補を `weak` に落とす（D21）。
+
+    **`score_gates` に渡す前に落とすこと。** 等級の表示だけを直して候補の
+    `grade`（`Req.OP`）を残すと `req_val` が OP のままになり、行が GAP として
+    残るのは規則 W の実装が Def 7 の `req_val = MODEL` 条件を上書きしている
+    **既知の欠陥のおかげ**になる。その欠陥を直した瞬間に false-clean が戻る。
+
+    落とす先は `weak(no_symlink_resolution)`。Def 5 の 3 条件のうち満たせて
+    いないのは (i)（root の canonical alias）なので、凍結済みの weak 理由語彙
+    （`validators.py: WEAK_REASONS`）の中でこれが対応する語である。
+    """
+    if not cands:
+        return cands
+    backed = _strong_path_backed(value, alias_facts)
+    if backed:
+        return cands
+    out: list[GateCandidate] = []
+    for c in cands:
+        if c.form == "value" and c.value_grade == "strong-path":
+            c = replace(c, grade=REQ_BOTTOM, value_grade="weak", weak_reason="no_symlink_resolution")
+        out.append(c)
+    return out
 
 
 def _grade_of(

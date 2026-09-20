@@ -507,6 +507,103 @@ def _normalised_to_sep(fn: ast.AST, name: str) -> bool:
     return False
 
 
+def _value_grade(
+    transforms: set[str],
+    containments: set[str],
+    shapes: set[str],
+    fn: ast.AST,
+    first_token: bool = False,
+    statement_type: bool = False,
+) -> tuple[Optional[str], Optional[str]]:
+    """Def 5 の値検証等級。**strong は推定で出さない。**
+
+    **weak 理由は値の領域ごとに分かれている。** `prefix_no_canon` /
+    `no_containment` / `no_symlink_resolution` はパス領域の語であり、
+    シェルコマンドの allowlist に付けてはならない（A5 がその実例で、
+    `command.split()[0] in allowlist` は `first_token` である）。
+    したがって領域を先に決める:
+
+    1. 先頭トークン検査（`split()[0]` が会員判定に入る）→ `weak(first_token)`
+    2. パス正規化子がある → パス領域の規則
+    3. どちらでもない → 会員判定は config atom 規則に任せて等級は付けない
+    """
+    has_symlink = bool(transforms & SYMLINK_RESOLVERS)
+    has_lexical = bool(transforms & LEXICAL_CANONS)
+    dash_reject = "dash_reject" in containments
+    existence = "exists" in shapes
+
+    if first_token:
+        # **A5 / A6 の形。** 先頭トークンだけを見る allowlist / denylist は
+        # `ls; rm -rf /` のような witness で抜けられる。
+        return "weak", "first_token"
+
+    if statement_type:
+        # **A18 の形。** 文型は絞れているが値は自由な SQL のまま。
+        return "weak", "statement_type_only"
+
+    # -- strong-token（Def 5）: メタ文字・フラグ拒否 + 存在検証 + argv 実行。
+    # **argv 実行の確認は効果側の exec_mode で行う**（検証子の本体からは
+    # 分からない）ので、ここでは 2 条件までを見て `strong-token` を返し、
+    # 3 条件目は `analyze._grade_of` が効果を見て確かめる。
+    if dash_reject and existence:
+        return "strong-token", None
+    if dash_reject and not existence:
+        return "weak", "no_existence_check"
+    if existence and not dash_reject and not transforms:
+        return "weak", "no_dash_reject"
+    strong_containment = containments & {
+        "os.path.commonpath",
+        "is_relative_to",
+        "relative_to",
+        "exact_allowlist",
+    }
+    prefix_only = "startswith" in containments and not strong_containment
+
+    if has_symlink and (strong_containment or (prefix_only and _startswith_has_sep(fn))):
+        return "strong-path", None
+    if has_symlink and prefix_only:
+        return "weak", "prefix_no_boundary"
+    if has_symlink and not containments:
+        return "weak", "no_containment"
+    if has_lexical and (strong_containment or (prefix_only and _startswith_has_sep(fn))):
+        return "weak", "no_symlink_resolution"
+    if has_lexical and prefix_only:
+        return "weak", "prefix_no_canon"
+    if has_lexical and not containments:
+        return "weak", "lexical_canon_only"
+    if not transforms and prefix_only:
+        return "weak", "prefix_no_canon"
+    if not transforms and "exact_allowlist" in containments:
+        # 完全一致 allowlist。等級は config atom 規則が決める（既定閉なら OP）。
+        return "allowlist", None
+    path_containment = containments & {
+        "os.path.commonpath",
+        "is_relative_to",
+        "relative_to",
+    }
+    if path_containment and not transforms:
+        # 包含述語はあるが正規化子が無い（パス領域）。
+        return "weak", "no_symlink_resolution"
+    absolute_only = "absolute" in shapes
+    existence_only = "exists" in shapes
+    if not transforms and not containments and (absolute_only or existence_only):
+        # **F7 の形。** 絶対パスか存在かだけを見る検証子は木の外を止めない。
+        # 絶対パス検査を先に採る（`/etc/passwd` は絶対かつ存在する）。
+        return "weak", "absolute_only" if absolute_only else "existence_only"
+
+    if "exact_allowlist" in containments and not transforms:
+        # **完全一致 allowlist だけ。** 領域が決まらないので等級は付けず、
+        # `req` の引き上げは config atom 規則（既定閉なら OP）に任せる。
+        # ここでパス領域の理由を付けると A5 のような対で誤った weak 理由が出る。
+        return "allowlist", None
+    # **形状語彙の語が本体に出るだけでは検証子にしない。**
+    # §6 F0a の 11 語は構文的な棚卸しの語彙であって、`split` や `Path()` は
+    # 値の変換である。`repo.git.log(*args).split("\n")` を「等級 unknown の
+    # 検証子」と読むと、検証が 1 つも無い脆弱側に等級が付き、両側の差が消える。
+    del shapes
+    return None, None
+
+
 class SummaryCache:
     """関数サマリの記憶化。`(module, qualname)` で引く。
 
@@ -550,7 +647,7 @@ class SummaryCache:
         statement_type = _is_statement_type_check(fd.node, scope)
         checked = _checked_params(fd.node, scope)
         raises = self._raises_on_deny(fd, path, scope, is_cm, depth)
-        grade, weak_reason = self._value_grade(
+        grade, weak_reason = _value_grade(
             transforms, containments, shapes, fd.node, first_token, statement_type
         )
         tree = self.index.parse(path)
@@ -623,104 +720,6 @@ class SummaryCache:
                 decided = True
         del dom
         return True if decided else False
-
-    def _value_grade(
-        self,
-        transforms: set[str],
-        containments: set[str],
-        shapes: set[str],
-        fn: ast.AST,
-        first_token: bool = False,
-        statement_type: bool = False,
-    ) -> tuple[Optional[str], Optional[str]]:
-        """Def 5 の値検証等級。**strong は推定で出さない。**
-
-        **weak 理由は値の領域ごとに分かれている。** `prefix_no_canon` /
-        `no_containment` / `no_symlink_resolution` はパス領域の語であり、
-        シェルコマンドの allowlist に付けてはならない（A5 がその実例で、
-        `command.split()[0] in allowlist` は `first_token` である）。
-        したがって領域を先に決める:
-
-        1. 先頭トークン検査（`split()[0]` が会員判定に入る）→ `weak(first_token)`
-        2. パス正規化子がある → パス領域の規則
-        3. どちらでもない → 会員判定は config atom 規則に任せて等級は付けない
-        """
-        has_symlink = bool(transforms & SYMLINK_RESOLVERS)
-        has_lexical = bool(transforms & LEXICAL_CANONS)
-        dash_reject = "dash_reject" in containments
-        existence = "exists" in shapes
-
-        if first_token:
-            # **A5 / A6 の形。** 先頭トークンだけを見る allowlist / denylist は
-            # `ls; rm -rf /` のような witness で抜けられる。
-            return "weak", "first_token"
-
-        if statement_type:
-            # **A18 の形。** 文型は絞れているが値は自由な SQL のまま。
-            return "weak", "statement_type_only"
-
-        # -- strong-token（Def 5）: メタ文字・フラグ拒否 + 存在検証 + argv 実行。
-        # **argv 実行の確認は効果側の exec_mode で行う**（検証子の本体からは
-        # 分からない）ので、ここでは 2 条件までを見て `strong-token` を返し、
-        # 3 条件目は `analyze._grade_of` が効果を見て確かめる。
-        if dash_reject and existence:
-            return "strong-token", None
-        if dash_reject and not existence:
-            return "weak", "no_existence_check"
-        if existence and not dash_reject and not transforms:
-            return "weak", "no_dash_reject"
-        strong_containment = containments & {
-            "os.path.commonpath",
-            "is_relative_to",
-            "relative_to",
-            "exact_allowlist",
-        }
-        prefix_only = "startswith" in containments and not strong_containment
-
-        if has_symlink and (strong_containment or (prefix_only and _startswith_has_sep(fn))):
-            return "strong-path", None
-        if has_symlink and prefix_only:
-            return "weak", "prefix_no_boundary"
-        if has_symlink and not containments:
-            return "weak", "no_containment"
-        if has_lexical and (strong_containment or (prefix_only and _startswith_has_sep(fn))):
-            return "weak", "no_symlink_resolution"
-        if has_lexical and prefix_only:
-            return "weak", "prefix_no_canon"
-        if has_lexical and not containments:
-            return "weak", "lexical_canon_only"
-        if not transforms and prefix_only:
-            return "weak", "prefix_no_canon"
-        if not transforms and "exact_allowlist" in containments:
-            # 完全一致 allowlist。等級は config atom 規則が決める（既定閉なら OP）。
-            return "allowlist", None
-        path_containment = containments & {
-            "os.path.commonpath",
-            "is_relative_to",
-            "relative_to",
-        }
-        if path_containment and not transforms:
-            # 包含述語はあるが正規化子が無い（パス領域）。
-            return "weak", "no_symlink_resolution"
-        absolute_only = "absolute" in shapes
-        existence_only = "exists" in shapes
-        if not transforms and not containments and (absolute_only or existence_only):
-            # **F7 の形。** 絶対パスか存在かだけを見る検証子は木の外を止めない。
-            # 絶対パス検査を先に採る（`/etc/passwd` は絶対かつ存在する）。
-            return "weak", "absolute_only" if absolute_only else "existence_only"
-
-        if "exact_allowlist" in containments and not transforms:
-            # **完全一致 allowlist だけ。** 領域が決まらないので等級は付けず、
-            # `req` の引き上げは config atom 規則（既定閉なら OP）に任せる。
-            # ここでパス領域の理由を付けると A5 のような対で誤った weak 理由が出る。
-            return "allowlist", None
-        # **形状語彙の語が本体に出るだけでは検証子にしない。**
-        # §6 F0a の 11 語は構文的な棚卸しの語彙であって、`split` や `Path()` は
-        # 値の変換である。`repo.git.log(*args).split("\n")` を「等級 unknown の
-        # 検証子」と読むと、検証が 1 つも無い脆弱側に等級が付き、両側の差が消える。
-        del shapes
-        return None, None
-
 
 def _yield_nodes(cfg: CFG) -> set[int]:
     out: set[int] = set()
@@ -839,7 +838,9 @@ def find_gate_candidates(
 
         # 2) 呼び出し形
         for call in _calls_in(subject_expr):
-            cand = _call_candidate(nid, node.kind, call, scope, index, summaries, depth, tree)
+            cand = _call_candidate(
+                nid, node.kind, call, scope, index, summaries, depth, tree, cfg.func
+            )
             if cand is None:
                 continue
             if node.kind == "test":
@@ -943,6 +944,7 @@ def _call_candidate(
     summaries: SummaryCache,
     depth: int,
     tree,
+    enclosing_fn: Optional[ast.AST] = None,
 ) -> Optional[GateCandidate]:
     name = dotted_of(call.func)
     if name is None:
@@ -996,7 +998,7 @@ def _call_candidate(
         if shape is not None:
             subjects = subjects | subject_names(call.func.value)
     if shape is not None and shape in PREDICATE_SHAPES:
-        grade, weak = _grade_from_shape(shape)
+        grade, weak = _grade_inline(enclosing_fn, scope, shape)
         cand = _value_candidate(nid, name, call, subjects, grade, weak, None, tree)
         cand.subject_exprs = tuple(call.args) + (
             (call.func.value,) if isinstance(call.func, ast.Attribute) else ()
@@ -1050,8 +1052,53 @@ def _subjects_for_checked(
 PREDICATE_SHAPES: frozenset[str] = frozenset({"containment", "prefix", "exists"})
 
 
+def _grade_inline(
+    enclosing_fn: Optional[ast.AST], scope: Scope, shape: str
+) -> tuple[Optional[str], Optional[str]]:
+    """ツール本体に inline で書かれた述語を、**helper 経路と同じ規則で**採点する。
+
+    Def 5 の strong-path は 3 条件であって「検証子をどこに書いたか」を区別しない。
+    それなのに helper 経路（:func:`_value_grade` を `FuncSummary` 経由で使う）と
+    inline 経路（旧 :func:`_grade_from_shape`）が別の近似になっていたため、
+    同じ論理でも本体に書くと weak 止まり、関数に切り出すと strong-path という
+    反転が起きていた（`docs/decisions.md` D21）。ここで両者を 1 つの規則に寄せる。
+
+    **採点の対象は述語 1 つではなく囲み関数の本体全体である。** `_value_grade` が
+    「正規化子の集合 × 包含述語の集合」で決める規則をそのまま当てるため、
+    helper 経路と同じ過大近似をここでも引き受ける。**その過大さは
+    `analyze._strong_path_backed` が val の証拠（canonical alias と
+    `canonicalised` 属性）で打ち消す。** 片方だけを入れてはならない:
+    本関数だけなら false-clean が増え、裏づけだけなら inline は weak のままになる。
+
+    囲み関数が取れないとき（`enclosing_fn is None`）は旧来どおり単一形状から
+    決める。**推定で strong にはしない。**
+    """
+    if enclosing_fn is None:
+        return _grade_from_shape(shape)
+    shapes, _ = _shapes_in(enclosing_fn, scope)
+    transforms = _transform_names(enclosing_fn, scope)
+    containments = _containment_forms(enclosing_fn, scope)
+    grade, weak = _value_grade(
+        transforms,
+        containments,
+        shapes,
+        enclosing_fn,
+        _is_first_token_check(enclosing_fn, scope),
+        _is_statement_type_check(enclosing_fn, scope),
+    )
+    if grade is None and weak is None:
+        # 本体をまとめて見ても領域が決まらなかった。**当該述語の形状に戻す**
+        # （`exists` だけの検証子などが等級を失わないように）。
+        return _grade_from_shape(shape)
+    return grade, weak
+
+
 def _grade_from_shape(shape: str) -> tuple[str, Optional[str]]:
-    """単一形状だけから決まる等級。**単独で strong にはしない。**"""
+    """単一形状だけから決まる等級。**単独で strong にはしない。**
+
+    :func:`_grade_inline` が囲み関数を取れないとき、および本体をまとめて見ても
+    領域が決まらなかったときの退避先。
+    """
     if shape == "prefix":
         return "weak", "prefix_no_canon"
     if shape == "lexical_canon":
