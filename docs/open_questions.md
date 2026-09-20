@@ -260,7 +260,7 @@
 
 ---
 
-## O14. 宣言 D を持つ部分母集団をどう扱うか（第 2 の枠 / R2 の拡張）
+## O14. 宣言 D を持つ部分母集団をどう扱うか（第 2 の枠 / R2 の拡張）— **解決（D29: 母集団を宣言ありに変える）**
 
 - **要る情報**: (a) OpenHands 型（app 枠組みの `ToolDefinition(annotations=ToolAnnotations(...))`）
   を R2 カタログに足すか、(b) 「明示の MCP annotation を持つ Python サーバ」を第 2 の枠
