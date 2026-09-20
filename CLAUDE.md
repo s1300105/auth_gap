@@ -100,6 +100,15 @@ uv pip install --python .venv/bin/python -r requirements.txt
 uv venv .venv312 --python 3.12 && uv pip install --python .venv312/bin/python -r requirements.txt
 .venv312/bin/python -u scripts/f0a.py --sample docs/corpus_sample.json --label run2
 .venv/bin/python scripts/compare_f0a_runs.py                          # run の差を処理系 / 解析器に分解
+
+# r_prev（preregistration §2.7）。手順 1（タグ選択）→ 手順 2〜5（取得・scan・join・集計）
+.venv/bin/python scripts/prev_releases.py --run evidence/f0a_run6 --out docs/prev_releases.json   # 測定より先にコミット
+.venv/bin/python scripts/r_prev.py --label run1                       # → evidence/r_prev_run1/
+
+# 判別実験（preregistration §5 #2 / #4）
+.venv/bin/python scripts/two_sided.py --spec docs/corpus_spec.json --arm C    # 3 列（事前登録照合 / 座標一致 / any-change）
+.venv/bin/python scripts/two_sided.py --spec docs/corpus_spec.json --arm C0   # 等級潰し腕。C − C0 を出す
+.venv/bin/python scripts/codeql_fair.py --help                        # 入口を揃えた CodeQL 比較
 ```
 
 **手検証の入口は `docs/verification_guide.md`。**
