@@ -1,0 +1,97 @@
+{
+ "_note": "docs/preregistration.md §2.9 の規則から書いた期待値。実装より先にコミットする（規則 5）。",
+ "units": {
+  "call_tool": {
+   "entry_kind_prefix": "lowlevel",
+   "dispatch_join": {
+    "tools": [
+     "read_note",
+     "write_note"
+    ],
+    "unjoined_literals": 1
+   },
+   "d_kind_by_tool": {
+    "read_note": {
+     "explicit": [
+      "readOnlyHint"
+     ],
+     "upper": [
+      "FS_READ",
+      "NET"
+     ]
+    },
+    "write_note": {
+     "bottom": true,
+     "present_no_bound": [
+      "destructiveHint",
+      "readOnlyHint"
+     ]
+    }
+   },
+   "effects": [
+    {
+     "site": "os.makedirs",
+     "kind": "FS_WRITE",
+     "attributed": [
+      "read_note",
+      "write_note"
+     ],
+     "verdicts_include": [
+      "CONTRADICTION",
+      "GAP_SELECT"
+     ]
+    },
+    {
+     "site": "builtins.open",
+     "kind": "FS_READ",
+     "attributed": [
+      "read_note"
+     ],
+     "verdicts_include": [
+      "INVENTORY"
+     ],
+     "verdicts_exclude": [
+      "CONTRADICTION",
+      "GAP_SELECT"
+     ],
+     "covered_by": "kind"
+    },
+    {
+     "site": "builtins.open",
+     "kind": "FS_WRITE",
+     "attributed": [
+      "write_note"
+     ],
+     "verdicts_include": [
+      "GAP_SELECT"
+     ],
+     "verdicts_exclude": [
+      "CONTRADICTION",
+      "INVENTORY"
+     ]
+    }
+   ]
+  },
+  "deco_read": {
+   "d_kind": {
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "effects": [
+    {
+     "site": "builtins.open",
+     "kind": "FS_READ",
+     "notes_include": [
+      "D_layer_present:kind:FS_READ"
+     ],
+     "_note": "FastMCP デコレータ形は trig が assumed なので SELECT 行は manifest 行（INVENTORY にならない）。D の存在は notes に出る。既存挙動の転記"
+    }
+   ]
+  }
+ }
+}
