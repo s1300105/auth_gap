@@ -123,8 +123,14 @@ class SideRow:
         }
 
 
-def collect(src_root: str, population: str) -> dict[tuple, SideRow]:
-    res = run(RunConfig(src_root=src_root, population=population, full=True))
+def collect(src_root: str, population: str, arm: str = "C") -> dict[tuple, SideRow]:
+    """片側を解析して効果サイトごとの行にする。
+
+    `arm` は `authgap.analyze.ARMS` の腕。既定は完全版 ``C``。判別実験 (b)
+    （`docs/preregistration.md` §5 #2）では ``C0``（等級潰し腕）で同じ対を回し、
+    `C − C0` を出す。**腕は解析器に渡すだけで、ここでの集計は腕に依存しない。**
+    """
+    res = run(RunConfig(src_root=src_root, population=population, full=True, arm=arm))
     man = manifest_json(res, run_id="two-sided", volatile=False)
     out: dict[tuple, SideRow] = {}
     for u in man["units"]:
@@ -261,9 +267,9 @@ def _chain_label(chain: tuple) -> str:
     return "->".join(chain) if chain else "-"
 
 
-def compare(pair_id: str, vuln: str, fixed: str, population: str) -> PairResult:
-    a = collect(vuln, population)
-    b = collect(fixed, population)
+def compare(pair_id: str, vuln: str, fixed: str, population: str, arm: str = "C") -> PairResult:
+    a = collect(vuln, population, arm)
+    b = collect(fixed, population, arm)
     res = PairResult(pair_id, vuln, fixed)
 
     def by_path(rows: dict[tuple, SideRow]) -> dict[str, dict[tuple, SideRow]]:
