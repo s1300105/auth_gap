@@ -1,0 +1,406 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "title": "Clear History"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 238,
+    "module": "mcp_sequential_thinking.server",
+    "params": [],
+    "qualname": "clear_history",
+    "relpath": "mcp_sequential_thinking/server.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "clear_history",
+    "unit_id": "mcp:clear_history:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "title": "Export Session"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 270,
+    "module": "mcp_sequential_thinking.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "file_path"
+     }
+    ],
+    "qualname": "export_session",
+    "relpath": "mcp_sequential_thinking/server.py",
+    "schema_hash": "4caa0948ebda",
+    "tool_name": "export_session",
+    "unit_id": "mcp:export_session:4caa0948ebda"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "TOP_TAGS_COUNT": null
+   },
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "title": "Generate Summary"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 213,
+    "module": "mcp_sequential_thinking.server",
+    "params": [],
+    "qualname": "generate_summary",
+    "relpath": "mcp_sequential_thinking/server.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "generate_summary",
+    "unit_id": "mcp:generate_summary:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "title": "Import Session"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 311,
+    "module": "mcp_sequential_thinking.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "file_path"
+     }
+    ],
+    "qualname": "import_session",
+    "relpath": "mcp_sequential_thinking/server.py",
+    "schema_hash": "4caa0948ebda",
+    "tool_name": "import_session",
+    "unit_id": "mcp:import_session:4caa0948ebda"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "title"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "thought",
+     "site": "mcp_sequential_thinking/analysis.py:L259",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "title": "Process Thought"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 100,
+    "module": "mcp_sequential_thinking.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "thought"
+     },
+     {
+      "annotation": "int",
+      "index": 1,
+      "name": "total_thoughts"
+     },
+     {
+      "annotation": "bool",
+      "index": 2,
+      "name": "next_thought_needed"
+     },
+     {
+      "annotation": "str",
+      "index": 3,
+      "name": "stage"
+     },
+     {
+      "annotation": "int | None",
+      "default": "None",
+      "index": 4,
+      "name": "thought_number"
+     },
+     {
+      "annotation": "list[str] | None",
+      "default": "None",
+      "index": 5,
+      "name": "tags"
+     },
+     {
+      "annotation": "list[str] | None",
+      "default": "None",
+      "index": 6,
+      "name": "axioms_used"
+     },
+     {
+      "annotation": "list[str] | None",
+      "default": "None",
+      "index": 7,
+      "name": "assumptions_challenged"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 8,
+      "name": "is_revision"
+     },
+     {
+      "annotation": "int | None",
+      "default": "None",
+      "index": 9,
+      "name": "revises_thought_number"
+     },
+     {
+      "annotation": "int | None",
+      "default": "None",
+      "index": 10,
+      "name": "branch_from_thought"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 11,
+      "name": "branch_id"
+     },
+     {
+      "annotation": "Context | None",
+      "default": "None",
+      "index": 12,
+      "name": "ctx"
+     }
+    ],
+    "qualname": "process_thought",
+    "relpath": "mcp_sequential_thinking/server.py",
+    "schema_hash": "514c49e62146",
+    "tool_name": "process_thought",
+    "unit_id": "mcp:process_thought:514c49e62146"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

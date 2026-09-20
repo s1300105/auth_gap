@@ -1,0 +1,260 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 317,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_grants_auto_reconcile.py",
+   "resolution": "opaque",
+   "selector": "1",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 317,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_grants_auto_reconcile.py",
+   "resolution": "opaque",
+   "selector": "1",
+   "selector_is_model": false
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Describe a table's columns"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 299,
+    "module": "views.mcp_endpoint",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "name"
+     }
+    ],
+    "qualname": "_build_mcp_server.describe_table",
+    "relpath": "views/mcp_endpoint.py",
+    "schema_hash": "459d43d19675",
+    "tool_name": "describe_table",
+    "unit_id": "mcp:_build_mcp_server.describe_table:459d43d19675"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "List readable tables"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 268,
+    "module": "views.mcp_endpoint",
+    "params": [],
+    "qualname": "_build_mcp_server.list_tables",
+    "relpath": "views/mcp_endpoint.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "list_tables",
+    "unit_id": "mcp:_build_mcp_server.list_tables:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Run a read-only SQL query"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 345,
+    "module": "views.mcp_endpoint",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "sql"
+     },
+     {
+      "annotation": "int | None",
+      "default": "None",
+      "index": 1,
+      "name": "limit"
+     }
+    ],
+    "qualname": "_build_mcp_server.run_query",
+    "relpath": "views/mcp_endpoint.py",
+    "schema_hash": "ed219c2a4bff",
+    "tool_name": "run_query",
+    "unit_id": "mcp:_build_mcp_server.run_query:ed219c2a4bff"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

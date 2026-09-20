@@ -1,0 +1,3663 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 747,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "mechanics/inference-pilots/parts/langgraph-pilot/aoa_langgraph_pilot.py",
+   "resolution": "opaque",
+   "selector": "'repo_root_for_w4_case'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 747,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "mechanics/inference-pilots/parts/langgraph-pilot/aoa_langgraph_pilot.py",
+   "resolution": "opaque",
+   "selector": "'repo_root_for_w4_case'",
+   "selector_is_model": false
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [
+  {
+   "cap": "ast_node_cap",
+   "count": 30974,
+   "relpath": "mechanics/governed-execution/parts/governed-runner/aoa_governed_execution.py"
+  }
+ ],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 36,
+    "module": "mcp.services.abyss-machine-mcp.src.abyss_machine_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "'fast'",
+      "index": 0,
+      "name": "profile"
+     },
+     {
+      "annotation": "int",
+      "default": "8",
+      "index": 1,
+      "name": "evidence_limit"
+     }
+    ],
+    "qualname": "build_server.abyss_machine_brief",
+    "relpath": "mcp/services/abyss-machine-mcp/src/abyss_machine_mcp/server.py",
+    "schema_hash": "408536a5d050",
+    "tool_name": "abyss_machine_brief",
+    "unit_id": "mcp:build_server.abyss_machine_brief:408536a5d050"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 88,
+    "module": "mcp.services.abyss-machine-mcp.src.abyss_machine_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 0,
+      "name": "axis"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 1,
+      "name": "query"
+     },
+     {
+      "annotation": "str",
+      "default": "'agent'",
+      "index": 2,
+      "name": "reader_profile"
+     },
+     {
+      "annotation": "int",
+      "default": "20",
+      "index": 3,
+      "name": "limit"
+     }
+    ],
+    "qualname": "build_server.abyss_machine_context_packet",
+    "relpath": "mcp/services/abyss-machine-mcp/src/abyss_machine_mcp/server.py",
+    "schema_hash": "31c0a0befb33",
+    "tool_name": "abyss_machine_context_packet",
+    "unit_id": "mcp:build_server.abyss_machine_context_packet:31c0a0befb33"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 68,
+    "module": "mcp.services.abyss-machine-mcp.src.abyss_machine_mcp.server",
+    "params": [
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 0,
+      "name": "layer"
+     },
+     {
+      "annotation": "int",
+      "default": "40",
+      "index": 1,
+      "name": "limit"
+     }
+    ],
+    "qualname": "build_server.abyss_machine_evidence_map",
+    "relpath": "mcp/services/abyss-machine-mcp/src/abyss_machine_mcp/server.py",
+    "schema_hash": "5ccdb1faa901",
+    "tool_name": "abyss_machine_evidence_map",
+    "unit_id": "mcp:build_server.abyss_machine_evidence_map:5ccdb1faa901"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 83,
+    "module": "mcp.services.abyss-machine-mcp.src.abyss_machine_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 0,
+      "name": "axis"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 1,
+      "name": "query"
+     },
+     {
+      "annotation": "int",
+      "default": "40",
+      "index": 2,
+      "name": "limit"
+     }
+    ],
+    "qualname": "build_server.abyss_machine_maps",
+    "relpath": "mcp/services/abyss-machine-mcp/src/abyss_machine_mcp/server.py",
+    "schema_hash": "7044cff0012c",
+    "tool_name": "abyss_machine_maps",
+    "unit_id": "mcp:build_server.abyss_machine_maps:7044cff0012c"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 98,
+    "module": "mcp.services.abyss-machine-mcp.src.abyss_machine_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "query"
+     },
+     {
+      "annotation": "str",
+      "default": "'by-rag-run'",
+      "index": 1,
+      "name": "axis"
+     },
+     {
+      "annotation": "str",
+      "default": "'retrieval-context'",
+      "index": 2,
+      "name": "reader_profile"
+     },
+     {
+      "annotation": "int",
+      "default": "8",
+      "index": 3,
+      "name": "limit"
+     },
+     {
+      "annotation": "int",
+      "default": "12",
+      "index": 4,
+      "name": "evidence_limit"
+     }
+    ],
+    "qualname": "build_server.abyss_machine_rag_trace",
+    "relpath": "mcp/services/abyss-machine-mcp/src/abyss_machine_mcp/server.py",
+    "schema_hash": "3e3460424493",
+    "tool_name": "abyss_machine_rag_trace",
+    "unit_id": "mcp:build_server.abyss_machine_rag_trace:3e3460424493"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 78,
+    "module": "mcp.services.abyss-machine-mcp.src.abyss_machine_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "query"
+     },
+     {
+      "annotation": "str",
+      "default": "'hybrid'",
+      "index": 1,
+      "name": "mode"
+     }
+    ],
+    "qualname": "build_server.abyss_machine_recall",
+    "relpath": "mcp/services/abyss-machine-mcp/src/abyss_machine_mcp/server.py",
+    "schema_hash": "8b10c84c1ff0",
+    "tool_name": "abyss_machine_recall",
+    "unit_id": "mcp:build_server.abyss_machine_recall:8b10c84c1ff0"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 73,
+    "module": "mcp.services.abyss-machine-mcp.src.abyss_machine_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "intent"
+     },
+     {
+      "annotation": "str",
+      "default": "'heavy'",
+      "index": 1,
+      "name": "work_class"
+     },
+     {
+      "annotation": "str",
+      "default": "'ai'",
+      "index": 2,
+      "name": "kind"
+     }
+    ],
+    "qualname": "build_server.abyss_machine_route",
+    "relpath": "mcp/services/abyss-machine-mcp/src/abyss_machine_mcp/server.py",
+    "schema_hash": "8d0823affce8",
+    "tool_name": "abyss_machine_route",
+    "unit_id": "mcp:build_server.abyss_machine_route:8d0823affce8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 41,
+    "module": "mcp.services.abyss-machine-mcp.src.abyss_machine_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "name"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 1,
+      "name": "query"
+     },
+     {
+      "annotation": "str",
+      "default": "'heavy'",
+      "index": 2,
+      "name": "work_class"
+     },
+     {
+      "annotation": "str",
+      "default": "'ai'",
+      "index": 3,
+      "name": "kind"
+     },
+     {
+      "annotation": "str",
+      "default": "'now'",
+      "index": 4,
+      "name": "scope"
+     },
+     {
+      "annotation": "str",
+      "default": "'hybrid'",
+      "index": 5,
+      "name": "mode"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 6,
+      "name": "axis"
+     },
+     {
+      "annotation": "str",
+      "default": "'agent'",
+      "index": 7,
+      "name": "reader_profile"
+     },
+     {
+      "annotation": "int",
+      "default": "20",
+      "index": 8,
+      "name": "limit"
+     },
+     {
+      "annotation": "int",
+      "default": "12",
+      "index": 9,
+      "name": "evidence_limit"
+     }
+    ],
+    "qualname": "build_server.abyss_machine_surface",
+    "relpath": "mcp/services/abyss-machine-mcp/src/abyss_machine_mcp/server.py",
+    "schema_hash": "11d67e04a135",
+    "tool_name": "abyss_machine_surface",
+    "unit_id": "mcp:build_server.abyss_machine_surface:11d67e04a135"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 85,
+    "module": "mcp.services.aoa-decisions-mcp.src.aoa_decisions_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "path"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "repo"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 2,
+      "name": "limit"
+     }
+    ],
+    "qualname": "build_server.aoa_decisions_changed_path",
+    "relpath": "mcp/services/aoa-decisions-mcp/src/aoa_decisions_mcp/server.py",
+    "schema_hash": "3b2829e65104",
+    "tool_name": "aoa_decisions_changed_path",
+    "unit_id": "mcp:build_server.aoa_decisions_changed_path:3b2829e65104"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 70,
+    "module": "mcp.services.aoa-decisions-mcp.src.aoa_decisions_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "decision_id"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "repo"
+     }
+    ],
+    "qualname": "build_server.aoa_decisions_decision",
+    "relpath": "mcp/services/aoa-decisions-mcp/src/aoa_decisions_mcp/server.py",
+    "schema_hash": "26bceff5ed21",
+    "tool_name": "aoa_decisions_decision",
+    "unit_id": "mcp:build_server.aoa_decisions_decision:26bceff5ed21"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 95,
+    "module": "mcp.services.aoa-decisions-mcp.src.aoa_decisions_mcp.server",
+    "params": [
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 0,
+      "name": "repo"
+     },
+     {
+      "annotation": "int",
+      "default": "100",
+      "index": 1,
+      "name": "limit"
+     }
+    ],
+    "qualname": "build_server.aoa_decisions_issues",
+    "relpath": "mcp/services/aoa-decisions-mcp/src/aoa_decisions_mcp/server.py",
+    "schema_hash": "be47372b33ff",
+    "tool_name": "aoa_decisions_issues",
+    "unit_id": "mcp:build_server.aoa_decisions_issues:be47372b33ff"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 80,
+    "module": "mcp.services.aoa-decisions-mcp.src.aoa_decisions_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "owner_surface"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "repo"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 2,
+      "name": "limit"
+     }
+    ],
+    "qualname": "build_server.aoa_decisions_owner_surface",
+    "relpath": "mcp/services/aoa-decisions-mcp/src/aoa_decisions_mcp/server.py",
+    "schema_hash": "7fb11191e4a8",
+    "tool_name": "aoa_decisions_owner_surface",
+    "unit_id": "mcp:build_server.aoa_decisions_owner_surface:7fb11191e4a8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 48,
+    "module": "mcp.services.aoa-decisions-mcp.src.aoa_decisions_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 0,
+      "name": "query"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "repo"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 2,
+      "name": "decision_id"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 3,
+      "name": "path"
+     },
+     {
+      "annotation": "int",
+      "default": "12",
+      "index": 4,
+      "name": "limit"
+     }
+    ],
+    "qualname": "build_server.aoa_decisions_packet",
+    "relpath": "mcp/services/aoa-decisions-mcp/src/aoa_decisions_mcp/server.py",
+    "schema_hash": "6856319d8ba0",
+    "tool_name": "aoa_decisions_packet",
+    "unit_id": "mcp:build_server.aoa_decisions_packet:6856319d8ba0"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 100,
+    "module": "mcp.services.aoa-decisions-mcp.src.aoa_decisions_mcp.server",
+    "params": [
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 0,
+      "name": "force"
+     }
+    ],
+    "qualname": "build_server.aoa_decisions_refresh",
+    "relpath": "mcp/services/aoa-decisions-mcp/src/aoa_decisions_mcp/server.py",
+    "schema_hash": "fc0eed7a68e5",
+    "tool_name": "aoa_decisions_refresh",
+    "unit_id": "mcp:build_server.aoa_decisions_refresh:fc0eed7a68e5"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 65,
+    "module": "mcp.services.aoa-decisions-mcp.src.aoa_decisions_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo"
+     }
+    ],
+    "qualname": "build_server.aoa_decisions_repo",
+    "relpath": "mcp/services/aoa-decisions-mcp/src/aoa_decisions_mcp/server.py",
+    "schema_hash": "14b13cbdc0b5",
+    "tool_name": "aoa_decisions_repo",
+    "unit_id": "mcp:build_server.aoa_decisions_repo:14b13cbdc0b5"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 90,
+    "module": "mcp.services.aoa-decisions-mcp.src.aoa_decisions_mcp.server",
+    "params": [
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 0,
+      "name": "repo"
+     }
+    ],
+    "qualname": "build_server.aoa_decisions_repo_symmetry",
+    "relpath": "mcp/services/aoa-decisions-mcp/src/aoa_decisions_mcp/server.py",
+    "schema_hash": "a268ffcd29a4",
+    "tool_name": "aoa_decisions_repo_symmetry",
+    "unit_id": "mcp:build_server.aoa_decisions_repo_symmetry:a268ffcd29a4"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 43,
+    "module": "mcp.services.aoa-decisions-mcp.src.aoa_decisions_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "query"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "repo"
+     },
+     {
+      "annotation": "int",
+      "default": "20",
+      "index": 2,
+      "name": "limit"
+     }
+    ],
+    "qualname": "build_server.aoa_decisions_search",
+    "relpath": "mcp/services/aoa-decisions-mcp/src/aoa_decisions_mcp/server.py",
+    "schema_hash": "aeba64240f4e",
+    "tool_name": "aoa_decisions_search",
+    "unit_id": "mcp:build_server.aoa_decisions_search:aeba64240f4e"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 75,
+    "module": "mcp.services.aoa-decisions-mcp.src.aoa_decisions_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "source_surface"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "repo"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 2,
+      "name": "limit"
+     }
+    ],
+    "qualname": "build_server.aoa_decisions_source_surface",
+    "relpath": "mcp/services/aoa-decisions-mcp/src/aoa_decisions_mcp/server.py",
+    "schema_hash": "a26cee5666e2",
+    "tool_name": "aoa_decisions_source_surface",
+    "unit_id": "mcp:build_server.aoa_decisions_source_surface:a26cee5666e2"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 33,
+    "module": "mcp.services.aoa-decisions-mcp.src.aoa_decisions_mcp.server",
+    "params": [
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 0,
+      "name": "force_refresh"
+     }
+    ],
+    "qualname": "build_server.aoa_decisions_status",
+    "relpath": "mcp/services/aoa-decisions-mcp/src/aoa_decisions_mcp/server.py",
+    "schema_hash": "e81aa870d3e8",
+    "tool_name": "aoa_decisions_status",
+    "unit_id": "mcp:build_server.aoa_decisions_status:e81aa870d3e8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 38,
+    "module": "mcp.services.aoa-decisions-mcp.src.aoa_decisions_mcp.server",
+    "params": [],
+    "qualname": "build_server.aoa_decisions_summary",
+    "relpath": "mcp/services/aoa-decisions-mcp/src/aoa_decisions_mcp/server.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "aoa_decisions_summary",
+    "unit_id": "mcp:build_server.aoa_decisions_summary:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 52,
+    "module": "mcp.services.aoa-evals-mcp.src.aoa_evals_mcp.server",
+    "params": [
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 0,
+      "name": "baseline_mode"
+     }
+    ],
+    "qualname": "build_server.aoa_evals_comparison",
+    "relpath": "mcp/services/aoa-evals-mcp/src/aoa_evals_mcp/server.py",
+    "schema_hash": "860b05dbb8c0",
+    "tool_name": "aoa_evals_comparison",
+    "unit_id": "mcp:build_server.aoa_evals_comparison:860b05dbb8c0"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 47,
+    "module": "mcp.services.aoa-evals-mcp.src.aoa_evals_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "name"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "section_key"
+     }
+    ],
+    "qualname": "build_server.aoa_evals_expand",
+    "relpath": "mcp/services/aoa-evals-mcp/src/aoa_evals_mcp/server.py",
+    "schema_hash": "7fc184339fe8",
+    "tool_name": "aoa_evals_expand",
+    "unit_id": "mcp:build_server.aoa_evals_expand:7fc184339fe8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 34,
+    "module": "mcp.services.aoa-evals-mcp.src.aoa_evals_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 0,
+      "name": "proof_question"
+     },
+     {
+      "annotation": "dict[str, Any] | None",
+      "default": "None",
+      "index": 1,
+      "name": "proposal"
+     }
+    ],
+    "qualname": "build_server.aoa_evals_find_or_propose",
+    "relpath": "mcp/services/aoa-evals-mcp/src/aoa_evals_mcp/server.py",
+    "schema_hash": "0b4b3f05c138",
+    "tool_name": "aoa_evals_find_or_propose",
+    "unit_id": "mcp:build_server.aoa_evals_find_or_propose:0b4b3f05c138"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 42,
+    "module": "mcp.services.aoa-evals-mcp.src.aoa_evals_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "name"
+     }
+    ],
+    "qualname": "build_server.aoa_evals_inspect",
+    "relpath": "mcp/services/aoa-evals-mcp/src/aoa_evals_mcp/server.py",
+    "schema_hash": "459d43d19675",
+    "tool_name": "aoa_evals_inspect",
+    "unit_id": "mcp:build_server.aoa_evals_inspect:459d43d19675"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 77,
+    "module": "mcp.services.aoa-evals-mcp.src.aoa_evals_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "record_id"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 1,
+      "name": "include_payload"
+     }
+    ],
+    "qualname": "build_server.aoa_evals_read_runtime_candidate_export",
+    "relpath": "mcp/services/aoa-evals-mcp/src/aoa_evals_mcp/server.py",
+    "schema_hash": "96813fd7ef25",
+    "tool_name": "aoa_evals_read_runtime_candidate_export",
+    "unit_id": "mcp:build_server.aoa_evals_read_runtime_candidate_export:96813fd7ef25"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 85,
+    "module": "mcp.services.aoa-evals-mcp.src.aoa_evals_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "name"
+     },
+     {
+      "annotation": "list[str] | None",
+      "default": "None",
+      "index": 1,
+      "name": "evidence_refs"
+     }
+    ],
+    "qualname": "build_server.aoa_evals_report_skeleton",
+    "relpath": "mcp/services/aoa-evals-mcp/src/aoa_evals_mcp/server.py",
+    "schema_hash": "fdb49058500d",
+    "tool_name": "aoa_evals_report_skeleton",
+    "unit_id": "mcp:build_server.aoa_evals_report_skeleton:fdb49058500d"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 72,
+    "module": "mcp.services.aoa-evals-mcp.src.aoa_evals_mcp.server",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "20",
+      "index": 0,
+      "name": "limit"
+     }
+    ],
+    "qualname": "build_server.aoa_evals_runtime_candidate_exports",
+    "relpath": "mcp/services/aoa-evals-mcp/src/aoa_evals_mcp/server.py",
+    "schema_hash": "cbbab5bb9059",
+    "tool_name": "aoa_evals_runtime_candidate_exports",
+    "unit_id": "mcp:build_server.aoa_evals_runtime_candidate_exports:cbbab5bb9059"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 57,
+    "module": "mcp.services.aoa-evals-mcp.src.aoa_evals_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "name"
+     }
+    ],
+    "qualname": "build_server.aoa_evals_runtime_evidence_template",
+    "relpath": "mcp/services/aoa-evals-mcp/src/aoa_evals_mcp/server.py",
+    "schema_hash": "459d43d19675",
+    "tool_name": "aoa_evals_runtime_evidence_template",
+    "unit_id": "mcp:build_server.aoa_evals_runtime_evidence_template:459d43d19675"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 62,
+    "module": "mcp.services.aoa-evals-mcp.src.aoa_evals_mcp.server",
+    "params": [],
+    "qualname": "build_server.aoa_evals_runtime_status",
+    "relpath": "mcp/services/aoa-evals-mcp/src/aoa_evals_mcp/server.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "aoa_evals_runtime_status",
+    "unit_id": "mcp:build_server.aoa_evals_runtime_status:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 29,
+    "module": "mcp.services.aoa-evals-mcp.src.aoa_evals_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 0,
+      "name": "proof_question"
+     },
+     {
+      "annotation": "dict[str, Any] | None",
+      "default": "None",
+      "index": 1,
+      "name": "filters"
+     }
+    ],
+    "qualname": "build_server.aoa_evals_select",
+    "relpath": "mcp/services/aoa-evals-mcp/src/aoa_evals_mcp/server.py",
+    "schema_hash": "30ca65308bb5",
+    "tool_name": "aoa_evals_select",
+    "unit_id": "mcp:build_server.aoa_evals_select:30ca65308bb5"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 67,
+    "module": "mcp.services.aoa-evals-mcp.src.aoa_evals_mcp.server",
+    "params": [
+     {
+      "annotation": "dict[str, Any]",
+      "index": 0,
+      "name": "packet"
+     }
+    ],
+    "qualname": "build_server.aoa_evals_validate_evidence_candidate",
+    "relpath": "mcp/services/aoa-evals-mcp/src/aoa_evals_mcp/server.py",
+    "schema_hash": "aa5aa21e58b9",
+    "tool_name": "aoa_evals_validate_evidence_candidate",
+    "unit_id": "mcp:build_server.aoa_evals_validate_evidence_candidate:aa5aa21e58b9"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 25,
+    "module": "mcp.services.aoa-memo-mcp.src.aoa_memo_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 1,
+      "name": "intent"
+     }
+    ],
+    "qualname": "build_server.aoa_memo_brief",
+    "relpath": "mcp/services/aoa-memo-mcp/src/aoa_memo_mcp/server.py",
+    "schema_hash": "c7ecf946a974",
+    "tool_name": "aoa_memo_brief",
+    "unit_id": "mcp:build_server.aoa_memo_brief:c7ecf946a974"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 63,
+    "module": "mcp.services.aoa-memo-mcp.src.aoa_memo_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 1,
+      "name": "write"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 2,
+      "name": "check"
+     }
+    ],
+    "qualname": "build_server.aoa_memo_build_port_index",
+    "relpath": "mcp/services/aoa-memo-mcp/src/aoa_memo_mcp/server.py",
+    "schema_hash": "daacf2dfda9d",
+    "tool_name": "aoa_memo_build_port_index",
+    "unit_id": "mcp:build_server.aoa_memo_build_port_index:daacf2dfda9d"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 35,
+    "module": "mcp.services.aoa-memo-mcp.src.aoa_memo_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo"
+     },
+     {
+      "annotation": "list[str]",
+      "index": 1,
+      "name": "evidence_refs"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "claim"
+     },
+     {
+      "annotation": "str",
+      "default": "'review_required'",
+      "index": 3,
+      "name": "source_trust"
+     },
+     {
+      "annotation": "str",
+      "default": "'route'",
+      "index": 4,
+      "name": "kind"
+     },
+     {
+      "annotation": "str",
+      "default": "'memory-access'",
+      "index": 5,
+      "name": "family"
+     },
+     {
+      "annotation": "str",
+      "default": "'repo'",
+      "index": 6,
+      "name": "scope"
+     },
+     {
+      "annotation": "list[str] | None",
+      "default": "None",
+      "index": 7,
+      "name": "source_refs"
+     }
+    ],
+    "qualname": "build_server.aoa_memo_create_candidate",
+    "relpath": "mcp/services/aoa-memo-mcp/src/aoa_memo_mcp/server.py",
+    "schema_hash": "5a3c79a229ef",
+    "tool_name": "aoa_memo_create_candidate",
+    "unit_id": "mcp:build_server.aoa_memo_create_candidate:5a3c79a229ef"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 92,
+    "module": "mcp.services.aoa-memo-mcp.src.aoa_memo_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "export_ref"
+     },
+     {
+      "annotation": "str",
+      "default": "'decision'",
+      "index": 2,
+      "name": "object_kind"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 3,
+      "name": "slug"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 4,
+      "name": "title"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 5,
+      "name": "summary"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 6,
+      "name": "reviewed_at"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 7,
+      "name": "run_dry_run"
+     }
+    ],
+    "qualname": "build_server.aoa_memo_landing_plan",
+    "relpath": "mcp/services/aoa-memo-mcp/src/aoa_memo_mcp/server.py",
+    "schema_hash": "505db301caa0",
+    "tool_name": "aoa_memo_landing_plan",
+    "unit_id": "mcp:build_server.aoa_memo_landing_plan:505db301caa0"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 87,
+    "module": "mcp.services.aoa-memo-mcp.src.aoa_memo_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo"
+     }
+    ],
+    "qualname": "build_server.aoa_memo_pending_exports",
+    "relpath": "mcp/services/aoa-memo-mcp/src/aoa_memo_mcp/server.py",
+    "schema_hash": "14b13cbdc0b5",
+    "tool_name": "aoa_memo_pending_exports",
+    "unit_id": "mcp:build_server.aoa_memo_pending_exports:14b13cbdc0b5"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 73,
+    "module": "mcp.services.aoa-memo-mcp.src.aoa_memo_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo"
+     },
+     {
+      "annotation": "list[str]",
+      "index": 1,
+      "name": "candidate_refs"
+     },
+     {
+      "annotation": "list[str] | None",
+      "default": "None",
+      "index": 2,
+      "name": "receipt_refs"
+     }
+    ],
+    "qualname": "build_server.aoa_memo_prepare_intake_packet",
+    "relpath": "mcp/services/aoa-memo-mcp/src/aoa_memo_mcp/server.py",
+    "schema_hash": "015cb5ac075e",
+    "tool_name": "aoa_memo_prepare_intake_packet",
+    "unit_id": "mcp:build_server.aoa_memo_prepare_intake_packet:015cb5ac075e"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 82,
+    "module": "mcp.services.aoa-memo-mcp.src.aoa_memo_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "path"
+     }
+    ],
+    "qualname": "build_server.aoa_memo_review_intake",
+    "relpath": "mcp/services/aoa-memo-mcp/src/aoa_memo_mcp/server.py",
+    "schema_hash": "b1ef559040e6",
+    "tool_name": "aoa_memo_review_intake",
+    "unit_id": "mcp:build_server.aoa_memo_review_intake:b1ef559040e6"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 30,
+    "module": "mcp.services.aoa-memo-mcp.src.aoa_memo_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "query"
+     },
+     {
+      "annotation": "str",
+      "default": "'all'",
+      "index": 1,
+      "name": "scope"
+     },
+     {
+      "annotation": "str",
+      "default": "'brief'",
+      "index": 2,
+      "name": "mode"
+     }
+    ],
+    "qualname": "build_server.aoa_memo_search",
+    "relpath": "mcp/services/aoa-memo-mcp/src/aoa_memo_mcp/server.py",
+    "schema_hash": "6b20fb5ab2f6",
+    "tool_name": "aoa_memo_search",
+    "unit_id": "mcp:build_server.aoa_memo_search:6b20fb5ab2f6"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 58,
+    "module": "mcp.services.aoa-memo-mcp.src.aoa_memo_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "path"
+     }
+    ],
+    "qualname": "build_server.aoa_memo_validate_candidate",
+    "relpath": "mcp/services/aoa-memo-mcp/src/aoa_memo_mcp/server.py",
+    "schema_hash": "b1ef559040e6",
+    "tool_name": "aoa_memo_validate_candidate",
+    "unit_id": "mcp:build_server.aoa_memo_validate_candidate:b1ef559040e6"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 68,
+    "module": "mcp.services.aoa-memo-mcp.src.aoa_memo_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "repo"
+     }
+    ],
+    "qualname": "build_server.aoa_memo_validate_port",
+    "relpath": "mcp/services/aoa-memo-mcp/src/aoa_memo_mcp/server.py",
+    "schema_hash": "14b13cbdc0b5",
+    "tool_name": "aoa_memo_validate_port",
+    "unit_id": "mcp:build_server.aoa_memo_validate_port:14b13cbdc0b5"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 78,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "'latest'",
+      "index": 0,
+      "name": "session"
+     },
+     {
+      "annotation": "int",
+      "default": "5",
+      "index": 1,
+      "name": "max_segments"
+     }
+    ],
+    "qualname": "build_server.aoa_session_brief",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "b739c8d68135",
+    "tool_name": "aoa_session_brief",
+    "unit_id": "mcp:build_server.aoa_session_brief:b739c8d68135"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 100,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "intent"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 1,
+      "name": "query"
+     },
+     {
+      "annotation": "list[str] | None",
+      "default": "None",
+      "index": 2,
+      "name": "anchors"
+     },
+     {
+      "annotation": "list[str] | None",
+      "default": "None",
+      "index": 3,
+      "name": "refs"
+     },
+     {
+      "annotation": "int",
+      "default": "8",
+      "index": 4,
+      "name": "limit"
+     }
+    ],
+    "qualname": "build_server.aoa_session_evidence_packet",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "55f67ee249e2",
+    "tool_name": "aoa_session_evidence_packet",
+    "unit_id": "mcp:build_server.aoa_session_evidence_packet:55f67ee249e2"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 180,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "intent"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 1,
+      "name": "anchor"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 2,
+      "name": "query"
+     },
+     {
+      "annotation": "int",
+      "default": "8",
+      "index": 3,
+      "name": "limit"
+     }
+    ],
+    "qualname": "build_server.aoa_session_explain_graph_packet",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "5e2120be9fdd",
+    "tool_name": "aoa_session_explain_graph_packet",
+    "unit_id": "mcp:build_server.aoa_session_explain_graph_packet:5e2120be9fdd"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 117,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "list[str] | None",
+      "default": "None",
+      "index": 0,
+      "name": "refs"
+     }
+    ],
+    "qualname": "build_server.aoa_session_freshness_check",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "787bbe050fd7",
+    "tool_name": "aoa_session_freshness_check",
+    "unit_id": "mcp:build_server.aoa_session_freshness_check:787bbe050fd7"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 156,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "anchor"
+     },
+     {
+      "annotation": "str",
+      "default": "'auto'",
+      "index": 1,
+      "name": "kind"
+     },
+     {
+      "annotation": "int",
+      "default": "30",
+      "index": 2,
+      "name": "limit"
+     }
+    ],
+    "qualname": "build_server.aoa_session_graph_cooccurrence",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "32c1437dcadb",
+    "tool_name": "aoa_session_graph_cooccurrence",
+    "unit_id": "mcp:build_server.aoa_session_graph_cooccurrence:32c1437dcadb"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 190,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "6",
+      "index": 0,
+      "name": "limit"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 1,
+      "name": "include_semantic_context"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 2,
+      "name": "rerank_local"
+     }
+    ],
+    "qualname": "build_server.aoa_session_graph_eval",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "a27715d132e6",
+    "tool_name": "aoa_session_graph_eval",
+    "unit_id": "mcp:build_server.aoa_session_graph_eval:a27715d132e6"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 141,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "anchor"
+     },
+     {
+      "annotation": "str",
+      "default": "'auto'",
+      "index": 1,
+      "name": "kind"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 2,
+      "name": "depth"
+     },
+     {
+      "annotation": "int",
+      "default": "40",
+      "index": 3,
+      "name": "limit"
+     }
+    ],
+    "qualname": "build_server.aoa_session_graph_neighborhood",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "2e99bc8c0652",
+    "tool_name": "aoa_session_graph_neighborhood",
+    "unit_id": "mcp:build_server.aoa_session_graph_neighborhood:2e99bc8c0652"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 203,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "4",
+      "index": 0,
+      "name": "limit"
+     },
+     {
+      "annotation": "int",
+      "default": "2",
+      "index": 1,
+      "name": "sample_ref_limit"
+     },
+     {
+      "annotation": "list[Any] | None",
+      "default": "None",
+      "index": 2,
+      "name": "anchors"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "full_graphrag"
+     }
+    ],
+    "qualname": "build_server.aoa_session_graph_quality_audit",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "5921a150a1ce",
+    "tool_name": "aoa_session_graph_quality_audit",
+    "unit_id": "mcp:build_server.aoa_session_graph_quality_audit:5921a150a1ce"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 151,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "source"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "target"
+     },
+     {
+      "annotation": "str",
+      "default": "'auto'",
+      "index": 2,
+      "name": "kind"
+     },
+     {
+      "annotation": "int",
+      "default": "4",
+      "index": 3,
+      "name": "max_depth"
+     }
+    ],
+    "qualname": "build_server.aoa_session_graph_shortest_path",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "6511c8935e60",
+    "tool_name": "aoa_session_graph_shortest_path",
+    "unit_id": "mcp:build_server.aoa_session_graph_shortest_path:6511c8935e60"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 146,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "anchor"
+     },
+     {
+      "annotation": "str",
+      "default": "'auto'",
+      "index": 1,
+      "name": "kind"
+     },
+     {
+      "annotation": "int",
+      "default": "40",
+      "index": 2,
+      "name": "limit"
+     }
+    ],
+    "qualname": "build_server.aoa_session_graph_timeline",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "ec47969a9319",
+    "tool_name": "aoa_session_graph_timeline",
+    "unit_id": "mcp:build_server.aoa_session_graph_timeline:ec47969a9319"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 161,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "query"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 1,
+      "name": "anchor"
+     },
+     {
+      "annotation": "str",
+      "default": "'hybrid'",
+      "index": 2,
+      "name": "mode"
+     },
+     {
+      "annotation": "int",
+      "default": "8",
+      "index": 3,
+      "name": "limit"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 4,
+      "name": "include_semantic_context"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 5,
+      "name": "rerank_local"
+     }
+    ],
+    "qualname": "build_server.aoa_session_graphrag_packet",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "07204cea7a37",
+    "tool_name": "aoa_session_graphrag_packet",
+    "unit_id": "mcp:build_server.aoa_session_graphrag_packet:07204cea7a37"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 127,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "'route-layer-readiness'",
+      "index": 0,
+      "name": "kind"
+     },
+     {
+      "annotation": "int",
+      "default": "5",
+      "index": 1,
+      "name": "limit"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 2,
+      "name": "include_payload"
+     }
+    ],
+    "qualname": "build_server.aoa_session_latest_diagnostics",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "8d33b66fb1da",
+    "tool_name": "aoa_session_latest_diagnostics",
+    "unit_id": "mcp:build_server.aoa_session_latest_diagnostics:8d33b66fb1da"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 136,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [],
+    "qualname": "build_server.aoa_session_maintenance_plan",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "aoa_session_maintenance_plan",
+    "unit_id": "mcp:build_server.aoa_session_maintenance_plan:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 34,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 0,
+      "name": "include_live"
+     }
+    ],
+    "qualname": "build_server.aoa_session_memory_status",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "53760c10fa5b",
+    "tool_name": "aoa_session_memory_status",
+    "unit_id": "mcp:build_server.aoa_session_memory_status:53760c10fa5b"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 122,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "pattern"
+     },
+     {
+      "annotation": "dict[str, Any] | None",
+      "default": "None",
+      "index": 1,
+      "name": "filters"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 2,
+      "name": "limit"
+     }
+    ],
+    "qualname": "build_server.aoa_session_pattern_scan",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "b440f2911023",
+    "tool_name": "aoa_session_pattern_scan",
+    "unit_id": "mcp:build_server.aoa_session_pattern_scan:b440f2911023"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 83,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "'continue-session'",
+      "index": 0,
+      "name": "recipe"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 1,
+      "name": "query"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 2,
+      "name": "session"
+     },
+     {
+      "annotation": "int",
+      "default": "8",
+      "index": 3,
+      "name": "limit"
+     },
+     {
+      "annotation": "int",
+      "default": "12",
+      "index": 4,
+      "name": "event_limit"
+     }
+    ],
+    "qualname": "build_server.aoa_session_retrieve",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "3be22f6acde7",
+    "tool_name": "aoa_session_retrieve",
+    "unit_id": "mcp:build_server.aoa_session_retrieve:3be22f6acde7"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 63,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "axis"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 1,
+      "name": "key"
+     },
+     {
+      "annotation": "int",
+      "default": "20",
+      "index": 2,
+      "name": "limit"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "include_entry_payloads"
+     }
+    ],
+    "qualname": "build_server.aoa_session_route",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "4e64128f3d77",
+    "tool_name": "aoa_session_route",
+    "unit_id": "mcp:build_server.aoa_session_route:4e64128f3d77"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 39,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "query"
+     },
+     {
+      "annotation": "dict[str, Any] | None",
+      "default": "None",
+      "index": 1,
+      "name": "filters"
+     },
+     {
+      "annotation": "int",
+      "default": "20",
+      "index": 2,
+      "name": "limit"
+     }
+    ],
+    "qualname": "build_server.aoa_session_search",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "1de9855bb7dc",
+    "tool_name": "aoa_session_search",
+    "unit_id": "mcp:build_server.aoa_session_search:1de9855bb7dc"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 44,
+    "module": "mcp.services.aoa-session-memory-mcp.src.aoa_session_memory_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "anchor"
+     },
+     {
+      "annotation": "str",
+      "default": "'auto'",
+      "index": 1,
+      "name": "kind"
+     },
+     {
+      "annotation": "int",
+      "default": "20",
+      "index": 2,
+      "name": "limit"
+     },
+     {
+      "annotation": "int",
+      "default": "10",
+      "index": 3,
+      "name": "per_route_limit"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 4,
+      "name": "session"
+     },
+     {
+      "annotation": "str",
+      "default": "'session'",
+      "index": 5,
+      "name": "doc_type"
+     }
+    ],
+    "qualname": "build_server.aoa_session_trace",
+    "relpath": "mcp/services/aoa-session-memory-mcp/src/aoa_session_memory_mcp/server.py",
+    "schema_hash": "8f426060ae57",
+    "tool_name": "aoa_session_trace",
+    "unit_id": "mcp:build_server.aoa_session_trace:8f426060ae57"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

@@ -1,0 +1,1345 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 138,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "examples/upstream_product_catalog_server.py",
+   "resolution": "opaque",
+   "selector": "'march madness'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 148,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "examples/upstream_product_catalog_server.py",
+   "resolution": "opaque",
+   "selector": "'native'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 216,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "examples/upstream_product_catalog_server.py",
+   "resolution": "opaque",
+   "selector": "topic",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 222,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "examples/upstream_product_catalog_server.py",
+   "resolution": "opaque",
+   "selector": "format_type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "product.get"
+   ],
+   "form": "if_chain",
+   "lineno": 207,
+   "opaque_reason": null,
+   "relpath": "examples/upstream_with_implementation.py",
+   "resolution": "resolved",
+   "selector": "principal_id",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 256,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "examples/upstream_with_implementation.py",
+   "resolution": "opaque",
+   "selector": "product.get('delivery_type')",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 267,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "examples/upstream_with_implementation.py",
+   "resolution": "opaque",
+   "selector": "'run of site'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 339,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/adapters/gam/utils/error_handler.py",
+   "resolution": "opaque",
+   "selector": "'rollback_action'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 918,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/core/main.py",
+   "resolution": "opaque",
+   "selector": "status",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 265,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/core/tools/creatives/listing.py",
+   "resolution": "opaque",
+   "selector": "sort_by",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 267,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/core/tools/creatives/listing.py",
+   "resolution": "opaque",
+   "selector": "sort_by",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "sort_column.asc",
+    "stmt.order_by"
+   ],
+   "form": "if_chain",
+   "lineno": 272,
+   "opaque_reason": null,
+   "relpath": "src/core/tools/creatives/listing.py",
+   "resolution": "resolved",
+   "selector": "valid_sort_order",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 309,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/core/tools/creatives/listing.py",
+   "resolution": "opaque",
+   "selector": "'width'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 311,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/core/tools/creatives/listing.py",
+   "resolution": "opaque",
+   "selector": "'height'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 313,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/core/tools/creatives/listing.py",
+   "resolution": "opaque",
+   "selector": "'duration_ms'",
+   "selector_is_model": true
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 293,
+    "module": "examples.upstream_product_catalog_server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "product_id"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "start_date"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "end_date"
+     }
+    ],
+    "qualname": "get_product_availability",
+    "relpath": "examples/upstream_product_catalog_server.py",
+    "schema_hash": "f4d0b6f84c41",
+    "tool_name": "get_product_availability",
+    "unit_id": "mcp:get_product_availability:f4d0b6f84c41"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "brief",
+     "site": "tests/fixtures/mocks.py:L170",
+     "transform": "str.lower"
+    },
+    {
+     "root": "brief",
+     "site": "examples/upstream_product_catalog_server.py:L125",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 246,
+    "module": "examples.upstream_product_catalog_server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "brief"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "tenant_id"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 2,
+      "name": "principal_id"
+     },
+     {
+      "annotation": "dict[str, Any] | None",
+      "default": "None",
+      "index": 3,
+      "name": "context"
+     }
+    ],
+    "qualname": "get_products",
+    "relpath": "examples/upstream_product_catalog_server.py",
+    "schema_hash": "c1bfbab99d1d",
+    "tool_name": "get_products",
+    "unit_id": "mcp:get_products:c1bfbab99d1d"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "brief",
+     "site": "examples/upstream_with_implementation.py:L184",
+     "transform": "str.lower"
+    },
+    {
+     "root": "brief",
+     "site": "examples/upstream_with_implementation.py:L236",
+     "transform": "str.lower"
+    },
+    {
+     "root": "brief",
+     "site": "examples/upstream_with_implementation.py:L236",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 159,
+    "module": "examples.upstream_with_implementation",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "brief"
+     },
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 1,
+      "name": "tenant_id"
+     },
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 2,
+      "name": "principal_id"
+     },
+     {
+      "annotation": "dict[str, Any] | None",
+      "default": "None",
+      "index": 3,
+      "name": "principal_data"
+     },
+     {
+      "annotation": "dict[str, Any] | None",
+      "default": "None",
+      "index": 4,
+      "name": "context"
+     }
+    ],
+    "qualname": "get_products",
+    "relpath": "examples/upstream_with_implementation.py",
+    "schema_hash": "934cea415c80",
+    "tool_name": "get_products",
+    "unit_id": "mcp:get_products:934cea415c80"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 274,
+    "module": "examples.upstream_with_implementation",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "product_id"
+     },
+     {
+      "annotation": "dict[str, Any]",
+      "index": 1,
+      "name": "principal_data"
+     }
+    ],
+    "qualname": "validate_implementation",
+    "relpath": "examples/upstream_with_implementation.py",
+    "schema_hash": "8589327df77d",
+    "tool_name": "validate_implementation",
+    "unit_id": "mcp:validate_implementation:8589327df77d"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "audit_logger": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 930,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 336,
+     "relpath": "src/core/audit_logger.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "structured.jsonl",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "AuditLogger.log_operation",
+      "AuditLogger._write_structured_log"
+     ]
+    },
+    {
+     "entry_lineno": 930,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 128,
+     "relpath": "src/core/webhook_delivery.py",
+     "required_by": [
+      "A16"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "unresolved"
+     ],
+     "site": "requests.post",
+     "slots": {
+      "headers": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "AuditLogger.log_operation",
+      "SlackNotifier.notify_audit_log",
+      "deliver_webhook_with_retry"
+     ]
+    },
+    {
+     "entry_lineno": 930,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 128,
+     "relpath": "src/core/webhook_delivery.py",
+     "required_by": [
+      "A16"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "unresolved"
+     ],
+     "site": "requests.post",
+     "slots": {
+      "headers": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "AuditLogger.log_operation",
+      "SlackNotifier.notify_audit_log",
+      "deliver_webhook_with_retry"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 866,
+    "module": "src.core.main",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "task_id"
+     },
+     {
+      "annotation": "str",
+      "default": "'completed'",
+      "index": 1,
+      "name": "status"
+     },
+     {
+      "annotation": "dict[str, Any] | None",
+      "default": "None",
+      "index": 2,
+      "name": "response_data"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 3,
+      "name": "error_message"
+     },
+     {
+      "annotation": "Context | None",
+      "default": "None",
+      "index": 4,
+      "name": "context"
+     }
+    ],
+    "qualname": "complete_task",
+    "relpath": "src/core/main.py",
+    "schema_hash": "9a5118763779",
+    "tool_name": "complete_task",
+    "unit_id": "mcp:complete_task:9a5118763779"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 799,
+    "module": "src.core.main",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "task_id"
+     },
+     {
+      "annotation": "Context | None",
+      "default": "None",
+      "index": 1,
+      "name": "context"
+     }
+    ],
+    "qualname": "get_task",
+    "relpath": "src/core/main.py",
+    "schema_hash": "e0b1984b8463",
+    "tool_name": "get_task",
+    "unit_id": "mcp:get_task:e0b1984b8463"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 690,
+    "module": "src.core.main",
+    "params": [
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 0,
+      "name": "status"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "object_type"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 2,
+      "name": "object_id"
+     },
+     {
+      "annotation": "int",
+      "default": "20",
+      "index": 3,
+      "name": "limit"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 4,
+      "name": "offset"
+     },
+     {
+      "annotation": "Context | None",
+      "default": "None",
+      "index": 5,
+      "name": "context"
+     }
+    ],
+    "qualname": "list_tasks",
+    "relpath": "src/core/main.py",
+    "schema_hash": "b1861f29f714",
+    "tool_name": "list_tasks",
+    "unit_id": "mcp:list_tasks:b1861f29f714"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "created_after",
+     "site": "src/core/tools/creatives/listing.py:L103",
+     "transform": "str.replace"
+    },
+    {
+     "root": "created_before",
+     "site": "src/core/tools/creatives/listing.py:L108",
+     "transform": "str.replace"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/auth.py:L244",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/auth.py:L244",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/auth.py:L289",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/auth.py:L289",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/auth.py:L314",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/auth.py:L314",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/auth.py:L316",
+     "transform": "str.strip"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/auth.py:L316",
+     "transform": "str.strip"
+    },
+    {
+     "root": "media_buy_id",
+     "site": "src/core/tools/creatives/listing.py:L229",
+     "transform": "str.join"
+    },
+    {
+     "root": "media_buy_ids",
+     "site": "src/core/tools/creatives/listing.py:L229",
+     "transform": "str.join"
+    },
+    {
+     "root": "media_buy_id",
+     "site": "src/core/tools/creatives/listing.py:L230",
+     "transform": "str.join"
+    },
+    {
+     "root": "media_buy_ids",
+     "site": "src/core/tools/creatives/listing.py:L230",
+     "transform": "str.join"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/auth.py:L244",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/auth.py:L244",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/auth.py:L289",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/auth.py:L289",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/auth.py:L314",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/auth.py:L314",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/auth.py:L316",
+     "transform": "str.strip"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/auth.py:L316",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "logger": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 570,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 336,
+     "relpath": "src/core/audit_logger.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "structured.jsonl",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "_list_creatives_impl",
+      "AuditLogger.log_operation",
+      "AuditLogger._write_structured_log"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "tools_list",
+    "framework": "tools-list",
+    "is_async": false,
+    "lineno": 527,
+    "module": "src.core.tools.creatives.listing",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 0,
+      "name": "media_buy_id"
+     },
+     {
+      "annotation": "list[str]",
+      "default": "None",
+      "index": 1,
+      "name": "media_buy_ids"
+     },
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 2,
+      "name": "buyer_ref"
+     },
+     {
+      "annotation": "list[str]",
+      "default": "None",
+      "index": 3,
+      "name": "buyer_refs"
+     },
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 4,
+      "name": "status"
+     },
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 5,
+      "name": "format"
+     },
+     {
+      "annotation": "list[str]",
+      "default": "None",
+      "index": 6,
+      "name": "tags"
+     },
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 7,
+      "name": "created_after"
+     },
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 8,
+      "name": "created_before"
+     },
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 9,
+      "name": "search"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 10,
+      "name": "page"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 11,
+      "name": "limit"
+     },
+     {
+      "annotation": "str",
+      "default": "'created_date'",
+      "index": 12,
+      "name": "sort_by"
+     },
+     {
+      "annotation": "str",
+      "default": "'desc'",
+      "index": 13,
+      "name": "sort_order"
+     },
+     {
+      "annotation": "dict | None",
+      "default": "None",
+      "index": 14,
+      "name": "context"
+     },
+     {
+      "annotation": "Context | ToolContext | None",
+      "default": "None",
+      "index": 15,
+      "name": "ctx"
+     }
+    ],
+    "qualname": "list_creatives_raw",
+    "relpath": "src/core/tools/creatives/listing.py",
+    "schema_hash": "1de43295eff6",
+    "tool_name": "list_creatives_raw",
+    "unit_id": "tools-list:list_creatives_raw:1de43295eff6"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "ctx",
+     "site": "src/core/auth.py:L244",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/auth.py:L244",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/auth.py:L289",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/auth.py:L289",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/auth.py:L314",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/auth.py:L314",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/auth.py:L316",
+     "transform": "str.strip"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/auth.py:L316",
+     "transform": "str.strip"
+    },
+    {
+     "root": "creatives",
+     "site": "src/core/tools/creatives/_validation.py:L79",
+     "transform": "str.strip"
+    },
+    {
+     "root": "creatives",
+     "site": "src/core/tools/creatives/_validation.py:L79",
+     "transform": "str.strip"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/auth.py:L244",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/auth.py:L244",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/auth.py:L289",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/auth.py:L289",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/auth.py:L314",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/auth.py:L314",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/auth.py:L316",
+     "transform": "str.strip"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/auth.py:L316",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "logger": null
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "tools_list",
+    "framework": "tools-list",
+    "is_async": false,
+    "lineno": 62,
+    "module": "src.core.tools.creatives.sync_wrappers",
+    "params": [
+     {
+      "annotation": "list[CreativeAsset]",
+      "index": 0,
+      "name": "creatives"
+     },
+     {
+      "annotation": "dict",
+      "default": "None",
+      "index": 1,
+      "name": "assignments"
+     },
+     {
+      "annotation": "list[str]",
+      "default": "None",
+      "index": 2,
+      "name": "creative_ids"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "delete_missing"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 4,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "str",
+      "default": "'strict'",
+      "index": 5,
+      "name": "validation_mode"
+     },
+     {
+      "annotation": "PushNotificationConfig | None",
+      "default": "None",
+      "index": 6,
+      "name": "push_notification_config"
+     },
+     {
+      "annotation": "ContextObject | None",
+      "default": "None",
+      "index": 7,
+      "name": "context"
+     },
+     {
+      "annotation": "Context | ToolContext | None",
+      "default": "None",
+      "index": 8,
+      "name": "ctx"
+     }
+    ],
+    "qualname": "sync_creatives_raw",
+    "relpath": "src/core/tools/creatives/sync_wrappers.py",
+    "schema_hash": "f966b87c3b3d",
+    "tool_name": "sync_creatives_raw",
+    "unit_id": "tools-list:sync_creatives_raw:f966b87c3b3d"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

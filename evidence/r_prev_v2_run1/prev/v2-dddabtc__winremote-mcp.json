@@ -1,0 +1,6457 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [
+    "pyautogui.moveTo"
+   ],
+   "form": "if_chain",
+   "lineno": 235,
+   "opaque_reason": null,
+   "relpath": "src/winremote/__main__.py",
+   "resolution": "resolved",
+   "selector": "action",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "pyautogui.doubleClick"
+   ],
+   "form": "if_chain",
+   "lineno": 238,
+   "opaque_reason": null,
+   "relpath": "src/winremote/__main__.py",
+   "resolution": "resolved",
+   "selector": "action",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "desktop.launch_app"
+   ],
+   "form": "if_chain",
+   "lineno": 464,
+   "opaque_reason": null,
+   "relpath": "src/winremote/__main__.py",
+   "resolution": "resolved",
+   "selector": "action",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "_check_win32",
+    "desktop.focus_window"
+   ],
+   "form": "if_chain",
+   "lineno": 466,
+   "opaque_reason": null,
+   "relpath": "src/winremote/__main__.py",
+   "resolution": "resolved",
+   "selector": "action",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "_check_win32",
+    "desktop.resize_window"
+   ],
+   "form": "if_chain",
+   "lineno": 471,
+   "opaque_reason": null,
+   "relpath": "src/winremote/__main__.py",
+   "resolution": "resolved",
+   "selector": "action",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 647,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/winremote/__main__.py",
+   "resolution": "opaque",
+   "selector": "name",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 792,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/winremote/__main__.py",
+   "resolution": "opaque",
+   "selector": "'.mp3'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 794,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/winremote/__main__.py",
+   "resolution": "opaque",
+   "selector": "'.ogg'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "subprocess.run"
+   ],
+   "form": "if_chain",
+   "lineno": 814,
+   "opaque_reason": null,
+   "relpath": "src/winremote/__main__.py",
+   "resolution": "resolved",
+   "selector": "ext",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "base64.b64encode",
+    "p.read_bytes"
+   ],
+   "form": "if_chain",
+   "lineno": 926,
+   "opaque_reason": null,
+   "relpath": "src/winremote/__main__.py",
+   "resolution": "resolved",
+   "selector": "encoding",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 1582,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/winremote/__main__.py",
+   "resolution": "opaque",
+   "selector": "'error'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 1686,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/winremote/__main__.py",
+   "resolution": "opaque",
+   "selector": "name",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "click.echo"
+   ],
+   "form": "if_chain",
+   "lineno": 1975,
+   "opaque_reason": null,
+   "relpath": "src/winremote/__main__.py",
+   "resolution": "resolved",
+   "selector": "result.returncode",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "click.echo"
+   ],
+   "form": "if_chain",
+   "lineno": 1996,
+   "opaque_reason": null,
+   "relpath": "src/winremote/__main__.py",
+   "resolution": "resolved",
+   "selector": "result.returncode",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 16,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_shell_tools.py",
+   "resolution": "opaque",
+   "selector": "tool_name",
+   "selector_is_model": false
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 1492,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 629,
+     "relpath": "src/winremote/__main__.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "resolved",
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "query",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "query",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "session",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "_ensure_session_connected"
+     ]
+    },
+    {
+     "entry_lineno": 1492,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 674,
+     "relpath": "src/winremote/__main__.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "tscon",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "tscon",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/dest:console",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "_ensure_session_connected"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "AnnotatedSnapshot"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1468,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "30",
+      "index": 0,
+      "name": "max_elements"
+     },
+     {
+      "annotation": "int",
+      "default": "75",
+      "index": 1,
+      "name": "quality"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 2,
+      "name": "max_width"
+     }
+    ],
+    "qualname": "AnnotatedSnapshot",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "5a94a457a141",
+    "tool_name": "AnnotatedSnapshot",
+    "unit_id": "mcp:AnnotatedSnapshot:5a94a457a141"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint",
+     "openWorldHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "name",
+     "site": "src/winremote/desktop.py:L253",
+     "transform": "str.replace"
+    },
+    {
+     "root": "args",
+     "site": "src/winremote/desktop.py:L256",
+     "transform": "str.replace"
+    },
+    {
+     "root": "name",
+     "site": "src/winremote/desktop.py:L218",
+     "transform": "str.lower"
+    },
+    {
+     "root": "name",
+     "site": "src/winremote/desktop.py:L218",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 465,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 258,
+     "relpath": "src/winremote/desktop.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "powershell",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "args",
+        "name"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "powershell",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-NoProfile",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-Command",
+           "k": "Atom"
+          }
+         },
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "MODEL",
+          "prov": "resolved",
+          "roots": [
+           "args",
+           "name"
+          ],
+          "shape": {
+           "items": [],
+           "k": "Str"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "launch_app"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "openWorldHint": true,
+     "title": "App"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 445,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "'launch'",
+      "index": 0,
+      "name": "action"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 1,
+      "name": "name"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 2,
+      "name": "args"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 3,
+      "name": "handle"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 4,
+      "name": "width"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 5,
+      "name": "height"
+     }
+    ],
+    "qualname": "App",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "4e683f77fd12",
+    "tool_name": "App",
+    "unit_id": "mcp:App:4e683f77fd12"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {
+    "result": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1575,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "task_id"
+     }
+    ],
+    "qualname": "CancelTask",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "1dfedafb7131",
+    "tool_name": "CancelTask",
+    "unit_id": "mcp:CancelTask:1dfedafb7131"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "openWorldHint": false,
+     "title": "Click"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 220,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "int",
+      "index": 0,
+      "name": "x"
+     },
+     {
+      "annotation": "int",
+      "index": 1,
+      "name": "y"
+     },
+     {
+      "annotation": "str",
+      "default": "'left'",
+      "index": 2,
+      "name": "button"
+     },
+     {
+      "annotation": "str",
+      "default": "'click'",
+      "index": 3,
+      "name": "action"
+     }
+    ],
+    "qualname": "Click",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "901e90861199",
+    "tool_name": "Click",
+    "unit_id": "mcp:Click:901e90861199"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "log_name",
+     "site": "src/winremote/services.py:L31",
+     "transform": "str.replace"
+    },
+    {
+     "root": "level",
+     "site": "src/winremote/services.py:L126",
+     "transform": "str.lower"
+    },
+    {
+     "root": "count",
+     "site": "src/winremote/services.py:L21",
+     "transform": "str.strip"
+    },
+    {
+     "root": "level",
+     "site": "src/winremote/services.py:L21",
+     "transform": "str.strip"
+    },
+    {
+     "root": "log_name",
+     "site": "src/winremote/services.py:L21",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 1362,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 10,
+     "relpath": "src/winremote/services.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "shape_from": {
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "powershell",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "MODEL",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "roots": [
+        "count",
+        "level",
+        "log_name"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "powershell",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-NoProfile",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-Command",
+           "k": "Atom"
+          }
+         },
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "MODEL",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "roots": [
+           "count",
+           "level",
+           "log_name"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": " | Format-Table TimeCreated, Id, LevelDisplayName, Message -AutoSize -Wrap",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "event_log",
+      "_ps"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "EventLog"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1353,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "'System'",
+      "index": 0,
+      "name": "log_name"
+     },
+     {
+      "annotation": "int",
+      "default": "20",
+      "index": 1,
+      "name": "count"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 2,
+      "name": "level"
+     }
+    ],
+    "qualname": "EventLog",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "58b6e70b6567",
+    "tool_name": "EventLog",
+    "unit_id": "mcp:EventLog:58b6e70b6567"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "path",
+     "site": "src/winremote/__main__.py:L1075",
+     "transform": "Path()"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 1078,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 1078,
+     "relpath": "src/winremote/__main__.py",
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "pathlib.Path.read_bytes",
+     "slots": {
+      "path": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "path"
+       ],
+       "shape": {
+        "base": {
+         "prin": "MODEL",
+         "prov": "resolved",
+         "roots": [
+          "path"
+         ],
+         "shape": {
+          "formal": "path",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_READ"
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "FileDownload"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1068,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "path"
+     }
+    ],
+    "qualname": "FileDownload",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "b1ef559040e6",
+    "tool_name": "FileDownload",
+    "unit_id": "mcp:FileDownload:b1ef559040e6"
+   },
+   "validator_shapes": [
+    "ctor_path",
+    "exists"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "path",
+     "site": "src/winremote/__main__.py:L982",
+     "transform": "Path()"
+    },
+    {
+     "root": "show_hidden",
+     "site": "src/winremote/__main__.py:L116",
+     "transform": "str.lower"
+    },
+    {
+     "root": "show_hidden",
+     "site": "src/winremote/__main__.py:L116",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "FileList"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 972,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "'.'",
+      "index": 0,
+      "name": "path"
+     },
+     {
+      "annotation": "bool | str",
+      "default": "False",
+      "index": 1,
+      "name": "show_hidden"
+     }
+    ],
+    "qualname": "FileList",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "6c9c85736c0b",
+    "tool_name": "FileList",
+    "unit_id": "mcp:FileList:6c9c85736c0b"
+   },
+   "validator_shapes": [
+    "ctor_path",
+    "exists",
+    "prefix"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "path",
+     "site": "src/winremote/__main__.py:L923",
+     "transform": "Path()"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 927,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 927,
+     "relpath": "src/winremote/__main__.py",
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "pathlib.Path.read_bytes",
+     "slots": {
+      "path": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "path"
+       ],
+       "shape": {
+        "base": {
+         "prin": "MODEL",
+         "prov": "resolved",
+         "roots": [
+          "path"
+         ],
+         "shape": {
+          "formal": "path",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_READ"
+    },
+    {
+     "entry_lineno": 930,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 930,
+     "relpath": "src/winremote/__main__.py",
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "pathlib.Path.read_text",
+     "slots": {
+      "path": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "path"
+       ],
+       "shape": {
+        "base": {
+         "prin": "MODEL",
+         "prov": "resolved",
+         "roots": [
+          "path"
+         ],
+         "shape": {
+          "formal": "path",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_READ"
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "FileRead"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 915,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "path"
+     },
+     {
+      "annotation": "str",
+      "default": "'utf-8'",
+      "index": 1,
+      "name": "encoding"
+     }
+    ],
+    "qualname": "FileRead",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "82fbddd08d85",
+    "tool_name": "FileRead",
+    "unit_id": "mcp:FileRead:82fbddd08d85"
+   },
+   "validator_shapes": [
+    "ctor_path",
+    "exists"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "path",
+     "site": "src/winremote/__main__.py:L1032",
+     "transform": "Path()"
+    },
+    {
+     "root": "recursive",
+     "site": "src/winremote/__main__.py:L116",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 1034,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 1034,
+     "relpath": "src/winremote/__main__.py",
+     "required_by": [
+      "B2"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "pathlib.Path.rglob",
+     "slots": {
+      "path": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "pattern"
+       ],
+       "shape": {
+        "formal": "pattern",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_READ"
+    },
+    {
+     "entry_lineno": 1036,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 1036,
+     "relpath": "src/winremote/__main__.py",
+     "required_by": [
+      "B2",
+      "Def3-必要ライブラリ"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "pathlib.Path.glob",
+     "slots": {
+      "path": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "pattern"
+       ],
+       "shape": {
+        "formal": "pattern",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_READ"
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "FileSearch"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1022,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "pattern"
+     },
+     {
+      "annotation": "str",
+      "default": "'.'",
+      "index": 1,
+      "name": "path"
+     },
+     {
+      "annotation": "bool | str",
+      "default": "True",
+      "index": 2,
+      "name": "recursive"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 3,
+      "name": "limit"
+     }
+    ],
+    "qualname": "FileSearch",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "d733d3c1e46b",
+    "tool_name": "FileSearch",
+    "unit_id": "mcp:FileSearch:d733d3c1e46b"
+   },
+   "validator_shapes": [
+    "ctor_path"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "openWorldHint",
+     "title"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "path",
+     "site": "src/winremote/__main__.py:L1103",
+     "transform": "Path()"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 1106,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 1106,
+     "relpath": "src/winremote/__main__.py",
+     "required_by": [
+      "F7"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "shape_from": {
+      "content": "annotation",
+      "path": "annotation"
+     },
+     "site": "pathlib.Path.write_bytes",
+     "slots": {
+      "content": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "roots": [
+        "data_base64"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "path": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "path"
+       ],
+       "shape": {
+        "base": {
+         "prin": "MODEL",
+         "prov": "resolved",
+         "roots": [
+          "path"
+         ],
+         "shape": {
+          "formal": "path",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE"
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "openWorldHint": false,
+     "title": "FileUpload"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1092,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "path"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "data_base64"
+     }
+    ],
+    "qualname": "FileUpload",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "35f29b0058e0",
+    "tool_name": "FileUpload",
+    "unit_id": "mcp:FileUpload:35f29b0058e0"
+   },
+   "validator_shapes": [
+    "ctor_path"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "openWorldHint",
+     "title"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "path",
+     "site": "src/winremote/__main__.py:L955",
+     "transform": "Path()"
+    },
+    {
+     "root": "append",
+     "site": "src/winremote/__main__.py:L116",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 958,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 958,
+     "relpath": "src/winremote/__main__.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "path"
+       ],
+       "shape": {
+        "base": {
+         "prin": "MODEL",
+         "prov": "resolved",
+         "roots": [
+          "path"
+         ],
+         "shape": {
+          "formal": "path",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_READ"
+    },
+    {
+     "entry_lineno": 958,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 958,
+     "relpath": "src/winremote/__main__.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "path"
+       ],
+       "shape": {
+        "base": {
+         "prin": "MODEL",
+         "prov": "resolved",
+         "roots": [
+          "path"
+         ],
+         "shape": {
+          "formal": "path",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE"
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "openWorldHint": false,
+     "title": "FileWrite"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 945,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "path"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "content"
+     },
+     {
+      "annotation": "str",
+      "default": "'utf-8'",
+      "index": 2,
+      "name": "encoding"
+     },
+     {
+      "annotation": "bool | str",
+      "default": "False",
+      "index": 3,
+      "name": "append"
+     }
+    ],
+    "qualname": "FileWrite",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "0bafad41ae37",
+    "tool_name": "FileWrite",
+    "unit_id": "mcp:FileWrite:0bafad41ae37"
+   },
+   "validator_shapes": [
+    "ctor_path"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "title",
+     "site": "src/winremote/desktop.py:L218",
+     "transform": "str.lower"
+    },
+    {
+     "root": "title",
+     "site": "src/winremote/desktop.py:L218",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "openWorldHint": false,
+     "title": "FocusWindow"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 407,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 0,
+      "name": "title"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 1,
+      "name": "handle"
+     }
+    ],
+    "qualname": "FocusWindow",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "cc11bd86542c",
+    "tool_name": "FocusWindow",
+    "unit_id": "mcp:FocusWindow:cc11bd86542c"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "GetClipboard"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 530,
+    "module": "src.winremote.__main__",
+    "params": [],
+    "qualname": "GetClipboard",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "GetClipboard",
+    "unit_id": "mcp:GetClipboard:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1613,
+    "module": "src.winremote.__main__",
+    "params": [],
+    "qualname": "GetRunningTasks",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "GetRunningTasks",
+    "unit_id": "mcp:GetRunningTasks:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "GetSystemInfo"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 615,
+    "module": "src.winremote.__main__",
+    "params": [],
+    "qualname": "GetSystemInfo",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "GetSystemInfo",
+    "unit_id": "mcp:GetSystemInfo:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "task_id",
+     "site": "src/winremote/__main__.py:L1600",
+     "transform": "json.dumps"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1588,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 0,
+      "name": "task_id"
+     }
+    ],
+    "qualname": "GetTaskStatus",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "e72a9d85fabc",
+    "tool_name": "GetTaskStatus",
+    "unit_id": "mcp:GetTaskStatus:e72a9d85fabc"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "openWorldHint",
+     "title"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "name",
+     "site": "src/winremote/process_mgr.py:L72",
+     "transform": "str.lower"
+    },
+    {
+     "root": "name",
+     "site": "src/winremote/process_mgr.py:L72",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "openWorldHint": false,
+     "title": "KillProcess"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 595,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 0,
+      "name": "pid"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 1,
+      "name": "name"
+     }
+    ],
+    "qualname": "KillProcess",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "b8a9abbd38dc",
+    "tool_name": "KillProcess",
+    "unit_id": "mcp:KillProcess:b8a9abbd38dc"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "filter",
+     "site": "src/winremote/process_mgr.py:L28",
+     "transform": "str.lower"
+    },
+    {
+     "root": "filter",
+     "site": "src/winremote/process_mgr.py:L28",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "ListProcesses"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 570,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 0,
+      "name": "filter"
+     },
+     {
+      "annotation": "str",
+      "default": "'memory'",
+      "index": 1,
+      "name": "sort_by"
+     },
+     {
+      "annotation": "int",
+      "default": "30",
+      "index": 2,
+      "name": "limit"
+     }
+    ],
+    "qualname": "ListProcesses",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "1bb579399489",
+    "tool_name": "ListProcesses",
+    "unit_id": "mcp:ListProcesses:1bb579399489"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "openWorldHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "openWorldHint": false,
+     "title": "LockScreen"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 867,
+    "module": "src.winremote.__main__",
+    "params": [],
+    "qualname": "LockScreen",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "LockScreen",
+    "unit_id": "mcp:LockScreen:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "openWorldHint": false,
+     "title": "MinimizeAll"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 430,
+    "module": "src.winremote.__main__",
+    "params": [],
+    "qualname": "MinimizeAll",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "MinimizeAll",
+    "unit_id": "mcp:MinimizeAll:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "drag",
+     "site": "src/winremote/__main__.py:L116",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "openWorldHint": false,
+     "title": "Move"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 328,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "int",
+      "index": 0,
+      "name": "x"
+     },
+     {
+      "annotation": "int",
+      "index": 1,
+      "name": "y"
+     },
+     {
+      "annotation": "bool | str",
+      "default": "False",
+      "index": 2,
+      "name": "drag"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 3,
+      "name": "start_x"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 4,
+      "name": "start_y"
+     },
+     {
+      "annotation": "float",
+      "default": "0.3",
+      "index": 5,
+      "name": "duration"
+     }
+    ],
+    "qualname": "Move",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "542bf049131c",
+    "tool_name": "Move",
+    "unit_id": "mcp:Move:542bf049131c"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "filter",
+     "site": "src/winremote/network.py:L58",
+     "transform": "str.lower"
+    },
+    {
+     "root": "filter",
+     "site": "src/winremote/network.py:L58",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "recursion",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "NetConnections"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1330,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 0,
+      "name": "filter"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 1,
+      "name": "limit"
+     }
+    ],
+    "qualname": "NetConnections",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "f4b2bbfa2233",
+    "tool_name": "NetConnections",
+    "unit_id": "mcp:NetConnections:f4b2bbfa2233"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 723,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 357,
+     "relpath": "src/winremote/desktop.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "shape_from": {
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "powershell",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "roots": [
+        "message",
+        "title"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "powershell",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-NoProfile",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-Command",
+           "k": "Atom"
+          }
+         },
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "roots": [
+           "message",
+           "title"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "\n[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null\n[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null\n$template = @\"\n<toast>\n  <visual><binding template=\"ToastGeneric\">\n    <text>",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "unresolved"
+             ],
+             "roots": [
+              "title"
+             ],
+             "shape": {
+              "k": "Unknown"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "</text>\n    <text>",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "unresolved"
+             ],
+             "roots": [
+              "message"
+             ],
+             "shape": {
+              "k": "Unknown"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "</text>\n  </binding></visual>\n</toast>\n\"@\n$xml = New-Object Windows.Data.Xml.Dom.XmlDocument\n$xml.LoadXml($template)\n$toast = [Windows.UI.Notifications.ToastNotification]::new($xml)\n[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier(\"winremote-mcp\").Show($toast)\n",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "show_notification"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "openWorldHint": false,
+     "title": "Notification"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 715,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "'winremote-mcp'",
+      "index": 0,
+      "name": "title"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 1,
+      "name": "message"
+     }
+    ],
+    "qualname": "Notification",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "243479827219",
+    "tool_name": "Notification",
+    "unit_id": "mcp:Notification:243479827219"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 1399,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 103,
+     "relpath": "src/winremote/ocr.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "powershell",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "powershell",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-NoProfile",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-Command",
+           "k": "Atom"
+          }
+         },
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "\nAdd-Type -AssemblyName System.Runtime.WindowsRuntime\n$null = [Windows.Media.Ocr.OcrEngine, Windows.Foundation, ContentType = WindowsRuntime]\n$null = [Windows.Graphics.Imaging.BitmapDecoder, Windows.Foundation, ContentType = WindowsRuntime]\n\n# Helper to await WinRT async\nAdd-Type -TypeDefinition @'\nusing System;\nusing System.Threading.Tasks;\nusing System.Runtime.CompilerServices;\npublic static class AsyncHelper {\n    public static T Await<T>(Windows.Foundation.IAsyncOperation<T> op) {\n        return Task.Run(() => {\n            while (op.Status == Windows.Foundation.AsyncStatus.Started) {\n                System.Threading.Thread.Sleep(10);\n            }\n            return op.GetResults();\n        }).Result;\n    }\n}\n'@ -ReferencedAssemblies \"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.Runtime.WindowsRuntime.dll\"\n\n$path = '",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "unresolved"
+             ],
+             "shape": {
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "'\n$stream = [System.IO.File]::OpenRead($path)\n$ras = [System.IO.WindowsRuntimeStreamExtensions]::AsRandomAccessStream($stream)\n$decoder = [AsyncHelper]::Await([Windows.Graphics.Imaging.BitmapDecoder]::CreateAsync($ras))\n$bitmap = [AsyncHelper]::Await($decoder.GetSoftwareBitmapAsync())\n$engine = [Windows.Media.Ocr.OcrEngine]::TryCreateFromUserProfileLanguages()\n$result = [AsyncHelper]::Await($engine.RecognizeAsync($bitmap))\n$stream.Close()\nWrite-Output $result.Text\n",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "run_ocr",
+      "ocr_windows_builtin"
+     ]
+    },
+    {
+     "entry_lineno": 1399,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 114,
+     "relpath": "src/winremote/ocr.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.unlink",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "run_ocr",
+      "ocr_windows_builtin"
+     ]
+    },
+    {
+     "entry_lineno": 1399,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 103,
+     "relpath": "src/winremote/ocr.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "powershell",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "powershell",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-NoProfile",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-Command",
+           "k": "Atom"
+          }
+         },
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "\nAdd-Type -AssemblyName System.Runtime.WindowsRuntime\n$null = [Windows.Media.Ocr.OcrEngine, Windows.Foundation, ContentType = WindowsRuntime]\n$null = [Windows.Graphics.Imaging.BitmapDecoder, Windows.Foundation, ContentType = WindowsRuntime]\n\n# Helper to await WinRT async\nAdd-Type -TypeDefinition @'\nusing System;\nusing System.Threading.Tasks;\nusing System.Runtime.CompilerServices;\npublic static class AsyncHelper {\n    public static T Await<T>(Windows.Foundation.IAsyncOperation<T> op) {\n        return Task.Run(() => {\n            while (op.Status == Windows.Foundation.AsyncStatus.Started) {\n                System.Threading.Thread.Sleep(10);\n            }\n            return op.GetResults();\n        }).Result;\n    }\n}\n'@ -ReferencedAssemblies \"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.Runtime.WindowsRuntime.dll\"\n\n$path = '",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "unresolved"
+             ],
+             "shape": {
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "'\n$stream = [System.IO.File]::OpenRead($path)\n$ras = [System.IO.WindowsRuntimeStreamExtensions]::AsRandomAccessStream($stream)\n$decoder = [AsyncHelper]::Await([Windows.Graphics.Imaging.BitmapDecoder]::CreateAsync($ras))\n$bitmap = [AsyncHelper]::Await($decoder.GetSoftwareBitmapAsync())\n$engine = [Windows.Media.Ocr.OcrEngine]::TryCreateFromUserProfileLanguages()\n$result = [AsyncHelper]::Await($engine.RecognizeAsync($bitmap))\n$stream.Close()\nWrite-Output $result.Text\n",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "run_ocr",
+      "ocr_windows_builtin"
+     ]
+    },
+    {
+     "entry_lineno": 1399,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 114,
+     "relpath": "src/winremote/ocr.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.unlink",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "run_ocr",
+      "ocr_windows_builtin"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "OCR"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1377,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 0,
+      "name": "left"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 1,
+      "name": "top"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 2,
+      "name": "right"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 3,
+      "name": "bottom"
+     },
+     {
+      "annotation": "str",
+      "default": "'eng'",
+      "index": 4,
+      "name": "lang"
+     }
+    ],
+    "qualname": "OCR",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "e9e9b9fe843c",
+    "tool_name": "OCR",
+    "unit_id": "mcp:OCR:e9e9b9fe843c"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "openWorldHint",
+     "readOnlyHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "count",
+     "site": "src/winremote/network.py:L18",
+     "transform": "str.strip"
+    },
+    {
+     "root": "host",
+     "site": "src/winremote/network.py:L18",
+     "transform": "str.strip"
+    },
+    {
+     "root": "count",
+     "site": "src/winremote/network.py:L18",
+     "transform": "str.strip"
+    },
+    {
+     "root": "host",
+     "site": "src/winremote/network.py:L18",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 1297,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 12,
+     "relpath": "src/winremote/network.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "shape_from": {
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "ping",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "MODEL",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "roots": [
+        "count",
+        "host"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "ping",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-n",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "roots": [
+           "count"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "MODEL",
+          "prov": "resolved",
+          "roots": [
+           "host"
+          ],
+          "shape": {
+           "formal": "host",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "ping"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": true,
+     "readOnlyHint": true,
+     "title": "Ping"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1289,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "host"
+     },
+     {
+      "annotation": "int",
+      "default": "4",
+      "index": 1,
+      "name": "count"
+     }
+    ],
+    "qualname": "Ping",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "a51da59f2517",
+    "tool_name": "Ping",
+    "unit_id": "mcp:Ping:a51da59f2517"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "url",
+     "site": "src/winremote/security.py:L34",
+     "transform": "urlparse"
+    },
+    {
+     "root": "url",
+     "site": "src/winremote/security.py:L34",
+     "transform": "urlparse"
+    },
+    {
+     "root": "url",
+     "site": "src/winremote/security.py:L34",
+     "transform": "urlparse"
+    },
+    {
+     "root": "path",
+     "site": "src/winremote/__main__.py:L810",
+     "transform": "str.lower"
+    },
+    {
+     "root": "path",
+     "site": "src/winremote/__main__.py:L812",
+     "transform": "str.replace"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 798,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 798,
+     "relpath": "src/winremote/__main__.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE"
+    },
+    {
+     "entry_lineno": 827,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 827,
+     "relpath": "src/winremote/__main__.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "shape_from": {
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "powershell",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "MODEL",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "roots": [
+        "path"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "powershell",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-NoProfile",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-Command",
+           "k": "Atom"
+          }
+         },
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "MODEL",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "roots": [
+           "path"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "Add-Type -AssemblyName presentationCore; $p = New-Object System.Windows.Media.MediaPlayer; $p.Open([uri]'",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "MODEL",
+             "prov": "opaque",
+             "prov_reasons": [
+              "unresolved"
+             ],
+             "roots": [
+              "path"
+             ],
+             "shape": {
+              "k": "Unknown"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "'); $p.Play(); Start-Sleep -Milliseconds 500; while ($p.NaturalDuration.HasTimeSpan -and $p.Position -lt $p.NaturalDuration.TimeSpan) { Start-Sleep -Milliseconds 200 }; $p.Close()",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV"
+    },
+    {
+     "entry_lineno": 838,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 838,
+     "relpath": "src/winremote/__main__.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "shape_from": {
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "powershell",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "MODEL",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "roots": [
+        "path"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "powershell",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-NoProfile",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-Command",
+           "k": "Atom"
+          }
+         },
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "MODEL",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "roots": [
+           "path"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "(New-Object System.Media.SoundPlayer '",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "MODEL",
+             "prov": "opaque",
+             "prov_reasons": [
+              "unresolved"
+             ],
+             "roots": [
+              "path"
+             ],
+             "shape": {
+              "k": "Unknown"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "').PlaySync()",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV"
+    },
+    {
+     "entry_lineno": 855,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 855,
+     "relpath": "src/winremote/__main__.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.unlink",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE"
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "openWorldHint": false,
+     "title": "PlaySound"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 771,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 0,
+      "name": "path"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "url"
+     }
+    ],
+    "qualname": "PlaySound",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "9eacb7be4853",
+    "tool_name": "PlaySound",
+    "unit_id": "mcp:PlaySound:9eacb7be4853"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "openWorldHint",
+     "readOnlyHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": true,
+     "readOnlyHint": true,
+     "title": "PortCheck"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1309,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "host"
+     },
+     {
+      "annotation": "int",
+      "index": 1,
+      "name": "port"
+     },
+     {
+      "annotation": "float",
+      "default": "5.0",
+      "index": 2,
+      "name": "timeout"
+     }
+    ],
+    "qualname": "PortCheck",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "ddc7cc236f86",
+    "tool_name": "PortCheck",
+    "unit_id": "mcp:PortCheck:ddc7cc236f86"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "readOnlyHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 702,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 629,
+     "relpath": "src/winremote/__main__.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "resolved",
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "query",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "query",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "session",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "_ensure_session_connected"
+     ]
+    },
+    {
+     "entry_lineno": 702,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 674,
+     "relpath": "src/winremote/__main__.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "tscon",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "tscon",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/dest:console",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "_ensure_session_connected"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": false,
+     "title": "ReconnectSession"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 692,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 0,
+      "name": "force"
+     }
+    ],
+    "qualname": "ReconnectSession",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "fc0eed7a68e5",
+    "tool_name": "ReconnectSession",
+    "unit_id": "mcp:ReconnectSession:fc0eed7a68e5"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "key",
+     "site": "src/winremote/registry.py:L39",
+     "transform": "str.split"
+    },
+    {
+     "root": "key",
+     "site": "src/winremote/registry.py:L40",
+     "transform": "str.upper"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "RegRead"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1122,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "key"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "value_name"
+     }
+    ],
+    "qualname": "RegRead",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "d5bde2ca0646",
+    "tool_name": "RegRead",
+    "unit_id": "mcp:RegRead:d5bde2ca0646"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "openWorldHint",
+     "title"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "key",
+     "site": "src/winremote/registry.py:L39",
+     "transform": "str.split"
+    },
+    {
+     "root": "key",
+     "site": "src/winremote/registry.py:L40",
+     "transform": "str.upper"
+    },
+    {
+     "root": "reg_type",
+     "site": "src/winremote/registry.py:L69",
+     "transform": "str.upper"
+    },
+    {
+     "root": "reg_type",
+     "site": "src/winremote/registry.py:L74",
+     "transform": "str.upper"
+    },
+    {
+     "root": "reg_type",
+     "site": "src/winremote/registry.py:L76",
+     "transform": "str.upper"
+    },
+    {
+     "root": "reg_type",
+     "site": "src/winremote/registry.py:L78",
+     "transform": "str.upper"
+    },
+    {
+     "root": "data",
+     "site": "src/winremote/registry.py:L79",
+     "transform": "str.split"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "openWorldHint": false,
+     "title": "RegWrite"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1142,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "key"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "value_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "data"
+     },
+     {
+      "annotation": "str",
+      "default": "'REG_SZ'",
+      "index": 3,
+      "name": "reg_type"
+     }
+    ],
+    "qualname": "RegWrite",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "4b2f74cd50bd",
+    "tool_name": "RegWrite",
+    "unit_id": "mcp:RegWrite:4b2f74cd50bd"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "openWorldHint",
+     "readOnlyHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "url",
+     "site": "src/winremote/security.py:L34",
+     "transform": "urlparse"
+    },
+    {
+     "root": "url",
+     "site": "src/winremote/security.py:L34",
+     "transform": "urlparse"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": true,
+     "readOnlyHint": true,
+     "title": "Scrape"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 882,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "url"
+     }
+    ],
+    "qualname": "Scrape",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "6a614562b317",
+    "tool_name": "Scrape",
+    "unit_id": "mcp:Scrape:6a614562b317"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "ScreenRecord"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1419,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "float",
+      "default": "3.0",
+      "index": 0,
+      "name": "duration"
+     },
+     {
+      "annotation": "int",
+      "default": "5",
+      "index": 1,
+      "name": "fps"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 2,
+      "name": "left"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 3,
+      "name": "top"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 4,
+      "name": "right"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 5,
+      "name": "bottom"
+     },
+     {
+      "annotation": "int",
+      "default": "800",
+      "index": 6,
+      "name": "max_width"
+     }
+    ],
+    "qualname": "ScreenRecord",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "962c5e8871f8",
+    "tool_name": "ScreenRecord",
+    "unit_id": "mcp:ScreenRecord:962c5e8871f8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "horizontal",
+     "site": "src/winremote/__main__.py:L116",
+     "transform": "str.lower"
+    },
+    {
+     "root": "horizontal",
+     "site": "src/winremote/__main__.py:L116",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "openWorldHint": false,
+     "title": "Scroll"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 294,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "int",
+      "index": 0,
+      "name": "amount"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 1,
+      "name": "x"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 2,
+      "name": "y"
+     },
+     {
+      "annotation": "bool | str",
+      "default": "False",
+      "index": 3,
+      "name": "horizontal"
+     }
+    ],
+    "qualname": "Scroll",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "45bf881258f7",
+    "tool_name": "Scroll",
+    "unit_id": "mcp:Scroll:45bf881258f7"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "filter",
+     "site": "src/winremote/services.py:L31",
+     "transform": "str.replace"
+    },
+    {
+     "root": "filter",
+     "site": "src/winremote/services.py:L21",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 1174,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 10,
+     "relpath": "src/winremote/services.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "powershell",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "filter"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "powershell",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-NoProfile",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-Command",
+           "k": "Atom"
+          }
+         },
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "MODEL",
+          "prov": "resolved",
+          "roots": [
+           "filter"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "MODEL",
+             "prov": "resolved",
+             "roots": [
+              "filter"
+             ],
+             "shape": {
+              "k": "Unknown"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": " | Format-Table Name, DisplayName, Status -AutoSize",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "service_list",
+      "_ps"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "ServiceList"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1167,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 0,
+      "name": "filter"
+     }
+    ],
+    "qualname": "ServiceList",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "6748f8486da9",
+    "tool_name": "ServiceList",
+    "unit_id": "mcp:ServiceList:6748f8486da9"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "openWorldHint",
+     "title"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "name",
+     "site": "src/winremote/services.py:L31",
+     "transform": "str.replace"
+    },
+    {
+     "root": "name",
+     "site": "src/winremote/services.py:L21",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 1193,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 10,
+     "relpath": "src/winremote/services.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "powershell",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "name"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "powershell",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-NoProfile",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-Command",
+           "k": "Atom"
+          }
+         },
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "MODEL",
+          "prov": "resolved",
+          "roots": [
+           "name"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "Start-Service -Name '",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "MODEL",
+             "prov": "resolved",
+             "roots": [
+              "name"
+             ],
+             "shape": {
+              "formal": "name",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "' -PassThru | Format-Table Name, Status -AutoSize",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "service_start",
+      "_ps"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "openWorldHint": false,
+     "title": "ServiceStart"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1186,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "name"
+     }
+    ],
+    "qualname": "ServiceStart",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "459d43d19675",
+    "tool_name": "ServiceStart",
+    "unit_id": "mcp:ServiceStart:459d43d19675"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "openWorldHint",
+     "title"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "name",
+     "site": "src/winremote/services.py:L31",
+     "transform": "str.replace"
+    },
+    {
+     "root": "name",
+     "site": "src/winremote/services.py:L21",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 1212,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 10,
+     "relpath": "src/winremote/services.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "powershell",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "name"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "powershell",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-NoProfile",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-Command",
+           "k": "Atom"
+          }
+         },
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "MODEL",
+          "prov": "resolved",
+          "roots": [
+           "name"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "Stop-Service -Name '",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "MODEL",
+             "prov": "resolved",
+             "roots": [
+              "name"
+             ],
+             "shape": {
+              "formal": "name",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "' -Force -PassThru | Format-Table Name, Status -AutoSize",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "service_stop",
+      "_ps"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "openWorldHint": false,
+     "title": "ServiceStop"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1205,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "name"
+     }
+    ],
+    "qualname": "ServiceStop",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "459d43d19675",
+    "tool_name": "ServiceStop",
+    "unit_id": "mcp:ServiceStop:459d43d19675"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "openWorldHint": false,
+     "title": "SetClipboard"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 548,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "text"
+     }
+    ],
+    "qualname": "SetClipboard",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "24207698f081",
+    "tool_name": "SetClipboard",
+    "unit_id": "mcp:SetClipboard:24207698f081"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [
+     "openWorldHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "cwd",
+     "site": "src/winremote/__main__.py:L503",
+     "transform": "str.replace"
+    },
+    {
+     "root": "command",
+     "site": "src/winremote/__main__.py:L516",
+     "transform": "str.strip"
+    },
+    {
+     "root": "cwd",
+     "site": "src/winremote/__main__.py:L516",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 505,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 505,
+     "relpath": "src/winremote/__main__.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "powershell",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "command",
+        "cwd"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "powershell",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-NoProfile",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-Command",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "MODEL",
+          "prov": "resolved",
+          "roots": [
+           "command",
+           "cwd"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV"
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "openWorldHint": true,
+     "title": "Shell"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 493,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "command"
+     },
+     {
+      "annotation": "int",
+      "default": "30",
+      "index": 1,
+      "name": "timeout"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 2,
+      "name": "cwd"
+     }
+    ],
+    "qualname": "Shell",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "e74a970fab31",
+    "tool_name": "Shell",
+    "unit_id": "mcp:Shell:e74a970fab31"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "keys",
+     "site": "src/winremote/__main__.py:L373",
+     "transform": "str.lower"
+    },
+    {
+     "root": "keys",
+     "site": "src/winremote/__main__.py:L373",
+     "transform": "str.split"
+    },
+    {
+     "root": "keys",
+     "site": "src/winremote/__main__.py:L373",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "openWorldHint": false,
+     "title": "Shortcut"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 366,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "keys"
+     }
+    ],
+    "qualname": "Shortcut",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "e3d9a6950f58",
+    "tool_name": "Shortcut",
+    "unit_id": "mcp:Shortcut:e3d9a6950f58"
+   },
+   "validator_shapes": [
+    "split"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "use_vision",
+     "site": "src/winremote/__main__.py:L116",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 178,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 629,
+     "relpath": "src/winremote/__main__.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "resolved",
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "query",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "query",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "session",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "_ensure_session_connected"
+     ]
+    },
+    {
+     "entry_lineno": 178,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 674,
+     "relpath": "src/winremote/__main__.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "tscon",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "tscon",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/dest:console",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "_ensure_session_connected"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Snapshot"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 150,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "bool | str",
+      "default": "True",
+      "index": 0,
+      "name": "use_vision"
+     },
+     {
+      "annotation": "int",
+      "default": "75",
+      "index": 1,
+      "name": "quality"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 2,
+      "name": "max_width"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 3,
+      "name": "monitor"
+     }
+    ],
+    "qualname": "Snapshot",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "4db1511d1ec8",
+    "tool_name": "Snapshot",
+    "unit_id": "mcp:Snapshot:4db1511d1ec8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "openWorldHint",
+     "title"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "name",
+     "site": "src/winremote/services.py:L31",
+     "transform": "str.replace"
+    },
+    {
+     "root": "command",
+     "site": "src/winremote/services.py:L31",
+     "transform": "str.replace"
+    },
+    {
+     "root": "schedule",
+     "site": "src/winremote/services.py:L31",
+     "transform": "str.replace"
+    },
+    {
+     "root": "command",
+     "site": "src/winremote/services.py:L21",
+     "transform": "str.strip"
+    },
+    {
+     "root": "name",
+     "site": "src/winremote/services.py:L21",
+     "transform": "str.strip"
+    },
+    {
+     "root": "schedule",
+     "site": "src/winremote/services.py:L21",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 1255,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 10,
+     "relpath": "src/winremote/services.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "powershell",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "command",
+        "name",
+        "schedule"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "powershell",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-NoProfile",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-Command",
+           "k": "Atom"
+          }
+         },
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "MODEL",
+          "prov": "resolved",
+          "roots": [
+           "command",
+           "name",
+           "schedule"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "schtasks /Create /TN '",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "MODEL",
+             "prov": "resolved",
+             "roots": [
+              "name"
+             ],
+             "shape": {
+              "formal": "name",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "' /TR '",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "MODEL",
+             "prov": "resolved",
+             "roots": [
+              "command"
+             ],
+             "shape": {
+              "formal": "command",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "' /SC '",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "MODEL",
+             "prov": "resolved",
+             "roots": [
+              "schedule"
+             ],
+             "shape": {
+              "formal": "schedule",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "' /F",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "task_create",
+      "_ps"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "openWorldHint": false,
+     "title": "TaskCreate"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1246,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "name"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "command"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "schedule"
+     }
+    ],
+    "qualname": "TaskCreate",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "25ff4a64eb71",
+    "tool_name": "TaskCreate",
+    "unit_id": "mcp:TaskCreate:25ff4a64eb71"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "openWorldHint",
+     "title"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "name",
+     "site": "src/winremote/services.py:L31",
+     "transform": "str.replace"
+    },
+    {
+     "root": "name",
+     "site": "src/winremote/services.py:L21",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 1274,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 10,
+     "relpath": "src/winremote/services.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "powershell",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "name"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "powershell",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-NoProfile",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-Command",
+           "k": "Atom"
+          }
+         },
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "MODEL",
+          "prov": "resolved",
+          "roots": [
+           "name"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "schtasks /Delete /TN '",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "MODEL",
+             "prov": "resolved",
+             "roots": [
+              "name"
+             ],
+             "shape": {
+              "formal": "name",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "' /F",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "task_delete",
+      "_ps"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "openWorldHint": false,
+     "title": "TaskDelete"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1267,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "name"
+     }
+    ],
+    "qualname": "TaskDelete",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "459d43d19675",
+    "tool_name": "TaskDelete",
+    "unit_id": "mcp:TaskDelete:459d43d19675"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "filter",
+     "site": "src/winremote/services.py:L31",
+     "transform": "str.replace"
+    },
+    {
+     "root": "filter",
+     "site": "src/winremote/services.py:L21",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 1234,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 10,
+     "relpath": "src/winremote/services.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "resolved",
+     "shape_from": {
+      "argv[*]": "annotation"
+     },
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "powershell",
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "filter"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "powershell",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-NoProfile",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-Command",
+           "k": "Atom"
+          }
+         },
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "MODEL",
+          "prov": "resolved",
+          "roots": [
+           "filter"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "MODEL",
+             "prov": "resolved",
+             "roots": [
+              "filter"
+             ],
+             "shape": {
+              "k": "Unknown"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": " | Format-Table TaskName, State, TaskPath -AutoSize",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_CONST_ARGV",
+     "witness_chain": [
+      "task_list",
+      "_ps"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "TaskList"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1227,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 0,
+      "name": "filter"
+     }
+    ],
+    "qualname": "TaskList",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "6748f8486da9",
+    "tool_name": "TaskList",
+    "unit_id": "mcp:TaskList:6748f8486da9"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "clear",
+     "site": "src/winremote/__main__.py:L116",
+     "transform": "str.lower"
+    },
+    {
+     "root": "press_enter",
+     "site": "src/winremote/__main__.py:L116",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "openWorldHint": false,
+     "title": "Type"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 255,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "text"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 1,
+      "name": "x"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 2,
+      "name": "y"
+     },
+     {
+      "annotation": "bool | str",
+      "default": "False",
+      "index": 3,
+      "name": "clear"
+     },
+     {
+      "annotation": "bool | str",
+      "default": "False",
+      "index": 4,
+      "name": "press_enter"
+     }
+    ],
+    "qualname": "Type",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "ffcc8dbee7a1",
+    "tool_name": "Type",
+    "unit_id": "mcp:Type:ffcc8dbee7a1"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Wait"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 387,
+    "module": "src.winremote.__main__",
+    "params": [
+     {
+      "annotation": "float",
+      "default": "1.0",
+      "index": 0,
+      "name": "seconds"
+     }
+    ],
+    "qualname": "Wait",
+    "relpath": "src/winremote/__main__.py",
+    "schema_hash": "a5a9269dc88d",
+    "tool_name": "Wait",
+    "unit_id": "mcp:Wait:a5a9269dc88d"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

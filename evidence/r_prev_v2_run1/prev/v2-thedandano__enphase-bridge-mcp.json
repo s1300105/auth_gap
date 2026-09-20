@@ -1,0 +1,654 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 261,
+    "module": "src.enphase_bridge_mcp.analysis_tools",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "start_a"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "end_a"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "start_b"
+     },
+     {
+      "annotation": "str",
+      "index": 3,
+      "name": "end_b"
+     }
+    ],
+    "qualname": "compare_periods",
+    "relpath": "src/enphase_bridge_mcp/analysis_tools.py",
+    "schema_hash": "eb6b748117b9",
+    "tool_name": "compare_periods",
+    "unit_id": "mcp:compare_periods:eb6b748117b9"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 318,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 40,
+     "relpath": "src/enphase_bridge_mcp/bridge_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "/api/inverters/arrays",
+        "k": "Atom"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BridgeClient.get_inverter_arrays",
+      "BridgeClient._get",
+      "BridgeClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 302,
+    "module": "src.enphase_bridge_mcp.analysis_tools",
+    "params": [
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 0,
+      "name": "array_name"
+     }
+    ],
+    "qualname": "get_inverter_health",
+    "relpath": "src/enphase_bridge_mcp/analysis_tools.py",
+    "schema_hash": "8b007ed31eca",
+    "tool_name": "get_inverter_health",
+    "unit_id": "mcp:get_inverter_health:8b007ed31eca"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 233,
+    "module": "src.enphase_bridge_mcp.analysis_tools",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "start_date"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "end_date"
+     }
+    ],
+    "qualname": "get_period_summary",
+    "relpath": "src/enphase_bridge_mcp/analysis_tools.py",
+    "schema_hash": "28776de576d9",
+    "tool_name": "get_period_summary",
+    "unit_id": "mcp:get_period_summary:28776de576d9"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 124,
+    "module": "src.enphase_bridge_mcp.cost_tools",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "start_date"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "end_date"
+     }
+    ],
+    "qualname": "get_trueup_estimate",
+    "relpath": "src/enphase_bridge_mcp/cost_tools.py",
+    "schema_hash": "28776de576d9",
+    "tool_name": "get_trueup_estimate",
+    "unit_id": "mcp:get_trueup_estimate:28776de576d9"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 171,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 40,
+     "relpath": "src/enphase_bridge_mcp/bridge_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "/api/tou/refresh",
+        "k": "Atom"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BridgeClient.refresh_tou_schedule",
+      "BridgeClient._post",
+      "BridgeClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {},
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 155,
+    "module": "src.enphase_bridge_mcp.cost_tools",
+    "params": [],
+    "qualname": "refresh_tou_schedule",
+    "relpath": "src/enphase_bridge_mcp/cost_tools.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "refresh_tou_schedule",
+    "unit_id": "mcp:refresh_tou_schedule:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 313,
+    "module": "src.enphase_bridge_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "'today'",
+      "index": 0,
+      "name": "date_a"
+     },
+     {
+      "annotation": "str",
+      "default": "'yesterday'",
+      "index": 1,
+      "name": "date_b"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 2,
+      "name": "same_time_of_day"
+     }
+    ],
+    "qualname": "compare_days",
+    "relpath": "src/enphase_bridge_mcp/server.py",
+    "schema_hash": "bdec79379fa3",
+    "tool_name": "compare_days",
+    "unit_id": "mcp:compare_days:bdec79379fa3"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 262,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 40,
+     "relpath": "src/enphase_bridge_mcp/bridge_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "/api/health",
+        "k": "Atom"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BridgeClient.get_health",
+      "BridgeClient._get",
+      "BridgeClient._request"
+     ]
+    },
+    {
+     "entry_lineno": 263,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 40,
+     "relpath": "src/enphase_bridge_mcp/bridge_client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "/api/energy/windows/latest",
+        "k": "Atom"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "BridgeClient.get_latest_window",
+      "BridgeClient._get",
+      "BridgeClient._request"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 245,
+    "module": "src.enphase_bridge_mcp.server",
+    "params": [],
+    "qualname": "get_current_status",
+    "relpath": "src/enphase_bridge_mcp/server.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "get_current_status",
+    "unit_id": "mcp:get_current_status:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 296,
+    "module": "src.enphase_bridge_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "'today'",
+      "index": 0,
+      "name": "date"
+     }
+    ],
+    "qualname": "get_daily_summary",
+    "relpath": "src/enphase_bridge_mcp/server.py",
+    "schema_hash": "029042e71d28",
+    "tool_name": "get_daily_summary",
+    "unit_id": "mcp:get_daily_summary:029042e71d28"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

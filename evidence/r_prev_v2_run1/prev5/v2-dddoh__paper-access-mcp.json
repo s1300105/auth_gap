@@ -1,0 +1,1503 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint",
+     "openWorldHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [
+     "readOnlyHint"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py:L34",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py:L34",
+     "transform": "urlparse"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py:L35",
+     "transform": "str.lower"
+    },
+    {
+     "root": "browser_profile_dir",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/server.py:L102",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py:L39",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py:L42",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py:L42",
+     "transform": "urlparse"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py:L45",
+     "transform": "str.lower"
+    },
+    {
+     "root": "output_dir",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/paths.py:L8",
+     "transform": "str.strip"
+    },
+    {
+     "root": "output_dir",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/paths.py:L11",
+     "transform": "Path()"
+    },
+    {
+     "root": "browser_profile_dir",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py:L76",
+     "transform": "Path()"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley.py:L52",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley.py:L52",
+     "transform": "urlparse"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley.py:L53",
+     "transform": "str.lower"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley.py:L85",
+     "transform": "str.lower"
+    },
+    {
+     "root": "browser_profile_dir",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/server.py:L115",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley.py:L59",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley.py:L62",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley.py:L62",
+     "transform": "urlparse"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley.py:L85",
+     "transform": "str.lower"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley.py:L68",
+     "transform": "str.lower"
+    },
+    {
+     "root": "output_dir",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/paths.py:L8",
+     "transform": "str.strip"
+    },
+    {
+     "root": "output_dir",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/paths.py:L11",
+     "transform": "Path()"
+    },
+    {
+     "root": "browser_profile_dir",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley.py:L246",
+     "transform": "Path()"
+    },
+    {
+     "root": "browser_profile_dir",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley.py:L246",
+     "transform": "Path()"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/core.py:L71",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/core.py:L74",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/core.py:L74",
+     "transform": "urlparse"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/arxiv.py:L12",
+     "transform": "str.lower"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/arxiv.py:L16",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/openreview.py:L12",
+     "transform": "str.lower"
+    },
+    {
+     "root": "output_dir",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/paths.py:L8",
+     "transform": "str.strip"
+    },
+    {
+     "root": "output_dir",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/paths.py:L11",
+     "transform": "Path()"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "BrowserMode": null,
+    "_INFORMS_HOSTS": true,
+    "_WILEY_HOSTS": true
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 104,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 72,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "attrs": [
+        "canonicalised"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "download_informs_paper_from_link"
+     ]
+    },
+    {
+     "entry_lineno": 104,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 77,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "attrs": [
+        "canonicalised"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "download_informs_paper_from_link"
+     ]
+    },
+    {
+     "entry_lineno": 104,
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 238,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py",
+     "required_by": [
+      "B3",
+      "B4",
+      "Def3-必要ライブラリ"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "unresolved"
+     ],
+     "site": "mcp.StdioServerParameters",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--browser",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "chrome",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--user-data-dir",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--output-mode",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "stdout",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Seq",
+        "tail": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "--headless",
+          "k": "Atom"
+         }
+        }
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "download_informs_paper_from_link",
+      "_download_informs_paper_once",
+      "_connect_stdio_mcp"
+     ]
+    },
+    {
+     "entry_lineno": 104,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 425,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "download_informs_paper_from_link",
+      "_download_informs_paper_once",
+      "_download_pdf_with_browser_session"
+     ]
+    },
+    {
+     "entry_lineno": 104,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 434,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py",
+     "required_by": [
+      "F7"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.write_bytes",
+     "slots": {
+      "content": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": [
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "unresolved"
+             ],
+             "shape": {
+              "k": "Unknown"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": ".pdf",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "download_informs_paper_from_link",
+      "_download_informs_paper_once",
+      "_download_pdf_with_browser_session"
+     ]
+    },
+    {
+     "entry_lineno": 104,
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 238,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py",
+     "required_by": [
+      "B3",
+      "B4",
+      "Def3-必要ライブラリ"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "unresolved"
+     ],
+     "site": "mcp.StdioServerParameters",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--browser",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "chrome",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--user-data-dir",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--output-mode",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "stdout",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Seq",
+        "tail": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "--headless",
+          "k": "Atom"
+         }
+        }
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "download_informs_paper_from_link",
+      "_download_informs_paper_once",
+      "_connect_stdio_mcp"
+     ]
+    },
+    {
+     "entry_lineno": 104,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 425,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "download_informs_paper_from_link",
+      "_download_informs_paper_once",
+      "_download_pdf_with_browser_session"
+     ]
+    },
+    {
+     "entry_lineno": 104,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 434,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py",
+     "required_by": [
+      "F7"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.write_bytes",
+     "slots": {
+      "content": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": [
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "unresolved"
+             ],
+             "shape": {
+              "k": "Unknown"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": ".pdf",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "download_informs_paper_from_link",
+      "_download_informs_paper_once",
+      "_download_pdf_with_browser_session"
+     ]
+    },
+    {
+     "entry_lineno": 125,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 124,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "attrs": [
+        "canonicalised"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "download_wiley_paper_from_link"
+     ]
+    },
+    {
+     "entry_lineno": 125,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 126,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "download_wiley_paper_from_link"
+     ]
+    },
+    {
+     "entry_lineno": 125,
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 238,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py",
+     "required_by": [
+      "B3",
+      "B4",
+      "Def3-必要ライブラリ"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "unresolved"
+     ],
+     "site": "mcp.StdioServerParameters",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--browser",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "chrome",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--user-data-dir",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--output-mode",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "stdout",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Seq",
+        "tail": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "--headless",
+          "k": "Atom"
+         }
+        }
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "download_wiley_paper_from_link",
+      "_download_wiley_paper_once",
+      "_connect_stdio_mcp"
+     ]
+    },
+    {
+     "entry_lineno": 125,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 345,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley.py",
+     "required_by": [
+      "F7"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "recursion",
+      "unresolved"
+     ],
+     "site": "pathlib.Path.write_bytes",
+     "slots": {
+      "content": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "recursion",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": [
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "recursion",
+           "unresolved"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "recursion",
+              "unresolved"
+             ],
+             "shape": {
+              "k": "Unknown"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": ".pdf",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "download_wiley_paper_from_link",
+      "_download_wiley_paper_once",
+      "_wait_for_wiley_pdf"
+     ]
+    },
+    {
+     "entry_lineno": 125,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 345,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley.py",
+     "required_by": [
+      "F7"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "recursion",
+      "unresolved"
+     ],
+     "site": "pathlib.Path.write_bytes",
+     "slots": {
+      "content": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "recursion",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": [
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "recursion",
+           "unresolved"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "recursion",
+              "unresolved"
+             ],
+             "shape": {
+              "k": "Unknown"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": ".pdf",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "download_wiley_paper_from_link",
+      "_download_wiley_paper_once",
+      "_wait_for_wiley_pdf"
+     ]
+    },
+    {
+     "entry_lineno": 125,
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 238,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs.py",
+     "required_by": [
+      "B3",
+      "B4",
+      "Def3-必要ライブラリ"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "unresolved"
+     ],
+     "site": "mcp.StdioServerParameters",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--browser",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "chrome",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--user-data-dir",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--output-mode",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "stdout",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Seq",
+        "tail": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "--headless",
+          "k": "Atom"
+         }
+        }
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "download_wiley_paper_from_link",
+      "_download_wiley_paper_once",
+      "_connect_stdio_mcp"
+     ]
+    },
+    {
+     "entry_lineno": 125,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 345,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley.py",
+     "required_by": [
+      "F7"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "recursion",
+      "unresolved"
+     ],
+     "site": "pathlib.Path.write_bytes",
+     "slots": {
+      "content": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "recursion",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": [
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "recursion",
+           "unresolved"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "recursion",
+              "unresolved"
+             ],
+             "shape": {
+              "k": "Unknown"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": ".pdf",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "download_wiley_paper_from_link",
+      "_download_wiley_paper_once",
+      "_wait_for_wiley_pdf"
+     ]
+    },
+    {
+     "entry_lineno": 125,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 345,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley.py",
+     "required_by": [
+      "F7"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "recursion",
+      "unresolved"
+     ],
+     "site": "pathlib.Path.write_bytes",
+     "slots": {
+      "content": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "recursion",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": [
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "recursion",
+           "unresolved"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "recursion",
+              "unresolved"
+             ],
+             "shape": {
+              "k": "Unknown"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": ".pdf",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "download_wiley_paper_from_link",
+      "_download_wiley_paper_once",
+      "_wait_for_wiley_pdf"
+     ]
+    },
+    {
+     "entry_lineno": 137,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 54,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/core.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "attrs": [
+        "canonicalised"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "download_paper_from_link"
+     ]
+    },
+    {
+     "entry_lineno": 137,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 56,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/core.py",
+     "required_by": [
+      "F7"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.write_bytes",
+     "slots": {
+      "content": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "download_paper_from_link"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "recursion",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "openWorldHint": true,
+     "readOnlyHint": false
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 57,
+    "module": "packages.paper-access-mcp.src.paper_access_mcp.server",
+    "params": [
+     {
+      "annotation": "Annotated[str, Field(description='Direct arXiv abs/pdf URL, OpenReview forum/pdf URL, INFORMS DOI URL, Wiley DOI URL, or supported UofT Wiley proxy URL.')]",
+      "index": 0,
+      "name": "url"
+     },
+     {
+      "annotation": "Annotated[str, Field(description='Directory where the PDF should be written. Use an absolute path or a relative path under the MCP server cwd.')]",
+      "index": 1,
+      "name": "output_dir"
+     },
+     {
+      "annotation": "Context",
+      "index": 2,
+      "name": "ctx"
+     },
+     {
+      "annotation": "Annotated[str | None, Field(description='Required for INFORMS and Wiley URLs. Directory for the persistent Chrome profile used to preserve login state. Not needed for arXiv or OpenReview.')]",
+      "default": "None",
+      "index": 3,
+      "name": "browser_profile_dir"
+     },
+     {
+      "annotation": "Annotated[BrowserMode, Field(description=\"Browser mode for INFORMS and Wiley. Must be 'headed' or 'headless'. headless starts hidden and reopens visibly if manual verification or login is required.\")]",
+      "default": "'headed'",
+      "index": 4,
+      "name": "browser_mode"
+     }
+    ],
+    "qualname": "download_paper_from_link_tool",
+    "relpath": "packages/paper-access-mcp/src/paper_access_mcp/server.py",
+    "schema_hash": "864e4fdfbaf9",
+    "tool_name": "download_paper_from_link_tool",
+    "unit_id": "mcp:download_paper_from_link_tool:864e4fdfbaf9"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

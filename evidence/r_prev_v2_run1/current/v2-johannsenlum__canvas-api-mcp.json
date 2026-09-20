@@ -1,0 +1,4749 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [
+    "_fence_comments"
+   ],
+   "form": "if_chain",
+   "lineno": 302,
+   "opaque_reason": null,
+   "relpath": "src/canvas_api_mcp/tools/student.py",
+   "resolution": "resolved",
+   "selector": "'submission_comments'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 434,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/canvas_api_mcp/tools/student.py",
+   "resolution": "opaque",
+   "selector": "submission_type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 436,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/canvas_api_mcp/tools/student.py",
+   "resolution": "opaque",
+   "selector": "submission_type",
+   "selector_is_model": true
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [],
+    "unknown": true
+   },
+   "alias_facts": [
+    {
+     "root": "course_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 176,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_course_content",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 176,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_course_content",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 176,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_course_content",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 176,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_course_content",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "unreadable",
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 172,
+    "module": "src.canvas_api_mcp.tools.content",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "Field(description='Course id, from my_courses')",
+      "index": 0,
+      "name": "course_id"
+     }
+    ],
+    "qualname": "register.course_content",
+    "relpath": "src/canvas_api_mcp/tools/content.py",
+    "schema_hash": "ef42871e7224",
+    "tool_name": "course_content",
+    "unit_id": "mcp:register.course_content:ef42871e7224"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [],
+    "unknown": true
+   },
+   "alias_facts": [
+    {
+     "root": "course_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    },
+    {
+     "root": "page_url",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 206,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_get_page",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 206,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_get_page",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 206,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_get_page",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 206,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_get_page",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "unreadable",
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 201,
+    "module": "src.canvas_api_mcp.tools.content",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "Field(description='Course id')",
+      "index": 0,
+      "name": "course_id"
+     },
+     {
+      "annotation": "str",
+      "default": "Field(description=\"Page slug, e.g. 'week-1-overview'\")",
+      "index": 1,
+      "name": "page_url"
+     }
+    ],
+    "qualname": "register.get_page",
+    "relpath": "src/canvas_api_mcp/tools/content.py",
+    "schema_hash": "127e6216728e",
+    "tool_name": "get_page",
+    "unit_id": "mcp:register.get_page:127e6216728e"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [],
+    "unknown": true
+   },
+   "alias_facts": [
+    {
+     "root": "course_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 220,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_get_syllabus",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 220,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_get_syllabus",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 220,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_get_syllabus",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 220,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_get_syllabus",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "unreadable",
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 216,
+    "module": "src.canvas_api_mcp.tools.content",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "Field(description='Course id')",
+      "index": 0,
+      "name": "course_id"
+     }
+    ],
+    "qualname": "register.get_syllabus",
+    "relpath": "src/canvas_api_mcp/tools/content.py",
+    "schema_hash": "5592f816eaf2",
+    "tool_name": "get_syllabus",
+    "unit_id": "mcp:register.get_syllabus:5592f816eaf2"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [],
+    "unknown": true
+   },
+   "alias_facts": [
+    {
+     "root": "course_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 191,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_list_files",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 191,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_list_files",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 191,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_list_files",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 191,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_list_files",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "unreadable",
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 186,
+    "module": "src.canvas_api_mcp.tools.content",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "Field(description='Course id')",
+      "index": 0,
+      "name": "course_id"
+     },
+     {
+      "annotation": "str | None",
+      "default": "Field(default=None, description='Filter by filename fragment')",
+      "index": 1,
+      "name": "search"
+     }
+    ],
+    "qualname": "register.list_files",
+    "relpath": "src/canvas_api_mcp/tools/content.py",
+    "schema_hash": "a4667e1c73ce",
+    "tool_name": "list_files",
+    "unit_id": "mcp:register.list_files:a4667e1c73ce"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [],
+    "unknown": true
+   },
+   "alias_facts": [
+    {
+     "root": "file_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    },
+    {
+     "root": "file_id",
+     "site": "src/canvas_api_mcp/extract.py:L58",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 235,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_read_file",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 235,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_read_file",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 235,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_read_file",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 235,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_read_file",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 235,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 126,
+     "relpath": "src/canvas_api_mcp/tools/content.py",
+     "required_by": [
+      "A16"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.get",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_read_file"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "unreadable",
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 230,
+    "module": "src.canvas_api_mcp.tools.content",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "Field(description='Canvas file id, from list_files')",
+      "index": 0,
+      "name": "file_id"
+     },
+     {
+      "annotation": "int",
+      "default": "Field(default=50000, description='Truncate extracted text to this length')",
+      "index": 1,
+      "name": "max_chars"
+     }
+    ],
+    "qualname": "register.read_file",
+    "relpath": "src/canvas_api_mcp/tools/content.py",
+    "schema_hash": "214ac1adee85",
+    "tool_name": "read_file",
+    "unit_id": "mcp:register.read_file:214ac1adee85"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [
+     "openWorldHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [
+     "destructiveHint",
+     "idempotentHint",
+     "readOnlyHint",
+     "title"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "message",
+     "site": "src/canvas_api_mcp/tools/discussions.py:L98",
+     "transform": "str.strip"
+    },
+    {
+     "root": "course_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    },
+    {
+     "root": "parent_entry_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    },
+    {
+     "root": "topic_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 175,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_post_discussion_reply",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 175,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_post_discussion_reply",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 175,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_post_discussion_reply",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 175,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_post_discussion_reply",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "idempotentHint": false,
+     "openWorldHint": true,
+     "readOnlyHint": false,
+     "title": "Post Discussion Reply"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 162,
+    "module": "src.canvas_api_mcp.tools.discussions",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "Field(description='Course id')",
+      "index": 0,
+      "name": "course_id"
+     },
+     {
+      "annotation": "int",
+      "default": "Field(description='Discussion topic id')",
+      "index": 1,
+      "name": "topic_id"
+     },
+     {
+      "annotation": "str",
+      "default": "Field(description='The reply text; HTML is allowed')",
+      "index": 2,
+      "name": "message"
+     },
+     {
+      "annotation": "int | None",
+      "default": "Field(default=None, description='Reply to this entry instead of the topic')",
+      "index": 3,
+      "name": "parent_entry_id"
+     },
+     {
+      "annotation": "bool",
+      "default": "Field(default=False, description='Return exactly what would be posted, without posting it')",
+      "index": 4,
+      "name": "dry_run"
+     }
+    ],
+    "qualname": "register.post_discussion_reply",
+    "relpath": "src/canvas_api_mcp/tools/discussions.py",
+    "schema_hash": "6e7294fc3243",
+    "tool_name": "post_discussion_reply",
+    "unit_id": "mcp:register.post_discussion_reply:6e7294fc3243"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [],
+    "unknown": true
+   },
+   "alias_facts": [
+    {
+     "root": "course_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    },
+    {
+     "root": "course_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    },
+    {
+     "root": "topic_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    },
+    {
+     "root": "course_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    },
+    {
+     "root": "topic_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 143,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_read_discussion",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 143,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_read_discussion",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 143,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_read_discussion",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 143,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_read_discussion",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 143,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_read_discussion",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 143,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_read_discussion",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 143,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_read_discussion",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 143,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_read_discussion",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 143,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_read_discussion",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 143,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_read_discussion",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 143,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_read_discussion",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 143,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_read_discussion",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "unreadable",
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 138,
+    "module": "src.canvas_api_mcp.tools.discussions",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "Field(description='Course id')",
+      "index": 0,
+      "name": "course_id"
+     },
+     {
+      "annotation": "int | None",
+      "default": "Field(default=None, description='Topic id; omit to list topics')",
+      "index": 1,
+      "name": "topic_id"
+     }
+    ],
+    "qualname": "register.read_discussion",
+    "relpath": "src/canvas_api_mcp/tools/discussions.py",
+    "schema_hash": "fb146fa634d1",
+    "tool_name": "read_discussion",
+    "unit_id": "mcp:register.read_discussion:fb146fa634d1"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [
+     "openWorldHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [
+     "destructiveHint",
+     "idempotentHint",
+     "readOnlyHint",
+     "title"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "method",
+     "site": "src/canvas_api_mcp/tools/gateway.py:L50",
+     "transform": "str.upper"
+    },
+    {
+     "root": "method",
+     "site": "src/canvas_api_mcp/tools/gateway.py:L50",
+     "transform": "str.strip"
+    },
+    {
+     "root": "path",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    },
+    {
+     "root": "path",
+     "site": "src/canvas_api_mcp/client.py:L42",
+     "transform": "str.strip"
+    },
+    {
+     "root": "path",
+     "site": "src/canvas_api_mcp/client.py:L42",
+     "transform": "str.strip"
+    },
+    {
+     "root": "path",
+     "site": "src/canvas_api_mcp/client.py:L42",
+     "transform": "str.strip"
+    },
+    {
+     "root": "path",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    },
+    {
+     "root": "method",
+     "site": "src/canvas_api_mcp/client.py:L295",
+     "transform": "str.upper"
+    },
+    {
+     "root": "method",
+     "site": "src/canvas_api_mcp/client.py:L295",
+     "transform": "str.upper"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "ALLOWED_METHODS": true
+   },
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 143,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_request",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 143,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_request",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 143,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_request",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 143,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_request",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "idempotentHint": false,
+     "openWorldHint": true,
+     "readOnlyHint": false,
+     "title": "Canvas API Request"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 135,
+    "module": "src.canvas_api_mcp.tools.gateway",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "Field(description='GET, POST, PUT, PATCH, or DELETE')",
+      "index": 0,
+      "name": "method"
+     },
+     {
+      "annotation": "str",
+      "default": "Field(description=\"Endpoint path, e.g. '/v1/users/self/groups' or 'courses/123/assignments'\")",
+      "index": 1,
+      "name": "path"
+     },
+     {
+      "annotation": "dict | None",
+      "default": "Field(default=None, description='Query string parameters')",
+      "index": 2,
+      "name": "params"
+     },
+     {
+      "annotation": "dict | None",
+      "default": "Field(default=None, description='JSON request body for write methods')",
+      "index": 3,
+      "name": "body"
+     },
+     {
+      "annotation": "bool",
+      "default": "Field(default=False, description='Return the prepared request without sending it')",
+      "index": 4,
+      "name": "dry_run"
+     }
+    ],
+    "qualname": "register.canvas_request",
+    "relpath": "src/canvas_api_mcp/tools/gateway.py",
+    "schema_hash": "d9749f713fc4",
+    "tool_name": "canvas_request",
+    "unit_id": "mcp:register.canvas_request:d9749f713fc4"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "destructiveHint",
+     "idempotentHint",
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "method",
+     "site": "src/canvas_api_mcp/catalog.py:L103",
+     "transform": "str.upper"
+    },
+    {
+     "root": "query",
+     "site": "src/canvas_api_mcp/catalog.py:L42",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Search Canvas API"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 108,
+    "module": "src.canvas_api_mcp.tools.gateway",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "Field(description=\"Keywords, e.g. 'group membership' or 'quiz submission'\")",
+      "index": 0,
+      "name": "query"
+     },
+     {
+      "annotation": "str | None",
+      "default": "Field(default=None, description='Optional filter: GET, POST, PUT, PATCH, DELETE')",
+      "index": 1,
+      "name": "method"
+     },
+     {
+      "annotation": "int",
+      "default": "Field(default=10, description='Maximum results to return')",
+      "index": 2,
+      "name": "limit"
+     }
+    ],
+    "qualname": "register.search_canvas_api",
+    "relpath": "src/canvas_api_mcp/tools/gateway.py",
+    "schema_hash": "62a6e81d6243",
+    "tool_name": "search_canvas_api",
+    "unit_id": "mcp:register.search_canvas_api:62a6e81d6243"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [],
+    "unknown": true
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "unreadable",
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 83,
+    "module": "src.canvas_api_mcp.tools.orientation",
+    "params": [],
+    "qualname": "register.get_calendar_feed_url",
+    "relpath": "src/canvas_api_mcp/tools/orientation.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "get_calendar_feed_url",
+    "unit_id": "mcp:register.get_calendar_feed_url:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [],
+    "unknown": true
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 99,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_my_courses",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 99,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_my_courses",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 99,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_my_courses",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 99,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_my_courses",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "unreadable",
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 95,
+    "module": "src.canvas_api_mcp.tools.orientation",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "Field(default='active', description='Enrollment state: active, completed, or invited')",
+      "index": 0,
+      "name": "state"
+     }
+    ],
+    "qualname": "register.my_courses",
+    "relpath": "src/canvas_api_mcp/tools/orientation.py",
+    "schema_hash": "0c00483e711c",
+    "tool_name": "my_courses",
+    "unit_id": "mcp:register.my_courses:0c00483e711c"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [],
+    "unknown": true
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "unreadable",
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 65,
+    "module": "src.canvas_api_mcp.tools.orientation",
+    "params": [],
+    "qualname": "register.whoami",
+    "relpath": "src/canvas_api_mcp/tools/orientation.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "whoami",
+    "unit_id": "mcp:register.whoami:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [],
+    "unknown": true
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 568,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_course_announcements",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 568,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_course_announcements",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 568,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_course_announcements",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 568,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_course_announcements",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 568,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_course_announcements",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 568,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_course_announcements",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 568,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_course_announcements",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 568,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_course_announcements",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "unreadable",
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 563,
+    "module": "src.canvas_api_mcp.tools.student",
+    "params": [
+     {
+      "annotation": "int | None",
+      "default": "Field(default=None, description='Limit to one course; omit for all')",
+      "index": 0,
+      "name": "course_id"
+     },
+     {
+      "annotation": "int",
+      "default": "Field(default=14, description='How many days back to look')",
+      "index": 1,
+      "name": "days"
+     }
+    ],
+    "qualname": "register.course_announcements",
+    "relpath": "src/canvas_api_mcp/tools/student.py",
+    "schema_hash": "a7ce346edef1",
+    "tool_name": "course_announcements",
+    "unit_id": "mcp:register.course_announcements:a7ce346edef1"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [],
+    "unknown": true
+   },
+   "alias_facts": [
+    {
+     "root": "assignment_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    },
+    {
+     "root": "course_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    },
+    {
+     "root": "assignment_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    },
+    {
+     "root": "course_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 540,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_get_assignment",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 540,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_get_assignment",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 540,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_get_assignment",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 540,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_get_assignment",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 540,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_get_assignment",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 540,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_get_assignment",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 540,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_get_assignment",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 540,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_get_assignment",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "unreadable",
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 535,
+    "module": "src.canvas_api_mcp.tools.student",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "Field(description='Course id')",
+      "index": 0,
+      "name": "course_id"
+     },
+     {
+      "annotation": "int",
+      "default": "Field(description='Assignment id')",
+      "index": 1,
+      "name": "assignment_id"
+     }
+    ],
+    "qualname": "register.get_assignment",
+    "relpath": "src/canvas_api_mcp/tools/student.py",
+    "schema_hash": "8204a8f9e9c3",
+    "tool_name": "get_assignment",
+    "unit_id": "mcp:register.get_assignment:8204a8f9e9c3"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [],
+    "unknown": true
+   },
+   "alias_facts": [
+    {
+     "root": "course_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 526,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_list_assignments",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 526,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_list_assignments",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 526,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_list_assignments",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 526,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_list_assignments",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "unreadable",
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 518,
+    "module": "src.canvas_api_mcp.tools.student",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "Field(description='Course id, from my_courses')",
+      "index": 0,
+      "name": "course_id"
+     },
+     {
+      "annotation": "str | None",
+      "default": "Field(default=None, description='One of: past, overdue, undated, ungraded, unsubmitted, upcoming, future')",
+      "index": 1,
+      "name": "bucket"
+     }
+    ],
+    "qualname": "register.list_assignments",
+    "relpath": "src/canvas_api_mcp/tools/student.py",
+    "schema_hash": "9e548199dddf",
+    "tool_name": "list_assignments",
+    "unit_id": "mcp:register.list_assignments:9e548199dddf"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [],
+    "unknown": true
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 508,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_my_grades",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 508,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_my_grades",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 508,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_my_grades",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 508,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_my_grades",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "unreadable",
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 504,
+    "module": "src.canvas_api_mcp.tools.student",
+    "params": [
+     {
+      "annotation": "int | None",
+      "default": "Field(default=None, description='Limit to one course; omit for all')",
+      "index": 0,
+      "name": "course_id"
+     }
+    ],
+    "qualname": "register.my_grades",
+    "relpath": "src/canvas_api_mcp/tools/student.py",
+    "schema_hash": "4000686f564f",
+    "tool_name": "my_grades",
+    "unit_id": "mcp:register.my_grades:4000686f564f"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [],
+    "unknown": true
+   },
+   "alias_facts": [
+    {
+     "root": "assignment_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    },
+    {
+     "root": "course_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 554,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_my_submission",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 554,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_my_submission",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 554,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_my_submission",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 554,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_my_submission",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "unreadable",
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 549,
+    "module": "src.canvas_api_mcp.tools.student",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "Field(description='Course id')",
+      "index": 0,
+      "name": "course_id"
+     },
+     {
+      "annotation": "int",
+      "default": "Field(description='Assignment id')",
+      "index": 1,
+      "name": "assignment_id"
+     }
+    ],
+    "qualname": "register.my_submission",
+    "relpath": "src/canvas_api_mcp/tools/student.py",
+    "schema_hash": "8204a8f9e9c3",
+    "tool_name": "my_submission",
+    "unit_id": "mcp:register.my_submission:8204a8f9e9c3"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [
+     "openWorldHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [
+     "destructiveHint",
+     "idempotentHint",
+     "readOnlyHint",
+     "title"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "assignment_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    },
+    {
+     "root": "course_id",
+     "site": "src/canvas_api_mcp/client.py:L70",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "SUBMISSION_REQUIREMENTS": null
+   },
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 607,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_submit_assignment",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 607,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [],
+        "k": "Str"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_submit_assignment",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 607,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_submit_assignment",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    },
+    {
+     "entry_lineno": 607,
+     "form": "proxy",
+     "kind": "NET",
+     "lineno": 190,
+     "relpath": "src/canvas_api_mcp/client.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "httpx.AsyncClient.request",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "url.scheme": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "do_submit_assignment",
+      "CanvasClient.request",
+      "CanvasClient._send"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "idempotentHint": false,
+     "openWorldHint": true,
+     "readOnlyHint": false,
+     "title": "Submit Assignment"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 590,
+    "module": "src.canvas_api_mcp.tools.student",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "Field(description='Course id')",
+      "index": 0,
+      "name": "course_id"
+     },
+     {
+      "annotation": "int",
+      "default": "Field(description='Assignment id')",
+      "index": 1,
+      "name": "assignment_id"
+     },
+     {
+      "annotation": "str",
+      "default": "Field(description='One of: online_text_entry, online_url, online_upload')",
+      "index": 2,
+      "name": "submission_type"
+     },
+     {
+      "annotation": "str | None",
+      "default": "Field(default=None, description='Text content for online_text_entry')",
+      "index": 3,
+      "name": "body"
+     },
+     {
+      "annotation": "str | None",
+      "default": "Field(default=None, description='URL for online_url')",
+      "index": 4,
+      "name": "url"
+     },
+     {
+      "annotation": "list[int] | None",
+      "default": "Field(default=None, description='Canvas file ids for online_upload')",
+      "index": 5,
+      "name": "file_ids"
+     },
+     {
+      "annotation": "bool",
+      "default": "Field(default=False, description='Return exactly what would be submitted, without submitting it')",
+      "index": 6,
+      "name": "dry_run"
+     }
+    ],
+    "qualname": "register.submit_assignment",
+    "relpath": "src/canvas_api_mcp/tools/student.py",
+    "schema_hash": "69dff9c81f93",
+    "tool_name": "submit_assignment",
+    "unit_id": "mcp:register.submit_assignment:69dff9c81f93"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [],
+    "unknown": true
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "unreadable",
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 491,
+    "module": "src.canvas_api_mcp.tools.student",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "Field(default=14, description='Horizon in days to describe in the result')",
+      "index": 0,
+      "name": "days"
+     }
+    ],
+    "qualname": "register.whats_due",
+    "relpath": "src/canvas_api_mcp/tools/student.py",
+    "schema_hash": "9cd1a526f189",
+    "tool_name": "whats_due",
+    "unit_id": "mcp:register.whats_due:9cd1a526f189"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

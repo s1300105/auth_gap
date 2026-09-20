@@ -11,6 +11,53 @@
 
 ---
 
+## D31. 母集団 v2 の full scan と `r_prev`: 宣言との差は CONTRADICTION に現れる（16/87 木）
+
+- **いつ**: 2026-09-20。D30 の 87 木で full scan（`evidence/scan_v2_run1/`）と
+  `r_prev`（`docs/prev_releases_v2.json` を先にコミット、`evidence/r_prev_v2_run1/`）。
+- **full scan**（行 4,804）: UNKNOWN 2,549 / GAP_SELECT 232 / GAP_INJECT 197 /
+  **CONTRADICTION 202** / INVENTORY 0。tree budget（180 s）で飛ばしたユニット 716
+  （xagent 等の大きな木。分母に効くので本文に書く）。
+  - **INVENTORY が 0、GAP_SELECT が 5 木だけ**なのは設計どおり: FastMCP デコレータ形
+    （2,205/2,231 ユニット）は木内に MODEL セレクタの dispatch が無く `trig = assumed`
+    なので、SELECT 座標は manifest 行にしかならない（`verdict.py:191`、仕様書 §3）。
+    **宣言を持つ母集団では、宣言 D と実効 M の差は SELECT 座標ではなく
+    CONTRADICTION（明示宣言に反する WRITE / EXEC / SPAWN）と、INJECT 行の
+    `D_layer_present` に現れる。** これは主張の書き方を決める所見である。
+  - CONTRADICTION はユニット × (site, kind) で 80 件・16 木
+    （`evidence/scan_v2_run1/contradictions.json`、手検証の候補表）:
+    readOnlyHint==true に反する書き込み / 実行 48 件（8 木、FS_WRITE 35 / SPAWN 13）、
+    destructiveHint==false のみに反するもの 32 件（12 木。`shutil.rmtree` /
+    `os.unlink` / `os.remove` のような削除も、`mkdir` / `open(w)` のような追記型も含む）。
+- **定義の食い違い（O16）**: `dparse.d_kind_from` は destructiveHint==false の上界に
+  FS_WRITE（追記型）を**含める**が、`dparse.contradiction` は FS_WRITE を無条件に
+  矛盾とする。追記型の書き込みを矛盾に数えるかで 32 件が動く。実装側で寄せない。
+- **`r_prev`（34 木 = 直前リリースを持つ 39.1%。旧枠 13.3%）**: 危険ユニットで
+  **93.9%（169/180）**、粗 91.7%、5 リリース前 65.6%。無条件（87 木の危険ユニット
+  1,027 を分母）で 16.5%。D_prev 層の適用可能性は旧枠の約 3 倍。
+- **§10 の 3 連言（母集団 v2）**: `r_D` 53.3%（偽）、`r_prev` 93.9%（偽）、validator
+  保有 3.5%（主分母で**真**）→ 不発火。ただし validator 保有の関門（≥ 5%）は
+  6 分母すべてで × なので、§10 A5 の対処（クラス 2 は T1+T2 のみ）が**この母集団では
+  発動する**。旧枠では主分母で通過していたので、母集団の変更で関門の合否が
+  入れ替わった。**O7 の分母選択は v2 では合否を動かさない**（全分母 ×）。
+- **旧枠との比較（本文の主表の候補）**:
+
+| | 母集団 v2（宣言あり） | 旧枠 run6 |
+|---|---|---|
+| r_D（上界を動かす明示） | 53.3% | 0.0% |
+| §10 分岐 | 1 | 3 |
+| validator 保有（主分母） | 3.5% × | 12.1% ○ |
+| 直前リリースを持つ木 | 39.1% | 13.3% |
+| r_prev（適用木内） | 93.9% | 88.1% |
+| CONTRADICTION を持つ木 | 16/87 | 0 |
+
+- **次に決めること**: O15（r_D の分子）、O16（追記型 FS_WRITE を矛盾に数えるか）。
+  **次の作業**: CONTRADICTION 80 件の手検証（`docs/verification_guide.md` の手順で
+  本人が行う。これが最初の再現数値になる）、tree budget を上げた再走（716 ユニット）、
+  full scan の決定論 3 回一致。
+
+---
+
 ## D30. 母集団 v2（宣言を持つ Python MCP サーバ）の最初の run: r_D = 53.3%、分岐 1
 
 - **いつ**: 2026-09-20。枠は `docs/population_v2.md` に列挙前に、抽出は `e29a8c8` に

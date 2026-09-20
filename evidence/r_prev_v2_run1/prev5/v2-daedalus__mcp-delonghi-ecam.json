@@ -1,0 +1,921 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "idempotentHint",
+     "openWorldHint",
+     "readOnlyHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": false,
+     "openWorldHint": false,
+     "readOnlyHint": false,
+     "title": "Brew Beverage"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 213,
+    "module": "src.mcp_delonghi_ecam.mcp",
+    "params": [
+     {
+      "annotation": "BrewBeverageInput",
+      "index": 0,
+      "name": "params"
+     }
+    ],
+    "qualname": "brew_beverage",
+    "relpath": "src/mcp_delonghi_ecam/mcp.py",
+    "schema_hash": "70fe8df8f49f",
+    "tool_name": "brew_beverage",
+    "unit_id": "mcp:brew_beverage:70fe8df8f49f"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "idempotentHint",
+     "openWorldHint",
+     "readOnlyHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": false,
+     "title": "Connect to Coffee Machine"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 120,
+    "module": "src.mcp_delonghi_ecam.mcp",
+    "params": [
+     {
+      "annotation": "ConnectInput",
+      "index": 0,
+      "name": "params"
+     }
+    ],
+    "qualname": "connect",
+    "relpath": "src/mcp_delonghi_ecam/mcp.py",
+    "schema_hash": "8fa8f742cf33",
+    "tool_name": "connect",
+    "unit_id": "mcp:connect:8fa8f742cf33"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "idempotentHint",
+     "openWorldHint",
+     "readOnlyHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": false,
+     "title": "Disconnect from Coffee Machine"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 152,
+    "module": "src.mcp_delonghi_ecam.mcp",
+    "params": [],
+    "qualname": "disconnect",
+    "relpath": "src/mcp_delonghi_ecam/mcp.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "disconnect",
+    "unit_id": "mcp:disconnect:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "destructiveHint",
+     "idempotentHint",
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Get Machine Info"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 401,
+    "module": "src.mcp_delonghi_ecam.mcp",
+    "params": [
+     {
+      "annotation": "MachineInfoInput",
+      "index": 0,
+      "name": "params"
+     }
+    ],
+    "qualname": "get_machine_info",
+    "relpath": "src/mcp_delonghi_ecam/mcp.py",
+    "schema_hash": "7fea2e221dc1",
+    "tool_name": "get_machine_info",
+    "unit_id": "mcp:get_machine_info:7fea2e221dc1"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "destructiveHint",
+     "idempotentHint",
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "params",
+     "site": "src/mcp_delonghi_ecam/services/control.py:L385",
+     "transform": "json.dumps"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Get Beverage Recipe"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 493,
+    "module": "src.mcp_delonghi_ecam.mcp",
+    "params": [
+     {
+      "annotation": "GetRecipeInput",
+      "index": 0,
+      "name": "params"
+     }
+    ],
+    "qualname": "get_recipe",
+    "relpath": "src/mcp_delonghi_ecam/mcp.py",
+    "schema_hash": "23af66c5ee63",
+    "tool_name": "get_recipe",
+    "unit_id": "mcp:get_recipe:23af66c5ee63"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "destructiveHint",
+     "idempotentHint",
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Get Machine Statistics"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 432,
+    "module": "src.mcp_delonghi_ecam.mcp",
+    "params": [
+     {
+      "annotation": "StatisticsInput",
+      "index": 0,
+      "name": "params"
+     }
+    ],
+    "qualname": "get_statistics",
+    "relpath": "src/mcp_delonghi_ecam/mcp.py",
+    "schema_hash": "3bb417e410ba",
+    "tool_name": "get_statistics",
+    "unit_id": "mcp:get_statistics:3bb417e410ba"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "destructiveHint",
+     "idempotentHint",
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Get Machine Status"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 182,
+    "module": "src.mcp_delonghi_ecam.mcp",
+    "params": [
+     {
+      "annotation": "StatusInput",
+      "index": 0,
+      "name": "params"
+     }
+    ],
+    "qualname": "get_status",
+    "relpath": "src/mcp_delonghi_ecam/mcp.py",
+    "schema_hash": "0a701dd4902d",
+    "tool_name": "get_status",
+    "unit_id": "mcp:get_status:0a701dd4902d"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "destructiveHint",
+     "idempotentHint",
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "List Available Beverages"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 463,
+    "module": "src.mcp_delonghi_ecam.mcp",
+    "params": [],
+    "qualname": "list_beverages",
+    "relpath": "src/mcp_delonghi_ecam/mcp.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "list_beverages",
+    "unit_id": "mcp:list_beverages:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "idempotentHint",
+     "openWorldHint",
+     "readOnlyHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": false,
+     "title": "Set Cup Light"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 339,
+    "module": "src.mcp_delonghi_ecam.mcp",
+    "params": [
+     {
+      "annotation": "CupControlInput",
+      "index": 0,
+      "name": "params"
+     }
+    ],
+    "qualname": "set_cup_light",
+    "relpath": "src/mcp_delonghi_ecam/mcp.py",
+    "schema_hash": "2da50af095c7",
+    "tool_name": "set_cup_light",
+    "unit_id": "mcp:set_cup_light:2da50af095c7"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "idempotentHint",
+     "openWorldHint",
+     "readOnlyHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": false,
+     "title": "Set Cup Warmer"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 370,
+    "module": "src.mcp_delonghi_ecam.mcp",
+    "params": [
+     {
+      "annotation": "CupControlInput",
+      "index": 0,
+      "name": "params"
+     }
+    ],
+    "qualname": "set_cup_warmer",
+    "relpath": "src/mcp_delonghi_ecam/mcp.py",
+    "schema_hash": "2da50af095c7",
+    "tool_name": "set_cup_warmer",
+    "unit_id": "mcp:set_cup_warmer:2da50af095c7"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "idempotentHint",
+     "openWorldHint",
+     "readOnlyHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": false,
+     "title": "Stop Brewing"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 249,
+    "module": "src.mcp_delonghi_ecam.mcp",
+    "params": [],
+    "qualname": "stop_brewing",
+    "relpath": "src/mcp_delonghi_ecam/mcp.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "stop_brewing",
+    "unit_id": "mcp:stop_brewing:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "idempotentHint",
+     "openWorldHint",
+     "readOnlyHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": false,
+     "title": "Turn Machine Off"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 309,
+    "module": "src.mcp_delonghi_ecam.mcp",
+    "params": [],
+    "qualname": "turn_off",
+    "relpath": "src/mcp_delonghi_ecam/mcp.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "turn_off",
+    "unit_id": "mcp:turn_off:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "idempotentHint",
+     "openWorldHint",
+     "readOnlyHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": false,
+     "title": "Turn Machine On"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 279,
+    "module": "src.mcp_delonghi_ecam.mcp",
+    "params": [],
+    "qualname": "turn_on",
+    "relpath": "src/mcp_delonghi_ecam/mcp.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "turn_on",
+    "unit_id": "mcp:turn_on:d36d5fd42096"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

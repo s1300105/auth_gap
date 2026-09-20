@@ -299,6 +299,24 @@
 
 ---
 
+## O16. `destructiveHint==false` の宣言に対して、追記型の FS_WRITE を CONTRADICTION に数えるか
+
+- **要る情報**: Def 7 の CONTRADICTION の読み。`authgap/dparse.py: d_kind_from` は
+  destructiveHint==false の上界に FS_WRITE（追記型）と DB を含めるが、
+  `dparse.contradiction` は FS_WRITE を無条件に矛盾とする。
+- **背景**: 母集団 v2 の full scan で CONTRADICTION 80 件のうち 32 件（12 木）が
+  destructiveHint==false のみに反するもので、`shutil.rmtree` / `os.unlink` のような
+  削除（矛盾として妥当）と、`mkdir` / `open(w)` のような追記型（上界の定義では
+  宣言内）が混ざる（D31、`evidence/scan_v2_run1/contradictions.json`）。
+- **案**: (a) 追記型と削除型を sink カタログで分け、削除型だけを矛盾に数える
+  （sink 語彙の変更 = 凍結後の逸脱として記録）。(b) 現行どおり FS_WRITE 全部を
+  矛盾に数え、上界の定義を FS_WRITE を含めない形に揃える。(c) 現行のまま、本文で
+  32 件を「追記型を含む」と注記する。
+- **誤りの向き**: (a)(b) で 32 件が減る側 / 増えない側に動く。手検証（D31 の次の
+  作業）で削除型と追記型の内訳を出してから決める。
+
+---
+
 ## 参考: 質問ではなく作業として残っているもの
 
 - **較正対の検証**: `docs/cve_triage.csv` の 25 行のうち一次確認できたのは

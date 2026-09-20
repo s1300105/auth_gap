@@ -1,0 +1,962 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 66,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "examples/aws_strands_agent/dbt_data_scientist/tools/dbt_model_analyzer.py",
+   "resolution": "opaque",
+   "selector": "'dependency'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 38,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/unit/dbt_admin/run_artifacts/test_parsers.py",
+   "resolution": "opaque",
+   "selector": "artifact_type",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 47,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/unit/dbt_admin/run_artifacts/test_parsers.py",
+   "resolution": "opaque",
+   "selector": "artifact_type",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 93,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/unit/dbt_cli/test_cli_integration.py",
+   "resolution": "opaque",
+   "selector": "command_name",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 42,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/unit/dbt_cli/test_manifest_encoding.py",
+   "resolution": "opaque",
+   "selector": "'get_lineage_dev'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 65,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/unit/dbt_cli/test_manifest_non_ascii.py",
+   "resolution": "opaque",
+   "selector": "'get_lineage_dev'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 549,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/unit/dbt_cli/test_tools.py",
+   "resolution": "opaque",
+   "selector": "'build'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 579,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/unit/dbt_cli/test_tools.py",
+   "resolution": "opaque",
+   "selector": "'build'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 612,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/unit/dbt_cli/test_tools.py",
+   "resolution": "opaque",
+   "selector": "'build'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 643,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/unit/dbt_cli/test_tools.py",
+   "resolution": "opaque",
+   "selector": "'build'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 759,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/unit/dbt_cli/test_tools.py",
+   "resolution": "opaque",
+   "selector": "'run'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 792,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/unit/dbt_cli/test_tools.py",
+   "resolution": "opaque",
+   "selector": "'run'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 818,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/unit/dbt_cli/test_tools.py",
+   "resolution": "opaque",
+   "selector": "'ls'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 845,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/unit/dbt_cli/test_tools.py",
+   "resolution": "opaque",
+   "selector": "'ls'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 878,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/unit/dbt_cli/test_tools.py",
+   "resolution": "opaque",
+   "selector": "'get_lineage_dev'",
+   "selector_is_model": false
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [
+  "src/dbt_mcp/config/config_providers/base.py",
+  "src/dbt_mcp/config/settings.py",
+  "src/dbt_mcp/tools/definitions.py",
+  "src/dbt_mcp/tools/injection.py",
+  "src/dbt_mcp/tools/register.py"
+ ],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 36,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 36,
+     "relpath": "examples/aws_strands_agent/dbt_data_scientist/tools/dbt_compile.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "compile",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--log-format",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "json",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "cwd": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV"
+    },
+    {
+     "entry_lineno": 36,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 134,
+     "relpath": "src/dbt_mcp/dbt_cli/tools.py",
+     "required_by": [
+      "F6"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.Popen",
+     "slots": {
+      "cwd": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "create_dbt_cli_tool_definitions.run",
+      "create_dbt_cli_tool_definitions._run_dbt_command"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 20,
+    "module": "examples.aws_strands_agent.dbt_data_scientist.tools.dbt_compile",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "query"
+     }
+    ],
+    "qualname": "dbt_compile",
+    "relpath": "examples/aws_strands_agent/dbt_data_scientist/tools/dbt_compile.py",
+    "schema_hash": "335a9573280b",
+    "tool_name": "dbt_compile",
+    "unit_id": "mcp:dbt_compile:335a9573280b"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "query",
+     "site": "examples/aws_strands_agent/dbt_data_scientist/tools/dbt_mcp.py:L73",
+     "transform": "str.lower"
+    },
+    {
+     "root": "query",
+     "site": "examples/aws_strands_agent/dbt_data_scientist/tools/dbt_mcp.py:L74",
+     "transform": "str.lower"
+    },
+    {
+     "root": "query",
+     "site": "examples/aws_strands_agent/dbt_data_scientist/tools/dbt_mcp.py:L74",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 52,
+    "module": "examples.aws_strands_agent.dbt_data_scientist.tools.dbt_mcp",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "query"
+     }
+    ],
+    "qualname": "dbt_mcp_tool",
+    "relpath": "examples/aws_strands_agent/dbt_data_scientist/tools/dbt_mcp.py",
+    "schema_hash": "335a9573280b",
+    "tool_name": "dbt_mcp_tool",
+    "unit_id": "mcp:dbt_mcp_tool:335a9573280b"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "query",
+     "site": "examples/aws_strands_agent/dbt_data_scientist/tools/dbt_model_analyzer.py:L62",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [
+    {
+     "entry_lineno": 78,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 138,
+     "relpath": "examples/aws_strands_agent/dbt_data_scientist/tools/dbt_model_analyzer.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_READ",
+     "witness_chain": [
+      "gather_dbt_project_info"
+     ]
+    },
+    {
+     "entry_lineno": 78,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 152,
+     "relpath": "examples/aws_strands_agent/dbt_data_scientist/tools/dbt_model_analyzer.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "list",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--resource-type",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "model",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "cwd": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "gather_dbt_project_info"
+     ]
+    },
+    {
+     "entry_lineno": 78,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 134,
+     "relpath": "src/dbt_mcp/dbt_cli/tools.py",
+     "required_by": [
+      "F6"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.Popen",
+     "slots": {
+      "cwd": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "gather_dbt_project_info",
+      "create_dbt_cli_tool_definitions.run",
+      "create_dbt_cli_tool_definitions._run_dbt_command"
+     ]
+    },
+    {
+     "entry_lineno": 78,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 168,
+     "relpath": "examples/aws_strands_agent/dbt_data_scientist/tools/dbt_model_analyzer.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "list",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--resource-type",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "test",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "cwd": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "gather_dbt_project_info"
+     ]
+    },
+    {
+     "entry_lineno": 78,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 134,
+     "relpath": "src/dbt_mcp/dbt_cli/tools.py",
+     "required_by": [
+      "F6"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.Popen",
+     "slots": {
+      "cwd": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "gather_dbt_project_info",
+      "create_dbt_cli_tool_definitions.run",
+      "create_dbt_cli_tool_definitions._run_dbt_command"
+     ]
+    },
+    {
+     "entry_lineno": 78,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 184,
+     "relpath": "examples/aws_strands_agent/dbt_data_scientist/tools/dbt_model_analyzer.py",
+     "required_by": [
+      "A5",
+      "F3",
+      "F9"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.run",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Atom"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "list",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--resource-type",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "source",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "cwd": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "gather_dbt_project_info"
+     ]
+    },
+    {
+     "entry_lineno": 78,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 134,
+     "relpath": "src/dbt_mcp/dbt_cli/tools.py",
+     "required_by": [
+      "F6"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.Popen",
+     "slots": {
+      "cwd": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "gather_dbt_project_info",
+      "create_dbt_cli_tool_definitions.run",
+      "create_dbt_cli_tool_definitions._run_dbt_command"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 34,
+    "module": "examples.aws_strands_agent.dbt_data_scientist.tools.dbt_model_analyzer",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "query"
+     }
+    ],
+    "qualname": "dbt_model_analyzer_agent",
+    "relpath": "examples/aws_strands_agent/dbt_data_scientist/tools/dbt_model_analyzer.py",
+    "schema_hash": "335a9573280b",
+    "tool_name": "dbt_model_analyzer_agent",
+    "unit_id": "mcp:dbt_model_analyzer_agent:335a9573280b"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

@@ -1,0 +1,7489 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [
+    "payload.pop"
+   ],
+   "form": "if_chain",
+   "lineno": 157,
+   "opaque_reason": null,
+   "relpath": "src/excel_mcp/server.py",
+   "resolution": "resolved",
+   "selector": "key",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "hints.append"
+   ],
+   "form": "if_chain",
+   "lineno": 178,
+   "opaque_reason": null,
+   "relpath": "src/excel_mcp/server.py",
+   "resolution": "resolved",
+   "selector": "'cells'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "hints.append"
+   ],
+   "form": "if_chain",
+   "lineno": 230,
+   "opaque_reason": null,
+   "relpath": "src/excel_mcp/server.py",
+   "resolution": "resolved",
+   "selector": "data_dict.get('row_mode')",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "hints.append"
+   ],
+   "form": "if_chain",
+   "lineno": 259,
+   "opaque_reason": null,
+   "relpath": "src/excel_mcp/server.py",
+   "resolution": "resolved",
+   "selector": "'changes'",
+   "selector_is_model": true
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [
+  {
+   "cap": "ast_node_cap",
+   "count": 25364,
+   "relpath": "src/excel_mcp/workbook.py"
+  }
+ ],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Aggregate Table"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 978,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "table_name"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 3,
+      "name": "header_row"
+     },
+     {
+      "annotation": "Optional[List[Dict[str, Any]]]",
+      "default": "None",
+      "index": 4,
+      "name": "filters"
+     },
+     {
+      "annotation": "Optional[List[str]]",
+      "default": "None",
+      "index": 5,
+      "name": "group_by"
+     },
+     {
+      "annotation": "Optional[List[Dict[str, Any]]]",
+      "default": "None",
+      "index": 6,
+      "name": "metrics"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 7,
+      "name": "sort_by"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 8,
+      "name": "sort_desc"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 9,
+      "name": "limit"
+     },
+     {
+      "annotation": "str",
+      "default": "'arrays'",
+      "index": 10,
+      "name": "row_mode"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 11,
+      "name": "infer_schema"
+     }
+    ],
+    "qualname": "aggregate_table",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "7b40b4da5862",
+    "tool_name": "aggregate_table",
+    "unit_id": "mcp:aggregate_table:7b40b4da5862"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Analyze Range Impact"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1507,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "range_ref"
+     }
+    ],
+    "qualname": "analyze_range_impact",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "eea1bc257908",
+    "tool_name": "analyze_range_impact",
+    "unit_id": "mcp:analyze_range_impact:eea1bc257908"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Append Table Rows"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2455,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "List[Dict[str, Any]]",
+      "index": 2,
+      "name": "rows"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 3,
+      "name": "header_row"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 4,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "Optional[bool]",
+      "default": "None",
+      "index": 5,
+      "name": "include_changes"
+     }
+    ],
+    "qualname": "append_table_rows",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "c997ef47784f",
+    "tool_name": "append_table_rows",
+    "unit_id": "mcp:append_table_rows:c997ef47784f"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Apply Formula"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 374,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "cell"
+     },
+     {
+      "annotation": "str",
+      "index": 3,
+      "name": "formula"
+     }
+    ],
+    "qualname": "apply_formula",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "11d50f2eaebe",
+    "tool_name": "apply_formula",
+    "unit_id": "mcp:apply_formula:11d50f2eaebe"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Apply Workbook Repairs"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1633,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "Optional[List[str]]",
+      "default": "None",
+      "index": 1,
+      "name": "repair_types"
+     },
+     {
+      "annotation": "Optional[List[str]]",
+      "default": "None",
+      "index": 2,
+      "name": "sheet_names"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 3,
+      "name": "header_row"
+     },
+     {
+      "annotation": "int",
+      "default": "25",
+      "index": 4,
+      "name": "sample_limit"
+     },
+     {
+      "annotation": "bool",
+      "default": "True",
+      "index": 5,
+      "name": "dry_run"
+     }
+    ],
+    "qualname": "apply_workbook_repairs",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "02fa81859d45",
+    "tool_name": "apply_workbook_repairs",
+    "unit_id": "mcp:apply_workbook_repairs:02fa81859d45"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Audit Workbook"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1587,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 1,
+      "name": "header_row"
+     },
+     {
+      "annotation": "int",
+      "default": "25",
+      "index": 2,
+      "name": "sample_limit"
+     }
+    ],
+    "qualname": "audit_workbook",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "a4b6ebf7886b",
+    "tool_name": "audit_workbook",
+    "unit_id": "mcp:audit_workbook:a4b6ebf7886b"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Autofit Columns"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2027,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Optional[List[str]]",
+      "default": "None",
+      "index": 2,
+      "name": "columns"
+     },
+     {
+      "annotation": "float",
+      "default": "8.43",
+      "index": 3,
+      "name": "min_width"
+     },
+     {
+      "annotation": "Optional[float]",
+      "default": "None",
+      "index": 4,
+      "name": "max_width"
+     },
+     {
+      "annotation": "float",
+      "default": "2.0",
+      "index": 5,
+      "name": "padding"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 6,
+      "name": "dry_run"
+     }
+    ],
+    "qualname": "autofit_columns",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "4f3ad058e970",
+    "tool_name": "autofit_columns",
+    "unit_id": "mcp:autofit_columns:4f3ad058e970"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Bulk Aggregate Workbooks"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1019,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "List[str]",
+      "index": 0,
+      "name": "filepaths"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "table_name"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 3,
+      "name": "header_row"
+     },
+     {
+      "annotation": "Optional[List[Dict[str, Any]]]",
+      "default": "None",
+      "index": 4,
+      "name": "filters"
+     },
+     {
+      "annotation": "Optional[List[str]]",
+      "default": "None",
+      "index": 5,
+      "name": "group_by"
+     },
+     {
+      "annotation": "Optional[List[Dict[str, Any]]]",
+      "default": "None",
+      "index": 6,
+      "name": "metrics"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 7,
+      "name": "sort_by"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 8,
+      "name": "sort_desc"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 9,
+      "name": "limit"
+     },
+     {
+      "annotation": "str",
+      "default": "'strict'",
+      "index": 10,
+      "name": "schema_mode"
+     },
+     {
+      "annotation": "int",
+      "default": "10",
+      "index": 11,
+      "name": "source_sample_limit"
+     },
+     {
+      "annotation": "str",
+      "default": "'arrays'",
+      "index": 12,
+      "name": "row_mode"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 13,
+      "name": "infer_schema"
+     }
+    ],
+    "qualname": "bulk_aggregate_workbooks",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "33847eec59d8",
+    "tool_name": "bulk_aggregate_workbooks",
+    "unit_id": "mcp:bulk_aggregate_workbooks:33847eec59d8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Bulk Filter Workbooks"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 823,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "List[str]",
+      "index": 0,
+      "name": "filepaths"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "table_name"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 3,
+      "name": "header_row"
+     },
+     {
+      "annotation": "Optional[List[str]]",
+      "default": "None",
+      "index": 4,
+      "name": "select"
+     },
+     {
+      "annotation": "Optional[List[Dict[str, Any]]]",
+      "default": "None",
+      "index": 5,
+      "name": "filters"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 6,
+      "name": "sort_by"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 7,
+      "name": "sort_desc"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 8,
+      "name": "limit"
+     },
+     {
+      "annotation": "str",
+      "default": "'strict'",
+      "index": 9,
+      "name": "schema_mode"
+     },
+     {
+      "annotation": "int",
+      "default": "10",
+      "index": 10,
+      "name": "source_sample_limit"
+     },
+     {
+      "annotation": "bool",
+      "default": "True",
+      "index": 11,
+      "name": "include_source_columns"
+     },
+     {
+      "annotation": "str",
+      "default": "'arrays'",
+      "index": 12,
+      "name": "row_mode"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 13,
+      "name": "infer_schema"
+     }
+    ],
+    "qualname": "bulk_filter_workbooks",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "2ccc810ff986",
+    "tool_name": "bulk_filter_workbooks",
+    "unit_id": "mcp:bulk_filter_workbooks:2ccc810ff986"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Copy Range"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2084,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "source_start"
+     },
+     {
+      "annotation": "str",
+      "index": 3,
+      "name": "source_end"
+     },
+     {
+      "annotation": "str",
+      "index": 4,
+      "name": "target_start"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 5,
+      "name": "target_sheet"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 6,
+      "name": "dry_run"
+     }
+    ],
+    "qualname": "copy_range",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "318554daa4d9",
+    "tool_name": "copy_range",
+    "unit_id": "mcp:copy_range:318554daa4d9"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Copy Worksheet"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1407,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "source_sheet"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "target_sheet"
+     }
+    ],
+    "qualname": "copy_worksheet",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "d51aafad91d5",
+    "tool_name": "copy_worksheet",
+    "unit_id": "mcp:copy_worksheet:d51aafad91d5"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Create Chart"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1184,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "chart_type"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 3,
+      "name": "target_cell"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 4,
+      "name": "data_range"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 5,
+      "name": "title"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 6,
+      "name": "x_axis"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 7,
+      "name": "y_axis"
+     },
+     {
+      "annotation": "Optional[Dict[str, Any]]",
+      "default": "None",
+      "index": 8,
+      "name": "style"
+     },
+     {
+      "annotation": "Optional[List[Dict[str, Any]]]",
+      "default": "None",
+      "index": 9,
+      "name": "series"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 10,
+      "name": "categories_range"
+     },
+     {
+      "annotation": "Optional[float]",
+      "default": "None",
+      "index": 11,
+      "name": "width"
+     },
+     {
+      "annotation": "Optional[float]",
+      "default": "None",
+      "index": 12,
+      "name": "height"
+     },
+     {
+      "annotation": "Optional[Dict[str, Any]]",
+      "default": "None",
+      "index": 13,
+      "name": "placement"
+     }
+    ],
+    "qualname": "create_chart",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "ec5a9cb8eef5",
+    "tool_name": "create_chart",
+    "unit_id": "mcp:create_chart:ec5a9cb8eef5"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Create Chart From Series"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1233,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "chart_type"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 3,
+      "name": "target_cell"
+     },
+     {
+      "annotation": "Optional[List[Dict[str, Any]]]",
+      "default": "None",
+      "index": 4,
+      "name": "series"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 5,
+      "name": "title"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 6,
+      "name": "x_axis"
+     },
+     {
+      "annotation": "str",
+      "default": "''",
+      "index": 7,
+      "name": "y_axis"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 8,
+      "name": "categories_range"
+     },
+     {
+      "annotation": "Optional[Dict[str, Any]]",
+      "default": "None",
+      "index": 9,
+      "name": "style"
+     },
+     {
+      "annotation": "Optional[float]",
+      "default": "None",
+      "index": 10,
+      "name": "width"
+     },
+     {
+      "annotation": "Optional[float]",
+      "default": "None",
+      "index": 11,
+      "name": "height"
+     },
+     {
+      "annotation": "Optional[Dict[str, Any]]",
+      "default": "None",
+      "index": 12,
+      "name": "placement"
+     }
+    ],
+    "qualname": "create_chart_from_series",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "bfdce192f072",
+    "tool_name": "create_chart_from_series",
+    "unit_id": "mcp:create_chart_from_series:bfdce192f072"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Create Pivot Table"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1331,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "data_range"
+     },
+     {
+      "annotation": "List[str]",
+      "index": 3,
+      "name": "rows"
+     },
+     {
+      "annotation": "List[str]",
+      "index": 4,
+      "name": "values"
+     },
+     {
+      "annotation": "Optional[List[str]]",
+      "default": "None",
+      "index": 5,
+      "name": "columns"
+     },
+     {
+      "annotation": "str",
+      "default": "'sum'",
+      "index": 6,
+      "name": "agg_func"
+     }
+    ],
+    "qualname": "create_pivot_table",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "b8465b70a592",
+    "tool_name": "create_pivot_table",
+    "unit_id": "mcp:create_pivot_table:b8465b70a592"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Create Table"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1361,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "data_range"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 3,
+      "name": "table_name"
+     },
+     {
+      "annotation": "str",
+      "default": "'TableStyleMedium9'",
+      "index": 4,
+      "name": "table_style"
+     }
+    ],
+    "qualname": "create_table",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "9aa4a58fca91",
+    "tool_name": "create_table",
+    "unit_id": "mcp:create_table:9aa4a58fca91"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Create Workbook"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1145,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     }
+    ],
+    "qualname": "create_workbook",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "70a984c8546c",
+    "tool_name": "create_workbook",
+    "unit_id": "mcp:create_workbook:70a984c8546c"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Create Worksheet"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1165,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     }
+    ],
+    "qualname": "create_worksheet",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "fcb7f4bf0385",
+    "tool_name": "create_worksheet",
+    "unit_id": "mcp:create_worksheet:fcb7f4bf0385"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Cross Workbook Lookup"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 913,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "source_filepath"
+     },
+     {
+      "annotation": "List[str]",
+      "index": 1,
+      "name": "lookup_filepaths"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "source_key"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 3,
+      "name": "source_sheet_name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 4,
+      "name": "source_table_name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 5,
+      "name": "lookup_sheet_name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 6,
+      "name": "lookup_table_name"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 7,
+      "name": "source_header_row"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 8,
+      "name": "lookup_header_row"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 9,
+      "name": "lookup_key"
+     },
+     {
+      "annotation": "Optional[List[str]]",
+      "default": "None",
+      "index": 10,
+      "name": "select"
+     },
+     {
+      "annotation": "Optional[List[str]]",
+      "default": "None",
+      "index": 11,
+      "name": "lookup_select"
+     },
+     {
+      "annotation": "str",
+      "default": "'left'",
+      "index": 12,
+      "name": "join_type"
+     },
+     {
+      "annotation": "str",
+      "default": "'first'",
+      "index": 13,
+      "name": "match_mode"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 14,
+      "name": "lookup_sort_by"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 15,
+      "name": "lookup_sort_desc"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 16,
+      "name": "limit"
+     },
+     {
+      "annotation": "str",
+      "default": "'strict'",
+      "index": 17,
+      "name": "schema_mode"
+     },
+     {
+      "annotation": "int",
+      "default": "10",
+      "index": 18,
+      "name": "lookup_sample_limit"
+     },
+     {
+      "annotation": "bool",
+      "default": "True",
+      "index": 19,
+      "name": "include_lookup_source_columns"
+     },
+     {
+      "annotation": "bool",
+      "default": "True",
+      "index": 20,
+      "name": "include_lookup_match_count"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 21,
+      "name": "case_sensitive"
+     },
+     {
+      "annotation": "str",
+      "default": "'arrays'",
+      "index": 22,
+      "name": "row_mode"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 23,
+      "name": "infer_schema"
+     }
+    ],
+    "qualname": "cross_workbook_lookup",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "c207ac765219",
+    "tool_name": "cross_workbook_lookup",
+    "unit_id": "mcp:cross_workbook_lookup:c207ac765219"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Delete Named Range"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1725,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "scope_sheet"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "dry_run"
+     }
+    ],
+    "qualname": "delete_named_range",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "e7edc4d6b98f",
+    "tool_name": "delete_named_range",
+    "unit_id": "mcp:delete_named_range:e7edc4d6b98f"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false,
+    "logger": null
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Delete Range"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2116,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "start_cell"
+     },
+     {
+      "annotation": "str",
+      "index": 3,
+      "name": "end_cell"
+     },
+     {
+      "annotation": "str",
+      "default": "'up'",
+      "index": 4,
+      "name": "shift_direction"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 5,
+      "name": "dry_run"
+     }
+    ],
+    "qualname": "delete_range",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "39416dedb552",
+    "tool_name": "delete_range",
+    "unit_id": "mcp:delete_range:39416dedb552"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Delete Columns"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2385,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "int",
+      "index": 2,
+      "name": "start_col"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 3,
+      "name": "count"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 4,
+      "name": "dry_run"
+     }
+    ],
+    "qualname": "delete_sheet_columns",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "a11eba38a99e",
+    "tool_name": "delete_sheet_columns",
+    "unit_id": "mcp:delete_sheet_columns:a11eba38a99e"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Delete Rows"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2365,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "int",
+      "index": 2,
+      "name": "start_row"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 3,
+      "name": "count"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 4,
+      "name": "dry_run"
+     }
+    ],
+    "qualname": "delete_sheet_rows",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "7ff275542251",
+    "tool_name": "delete_sheet_rows",
+    "unit_id": "mcp:delete_sheet_rows:7ff275542251"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Delete Worksheet"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1425,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     }
+    ],
+    "qualname": "delete_worksheet",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "fcb7f4bf0385",
+    "tool_name": "delete_worksheet",
+    "unit_id": "mcp:delete_worksheet:fcb7f4bf0385"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Describe Dataset"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 728,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "table_name"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 3,
+      "name": "header_row"
+     },
+     {
+      "annotation": "int",
+      "default": "25",
+      "index": 4,
+      "name": "sample_rows"
+     }
+    ],
+    "qualname": "describe_dataset",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "7a013fb13ac2",
+    "tool_name": "describe_dataset",
+    "unit_id": "mcp:describe_dataset:7a013fb13ac2"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Describe Sheet Layout"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1478,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "int",
+      "default": "10",
+      "index": 2,
+      "name": "sample_limit"
+     },
+     {
+      "annotation": "int",
+      "default": "8",
+      "index": 3,
+      "name": "free_canvas_rows"
+     },
+     {
+      "annotation": "int",
+      "default": "6",
+      "index": 4,
+      "name": "free_canvas_cols"
+     },
+     {
+      "annotation": "int",
+      "default": "3",
+      "index": 5,
+      "name": "free_canvas_limit"
+     }
+    ],
+    "qualname": "describe_sheet_layout",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "18104b448187",
+    "tool_name": "describe_sheet_layout",
+    "unit_id": "mcp:describe_sheet_layout:18104b448187"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Detect Circular Dependencies"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1551,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "int",
+      "default": "25",
+      "index": 1,
+      "name": "sample_limit"
+     }
+    ],
+    "qualname": "detect_circular_dependencies",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "44420d46cf72",
+    "tool_name": "detect_circular_dependencies",
+    "unit_id": "mcp:detect_circular_dependencies:44420d46cf72"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Diff Workbooks"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1662,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "before_filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "after_filepath"
+     },
+     {
+      "annotation": "int",
+      "default": "25",
+      "index": 2,
+      "name": "sample_limit"
+     },
+     {
+      "annotation": "bool",
+      "default": "True",
+      "index": 3,
+      "name": "include_cell_changes"
+     }
+    ],
+    "qualname": "diff_workbooks",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "853acac09030",
+    "tool_name": "diff_workbooks",
+    "unit_id": "mcp:diff_workbooks:853acac09030"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Explain Formula Cell"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1526,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "cell"
+     },
+     {
+      "annotation": "int",
+      "default": "3",
+      "index": 3,
+      "name": "max_depth"
+     }
+    ],
+    "qualname": "explain_formula_cell",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "57ffd2f30b0d",
+    "tool_name": "explain_formula_cell",
+    "unit_id": "mcp:explain_formula_cell:57ffd2f30b0d"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Find Free Canvas"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1291,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Optional[float]",
+      "default": "None",
+      "index": 2,
+      "name": "width"
+     },
+     {
+      "annotation": "Optional[float]",
+      "default": "None",
+      "index": 3,
+      "name": "height"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 4,
+      "name": "min_rows"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 5,
+      "name": "min_cols"
+     },
+     {
+      "annotation": "int",
+      "default": "5",
+      "index": 6,
+      "name": "limit"
+     },
+     {
+      "annotation": "str",
+      "default": "'A1'",
+      "index": 7,
+      "name": "origin_cell"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 8,
+      "name": "search_rows"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 9,
+      "name": "search_columns"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 10,
+      "name": "padding_rows"
+     },
+     {
+      "annotation": "int",
+      "default": "0",
+      "index": 11,
+      "name": "padding_columns"
+     }
+    ],
+    "qualname": "find_free_canvas",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "864319f554bb",
+    "tool_name": "find_free_canvas",
+    "unit_id": "mcp:find_free_canvas:864319f554bb"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Format Range"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 440,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "start_cell"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 3,
+      "name": "end_cell"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 4,
+      "name": "bold"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 5,
+      "name": "italic"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 6,
+      "name": "underline"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 7,
+      "name": "font_size"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 8,
+      "name": "font_color"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 9,
+      "name": "bg_color"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 10,
+      "name": "border_style"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 11,
+      "name": "border_color"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 12,
+      "name": "number_format"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 13,
+      "name": "alignment"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 14,
+      "name": "wrap_text"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 15,
+      "name": "merge_cells"
+     },
+     {
+      "annotation": "Optional[Dict[str, Any]]",
+      "default": "None",
+      "index": 16,
+      "name": "protection"
+     },
+     {
+      "annotation": "Optional[Dict[str, Any]]",
+      "default": "None",
+      "index": 17,
+      "name": "conditional_format"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 18,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "Optional[bool]",
+      "default": "None",
+      "index": 19,
+      "name": "include_changes"
+     }
+    ],
+    "qualname": "format_range",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "165b04657a7e",
+    "tool_name": "format_range",
+    "unit_id": "mcp:format_range:165b04657a7e"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Format Multiple Ranges"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 500,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "List[Dict[str, Any]]",
+      "index": 2,
+      "name": "ranges"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "Optional[bool]",
+      "default": "None",
+      "index": 4,
+      "name": "include_changes"
+     }
+    ],
+    "qualname": "format_ranges",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "c422ab56f530",
+    "tool_name": "format_ranges",
+    "unit_id": "mcp:format_ranges:c422ab56f530"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false,
+    "logger": null
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Freeze Panes"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1820,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "cell"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "Optional[bool]",
+      "default": "None",
+      "index": 4,
+      "name": "include_changes"
+     }
+    ],
+    "qualname": "freeze_panes",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "c9b76fd8789c",
+    "tool_name": "freeze_panes",
+    "unit_id": "mcp:freeze_panes:c9b76fd8789c"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "filepath",
+     "site": "src/excel_mcp/cell_validation.py:L99",
+     "transform": "str.strip"
+    },
+    {
+     "root": "sheet_name",
+     "site": "src/excel_mcp/cell_validation.py:L99",
+     "transform": "str.strip"
+    },
+    {
+     "root": "filepath",
+     "site": "src/excel_mcp/cell_validation.py:L104",
+     "transform": "str.split"
+    },
+    {
+     "root": "sheet_name",
+     "site": "src/excel_mcp/cell_validation.py:L104",
+     "transform": "str.split"
+    },
+    {
+     "root": "filepath",
+     "site": "src/excel_mcp/cell_validation.py:L104",
+     "transform": "str.strip"
+    },
+    {
+     "root": "sheet_name",
+     "site": "src/excel_mcp/cell_validation.py:L104",
+     "transform": "str.strip"
+    },
+    {
+     "root": "filepath",
+     "site": "src/excel_mcp/cell_validation.py:L104",
+     "transform": "str.strip"
+    },
+    {
+     "root": "sheet_name",
+     "site": "src/excel_mcp/cell_validation.py:L104",
+     "transform": "str.strip"
+    },
+    {
+     "root": "filepath",
+     "site": "src/excel_mcp/cell_validation.py:L149",
+     "transform": "str.strip"
+    },
+    {
+     "root": "sheet_name",
+     "site": "src/excel_mcp/cell_validation.py:L149",
+     "transform": "str.strip"
+    },
+    {
+     "root": "filepath",
+     "site": "src/excel_mcp/cell_validation.py:L99",
+     "transform": "str.strip"
+    },
+    {
+     "root": "sheet_name",
+     "site": "src/excel_mcp/cell_validation.py:L99",
+     "transform": "str.strip"
+    },
+    {
+     "root": "filepath",
+     "site": "src/excel_mcp/cell_validation.py:L104",
+     "transform": "str.split"
+    },
+    {
+     "root": "sheet_name",
+     "site": "src/excel_mcp/cell_validation.py:L104",
+     "transform": "str.split"
+    },
+    {
+     "root": "filepath",
+     "site": "src/excel_mcp/cell_validation.py:L104",
+     "transform": "str.strip"
+    },
+    {
+     "root": "sheet_name",
+     "site": "src/excel_mcp/cell_validation.py:L104",
+     "transform": "str.strip"
+    },
+    {
+     "root": "filepath",
+     "site": "src/excel_mcp/cell_validation.py:L104",
+     "transform": "str.strip"
+    },
+    {
+     "root": "sheet_name",
+     "site": "src/excel_mcp/cell_validation.py:L104",
+     "transform": "str.strip"
+    },
+    {
+     "root": "filepath",
+     "site": "src/excel_mcp/cell_validation.py:L149",
+     "transform": "str.strip"
+    },
+    {
+     "root": "sheet_name",
+     "site": "src/excel_mcp/cell_validation.py:L149",
+     "transform": "str.strip"
+    },
+    {
+     "root": "filepath",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "sheet_name",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "filepath",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "sheet_name",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Get Data Validation Info"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2166,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     }
+    ],
+    "qualname": "get_data_validation_info",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "fcb7f4bf0385",
+    "tool_name": "get_data_validation_info",
+    "unit_id": "mcp:get_data_validation_info:fcb7f4bf0385"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Get Merged Cells"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1805,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     }
+    ],
+    "qualname": "get_merged_cells",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "fcb7f4bf0385",
+    "tool_name": "get_merged_cells",
+    "unit_id": "mcp:get_merged_cells:fcb7f4bf0385"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Get Workbook Metadata"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1460,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 1,
+      "name": "include_ranges"
+     }
+    ],
+    "qualname": "get_workbook_metadata",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "639e10d4e38f",
+    "tool_name": "get_workbook_metadata",
+    "unit_id": "mcp:get_workbook_metadata:639e10d4e38f"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Get Worksheet Protection"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1900,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     }
+    ],
+    "qualname": "get_worksheet_protection",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "fcb7f4bf0385",
+    "tool_name": "get_worksheet_protection",
+    "unit_id": "mcp:get_worksheet_protection:fcb7f4bf0385"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Insert Columns"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2345,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "int",
+      "index": 2,
+      "name": "start_col"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 3,
+      "name": "count"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 4,
+      "name": "dry_run"
+     }
+    ],
+    "qualname": "insert_columns",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "a11eba38a99e",
+    "tool_name": "insert_columns",
+    "unit_id": "mcp:insert_columns:a11eba38a99e"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Insert Rows"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2325,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "int",
+      "index": 2,
+      "name": "start_row"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 3,
+      "name": "count"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 4,
+      "name": "dry_run"
+     }
+    ],
+    "qualname": "insert_rows",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "7ff275542251",
+    "tool_name": "insert_rows",
+    "unit_id": "mcp:insert_rows:7ff275542251"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Inspect Conditional Format Rules"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2275,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 2,
+      "name": "broken_only"
+     }
+    ],
+    "qualname": "inspect_conditional_format_rules",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "6940a11c3e49",
+    "tool_name": "inspect_conditional_format_rules",
+    "unit_id": "mcp:inspect_conditional_format_rules:6940a11c3e49"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Inspect Data Validation Rules"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2225,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 2,
+      "name": "broken_only"
+     }
+    ],
+    "qualname": "inspect_data_validation_rules",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "6940a11c3e49",
+    "tool_name": "inspect_data_validation_rules",
+    "unit_id": "mcp:inspect_data_validation_rules:6940a11c3e49"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Inspect Formula"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 423,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "formula"
+     }
+    ],
+    "qualname": "inspect_formula",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "90c29b0df255",
+    "tool_name": "inspect_formula",
+    "unit_id": "mcp:inspect_formula:90c29b0df255"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Inspect Named Range"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1687,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "scope_sheet"
+     }
+    ],
+    "qualname": "inspect_named_range",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "9b7cb86a498c",
+    "tool_name": "inspect_named_range",
+    "unit_id": "mcp:inspect_named_range:9b7cb86a498c"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "List Sheets"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2435,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     }
+    ],
+    "qualname": "list_all_sheets",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "70a984c8546c",
+    "tool_name": "list_all_sheets",
+    "unit_id": "mcp:list_all_sheets:70a984c8546c"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "List Charts"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1276,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "sheet_name"
+     }
+    ],
+    "qualname": "list_charts",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "138bffc3ba6a",
+    "tool_name": "list_charts",
+    "unit_id": "mcp:list_charts:138bffc3ba6a"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "List Named Ranges"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1710,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     }
+    ],
+    "qualname": "list_named_ranges",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "70a984c8546c",
+    "tool_name": "list_named_ranges",
+    "unit_id": "mcp:list_named_ranges:70a984c8546c"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "List Excel Tables"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1387,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "sheet_name"
+     }
+    ],
+    "qualname": "list_tables",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "138bffc3ba6a",
+    "tool_name": "list_tables",
+    "unit_id": "mcp:list_tables:138bffc3ba6a"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Merge Cells"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1749,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "start_cell"
+     },
+     {
+      "annotation": "str",
+      "index": 3,
+      "name": "end_cell"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 4,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "Optional[bool]",
+      "default": "None",
+      "index": 5,
+      "name": "include_changes"
+     }
+    ],
+    "qualname": "merge_cells",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "4eaa2c9a2679",
+    "tool_name": "merge_cells",
+    "unit_id": "mcp:merge_cells:4eaa2c9a2679"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Plan Workbook Repairs"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1610,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 1,
+      "name": "header_row"
+     },
+     {
+      "annotation": "int",
+      "default": "25",
+      "index": 2,
+      "name": "sample_limit"
+     }
+    ],
+    "qualname": "plan_workbook_repairs",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "a4b6ebf7886b",
+    "tool_name": "plan_workbook_repairs",
+    "unit_id": "mcp:plan_workbook_repairs:a4b6ebf7886b"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Profile Workbook"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1572,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     }
+    ],
+    "qualname": "profile_workbook",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "70a984c8546c",
+    "tool_name": "profile_workbook",
+    "unit_id": "mcp:profile_workbook:70a984c8546c"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Query Table"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 784,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "table_name"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 3,
+      "name": "header_row"
+     },
+     {
+      "annotation": "Optional[List[str]]",
+      "default": "None",
+      "index": 4,
+      "name": "select"
+     },
+     {
+      "annotation": "Optional[List[Dict[str, Any]]]",
+      "default": "None",
+      "index": 5,
+      "name": "filters"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 6,
+      "name": "sort_by"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 7,
+      "name": "sort_desc"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 8,
+      "name": "limit"
+     },
+     {
+      "annotation": "str",
+      "default": "'arrays'",
+      "index": 9,
+      "name": "row_mode"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 10,
+      "name": "infer_schema"
+     }
+    ],
+    "qualname": "query_table",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "72ce0d62bfea",
+    "tool_name": "query_table",
+    "unit_id": "mcp:query_table:72ce0d62bfea"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Quick Read"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 687,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 2,
+      "name": "header_row"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 3,
+      "name": "start_row"
+     },
+     {
+      "annotation": "str",
+      "default": "'A'",
+      "index": 4,
+      "name": "start_col"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 5,
+      "name": "end_col"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 6,
+      "name": "max_rows"
+     },
+     {
+      "annotation": "bool",
+      "default": "True",
+      "index": 7,
+      "name": "include_headers"
+     },
+     {
+      "annotation": "str",
+      "default": "'arrays'",
+      "index": 8,
+      "name": "row_mode"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 9,
+      "name": "infer_schema"
+     }
+    ],
+    "qualname": "quick_read",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "62dfb19463ec",
+    "tool_name": "quick_read",
+    "unit_id": "mcp:quick_read:62dfb19463ec"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "start_cell",
+     "site": "src/excel_mcp/data.py:L1267",
+     "transform": "str.split"
+    },
+    {
+     "root": "start_cell",
+     "site": "src/excel_mcp/cell_utils.py:L17",
+     "transform": "str.upper"
+    },
+    {
+     "root": "end_cell",
+     "site": "src/excel_mcp/cell_utils.py:L17",
+     "transform": "str.upper"
+    },
+    {
+     "root": "start_cell",
+     "site": "src/excel_mcp/cell_utils.py:L17",
+     "transform": "str.upper"
+    },
+    {
+     "root": "compact",
+     "site": "src/excel_mcp/data.py:L919",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "filepath",
+     "site": "src/excel_mcp/data.py:L919",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_cols",
+     "site": "src/excel_mcp/data.py:L919",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_rows",
+     "site": "src/excel_mcp/data.py:L919",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "sheet_name",
+     "site": "src/excel_mcp/data.py:L919",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "values_only",
+     "site": "src/excel_mcp/data.py:L919",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "compact",
+     "site": "src/excel_mcp/data.py:L919",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "filepath",
+     "site": "src/excel_mcp/data.py:L919",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_cols",
+     "site": "src/excel_mcp/data.py:L919",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_rows",
+     "site": "src/excel_mcp/data.py:L919",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "sheet_name",
+     "site": "src/excel_mcp/data.py:L919",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "values_only",
+     "site": "src/excel_mcp/data.py:L919",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "end_cell",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "end_cell[\"cells\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "end_cell[\"values\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "filepath",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "filepath[\"cells\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "filepath[\"values\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_cols",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_cols[\"cells\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_cols[\"values\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_rows",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_rows[\"cells\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_rows[\"values\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "sheet_name",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "sheet_name[\"cells\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "sheet_name[\"values\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "start_cell",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "start_cell[\"cells\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "start_cell[\"values\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "end_cell",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "end_cell[\"cells\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "end_cell[\"values\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "filepath",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "filepath[\"cells\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "filepath[\"values\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_cols",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_cols[\"cells\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_cols[\"values\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_rows",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_rows[\"cells\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_rows[\"values\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "sheet_name",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "sheet_name[\"cells\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "sheet_name[\"values\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "start_cell",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "start_cell[\"cells\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "start_cell[\"values\"]",
+     "site": "src/excel_mcp/server.py:L169",
+     "transform": "json.dumps"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false,
+    "logger": null
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Read Data from Excel"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 557,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "default": "'A1'",
+      "index": 2,
+      "name": "start_cell"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 3,
+      "name": "end_cell"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 4,
+      "name": "max_rows"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 5,
+      "name": "max_cols"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 6,
+      "name": "cursor"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 7,
+      "name": "preview_only"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 8,
+      "name": "compact"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 9,
+      "name": "values_only"
+     }
+    ],
+    "qualname": "read_data_from_excel",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "6b0043a8a5c8",
+    "tool_name": "read_data_from_excel",
+    "unit_id": "mcp:read_data_from_excel:6b0043a8a5c8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Read Excel as Table"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 645,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 2,
+      "name": "header_row"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 3,
+      "name": "start_row"
+     },
+     {
+      "annotation": "str",
+      "default": "'A'",
+      "index": 4,
+      "name": "start_col"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 5,
+      "name": "end_col"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 6,
+      "name": "max_rows"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 7,
+      "name": "compact"
+     },
+     {
+      "annotation": "bool",
+      "default": "True",
+      "index": 8,
+      "name": "include_headers"
+     },
+     {
+      "annotation": "str",
+      "default": "'arrays'",
+      "index": 9,
+      "name": "row_mode"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 10,
+      "name": "infer_schema"
+     }
+    ],
+    "qualname": "read_excel_as_table",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "1f168b41a65f",
+    "tool_name": "read_excel_as_table",
+    "unit_id": "mcp:read_excel_as_table:1f168b41a65f"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Read Excel Table"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1064,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "table_name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 3,
+      "name": "start_row"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 4,
+      "name": "start_col"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 5,
+      "name": "end_col"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 6,
+      "name": "max_rows"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 7,
+      "name": "compact"
+     },
+     {
+      "annotation": "bool",
+      "default": "True",
+      "index": 8,
+      "name": "include_headers"
+     },
+     {
+      "annotation": "str",
+      "default": "'arrays'",
+      "index": 9,
+      "name": "row_mode"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 10,
+      "name": "infer_schema"
+     }
+    ],
+    "qualname": "read_excel_table",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "646cdedb526e",
+    "tool_name": "read_excel_table",
+    "unit_id": "mcp:read_excel_table:646cdedb526e"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Read Range Formatting"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 530,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "range_ref"
+     },
+     {
+      "annotation": "int",
+      "default": "10",
+      "index": 3,
+      "name": "sample_limit"
+     }
+    ],
+    "qualname": "read_range_formatting",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "5239c051ced8",
+    "tool_name": "read_range_formatting",
+    "unit_id": "mcp:read_range_formatting:5239c051ced8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Remove Conditional Format Rules"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2298,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Optional[List[int]]",
+      "default": "None",
+      "index": 2,
+      "name": "rule_indexes"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "broken_only"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 4,
+      "name": "dry_run"
+     }
+    ],
+    "qualname": "remove_conditional_format_rules",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "2d6802fef0a8",
+    "tool_name": "remove_conditional_format_rules",
+    "unit_id": "mcp:remove_conditional_format_rules:2d6802fef0a8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Remove Data Validation Rules"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2248,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Optional[List[int]]",
+      "default": "None",
+      "index": 2,
+      "name": "rule_indexes"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "broken_only"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 4,
+      "name": "dry_run"
+     }
+    ],
+    "qualname": "remove_data_validation_rules",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "2d6802fef0a8",
+    "tool_name": "remove_data_validation_rules",
+    "unit_id": "mcp:remove_data_validation_rules:2d6802fef0a8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Rename Worksheet"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1442,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "old_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "new_name"
+     }
+    ],
+    "qualname": "rename_worksheet",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "0287c0cc3881",
+    "tool_name": "rename_worksheet",
+    "unit_id": "mcp:rename_worksheet:0287c0cc3881"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Search Cells"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2405,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Any",
+      "index": 2,
+      "name": "query"
+     },
+     {
+      "annotation": "bool",
+      "default": "True",
+      "index": 3,
+      "name": "exact"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 4,
+      "name": "max_results"
+     }
+    ],
+    "qualname": "search_in_sheet",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "eba89a6347ff",
+    "tool_name": "search_in_sheet",
+    "unit_id": "mcp:search_in_sheet:eba89a6347ff"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Set Autofilter"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1847,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "range_ref"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "Optional[bool]",
+      "default": "None",
+      "index": 4,
+      "name": "include_changes"
+     }
+    ],
+    "qualname": "set_autofilter",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "30ba29c0b4c2",
+    "tool_name": "set_autofilter",
+    "unit_id": "mcp:set_autofilter:30ba29c0b4c2"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Set Column Widths"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2001,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Dict[str, float]",
+      "index": 2,
+      "name": "widths"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "Optional[bool]",
+      "default": "None",
+      "index": 4,
+      "name": "include_changes"
+     }
+    ],
+    "qualname": "set_column_widths",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "82ff36ea377b",
+    "tool_name": "set_column_widths",
+    "unit_id": "mcp:set_column_widths:82ff36ea377b"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Set Print Area"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1946,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "range_ref"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "Optional[bool]",
+      "default": "None",
+      "index": 4,
+      "name": "include_changes"
+     }
+    ],
+    "qualname": "set_print_area",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "30ba29c0b4c2",
+    "tool_name": "set_print_area",
+    "unit_id": "mcp:set_print_area:30ba29c0b4c2"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Set Print Titles"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1973,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "rows"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 3,
+      "name": "columns"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 4,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "Optional[bool]",
+      "default": "None",
+      "index": 5,
+      "name": "include_changes"
+     }
+    ],
+    "qualname": "set_print_titles",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "ced43b476611",
+    "tool_name": "set_print_titles",
+    "unit_id": "mcp:set_print_titles:ced43b476611"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Set Row Heights"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2058,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Dict[str, float]",
+      "index": 2,
+      "name": "heights"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "Optional[bool]",
+      "default": "None",
+      "index": 4,
+      "name": "include_changes"
+     }
+    ],
+    "qualname": "set_row_heights",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "1d688521889b",
+    "tool_name": "set_row_heights",
+    "unit_id": "mcp:set_row_heights:1d688521889b"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Set Worksheet Protection"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1915,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "bool",
+      "default": "True",
+      "index": 2,
+      "name": "enabled"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 3,
+      "name": "password"
+     },
+     {
+      "annotation": "Optional[Dict[str, bool]]",
+      "default": "None",
+      "index": 4,
+      "name": "options"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 5,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "Optional[bool]",
+      "default": "None",
+      "index": 6,
+      "name": "include_changes"
+     }
+    ],
+    "qualname": "set_worksheet_protection",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "c9f2d93705a7",
+    "tool_name": "set_worksheet_protection",
+    "unit_id": "mcp:set_worksheet_protection:c9f2d93705a7"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false,
+    "logger": null
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Set Worksheet Visibility"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1873,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "visibility"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "Optional[bool]",
+      "default": "None",
+      "index": 4,
+      "name": "include_changes"
+     }
+    ],
+    "qualname": "set_worksheet_visibility",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "de45480207ac",
+    "tool_name": "set_worksheet_visibility",
+    "unit_id": "mcp:set_worksheet_visibility:de45480207ac"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Suggest Read Strategy"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 755,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "goal"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 3,
+      "name": "table_name"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 4,
+      "name": "header_row"
+     },
+     {
+      "annotation": "int",
+      "default": "25",
+      "index": 5,
+      "name": "sample_rows"
+     }
+    ],
+    "qualname": "suggest_read_strategy",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "e76299b1378b",
+    "tool_name": "suggest_read_strategy",
+    "unit_id": "mcp:suggest_read_strategy:e76299b1378b"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Union Tables"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 868,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "List[str]",
+      "index": 0,
+      "name": "filepaths"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 2,
+      "name": "table_name"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 3,
+      "name": "header_row"
+     },
+     {
+      "annotation": "Optional[List[str]]",
+      "default": "None",
+      "index": 4,
+      "name": "select"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 5,
+      "name": "sort_by"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 6,
+      "name": "sort_desc"
+     },
+     {
+      "annotation": "Optional[int]",
+      "default": "None",
+      "index": 7,
+      "name": "limit"
+     },
+     {
+      "annotation": "str",
+      "default": "'strict'",
+      "index": 8,
+      "name": "schema_mode"
+     },
+     {
+      "annotation": "int",
+      "default": "10",
+      "index": 9,
+      "name": "source_sample_limit"
+     },
+     {
+      "annotation": "bool",
+      "default": "True",
+      "index": 10,
+      "name": "include_source_columns"
+     },
+     {
+      "annotation": "Optional[List[str]]",
+      "default": "None",
+      "index": 11,
+      "name": "dedupe_on"
+     },
+     {
+      "annotation": "str",
+      "default": "'arrays'",
+      "index": 12,
+      "name": "row_mode"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 13,
+      "name": "infer_schema"
+     }
+    ],
+    "qualname": "union_tables",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "2f46480f3334",
+    "tool_name": "union_tables",
+    "unit_id": "mcp:union_tables:2f46480f3334"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Unmerge Cells"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1777,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "start_cell"
+     },
+     {
+      "annotation": "str",
+      "index": 3,
+      "name": "end_cell"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 4,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "Optional[bool]",
+      "default": "None",
+      "index": 5,
+      "name": "include_changes"
+     }
+    ],
+    "qualname": "unmerge_cells",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "4eaa2c9a2679",
+    "tool_name": "unmerge_cells",
+    "unit_id": "mcp:unmerge_cells:4eaa2c9a2679"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Update Rows by Key"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2515,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "key_column"
+     },
+     {
+      "annotation": "List[Dict[str, Any]]",
+      "index": 3,
+      "name": "updates"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 4,
+      "name": "header_row"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 5,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "Optional[bool]",
+      "default": "None",
+      "index": 6,
+      "name": "include_changes"
+     }
+    ],
+    "qualname": "update_rows_by_key",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "48464a93cfca",
+    "tool_name": "update_rows_by_key",
+    "unit_id": "mcp:update_rows_by_key:48464a93cfca"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Upsert Excel Table Rows"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2484,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "table_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "key_column"
+     },
+     {
+      "annotation": "List[Dict[str, Any]]",
+      "index": 3,
+      "name": "rows"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 4,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 5,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "Optional[bool]",
+      "default": "None",
+      "index": 6,
+      "name": "include_changes"
+     }
+    ],
+    "qualname": "upsert_excel_table_rows",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "922eee1277db",
+    "tool_name": "upsert_excel_table_rows",
+    "unit_id": "mcp:upsert_excel_table_rows:922eee1277db"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Validate Excel Range"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 2146,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "start_cell"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 3,
+      "name": "end_cell"
+     }
+    ],
+    "qualname": "validate_excel_range",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "cfa5824011d2",
+    "tool_name": "validate_excel_range",
+    "unit_id": "mcp:validate_excel_range:cfa5824011d2"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Validate Formula Syntax"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 403,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "cell"
+     },
+     {
+      "annotation": "str",
+      "index": 3,
+      "name": "formula"
+     }
+    ],
+    "qualname": "validate_formula_syntax",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "11d50f2eaebe",
+    "tool_name": "validate_formula_syntax",
+    "unit_id": "mcp:validate_formula_syntax:11d50f2eaebe"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "EXCEL_FILES_PATH": false
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "title": "Write Data to Excel"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 1107,
+    "module": "src.excel_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "filepath"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "sheet_name"
+     },
+     {
+      "annotation": "List[List]",
+      "index": 2,
+      "name": "data"
+     },
+     {
+      "annotation": "str",
+      "default": "'A1'",
+      "index": 3,
+      "name": "start_cell"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 4,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "Optional[bool]",
+      "default": "None",
+      "index": 5,
+      "name": "include_changes"
+     }
+    ],
+    "qualname": "write_data_to_excel",
+    "relpath": "src/excel_mcp/server.py",
+    "schema_hash": "e51bbc48fe9c",
+    "tool_name": "write_data_to_excel",
+    "unit_id": "mcp:write_data_to_excel:e51bbc48fe9c"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

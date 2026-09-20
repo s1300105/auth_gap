@@ -1,0 +1,756 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [
+    "SafeSqlDriver.execute_param_query"
+   ],
+   "form": "if_chain",
+   "lineno": 131,
+   "opaque_reason": null,
+   "relpath": "src/postgres_mcp/server.py",
+   "resolution": "resolved",
+   "selector": "object_type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "SafeSqlDriver.execute_param_query"
+   ],
+   "form": "if_chain",
+   "lineno": 149,
+   "opaque_reason": null,
+   "relpath": "src/postgres_mcp/server.py",
+   "resolution": "resolved",
+   "selector": "object_type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "sql_driver.execute_query"
+   ],
+   "form": "if_chain",
+   "lineno": 166,
+   "opaque_reason": null,
+   "relpath": "src/postgres_mcp/server.py",
+   "resolution": "resolved",
+   "selector": "object_type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "SafeSqlDriver.execute_param_query",
+    "constraints.items"
+   ],
+   "form": "if_chain",
+   "lineno": 206,
+   "opaque_reason": null,
+   "relpath": "src/postgres_mcp/server.py",
+   "resolution": "resolved",
+   "selector": "object_type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "SafeSqlDriver.execute_param_query"
+   ],
+   "form": "if_chain",
+   "lineno": 280,
+   "opaque_reason": null,
+   "relpath": "src/postgres_mcp/server.py",
+   "resolution": "resolved",
+   "selector": "object_type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "SafeSqlDriver.execute_param_query"
+   ],
+   "form": "if_chain",
+   "lineno": 303,
+   "opaque_reason": null,
+   "relpath": "src/postgres_mcp/server.py",
+   "resolution": "resolved",
+   "selector": "object_type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "DatabaseTuningAdvisor"
+   ],
+   "form": "if_chain",
+   "lineno": 445,
+   "opaque_reason": null,
+   "relpath": "src/postgres_mcp/server.py",
+   "resolution": "resolved",
+   "selector": "method",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "format_error_response"
+   ],
+   "form": "if_chain",
+   "lineno": 471,
+   "opaque_reason": null,
+   "relpath": "src/postgres_mcp/server.py",
+   "resolution": "resolved",
+   "selector": "len(queries)",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "DatabaseTuningAdvisor"
+   ],
+   "form": "if_chain",
+   "lineno": 478,
+   "opaque_reason": null,
+   "relpath": "src/postgres_mcp/server.py",
+   "resolution": "resolved",
+   "selector": "method",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "format_text_response",
+    "top_queries_tool.get_top_resource_queries"
+   ],
+   "form": "if_chain",
+   "lineno": 543,
+   "opaque_reason": null,
+   "relpath": "src/postgres_mcp/server.py",
+   "resolution": "resolved",
+   "selector": "sort_by",
+   "selector_is_model": true
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [
+  "tests/unit/index/test_dta_calc.py"
+ ],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "health_type",
+     "site": "src/postgres_mcp/database_health/database_health.py:L52",
+     "transform": "str.split"
+    },
+    {
+     "root": "health_type",
+     "site": "src/postgres_mcp/database_health/database_health.py:L52",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "logger": null
+   },
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Analyze Database Health"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 506,
+    "module": "src.postgres_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "Field(description=f\"Optional. Valid values are: {', '.join(sorted([t.value for t in HealthType]))}.\", default='all')",
+      "index": 0,
+      "name": "health_type"
+     }
+    ],
+    "qualname": "analyze_db_health",
+    "relpath": "src/postgres_mcp/server.py",
+    "schema_hash": "7e993a129c2a",
+    "tool_name": "analyze_db_health",
+    "unit_id": "mcp:analyze_db_health:7e993a129c2a"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Analyze Query Indexes"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 465,
+    "module": "src.postgres_mcp.server",
+    "params": [
+     {
+      "annotation": "list[str]",
+      "default": "Field(description='List of Query strings to analyze')",
+      "index": 0,
+      "name": "queries"
+     },
+     {
+      "annotation": "int",
+      "default": "Field(description='Max index size in MB', default=10000)",
+      "index": 1,
+      "name": "max_index_size_mb"
+     },
+     {
+      "annotation": "Literal['dta', 'llm']",
+      "default": "Field(description='Method to use for analysis', default='dta')",
+      "index": 2,
+      "name": "method"
+     }
+    ],
+    "qualname": "analyze_query_indexes",
+    "relpath": "src/postgres_mcp/server.py",
+    "schema_hash": "2a8efd49518b",
+    "tool_name": "analyze_query_indexes",
+    "unit_id": "mcp:analyze_query_indexes:2a8efd49518b"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Analyze Workload Indexes"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 438,
+    "module": "src.postgres_mcp.server",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "Field(description='Max index size in MB', default=10000)",
+      "index": 0,
+      "name": "max_index_size_mb"
+     },
+     {
+      "annotation": "Literal['dta', 'llm']",
+      "default": "Field(description='Method to use for analysis', default='dta')",
+      "index": 1,
+      "name": "method"
+     }
+    ],
+    "qualname": "analyze_workload_indexes",
+    "relpath": "src/postgres_mcp/server.py",
+    "schema_hash": "7fb537f51ed0",
+    "tool_name": "analyze_workload_indexes",
+    "unit_id": "mcp:analyze_workload_indexes:7fb537f51ed0"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "logger": null
+   },
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Explain Query"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 336,
+    "module": "src.postgres_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "Field(description='SQL query to explain')",
+      "index": 0,
+      "name": "sql"
+     },
+     {
+      "annotation": "bool",
+      "default": "Field(description='When True, actually runs the query to show real execution statistics instead of estimates. Takes longer but provides more accurate information.', default=False)",
+      "index": 1,
+      "name": "analyze"
+     },
+     {
+      "annotation": "list[dict[str, Any]]",
+      "default": "Field(description='A list of hypothetical indexes to simulate. Each index must be a dictionary with these keys:\\n    - \\'table\\': The table name to add the index to (e.g., \\'users\\')\\n    - \\'columns\\': List of column names to include in the index (e.g., [\\'email\\'] or [\\'last_name\\', \\'first_name\\'])\\n    - \\'using\\': Optional index method (default: \\'btree\\', other options include \\'hash\\', \\'gist\\', etc.)\\n\\nExamples: [\\n    {\"table\": \"users\", \"columns\": [\"email\"], \"using\": \"btree\"},\\n    {\"table\": \"orders\", \"columns\": [\"user_id\", \"created_at\"]}\\n]\\nIf there is no hypothetical index, you can pass an empty list.', default=[])",
+      "index": 2,
+      "name": "hypothetical_indexes"
+     }
+    ],
+    "qualname": "explain_query",
+    "relpath": "src/postgres_mcp/server.py",
+    "schema_hash": "aa6d7b9c2ddd",
+    "tool_name": "explain_query",
+    "unit_id": "mcp:explain_query:aa6d7b9c2ddd"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Get Object Details"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 197,
+    "module": "src.postgres_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "Field(description='Schema name')",
+      "index": 0,
+      "name": "schema_name"
+     },
+     {
+      "annotation": "str",
+      "default": "Field(description='Object name')",
+      "index": 1,
+      "name": "object_name"
+     },
+     {
+      "annotation": "str",
+      "default": "Field(description=\"Object type: 'table', 'view', 'sequence', or 'extension'\", default='table')",
+      "index": 2,
+      "name": "object_type"
+     }
+    ],
+    "qualname": "get_object_details",
+    "relpath": "src/postgres_mcp/server.py",
+    "schema_hash": "6daafe7654bb",
+    "tool_name": "get_object_details",
+    "unit_id": "mcp:get_object_details:6daafe7654bb"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "Get Top Queries"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 531,
+    "module": "src.postgres_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "Field(description=\"Ranking criteria: 'total_time' for total execution time or 'mean_time' for mean execution time per call, or 'resources' for resource-intensive queries\", default='resources')",
+      "index": 0,
+      "name": "sort_by"
+     },
+     {
+      "annotation": "int",
+      "default": "Field(description='Number of queries to return when ranking based on mean_time or total_time', default=10)",
+      "index": 1,
+      "name": "limit"
+     }
+    ],
+    "qualname": "get_top_queries",
+    "relpath": "src/postgres_mcp/server.py",
+    "schema_hash": "7a3547d0adb3",
+    "tool_name": "get_top_queries",
+    "unit_id": "mcp:get_top_queries:7a3547d0adb3"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "List Objects"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 123,
+    "module": "src.postgres_mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "Field(description='Schema name')",
+      "index": 0,
+      "name": "schema_name"
+     },
+     {
+      "annotation": "str",
+      "default": "Field(description=\"Object type: 'table', 'view', 'sequence', or 'extension'\", default='table')",
+      "index": 1,
+      "name": "object_type"
+     }
+    ],
+    "qualname": "list_objects",
+    "relpath": "src/postgres_mcp/server.py",
+    "schema_hash": "734c1dfa8694",
+    "tool_name": "list_objects",
+    "unit_id": "mcp:list_objects:734c1dfa8694"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "readOnlyHint": true,
+     "title": "List Schemas"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 91,
+    "module": "src.postgres_mcp.server",
+    "params": [],
+    "qualname": "list_schemas",
+    "relpath": "src/postgres_mcp/server.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "list_schemas",
+    "unit_id": "mcp:list_schemas:d36d5fd42096"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

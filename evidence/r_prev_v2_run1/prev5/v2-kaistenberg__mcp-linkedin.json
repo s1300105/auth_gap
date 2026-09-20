@@ -1,0 +1,3170 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [
+   ".claude/settings.json"
+  ],
+  "source": null
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 87,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "linkedin_mcp_server/tools/feed.py",
+   "resolution": "opaque",
+   "selector": "extracted.text",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 87,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "linkedin_mcp_server/tools/feed.py",
+   "resolution": "opaque",
+   "selector": "extracted.text",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 219,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_dependencies.py",
+   "resolution": "opaque",
+   "selector": "'get_person_profile'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 55,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/test_logging_config.py",
+   "resolution": "opaque",
+   "selector": "0",
+   "selector_is_model": false
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 80,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 74,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.chmod",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "close_browser",
+      "BrowserManager.export_cookies",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 80,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 75,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "receiver",
+      "unresolved"
+     ],
+     "site": "os.replace",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "receiver",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "close_browser",
+      "BrowserManager.export_cookies",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 80,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 77,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.unlink",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "close_browser",
+      "BrowserManager.export_cookies",
+      "secure_write_text"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "recursion",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 77,
+    "module": "linkedin_mcp_server.server",
+    "params": [],
+    "qualname": "create_mcp_server.close_session",
+    "relpath": "linkedin_mcp_server/server.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "close_session",
+    "unit_id": "mcp:create_mcp_server.close_session:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "openWorldHint",
+     "readOnlyHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "openWorldHint": true,
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 218,
+    "module": "linkedin_mcp_server.tools.company",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "company_name"
+     },
+     {
+      "annotation": "Context",
+      "index": 1,
+      "name": "ctx"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 2,
+      "name": "keywords"
+     },
+     {
+      "annotation": "Any | None",
+      "default": "None",
+      "index": 3,
+      "name": "extractor"
+     }
+    ],
+    "qualname": "register_company_tools.get_company_employees",
+    "relpath": "linkedin_mcp_server/tools/company.py",
+    "schema_hash": "13d87b0705a8",
+    "tool_name": "get_company_employees",
+    "unit_id": "mcp:register_company_tools.get_company_employees:13d87b0705a8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "openWorldHint",
+     "readOnlyHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "company_name[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "company_name[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 132,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 339,
+     "relpath": "linkedin_mcp_server/error_diagnostics.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "shape_from": {
+      "url.host": "annotation"
+     },
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "roots": [
+        "company_name"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "LinkedInExtractor.extract_page",
+      "build_issue_diagnostics",
+      "_find_existing_issues"
+     ]
+    },
+    {
+     "entry_lineno": 132,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 74,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.chmod",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.extract_page",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 132,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 75,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "receiver",
+      "unresolved"
+     ],
+     "site": "os.replace",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.extract_page",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 132,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 77,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.unlink",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.extract_page",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "openWorldHint": true,
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 105,
+    "module": "linkedin_mcp_server.tools.company",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "company_name"
+     },
+     {
+      "annotation": "Context",
+      "index": 1,
+      "name": "ctx"
+     },
+     {
+      "annotation": "Any | None",
+      "default": "None",
+      "index": 2,
+      "name": "extractor"
+     }
+    ],
+    "qualname": "register_company_tools.get_company_posts",
+    "relpath": "linkedin_mcp_server/tools/company.py",
+    "schema_hash": "75de92f434ea",
+    "tool_name": "get_company_posts",
+    "unit_id": "mcp:register_company_tools.get_company_posts:75de92f434ea"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "openWorldHint",
+     "readOnlyHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "sections",
+     "site": "linkedin_mcp_server/scraping/fields.py:L75",
+     "transform": "str.split"
+    },
+    {
+     "root": "sections",
+     "site": "linkedin_mcp_server/scraping/fields.py:L76",
+     "transform": "str.strip"
+    },
+    {
+     "root": "sections",
+     "site": "linkedin_mcp_server/scraping/fields.py:L76",
+     "transform": "str.lower"
+    },
+    {
+     "root": "sections",
+     "site": "linkedin_mcp_server/scraping/fields.py:L76",
+     "transform": "str.strip"
+    },
+    {
+     "root": "sections",
+     "site": "linkedin_mcp_server/scraping/fields.py:L76",
+     "transform": "str.lower"
+    },
+    {
+     "root": "company_name[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "company_name[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "company_name[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "company_name[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "COMPANY_SECTIONS": null,
+    "_NAV_DELAY": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 81,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 339,
+     "relpath": "linkedin_mcp_server/error_diagnostics.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "shape_from": {
+      "url.host": "annotation"
+     },
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "roots": [
+        "company_name"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "LinkedInExtractor.scrape_company",
+      "build_issue_diagnostics",
+      "_find_existing_issues"
+     ]
+    },
+    {
+     "entry_lineno": 81,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 74,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.chmod",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.scrape_company",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 81,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 75,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "receiver",
+      "unresolved"
+     ],
+     "site": "os.replace",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.scrape_company",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 81,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 77,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.unlink",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.scrape_company",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 81,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 339,
+     "relpath": "linkedin_mcp_server/error_diagnostics.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "shape_from": {
+      "url.host": "annotation"
+     },
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "roots": [
+        "company_name"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "LinkedInExtractor.scrape_company",
+      "build_issue_diagnostics",
+      "_find_existing_issues"
+     ]
+    },
+    {
+     "entry_lineno": 81,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 74,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.chmod",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.scrape_company",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 81,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 75,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "receiver",
+      "unresolved"
+     ],
+     "site": "os.replace",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.scrape_company",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 81,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 77,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.unlink",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.scrape_company",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "openWorldHint": true,
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 37,
+    "module": "linkedin_mcp_server.tools.company",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "company_name"
+     },
+     {
+      "annotation": "Context",
+      "index": 1,
+      "name": "ctx"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 2,
+      "name": "sections"
+     },
+     {
+      "annotation": "Any | None",
+      "default": "None",
+      "index": 3,
+      "name": "extractor"
+     }
+    ],
+    "qualname": "register_company_tools.get_company_profile",
+    "relpath": "linkedin_mcp_server/tools/company.py",
+    "schema_hash": "127afff78dac",
+    "tool_name": "get_company_profile",
+    "unit_id": "mcp:register_company_tools.get_company_profile:127afff78dac"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "openWorldHint",
+     "readOnlyHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "openWorldHint": true,
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 171,
+    "module": "linkedin_mcp_server.tools.company",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "keywords"
+     },
+     {
+      "annotation": "Context",
+      "index": 1,
+      "name": "ctx"
+     },
+     {
+      "annotation": "Any | None",
+      "default": "None",
+      "index": 2,
+      "name": "extractor"
+     }
+    ],
+    "qualname": "register_company_tools.search_companies",
+    "relpath": "linkedin_mcp_server/tools/company.py",
+    "schema_hash": "b73824907a3c",
+    "tool_name": "search_companies",
+    "unit_id": "mcp:register_company_tools.search_companies:b73824907a3c"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "openWorldHint",
+     "readOnlyHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 77,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 339,
+     "relpath": "linkedin_mcp_server/error_diagnostics.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "LinkedInExtractor.extract_feed",
+      "build_issue_diagnostics",
+      "_find_existing_issues"
+     ]
+    },
+    {
+     "entry_lineno": 77,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 74,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.chmod",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.extract_feed",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 77,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 75,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "receiver",
+      "unresolved"
+     ],
+     "site": "os.replace",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.extract_feed",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 77,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 77,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.unlink",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.extract_feed",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "openWorldHint": true,
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 39,
+    "module": "linkedin_mcp_server.tools.feed",
+    "params": [
+     {
+      "annotation": "Context",
+      "index": 0,
+      "name": "ctx"
+     },
+     {
+      "annotation": "Annotated[int, Field(ge=1, le=50)]",
+      "default": "10",
+      "index": 1,
+      "name": "num_posts"
+     },
+     {
+      "annotation": "Any | None",
+      "default": "None",
+      "index": 2,
+      "name": "extractor"
+     }
+    ],
+    "qualname": "register_feed_tools.get_feed",
+    "relpath": "linkedin_mcp_server/tools/feed.py",
+    "schema_hash": "ff16799ca3ae",
+    "tool_name": "get_feed",
+    "unit_id": "mcp:register_feed_tools.get_feed:ff16799ca3ae"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "openWorldHint",
+     "readOnlyHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "openWorldHint": true,
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 33,
+    "module": "linkedin_mcp_server.tools.job",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "job_id"
+     },
+     {
+      "annotation": "Context",
+      "index": 1,
+      "name": "ctx"
+     },
+     {
+      "annotation": "Any | None",
+      "default": "None",
+      "index": 2,
+      "name": "extractor"
+     }
+    ],
+    "qualname": "register_job_tools.get_job_details",
+    "relpath": "linkedin_mcp_server/tools/job.py",
+    "schema_hash": "6508ec65dd3f",
+    "tool_name": "get_job_details",
+    "unit_id": "mcp:register_job_tools.get_job_details:6508ec65dd3f"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "openWorldHint",
+     "readOnlyHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "date_posted",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L3081",
+     "transform": "str.strip"
+    },
+    {
+     "root": "job_type",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L372",
+     "transform": "str.split"
+    },
+    {
+     "root": "job_type",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L372",
+     "transform": "str.strip"
+    },
+    {
+     "root": "experience_level",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L372",
+     "transform": "str.split"
+    },
+    {
+     "root": "experience_level",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L372",
+     "transform": "str.strip"
+    },
+    {
+     "root": "work_type",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L372",
+     "transform": "str.split"
+    },
+    {
+     "root": "work_type",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L372",
+     "transform": "str.strip"
+    },
+    {
+     "root": "sort_by",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L3092",
+     "transform": "str.strip"
+    },
+    {
+     "root": "date_posted[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "date_posted[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "experience_level[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "experience_level[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "job_type[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "job_type[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "keywords[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "keywords[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "location[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "location[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_pages[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_pages[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "sort_by[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "sort_by[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "work_type[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "work_type[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "date_posted[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "date_posted[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "experience_level[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "experience_level[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "job_type[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "job_type[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "keywords[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "keywords[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "location[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "location[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_pages[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "max_pages[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "sort_by[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "sort_by[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "work_type[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "work_type[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "_NAV_DELAY": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 129,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 339,
+     "relpath": "linkedin_mcp_server/error_diagnostics.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "shape_from": {
+      "url.host": "annotation"
+     },
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "roots": [
+        "date_posted",
+        "experience_level",
+        "job_type",
+        "keywords",
+        "location",
+        "max_pages",
+        "sort_by",
+        "work_type"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "LinkedInExtractor.search_jobs",
+      "build_issue_diagnostics",
+      "_find_existing_issues"
+     ]
+    },
+    {
+     "entry_lineno": 129,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 74,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.chmod",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.search_jobs",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 129,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 75,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "receiver",
+      "unresolved"
+     ],
+     "site": "os.replace",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.search_jobs",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 129,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 77,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.unlink",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.search_jobs",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 129,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 339,
+     "relpath": "linkedin_mcp_server/error_diagnostics.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "shape_from": {
+      "url.host": "annotation"
+     },
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "roots": [
+        "date_posted",
+        "experience_level",
+        "job_type",
+        "keywords",
+        "location",
+        "max_pages",
+        "sort_by",
+        "work_type"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "LinkedInExtractor.search_jobs",
+      "build_issue_diagnostics",
+      "_find_existing_issues"
+     ]
+    },
+    {
+     "entry_lineno": 129,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 74,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.chmod",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.search_jobs",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 129,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 75,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "receiver",
+      "unresolved"
+     ],
+     "site": "os.replace",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.search_jobs",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 129,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 77,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.unlink",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.search_jobs",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "openWorldHint": true,
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 80,
+    "module": "linkedin_mcp_server.tools.job",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "keywords"
+     },
+     {
+      "annotation": "Context",
+      "index": 1,
+      "name": "ctx"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 2,
+      "name": "location"
+     },
+     {
+      "annotation": "Annotated[int, Field(ge=1, le=10)]",
+      "default": "3",
+      "index": 3,
+      "name": "max_pages"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 4,
+      "name": "date_posted"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 5,
+      "name": "job_type"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 6,
+      "name": "experience_level"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 7,
+      "name": "work_type"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 8,
+      "name": "easy_apply"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 9,
+      "name": "sort_by"
+     },
+     {
+      "annotation": "Any | None",
+      "default": "None",
+      "index": 10,
+      "name": "extractor"
+     }
+    ],
+    "qualname": "register_job_tools.search_jobs",
+    "relpath": "linkedin_mcp_server/tools/job.py",
+    "schema_hash": "3717cf6e2b15",
+    "tool_name": "search_jobs",
+    "unit_id": "mcp:register_job_tools.search_jobs:3717cf6e2b15"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "openWorldHint",
+     "readOnlyHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "openWorldHint": true,
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 82,
+    "module": "linkedin_mcp_server.tools.messaging",
+    "params": [
+     {
+      "annotation": "Context",
+      "index": 0,
+      "name": "ctx"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "linkedin_username"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 2,
+      "name": "thread_id"
+     },
+     {
+      "annotation": "Annotated[int, Field(ge=0)]",
+      "default": "0",
+      "index": 3,
+      "name": "index"
+     },
+     {
+      "annotation": "Any | None",
+      "default": "None",
+      "index": 4,
+      "name": "extractor"
+     }
+    ],
+    "qualname": "register_messaging_tools.get_conversation",
+    "relpath": "linkedin_mcp_server/tools/messaging.py",
+    "schema_hash": "82013656691a",
+    "tool_name": "get_conversation",
+    "unit_id": "mcp:register_messaging_tools.get_conversation:82013656691a"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "openWorldHint",
+     "readOnlyHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "openWorldHint": true,
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 36,
+    "module": "linkedin_mcp_server.tools.messaging",
+    "params": [
+     {
+      "annotation": "Context",
+      "index": 0,
+      "name": "ctx"
+     },
+     {
+      "annotation": "Annotated[int, Field(ge=1, le=50)]",
+      "default": "20",
+      "index": 1,
+      "name": "limit"
+     },
+     {
+      "annotation": "Any | None",
+      "default": "None",
+      "index": 2,
+      "name": "extractor"
+     }
+    ],
+    "qualname": "register_messaging_tools.get_inbox",
+    "relpath": "linkedin_mcp_server/tools/messaging.py",
+    "schema_hash": "410a322aad2a",
+    "tool_name": "get_inbox",
+    "unit_id": "mcp:register_messaging_tools.get_inbox:410a322aad2a"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "openWorldHint",
+     "readOnlyHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "openWorldHint": true,
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 161,
+    "module": "linkedin_mcp_server.tools.messaging",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "keywords"
+     },
+     {
+      "annotation": "Context",
+      "index": 1,
+      "name": "ctx"
+     },
+     {
+      "annotation": "Annotated[int, Field(ge=1, le=50)]",
+      "default": "20",
+      "index": 2,
+      "name": "limit"
+     },
+     {
+      "annotation": "Any | None",
+      "default": "None",
+      "index": 3,
+      "name": "extractor"
+     }
+    ],
+    "qualname": "register_messaging_tools.search_conversations",
+    "relpath": "linkedin_mcp_server/tools/messaging.py",
+    "schema_hash": "fc49389ae586",
+    "tool_name": "search_conversations",
+    "unit_id": "mcp:register_messaging_tools.search_conversations:fc49389ae586"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [
+     "openWorldHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [
+     "destructiveHint"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": true,
+     "openWorldHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 214,
+    "module": "linkedin_mcp_server.tools.messaging",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "linkedin_username"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "message"
+     },
+     {
+      "annotation": "bool",
+      "index": 2,
+      "name": "confirm_send"
+     },
+     {
+      "annotation": "Context",
+      "index": 3,
+      "name": "ctx"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 4,
+      "name": "profile_urn"
+     },
+     {
+      "annotation": "Any | None",
+      "default": "None",
+      "index": 5,
+      "name": "extractor"
+     }
+    ],
+    "qualname": "register_messaging_tools.send_message",
+    "relpath": "linkedin_mcp_server/tools/messaging.py",
+    "schema_hash": "e6b084d1ea79",
+    "tool_name": "send_message",
+    "unit_id": "mcp:register_messaging_tools.send_message:e6b084d1ea79"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [
+     "openWorldHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [
+     "destructiveHint"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "extractor",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L1681",
+     "transform": "urlparse"
+    },
+    {
+     "root": "extractor",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L1681",
+     "transform": "urlparse"
+    },
+    {
+     "root": "extractor",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L1681",
+     "transform": "urlparse"
+    },
+    {
+     "root": "extractor",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L1681",
+     "transform": "urlparse"
+    },
+    {
+     "root": "extractor",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L1681",
+     "transform": "urlparse"
+    },
+    {
+     "root": "extractor",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L1681",
+     "transform": "urlparse"
+    },
+    {
+     "root": "extractor",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L1681",
+     "transform": "urlparse"
+    },
+    {
+     "root": "extractor",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L1681",
+     "transform": "urlparse"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": true,
+     "openWorldHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 194,
+    "module": "linkedin_mcp_server.tools.person",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "linkedin_username"
+     },
+     {
+      "annotation": "Context",
+      "index": 1,
+      "name": "ctx"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 2,
+      "name": "note"
+     },
+     {
+      "annotation": "Any | None",
+      "default": "None",
+      "index": 3,
+      "name": "extractor"
+     }
+    ],
+    "qualname": "register_person_tools.connect_with_person",
+    "relpath": "linkedin_mcp_server/tools/person.py",
+    "schema_hash": "6ef971ce1710",
+    "tool_name": "connect_with_person",
+    "unit_id": "mcp:register_person_tools.connect_with_person:6ef971ce1710"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "openWorldHint",
+     "readOnlyHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "sections",
+     "site": "linkedin_mcp_server/scraping/fields.py:L44",
+     "transform": "str.split"
+    },
+    {
+     "root": "sections",
+     "site": "linkedin_mcp_server/scraping/fields.py:L45",
+     "transform": "str.strip"
+    },
+    {
+     "root": "sections",
+     "site": "linkedin_mcp_server/scraping/fields.py:L45",
+     "transform": "str.lower"
+    },
+    {
+     "root": "sections",
+     "site": "linkedin_mcp_server/scraping/fields.py:L45",
+     "transform": "str.strip"
+    },
+    {
+     "root": "sections",
+     "site": "linkedin_mcp_server/scraping/fields.py:L45",
+     "transform": "str.lower"
+    },
+    {
+     "root": "extractor",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L1681",
+     "transform": "urlparse"
+    },
+    {
+     "root": "extractor",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L1681",
+     "transform": "urlparse"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "PERSON_SECTIONS": null
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "openWorldHint": true,
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 316,
+    "module": "linkedin_mcp_server.tools.person",
+    "params": [
+     {
+      "annotation": "Context",
+      "index": 0,
+      "name": "ctx"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "sections"
+     },
+     {
+      "annotation": "Annotated[int, Field(ge=1, le=50)] | None",
+      "default": "None",
+      "index": 2,
+      "name": "max_scrolls"
+     },
+     {
+      "annotation": "Any | None",
+      "default": "None",
+      "index": 3,
+      "name": "extractor"
+     }
+    ],
+    "qualname": "register_person_tools.get_my_profile",
+    "relpath": "linkedin_mcp_server/tools/person.py",
+    "schema_hash": "7994d53359ee",
+    "tool_name": "get_my_profile",
+    "unit_id": "mcp:register_person_tools.get_my_profile:7994d53359ee"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "openWorldHint",
+     "readOnlyHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "sections",
+     "site": "linkedin_mcp_server/scraping/fields.py:L44",
+     "transform": "str.split"
+    },
+    {
+     "root": "sections",
+     "site": "linkedin_mcp_server/scraping/fields.py:L45",
+     "transform": "str.strip"
+    },
+    {
+     "root": "sections",
+     "site": "linkedin_mcp_server/scraping/fields.py:L45",
+     "transform": "str.lower"
+    },
+    {
+     "root": "sections",
+     "site": "linkedin_mcp_server/scraping/fields.py:L45",
+     "transform": "str.strip"
+    },
+    {
+     "root": "sections",
+     "site": "linkedin_mcp_server/scraping/fields.py:L45",
+     "transform": "str.lower"
+    },
+    {
+     "root": "extractor",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L1681",
+     "transform": "urlparse"
+    },
+    {
+     "root": "linkedin_username[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "linkedin_username[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "extractor",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L1681",
+     "transform": "urlparse"
+    },
+    {
+     "root": "linkedin_username[\"runtime\"][\"runtime_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "linkedin_username[\"runtime\"][\"source_state\"]",
+     "site": "linkedin_mcp_server/error_diagnostics.py:L237",
+     "transform": "json.dumps"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "PERSON_SECTIONS": null,
+    "_NAV_DELAY": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 84,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 339,
+     "relpath": "linkedin_mcp_server/error_diagnostics.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "shape_from": {
+      "url.host": "annotation"
+     },
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "roots": [
+        "linkedin_username"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "LinkedInExtractor.scrape_person",
+      "build_issue_diagnostics",
+      "_find_existing_issues"
+     ]
+    },
+    {
+     "entry_lineno": 84,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 74,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.chmod",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.scrape_person",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 84,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 75,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "receiver",
+      "unresolved"
+     ],
+     "site": "os.replace",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.scrape_person",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 84,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 77,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.unlink",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.scrape_person",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 84,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 339,
+     "relpath": "linkedin_mcp_server/error_diagnostics.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "shape_from": {
+      "url.host": "annotation"
+     },
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "roots": [
+        "linkedin_username"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "LinkedInExtractor.scrape_person",
+      "build_issue_diagnostics",
+      "_find_existing_issues"
+     ]
+    },
+    {
+     "entry_lineno": 84,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 74,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.chmod",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.scrape_person",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 84,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 75,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "receiver",
+      "unresolved"
+     ],
+     "site": "os.replace",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.scrape_person",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    },
+    {
+     "entry_lineno": 84,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 77,
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "os.unlink",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "LinkedInExtractor.scrape_person",
+      "build_issue_diagnostics",
+      "secure_write_text"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "openWorldHint": true,
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 38,
+    "module": "linkedin_mcp_server.tools.person",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "linkedin_username"
+     },
+     {
+      "annotation": "Context",
+      "index": 1,
+      "name": "ctx"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 2,
+      "name": "sections"
+     },
+     {
+      "annotation": "Annotated[int, Field(ge=1, le=50)] | None",
+      "default": "None",
+      "index": 3,
+      "name": "max_scrolls"
+     },
+     {
+      "annotation": "Any | None",
+      "default": "None",
+      "index": 4,
+      "name": "extractor"
+     }
+    ],
+    "qualname": "register_person_tools.get_person_profile",
+    "relpath": "linkedin_mcp_server/tools/person.py",
+    "schema_hash": "ccc7c3da8496",
+    "tool_name": "get_person_profile",
+    "unit_id": "mcp:register_person_tools.get_person_profile:ccc7c3da8496"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "openWorldHint",
+     "readOnlyHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "_NAV_DELAY": null
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "openWorldHint": true,
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 263,
+    "module": "linkedin_mcp_server.tools.person",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "linkedin_username"
+     },
+     {
+      "annotation": "Context",
+      "index": 1,
+      "name": "ctx"
+     },
+     {
+      "annotation": "Any | None",
+      "default": "None",
+      "index": 2,
+      "name": "extractor"
+     }
+    ],
+    "qualname": "register_person_tools.get_sidebar_profiles",
+    "relpath": "linkedin_mcp_server/tools/person.py",
+    "schema_hash": "ff89ed2fc1c1",
+    "tool_name": "get_sidebar_profiles",
+    "unit_id": "mcp:register_person_tools.get_sidebar_profiles:ff89ed2fc1c1"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "openWorldHint",
+     "readOnlyHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "network",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L383",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "current_company",
+     "site": "linkedin_mcp_server/scraping/extractor.py:L383",
+     "transform": "json.dumps"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "_NETWORK_TOKENS": true
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "openWorldHint": true,
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 111,
+    "module": "linkedin_mcp_server.tools.person",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "keywords"
+     },
+     {
+      "annotation": "Context",
+      "index": 1,
+      "name": "ctx"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 2,
+      "name": "location"
+     },
+     {
+      "annotation": "list[str] | None",
+      "default": "None",
+      "index": 3,
+      "name": "network"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 4,
+      "name": "current_company"
+     },
+     {
+      "annotation": "Any | None",
+      "default": "None",
+      "index": 5,
+      "name": "extractor"
+     }
+    ],
+    "qualname": "register_person_tools.search_people",
+    "relpath": "linkedin_mcp_server/tools/person.py",
+    "schema_hash": "adb883be07f3",
+    "tool_name": "search_people",
+    "unit_id": "mcp:register_person_tools.search_people:adb883be07f3"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 56,
+    "module": "tests.test_server",
+    "params": [
+     {
+      "annotation": "int",
+      "index": 0,
+      "name": "value"
+     }
+    ],
+    "qualname": "TestSequentialToolExecutionMiddleware.test_sequential_tool_middleware_preserves_tool_results.simple_tool",
+    "relpath": "tests/test_server.py",
+    "schema_hash": "da226061bee5",
+    "tool_name": "simple_tool",
+    "unit_id": "mcp:TestSequentialToolExecutionMiddleware.test_sequential_tool_middleware_preserves_tool_results.simple_tool:da226061bee5"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 32,
+    "module": "tests.test_server",
+    "params": [
+     {
+      "annotation": "float",
+      "default": "0.05",
+      "index": 0,
+      "name": "delay"
+     }
+    ],
+    "qualname": "TestSequentialToolExecutionMiddleware.test_sequential_tool_middleware_serializes_parallel_tool_calls.slow_tool",
+    "relpath": "tests/test_server.py",
+    "schema_hash": "9872af57af0b",
+    "tool_name": "slow_tool",
+    "unit_id": "mcp:TestSequentialToolExecutionMiddleware.test_sequential_tool_middleware_serializes_parallel_tool_calls.slow_tool:9872af57af0b"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

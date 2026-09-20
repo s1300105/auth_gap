@@ -1,0 +1,1171 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [
+    "DedupeResult",
+    "deduped_results.append",
+    "result.get"
+   ],
+   "form": "if_chain",
+   "lineno": 192,
+   "opaque_reason": null,
+   "relpath": "src/remembra/services/conversation_ingest.py",
+   "resolution": "resolved",
+   "selector": "result['action']",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 203,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/remembra/services/conversation_ingest.py",
+   "resolution": "opaque",
+   "selector": "result['action']",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 205,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/remembra/services/conversation_ingest.py",
+   "resolution": "opaque",
+   "selector": "result['action']",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 208,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/remembra/services/conversation_ingest.py",
+   "resolution": "opaque",
+   "selector": "result['action']",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 211,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/remembra/services/conversation_ingest.py",
+   "resolution": "opaque",
+   "selector": "result['action']",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "decision.get",
+    "self._store_new_fact"
+   ],
+   "form": "if_chain",
+   "lineno": 492,
+   "opaque_reason": null,
+   "relpath": "src/remembra/services/conversation_ingest.py",
+   "resolution": "resolved",
+   "selector": "decision['action']",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "decision.get",
+    "self._update_existing"
+   ],
+   "form": "if_chain",
+   "lineno": 502,
+   "opaque_reason": null,
+   "relpath": "src/remembra/services/conversation_ingest.py",
+   "resolution": "resolved",
+   "selector": "decision['action']",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "decision.get",
+    "self._store_new_fact",
+    "self.memory_service.forget_by_id"
+   ],
+   "form": "if_chain",
+   "lineno": 514,
+   "opaque_reason": null,
+   "relpath": "src/remembra/services/conversation_ingest.py",
+   "resolution": "resolved",
+   "selector": "decision['action']",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "decision.get"
+   ],
+   "form": "if_chain",
+   "lineno": 530,
+   "opaque_reason": null,
+   "relpath": "src/remembra/services/conversation_ingest.py",
+   "resolution": "resolved",
+   "selector": "decision['action']",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 473,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/remembra/tools/doctor.py",
+   "resolution": "opaque",
+   "selector": "args.agent",
+   "selector_is_model": false
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint",
+     "idempotentHint",
+     "openWorldHint",
+     "readOnlyHint",
+     "title"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {
+    "SAFE_ERROR_PREFIXES": true
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": true,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": false,
+     "title": "Forget Memories"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 229,
+    "module": "src.remembra.mcp.server",
+    "params": [
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 0,
+      "name": "memory_id"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "entity"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 2,
+      "name": "all_memories"
+     }
+    ],
+    "qualname": "forget_memories",
+    "relpath": "src/remembra/mcp/server.py",
+    "schema_hash": "9bd41a07eb06",
+    "tool_name": "forget_memories",
+    "unit_id": "mcp:forget_memories:9bd41a07eb06"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "destructiveHint",
+     "idempotentHint",
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {
+    "SAFE_ERROR_PREFIXES": true
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Health Check"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 291,
+    "module": "src.remembra.mcp.server",
+    "params": [],
+    "qualname": "health_check",
+    "relpath": "src/remembra/mcp/server.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "health_check",
+    "unit_id": "mcp:health_check:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "idempotentHint",
+     "openWorldHint",
+     "readOnlyHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {
+    "SAFE_ERROR_PREFIXES": true
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": false,
+     "openWorldHint": false,
+     "readOnlyHint": false,
+     "title": "Ingest Conversation"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 340,
+    "module": "src.remembra.mcp.server",
+    "params": [
+     {
+      "annotation": "list[dict[str, Any]]",
+      "index": 0,
+      "name": "messages"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "session_id"
+     },
+     {
+      "annotation": "float",
+      "default": "0.5",
+      "index": 2,
+      "name": "min_importance"
+     },
+     {
+      "annotation": "str",
+      "default": "'both'",
+      "index": 3,
+      "name": "extract_from"
+     },
+     {
+      "annotation": "bool",
+      "default": "True",
+      "index": 4,
+      "name": "store"
+     }
+    ],
+    "qualname": "ingest_conversation",
+    "relpath": "src/remembra/mcp/server.py",
+    "schema_hash": "dcb67ca91611",
+    "tool_name": "ingest_conversation",
+    "unit_id": "mcp:ingest_conversation:dcb67ca91611"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "destructiveHint",
+     "idempotentHint",
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {
+    "SAFE_ERROR_PREFIXES": true
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "List Memories"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 545,
+    "module": "src.remembra.mcp.server",
+    "params": [
+     {
+      "annotation": "int",
+      "default": "10",
+      "index": 0,
+      "name": "limit"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "project_id"
+     }
+    ],
+    "qualname": "list_memories",
+    "relpath": "src/remembra/mcp/server.py",
+    "schema_hash": "4a41e2bcbc84",
+    "tool_name": "list_memories",
+    "unit_id": "mcp:list_memories:4a41e2bcbc84"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "destructiveHint",
+     "idempotentHint",
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {
+    "SAFE_ERROR_PREFIXES": true
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Recall Memories"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 148,
+    "module": "src.remembra.mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "query"
+     },
+     {
+      "annotation": "int",
+      "default": "5",
+      "index": 1,
+      "name": "limit"
+     },
+     {
+      "annotation": "float",
+      "default": "0.4",
+      "index": 2,
+      "name": "threshold"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "slim"
+     }
+    ],
+    "qualname": "recall_memories",
+    "relpath": "src/remembra/mcp/server.py",
+    "schema_hash": "e687753c54cb",
+    "tool_name": "recall_memories",
+    "unit_id": "mcp:recall_memories:e687753c54cb"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "destructiveHint",
+     "idempotentHint",
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "as_of",
+     "site": "src/remembra/mcp/server.py:L769",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "entity_name",
+     "site": "src/remembra/mcp/server.py:L769",
+     "transform": "json.dumps"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {
+    "SAFE_ERROR_PREFIXES": true
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Relationships At"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 725,
+    "module": "src.remembra.mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "entity_name"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "as_of"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 2,
+      "name": "relationship_type"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "include_history"
+     }
+    ],
+    "qualname": "relationships_at",
+    "relpath": "src/remembra/mcp/server.py",
+    "schema_hash": "235d271aa081",
+    "tool_name": "relationships_at",
+    "unit_id": "mcp:relationships_at:235d271aa081"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "destructiveHint",
+     "idempotentHint",
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "query",
+     "site": "src/remembra/mcp/server.py:L505",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {
+    "SAFE_ERROR_PREFIXES": true
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Search Entities"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 479,
+    "module": "src.remembra.mcp.server",
+    "params": [
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 0,
+      "name": "query"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "entity_type"
+     },
+     {
+      "annotation": "int",
+      "default": "20",
+      "index": 2,
+      "name": "limit"
+     }
+    ],
+    "qualname": "search_entities",
+    "relpath": "src/remembra/mcp/server.py",
+    "schema_hash": "5d241939e020",
+    "tool_name": "search_entities",
+    "unit_id": "mcp:search_entities:5d241939e020"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "idempotentHint",
+     "openWorldHint",
+     "readOnlyHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "memory_id",
+     "site": "src/remembra/mcp/server.py:L627",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "space_id",
+     "site": "src/remembra/mcp/server.py:L627",
+     "transform": "json.dumps"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {
+    "SAFE_ERROR_PREFIXES": true
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": false,
+     "title": "Share Memory"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 601,
+    "module": "src.remembra.mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "memory_id"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "space_id"
+     }
+    ],
+    "qualname": "share_memory",
+    "relpath": "src/remembra/mcp/server.py",
+    "schema_hash": "6b27fb627ede",
+    "tool_name": "share_memory",
+    "unit_id": "mcp:share_memory:6b27fb627ede"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "idempotentHint",
+     "openWorldHint",
+     "readOnlyHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "ttl",
+     "site": "src/remembra/client/shadow_ttl.py:L298",
+     "transform": "str.strip"
+    },
+    {
+     "root": "ttl",
+     "site": "src/remembra/client/shadow_ttl.py:L298",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ttl",
+     "site": "src/remembra/extraction/matcher.py:L188",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ttl",
+     "site": "src/remembra/extraction/matcher.py:L199",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ttl",
+     "site": "src/remembra/extraction/matcher.py:L199",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ttl",
+     "site": "src/remembra/extraction/matcher.py:L188",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ttl",
+     "site": "src/remembra/extraction/matcher.py:L199",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ttl",
+     "site": "src/remembra/extraction/matcher.py:L199",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ttl",
+     "site": "src/remembra/extraction/matcher.py:L247",
+     "transform": "json.dumps"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "SAFE_ERROR_PREFIXES": true
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": false,
+     "openWorldHint": false,
+     "readOnlyHint": false,
+     "title": "Store Memory"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 92,
+    "module": "src.remembra.mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "content"
+     },
+     {
+      "annotation": "dict[str, Any] | None",
+      "default": "None",
+      "index": 1,
+      "name": "metadata"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 2,
+      "name": "ttl"
+     }
+    ],
+    "qualname": "store_memory",
+    "relpath": "src/remembra/mcp/server.py",
+    "schema_hash": "ccbd2264f6f8",
+    "tool_name": "store_memory",
+    "unit_id": "mcp:store_memory:ccbd2264f6f8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "destructiveHint",
+     "idempotentHint",
+     "openWorldHint",
+     "title"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "end_date",
+     "site": "src/remembra/mcp/server.py:L690",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "entity_name",
+     "site": "src/remembra/mcp/server.py:L690",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "start_date",
+     "site": "src/remembra/mcp/server.py:L690",
+     "transform": "json.dumps"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {
+    "SAFE_ERROR_PREFIXES": true
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": true,
+     "title": "Timeline"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 651,
+    "module": "src.remembra.mcp.server",
+    "params": [
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 0,
+      "name": "entity_name"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "start_date"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 2,
+      "name": "end_date"
+     },
+     {
+      "annotation": "int",
+      "default": "20",
+      "index": 3,
+      "name": "limit"
+     }
+    ],
+    "qualname": "timeline",
+    "relpath": "src/remembra/mcp/server.py",
+    "schema_hash": "525741c60c80",
+    "tool_name": "timeline",
+    "unit_id": "mcp:timeline:525741c60c80"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "idempotentHint",
+     "openWorldHint",
+     "readOnlyHint",
+     "title"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "memory_id",
+     "site": "src/remembra/mcp/server.py:L455",
+     "transform": "json.dumps"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {
+    "SAFE_ERROR_PREFIXES": true
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "idempotentHint": true,
+     "openWorldHint": false,
+     "readOnlyHint": false,
+     "title": "Update Memory"
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 432,
+    "module": "src.remembra.mcp.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "memory_id"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "content"
+     },
+     {
+      "annotation": "dict[str, Any] | None",
+      "default": "None",
+      "index": 2,
+      "name": "metadata"
+     }
+    ],
+    "qualname": "update_memory",
+    "relpath": "src/remembra/mcp/server.py",
+    "schema_hash": "f6cd121089ca",
+    "tool_name": "update_memory",
+    "unit_id": "mcp:update_memory:f6cd121089ca"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

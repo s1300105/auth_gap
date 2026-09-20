@@ -1,0 +1,359 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint",
+     "openWorldHint"
+    ],
+    "open_world": true,
+    "present_no_bound": [
+     "readOnlyHint"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs/parsing.py:L14",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs/parsing.py:L14",
+     "transform": "urlparse"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/informs/parsing.py:L15",
+     "transform": "str.lower"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley/parsing.py:L19",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley/parsing.py:L19",
+     "transform": "urlparse"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley/parsing.py:L20",
+     "transform": "str.lower"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley/parsing.py:L52",
+     "transform": "str.lower"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley/parsing.py:L26",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley/parsing.py:L29",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley/parsing.py:L29",
+     "transform": "urlparse"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley/parsing.py:L52",
+     "transform": "str.lower"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley/parsing.py:L35",
+     "transform": "str.lower"
+    },
+    {
+     "root": "output_dir",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/paths.py:L8",
+     "transform": "str.strip"
+    },
+    {
+     "root": "output_dir",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/paths.py:L11",
+     "transform": "Path()"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/core.py:L71",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/core.py:L74",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/core.py:L74",
+     "transform": "urlparse"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/arxiv.py:L12",
+     "transform": "str.lower"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/arxiv.py:L16",
+     "transform": "str.strip"
+    },
+    {
+     "root": "url",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/providers/openreview.py:L12",
+     "transform": "str.lower"
+    },
+    {
+     "root": "output_dir",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/paths.py:L8",
+     "transform": "str.strip"
+    },
+    {
+     "root": "output_dir",
+     "site": "packages/paper-access-mcp/src/paper_access_mcp/paths.py:L11",
+     "transform": "Path()"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "_INFORMS_HOSTS": true,
+    "_WILEY_HOSTS": true
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 100,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 31,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/providers/wiley/workflow.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "attrs": [
+        "canonicalised"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "download_wiley_paper_from_link"
+     ]
+    },
+    {
+     "entry_lineno": 109,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 54,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/core.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "attrs": [
+        "canonicalised"
+       ],
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "download_paper_from_link"
+     ]
+    },
+    {
+     "entry_lineno": 109,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 56,
+     "relpath": "packages/paper-access-mcp/src/paper_access_mcp/core.py",
+     "required_by": [
+      "F7"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.write_bytes",
+     "slots": {
+      "content": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "download_paper_from_link"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "recursion",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "openWorldHint": true,
+     "readOnlyHint": false
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 58,
+    "module": "packages.paper-access-mcp.src.paper_access_mcp.server",
+    "params": [
+     {
+      "annotation": "Annotated[str, Field(description='Direct arXiv abs/pdf URL, OpenReview forum/pdf URL, INFORMS DOI URL, Wiley DOI URL, or supported UofT Wiley proxy URL.')]",
+      "index": 0,
+      "name": "url"
+     },
+     {
+      "annotation": "Annotated[str, Field(description='Directory where the PDF should be written. Use an absolute path or a relative path under the MCP server cwd.')]",
+      "index": 1,
+      "name": "output_dir"
+     },
+     {
+      "annotation": "Context",
+      "index": 2,
+      "name": "ctx"
+     }
+    ],
+    "qualname": "download_paper_from_link_tool",
+    "relpath": "packages/paper-access-mcp/src/paper_access_mcp/server.py",
+    "schema_hash": "06257a3ab8ee",
+    "tool_name": "download_paper_from_link_tool",
+    "unit_id": "mcp:download_paper_from_link_tool:06257a3ab8ee"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

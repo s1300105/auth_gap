@@ -1,0 +1,1629 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 54,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/tools/groups.py",
+   "resolution": "opaque",
+   "selector": "select",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 51,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/tools/plans.py",
+   "resolution": "opaque",
+   "selector": "select",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 105,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/tools/plans.py",
+   "resolution": "opaque",
+   "selector": "select",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 135,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/tools/tasks.py",
+   "resolution": "opaque",
+   "selector": "select",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 221,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/tools/tasks.py",
+   "resolution": "opaque",
+   "selector": "select",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 182,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/tools/users.py",
+   "resolution": "opaque",
+   "selector": "select",
+   "selector_is_model": true
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 63,
+    "module": "src.tools.buckets",
+    "params": [
+     {
+      "annotation": "Annotated[str, 'The ID of the plan to create the bucket in (from list_my_plans or list_group_plans).']",
+      "index": 0,
+      "name": "planId"
+     },
+     {
+      "annotation": "Annotated[str, 'The display name for the new bucket.']",
+      "index": 1,
+      "name": "name"
+     }
+    ],
+    "qualname": "create_bucket",
+    "relpath": "src/tools/buckets.py",
+    "schema_hash": "d94f6b82ad2d",
+    "tool_name": "create_bucket",
+    "unit_id": "mcp:create_bucket:d94f6b82ad2d"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {
+    "T": null
+   },
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 105,
+    "module": "src.tools.buckets",
+    "params": [
+     {
+      "annotation": "Annotated[str, 'The ID of the bucket to delete (from list_buckets).']",
+      "index": 0,
+      "name": "bucketId"
+     },
+     {
+      "annotation": "Annotated[str, 'The current @odata.etag of the bucket. Retries once automatically if stale (412/409).']",
+      "index": 1,
+      "name": "etag"
+     }
+    ],
+    "qualname": "delete_bucket",
+    "relpath": "src/tools/buckets.py",
+    "schema_hash": "ae2a69414e58",
+    "tool_name": "delete_bucket",
+    "unit_id": "mcp:delete_bucket:ae2a69414e58"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 27,
+    "module": "src.tools.buckets",
+    "params": [
+     {
+      "annotation": "Annotated[str, 'The ID of the plan to list buckets for (from list_my_plans or list_group_plans).']",
+      "index": 0,
+      "name": "planId"
+     }
+    ],
+    "qualname": "list_buckets",
+    "relpath": "src/tools/buckets.py",
+    "schema_hash": "053ec12a85f3",
+    "tool_name": "list_buckets",
+    "unit_id": "mcp:list_buckets:053ec12a85f3"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "select",
+     "site": "src/tools/groups.py:L61",
+     "transform": "str.split"
+    },
+    {
+     "root": "select",
+     "site": "src/tools/groups.py:L61",
+     "transform": "str.strip"
+    },
+    {
+     "root": "select",
+     "site": "src/tools/groups.py:L61",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 28,
+    "module": "src.tools.groups",
+    "params": [
+     {
+      "annotation": "Annotated[str | None, Field(description=\"Optional comma-separated list of Group fields to include. Pass '*all' for all fields.\", default='id,displayName,mail')]",
+      "default": "'id,displayName,mail'",
+      "index": 0,
+      "name": "select"
+     },
+     {
+      "annotation": "Annotated[str | None, Field(description='OData filter string, e.g. \"startsWith(displayName,\\'Project\\')\".', examples=[\"startsWith(displayName,'Project')\", \"displayName eq 'Project X'\"])]",
+      "default": "None",
+      "index": 1,
+      "name": "filter"
+     },
+     {
+      "annotation": "Annotated[str | None, Field(description='OData search string to perform free-text search across multiple fields. e.g. \"displayName:Project\" for searching group name containing \\'Project\\'.', examples=['\"displayName:Project\"', '\"description:Something else\"'])]",
+      "default": "None",
+      "index": 2,
+      "name": "search"
+     }
+    ],
+    "qualname": "list_my_groups",
+    "relpath": "src/tools/groups.py",
+    "schema_hash": "d6731dbb7155",
+    "tool_name": "list_my_groups",
+    "unit_id": "mcp:list_my_groups:d6731dbb7155"
+   },
+   "validator_shapes": [
+    "split"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 25,
+    "module": "src.tools.me",
+    "params": [],
+    "qualname": "get_me",
+    "relpath": "src/tools/me.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "get_me",
+    "unit_id": "mcp:get_me:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 152,
+    "module": "src.tools.plans",
+    "params": [
+     {
+      "annotation": "Annotated[str, 'The object ID of the M365 group that will own the plan (from list_my_groups).']",
+      "index": 0,
+      "name": "groupId"
+     },
+     {
+      "annotation": "Annotated[str, 'The display title for the new plan.']",
+      "index": 1,
+      "name": "title"
+     }
+    ],
+    "qualname": "create_plan",
+    "relpath": "src/tools/plans.py",
+    "schema_hash": "6ecfe2a210af",
+    "tool_name": "create_plan",
+    "unit_id": "mcp:create_plan:6ecfe2a210af"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {
+    "T": null
+   },
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 233,
+    "module": "src.tools.plans",
+    "params": [
+     {
+      "annotation": "Annotated[str, 'The ID of the plan to delete (from list_my_plans or list_group_plans).']",
+      "index": 0,
+      "name": "planId"
+     },
+     {
+      "annotation": "Annotated[str, 'The current @odata.etag of the plan. Retries once automatically if stale (412/409).']",
+      "index": 1,
+      "name": "etag"
+     }
+    ],
+    "qualname": "delete_plan",
+    "relpath": "src/tools/plans.py",
+    "schema_hash": "704799ee1303",
+    "tool_name": "delete_plan",
+    "unit_id": "mcp:delete_plan:704799ee1303"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "select",
+     "site": "src/tools/plans.py:L112",
+     "transform": "str.split"
+    },
+    {
+     "root": "select",
+     "site": "src/tools/plans.py:L112",
+     "transform": "str.strip"
+    },
+    {
+     "root": "select",
+     "site": "src/tools/plans.py:L112",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 89,
+    "module": "src.tools.plans",
+    "params": [
+     {
+      "annotation": "Annotated[str, 'The object ID of the group (from list_my_groups).']",
+      "index": 0,
+      "name": "groupId"
+     },
+     {
+      "annotation": "Annotated[str | None, \"Comma-separated list of PlannerPlan fields to include. Pass '*all' for all fields.\"]",
+      "default": "'id,title,owner,createdBy,createdDateTime'",
+      "index": 1,
+      "name": "select"
+     }
+    ],
+    "qualname": "list_group_plans",
+    "relpath": "src/tools/plans.py",
+    "schema_hash": "2ed943f605d0",
+    "tool_name": "list_group_plans",
+    "unit_id": "mcp:list_group_plans:2ed943f605d0"
+   },
+   "validator_shapes": [
+    "split"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "select",
+     "site": "src/tools/plans.py:L58",
+     "transform": "str.split"
+    },
+    {
+     "root": "select",
+     "site": "src/tools/plans.py:L58",
+     "transform": "str.strip"
+    },
+    {
+     "root": "select",
+     "site": "src/tools/plans.py:L58",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 36,
+    "module": "src.tools.plans",
+    "params": [
+     {
+      "annotation": "Annotated[str | None, \"Comma-separated list of PlannerPlan fields to include. Pass '*all' for all fields.\"]",
+      "default": "'id,title,owner,createdBy,createdDateTime'",
+      "index": 0,
+      "name": "select"
+     }
+    ],
+    "qualname": "list_my_plans",
+    "relpath": "src/tools/plans.py",
+    "schema_hash": "921f1d890a33",
+    "tool_name": "list_my_plans",
+    "unit_id": "mcp:list_my_plans:921f1d890a33"
+   },
+   "validator_shapes": [
+    "split"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [
+     "destructiveHint"
+    ],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": false,
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 266,
+    "module": "src.tools.plans",
+    "params": [
+     {
+      "annotation": "Annotated[str, 'The ID of the plan (from list_my_plans or list_group_plans).']",
+      "index": 0,
+      "name": "planId"
+     }
+    ],
+    "qualname": "list_plan_categories",
+    "relpath": "src/tools/plans.py",
+    "schema_hash": "6e4e9d692dd7",
+    "tool_name": "list_plan_categories",
+    "unit_id": "mcp:list_plan_categories:6e4e9d692dd7"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "startDateTime",
+     "site": "src/services/planner_service.py:L347",
+     "transform": "str.replace"
+    },
+    {
+     "root": "dueDateTime",
+     "site": "src/services/planner_service.py:L347",
+     "transform": "str.replace"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 267,
+    "module": "src.tools.tasks",
+    "params": [
+     {
+      "annotation": "Annotated[str, 'The ID of the plan to create the task in.']",
+      "index": 0,
+      "name": "planId"
+     },
+     {
+      "annotation": "Annotated[str, 'The ID of the bucket to place the task in (from list_buckets).']",
+      "index": 1,
+      "name": "bucketId"
+     },
+     {
+      "annotation": "Annotated[str, 'The title of the task.']",
+      "index": 2,
+      "name": "title"
+     },
+     {
+      "annotation": "Annotated[str | None, \"ISO 8601 start date (e.g. '2026-05-01T00:00:00'). Must not be after dueDateTime.\"]",
+      "default": "None",
+      "index": 3,
+      "name": "startDateTime"
+     },
+     {
+      "annotation": "Annotated[str | None, \"ISO 8601 due date (e.g. '2026-05-31T00:00:00').\"]",
+      "default": "None",
+      "index": 4,
+      "name": "dueDateTime"
+     },
+     {
+      "annotation": "Annotated[int, Field(description='Completion percentage (0–100).', ge=0, le=100)] | None",
+      "default": "None",
+      "index": 5,
+      "name": "percentComplete"
+     },
+     {
+      "annotation": "Annotated[list[str] | None, 'List of user object IDs to assign to the task.']",
+      "default": "None",
+      "index": 6,
+      "name": "assignUserIds"
+     }
+    ],
+    "qualname": "create_task",
+    "relpath": "src/tools/tasks.py",
+    "schema_hash": "7da6137854a4",
+    "tool_name": "create_task",
+    "unit_id": "mcp:create_task:7da6137854a4"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "destructiveHint"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {
+    "T": null
+   },
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "destructiveHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 582,
+    "module": "src.tools.tasks",
+    "params": [
+     {
+      "annotation": "Annotated[str, 'The ID of the task to delete.']",
+      "index": 0,
+      "name": "taskId"
+     },
+     {
+      "annotation": "Annotated[str, 'The current @odata.etag of the task. Retries once automatically if stale (412/409).']",
+      "index": 1,
+      "name": "etag"
+     }
+    ],
+    "qualname": "delete_task",
+    "relpath": "src/tools/tasks.py",
+    "schema_hash": "b7c1b63d2fa8",
+    "tool_name": "delete_task",
+    "unit_id": "mcp:delete_task:b7c1b63d2fa8"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 336,
+    "module": "src.tools.tasks",
+    "params": [
+     {
+      "annotation": "Annotated[str, 'The ID of the task to retrieve details for (from list_my_tasks or list_tasks).']",
+      "index": 0,
+      "name": "taskId"
+     }
+    ],
+    "qualname": "get_task_details",
+    "relpath": "src/tools/tasks.py",
+    "schema_hash": "6ab30d4c6a27",
+    "tool_name": "get_task_details",
+    "unit_id": "mcp:get_task_details:6ab30d4c6a27"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "select",
+     "site": "src/tools/tasks.py:L141",
+     "transform": "str.split"
+    },
+    {
+     "root": "select",
+     "site": "src/tools/tasks.py:L141",
+     "transform": "str.strip"
+    },
+    {
+     "root": "select",
+     "site": "src/tools/tasks.py:L141",
+     "transform": "str.strip"
+    },
+    {
+     "root": "filter",
+     "site": "src/services/planner_service.py:L187",
+     "transform": "str.lower"
+    },
+    {
+     "root": "filter",
+     "site": "src/services/planner_service.py:L207",
+     "transform": "str.lower"
+    },
+    {
+     "root": "filter",
+     "site": "src/services/planner_service.py:L214",
+     "transform": "str.lower"
+    },
+    {
+     "root": "filter",
+     "site": "src/services/planner_service.py:L215",
+     "transform": "str.lower"
+    },
+    {
+     "root": "filter",
+     "site": "src/services/planner_service.py:L230",
+     "transform": "str.lower"
+    },
+    {
+     "root": "filter",
+     "site": "src/services/planner_service.py:L247",
+     "transform": "str.lower"
+    },
+    {
+     "root": "filter",
+     "site": "src/services/planner_service.py:L248",
+     "transform": "str.lower"
+    },
+    {
+     "root": "search",
+     "site": "src/services/planner_service.py:L322",
+     "transform": "str.strip"
+    },
+    {
+     "root": "search",
+     "site": "src/services/planner_service.py:L322",
+     "transform": "str.strip"
+    },
+    {
+     "root": "search",
+     "site": "src/services/planner_service.py:L322",
+     "transform": "str.strip"
+    },
+    {
+     "root": "search",
+     "site": "src/services/planner_service.py:L322",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 98,
+    "module": "src.tools.tasks",
+    "params": [
+     {
+      "annotation": "Annotated[str | None, \"Comma-separated list of PlannerTask fields to include. Pass '*all' for all fields.\"]",
+      "default": "'*all'",
+      "index": 0,
+      "name": "select"
+     },
+     {
+      "annotation": "Annotated[str | None, Field(description='OData filter expression. Supported operators: eq, ne, gt, ge, lt, le, and, or, not. Supported functions: startswith, endswith, contains. Example to get all incomplete tasks: \"percentComplete ne 100\".', examples=[\"startswith(title, 'Project')\", \"title eq 'Project X'\", 'percentComplete ne 100', \"startswith(title, 'Project') and percentComplete eq 0\"])]",
+      "default": "None",
+      "index": 1,
+      "name": "filter"
+     },
+     {
+      "annotation": "Annotated[str | None, Field(description='Free-text search term matched as a case-insensitive substring against the task title. Quotes are stripped automatically.', examples=['Project', 'Bug fix'])]",
+      "default": "None",
+      "index": 2,
+      "name": "search"
+     }
+    ],
+    "qualname": "list_my_tasks",
+    "relpath": "src/tools/tasks.py",
+    "schema_hash": "46ad9017dec9",
+    "tool_name": "list_my_tasks",
+    "unit_id": "mcp:list_my_tasks:46ad9017dec9"
+   },
+   "validator_shapes": [
+    "split"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {
+    "_FIELD_ANNOTATIONS": null
+   },
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 538,
+    "module": "src.tools.tasks",
+    "params": [],
+    "qualname": "list_task_fields",
+    "relpath": "src/tools/tasks.py",
+    "schema_hash": "d36d5fd42096",
+    "tool_name": "list_task_fields",
+    "unit_id": "mcp:list_task_fields:d36d5fd42096"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "select",
+     "site": "src/tools/tasks.py:L225",
+     "transform": "str.split"
+    },
+    {
+     "root": "select",
+     "site": "src/tools/tasks.py:L225",
+     "transform": "str.strip"
+    },
+    {
+     "root": "select",
+     "site": "src/tools/tasks.py:L225",
+     "transform": "str.strip"
+    },
+    {
+     "root": "filter",
+     "site": "src/services/planner_service.py:L187",
+     "transform": "str.lower"
+    },
+    {
+     "root": "filter",
+     "site": "src/services/planner_service.py:L207",
+     "transform": "str.lower"
+    },
+    {
+     "root": "filter",
+     "site": "src/services/planner_service.py:L214",
+     "transform": "str.lower"
+    },
+    {
+     "root": "filter",
+     "site": "src/services/planner_service.py:L215",
+     "transform": "str.lower"
+    },
+    {
+     "root": "filter",
+     "site": "src/services/planner_service.py:L230",
+     "transform": "str.lower"
+    },
+    {
+     "root": "filter",
+     "site": "src/services/planner_service.py:L247",
+     "transform": "str.lower"
+    },
+    {
+     "root": "filter",
+     "site": "src/services/planner_service.py:L248",
+     "transform": "str.lower"
+    },
+    {
+     "root": "search",
+     "site": "src/services/planner_service.py:L322",
+     "transform": "str.strip"
+    },
+    {
+     "root": "search",
+     "site": "src/services/planner_service.py:L322",
+     "transform": "str.strip"
+    },
+    {
+     "root": "search",
+     "site": "src/services/planner_service.py:L322",
+     "transform": "str.strip"
+    },
+    {
+     "root": "search",
+     "site": "src/services/planner_service.py:L322",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 186,
+    "module": "src.tools.tasks",
+    "params": [
+     {
+      "annotation": "Annotated[str, 'The ID of the plan to list tasks for (from list_my_plans or list_group_plans).']",
+      "index": 0,
+      "name": "planId"
+     },
+     {
+      "annotation": "Annotated[str | None, \"Comma-separated list of PlannerTask fields to include. Pass '*all' for all fields.\"]",
+      "default": "'*all'",
+      "index": 1,
+      "name": "select"
+     },
+     {
+      "annotation": "Annotated[str | None, Field(description='OData filter expression. Supported operators: eq, ne, gt, ge, lt, le, and, or, not. Supported functions: startswith, endswith, contains. Example to get all incomplete tasks: \"percentComplete ne 100\".', examples=[\"startswith(title, 'Project')\", \"title eq 'Project Task'\", 'percentComplete eq 0'])]",
+      "default": "None",
+      "index": 2,
+      "name": "filter"
+     },
+     {
+      "annotation": "Annotated[str | None, Field(description='Free-text search term matched as a case-insensitive substring against the task title. Quotes are stripped automatically.', examples=['Project', 'Bug fix'])]",
+      "default": "None",
+      "index": 3,
+      "name": "search"
+     }
+    ],
+    "qualname": "list_tasks",
+    "relpath": "src/tools/tasks.py",
+    "schema_hash": "0938b71f62f1",
+    "tool_name": "list_tasks",
+    "unit_id": "mcp:list_tasks:0938b71f62f1"
+   },
+   "validator_shapes": [
+    "split"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": [
+     "idempotentHint"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "dueDateTime",
+     "site": "src/services/planner_service.py:L347",
+     "transform": "str.replace"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {
+    "T": null
+   },
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "idempotentHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 369,
+    "module": "src.tools.tasks",
+    "params": [
+     {
+      "annotation": "Annotated[str, 'The ID of the task to update (from list_my_tasks or list_tasks).']",
+      "index": 0,
+      "name": "taskId"
+     },
+     {
+      "annotation": "Annotated[str, 'The current @odata.etag of the task resource. Retries once automatically if stale (412/409).']",
+      "index": 1,
+      "name": "etag"
+     },
+     {
+      "annotation": "Annotated[str | None, 'New title for the task.']",
+      "default": "None",
+      "index": 2,
+      "name": "title"
+     },
+     {
+      "annotation": "Annotated[int, Field(description='Completion percentage (0–100).', ge=0, le=100)] | None",
+      "default": "None",
+      "index": 3,
+      "name": "percentComplete"
+     },
+     {
+      "annotation": "Annotated[str | None, \"ISO 8601 due date string (e.g. '2026-05-31T00:00:00').\"]",
+      "default": "None",
+      "index": 4,
+      "name": "dueDateTime"
+     },
+     {
+      "annotation": "Annotated[str | None, 'ID of the bucket to move the task to.']",
+      "default": "None",
+      "index": 5,
+      "name": "bucketId"
+     },
+     {
+      "annotation": "Annotated[int, Field(description='Priority 0 (urgent)–10 (low). Planner maps: 1=urgent, 3=important, 5=medium, 9=low.', ge=0, le=10)] | None",
+      "default": "None",
+      "index": 6,
+      "name": "priority"
+     },
+     {
+      "annotation": "Annotated[str | None, \"Order hint string for sorting within the assignee's task list.\"]",
+      "default": "None",
+      "index": 7,
+      "name": "assigneePriority"
+     },
+     {
+      "annotation": "Annotated[dict | None, 'Categories applied to the task keyed by category slot (e.g. {\"category3\": true, \"category4\": false}). Use list_plan_categories for label names.']",
+      "default": "None",
+      "index": 8,
+      "name": "appliedCategories"
+     },
+     {
+      "annotation": "Annotated[list[str] | None, 'List of user object IDs to assign to the task.']",
+      "default": "None",
+      "index": 9,
+      "name": "assignUserIds"
+     },
+     {
+      "annotation": "Annotated[list[str] | None, 'List of user object IDs to remove from the task.']",
+      "default": "None",
+      "index": 10,
+      "name": "unassignUserIds"
+     },
+     {
+      "annotation": "Annotated[str | None, 'New plain-text description for the task (detail field).']",
+      "default": "None",
+      "index": 11,
+      "name": "description"
+     },
+     {
+      "annotation": "Annotated[str | None, 'Preview style shown in Planner UI. One of: automatic, noPreview, checklist, description, reference (detail field).']",
+      "default": "None",
+      "index": 12,
+      "name": "previewType"
+     },
+     {
+      "annotation": "Annotated[dict | None, 'Dict keyed by checklist item GUID. Pass null for a key to delete that item (detail field).']",
+      "default": "None",
+      "index": 13,
+      "name": "checklistItems"
+     },
+     {
+      "annotation": "Annotated[dict | None, 'Dict keyed by URL-encoded reference URL (periods to %2E, colons to %3A). Pass null for a key to delete that reference (detail field).']",
+      "default": "None",
+      "index": 14,
+      "name": "references"
+     },
+     {
+      "annotation": "Annotated[str | None, 'The current @odata.etag of the task *details* resource (from get_task_details). Required only when updating detail fields (description, checklistItems, references, previewType). If omitted the ETag is auto-refreshed from Graph before patching.']",
+      "default": "None",
+      "index": 15,
+      "name": "etagDetails"
+     }
+    ],
+    "qualname": "update_task",
+    "relpath": "src/tools/tasks.py",
+    "schema_hash": "1395b9c20986",
+    "tool_name": "update_task",
+    "unit_id": "mcp:update_task:1395b9c20986"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "readOnlyHint"
+    ],
+    "present_no_bound": [],
+    "upper": [
+     "FS_READ",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "select",
+     "site": "src/tools/users.py:L189",
+     "transform": "str.split"
+    },
+    {
+     "root": "select",
+     "site": "src/tools/users.py:L189",
+     "transform": "str.strip"
+    },
+    {
+     "root": "select",
+     "site": "src/tools/users.py:L189",
+     "transform": "str.strip"
+    },
+    {
+     "root": "search",
+     "site": "src/tools/users.py:L97",
+     "transform": "str.strip"
+    },
+    {
+     "root": "search",
+     "site": "src/tools/users.py:L97",
+     "transform": "str.strip"
+    },
+    {
+     "root": "search",
+     "site": "src/tools/users.py:L97",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": true,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "dict",
+    "annotations": {
+     "readOnlyHint": true
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 116,
+    "module": "src.tools.users",
+    "params": [
+     {
+      "annotation": "Annotated[str | None, Field(description=\"Comma-separated list of User fields to include. Pass '*all' for all fields. Default: id,displayName,mail,userPrincipalName.\", default='id,displayName,mail,userPrincipalName')]",
+      "default": "'id,displayName,mail,userPrincipalName'",
+      "index": 0,
+      "name": "select"
+     },
+     {
+      "annotation": "Annotated[str | None, Field(description='Free-text search for users. A plain string (e.g. \"Alice\") searches by displayName. Use \\'field:value\\' syntax to target a specific field (e.g. \"surname:Smith\"). Surrounding quotes are stripped automatically.', examples=['\"Alice\"', 'surname:Smith', '\"displayName:Bob\"'])]",
+      "default": "None",
+      "index": 1,
+      "name": "search"
+     },
+     {
+      "annotation": "Annotated[list[str] | None, Field(description='List of user object GUIDs to look up. Translated to an OData $filter expression. Large lists are silently truncated to stay within the 2 048-character URL limit.')]",
+      "default": "None",
+      "index": 2,
+      "name": "guids"
+     },
+     {
+      "annotation": "Annotated[list[str] | None, Field(description='List of user principal names (UPNs / e-mail addresses) to look up. Translated to an OData $filter expression. Large lists are silently truncated to stay within the 2 048-character URL limit.')]",
+      "default": "None",
+      "index": 3,
+      "name": "emails"
+     },
+     {
+      "annotation": "Annotated[int, Field(description=\"Maximum number of users to return. Ignored when 'guids' or 'emails' are provided. Default: 10.\", ge=1, le=999, default=10)]",
+      "default": "10",
+      "index": 4,
+      "name": "top"
+     }
+    ],
+    "qualname": "list_users",
+    "relpath": "src/tools/users.py",
+    "schema_hash": "11f23464269a",
+    "tool_name": "list_users",
+    "unit_id": "mcp:list_users:11f23464269a"
+   },
+   "validator_shapes": [
+    "split"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,915 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [
+   ".claude/settings.json"
+  ],
+  "source": null
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 139,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "examples/upstream_product_catalog_server.py",
+   "resolution": "opaque",
+   "selector": "'march madness'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 149,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "examples/upstream_product_catalog_server.py",
+   "resolution": "opaque",
+   "selector": "'native'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 218,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "examples/upstream_product_catalog_server.py",
+   "resolution": "opaque",
+   "selector": "topic",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 224,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "examples/upstream_product_catalog_server.py",
+   "resolution": "opaque",
+   "selector": "format_type",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "product.get"
+   ],
+   "form": "if_chain",
+   "lineno": 207,
+   "opaque_reason": null,
+   "relpath": "examples/upstream_with_implementation.py",
+   "resolution": "resolved",
+   "selector": "principal_id",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 256,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "examples/upstream_with_implementation.py",
+   "resolution": "opaque",
+   "selector": "product.get('delivery_type')",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 267,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "examples/upstream_with_implementation.py",
+   "resolution": "opaque",
+   "selector": "'run of site'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 339,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/adapters/gam/utils/error_handler.py",
+   "resolution": "opaque",
+   "selector": "'rollback_action'",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 251,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/core/tools/creatives/listing.py",
+   "resolution": "opaque",
+   "selector": "'width'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 253,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/core/tools/creatives/listing.py",
+   "resolution": "opaque",
+   "selector": "'height'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 255,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/core/tools/creatives/listing.py",
+   "resolution": "opaque",
+   "selector": "'duration_ms'",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "getattr",
+   "lineno": 256,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/harness/dispatchers.py",
+   "resolution": "opaque",
+   "selector": "method",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "getattr",
+   "lineno": 805,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "tests/unit/test_error_boundary_translation.py",
+   "resolution": "opaque",
+   "selector": "source_cls_name",
+   "selector_is_model": false
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [
+  {
+   "cap": "ast_node_cap",
+   "count": 31622,
+   "relpath": "tests/bdd/steps/domain/uc006_sync_creatives.py"
+  }
+ ],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 295,
+    "module": "examples.upstream_product_catalog_server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "product_id"
+     },
+     {
+      "annotation": "str",
+      "index": 1,
+      "name": "start_date"
+     },
+     {
+      "annotation": "str",
+      "index": 2,
+      "name": "end_date"
+     }
+    ],
+    "qualname": "get_product_availability",
+    "relpath": "examples/upstream_product_catalog_server.py",
+    "schema_hash": "f4d0b6f84c41",
+    "tool_name": "get_product_availability",
+    "unit_id": "mcp:get_product_availability:f4d0b6f84c41"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "brief",
+     "site": "examples/upstream_product_catalog_server.py:L126",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 248,
+    "module": "examples.upstream_product_catalog_server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "brief"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 1,
+      "name": "tenant_id"
+     },
+     {
+      "annotation": "str | None",
+      "default": "None",
+      "index": 2,
+      "name": "principal_id"
+     },
+     {
+      "annotation": "dict[str, Any] | None",
+      "default": "None",
+      "index": 3,
+      "name": "context"
+     }
+    ],
+    "qualname": "get_products",
+    "relpath": "examples/upstream_product_catalog_server.py",
+    "schema_hash": "c1bfbab99d1d",
+    "tool_name": "get_products",
+    "unit_id": "mcp:get_products:c1bfbab99d1d"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "brief",
+     "site": "examples/upstream_with_implementation.py:L184",
+     "transform": "str.lower"
+    },
+    {
+     "root": "brief",
+     "site": "examples/upstream_with_implementation.py:L236",
+     "transform": "str.lower"
+    },
+    {
+     "root": "brief",
+     "site": "examples/upstream_with_implementation.py:L236",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 159,
+    "module": "examples.upstream_with_implementation",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "brief"
+     },
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 1,
+      "name": "tenant_id"
+     },
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 2,
+      "name": "principal_id"
+     },
+     {
+      "annotation": "dict[str, Any] | None",
+      "default": "None",
+      "index": 3,
+      "name": "principal_data"
+     },
+     {
+      "annotation": "dict[str, Any] | None",
+      "default": "None",
+      "index": 4,
+      "name": "context"
+     }
+    ],
+    "qualname": "get_products",
+    "relpath": "examples/upstream_with_implementation.py",
+    "schema_hash": "934cea415c80",
+    "tool_name": "get_products",
+    "unit_id": "mcp:get_products:934cea415c80"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [],
+   "cap_hits": [],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 274,
+    "module": "examples.upstream_with_implementation",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "product_id"
+     },
+     {
+      "annotation": "dict[str, Any]",
+      "index": 1,
+      "name": "principal_data"
+     }
+    ],
+    "qualname": "validate_implementation",
+    "relpath": "examples/upstream_with_implementation.py",
+    "schema_hash": "8589327df77d",
+    "tool_name": "validate_implementation",
+    "unit_id": "mcp:validate_implementation:8589327df77d"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "ctx",
+     "site": "src/core/resolved_identity.py:L93",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/resolved_identity.py:L93",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/resolved_identity.py:L120",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/resolved_identity.py:L120",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/resolved_identity.py:L63",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/resolved_identity.py:L63",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/resolved_identity.py:L64",
+     "transform": "str.strip"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/resolved_identity.py:L64",
+     "transform": "str.strip"
+    },
+    {
+     "root": "created_after",
+     "site": "src/core/tools/creatives/listing.py:L111",
+     "transform": "str.replace"
+    },
+    {
+     "root": "created_before",
+     "site": "src/core/tools/creatives/listing.py:L116",
+     "transform": "str.replace"
+    },
+    {
+     "root": "identity",
+     "site": "src/core/tools/creatives/listing.py:L263",
+     "transform": "str.replace"
+    },
+    {
+     "root": "identity",
+     "site": "src/core/tools/creatives/listing.py:L272",
+     "transform": "str.replace"
+    },
+    {
+     "root": "identity",
+     "site": "src/core/tools/creatives/listing.py:L263",
+     "transform": "str.replace"
+    },
+    {
+     "root": "identity",
+     "site": "src/core/tools/creatives/listing.py:L272",
+     "transform": "str.replace"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 533,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 336,
+     "relpath": "src/core/audit_logger.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "structured.jsonl",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "_list_creatives_impl",
+      "AuditLogger.log_operation",
+      "AuditLogger._write_structured_log"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "tools_list",
+    "framework": "tools-list",
+    "is_async": false,
+    "lineno": 477,
+    "module": "src.core.tools.creatives.listing",
+    "params": [
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 0,
+      "name": "media_buy_id"
+     },
+     {
+      "annotation": "list[str]",
+      "default": "None",
+      "index": 1,
+      "name": "media_buy_ids"
+     },
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 2,
+      "name": "status"
+     },
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 3,
+      "name": "format"
+     },
+     {
+      "annotation": "list[str]",
+      "default": "None",
+      "index": 4,
+      "name": "tags"
+     },
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 5,
+      "name": "created_after"
+     },
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 6,
+      "name": "created_before"
+     },
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 7,
+      "name": "search"
+     },
+     {
+      "annotation": "CreativeFilters | None",
+      "default": "None",
+      "index": 8,
+      "name": "filters"
+     },
+     {
+      "annotation": "list[str] | None",
+      "default": "None",
+      "index": 9,
+      "name": "fields"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 10,
+      "name": "include_performance"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 11,
+      "name": "include_assignments"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 12,
+      "name": "include_sub_assets"
+     },
+     {
+      "annotation": "int",
+      "default": "1",
+      "index": 13,
+      "name": "page"
+     },
+     {
+      "annotation": "int",
+      "default": "50",
+      "index": 14,
+      "name": "limit"
+     },
+     {
+      "annotation": "str",
+      "default": "'created_date'",
+      "index": 15,
+      "name": "sort_by"
+     },
+     {
+      "annotation": "str",
+      "default": "'desc'",
+      "index": 16,
+      "name": "sort_order"
+     },
+     {
+      "annotation": "ContextObject | None",
+      "default": "None",
+      "index": 17,
+      "name": "context"
+     },
+     {
+      "annotation": "Context | ToolContext | None",
+      "default": "None",
+      "index": 18,
+      "name": "ctx"
+     },
+     {
+      "annotation": "ResolvedIdentity | None",
+      "default": "None",
+      "index": 19,
+      "name": "identity"
+     }
+    ],
+    "qualname": "list_creatives_raw",
+    "relpath": "src/core/tools/creatives/listing.py",
+    "schema_hash": "393945215b38",
+    "tool_name": "list_creatives_raw",
+    "unit_id": "tools-list:list_creatives_raw:393945215b38"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "ctx",
+     "site": "src/core/resolved_identity.py:L93",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/resolved_identity.py:L93",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/resolved_identity.py:L120",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/resolved_identity.py:L120",
+     "transform": "str.split"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/resolved_identity.py:L63",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/resolved_identity.py:L63",
+     "transform": "str.lower"
+    },
+    {
+     "root": "ctx",
+     "site": "src/core/resolved_identity.py:L64",
+     "transform": "str.strip"
+    },
+    {
+     "root": "ctx[\"headers\"]",
+     "site": "src/core/resolved_identity.py:L64",
+     "transform": "str.strip"
+    },
+    {
+     "root": "creatives",
+     "site": "src/core/tools/creatives/_validation.py:L95",
+     "transform": "str.strip"
+    },
+    {
+     "root": "creatives",
+     "site": "src/core/tools/creatives/_validation.py:L95",
+     "transform": "str.strip"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "logger": null
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "dynamic_schema",
+    "reason": "登録経路が執行表に無い",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "recursion",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "tools_list",
+    "framework": "tools-list",
+    "is_async": false,
+    "lineno": 76,
+    "module": "src.core.tools.creatives.sync_wrappers",
+    "params": [
+     {
+      "annotation": "list[CreativeAsset]",
+      "index": 0,
+      "name": "creatives"
+     },
+     {
+      "annotation": "dict",
+      "default": "None",
+      "index": 1,
+      "name": "assignments"
+     },
+     {
+      "annotation": "list[str]",
+      "default": "None",
+      "index": 2,
+      "name": "creative_ids"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 3,
+      "name": "delete_missing"
+     },
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 4,
+      "name": "dry_run"
+     },
+     {
+      "annotation": "str",
+      "default": "'strict'",
+      "index": 5,
+      "name": "validation_mode"
+     },
+     {
+      "annotation": "PushNotificationConfig | None",
+      "default": "None",
+      "index": 6,
+      "name": "push_notification_config"
+     },
+     {
+      "annotation": "ContextObject | None",
+      "default": "None",
+      "index": 7,
+      "name": "context"
+     },
+     {
+      "annotation": "LibraryAccountReference | None",
+      "default": "None",
+      "index": 8,
+      "name": "account"
+     },
+     {
+      "annotation": "Context | ToolContext | None",
+      "default": "None",
+      "index": 9,
+      "name": "ctx"
+     },
+     {
+      "annotation": "ResolvedIdentity | None",
+      "default": "None",
+      "index": 10,
+      "name": "identity"
+     }
+    ],
+    "qualname": "sync_creatives_raw",
+    "relpath": "src/core/tools/creatives/sync_wrappers.py",
+    "schema_hash": "c26034714a20",
+    "tool_name": "sync_creatives_raw",
+    "unit_id": "tools-list:sync_creatives_raw:c26034714a20"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

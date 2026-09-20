@@ -1,0 +1,2979 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [
+    "TextContent",
+    "_latest_session_id",
+    "classify.classify",
+    "store.get_resume_data",
+    "store.list_events"
+   ],
+   "form": "if_chain",
+   "lineno": 255,
+   "opaque_reason": null,
+   "relpath": "claude_replay/server.py",
+   "resolution": "resolved",
+   "selector": "name",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "TextContent",
+    "_latest_session_id",
+    "_manual_checkpoint",
+    "arguments.get"
+   ],
+   "form": "if_chain",
+   "lineno": 278,
+   "opaque_reason": null,
+   "relpath": "claude_replay/server.py",
+   "resolution": "resolved",
+   "selector": "name",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "TextContent",
+    "_latest_session_id",
+    "arguments.get",
+    "resume.generate_brief"
+   ],
+   "form": "if_chain",
+   "lineno": 285,
+   "opaque_reason": null,
+   "relpath": "claude_replay/server.py",
+   "resolution": "resolved",
+   "selector": "name",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "TextContent",
+    "arguments.get",
+    "int",
+    "len",
+    "lines.append",
+    "store.count_checkpoints",
+    "store.count_events",
+    "store.list_sessions"
+   ],
+   "form": "if_chain",
+   "lineno": 291,
+   "opaque_reason": null,
+   "relpath": "claude_replay/server.py",
+   "resolution": "resolved",
+   "selector": "name",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "Path.home",
+    "TextContent",
+    "_latest_session_id",
+    "arguments.get",
+    "export.render",
+    "str"
+   ],
+   "form": "if_chain",
+   "lineno": 305,
+   "opaque_reason": null,
+   "relpath": "claude_replay/server.py",
+   "resolution": "resolved",
+   "selector": "name",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "TextContent",
+    "any",
+    "arguments.get",
+    "filters.values",
+    "int",
+    "len",
+    "lines.append",
+    "store.search",
+    "str"
+   ],
+   "form": "if_chain",
+   "lineno": 316,
+   "opaque_reason": null,
+   "relpath": "claude_replay/server.py",
+   "resolution": "resolved",
+   "selector": "name",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "TextContent",
+    "_latest_session_id",
+    "arguments.get",
+    "store.add_tags",
+    "store.get_session",
+    "store.remove_tags",
+    "store.set_name",
+    "str"
+   ],
+   "form": "if_chain",
+   "lineno": 334,
+   "opaque_reason": null,
+   "relpath": "claude_replay/server.py",
+   "resolution": "resolved",
+   "selector": "name",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "TextContent",
+    "_latest_session_id",
+    "arguments.get",
+    "metrics.compute",
+    "store.get_session",
+    "store.list_events"
+   ],
+   "form": "if_chain",
+   "lineno": 350,
+   "opaque_reason": null,
+   "relpath": "claude_replay/server.py",
+   "resolution": "resolved",
+   "selector": "name",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "TextContent",
+    "arguments.get",
+    "store.compare"
+   ],
+   "form": "if_chain",
+   "lineno": 371,
+   "opaque_reason": null,
+   "relpath": "claude_replay/server.py",
+   "resolution": "resolved",
+   "selector": "name",
+   "selector_is_model": true
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "arguments[\"add\"]",
+     "site": "claude_replay/store.py:L279",
+     "transform": "json.dumps"
+    },
+    {
+     "root": "arguments[\"remove\"]",
+     "site": "claude_replay/store.py:L295",
+     "transform": "str.strip"
+    },
+    {
+     "root": "arguments[\"remove\"]",
+     "site": "claude_replay/store.py:L295",
+     "transform": "str.strip"
+    },
+    {
+     "root": "arguments[\"remove\"]",
+     "site": "claude_replay/store.py:L295",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 48,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA journal_mode=WAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "list_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 49,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA synchronous=NORMAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "list_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 50,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA foreign_keys=ON",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "list_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 356,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth"
+     ],
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "params": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "depth"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "SELECT * FROM events WHERE session_id = ? ORDER BY seq",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_READ",
+     "witness_chain": [
+      "dispatch_tool",
+      "list_events"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 48,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA journal_mode=WAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "list_sessions",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 49,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA synchronous=NORMAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "list_sessions",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 50,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA foreign_keys=ON",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "list_sessions",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 257,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "params": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "SELECT * FROM sessions ORDER BY started_at DESC LIMIT ?",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_READ",
+     "witness_chain": [
+      "dispatch_tool",
+      "list_sessions"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 48,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA journal_mode=WAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_checkpoints",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 49,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA synchronous=NORMAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_checkpoints",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 50,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA foreign_keys=ON",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_checkpoints",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 459,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "params": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "SELECT COUNT(*) FROM checkpoints WHERE session_id = ?",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_READ",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_checkpoints"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 48,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA journal_mode=WAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 49,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA synchronous=NORMAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 50,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA foreign_keys=ON",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 365,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "params": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "formal": "event_type",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "SELECT COUNT(*) FROM events WHERE session_id = ? AND event_type = ?",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_READ",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_events"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 48,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA journal_mode=WAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 49,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA synchronous=NORMAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 50,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA foreign_keys=ON",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 370,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "params": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "SELECT COUNT(*) FROM events WHERE session_id = ?",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_READ",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_events"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 48,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA journal_mode=WAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_checkpoints",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 49,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA synchronous=NORMAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_checkpoints",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 50,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA foreign_keys=ON",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_checkpoints",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 459,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "params": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "SELECT COUNT(*) FROM checkpoints WHERE session_id = ?",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_READ",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_checkpoints"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 48,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA journal_mode=WAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 49,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA synchronous=NORMAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 50,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA foreign_keys=ON",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 365,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "params": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "formal": "event_type",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "SELECT COUNT(*) FROM events WHERE session_id = ? AND event_type = ?",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_READ",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_events"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 48,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA journal_mode=WAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 49,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA synchronous=NORMAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 50,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA foreign_keys=ON",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 370,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "params": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "SELECT COUNT(*) FROM events WHERE session_id = ?",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_READ",
+     "witness_chain": [
+      "dispatch_tool",
+      "count_events"
+     ]
+    },
+    {
+     "entry_lineno": 392,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 64,
+     "relpath": "claude_replay/export.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "render",
+      "render_html"
+     ]
+    },
+    {
+     "entry_lineno": 392,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 66,
+     "relpath": "claude_replay/export.py",
+     "required_by": [
+      "F7"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "unresolved"
+     ],
+     "site": "pathlib.Path.write_text",
+     "slots": {
+      "content": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Atom"
+       }
+      },
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth",
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "depth",
+           "unresolved"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "claude-replay-",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "depth",
+              "unresolved"
+             ],
+             "shape": {
+              "k": "Unknown"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "-",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "depth"
+             ],
+             "shape": {
+              "k": "Unknown"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": ".html",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "render",
+      "render_html"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 48,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA journal_mode=WAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "search",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 49,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA synchronous=NORMAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "search",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 50,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA foreign_keys=ON",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "search",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 519,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "params": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "\"",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "unresolved"
+             ],
+             "shape": {
+              "formal": "re",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "\"",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "SELECT e.session_id AS sid,\n                              snippet(events_fts, -1, '«', '»', '…', 10) AS snip\n                       FROM events_fts\n                       JOIN events e ON e.id = events_fts.rowid\n                       WHERE events_fts MATCH ?\n                       ORDER BY rank",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_READ",
+     "witness_chain": [
+      "dispatch_tool",
+      "search"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 534,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "params": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "%",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "unresolved"
+             ],
+             "shape": {
+              "items": [
+               {
+                "prin": "OP",
+                "prov": "opaque",
+                "prov_reasons": [
+                 "unresolved"
+                ],
+                "shape": {
+                 "k": "Unknown"
+                }
+               }
+              ],
+              "k": "Str"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "%",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         },
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "%",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "unresolved"
+             ],
+             "shape": {
+              "items": [
+               {
+                "prin": "OP",
+                "prov": "opaque",
+                "prov_reasons": [
+                 "unresolved"
+                ],
+                "shape": {
+                 "k": "Unknown"
+                }
+               }
+              ],
+              "k": "Str"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "%",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         },
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "%",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "unresolved"
+             ],
+             "shape": {
+              "items": [
+               {
+                "prin": "OP",
+                "prov": "opaque",
+                "prov_reasons": [
+                 "unresolved"
+                ],
+                "shape": {
+                 "k": "Unknown"
+                }
+               }
+              ],
+              "k": "Str"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "%",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "SELECT session_id AS sid, tool_input, tool_result FROM events\n                   WHERE tool_name LIKE ? OR tool_input LIKE ? OR tool_result LIKE ?",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_READ",
+     "witness_chain": [
+      "dispatch_tool",
+      "search"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 544,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "params": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "%",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "unresolved"
+             ],
+             "shape": {
+              "items": [
+               {
+                "prin": "OP",
+                "prov": "opaque",
+                "prov_reasons": [
+                 "unresolved"
+                ],
+                "shape": {
+                 "items": [
+                  {
+                   "prin": "OP",
+                   "prov": "opaque",
+                   "prov_reasons": [
+                    "unresolved"
+                   ],
+                   "shape": {
+                    "k": "Unknown"
+                   }
+                  }
+                 ],
+                 "k": "Str"
+                }
+               }
+              ],
+              "k": "Str"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "%",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         },
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "%",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "unresolved"
+             ],
+             "shape": {
+              "items": [
+               {
+                "prin": "OP",
+                "prov": "opaque",
+                "prov_reasons": [
+                 "unresolved"
+                ],
+                "shape": {
+                 "items": [
+                  {
+                   "prin": "OP",
+                   "prov": "opaque",
+                   "prov_reasons": [
+                    "unresolved"
+                   ],
+                   "shape": {
+                    "k": "Unknown"
+                   }
+                  }
+                 ],
+                 "k": "Str"
+                }
+               }
+              ],
+              "k": "Str"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "%",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         },
+         {
+          "attrs": [
+           "joined"
+          ],
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "items": [
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "%",
+              "k": "Atom"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "opaque",
+             "prov_reasons": [
+              "unresolved"
+             ],
+             "shape": {
+              "items": [
+               {
+                "prin": "OP",
+                "prov": "opaque",
+                "prov_reasons": [
+                 "unresolved"
+                ],
+                "shape": {
+                 "items": [
+                  {
+                   "prin": "OP",
+                   "prov": "opaque",
+                   "prov_reasons": [
+                    "unresolved"
+                   ],
+                   "shape": {
+                    "k": "Unknown"
+                   }
+                  }
+                 ],
+                 "k": "Str"
+                }
+               }
+              ],
+              "k": "Str"
+             }
+            },
+            {
+             "prin": "OP",
+             "prov": "resolved",
+             "shape": {
+              "const": "%",
+              "k": "Atom"
+             }
+            }
+           ],
+           "k": "Str"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "SELECT id FROM sessions\n               WHERE lower(COALESCE(objective, '')) LIKE ?\n                  OR lower(COALESCE(name, ''))      LIKE ?\n                  OR lower(COALESCE(tags, ''))      LIKE ?",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_READ",
+     "witness_chain": [
+      "dispatch_tool",
+      "search"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 48,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA journal_mode=WAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "get_session",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 49,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA synchronous=NORMAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "get_session",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 50,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA foreign_keys=ON",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "get_session",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 250,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "unresolved"
+     ],
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "params": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth",
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "depth",
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "SELECT * FROM sessions WHERE id = ?",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_READ",
+     "witness_chain": [
+      "dispatch_tool",
+      "get_session"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 48,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA journal_mode=WAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "set_name",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 49,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA synchronous=NORMAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "set_name",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 50,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA foreign_keys=ON",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "set_name",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 267,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "unresolved"
+     ],
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "params": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth",
+        "unresolved"
+       ],
+       "roots": [
+        "arguments[\"name\"]"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "roots": [
+           "arguments[\"name\"]"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "depth",
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "UPDATE sessions SET name = ? WHERE id = ?",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "set_name"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 48,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA journal_mode=WAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "get_session",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 49,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA synchronous=NORMAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "get_session",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 50,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA foreign_keys=ON",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "get_session",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 250,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "unresolved"
+     ],
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "params": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth",
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "depth",
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "SELECT * FROM sessions WHERE id = ?",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_READ",
+     "witness_chain": [
+      "dispatch_tool",
+      "get_session"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 48,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA journal_mode=WAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "get_session",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 49,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA synchronous=NORMAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "get_session",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 50,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA foreign_keys=ON",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "get_session",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 250,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "unresolved"
+     ],
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "params": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth",
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "depth",
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "SELECT * FROM sessions WHERE id = ?",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_READ",
+     "witness_chain": [
+      "dispatch_tool",
+      "get_session"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 48,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA journal_mode=WAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "list_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 49,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA synchronous=NORMAL",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "list_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 50,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "resolved",
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "PRAGMA foreign_keys=ON",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_WRITE",
+     "witness_chain": [
+      "dispatch_tool",
+      "list_events",
+      "db"
+     ]
+    },
+    {
+     "db_rule": "db",
+     "entry_lineno": 392,
+     "form": "proxy",
+     "kind": "DB",
+     "lineno": 356,
+     "relpath": "claude_replay/store.py",
+     "required_by": [
+      "A18",
+      "S1'"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "depth",
+      "unresolved"
+     ],
+     "site": "psycopg.Cursor.execute",
+     "slots": {
+      "params": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "depth",
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "depth",
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      },
+      "sql": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "const": "SELECT * FROM events WHERE session_id = ? ORDER BY seq",
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "DB_READ",
+     "witness_chain": [
+      "dispatch_tool",
+      "list_events"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "lowlevel_v1_decorator",
+    "pin": {
+     "name": "mcp",
+     "source": "pyproject.toml",
+     "spec": ">=1.0.0",
+     "status": "lower_bound_only",
+     "version": null
+    },
+    "reason": "版が確定しない（`>=` だけの指定は版を確定しない。規則 2）。**既定で「執行あり」とも「執行なし」とも仮定しない**（規則 4）",
+    "verdict": "D_unknown"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "lowlevel_v1",
+    "framework": "mcp-lowlevel-v1",
+    "is_async": true,
+    "lineno": 391,
+    "module": "claude_replay.server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "name"
+     },
+     {
+      "annotation": "dict[str, Any]",
+      "index": 1,
+      "name": "arguments"
+     }
+    ],
+    "qualname": "call_tool",
+    "relpath": "claude_replay/server.py",
+    "schema_hash": "7071a54a23fa",
+    "tool_name": null,
+    "unit_id": "mcp-lowlevel-v1:call_tool:7071a54a23fa"
+   },
+   "validator_shapes": []
+  }
+ ]
+}

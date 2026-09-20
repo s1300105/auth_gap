@@ -1,0 +1,6297 @@
+{
+ "d_op": {
+  "allow": null,
+  "ask": [],
+  "bottom": true,
+  "deny": [],
+  "excluded_files": [],
+  "source": null
+ },
+ "dispatch_sites": [
+  {
+   "candidates": [
+    "logger.warning"
+   ],
+   "form": "if_chain",
+   "lineno": 180,
+   "opaque_reason": null,
+   "relpath": "docker/docling-mcp/app/tg_docling/tools.py",
+   "resolution": "resolved",
+   "selector": "successful",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "document.export_to_json",
+    "document.export_to_markdown",
+    "document.export_to_text",
+    "export_format.lower",
+    "len",
+    "logger.info",
+    "logger.warning",
+    "str"
+   ],
+   "form": "if_chain",
+   "lineno": 305,
+   "opaque_reason": null,
+   "relpath": "docker/docling-mcp/app/tg_docling/tools.py",
+   "resolution": "resolved",
+   "selector": "cache_key",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "document.export_to_markdown",
+    "len",
+    "logger.info",
+    "logger.warning",
+    "str"
+   ],
+   "form": "if_chain",
+   "lineno": 316,
+   "opaque_reason": null,
+   "relpath": "docker/docling-mcp/app/tg_docling/tools.py",
+   "resolution": "resolved",
+   "selector": "export_format_lower",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "document.export_to_json",
+    "logger.info",
+    "logger.warning",
+    "str"
+   ],
+   "form": "if_chain",
+   "lineno": 327,
+   "opaque_reason": null,
+   "relpath": "docker/docling-mcp/app/tg_docling/tools.py",
+   "resolution": "resolved",
+   "selector": "export_format_lower",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "document.export_to_text",
+    "len",
+    "logger.info",
+    "logger.warning",
+    "str"
+   ],
+   "form": "if_chain",
+   "lineno": 336,
+   "opaque_reason": null,
+   "relpath": "docker/docling-mcp/app/tg_docling/tools.py",
+   "resolution": "resolved",
+   "selector": "export_format_lower",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "document.export_to_markdown",
+    "len",
+    "logger.info",
+    "logger.warning",
+    "str"
+   ],
+   "form": "if_chain",
+   "lineno": 404,
+   "opaque_reason": null,
+   "relpath": "docker/docling-mcp/app/tg_docling/tools.py",
+   "resolution": "resolved",
+   "selector": "export_format_lower",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "document.export_to_json",
+    "logger.info",
+    "logger.warning",
+    "str"
+   ],
+   "form": "if_chain",
+   "lineno": 415,
+   "opaque_reason": null,
+   "relpath": "docker/docling-mcp/app/tg_docling/tools.py",
+   "resolution": "resolved",
+   "selector": "export_format_lower",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [
+    "document.export_to_text",
+    "len",
+    "logger.info",
+    "logger.warning",
+    "str"
+   ],
+   "form": "if_chain",
+   "lineno": 424,
+   "opaque_reason": null,
+   "relpath": "docker/docling-mcp/app/tg_docling/tools.py",
+   "resolution": "resolved",
+   "selector": "export_format_lower",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 73,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/agents/agent_registry.py",
+   "resolution": "opaque",
+   "selector": "name",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [],
+   "form": "subscript",
+   "lineno": 77,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/agents/agent_registry.py",
+   "resolution": "opaque",
+   "selector": "name",
+   "selector_is_model": false
+  },
+  {
+   "candidates": [
+    "logger.debug"
+   ],
+   "form": "if_chain",
+   "lineno": 336,
+   "opaque_reason": null,
+   "relpath": "src/mcp/mcp_hub_server.py",
+   "resolution": "resolved",
+   "selector": "user_id",
+   "selector_is_model": true
+  },
+  {
+   "candidates": [],
+   "form": "if_chain",
+   "lineno": 650,
+   "opaque_reason": "dynamic_registry",
+   "relpath": "src/mcp/mcp_hub_server.py",
+   "resolution": "opaque",
+   "selector": "kb_id",
+   "selector_is_model": true
+  }
+ ],
+ "fingerprint": {
+  "caps": {
+   "AST_NODE_CAP": 20000,
+   "CFG_NODE_CAP": 2000,
+   "EFFECT_ROW_CAP": 200,
+   "K": 16,
+   "MAX_DEPTH": 3,
+   "SUMMARY_CAP": 200,
+   "WALL_CLOCK_CAP": 10.0
+  },
+  "counts": {
+   "direct_sink_names": 67,
+   "pipe_rows": 2,
+   "proxy_rows": 16,
+   "validator_shapes": 12,
+   "weak_reasons": 22
+  },
+  "frozen_at": null,
+  "git_commit": null,
+  "schema": "authgap/v1",
+  "sha256": {
+   "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+   "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+   "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+   "sink_table": "17471a450e8bb7c25b37b718e4c79d27d89df54fd30d2157a34e7fb53fb9d912"
+  }
+ },
+ "gate_verdict_counts": {},
+ "parse_failures": [],
+ "population": "mcp_server",
+ "schema": "authgap/v1",
+ "truncations": [],
+ "units": [
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "readOnlyHint"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 119,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 77,
+     "relpath": "docker/docling-mcp/app/tg_docling/server.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "_load_and_apply_settings",
+      "_apply_env_overrides"
+     ]
+    },
+    {
+     "entry_lineno": 119,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 89,
+     "relpath": "docker/docling-mcp/app/tg_docling/server.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "_load_and_apply_settings",
+      "_apply_env_overrides"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 631,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 420,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_builtin_model"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 132,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_builtin_model",
+      "_snapshot_download_with_hf_transfer_fallback"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 135,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_builtin_model",
+      "_snapshot_download_with_hf_transfer_fallback"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 420,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_builtin_model"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 132,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_builtin_model",
+      "_snapshot_download_with_hf_transfer_fallback"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 135,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_builtin_model",
+      "_snapshot_download_with_hf_transfer_fallback"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 495,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_huggingface"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 515,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "shutil.rmtree",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_huggingface"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 516,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_huggingface"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 132,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_huggingface",
+      "_snapshot_download_with_hf_transfer_fallback"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 135,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_huggingface",
+      "_snapshot_download_with_hf_transfer_fallback"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 566,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_modelscope"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 586,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "shutil.rmtree",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_modelscope"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 587,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_modelscope"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 495,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_huggingface"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 515,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "shutil.rmtree",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_huggingface"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 516,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_huggingface"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 132,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_huggingface",
+      "_snapshot_download_with_hf_transfer_fallback"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 135,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_huggingface",
+      "_snapshot_download_with_hf_transfer_fallback"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 566,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_modelscope"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 586,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "shutil.rmtree",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_modelscope"
+     ]
+    },
+    {
+     "entry_lineno": 120,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 587,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "sync_models",
+      "_sync_modelscope"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": false,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "dynamic",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "readOnlyHint": false
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 111,
+    "module": "docker.docling-mcp.app.tg_docling.server",
+    "params": [
+     {
+      "annotation": "bool",
+      "default": "False",
+      "index": 0,
+      "name": "force"
+     }
+    ],
+    "qualname": "sync_docling_models",
+    "relpath": "docker/docling-mcp/app/tg_docling/server.py",
+    "schema_hash": "fc0eed7a68e5",
+    "tool_name": "sync_docling_models",
+    "unit_id": "mcp:sync_docling_models:fc0eed7a68e5"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": false,
+    "explicit": [
+     "destructiveHint"
+    ],
+    "present_no_bound": [
+     "readOnlyHint"
+    ],
+    "upper": [
+     "DB",
+     "FS_READ",
+     "FS_WRITE",
+     "NET"
+    ]
+   },
+   "alias_facts": [
+    {
+     "root": "filename",
+     "site": "docker/docling-mcp/app/tg_docling/tools.py:L50",
+     "transform": "Path()"
+    },
+    {
+     "root": "export_format",
+     "site": "docker/docling-mcp/app/tg_docling/tools.py:L315",
+     "transform": "str.lower"
+    },
+    {
+     "root": "export_format",
+     "site": "docker/docling-mcp/app/tg_docling/tools.py:L403",
+     "transform": "str.lower"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {},
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 363,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 113,
+     "relpath": "docker/docling-mcp/app/tg_docling/tools.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "_convert_with_model_recovery",
+      "_attempt_model_resync",
+      "_load_docling_settings_for_sync"
+     ]
+    },
+    {
+     "entry_lineno": 363,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 124,
+     "relpath": "docker/docling-mcp/app/tg_docling/tools.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "_convert_with_model_recovery",
+      "_attempt_model_resync",
+      "_load_docling_settings_for_sync"
+     ]
+    },
+    {
+     "entry_lineno": 363,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 631,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "_convert_with_model_recovery",
+      "_attempt_model_resync",
+      "sync_models"
+     ]
+    },
+    {
+     "entry_lineno": 363,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 113,
+     "relpath": "docker/docling-mcp/app/tg_docling/tools.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "_convert_with_model_recovery",
+      "_attempt_model_resync",
+      "_load_docling_settings_for_sync"
+     ]
+    },
+    {
+     "entry_lineno": 363,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 124,
+     "relpath": "docker/docling-mcp/app/tg_docling/tools.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "_convert_with_model_recovery",
+      "_attempt_model_resync",
+      "_load_docling_settings_for_sync"
+     ]
+    },
+    {
+     "entry_lineno": 363,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 631,
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "opaque",
+         "prov_reasons": [
+          "unresolved"
+         ],
+         "shape": {
+          "k": "Unknown"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "_convert_with_model_recovery",
+      "_attempt_model_resync",
+      "sync_models"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "annotation_form": "ToolAnnotations",
+    "annotations": {
+     "destructiveHint": false,
+     "readOnlyHint": false
+    },
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 254,
+    "module": "docker.docling-mcp.app.tg_docling.tools",
+    "params": [
+     {
+      "annotation": "Annotated[str, Field(description='Base64 encoded document content.', examples=['JVBERi0xLjcKJcTl8uXrp...'])]",
+      "index": 0,
+      "name": "content"
+     },
+     {
+      "annotation": "Annotated[Optional[str], Field(default=None, description='Optional original filename (used for extension detection and metadata).', examples=['document.pdf'])]",
+      "default": "None",
+      "index": 1,
+      "name": "filename"
+     },
+     {
+      "annotation": "Annotated[Optional[str], Field(default=None, description='Optional MIME type hint (e.g. application/pdf).', examples=['application/pdf'])]",
+      "default": "None",
+      "index": 2,
+      "name": "mime_type"
+     },
+     {
+      "annotation": "Annotated[Optional[str], Field(default=None, description=\"Optional export format for immediate conversion. Options: 'markdown', 'json', 'text'. If None, returns only document_key for later export.\", examples=['markdown', 'json', None])]",
+      "default": "None",
+      "index": 3,
+      "name": "export_format"
+     }
+    ],
+    "qualname": "convert_document_from_content",
+    "relpath": "docker/docling-mcp/app/tg_docling/tools.py",
+    "schema_hash": "9166d25bfdec",
+    "tool_name": "convert_document_from_content",
+    "unit_id": "mcp:convert_document_from_content:9166d25bfdec"
+   },
+   "validator_shapes": [
+    "ctor_path",
+    "exists"
+   ]
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "user_id",
+     "site": "src/mcp/mcp_hub_server.py:L345",
+     "transform": "Path()"
+    },
+    {
+     "root": "user_id",
+     "site": "src/mcp/memory/memory_storage.py:L55",
+     "transform": "Path()"
+    },
+    {
+     "root": "user_id",
+     "site": "src/mcp/memory/memory_storage.py:L55",
+     "transform": "Path()"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {
+    "_storages": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 610,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 56,
+     "relpath": "src/mcp/memory/memory_storage.py",
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "user_id"
+       ],
+       "shape": {
+        "base": {
+         "attrs": [
+          "joined"
+         ],
+         "prin": "MODEL",
+         "prov": "resolved",
+         "roots": [
+          "user_id"
+         ],
+         "shape": {
+          "items": [
+           {
+            "prin": "OP",
+            "prov": "resolved",
+            "shape": {
+             "const": "data/memory/user_",
+             "k": "Atom"
+            }
+           },
+           {
+            "prin": "MODEL",
+            "prov": "resolved",
+            "roots": [
+             "user_id"
+            ],
+            "shape": {
+             "formal": "user_id",
+             "k": "Atom"
+            }
+           }
+          ],
+          "k": "Str"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_storage",
+      "MemoryStorage.__init__"
+     ]
+    },
+    {
+     "entry_lineno": 610,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 56,
+     "relpath": "src/mcp/memory/memory_storage.py",
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "user_id"
+       ],
+       "shape": {
+        "base": {
+         "attrs": [
+          "joined"
+         ],
+         "prin": "MODEL",
+         "prov": "resolved",
+         "roots": [
+          "user_id"
+         ],
+         "shape": {
+          "items": [
+           {
+            "prin": "OP",
+            "prov": "resolved",
+            "shape": {
+             "const": "data/memory/user_",
+             "k": "Atom"
+            }
+           },
+           {
+            "prin": "MODEL",
+            "prov": "resolved",
+            "roots": [
+             "user_id"
+            ],
+            "shape": {
+             "formal": "user_id",
+             "k": "Atom"
+            }
+           }
+          ],
+          "k": "Str"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_storage",
+      "MemoryStorage.__init__"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 589,
+    "module": "src.mcp.mcp_hub_server",
+    "params": [
+     {
+      "annotation": "int",
+      "index": 0,
+      "name": "user_id"
+     }
+    ],
+    "qualname": "list_categories",
+    "relpath": "src/mcp/mcp_hub_server.py",
+    "schema_hash": "910bb14d4ba3",
+    "tool_name": "list_categories",
+    "unit_id": "mcp:list_categories:910bb14d4ba3"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "user_id",
+     "site": "src/mcp/mcp_hub_server.py:L345",
+     "transform": "Path()"
+    },
+    {
+     "root": "user_id",
+     "site": "src/mcp/memory/memory_storage.py:L55",
+     "transform": "Path()"
+    },
+    {
+     "root": "user_id",
+     "site": "src/mcp/memory/memory_storage.py:L55",
+     "transform": "Path()"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {
+    "_storages": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 571,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 56,
+     "relpath": "src/mcp/memory/memory_storage.py",
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "user_id"
+       ],
+       "shape": {
+        "base": {
+         "attrs": [
+          "joined"
+         ],
+         "prin": "MODEL",
+         "prov": "resolved",
+         "roots": [
+          "user_id"
+         ],
+         "shape": {
+          "items": [
+           {
+            "prin": "OP",
+            "prov": "resolved",
+            "shape": {
+             "const": "data/memory/user_",
+             "k": "Atom"
+            }
+           },
+           {
+            "prin": "MODEL",
+            "prov": "resolved",
+            "roots": [
+             "user_id"
+            ],
+            "shape": {
+             "formal": "user_id",
+             "k": "Atom"
+            }
+           }
+          ],
+          "k": "Str"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_storage",
+      "MemoryStorage.__init__"
+     ]
+    },
+    {
+     "entry_lineno": 571,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 56,
+     "relpath": "src/mcp/memory/memory_storage.py",
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "user_id"
+       ],
+       "shape": {
+        "base": {
+         "attrs": [
+          "joined"
+         ],
+         "prin": "MODEL",
+         "prov": "resolved",
+         "roots": [
+          "user_id"
+         ],
+         "shape": {
+          "items": [
+           {
+            "prin": "OP",
+            "prov": "resolved",
+            "shape": {
+             "const": "data/memory/user_",
+             "k": "Atom"
+            }
+           },
+           {
+            "prin": "MODEL",
+            "prov": "resolved",
+            "roots": [
+             "user_id"
+            ],
+            "shape": {
+             "formal": "user_id",
+             "k": "Atom"
+            }
+           }
+          ],
+          "k": "Str"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_storage",
+      "MemoryStorage.__init__"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 540,
+    "module": "src.mcp.mcp_hub_server",
+    "params": [
+     {
+      "annotation": "int",
+      "index": 0,
+      "name": "user_id"
+     },
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 1,
+      "name": "query"
+     },
+     {
+      "annotation": "str",
+      "default": "None",
+      "index": 2,
+      "name": "category"
+     },
+     {
+      "annotation": "list[str]",
+      "default": "None",
+      "index": 3,
+      "name": "tags"
+     },
+     {
+      "annotation": "int",
+      "default": "10",
+      "index": 4,
+      "name": "limit"
+     }
+    ],
+    "qualname": "retrieve_memory",
+    "relpath": "src/mcp/mcp_hub_server.py",
+    "schema_hash": "f71a9c7d02e9",
+    "tool_name": "retrieve_memory",
+    "unit_id": "mcp:retrieve_memory:f71a9c7d02e9"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "user_id",
+     "site": "src/mcp/mcp_hub_server.py:L345",
+     "transform": "Path()"
+    },
+    {
+     "root": "user_id",
+     "site": "src/mcp/memory/memory_storage.py:L55",
+     "transform": "Path()"
+    },
+    {
+     "root": "user_id",
+     "site": "src/mcp/memory/memory_storage.py:L55",
+     "transform": "Path()"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {
+    "_storages": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 520,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 56,
+     "relpath": "src/mcp/memory/memory_storage.py",
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "user_id"
+       ],
+       "shape": {
+        "base": {
+         "attrs": [
+          "joined"
+         ],
+         "prin": "MODEL",
+         "prov": "resolved",
+         "roots": [
+          "user_id"
+         ],
+         "shape": {
+          "items": [
+           {
+            "prin": "OP",
+            "prov": "resolved",
+            "shape": {
+             "const": "data/memory/user_",
+             "k": "Atom"
+            }
+           },
+           {
+            "prin": "MODEL",
+            "prov": "resolved",
+            "roots": [
+             "user_id"
+            ],
+            "shape": {
+             "formal": "user_id",
+             "k": "Atom"
+            }
+           }
+          ],
+          "k": "Str"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_storage",
+      "MemoryStorage.__init__"
+     ]
+    },
+    {
+     "entry_lineno": 520,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 56,
+     "relpath": "src/mcp/memory/memory_storage.py",
+     "resolution": "resolved",
+     "shape_from": {
+      "path": "annotation"
+     },
+     "site": "pathlib.Path.mkdir",
+     "slots": {
+      "path": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "MODEL",
+       "prov": "resolved",
+       "roots": [
+        "user_id"
+       ],
+       "shape": {
+        "base": {
+         "attrs": [
+          "joined"
+         ],
+         "prin": "MODEL",
+         "prov": "resolved",
+         "roots": [
+          "user_id"
+         ],
+         "shape": {
+          "items": [
+           {
+            "prin": "OP",
+            "prov": "resolved",
+            "shape": {
+             "const": "data/memory/user_",
+             "k": "Atom"
+            }
+           },
+           {
+            "prin": "MODEL",
+            "prov": "resolved",
+            "roots": [
+             "user_id"
+            ],
+            "shape": {
+             "formal": "user_id",
+             "k": "Atom"
+            }
+           }
+          ],
+          "k": "Str"
+         }
+        },
+        "k": "Path",
+        "segs": []
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_storage",
+      "MemoryStorage.__init__"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "receiver",
+    "recursion",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": false,
+    "lineno": 485,
+    "module": "src.mcp.mcp_hub_server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "content"
+     },
+     {
+      "annotation": "int",
+      "index": 1,
+      "name": "user_id"
+     },
+     {
+      "annotation": "str",
+      "default": "'general'",
+      "index": 2,
+      "name": "category"
+     },
+     {
+      "annotation": "list[str]",
+      "default": "None",
+      "index": 3,
+      "name": "tags"
+     },
+     {
+      "annotation": "dict",
+      "default": "None",
+      "index": 4,
+      "name": "metadata"
+     }
+    ],
+    "qualname": "store_memory",
+    "relpath": "src/mcp/mcp_hub_server.py",
+    "schema_hash": "e2462414670a",
+    "tool_name": "store_memory",
+    "unit_id": "mcp:store_memory:e2462414670a"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "kb_id",
+     "site": "src/mcp/mcp_hub_server.py:L671",
+     "transform": "Path()"
+    },
+    {
+     "root": "kb_id",
+     "site": "src/mcp/vector_search/factory.py:L218",
+     "transform": "Path()"
+    },
+    {
+     "root": "kb_id",
+     "site": "src/mcp/vector_search/manager.py:L49",
+     "transform": "Path()"
+    }
+   ],
+   "cap_hits": [
+    "depth"
+   ],
+   "config_atoms": {
+    "_vector_search_available": false,
+    "_vector_search_managers": null
+   },
+   "d_prev_joined": false,
+   "effects": [],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "depth",
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 702,
+    "module": "src.mcp.mcp_hub_server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "query"
+     },
+     {
+      "annotation": "int",
+      "default": "5",
+      "index": 1,
+      "name": "top_k"
+     },
+     {
+      "annotation": "int",
+      "default": "None",
+      "index": 2,
+      "name": "user_id"
+     },
+     {
+      "annotation": "str",
+      "default": "'default'",
+      "index": 3,
+      "name": "kb_id"
+     }
+    ],
+    "qualname": "vector_search",
+    "relpath": "src/mcp/mcp_hub_server.py",
+    "schema_hash": "16565fd04956",
+    "tool_name": "vector_search",
+    "unit_id": "mcp:vector_search:16565fd04956"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "memory_path",
+     "site": "src/mcp/memory/mem_agent_impl/agent.py:L119",
+     "transform": "abspath"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {
+    "_agent_instances": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 121,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 23,
+     "relpath": "src/mcp/memory/mem_agent_impl/utils.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "receiver",
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "receiver",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_READ",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "load_system_prompt"
+     ]
+    },
+    {
+     "entry_lineno": 121,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 153,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 121,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 169,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "vllm_server.log",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 121,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 170,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "vllm_server_errors.log",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 121,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 181,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "F6"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.Popen",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-m",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "vllm.entrypoints.openai.api_server",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--host",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--port",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--model",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 121,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 202,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 121,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 202,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 121,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 224,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 121,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 240,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "mlx_server.log",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 121,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 241,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "mlx_server_errors.log",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 121,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 252,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "F6"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.Popen",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-m",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "mlx_lm.server",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--model",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--host",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--port",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 121,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 272,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 121,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 272,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 92,
+    "module": "src.mcp.memory.mem_agent_impl.mcp_server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "question"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "memory_path"
+     }
+    ],
+    "qualname": "chat_with_memory",
+    "relpath": "src/mcp/memory/mem_agent_impl/mcp_server.py",
+    "schema_hash": "a956b925a76b",
+    "tool_name": "chat_with_memory",
+    "unit_id": "mcp:chat_with_memory:a956b925a76b"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "memory_path",
+     "site": "src/mcp/memory/mem_agent_impl/agent.py:L119",
+     "transform": "abspath"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {
+    "_agent_instances": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 248,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 23,
+     "relpath": "src/mcp/memory/mem_agent_impl/utils.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "receiver",
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "receiver",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_READ",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "load_system_prompt"
+     ]
+    },
+    {
+     "entry_lineno": 248,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 153,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 248,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 169,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "vllm_server.log",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 248,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 170,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "vllm_server_errors.log",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 248,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 181,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "F6"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.Popen",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-m",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "vllm.entrypoints.openai.api_server",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--host",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--port",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--model",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 248,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 202,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 248,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 202,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 248,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 224,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 248,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 240,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "mlx_server.log",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 248,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 241,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "mlx_server_errors.log",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 248,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 252,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "F6"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.Popen",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-m",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "mlx_lm.server",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--model",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--host",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--port",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 248,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 272,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 248,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 272,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 225,
+    "module": "src.mcp.memory.mem_agent_impl.mcp_server",
+    "params": [
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 0,
+      "name": "memory_path"
+     }
+    ],
+    "qualname": "list_memory_structure",
+    "relpath": "src/mcp/memory/mem_agent_impl/mcp_server.py",
+    "schema_hash": "12689cc2ec89",
+    "tool_name": "list_memory_structure",
+    "unit_id": "mcp:list_memory_structure:12689cc2ec89"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "memory_path",
+     "site": "src/mcp/memory/mem_agent_impl/agent.py:L119",
+     "transform": "abspath"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {
+    "_agent_instances": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 172,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 23,
+     "relpath": "src/mcp/memory/mem_agent_impl/utils.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "receiver",
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "receiver",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_READ",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "load_system_prompt"
+     ]
+    },
+    {
+     "entry_lineno": 172,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 153,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 172,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 169,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "vllm_server.log",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 172,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 170,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "vllm_server_errors.log",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 172,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 181,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "F6"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.Popen",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-m",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "vllm.entrypoints.openai.api_server",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--host",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--port",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--model",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 172,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 202,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 172,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 202,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 172,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 224,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 172,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 240,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "mlx_server.log",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 172,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 241,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "mlx_server_errors.log",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 172,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 252,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "F6"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.Popen",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-m",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "mlx_lm.server",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--model",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--host",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--port",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 172,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 272,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 172,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 272,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 143,
+    "module": "src.mcp.memory.mem_agent_impl.mcp_server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "query"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "memory_path"
+     }
+    ],
+    "qualname": "query_memory",
+    "relpath": "src/mcp/memory/mem_agent_impl/mcp_server.py",
+    "schema_hash": "f966dac70a56",
+    "tool_name": "query_memory",
+    "unit_id": "mcp:query_memory:f966dac70a56"
+   },
+   "validator_shapes": []
+  },
+  {
+   "D_kind": {
+    "bottom": true,
+    "explicit": [],
+    "present_no_bound": []
+   },
+   "alias_facts": [
+    {
+     "root": "memory_path",
+     "site": "src/mcp/memory/mem_agent_impl/agent.py:L119",
+     "transform": "abspath"
+    }
+   ],
+   "cap_hits": [],
+   "config_atoms": {
+    "_agent_instances": null
+   },
+   "d_prev_joined": false,
+   "effects": [
+    {
+     "entry_lineno": 210,
+     "form": "direct",
+     "kind": "FS_READ",
+     "lineno": 23,
+     "relpath": "src/mcp/memory/mem_agent_impl/utils.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "receiver",
+      "unresolved"
+     ],
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "receiver",
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Atom"
+       }
+      }
+     },
+     "sub_kind": "FS_READ",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "load_system_prompt"
+     ]
+    },
+    {
+     "entry_lineno": 210,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 153,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 210,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 169,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "vllm_server.log",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 210,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 170,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "vllm_server_errors.log",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 210,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 181,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "F6"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.Popen",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-m",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "vllm.entrypoints.openai.api_server",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--host",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--port",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--model",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 210,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 202,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 210,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 202,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 210,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 224,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 210,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 240,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "mlx_server.log",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 210,
+     "form": "direct",
+     "kind": "FS_WRITE",
+     "lineno": 241,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "P0"
+     ],
+     "resolution": "resolved",
+     "site": "builtins.open",
+     "slots": {
+      "path": {
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "base": {
+         "prin": "OP",
+         "prov": "resolved",
+         "shape": {
+          "const": "logs",
+          "k": "Atom"
+         }
+        },
+        "k": "Path",
+        "segs": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "mlx_server_errors.log",
+           "k": "Atom"
+          }
+         }
+        ]
+       }
+      }
+     },
+     "sub_kind": "FS_WRITE",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 210,
+     "exec_mode": {
+      "shell": {
+       "const": false,
+       "prin": "OP",
+       "source": "default"
+      }
+     },
+     "form": "direct",
+     "kind": "SPAWN",
+     "lineno": 252,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "required_by": [
+      "F6"
+     ],
+     "resolution": "opaque",
+     "resolution_reasons": [
+      "unresolved"
+     ],
+     "site": "subprocess.Popen",
+     "slots": {
+      "argv0": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "k": "Unknown"
+       }
+      },
+      "argv[*]": {
+       "prin": "OP",
+       "prov": "opaque",
+       "prov_reasons": [
+        "unresolved"
+       ],
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "-m",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "mlx_lm.server",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--model",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--host",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "--port",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "opaque",
+          "prov_reasons": [
+           "unresolved"
+          ],
+          "shape": {
+           "k": "Unknown"
+          }
+         }
+        ],
+        "k": "Seq"
+       }
+      }
+     },
+     "sub_kind": "SPAWN_MODEL_ARGV",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 210,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 272,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    },
+    {
+     "entry_lineno": 210,
+     "form": "direct",
+     "kind": "NET",
+     "lineno": 272,
+     "relpath": "src/mcp/memory/mem_agent_impl/agent.py",
+     "resolution": "resolved",
+     "site": "urllib.request.urlopen",
+     "slots": {
+      "url.host": {
+       "attrs": [
+        "joined"
+       ],
+       "prin": "OP",
+       "prov": "resolved",
+       "shape": {
+        "items": [
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "http://",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "127.0.0.1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": ":",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": 8001,
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/v1",
+           "k": "Atom"
+          }
+         },
+         {
+          "prin": "OP",
+          "prov": "resolved",
+          "shape": {
+           "const": "/models",
+           "k": "Atom"
+          }
+         }
+        ],
+        "k": "Str"
+       }
+      }
+     },
+     "sub_kind": "NET",
+     "witness_chain": [
+      "get_agent",
+      "Agent.__init__",
+      "Agent._ensure_local_server"
+     ]
+    }
+   ],
+   "enforcement": {
+    "path": "highlevel_decorator",
+    "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+    "verdict": "enforced"
+   },
+   "gate": {},
+   "gate_occ_by_effect": {},
+   "gate_predicate_present": true,
+   "grades": {},
+   "notes": [],
+   "opaque_reasons": [
+    "receiver",
+    "unresolved"
+   ],
+   "req_occ": "MODEL",
+   "req_occ_by_effect": {},
+   "req_val": {},
+   "rows": [],
+   "unit": {
+    "entry_kind": "decorator",
+    "framework": "mcp",
+    "is_async": true,
+    "lineno": 190,
+    "module": "src.mcp.memory.mem_agent_impl.mcp_server",
+    "params": [
+     {
+      "annotation": "str",
+      "index": 0,
+      "name": "information"
+     },
+     {
+      "annotation": "Optional[str]",
+      "default": "None",
+      "index": 1,
+      "name": "memory_path"
+     }
+    ],
+    "qualname": "save_to_memory",
+    "relpath": "src/mcp/memory/mem_agent_impl/mcp_server.py",
+    "schema_hash": "95c13f1bfd84",
+    "tool_name": "save_to_memory",
+    "unit_id": "mcp:save_to_memory:95c13f1bfd84"
+   },
+   "validator_shapes": []
+  }
+ ]
+}
