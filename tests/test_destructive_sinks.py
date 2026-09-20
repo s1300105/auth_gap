@@ -55,11 +55,7 @@ def test_contradiction_verdict(units, tool):
     assert has == EXPECTED[tool]["contradiction"], [(r.effect.site, sorted(r.verdicts)) for r in rows]
 
 
-#: 混在ユニット（rmtree + makedirs）: 行ごとの判定。**現行はユニット水準の旗を全 WRITE 行に付ける**ので未達。
-MIXED_DEFECT = pytest.mark.xfail(strict=True, reason="D32: CONTRADICTION を効果ごとに判定（未実装）")
-
-
-@MIXED_DEFECT
+#: 混在ユニット（rmtree + makedirs）: 行ごとの判定。ebac5cb で xfail として置き、実装で XPASS になったので印を外した。
 def test_mixed_unit_rows_are_judged_per_effect(units):
     u = units["nd_mixed"]
     exp = EXPECTED["nd_mixed"]

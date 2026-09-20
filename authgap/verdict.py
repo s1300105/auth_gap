@@ -145,9 +145,9 @@ def decide(inp: UnitVerdictInput) -> list[Row]:
         # それ以外はユニットの D_kind と同じ（`d_kind_by_effect` が空）。
         dk = inp.d_kind_by_effect.get(i, inp.d_kind)
         d_layers = _layers_present(inp, dk)
-        contradiction_flag = (
-            _contradiction_of(dk, [eff]) if i in inp.d_kind_by_effect else _contradiction(inp, inp.effects)
-        )
+        # CONTRADICTION は**効果ごと**（Def 7 の CONTRADICTION(e)、D32）。ユニット内の
+        # 別の効果が矛盾しても、この行の効果が宣言内（追記型など）なら立てない。
+        contradiction_flag = _contradiction_of(dk, [eff])
         # **行の確度で判定する。** ユニットのどこかで opaque が立ったことを
         # 全行に伝播させると、解決できている行まで UNKNOWN になり、
         # opaque 率も §3 の交差行も測れなくなる。ユニット水準の opaque 理由は
