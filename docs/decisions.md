@@ -42,6 +42,20 @@
   CONTRADICTION を数え直し、変更前（80 件）と変更後を併記する。
 - 期待値は `fixtures/destructive_sinks` に実装より先に置く。
 
+### 結果（同日、`evidence/scan_v2_run3/`。変更前 = `scan_v2_run1`、途中 = `scan_v2_run2`）
+
+| | 変更前（run1） | sink 属性のみ（run2） | 効果ごと + sink 属性（run3、確定） |
+|---|---|---|---|
+| CONTRADICTION 行 | 202 | 195 | **142** |
+| ユニット × (site, kind) | 80（16 木） | 78 | **72（16 木）** |
+| うち readOnlyHint に反する | 48（8 木） | 48 | 48（不変） |
+| うち destructiveHint==false のみに反する | 32 | 30 | **24**（rmtree 3 / unlink 3 / remove 1 / replace 2 / chmod 1 / open(w) 4 / Path.open 1 / write_text 2 / write_bytes 3 / subprocess.run 4） |
+
+追記型（`mkdir` 6 / `makedirs` 1 / `open('a')` 1）の 8 件が矛盾から外れ、残りはすべて
+削除・上書き型（`destructive=True`）か mode 不明（`open` 0 件）か SPAWN。
+UNKNOWN / GAP_INJECT / GAP_SELECT は不変（2,549 / 197 / 232）。
+手検証の候補表は `evidence/scan_v2_run3/contradictions.json`。
+
 ---
 
 ## D31. 母集団 v2 の full scan と `r_prev`: 宣言との差は CONTRADICTION に現れる（16/87 木）
