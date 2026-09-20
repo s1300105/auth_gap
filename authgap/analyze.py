@@ -58,7 +58,12 @@ R1_ROOT_PREFIX = "llm:"
 #: * ``A`` — trig を計算し、**val を全位置で OP に固定**する（INJECT が出ない）
 #: * ``B`` — val を計算し、**trig を全て assumed に固定**する（SELECT が出ない）
 #: * ``C`` — 完全版
-ARMS = ("A", "B", "C")
+#: * ``C0`` — **等級潰し腕**（`docs/preregistration.md` §5 #2 の判別実験 (b)）。
+#:   束縛された値検証子があれば**等級に関係なく** `req_val = OP` にする。
+#:   `C − C0`（C で GAP、C0 で clear になる位置）が「等級づけが verdict を動かした
+#:   位置」であり、これが空なら等級づけは verdict に寄与していない。
+#:   梯子は ``T ⊂ S ⊂ C0 ⊂ C``（A / B は座標を止め、C0 は等級を止める）。
+ARMS = ("A", "B", "C", "C0")
 
 
 @dataclass
@@ -386,8 +391,9 @@ def analyze_unit_full(
 ) -> UnitReport:
     """F0a に支配判定・等級・判定を足す。
 
-    :param arm: §3 の 3 腕（``A`` / ``B`` / ``C``）。**同一の解析経路を通り、
-        座標を 1 つずつ止めるだけ**である。腕ごとに別の実装を書いてはならない。
+    :param arm: §3 の 3 腕（``A`` / ``B`` / ``C``）と等級潰し腕 ``C0``。
+        **同一の解析経路を通り、座標（または等級）を 1 つずつ止めるだけ**である。
+        腕ごとに別の実装を書いてはならない。
     """
     if arm not in ARMS:
         raise ValueError(f"未知の腕: {arm!r}")
@@ -456,6 +462,14 @@ def analyze_unit_full(
         # 欠陥）にぶら下がる。規則 W を Def 7 どおりに直した瞬間に b1 型の
         # false-clean が戻るので、**req 側も同じ根拠で落とす。**
         slot_cands = _demote_unbacked_strong(cands, value, alias_facts)
+        if arm == "C0":
+            # 腕 C0: 値検証子の**等級を潰す**。form=value の候補はすべて `Req.OP` に
+            # する（strong / weak / unknown の別を見ない）。主語一致と支配は
+            # `score_gates` がそのまま判定するので、「位置をゲートしている検証子が
+            # あれば OP」になる。D21 の裏づけ（`_demote_unbacked_strong`）の後に
+            # 当てるのは、C0 が「等級が verdict に効いたか」を問う腕であり、
+            # 裏づけの有無もその「等級」の一部だからである。
+            slot_cands = [replace(c, grade=Req.OP) if c.form == "value" else c for c in slot_cands]
         sc = score_gates(cfg, dom, slot_cands, nodes, "val", subjects)
         report.req_val[(i, slot)] = sc.req
         report.gate_results[(i, slot)] = sc.to_json()
