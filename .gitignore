@@ -17,6 +17,9 @@ evidence/*
 !evidence/decl_census_*/
 # - 母集団 v2 の列挙（docs/population_v2.md）
 !evidence/population_v2/
+# - 母集団 v2 の full scan は要約だけ残す（manifest 本体 13MB は追跡しない）
+!evidence/scan_v2_*/
+evidence/scan_v2_*/v2-*.json
 
 __pycache__/
 *.pyc

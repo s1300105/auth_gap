@@ -1,0 +1,1629 @@
+{
+ "_note": "母集団 v2 full scan の CONTRADICTION 行（ユニット × (site, kind) で 1 件）。宣言（readOnlyHint==true / destructiveHint==false）に反して WRITE / EXEC / SPAWN の効果がある。手検証の候補表。",
+ "n": 80,
+ "trig_modes": {
+  "decorator:assumed": 2196,
+  "decorator:traced": 9,
+  "lowlevel_v1:traced": 4,
+  "method:assumed": 3,
+  "tools_list:assumed": 17,
+  "lowlevel_v1:assumed": 1,
+  "lowlevel_v2:traced": 1
+ },
+ "rows": [
+  {
+   "tree": "v2-artyomzemlyak__tg-note",
+   "unit": "sync_docling_models",
+   "tool": "sync_docling_models",
+   "relpath": "docker/docling-mcp/app/tg_docling/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 77,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-artyomzemlyak__tg-note",
+   "unit": "sync_docling_models",
+   "tool": "sync_docling_models",
+   "relpath": "docker/docling-mcp/app/tg_docling/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "shutil.rmtree",
+   "lineno": 515,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-artyomzemlyak__tg-note",
+   "unit": "convert_document_from_content",
+   "tool": "convert_document_from_content",
+   "relpath": "docker/docling-mcp/app/tg_docling/tools.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 113,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dddabtc__winremote-mcp",
+   "unit": "AnnotatedSnapshot",
+   "tool": "AnnotatedSnapshot",
+   "relpath": "src/winremote/__main__.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 629,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dddabtc__winremote-mcp",
+   "unit": "App",
+   "tool": "App",
+   "relpath": "src/winremote/__main__.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 258,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dddabtc__winremote-mcp",
+   "unit": "EventLog",
+   "tool": "EventLog",
+   "relpath": "src/winremote/__main__.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 10,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dddabtc__winremote-mcp",
+   "unit": "Notification",
+   "tool": "Notification",
+   "relpath": "src/winremote/__main__.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 357,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dddabtc__winremote-mcp",
+   "unit": "OCR",
+   "tool": "OCR",
+   "relpath": "src/winremote/__main__.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 103,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dddabtc__winremote-mcp",
+   "unit": "OCR",
+   "tool": "OCR",
+   "relpath": "src/winremote/__main__.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.unlink",
+   "lineno": 114,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dddabtc__winremote-mcp",
+   "unit": "Ping",
+   "tool": "Ping",
+   "relpath": "src/winremote/__main__.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 12,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dddabtc__winremote-mcp",
+   "unit": "PlaySound",
+   "tool": "PlaySound",
+   "relpath": "src/winremote/__main__.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 798,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dddabtc__winremote-mcp",
+   "unit": "PlaySound",
+   "tool": "PlaySound",
+   "relpath": "src/winremote/__main__.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 827,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dddabtc__winremote-mcp",
+   "unit": "PlaySound",
+   "tool": "PlaySound",
+   "relpath": "src/winremote/__main__.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 855,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dddabtc__winremote-mcp",
+   "unit": "ServiceList",
+   "tool": "ServiceList",
+   "relpath": "src/winremote/__main__.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 10,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dddabtc__winremote-mcp",
+   "unit": "Snapshot",
+   "tool": "Snapshot",
+   "relpath": "src/winremote/__main__.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 629,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dddabtc__winremote-mcp",
+   "unit": "TaskList",
+   "tool": "TaskList",
+   "relpath": "src/winremote/__main__.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 10,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dddoh__paper-access-mcp",
+   "unit": "download_paper_from_link_tool",
+   "tool": "download_paper_from_link_tool",
+   "relpath": "packages/paper-access-mcp/src/paper_access_mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 31,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dddoh__paper-access-mcp",
+   "unit": "download_paper_from_link_tool",
+   "tool": "download_paper_from_link_tool",
+   "relpath": "packages/paper-access-mcp/src/paper_access_mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.write_bytes",
+   "lineno": 56,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-diterex__youtube-research-mcp",
+   "unit": "get_video_frames",
+   "tool": "get_video_frames",
+   "relpath": "src/yt_research_mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 1598,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)",
+    "D_layer_present:kind:FS_WRITE"
+   ]
+  },
+  {
+   "tree": "v2-diterex__youtube-research-mcp",
+   "unit": "get_video_frames",
+   "tool": "get_video_frames",
+   "relpath": "src/yt_research_mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "shutil.rmtree",
+   "lineno": 844,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-diterex__youtube-research-mcp",
+   "unit": "get_video_frames",
+   "tool": "get_video_frames",
+   "relpath": "src/yt_research_mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 858,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-diterex__youtube-research-mcp",
+   "unit": "get_video_frames",
+   "tool": "get_video_frames",
+   "relpath": "src/yt_research_mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 998,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)",
+    "D_layer_present:kind:FS_WRITE"
+   ]
+  },
+  {
+   "tree": "v2-dondetir__codegrok_mcp",
+   "unit": "learn",
+   "tool": "learn",
+   "relpath": "src/codegrok_mcp/mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 174,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dondetir__codegrok_mcp",
+   "unit": "learn",
+   "tool": "learn",
+   "relpath": "src/codegrok_mcp/mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 628,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dondetir__codegrok_mcp",
+   "unit": "memory_stats",
+   "tool": "memory_stats",
+   "relpath": "src/codegrok_mcp/mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 84,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dondetir__codegrok_mcp",
+   "unit": "recall",
+   "tool": "recall",
+   "relpath": "src/codegrok_mcp/mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 84,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dondetir__codegrok_mcp",
+   "unit": "remember",
+   "tool": "remember",
+   "relpath": "src/codegrok_mcp/mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 84,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-dondetir__codegrok_mcp",
+   "unit": "remember",
+   "tool": "remember",
+   "relpath": "src/codegrok_mcp/mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 126,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-fanfan-de__anybox",
+   "unit": "register.get_blendfile_summary_datablocks_for_cli",
+   "tool": "get_blendfile_summary_datablocks_for_cli",
+   "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools/get_blendfile_summary_datablocks.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 165,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-fanfan-de__anybox",
+   "unit": "register.get_blendfile_summary_datablocks_for_cli",
+   "tool": "get_blendfile_summary_datablocks_for_cli",
+   "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools/get_blendfile_summary_datablocks.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 69,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-fanfan-de__anybox",
+   "unit": "register.get_blendfile_summary_missing_files_for_cli",
+   "tool": "get_blendfile_summary_missing_files_for_cli",
+   "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools/get_blendfile_summary_missing_files.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 165,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-fanfan-de__anybox",
+   "unit": "register.get_blendfile_summary_missing_files_for_cli",
+   "tool": "get_blendfile_summary_missing_files_for_cli",
+   "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools/get_blendfile_summary_missing_files.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 69,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-fanfan-de__anybox",
+   "unit": "register.get_blendfile_summary_of_linked_libraries_for_cli",
+   "tool": "get_blendfile_summary_of_linked_libraries_for_cli",
+   "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools/get_blendfile_summary_of_linked_libraries.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 165,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-fanfan-de__anybox",
+   "unit": "register.get_blendfile_summary_of_linked_libraries_for_cli",
+   "tool": "get_blendfile_summary_of_linked_libraries_for_cli",
+   "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools/get_blendfile_summary_of_linked_libraries.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 69,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-fanfan-de__anybox",
+   "unit": "register.get_blendfile_summary_path_info_for_cli",
+   "tool": "get_blendfile_summary_path_info_for_cli",
+   "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools/get_blendfile_summary_path_info.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 165,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-fanfan-de__anybox",
+   "unit": "register.get_blendfile_summary_path_info_for_cli",
+   "tool": "get_blendfile_summary_path_info_for_cli",
+   "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools/get_blendfile_summary_path_info.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 69,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-fanfan-de__anybox",
+   "unit": "register.get_blendfile_summary_usage_guess_for_cli",
+   "tool": "get_blendfile_summary_usage_guess_for_cli",
+   "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools/get_blendfile_summary_usage_guess.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 165,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-fanfan-de__anybox",
+   "unit": "register.get_blendfile_summary_usage_guess_for_cli",
+   "tool": "get_blendfile_summary_usage_guess_for_cli",
+   "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools/get_blendfile_summary_usage_guess.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 69,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-fbratten__agentspool",
+   "unit": "comm_heartbeat",
+   "tool": "comm_heartbeat",
+   "relpath": "agent_comm_mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 112,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-fbratten__agentspool",
+   "unit": "comm_heartbeat",
+   "tool": "comm_heartbeat",
+   "relpath": "agent_comm_mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 115,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-fbratten__agentspool",
+   "unit": "comm_register_agent",
+   "tool": "comm_register_agent",
+   "relpath": "agent_comm_mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 112,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-fbratten__agentspool",
+   "unit": "comm_register_agent",
+   "tool": "comm_register_agent",
+   "relpath": "agent_comm_mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 115,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-fbratten__agentspool",
+   "unit": "comm_relay_gen_secret",
+   "tool": "comm_relay_gen_secret",
+   "relpath": "agent_comm_mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.write_text",
+   "lineno": 32,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-gwicho38__write-like-me-mcp",
+   "unit": "analyze_writing_style",
+   "tool": "analyze_writing_style",
+   "relpath": "src/write_like_me_mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.write_text",
+   "lineno": 119,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-innovatehubph__innovatehub-ai-platform",
+   "unit": "send_message",
+   "tool": "send_message",
+   "relpath": "python/helpers/mcp_server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 84,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-innovatehubph__innovatehub-ai-platform",
+   "unit": "send_message",
+   "tool": "send_message",
+   "relpath": "python/helpers/mcp_server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "shutil.rmtree",
+   "lineno": 317,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-innovatehubph__innovatehub-ai-platform",
+   "unit": "send_message",
+   "tool": "send_message",
+   "relpath": "python/helpers/mcp_server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 326,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-jsyzlbw__bbwatch",
+   "unit": "find_materials",
+   "tool": "find_materials",
+   "relpath": "src/bbwatch/mcp_server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 39,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-jsyzlbw__bbwatch",
+   "unit": "get_status",
+   "tool": "get_status",
+   "relpath": "src/bbwatch/mcp_server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 39,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-jsyzlbw__bbwatch",
+   "unit": "list_pending",
+   "tool": "list_pending",
+   "relpath": "src/bbwatch/mcp_server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 39,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-jsyzlbw__bbwatch",
+   "unit": "list_tasks",
+   "tool": "list_tasks",
+   "relpath": "src/bbwatch/mcp_server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 39,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.get_company_posts",
+   "tool": "get_company_posts",
+   "relpath": "linkedin_mcp_server/tools/company.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.get_company_posts",
+   "tool": "get_company_posts",
+   "relpath": "linkedin_mcp_server/tools/company.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.get_company_posts",
+   "tool": "get_company_posts",
+   "relpath": "linkedin_mcp_server/tools/company.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.get_company_profile",
+   "tool": "get_company_profile",
+   "relpath": "linkedin_mcp_server/tools/company.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.get_company_profile",
+   "tool": "get_company_profile",
+   "relpath": "linkedin_mcp_server/tools/company.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.get_company_profile",
+   "tool": "get_company_profile",
+   "relpath": "linkedin_mcp_server/tools/company.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_feed_tools.get_feed",
+   "tool": "get_feed",
+   "relpath": "linkedin_mcp_server/tools/feed.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_feed_tools.get_feed",
+   "tool": "get_feed",
+   "relpath": "linkedin_mcp_server/tools/feed.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_feed_tools.get_feed",
+   "tool": "get_feed",
+   "relpath": "linkedin_mcp_server/tools/feed.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_job_tools.get_saved_jobs",
+   "tool": "get_saved_jobs",
+   "relpath": "linkedin_mcp_server/tools/job.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_job_tools.get_saved_jobs",
+   "tool": "get_saved_jobs",
+   "relpath": "linkedin_mcp_server/tools/job.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_job_tools.get_saved_jobs",
+   "tool": "get_saved_jobs",
+   "relpath": "linkedin_mcp_server/tools/job.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_job_tools.search_jobs",
+   "tool": "search_jobs",
+   "relpath": "linkedin_mcp_server/tools/job.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_job_tools.search_jobs",
+   "tool": "search_jobs",
+   "relpath": "linkedin_mcp_server/tools/job.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_job_tools.search_jobs",
+   "tool": "search_jobs",
+   "relpath": "linkedin_mcp_server/tools/job.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_person_tools.get_person_profile",
+   "tool": "get_person_profile",
+   "relpath": "linkedin_mcp_server/tools/person.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_person_tools.get_person_profile",
+   "tool": "get_person_profile",
+   "relpath": "linkedin_mcp_server/tools/person.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_person_tools.get_person_profile",
+   "tool": "get_person_profile",
+   "relpath": "linkedin_mcp_server/tools/person.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_connection_tools.connect_to_robot",
+   "tool": "connect_to_robot",
+   "relpath": "ros-mcp-server/ros_mcp/tools/connection.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 87,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_topic_tools.subscribe_for_duration",
+   "tool": "subscribe_for_duration",
+   "relpath": "ros-mcp-server/ros_mcp/tools/topics.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 119,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_topic_tools.subscribe_once",
+   "tool": "subscribe_once",
+   "relpath": "ros-mcp-server/ros_mcp/tools/topics.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 119,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-ritikakumar0204__audience-trend-miner",
+   "unit": "run_audience_mining",
+   "tool": "run_audience_mining",
+   "relpath": "mcp_server/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.open",
+   "lineno": 26,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-rwheeler007__cohort",
+   "unit": "desktop_status",
+   "tool": "desktop_status",
+   "relpath": "cohort/desktop/mcp_server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 110,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-rwheeler007__cohort",
+   "unit": "local_llm_generate",
+   "tool": "local_llm_generate",
+   "relpath": "cohort/mcp/local_llm_server.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 56,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-rwheeler007__cohort",
+   "unit": "browser_action",
+   "tool": "browser_action",
+   "relpath": "cohort/mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 611,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-sontanon__docx-mcp",
+   "unit": "apply_changes",
+   "tool": "apply_changes",
+   "relpath": "src/docx_mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.write_bytes",
+   "lineno": 510,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-sontanon__docx-mcp",
+   "unit": "apply_changes_from_file",
+   "tool": "apply_changes_from_file",
+   "relpath": "src/docx_mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.write_bytes",
+   "lineno": 510,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "D_upper": [
+    "DB",
+    "FS_READ",
+    "FS_WRITE",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-zomma-dev__quantcontext-mcp-server",
+   "unit": "backtest_strategy",
+   "tool": "backtest_strategy",
+   "relpath": "src/quantcontext/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 263,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  },
+  {
+   "tree": "v2-zomma-dev__quantcontext-mcp-server",
+   "unit": "screen_stocks",
+   "tool": "screen_stocks",
+   "relpath": "src/quantcontext/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 263,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "D_upper": [
+    "FS_READ",
+    "NET"
+   ],
+   "resolution": [
+    "select_manifest_only(assumed_trig)"
+   ]
+  }
+ ]
+}
