@@ -317,7 +317,7 @@
 
 ---
 
-## O17. val 受け入れ fixture F1–F10 の初回採点: OpenManus の 3 件（F6/F7/F8）が false-clean 方向で未達
+## O17. val 受け入れ fixture F1–F10 の初回採点: OpenManus の 3 件（F6/F7/F8）が false-clean 方向で未達 — **(c)(d)(e) は解決（D35）。(a)(b) は学生の入力待ち**
 
 - **状態**: 期待値 `fixtures/val/expected.json`（仕様 §2.6 の表から転記、コミット
   5944a0b）を採点器 `tests/test_val_fixtures.py` で当てた初回の結果（2026-09-21）。
@@ -362,6 +362,9 @@
     `try:` の中にある（`function_scope` は recurse=True で拾うはず）ので、
     `async with` の ctor 評価か `for url in valid_urls:` のループ内の受け手の
     widening のどちらかが原因（未切り分け）。
+- **進捗（D35）**: (c)(d)(e) は解析器を直して行が出るようになった（敵対的レビュー 2 本、
+  反証 13 形を直した後）。残るのは語彙の差と未出力（`tests/test_val_fixtures.py` の
+  `KNOWN_UNMET`）と、D35 の「残る既知の限界」（別名、末尾名のクラス、継承、remote）。
 - **誤りの向き**: (c)(d)(e) は効果行が出ない側（false-clean）。ただし 3 件とも
   ユニットに `opaque_reasons` が残るので「clean」ではなく「opaque」。§10 の脈拍の
   負例（OpenManus は GAP を出さない）は、行が無いことで成立しているのではなく

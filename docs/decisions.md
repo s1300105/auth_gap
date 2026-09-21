@@ -7,7 +7,77 @@
 **仕様書本体は書き換えていない。** 仕様書は設計の記録として残し、
 食い違いはここと `docs/cve_triage.csv` に併記する。
 
-最終更新 2026-09-21（D34 を追加）。
+最終更新 2026-09-21（D35 を追加）。
+
+---
+
+## D35. val エンジンの受け手型の修正（F6/F7/F8）と敵対的レビュー: 7 規則、反証 13 形、直した後の残る限界
+
+### 何を直したか（551f23e → 38531e7）
+
+O17 (c)(d)(e) の 3 件（OpenManus Bash / StrReplaceEditor / crawl4ai で効果行が出ない、
+false-clean 方向）を直すために、val エンジンに次の規則を入れた。**いずれも
+opaque → resolved の向きの変更**なので、CLAUDE.md の約束どおり敵対的レビューを通した。
+
+| 規則 | 内容 | 直した取りこぼし |
+|---|---|---|
+| (a) | `Obj ⊔ None` リテラル → `Obj`（`Atom.none` で None リテラルを「定数不明」と区別） | `Optional[_BashSession] = None` との合流で受け手型が消えていた |
+| (b) | 木内クラスの構築時にクラス体の既定値を `Obj.fields` に入れ、`__init__` で上書き | `command: str = "/bin/bash"` が読めなかった |
+| (c) | 型で裏付けられた降下の後、被呼び出しの `self.<f>` 書き込みを受け手の経路と fields に戻す | `_BashSession.start` の `self._process` を `run` が読めず EXEC@pipe が出なかった |
+| (d) | 受け手が 2 型以上の `Obj` で各型に候補が 1 つずつあれば全候補へ型を絞って降りる | `operator.write_file` が Local / Sandbox の 2 型で opaque のままだった |
+| (e) | `str.encode` / `bytes.decode` を内容不変の TRANSFER に | `command.encode()` で MODEL と root が落ちていた |
+| (f) | sink の `A(pos, kw=)`: 位置に無ければ仮引数名のキーワードで引く | crawl4ai `arun(url=...)` の slot が空で行が出なかった |
+| (g) | 常にシェル経由の SPAWN sink に `exec_mode.shell = OP/True/implicit` | `create_subprocess_shell` に shell の記録が無かった |
+
+### 敵対的レビューの結果（2 本、読み取り専用の agent、反証木 24 本）
+
+規則 (a)(f) は反証なし。(g) は等級・判定の変化なし（併せて既存の穴が 1 つ見つかった: proxy の
+SPAWN に一律 `const False` を付けていたため paramiko `exec_command` のシェル文字列の
+検証子が strong-token に上がっていた。直した）。**(b)(c)(d)(e) で false-clean が 13 形**:
+
+- (b) 既定値が、エンジンに見えない MODEL の書き込みを覆い隠す: 呼び出し側の `r.cmd = cmd`
+  （env の鍵と `Obj.fields` が別の記憶）、`super().__init__(cmd)`（未解決）、`__init__` が深さ /
+  再帰 / cap で走らなかったとき、別名 `b = a` 経由の書き込み。import 時の構築の効果行が
+  ツールに付く（false-dirty）。
+- (c) 書き戻しが上書きだった: 条件つき書き込み `if flag: self.cmd = "ls"` が MODEL を OP に、
+  分割降下の候補間で最後の候補が勝ちクラス名の並び順で答えが変わる、`Obj ⊔ Obj` の合流が
+  fields を全部落とし（ループ 2 周目で MODEL → OP）。
+- (d) 候補の無い型の経路が無言で落ちる（`<=`）、末尾名で別モジュールの同名クラスへ降りる、
+  絞った型で書き戻すと 2 型目以降の経路が消える。
+- (e) 受け手主語の TRANSFER が木内の `Codec.encode` を横取りし、その中の sink 行が丸ごと
+  消える（`split` / `strip` 等の既存の穴と同じ機構）。
+
+**すべて直した**（38531e7 のコミットメッセージに 1 件ずつ）。要点: 書き戻しは合流、降りる前に
+経路書き込みを fields に載せる、`Obj ⊔ Obj` は fields を名前ごとに合流、`super()` を解決、
+既定値の確度に「走らなかった理由」を合流、分割は全型一致 + 同名クラスが一意のときだけ、
+TRANSFER は木内メソッドを横取りしない。反証木 24 本で false-clean 0（d4 は opaque に戻る）。
+
+### 残る既知の限界（本文の限界節に書く）
+
+1. **別名**: `b = a` の単純な別名は同一オブジェクトで追うが、コンテナ / 引数 / 戻り値経由の
+   別名は追わない（前からの限界）。
+2. **`Obj.classes` は末尾名**でモジュールを持たない。同名クラスが木に 2 つ以上あるときは
+   分割降下しない（opaque のまま）ことで誤降下を避ける。単一型の解決も末尾名なので、同名
+   クラスの取り違えは前からある（`_class_family`）。
+3. **継承メソッド**は分割降下の対象外（候補が基底にあると「各型に 1 つ」が成り立たない）。
+4. **remote クライアントの sink カタログが無い**ので F7 の sandbox 側（`resolution=remote`
+   の行）は出ない。
+5. 経路非感応: `except` 側の `WebSearchResult(link=None)` のような dead な経路にも行が出る
+   （A18 の NET 2 行に `OP/resolved` の変種が加わった。false-dirty 側）。
+
+### 較正対と fixture
+
+- `diff_effects --before 967cab1` 較正 14 木: 行 0 消失 / 0 増加、slot 変化は A18 の上記 2 行のみ。
+- `tests/test_val_fixtures.py`: F6 EXEC@pipe（code_text=MODEL/{command}）、F7 FS_WRITE
+  （path=MODEL/{path}）、F8 NET（url.host=MODEL/{urls}）の 11 項目が XPASS → 印を外した。
+  残る未達 14 項目は語彙の差（`argv0` / `shell_string`、呼び出し点ごとの複製、witness_chain
+  に入口を含めない）と未出力（`depth_used`、`Seq.tail`、remote 行）。
+- 副産物: OpenManus StrReplaceEditor の `view` が `find {path} -maxdepth 2 ...` を
+  `create_subprocess_shell` に渡す SPAWN 行（shell_string=MODEL/{path}）が出る。
+
+### 母集団 v2 の取り直し（解析器 38531e7）
+
+（測定中。F0a `evidence/f0a_v2_run3`、full scan `evidence/scan_v2_run4`。結果はこの節に追記する。）
 
 ---
 

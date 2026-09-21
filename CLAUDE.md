@@ -109,6 +109,9 @@ uv venv .venv312 --python 3.12 && uv pip install --python .venv312/bin/python -r
 .venv/bin/python scripts/two_sided.py --spec docs/corpus_spec.json --arm C    # 3 列（事前登録照合 / 座標一致 / any-change）
 .venv/bin/python scripts/two_sided.py --spec docs/corpus_spec.json --arm C0   # 等級潰し腕。C − C0 を出す
 .venv/bin/python scripts/codeql_fair.py --help                        # 入口を揃えた CodeQL 比較
+
+# 母集団 v2（宣言あり、D29）。F0a は f0a.py --sample evidence/population_v2/sample_v2_mcp.json、full scan は
+.venv312/bin/python scripts/scan_v2.py --label run<N>                 # → evidence/scan_v2_run<N>/{summary,contradictions}.json
 ```
 
 **手検証の入口は `docs/verification_guide.md`。**
