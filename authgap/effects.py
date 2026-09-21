@@ -556,7 +556,10 @@ class EffectExtractor:
             relpath=ev.relpath,
             slots=slots,
             sub_kind=row.sub_kind or _sub_kind(kind, slots),
-            exec_mode={"shell": {"prin": "OP", "const": False, "source": "proxy"}}
+            # proxy の SPAWN は既定で argv 実行（git）だが、`shell_string` slot を持つ行
+            # （paramiko `exec_command`）はシェル実行。const False を一律に付けると
+            # `_is_argv_exec` が真になり、シェル文字列の検証子が strong-token に上がる（レビュー g1）。
+            exec_mode={"shell": {"prin": "OP", "const": "shell_string" in slots, "source": "proxy"}}
             if kind == "SPAWN"
             else {},
             resolution=_resolution_of(slots, ev.receiver, ev.by_name),

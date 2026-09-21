@@ -234,6 +234,8 @@ class ValEngine:
         #: 呼び出し側は候補ごとに受け手をその 1 型に絞って降り、行を witness で分ける（F7）。
         self._split_receiver = False
         self._class_defaults_active: set[tuple[str, str]] = set()
+        #: いま実行中のメソッドの `(クラス名, モジュール)`。`super().m()` の解決に使う（D35 改訂）。
+        self._class_stack: list[tuple[Optional[str], Optional[str]]] = []
         #: 直前の `_resolve_in_tree` が末尾名だけで決めたか（見える同名の定義が決まらないときも立つ）。
         self._by_name_hint = False
         #: 直前の `_resolve_in_tree` が、見える同名の定義のどれが効くかを決められなかったか（D17 改訂 5）。
@@ -245,7 +247,13 @@ class ValEngine:
         """ユニット入口から下向きに走る。`seed` は仮引数の初期値（R2 の MODEL）。"""
         res = ValResult()
         env = Env(seed)
-        self._exec_body(getattr(fn, "body", []), env, scope, res, depth=0, chain=())
+        me = seed.get("self")
+        cls = me.shape.classes[0] if me is not None and isinstance(me.shape, Obj) and me.shape.classes else None
+        self._class_stack.append((cls, scope.module))
+        try:
+            self._exec_body(getattr(fn, "body", []), env, scope, res, depth=0, chain=())
+        finally:
+            self._class_stack.pop()
         res.env = env
         return res
 
@@ -667,7 +675,28 @@ class ValEngine:
         if dotted in INDIRECT_BY_NAME:
             return self._descend_indirect(node, dotted, args, kwargs, env, scope, res, depth, chain)
 
+        # (3b) `super().m(...)`: いま実行中のメソッドのクラスの基底から `m` を引く（D35 改訂）。
+        # 解決できないと `super().__init__(cmd)` の MODEL の書き込みが見えず、クラス体の既定値が
+        # それを覆い隠す（レビュー b2、false-clean）。
+        sup = self._super_callees(node)
+        if sup is not None:
+            callees, _ = sup
+            me = env.get("self")
+            if callees and me is not None and isinstance(me.shape, Obj):
+                ret: Optional[Value] = None
+                for callee in callees:
+                    v, sub = self._descend_env(callee, node, args, kwargs, me, res, depth, chain)
+                    if sub is not None and me is not None:
+                        self._write_back_self("self", me, sub, env)
+                    ret = v if ret is None else value_join(ret, v)
+                return ret if ret is not None else Value(Prin.OP, RESOLVED, Unknown())
+
         # (4) 木内のユーザ定義関数（深さを消費する）
+        if receiver is not None and receiver_path is not None and isinstance(receiver.shape, Obj):
+            # 呼び出し側が `<path>.<f> = v` と書いた値を受け手の `Obj.fields` に載せてから降りる
+            # （D35 改訂）。env の鍵と `Obj.fields` は別の記憶なので、載せないと被呼び出しの
+            # `self.<f>` が古い既定値を読む（レビュー b1 / c2、false-clean）。
+            receiver = self._receiver_with_path_writes(receiver, receiver_path, env)
         callees = self._resolve_in_tree(node, dotted, receiver, scope)
         if callees:
             by_name = self._by_name_hint
@@ -690,12 +719,13 @@ class ValEngine:
                 v, sub = self._descend_env(
                     callee, node, args, kwargs, recv_i, res, depth, chain, by_name=by_name
                 )
-                if sub is not None and not by_name and receiver_path is not None and recv_i is not None:
+                if sub is not None and not by_name and receiver_path is not None and receiver is not None:
                     # 被呼び出しが `self.<f>` に書いた値を呼び出し側の受け手アクセスパスへ戻す（D35）。
                     # `_BashSession.start` が `self._process` に書き、`run` が読む（F6）。
                     # **受け手型で裏付けられた解決に限る**（by_name の書き戻しは別クラスの
-                    # フィールドを付ける恐れがある）。
-                    self._write_back_self(receiver_path, recv_i, sub, env)
+                    # フィールドを付ける恐れがある）。分割降下でも**絞る前の受け手**を基にする
+                    # （絞った型で書き戻すと 2 型目以降の経路が消える。レビュー d8）。
+                    self._write_back_self(receiver_path, receiver, sub, env)
                 ret = v if ret is None else value_join(ret, v)
             return _opaque_deep(ret) if ambiguous else ret
 
@@ -717,6 +747,11 @@ class ValEngine:
         row = transfer_for(dotted) if dotted else None
         if row is None and isinstance(node.func, ast.Attribute):
             row = method_transfer_for(node.func.attr)
+            if row is not None and self._in_tree_method(receiver, node.func.attr):
+                # 受け手が木内クラスで、そのクラス（または基底）が同名メソッドを定義するなら
+                # TRANSFER ではなく木内の解決に回す（`Codec.encode` の中の sink が消える。
+                # レビュー e1 / e3、false-clean）。
+                row = None
             if row is not None and row.subject != "receiver":
                 row = None
         if row is None:
@@ -800,7 +835,15 @@ class ValEngine:
             # あるなら全候補へ降りる（D35、F7 の「2 型受け手は witness の分岐として分ける」）。
             # 型で裏付けられた解決なので by_name にはしない。型に無い候補が混じるときは従来どおり。
             by_class = {c.classname: c for c in cands}
-            if len(by_class) == len(cands) and set(by_class) <= typed_classes:
+            # **受け手の全型に候補が要る**（`<=` だと候補の無い型（外部基底の `run` など）の経路が
+            # 無言で落ち、opaque(unresolved) だったものが resolved になる。レビュー d17）。
+            # **同名クラスが木に 2 つ以上あるときは分割しない**（`Obj.classes` は末尾名なので
+            # 別モジュールの同名クラスのメソッドへ降りうる。レビュー d4）。
+            if (
+                len(by_class) == len(cands)
+                and set(by_class) == typed_classes
+                and all(self._class_name_unique(n) for n in by_class)
+            ):
                 self._split_receiver = True
                 return sorted(cands, key=lambda c: (c.classname or "", c.module))
         if len(cands) != 1:
@@ -856,6 +899,7 @@ class ValEngine:
         sub = Env(seed)
         if by_name:
             self._by_name_depth += 1
+        self._class_stack.append((callee.classname, callee.module))
         try:
             self._exec_body(
                 getattr(callee.node, "body", []),
@@ -866,6 +910,7 @@ class ValEngine:
                 chain + (callee.qualname,),
             )
         finally:
+            self._class_stack.pop()
             self._active.discard(callee.key)
             if by_name:
                 self._by_name_depth -= 1
@@ -1090,7 +1135,13 @@ class ValEngine:
         value, sub = self._descend_env(init, node, args, kwargs, receiver, res, depth, chain)
         if sub is None:
             # 深さ・再帰・cap で降りなかった。型と既定値だけ持ち、確度は降りなかった理由を運ぶ。
-            return Value(Prin.OP, value.prov, Obj((cd.name,), tuple(sorted(fields.items()))))
+            # **既定値の確度にも同じ理由を合流する**（`__init__` が上書きしたかもしれない。
+            # レビュー b3、false-clean）。
+            dim = tuple(
+                (n, Value(v.prin, prov_merge(v.prov, value.prov), v.shape, v.attrs, v.roots))
+                for n, v in sorted(fields.items())
+            )
+            return Value(Prin.OP, value.prov, Obj((cd.name,), dim))
         for key, v in sub.items():
             rest = key[len("self."):] if key.startswith("self.") else None
             if rest and "." not in rest:
@@ -1123,6 +1174,8 @@ class ValEngine:
         if key in self._class_defaults_active:
             return {}
         self._class_defaults_active.add(key)
+        saved = self.on_call
+        self.on_call = None  # import 時の構築の効果行をツールに付けない（レビュー b4、false-dirty）
         try:
             chain_cls = [cd]
             seen = {key}
@@ -1155,6 +1208,7 @@ class ValEngine:
                         out[target.id] = self._eval(st.value, env, cscope, res, depth, chain)
             return out
         finally:
+            self.on_call = saved
             self._class_defaults_active.discard(key)
 
     def _write_back_self(self, receiver_path: str, receiver: Value, sub: Env, env: Env) -> None:
@@ -1168,18 +1222,87 @@ class ValEngine:
                 writes[key[len("self."):]] = v
         if not writes:
             return
-        fields = dict(receiver.shape.fields)
-        fields.update(writes)
         cur = env.get(receiver_path)
         base = cur if cur is not None and isinstance(cur.shape, Obj) else receiver
-        env.set(
-            receiver_path,
-            Value(base.prin, base.prov, Obj(base.shape.classes, tuple(sorted(fields.items()))), base.attrs, base.roots),
-        )
+        # **同じオブジェクトを指す別名**（`b = a` は同一の Value を束縛する）にも書き戻す
+        # （レビュー b4: `b.add(cmd); a.run()` で `a` 側が既定値のままになる、false-clean）。
+        # 同一性で判定するので、別々に構築した 2 つのオブジェクトは混ざらない。
+        aliases = [k for k, v in env.items() if v is cur and k != receiver_path and "." not in k] if cur is not None else []
+        fields = dict(base.shape.fields)
         for name, v in writes.items():
+            # **上書きではなく合流する**（D35 改訂）。被呼び出しの条件つき書き込み
+            # `if flag: self.cmd = "ls"` は sub の env に無条件の鍵として残るので、上書きすると
+            # 呼び出し側の MODEL が OP になる（レビュー c1 / c4、false-clean）。
             key = f"{receiver_path}.{name}"
+            prev = env.get(key)
+            if prev is None:
+                prev = fields.get(name)
+            merged = v if prev is None else value_join(prev, v)
+            fields[name] = merged
             if key.count(".") <= RECEIVER_DEPTH:
-                env.set(key, v)
+                env.set(key, merged)
+            for a in aliases:
+                env.set(f"{a}.{name}", merged)
+        new_val = Value(base.prin, base.prov, Obj(base.shape.classes, tuple(sorted(fields.items()))), base.attrs, base.roots)
+        env.set(receiver_path, new_val)
+        for a in aliases:
+            env.set(a, new_val)
+
+    def _receiver_with_path_writes(self, receiver: Value, receiver_path: str, env: Env) -> Value:
+        """env の `<receiver_path>.<f>`（呼び出し側の属性書き込み）を受け手の `Obj.fields` に載せる。"""
+        cur = env.get(receiver_path)
+        names = [receiver_path] + (
+            [k for k, v in env.items() if v is cur and k != receiver_path and "." not in k] if cur is not None else []
+        )
+        fields = dict(receiver.shape.fields)
+        changed = False
+        for base_name in names:  # 別名（同一オブジェクト）経由の書き込みも載せる
+            prefix = base_name + "."
+            for key, v in env.items():
+                if key.startswith(prefix) and "." not in key[len(prefix):]:
+                    fields[key[len(prefix):]] = v
+                    changed = True
+        if not changed:
+            return receiver
+        return Value(receiver.prin, receiver.prov, Obj(receiver.shape.classes, tuple(sorted(fields.items()))), receiver.attrs, receiver.roots)
+
+    def _super_callees(self, node) -> Optional[tuple[list, Optional[Value]]]:
+        """`super().m(...)` なら `(基底の m の候補, 受け手 self)`。そうでなければ None。"""
+        func = node.func
+        if not (isinstance(func, ast.Attribute) and isinstance(func.value, ast.Call)):
+            return None
+        if dotted_of(func.value.func) != "super" or not self._class_stack:
+            return None
+        cls, module = self._class_stack[-1]
+        if cls is None:
+            return None
+        cd = self.index.get_class(cls, module, strict=True) if module else self.index.get_class(cls)
+        if cd is None:
+            return [], None
+        out = []
+        for b in self._base_classes(cd):
+            hits = [f for f in self.index.lookup_function(f"{b.name}.{func.attr}", b.module) if f.module == b.module]
+            out += hits
+            if hits:
+                break
+        return out, None
+
+    def _class_name_unique(self, name: str) -> bool:
+        """末尾名 `name` のクラス定義が木に 1 つだけか（記憶化）。"""
+        memo = getattr(self, "_class_count_memo", None)
+        if memo is None:
+            memo = {}
+            for cd in self.index.classes():
+                memo[cd.name] = memo.get(cd.name, 0) + 1
+            self._class_count_memo = memo
+        return memo.get(name, 0) == 1
+
+    def _in_tree_method(self, receiver: Optional[Value], method: str) -> bool:
+        """受け手の木内クラス（基底 3 段まで）が `method` を定義しているか。"""
+        if receiver is None or not isinstance(receiver.shape, Obj) or not receiver.shape.classes:
+            return False
+        family = self._class_family(receiver.shape.classes)
+        return any(f.classname in family for f in self.index.lookup_function(method))
 
     def _class_family(self, classes) -> set[str]:
         """受け手クラスとその基底（3 段まで）の名前。継承したメソッドを解決するため。"""

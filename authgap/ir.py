@@ -512,7 +512,19 @@ def _shape_join(a: Shape, b: Shape) -> Shape:
         if isinstance(a, Path):
             return Path(None, (), None)
         if isinstance(a, Obj) and isinstance(b, Obj):
-            return Obj(tuple(sorted(set(a.classes) | set(b.classes))), ())
+            # **fields は名前ごとに合流する**（D35 改訂）。全部落とすと、片方の分岐だけが
+            # `self.<f>` に書いた後の合流で、両側に同じ値で存在する MODEL のフィールドまで
+            # 消え、`self.cmd` の読みが opaque になる（レビュー c3、MODEL → OP）。片側にしか
+            # 無い名前は「無い側では読めない」ので値を残しつつ確度に opaque(unresolved) を合流する。
+            fa, fb = dict(a.fields), dict(b.fields)
+            merged: list[tuple[str, Value]] = []
+            for name in sorted(set(fa) | set(fb)):
+                if name in fa and name in fb:
+                    merged.append((name, value_join(fa[name], fb[name])))
+                else:
+                    v = fa.get(name) or fb[name]
+                    merged.append((name, Value(v.prin, prov_merge(v.prov, opaque("unresolved")), v.shape, v.attrs, v.roots)))
+            return Obj(tuple(sorted(set(a.classes) | set(b.classes))), tuple(merged))
     return Unknown()
 
 

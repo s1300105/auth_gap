@@ -571,7 +571,8 @@ def _is_argv_exec(effect: Optional[Effect]) -> bool:
     if effect.kind != "SPAWN":
         return True  # SPAWN 以外に argv 条件は無い
     shell = effect.exec_mode.get("shell", {})
-    return shell.get("const") is False or shell.get("source") == "proxy"
+    # `source == "proxy"` だけで argv とみなさない（shell_string を持つ proxy 行は const True）。
+    return shell.get("const") is False
 
 
 #: デコレータ形の承認割り込み名（Def 5 の語彙のうち `decorator` 形）。
