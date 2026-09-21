@@ -477,3 +477,35 @@ F7 が挙げる `absolute_only` / `existence_only` は Def 5 の 19 語に無か
 | `opaque_ratio_primary_slots` > 40% | opaque 予算 | §10 C1 後。**閾値 40% は動かさない。動かすのは分母の定義だけ** |
 | T3-app の traced 率 < 20% | SELECT の野外評価 | §10 B1 後: fixture + ケーススタディのみの構造的主張に格下げ。**この条項は撤回しない** |
 | 野外支配発火率が (a)(b) とも 5% 未満 | strong 3 系統・false-strong 率・規則 W の比率 | §10 C1 後: fixture・T1・T2 に限定 |
+
+## 7. 母集団 v2 の CONTRADICTION の手検証（D31 / D32）
+
+対象: `evidence/scan_v2_run3/contradictions_review.csv`（72 行。ユニット × (site, kind)）。
+列 `source_excerpt` に効果の行の前後 3 行を抜粋してある。**判定はソースを開いて行う**
+（抜粋だけで決めない）。
+
+判定の語彙（`judgment` 列。**これ以外を書かない**）:
+
+| 値 | 意味 |
+|---|---|
+| `contradiction` | 宣言（`declaration` 列）に反する効果が、モデルが呼べる経路で実際に起きる |
+| `declared_ok` | 効果はあるが宣言の範囲内（例: `destructiveHint=false` に対する追記型で、上書きしない） |
+| `analyzer_false_effect` | 効果の検出自体が誤り（sink の誤同定、到達しない経路、名前一致の誤解決） |
+| `unreachable` | 効果は実在するがモデルの引数からは到達しない（定数パス等） |
+| `unclear` | 判断できない。理由を `judgment_reason` に書く |
+
+手順:
+
+1. `effect_relpath:effect_lineno` を開き、効果の呼び出しと、その引数がツールの
+   入力から来るかを確認する。
+2. `declaration` が `readOnlyHint` なら、書き込み / 実行があれば `contradiction`。
+   `destructiveHint` のみなら、削除・上書き（`destructive` 列が True）なら
+   `contradiction`、追記だけなら `declared_ok`。`open` の mode が変数のときは
+   呼び出し元をたどって決め、決まらなければ `unclear`。
+3. `judgment_reason` に根拠（行番号と 1 文）、`verified_by` に自分の識別子、
+   `date` に日付を書く。
+4. 終わったら `python3 scripts/summarize_review.py evidence/scan_v2_run3/contradictions_review.csv`
+   （未作成。集計は判定の語彙が固まってから書く）。
+
+**注意**: 判定を見てから解析器の規則を変えない。変えるなら `docs/preregistration.md`
+§5 に逸脱として記録し、変更前後の件数を併記する。
