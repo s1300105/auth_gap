@@ -20,6 +20,11 @@
 | in_tree_resolution_ratio（サイト） | 21.7% × | 19.3% × | `docs/f0a_v2_run1.md`、`docs/f0a_run6.md` |
 | opaque 率（主 slot、サイト） | 54.7% × | 45.3% × | 同上 |
 | tree budget（180 s）で飛ばしたユニット | 716 | （run6 の値は `trees.jsonl` の `units_skipped_by_tree_budget`） | `evidence/f0a_v2_run1/f0a.json` |
+| **tree budget 900 s の再走（感度、D34）**: ユニット / 危険ユニット | 2,947 / 1,193（飛ばし 0。増分 716 / 166 は**すべて 1 木** `david-li0406/meta-skill-evloving`） | — | `evidence/f0a_v2_run2_budget900` |
+| 同、validator 保有（主分母） | **8.38%**（100/1,193）○。木単位 95% 区間 [1.5%, 26.7%]（境界）。当該 1 木を除くと 3.51%（36/1,027、run1 と同値） | — | D34 |
+| 同、validator 保有（all_units） | 6.11%（180/2,947）○。区間 [2.2%, 10.3%]（境界） | — | `scripts/f0a_ci.py` |
+| 同、validator 保有（dangerous_non_net） | 30.3%（86/284）○ | — | `scripts/denominators.py` |
+| 決定論（`scan --determinism 3`、87 木） | 85 木で 3 回一致。1 木 OOM（未測定）、1 木は壁時計 cap の印 `TRUNCATED(wall_clock)` の有無だけが違う（解析結果は同じ） | run6: `docs/f0a_run6.md` | `evidence/determinism_v2/README.md` |
 | 直前リリースを持つ木 | 34/87 = 39.1% | 8/60 = 13.3% | `docs/prev_releases_v2.json`、D23 |
 | r_prev（適用木の危険ユニット） | 93.9%（169/180） | 87.7%（71/81） | D31、D27 |
 | r_prev（5 リリース前、感度） | 65.6% | 86.4% | 同上 |
@@ -44,10 +49,14 @@
    通る**（§2.10 の併記分母。主分母は変えない）。宣言する母集団は「外部 API を叩く
    サーバ」に偏っており、ファイル / コマンド系のサーバは 186 ユニット。
 4. 解析器の解決限界（opaque 率、in-tree 解決率）は母集団で変わらない。
+5. **validator 保有の関門は 1 木で決まる。** 180 s の budget で飛ばした 716 ユニットは
+   すべて `david-li0406/meta-skill-evloving`（36,900 の .py を持つスキル集）のもので、
+   900 s で解析すると主分母の validator 保有が 3.5% → 8.4% に動き関門を通る。
+   この 1 木を除くと run1 と同値（3.5%）。木単位のブートストラップ区間は両 run とも
+   閾値を跨ぐ（境界）。**点推定の合否を主張しない**（D18 の規則）。
 
 ## まだ無いもの
 
 - 人間が再現した数値（`docs/verification_log.csv` 無し）。CONTRADICTION 72 件の手検証が最初。
-- tree budget を上げた再走の値（`v2_run2_budget900`、実行中）。
-- 決定論 3 回一致（87 木、実行中）。
+- tree budget 900 s の再走と決定論チェックは済んだ（上の表、D34）。
 - 第二ラベラー、κ。

@@ -51,6 +51,9 @@ DEFAULT_RUNS = (
     ("run4", "evidence/f0a_run4"),
     ("run5", "evidence/f0a_run5"),
     ("run6", "evidence/f0a_run6"),
+    # 母集団 v2（D30 / D34）。180 s と 900 s の tree budget を併記する。
+    ("v2_run1", "evidence/f0a_v2_run1"),
+    ("v2_run2_budget900", "evidence/f0a_v2_run2_budget900"),
 )
 
 #: `(率の名前, 向き, 閾値)`（`scripts/f0a.py` の §10 関門と同じ値）。
