@@ -7,7 +7,49 @@
 **仕様書本体は書き換えていない。** 仕様書は設計の記録として残し、
 食い違いはここと `docs/cve_triage.csv` に併記する。
 
-最終更新 2026-09-20（D24 を追加）。
+最終更新 2026-09-21（D33 を追加）。
+
+---
+
+## D33. val 受け入れ fixture F1–F10 の期待値の写し方（仕様の表 → manifest の語彙）
+
+### 決めたこと
+
+`fixtures/val/expected.json` は仕様 §2.6 の表を行単位に転記したもので、**採点器より
+先にコミットした**（5944a0b、規則 5）。転記で語彙を写した箇所と、仕様の記載が
+互いに食い違う箇所の読み方を決めた。**仕様書本体は書き換えない。**
+
+1. **site 名は sink カタログの dotted 名**（仕様の `git.cmd.Git.checkout` は
+   `git.Git.checkout`、pipe 形は `pipe:<method>`）。同じ sink を指す名前の違いで
+   あり、期待の内容は変えていない。
+2. **root 名は R2 導入点の名前**。低レベル MCP は `arguments["<key>"]`（CLAUDE.md
+   「主語一致は root で取る」）。仕様の `roots={branch_name}` はその略記と読む。
+3. **F2「`alias_facts` が空」は「正規化子の alias fact が無い」と読む。** F7 が
+   `Path()`（正規化ではない）の alias fact を期待行に含めているので、字面どおり
+   「配列が空」だと F2 と F7 が両立しない。両方を別項目（`alias_facts_empty_literal`
+   / `alias_facts_canonical_absent_for_root`）にして採点し、前者は xfail で残す
+   （O17 (a)）。
+4. **F4 は実 commit で成立する。** 仕様は「未確定（合成 mutant）」と書くが、
+   `docs/cve_triage.csv` A5 で脆弱側 1f1e8c9f / 修正側 5090f55e を `git log -S` で
+   一次確認済み。仕様の記載は status に残した。
+5. **F7 の `Path()` の site は実コードで採る。** 仕様は `validate_path` と書くが、
+   3309bf4e では `Path(path)` は `execute` の中（`await self.validate_path(command,
+   Path(path), operator)`）。期待は `in_function = execute`、仕様の値は `_reading` に残す。
+6. **F5–F8 は入口を手で組む。** R2 カタログに OpenManus `BaseTool.execute` は無く
+   （D17「直さない 3」）、`authgap scan` ではユニット 0 件。F5–F8 は val エンジンの
+   受け入れ fixture なので、採点器が `Unit` を組んで `analyze_unit_f0a` に通す。
+   入口認識の是非は採点しない。
+7. **F9 / F10 は木が未取得なので skip**（xfail ではない: 未測定であって未達ではない）。
+   期待行だけ pin した。
+
+### 初回採点の結果（2026-09-21）
+
+74 項目中 48 通過・26 未達。F1–F4 は全項目通過、F5 は EXEC 行と負のアサートが通過。
+未達は F2 の字面の空（上記 3）、`depth_used` の未出力、F6/F7/F8 の 3 件（いずれも
+行が出ない false-clean 方向。ユニットは opaque で clean ではない）。診断と候補の
+規則は O17。**未達を直す変更は opaque → resolved なので、D17 改訂 2 と同じ敵対的
+レビューを通してから入れる。** 採点器は未達を `KNOWN_UNMET` に xfail(strict) で
+固定し、XPASS になったら印を外す。
 
 ---
 

@@ -317,6 +317,63 @@
 
 ---
 
+## O17. val 受け入れ fixture F1–F10 の初回採点: OpenManus の 3 件（F6/F7/F8）が false-clean 方向で未達
+
+- **状態**: 期待値 `fixtures/val/expected.json`（仕様 §2.6 の表から転記、コミット
+  5944a0b）を採点器 `tests/test_val_fixtures.py` で当てた初回の結果（2026-09-21）。
+  74 項目中 48 通過・26 未達（xfail(strict) で固定）・F9/F10 は木が未取得で skip。
+  F1–F4（較正対 A1 / A5）は**全項目通過**。F5 は EXEC 行・MODEL・roots が通り、
+  負のアサート（INDIRECT 表から `multiprocessing.Process` を外しても clean にならない）
+  も通る。
+- **学生の入力が要るもの**:
+  - (a) **仕様内の食い違い**: F2 は「`alias_facts` が空」、F7 は「`alias_facts +=
+    (path, validate_path, Path())` — 正規化ではない」と、`Path()` の alias fact を
+    片方は無し・片方は有りで期待している。実装は F7 側（`Path()` を非正規化の
+    alias fact として出す。Def 5 の root-equal 判定にはこの表が要る）。F2 の「空」を
+    「正規化子の alias fact が無い」と読む（D33）でよいか。**仕様書本体は直さない。**
+  - (b) **未出力の欄**: 仕様の期待行にある `depth_used`（F5/F6）と `shape=Seq.tail`
+    （F8/F9）は manifest に欄が無い。`witness_chain` の長さで `depth_used` は代替
+    できるが、期待行の属性として出すか（manifest スキーマの変更 = 指紋の変更）。
+  - (c)〜(e) は**解析器の未達**で、いずれも**行が出ない = false-clean 方向**
+    （ユニット水準では opaque が残るので clean にはなっていない）。直すなら
+    opaque → resolved の変更なので、D17 改訂 2 と同じ敵対的レビューを通す:
+  - (c) **F6 `Bash.execute`**: `self._session: Optional[_BashSession] = None` と
+    `self._session = _BashSession()` の合流で `Obj` と `None` の join が `Unknown` に
+    落ち（`ir._shape_join` は kind が違えば Unknown）、`self._session.start()` /
+    `.run()` の受け手型が消える。結果、`_BashSession.start` は末尾名解決 +
+    opaque(unresolved) で `self.command`（クラス体既定値 `"/bin/bash"`）が読めず
+    `shell_string = OP/Unknown`、`run` の `self._process.stdin.write(command...)`
+    （`EXEC@pipe`）は出ない。**候補の規則**: メソッド呼び出しの受け手位置では
+    `None` リテラルの分岐は呼び出しに到達しない（AttributeError）ので、
+    `Obj ⊔ None` は `Obj` として受け手解決に使う。**反証条件**: 2 型以上の Obj の
+    合流には適用しない（どちらの型かで sink が変わる）。
+  - (d) **F7 `StrReplaceEditor.execute`**: `operator = self._get_operator()` は
+    IfExp で `LocalFileOperator` / `SandboxFileOperator` の 2 型 `Obj`。
+    `execute → str_replace/insert → operator.write_file → Path(path).write_text`
+    が深さ 3（`MAX_DEPTH = 3`）で `cap_hits = depth` に当たり、FS_WRITE 行が 0。
+    仕様の witness chain（`execute → operator.write_file → write_text`）は
+    `create` 分岐（`execute` 直下、L139）のもので深さ 2 だが、それも出ていない
+    （2 型受け手の分岐が未実装か、`self._local_operator` のクラス体 pydantic
+    フィールド既定値 `LocalFileOperator()` の受け手が引けていないかは未切り分け）。
+  - (e) **F8 `Crawl4aiTool.execute`**: `AsyncWebCrawler` は CTOR カタログにあり
+    `async with ... as crawler` は `_bind` で束縛されるが、`crawler.arun(url=url,
+    config=run_config)` の proxy sink（`recv_types = crawl4ai.AsyncWebCrawler`）が
+    当たらず opaque(receiver)。`from crawl4ai import AsyncWebCrawler` が関数内の
+    `try:` の中にある（`function_scope` は recurse=True で拾うはず）ので、
+    `async with` の ctor 評価か `for url in valid_urls:` のループ内の受け手の
+    widening のどちらかが原因（未切り分け）。
+- **誤りの向き**: (c)(d)(e) は効果行が出ない側（false-clean）。ただし 3 件とも
+  ユニットに `opaque_reasons` が残るので「clean」ではなく「opaque」。§10 の脈拍の
+  負例（OpenManus は GAP を出さない）は、行が無いことで成立しているのではなく
+  opaque で成立していることになる。**この違いは本文に書く。**
+- **付随の観察**: F5 の `PythonExecute.execute` に `_BashSession.start` の SPAWN 行が
+  1 行混入する（`proc.start()`（`multiprocessing.Process.start`）が末尾名で
+  `_BashSession.start` に解決され、opaque(unresolved) を合流して降りる。D17 改訂の
+  「受け手型で裏付けられない解決は降りて opaque を合流」の帰結）。false-dirty 側。
+  仕様の F5 は行数を縛っていないので採点には入れていない。
+
+---
+
 ## 参考: 質問ではなく作業として残っているもの
 
 - **較正対の検証**: `docs/cve_triage.csv` の 25 行のうち一次確認できたのは
@@ -331,9 +388,10 @@
 - **§9 の未検証リスト 13 項目**: 1〜5・9〜13 は較正対の検証と重なる。
   6（母集団規模 ≥ 300）は通過済み（`docs/population.md`）。7（先行研究の一次資料）と
   8（Semgrep の機能境界）は未着手。
-- **§2.6 の val 受け入れ fixture F1–F10（`fixtures/val/expected.json`）が未作成。**
-  F5–F8 は `FoundationAgents/OpenManus` の `app/tool/` が出所（コーパスに取得済み、
-  commit 3309bf4e）。期待行は仕様の表から先に pin し、採点器より先にコミットする。
+- **§2.6 の val 受け入れ fixture F1–F10**: 期待値 `fixtures/val/expected.json` と
+  採点器 `tests/test_val_fixtures.py` を作った（O17）。残る作業は F9（agno 本体
+  `libs/agno/agno/tools/shell.py` の取得と SHA の pin）と F10（`restapi.amap.com` を
+  叩くツールの repo の選定 — 仕様書は名指ししていない）。
 - **カタログ外のツールの形**（D17「直さない 3」）: llama-index
   `FunctionTool.from_defaults` / `QueryEngineTool`、SuperAGI `_execute`、OpenManus
   `BaseTool.execute`、OpenHands `ToolDefinition`、claude_agent_sdk `tool(...)` など。
