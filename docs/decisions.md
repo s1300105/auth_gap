@@ -77,7 +77,27 @@ TRANSFER は木内メソッドを横取りしない。反証木 24 本で false-
 
 ### 母集団 v2 の取り直し（解析器 38531e7）
 
-（測定中。F0a `evidence/f0a_v2_run3`、full scan `evidence/scan_v2_run4`。結果はこの節に追記する。）
+prereg §5 #10 の逸脱として、変更前（235ae1e 系: run1 / run2 / scan run3）と変更後を併記する。
+budget は §2.1 の 180 s（run1 と同じ。飛ばしたユニット 716 も同じ 1 木）。
+
+| 指標（mcp_server、87 木） | 変更前 | 変更後（38531e7） |
+|---|---|---|
+| ユニット / 危険ユニット | 2,231 / 1,027 | 2,231 / **1,169**（+142、外れた 0。6 木、うち canvas-mcp +86、cohort +51） |
+| validator 保有（主分母） | 3.51% × | 4.11%（48/1,169）×。木単位 95% 区間 [1.4%, 12.4%]（境界） |
+| validator 保有（all_units） | 3.77% × | 3.77% ×（分子 84 は同じ。区間 [1.9%, 7.2%] 境界） |
+| validator 保有（dangerous_non_net） | 18.3% ○（34/186） | 17.4% ○（34/196） |
+| in_tree_resolution_ratio（サイト） | 21.7% × | 22.5% × |
+| opaque 率（主 slot、サイト） | 54.7% × | 52.8% × |
+| r_D（上界を動かす明示 / 危険ユニット） | 53.3% | 51.1%（分岐 1 のまま） |
+| full scan: CONTRADICTION（ユニット × site） | 72（16 木） | **79**（16 木。増分 7 はすべて cohort `TaskStore._save_tasks` → `Path.write_text`。消えた 0） |
+| full scan: 行数 / GAP_INJECT 行 | 4,804 / 197 | 9,492 / 767（**行は呼び出し経路ごとに複製され cap が効いていない**。O18。ユニット単位で比較する） |
+
+読み: 変更はユニット単位では「危険ユニットが 142 増え（API ラッパ / 状態ファイルの
+書き込みが解決した）、validator 保有は分子が増えず分母が増えた」向きで、関門の合否は
+どれも変わらない。CONTRADICTION は 7 件増え、手検証の候補表
+（`evidence/scan_v2_run4/contradictions.json`）を更新した。`contradictions_review.csv`
+（72 行、学生の手作業用）は run3 のまま残し、増分 7 行は同じ木・同じ site なので
+run4 の JSON から足す。
 
 ---
 

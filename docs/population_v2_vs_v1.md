@@ -24,6 +24,10 @@
 | 同、validator 保有（主分母） | **8.38%**（100/1,193）○。木単位 95% 区間 [1.5%, 26.7%]（境界）。当該 1 木を除くと 3.51%（36/1,027、run1 と同値） | — | D34 |
 | 同、validator 保有（all_units） | 6.11%（180/2,947）○。区間 [2.2%, 10.3%]（境界） | — | `scripts/f0a_ci.py` |
 | 同、validator 保有（dangerous_non_net） | 30.3%（86/284）○ | — | `scripts/denominators.py` |
+| **解析器 38531e7（D35、受け手型の修正）での取り直し**: ユニット / 危険ユニット | 2,231 / 1,169（+142、外れた 0） | — | `evidence/f0a_v2_run3`、`scan_v2_run4`、D35 |
+| 同、validator 保有（主分母 / all_units / non_net） | 4.11% × / 3.77% × / 17.4% ○（分子は同じ、分母が増えた） | — | `scripts/denominators.py` |
+| 同、r_D | 51.1%（分岐 1） | — | `docs/f0a_v2_run3.md` |
+| 同、CONTRADICTION（ユニット × site） | 79（16 木。+7、すべて cohort の `Path.write_text`） | — | `evidence/scan_v2_run4/contradictions.json` |
 | 決定論（`scan --determinism 3`、87 木） | 85 木で 3 回一致。1 木 OOM（未測定）、1 木は壁時計 cap の印 `TRUNCATED(wall_clock)` の有無だけが違う（解析結果は同じ） | run6: `docs/f0a_run6.md` | `evidence/determinism_v2/README.md` |
 | 直前リリースを持つ木 | 34/87 = 39.1% | 8/60 = 13.3% | `docs/prev_releases_v2.json`、D23 |
 | r_prev（適用木の危険ユニット） | 93.9%（169/180） | 87.7%（71/81） | D31、D27 |

@@ -79,3 +79,6 @@
 | v2_run2_budget900 | mcp_server | 87 | `in_tree_resolution_ratio_sites` | 27.4% | [15.5%, 36.4%] | >= 50% | × | 区間も同じ側 |
 | v2_run2_budget900 | mcp_server | 87 | `opaque_ratio_primary_slots_sites` | 50.9% | [42.3%, 63.8%] | <= 40% | × | 区間も同じ側 |
 | v2_run2_budget900 | mcp_server | 87 | `validator_holding_ratio` | 6.1% | [2.2%, 10.3%] | >= 5% | ○ | **境界**（区間が閾値を跨ぐ） |
+| v2_run3 | mcp_server | 87 | `in_tree_resolution_ratio_sites` | 22.5% | [14.0%, 32.3%] | >= 50% | × | 区間も同じ側 |
+| v2_run3 | mcp_server | 87 | `opaque_ratio_primary_slots_sites` | 52.8% | [41.2%, 64.3%] | <= 40% | × | 区間も同じ側 |
+| v2_run3 | mcp_server | 87 | `validator_holding_ratio` | 3.8% | [1.9%, 7.2%] | >= 5% | × | **境界**（区間が閾値を跨ぐ） |
