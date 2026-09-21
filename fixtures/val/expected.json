@@ -1,0 +1,248 @@
+{
+ "_note": [
+  "仕様 AUTHGAP_BRIEF_v3.md §2.6「受け入れ fixture（10 件）」の表（F1–F10）を行単位に転記した期待値。",
+  "**採点器（tests/test_val_fixtures.py）より先にコミットする**（CLAUDE.md 規則 5）。",
+  "期待値は仕様の表から書き、実装の出力を見て合わせていない。実装の出力と食い違う行は",
+  "採点器側で xfail(strict) にして残し、食い違いの向き（false-clean / false-dirty）を",
+  "docs/open_questions.md に記録する。**この file の期待値を出力に合わせて書き換えない。**",
+  "",
+  "語彙の対応（仕様の表記 → manifest の欄）:",
+  " - sink の site は authgap/catalog/sinks.py の dotted 名で書く（仕様の `git.cmd.Git.checkout` は",
+  "   カタログでは `git.Git.checkout`。同じ sink を指す）。pipe 形は `pipe:<method>`。",
+  " - root は R2 の導入点の名前。低レベル MCP（F1/F2）では `arguments[\"<key>\"]`（CLAUDE.md の",
+  "   「主語一致は root で取る」）。仕様の `roots={branch_name}` はこの表記の略記と読む。",
+  " - `lit=\"x\"` は `slots.<slot>.shape.const == \"x\"`、`OP` / `MODEL` は `slots.<slot>.prin`。",
+  " - `alias_facts += (root, site, transform)` は `alias_facts` に `{root, transform}` が含まれ、",
+  "   `site` がその関数の行範囲に入ること。",
+  " - `depth_used` / `tokenised` / `canonicalised` は仕様が期待行に書く属性。manifest に欄が",
+  "   無ければ採点器はその項目を「未出力」として xfail に落とす（黙って通さない）。",
+  "",
+  "status の意味: `一次確認済み` は仕様書の表の記載をそのまま写したもので、**本 repo で",
+  "検証したことを意味しない**（docs/cve_triage.csv の verified_by_me と同じ扱い）。",
+  "`未確定` / `未取得` は仕様書の表の記載どおり。A5 については docs/cve_triage.csv の",
+  "一次確認（修正 commit 5090f55e、`git log -S` で確定）があるので F4 は `未確定（合成 mutant）`",
+  "ではなく実 commit で成立する旨を併記する。"
+ ],
+ "spec_source": "AUTHGAP_BRIEF_v3.md §2.6 受け入れ fixture 表（`fixtures/val/expected.json` に pin すると仕様が指示）",
+ "trees": {
+  "A1__fixed": {"sha": "a37158bc1555ce0b1121ea98a3e740119d7fc8c7", "population": "mcp_server"},
+  "A1__vuln": {"sha": "9e5d5b8e4b5dd6fa4fc84cad5eb291568024aad4", "population": "mcp_server"},
+  "A5__fixed": {"sha": "5090f55eba388a664d7e5ee214178ab4791e8367", "population": "app"},
+  "A5__vuln": {"sha": "1f1e8c9f7d0dd06e4f36445f072e7d77ff96aa64", "population": "app"},
+  "w-FoundationAgents__OpenManus": {"sha": "3309bf4e416fb1c74b008f3e86494439a31bad53", "population": "app",
+   "entry_note": "R2 カタログに `BaseTool.execute` は無い（D17「直さない 3」、決定 D28 付近の記録）ので `authgap scan` ではユニット 0 件。F5–F8 は val エンジンの受け入れ fixture なので、採点器は `Unit` を手で組んで `analyze_unit_f0a` に通す（入口認識は試験しない）。"}
+ },
+ "fixtures": {
+  "F1": {
+   "origin": "較正 A1 修正側",
+   "status": "一次確認済み（仕様書の記載）",
+   "guards": "root 集合と alias 表、および proxy カタログの ctor 引数 slot 束縛。実コードは `repo = git.Repo(repo_path)` → `repo.git.checkout(...)` なので、型だけの解決では `cwd` が出ず Def 5(i) が付く先が無くなる",
+   "tree": "A1__fixed",
+   "unit": {"qualname": "serve.call_tool", "relpath": "src/git/src/mcp_server_git/server.py"},
+   "effects": [
+    {
+     "site": "git.Git.checkout", "kind": "SPAWN", "form": "proxy",
+     "slots": {
+      "argv0": {"prin": "OP", "const": "git"},
+      "argv[*]": {"prin": "MODEL", "roots": ["arguments[\"branch_name\"]"]},
+      "cwd": {"prin": "MODEL", "roots": ["arguments[\"repo_path\"]"], "attrs_absent": ["canonicalised"]}
+     }
+    }
+   ],
+   "alias_facts_include": [
+    {"root": "arguments[\"repo_path\"]", "transform": "Path.resolve", "in_function": "validate_repo_path"}
+   ],
+   "spec_row": "`SPAWN@proxy(git.cmd.Git.checkout)`: `argv0=OP/lit=\"git\"`、`argv[*]=MODEL/roots={branch_name}`、**`cwd=MODEL/canonicalised=false/roots={repo_path}`**、`alias_facts += (repo_path, validate_repo_path, Path.resolve)`"
+  },
+  "F2": {
+   "origin": "較正 A1 脆弱側",
+   "status": "一次確認済み（仕様書の記載。`9e5d5b8` は `a37158b` の祖先なので実 ref で成立）",
+   "guards": "両側条件のタプル差が `alias_facts` の有無だけで表現できること",
+   "tree": "A1__vuln",
+   "unit": {"qualname": "serve.call_tool", "relpath": "src/git/src/mcp_server_git/server.py"},
+   "effects": [
+    {
+     "site": "git.Git.checkout", "kind": "SPAWN", "form": "proxy",
+     "same_position_as": "F1",
+     "slots": {
+      "argv0": {"prin": "OP", "const": "git"},
+      "argv[*]": {"prin": "MODEL", "roots": ["arguments[\"branch_name\"]"]},
+      "cwd": {"prin": "MODEL", "roots": ["arguments[\"repo_path\"]"], "attrs_absent": ["canonicalised"]}
+     }
+    }
+   ],
+   "alias_facts_canonical_absent_for_root": "arguments[\"repo_path\"]",
+   "_reading": "仕様は「`alias_facts` が空」と書くが、F7 が `Path()`（正規化ではない）の alias fact を期待行に含めるので、F2 の「空」は**正規化子（realpath / Path.resolve / normpath+abspath）の alias fact が無い**と読む。字面どおり「配列が空」も `alias_facts_empty_literal` として併記し、採点器は両方を別項目で見る。",
+   "alias_facts_empty_literal": true,
+   "spec_row": "F1 と**同一の位置行**、`alias_facts` が空"
+  },
+  "F3": {
+   "origin": "較正 A5 修正側",
+   "status": "一次確認済み（仕様書の記載。docs/cve_triage.csv A5 で修正 commit 5090f55e を `git log -S` で確定）",
+   "guards": "戻り値タプルの unpack、`IfExp` の join、`shlex.split` と `shell=` の相互作用、config atom",
+   "tree": "A5__fixed",
+   "unit": {"qualname": "execute_shell", "relpath": "autogpts/autogpt/autogpt/commands/execute_code.py"},
+   "effects_count": {"site": "subprocess.run", "kind": "SPAWN", "form": "direct", "n": 2},
+   "effects": [
+    {
+     "site": "subprocess.run", "kind": "SPAWN", "form": "direct",
+     "slots": {"shell_string": {"prin": "MODEL", "roots": ["command_line"]}},
+     "exec_mode": {"shell": {"source": "config-conditional"}}
+    },
+    {
+     "site": "subprocess.run", "kind": "SPAWN", "form": "direct",
+     "slots": {"argv[*]": {"prin": "MODEL", "roots": ["command_line"]}},
+     "exec_mode": {"shell": {"source": "config-conditional"}}
+    }
+   ],
+   "config_atoms_include": ["ALLOWLIST_CONTROL"],
+   "alias_facts_include": [
+    {"root": "command_line", "transform": "shlex.split"}
+   ],
+   "spec_row": "**`SPAWN@direct` を 2 行**出す（`shell` が `config-conditional` のとき slot 束縛が確定しないので `shell_string` 行と `argv[*]` 行の両方）。`exec_mode.shell = config-conditional(shell_command_control, default=\"allowlist\")`。`alias_facts += (command_line, site, shlex.split→[0])`",
+   "_reading": "仕様の `config-conditional(shell_command_control, default=\"allowlist\")` は manifest では `exec_mode.shell.source == \"config-conditional\"` と `config_atoms` の名前で表す。config atom の名前は authgap/catalog/validators.py の `CONFIG_ATOM_SOURCES` の語彙（`ALLOWLIST_CONTROL`）。"
+  },
+  "F4": {
+   "origin": "較正 A5 脆弱側",
+   "status": "仕様書では「未確定（合成 mutant）」。docs/cve_triage.csv A5 で脆弱側 1f1e8c9f / 修正側 5090f55e を一次確認済みなので、**実 commit で成立する**（仕様書の記載は残す）",
+   "guards": "§9-2「修正がゲートを strong にしない対」— 差分が exec_mode と tokenised だけであることを行で示す",
+   "tree": "A5__vuln",
+   "unit": {"qualname": "execute_shell", "relpath": "autogpts/autogpt/autogpt/commands/execute_code.py"},
+   "effects": [
+    {
+     "site": "subprocess.run", "kind": "SPAWN", "form": "direct",
+     "slots": {"shell_string": {"prin": "MODEL", "roots": ["command_line"], "attrs_absent": ["tokenised"]}},
+     "exec_mode": {"shell": {"prin": "OP", "const": true}}
+    }
+   ],
+   "alias_facts_include": [
+    {"root": "command_line", "transform": "str.split"}
+   ],
+   "spec_row": "位置行は F3 と同じ MODEL、`tokenised=false`、`exec_mode.shell = OP/lit=True`、alias transform が `str.split→[0]`"
+  },
+  "F5": {
+   "origin": "負例 OpenManus `PythonExecute`",
+   "status": "一次確認済み（仕様書の記載）",
+   "guards": "間接 target 形。**`opaque` を clean に潰す退行を検出する唯一のテストなので必ず残す**",
+   "tree": "w-FoundationAgents__OpenManus",
+   "unit": {"qualname": "PythonExecute.execute", "relpath": "app/tool/python_execute.py", "forced_entry": true},
+   "effects": [
+    {
+     "site": "builtins.exec", "kind": "EXEC", "form": "direct",
+     "slots": {"code_text": {"prin": "MODEL", "roots": ["code"]}},
+     "depth_used": 1,
+     "via": "INDIRECT(multiprocessing.Process)"
+    }
+   ],
+   "negative_assert": {
+    "remove_indirect": "multiprocessing.Process",
+    "then": "EXEC 行の `code_text` が `prov = opaque(unresolved)` になる、または EXEC 行が出ず `opaque_reasons` に `unresolved` が入る。**いずれの場合も clean（効果行が無く opaque も無い）にはならない**"
+   },
+   "spec_row": "`EXEC@direct`: `code_text = MODEL/roots={code}/depth_used=1(INDIRECT)`。**負のアサート**: `INDIRECT` 表から `multiprocessing.Process` を外すと `opaque(unresolved)` になり **clean にはならない**"
+  },
+  "F6": {
+   "origin": "負例 OpenManus `Bash`",
+   "status": "一次確認済み（仕様書の記載）",
+   "guards": "**sink の第 3 形態 `pipe`、および heap の受け手アクセスパス**（`_BashSession.start` が `self._process` に書き `run` が読み、`Bash.execute` から見ればどちらも `self._session` の属性）",
+   "tree": "w-FoundationAgents__OpenManus",
+   "unit": {"qualname": "Bash.execute", "relpath": "app/tool/bash.py", "forced_entry": true},
+   "effects_count_total": 2,
+   "effects": [
+    {
+     "site": "asyncio.create_subprocess_shell", "kind": "SPAWN", "form": "direct",
+     "slots": {"argv0": {"prin": "OP", "const": "/bin/bash"}},
+     "exec_mode": {"shell": {"prin": "OP", "const": true}}
+    },
+    {
+     "site": "pipe:write", "kind": "EXEC", "form": "pipe",
+     "slots": {"code_text": {"prin": "MODEL", "roots": ["command"]}},
+     "depth_used": 1
+    }
+   ],
+   "spec_row": "2 行。`SPAWN@direct`: `argv0=OP/lit=\"/bin/bash\"`、`shell=OP/lit=True`。`EXEC@pipe`: `code_text=MODEL/roots={command}/**depth_used=1**`",
+   "_reading": "実コード（3309bf4e `app/tool/bash.py`）は `create_subprocess_shell(self.command, shell=True, ...)` で `self.command = \"/bin/bash\"` はクラス体のフィールド既定値。`argv0` はその受け手フィールド経由の定数。"
+  },
+  "F7": {
+   "origin": "負例 OpenManus `StrReplaceEditor`",
+   "status": "一次確認済み（仕様書の記載）",
+   "guards": "pydantic クラスレベル フィールド受け手、2 型受け手を 2 行に分けること、`remote` が行単位であること。**weak 理由 `absolute_only` / `existence_only` / `no_containment` を追加する根拠**",
+   "tree": "w-FoundationAgents__OpenManus",
+   "unit": {"qualname": "StrReplaceEditor.execute", "relpath": "app/tool/str_replace_editor.py", "forced_entry": true},
+   "effects_count": {"site": "pathlib.Path.write_text", "kind": "FS_WRITE", "form": "direct", "n": 2},
+   "effects": [
+    {
+     "site": "pathlib.Path.write_text", "kind": "FS_WRITE", "form": "direct",
+     "slots": {"path": {"prin": "MODEL", "roots": ["path"]}},
+     "resolution": "resolved",
+     "witness_chain_includes": ["execute", "write_file", "LocalFileOperator"]
+    },
+    {
+     "site": "pathlib.Path.write_text", "kind": "FS_WRITE", "form": "direct",
+     "slots": {"path": {"prin": "MODEL", "roots": ["path"]}},
+     "resolution": "remote"
+    }
+   ],
+   "alias_facts_include": [
+    {"root": "path", "transform": "Path()", "in_function": "execute"}
+   ],
+   "alias_facts_canonical_absent_for_root": "path",
+   "spec_row": "2 行。`FS_WRITE@direct(Path.write_text)` × 2（受け手 2 型は **witness の分岐**として分ける）。`witness_chain` に `execute → operator.write_file(LocalFileOperator) → Path(path).write_text`。片方は `resolution=remote`。`alias_facts += (path, validate_path, Path())` — **正規化ではない**",
+   "_reading": "仕様の `(path, validate_path, Path())` の site は `validate_path` だが、3309bf4e の実コードでは `Path(path)` は `execute` の中（`await self.validate_path(command, Path(path), operator)`）にある。site の関数名は実コードで採り、仕様の値も残す。"
+  },
+  "F8": {
+   "origin": "負例 OpenManus `crawl4ai`",
+   "status": "一次確認済み（仕様書の記載）",
+   "guards": "ループ内 append → 2 周固定点で `tail` に確定、**`ast.If` 文の `join_env`**（実コード 85–88 行は `if/else` **文**であって `IfExp` ではない）、`async with` のコンストラクタ型付け、キーワード引数束縛",
+   "tree": "w-FoundationAgents__OpenManus",
+   "unit": {"qualname": "Crawl4aiTool.execute", "relpath": "app/tool/crawl4ai.py", "forced_entry": true},
+   "effects": [
+    {
+     "site": "crawl4ai.AsyncWebCrawler.arun", "kind": "NET", "form": "proxy",
+     "slots": {"url.host": {"prin": "MODEL", "roots": ["urls"], "shape_k": "Seq", "shape_tail": true}}
+    }
+   ],
+   "spec_row": "`NET@proxy(AsyncWebCrawler.arun)`: `url.host = MODEL/shape=Seq.tail/roots={urls}`",
+   "_reading": "`shape=Seq.tail` は「値が `Seq` の tail 要素（ループ内 append で widening された要素）から来た」の意。manifest の shape 表現に `tail` 欄が無い場合は「`prin=MODEL`、`roots={urls}`」までを採点し、`Seq.tail` は未出力として記録する。"
+  },
+  "F9": {
+   "origin": "T3 代表 agno `ShellTools`",
+   "status": "一次確認済み（仕様書の記載）。**木が未取得**: corpus にあるのは cookbook（`w-defulat-coder__agno-cookbook-cn`）で、agno 本体 `agno/tools/shell.py` は無い",
+   "guards": "`__init__` kwarg 由来の config atom、リスト丸ごとが argv になる形、**注釈由来 shape の種付け**",
+   "tree": null,
+   "tree_needed": "agno-agi/agno（`libs/agno/agno/tools/shell.py`、`ShellTools.run_shell_command`）。SHA は取得時に pin する",
+   "unit": {"qualname": "ShellTools.run_shell_command", "relpath": "libs/agno/agno/tools/shell.py", "forced_entry": true},
+   "effects": [
+    {
+     "site": "subprocess.run", "kind": "SPAWN", "form": "direct",
+     "slots": {
+      "argv[*]": {"prin": "MODEL", "roots": ["args"]},
+      "argv0": {"prin": "MODEL", "shape_k": "Seq", "shape_tail": true},
+      "cwd": {"config_atom": {"name": "base_dir", "default": null, "policy": "default-open"}}
+     },
+     "exec_mode": {"shell": {"prin": "OP", "const": false}}
+    }
+   ],
+   "spec_row": "`SPAWN@direct`: `argv[*] = MODEL/roots={args}`、`argv0 = MODEL/shape=Seq.tail`、`cwd = config-atom(base_dir, default=None)/default-open`、`shell = OP/lit=False`"
+  },
+  "F10": {
+   "origin": "負例 定数ホストの HTTP ツール",
+   "status": "**未確定**（仕様書の記載: 木が未取得。checkout して URL 構築式を読んでから pin する）",
+   "guards": "URL slot 分割規則。`url.host` が OP になることが「定数ホストの HTTP ツール → GAP 0」の唯一の機構",
+   "tree": null,
+   "tree_needed": "仕様書は repo を名指ししていない（`restapi.amap.com` を叩くツール）。取得先の選定は学生の入力（docs/open_questions.md）",
+   "unit": null,
+   "effects": [
+    {
+     "site": null, "kind": "NET", "form": "direct",
+     "slots": {
+      "url.scheme": {"prin": "OP"},
+      "url.host": {"prin": "OP", "const": "restapi.amap.com"},
+      "url.path": {"prin": "OP"},
+      "url.query": {"prin": "MODEL", "roots": ["city"]}
+     }
+    }
+   ],
+   "spec_row": "`NET@direct`: `url.scheme=OP`、`url.host=OP/lit=\"restapi.amap.com\"`、`url.path=OP`、`url.query=MODEL/roots={city}`"
+  }
+ }
+}
