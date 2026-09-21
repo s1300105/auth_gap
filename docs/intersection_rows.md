@@ -1,81 +1,33 @@
-# 交差行（§3 の 3 腕アブレーション）
+# §3 の交差行（統一の唯一の証拠）と trig の内訳
 
-**統一の唯一の証拠。** trig / val / gate は伝播機構を共有しないので、
-3 座標のうち 2 つを同時に必要とする行が実在しなければ「一つの解析」とは
-書けない。3 腕は `authgap/analyze.py` の `arm` 引数によるフラグ違いであり、
-**別実装ではない**（§3 の要求）。
+再現: `python scripts/intersection_rows.py evidence/scan_v2_run4`
 
-再現: `python scripts/ablation.py <木> [<木> ...]`
+**この表は 3 腕アブレーションの値ではない。** §3 が与えた特徴づけ
+（同一行が SELECT 系と INJECT 系の verdict を同時に持つ）で数えた**候補**である。
+数える単位は (ユニット, site, slot)。効果行は呼び出し経路ごとに複製されるため
+（`docs/open_questions.md` O18）、行をそのまま数えない。
 
-- 交差行 **12** 行 / **1** プロジェクト
-- 事前登録した閾値 **3**（**経験的根拠は無い。事前に固定することだけが根拠である**）
-- 判定: **不合格**
-
-数えない行: `UNKNOWN` を含む行（OPAQUE 行）、`Leak` だけで説明できる行、
-D だけで説明できる行（INVENTORY / CONTRADICTION / GAP_DRIFT のみ）、
-fixture 由来と自作ケーススタディ由来。
-
-## 木ごとの内訳
-
-| 木 | プロジェクト | 行数 | 交差行 |
+| 項目 | 実測 | §3 の条件 | 判定 |
 |---|---|---|---|
-| `corpus/A1__vuln` | modelcontextprotocol/servers | 19 | 5 |
-| `corpus/A2__vuln` | modelcontextprotocol/servers | 19 | 6 |
-| `corpus/A3__vuln` | modelcontextprotocol/servers | 19 | 1 |
-| `corpus/A5__vuln` | Significant-Gravitas/AutoGPT | 21 | 0 |
-| `corpus/A5__fixed` | Significant-Gravitas/AutoGPT | 25 | 0 |
-| `corpus/A9__vuln` | MervinPraison/PraisonAI | 49 | 0 |
-| `corpus/A18__vuln` | langroid/langroid | 14 | 0 |
+| 交差行の候補 | 5 | 3 以上 | ○ |
+| 由来プロジェクト数 | 2 | 3 以上 | × |
+| `trig = traced` のユニット | 14 / 2231 = 0.6% | 20% 以上 | × |
 
-## 交差行
+**§3 の格下げ条項が発火している。** 仕様書の文言: 「traced 率が 20% 未満なら
+SELECT の野外評価は成立しないので、その時点で SELECT は fixture + ケーススタディのみの
+構造的主張に格下げする。**この条項は撤回しない。**」
 
-| 行 | プロジェクト | V_A | V_B | V_C |
-|---|---|---|---|---|
-| `mcp-lowlevel-v1:serve.call_tool:965af40077db|FS_WRITE@git.IndexFile.add|path` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
-| `mcp-lowlevel-v1:serve.call_tool:965af40077db|SPAWN@git.Git.add|cwd` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
-| `mcp-lowlevel-v1:serve.call_tool:965af40077db|SPAWN@git.Git.checkout|cwd` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
-| `mcp-lowlevel-v1:serve.call_tool:965af40077db|SPAWN@git.Git.log|cwd` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
-| `mcp-lowlevel-v1:serve.call_tool:965af40077db|SPAWN@git.Git.status|cwd` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
-| `mcp-lowlevel-v1:serve.call_tool:965af40077db|FS_WRITE@git.IndexFile.add|path` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
-| `mcp-lowlevel-v1:serve.call_tool:965af40077db|SPAWN@git.Git.add|cwd` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
-| `mcp-lowlevel-v1:serve.call_tool:965af40077db|SPAWN@git.Git.checkout|argv[*]` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
-| `mcp-lowlevel-v1:serve.call_tool:965af40077db|SPAWN@git.Git.checkout|cwd` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
-| `mcp-lowlevel-v1:serve.call_tool:965af40077db|SPAWN@git.Git.log|cwd` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
-| `mcp-lowlevel-v1:serve.call_tool:965af40077db|SPAWN@git.Git.status|cwd` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
-| `mcp-lowlevel-v1:serve.call_tool:965af40077db|FS_WRITE@git.IndexFile.add|path` | modelcontextprotocol/servers | GAP_SELECT | GAP_INJECT | GAP_INJECT,GAP_SELECT |
+## 由来
 
-## 交差行がどこから出るか（測定で分かったこと）
+- `v2-ariffazil__wealth`（1 行）
+  - `wealth_fx_rate` / `httpx.AsyncClient.get` / slot `url.query`
+- `v2-fanfan-de__anybox`（4 行）
+  - `KeynoteMCPServer._register_handlers.call_tool` / `glob.glob` / slot `path`
+  - `KeynoteMCPServer._register_handlers.call_tool` / `shutil.move` / slot `path`
+  - `KeynoteMCPServer._register_handlers.call_tool` / `shutil.rmtree` / slot `path`
+  - `KeynoteMCPServer._register_handlers.call_tool` / `subprocess.run` / slot `argv[*]`
 
-交差行が出るのは **`trig` が `traced` のユニット**に限る。SELECT 座標が
-発火しなければ「同一行が SELECT 系と INJECT 系を同時に持つ」形が作れない。
+## 決定
 
-測定した範囲では `traced` になるのは**低レベル MCP の
-`@server.call_tool()` 形だけ**である。ハンドラが解析対象の木の中にあり、
-`match name:` / `if name == ...` の分岐が木内で読めるので、
-セレクタ → ディスパッチ → callee の連結経路が見える。
-
-一方で次はすべて `assumed` になり、交差行に寄与しない:
-
-- 高レベル `@mcp.tool`（ディスパッチが SDK の中）
-- langroid の `ToolMessage` 派生 + 同名ハンドラ（同上）
-- `tools=[f, g]` に渡す裸の関数（同上）
-
-**これは仕様書 §3 の想定と食い違う。** §3 は「MCP サーバでは dispatch が
-framework 内にあるので trig は常に `assumed` になり、SELECT は原理的に
-発火しない」と書くが、**低レベル経路では発火する**。仕様書の主要較正
-プロジェクト（mcp-server-git）自身が低レベル経路である。
-詳細は `docs/open_questions.md` Q12。
-
-## 単一座標のゲート寄与（**交差行ではない。別表**）
-
-§3 が明記するとおり、(i) callee の `confirm()` が SELECT を clear する / 
-(ii) caller の承認 hook が `req_val` を引き上げる、はそれぞれ腕 B のみ・
-腕 A のみとしか差が出ないので**定義上 0 行**であり交差行に数えない。
-ここには「腕 A とだけ差が出た行 / 腕 B とだけ差が出た行」の件数を出す。
-
-| プロジェクト | 腕 A とだけ差 | 腕 B とだけ差 |
-|---|---|---|
-| MervinPraison/PraisonAI | 13 | 0 |
-| Significant-Gravitas/AutoGPT | 7 | 0 |
-| langroid/langroid | 9 | 0 |
-| modelcontextprotocol/servers | 0 | 18 |
+`docs/decisions.md` D36: 統一主張と等級づけによる判別は主張から降ろし、
+「宣言 D と実効 M の照合」1 本を主軸にする。D10 の二択は格下げ分岐を採る。
