@@ -230,6 +230,10 @@ class ValEngine:
         self._module_active: set[tuple[str, str]] = set()
         #: いま末尾名だけで降りた経路の中にいるか（入れ子の深さ）。
         self._by_name_depth = 0
+        #: 受け手が 2 型以上の `Obj` で、各型に候補メソッドが 1 つずつあるとき真（D35）。
+        #: 呼び出し側は候補ごとに受け手をその 1 型に絞って降り、行を witness で分ける（F7）。
+        self._split_receiver = False
+        self._class_defaults_active: set[tuple[str, str]] = set()
         #: 直前の `_resolve_in_tree` が末尾名だけで決めたか（見える同名の定義が決まらないときも立つ）。
         self._by_name_hint = False
         #: 直前の `_resolve_in_tree` が、見える同名の定義のどれが効くかを決められなかったか（D17 改訂 5）。
@@ -419,7 +423,7 @@ class ValEngine:
     # 定数・名前 ----------------------------------------------------------
 
     def _ev_Constant(self, node, env, scope, res, depth, chain) -> Value:
-        return Value(Prin.OP, RESOLVED, Atom(const=node.value))
+        return Value(Prin.OP, RESOLVED, Atom(const=node.value, none=node.value is None))
 
     def _ev_Name(self, node, env, scope, res, depth, chain) -> Value:
         v = env.get(node.id)
@@ -672,11 +676,26 @@ class ValEngine:
                 res.note_opaque("unresolved")
             # 見える同名の定義のどれが効くか決まらないときは**全候補へ降りて戻り値を join する**
             # （D17 改訂 5）。1 つを選ぶと他方の効果行が消え、降りなければ全部消える。
+            split = self._split_receiver
             ret: Optional[Value] = None
             for callee in callees:
-                v = self._descend(
-                    callee, node, args, kwargs, receiver, env, scope, res, depth, chain, by_name=by_name
+                recv_i = receiver
+                if split and callee.classname is not None and receiver is not None and isinstance(receiver.shape, Obj):
+                    # 2 型受け手を候補の型に絞って降りる（F7: `LocalFileOperator` / `SandboxFileOperator`
+                    # の `write_file` を別行にする）。fields は合流後のもの（両型で共通の名前だけ残る）。
+                    recv_i = Value(
+                        receiver.prin, receiver.prov, Obj((callee.classname,), receiver.shape.fields),
+                        receiver.attrs, receiver.roots,
+                    )
+                v, sub = self._descend_env(
+                    callee, node, args, kwargs, recv_i, res, depth, chain, by_name=by_name
                 )
+                if sub is not None and not by_name and receiver_path is not None and recv_i is not None:
+                    # 被呼び出しが `self.<f>` に書いた値を呼び出し側の受け手アクセスパスへ戻す（D35）。
+                    # `_BashSession.start` が `self._process` に書き、`run` が読む（F6）。
+                    # **受け手型で裏付けられた解決に限る**（by_name の書き戻しは別クラスの
+                    # フィールドを付ける恐れがある）。
+                    self._write_back_self(receiver_path, recv_i, sub, env)
                 ret = v if ret is None else value_join(ret, v)
             return _opaque_deep(ret) if ambiguous else ret
 
@@ -752,6 +771,7 @@ class ValEngine:
         """
         self._by_name_hint = False
         self._pinned_ambiguous = False
+        self._split_receiver = False
         name = dotted_of(node.func)
         if name is None:
             return []
@@ -765,15 +785,24 @@ class ValEngine:
         cands = self.index.lookup_function(last)
         if not cands:
             return []
+        typed_classes: set[str] = set()
         if receiver is not None and isinstance(receiver.shape, Obj) and receiver.shape.classes:
-            classes = {c.split(".")[-1] for c in receiver.shape.classes}
-            narrowed = [c for c in cands if c.classname in classes]
+            typed_classes = {c.split(".")[-1] for c in receiver.shape.classes}
+            narrowed = [c for c in cands if c.classname in typed_classes]
             if narrowed:
                 cands = narrowed
         want_method = isinstance(node.func, ast.Attribute)
         narrowed = [c for c in cands if (c.classname is not None) == want_method]
         if narrowed:
             cands = narrowed
+        if len(cands) > 1 and want_method and len(typed_classes) > 1:
+            # 受け手が 2 型以上の `Obj`（IfExp / 分岐の合流）で、候補が**その各型に 1 つずつ**
+            # あるなら全候補へ降りる（D35、F7 の「2 型受け手は witness の分岐として分ける」）。
+            # 型で裏付けられた解決なので by_name にはしない。型に無い候補が混じるときは従来どおり。
+            by_class = {c.classname: c for c in cands}
+            if len(by_class) == len(cands) and set(by_class) <= typed_classes:
+                self._split_receiver = True
+                return sorted(cands, key=lambda c: (c.classname or "", c.module))
         if len(cands) != 1:
             return []  # 絞れないものは opaque(unresolved) に落とす
         chosen = cands[0]
@@ -1040,7 +1069,10 @@ class ValEngine:
         if cd is None:
             return None
         init = self._find_init(cd)
-        fields: dict[str, Value] = {}
+        # **クラス体のフィールド既定値**（`command: str = "/bin/bash"`、pydantic のクラス変数）を
+        # 先に入れ、`__init__` の書き込みで上書きする（D35）。無いと `__init__` で触らない
+        # 既定値が `opaque(unresolved)` になり、`self.command` を渡す sink の値が消える（F6）。
+        fields: dict[str, Value] = dict(self._class_body_defaults(cd, res, depth, chain))
         if init is None:
             # dataclass / pydantic 形: 注釈つきクラス変数の順に実引数を割り当てる
             declared = [
@@ -1054,11 +1086,11 @@ class ValEngine:
                 elif fname in kwargs:
                     fields[fname] = kwargs[fname]
             return Value(Prin.OP, RESOLVED, Obj((cd.name,), tuple(sorted(fields.items()))))
-        receiver = Value(Prin.OP, RESOLVED, Obj((cd.name,), ()))
+        receiver = Value(Prin.OP, RESOLVED, Obj((cd.name,), tuple(sorted(fields.items()))))
         value, sub = self._descend_env(init, node, args, kwargs, receiver, res, depth, chain)
         if sub is None:
-            # 深さ・再帰・cap で降りなかった。型だけ持ち、確度は降りなかった理由を運ぶ。
-            return Value(Prin.OP, value.prov, Obj((cd.name,), ()))
+            # 深さ・再帰・cap で降りなかった。型と既定値だけ持ち、確度は降りなかった理由を運ぶ。
+            return Value(Prin.OP, value.prov, Obj((cd.name,), tuple(sorted(fields.items()))))
         for key, v in sub.items():
             rest = key[len("self."):] if key.startswith("self.") else None
             if rest and "." not in rest:
@@ -1079,6 +1111,75 @@ class ValEngine:
                 return hits[0]
             todo += self._base_classes(c)  # **基底は import 表で厳密に引く**（D17 改訂 2）
         return None
+
+    def _class_body_defaults(self, cd, res, depth, chain) -> dict[str, Value]:
+        """クラス体の `name = value` / `name: T = value` を評価して `Obj.fields` の既定値にする。
+
+        基底（3 段まで、import 表で厳密に引く）を先に、自クラスを後に入れて上書きする。
+        値の評価は木内クラスの構築を含みうるので再帰を切る（同じクラスの評価中は空）。
+        `analyze._self_fields` の (1) と同じ規則。
+        """
+        key = (cd.module, cd.name)
+        if key in self._class_defaults_active:
+            return {}
+        self._class_defaults_active.add(key)
+        try:
+            chain_cls = [cd]
+            seen = {key}
+            frontier = [cd]
+            for _ in range(3):
+                nxt = []
+                for c in frontier:
+                    for b in self._base_classes(c):
+                        if (b.module, b.name) not in seen:
+                            seen.add((b.module, b.name))
+                            nxt.append(b)
+                chain_cls = nxt + chain_cls
+                frontier = nxt
+                if not nxt:
+                    break
+            out: dict[str, Value] = {}
+            for c in chain_cls:
+                mpath = self.index.resolve_module_path(c.module)
+                if mpath is None:
+                    continue
+                cscope = self.index.module_scope(mpath)
+                env = Env()
+                for st in c.node.body:
+                    target = None
+                    if isinstance(st, ast.Assign) and len(st.targets) == 1:
+                        target = st.targets[0]
+                    elif isinstance(st, ast.AnnAssign):
+                        target = st.target
+                    if isinstance(target, ast.Name) and getattr(st, "value", None) is not None:
+                        out[target.id] = self._eval(st.value, env, cscope, res, depth, chain)
+            return out
+        finally:
+            self._class_defaults_active.discard(key)
+
+    def _write_back_self(self, receiver_path: str, receiver: Value, sub: Env, env: Env) -> None:
+        """被呼び出しの env の `self.<f>`（1 段）を、呼び出し側の `<receiver_path>.<f>` と受け手の
+        `Obj.fields` に戻す。アクセスパスの深さは `RECEIVER_DEPTH` まで（読みと同じ鍵体系）。"""
+        if not isinstance(receiver.shape, Obj):
+            return
+        writes: dict[str, Value] = {}
+        for key, v in sub.items():
+            if key.startswith("self.") and "." not in key[len("self."):]:
+                writes[key[len("self."):]] = v
+        if not writes:
+            return
+        fields = dict(receiver.shape.fields)
+        fields.update(writes)
+        cur = env.get(receiver_path)
+        base = cur if cur is not None and isinstance(cur.shape, Obj) else receiver
+        env.set(
+            receiver_path,
+            Value(base.prin, base.prov, Obj(base.shape.classes, tuple(sorted(fields.items()))), base.attrs, base.roots),
+        )
+        for name, v in writes.items():
+            key = f"{receiver_path}.{name}"
+            if key.count(".") <= RECEIVER_DEPTH:
+                env.set(key, v)
 
     def _class_family(self, classes) -> set[str]:
         """受け手クラスとその基底（3 段まで）の名前。継承したメソッドを解決するため。"""

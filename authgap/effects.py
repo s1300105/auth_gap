@@ -146,6 +146,8 @@ def _arg_value(ref: ArgRef, ev: CallEvent) -> Optional[Value]:
     base: Optional[Value]
     if ref.pos is not None:
         base = ev.args[ref.pos] if ref.pos < len(ev.args) else None
+        if base is None and ref.kw is not None:
+            base = ev.kwargs.get(ref.kw)  # 位置に無ければ仮引数名のキーワードで引く（F8）
     else:
         base = ev.kwargs.get(ref.kw or "")
     if base is None:
@@ -458,6 +460,10 @@ class EffectExtractor:
                 return self._materialise(ev, row, dict(row.slots), "FS_WRITE", {}, key)
             kind = "FS_WRITE" if is_write else "FS_READ"
 
+        if kind == "SPAWN" and "shell_string" in row.slots and not row.exec_mode_kw:
+            # 常にシェル経由の sink（`asyncio.create_subprocess_shell` / `os.system` …）は
+            # `shell=` の引数を持たないので exec_mode を明示しておく（F6 の `shell = OP/lit=True`）。
+            exec_mode = {"shell": {"prin": "OP", "const": True, "source": "implicit"}}
         return self._materialise(ev, row, dict(row.slots), kind, exec_mode, key)
 
     def _materialise(

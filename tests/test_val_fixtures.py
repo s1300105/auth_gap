@@ -42,8 +42,8 @@ TREES: dict[str, dict] = EXPECTED["trees"]
 CANONICALISING = frozenset({"realpath", "Path.resolve", "normpath+abspath", "normpath", "abspath"})
 
 #: 実装が満たさない項目（id → 理由）。**向きを書く。** XPASS で strict が落ちたら外す。
-#: 初回の採点（2026-09-21、fixture 期待値 5944a0b）: 74 項目中 26 項目が未達。
-#: 内訳と診断は docs/open_questions.md O17。
+#: 初回の採点（2026-09-21、fixture 期待値 5944a0b）は 74 項目中 26 項目が未達（O17）。
+#: D35（F6/F7/F8 の解析器修正）で 11 項目が XPASS になり印を外した。残りは語彙の差と未出力。
 _F6_SPAWN = "F6/effect[asyncio.create_subprocess_shell]"
 _F6_PIPE = "F6/effect[pipe:write]"
 _F7_WT = "F7/effect[pathlib.Path.write_text]"
@@ -54,48 +54,45 @@ _R_F2 = (
     " `alias_facts_canonical_absent_for_root` で別に通っている。向き: 中立（O17 (a)）"
 )
 _R_DEPTH = "manifest に `depth_used` の欄が無い（未出力。仕様 §2.6 の期待行の属性）。向き: 中立（O17 (b)）"
-_R_F6 = (
-    "`self._session` が `Optional[_BashSession]`（None との合流で Obj が Unknown に落ちる）ため"
-    "受け手型が消え、`_BashSession.start` は末尾名解決 + opaque(unresolved)、`self.command` は"
-    "読めず、`run` の `self._process.stdin.write` は出ない。向き: **false-clean**（MODEL の"
-    " `command` が bash の stdin に届く EXEC 行が無い。ユニットは opaque(receiver/unresolved) で"
-    " clean ではない）。O17 (c)"
+_R_F6_SLOT = (
+    "slot 語彙の差: `create_subprocess_shell(\"/bin/bash\")` の実装の slot は `shell_string`"
+    "（常にシェル経由の sink）で、仕様の期待行は `argv0`。行自体は出ている（shell_string="
+    "OP/\"/bin/bash\"、exec_mode.shell = OP/True/implicit）。向き: 中立（O17 (c) 残り）"
 )
-_R_F7 = (
-    "`operator = self._get_operator()`（IfExp で `LocalFileOperator` / `SandboxFileOperator` の"
-    " 2 型 Obj）を `str_replace` / `insert` 経由で `operator.write_file` に渡す経路が深さ 3 で"
-    " cap（`cap_hits = depth`）に当たり FS_WRITE 行が出ない。向き: **false-clean**（MODEL の"
-    " `path` への書き込み行が無い。ユニットは opaque(depth) で clean ではない）。O17 (d)"
+_R_F6_COUNT = (
+    "行は呼び出し点ごとに複製される（仕様 §2.6 複雑度）。`execute` は `_session.start()` を"
+    " 2 箇所（restart 分岐と None 分岐）で呼ぶので SPAWN 2 行 + EXEC@pipe 1 行 = 3 行。"
+    "site 単位では 2。向き: false-dirty 側（O17 (c) 残り）"
 )
-_R_F8 = (
-    "`async with AsyncWebCrawler(config=...) as crawler` の ctor は CTOR カタログにあるが、"
-    "`crawler.arun(url=url, ...)` の proxy sink が当たらない（受け手 opaque(receiver)）。"
-    "向き: **false-clean**（MODEL の `urls` が NET の url.host に届く行が無い。ユニットは"
-    " opaque で clean ではない）。O17 (e)"
+_R_F7_REMOTE = (
+    "`SandboxFileOperator.write_file` は `self.sandbox_client.write_file(...)` で、remote クライアント"
+    "の sink カタログが無いので行が出ない（`resolution=remote` の行が無い）。Local 側は"
+    " create / str_replace / insert / undo_edit の 4 経路で 4 行（呼び出し点ごとの複製）。"
+    "向き: remote 行が無いのは false-clean 側（ただし sandbox は木の外の実行）。O17 (d) 残り"
+)
+_R_F7_CHAIN = (
+    "`witness_chain` は入口自身を含めない規約（F1 の `['git_checkout']` と同じ）なので"
+    " `execute` が入らない。向き: 中立（語彙）。O17 (d) 残り"
+)
+_R_F8_SHAPE = (
+    "`for url in valid_urls` の要素は `Seq` の要素値（shape Unknown）で、`shape=Seq.tail` は"
+    "要素側の値には現れない（未出力）。prin=MODEL / roots={urls} は通る。向き: 中立。O17 (e) 残り"
 )
 KNOWN_UNMET: dict[str, str] = {
     "F2/alias_facts_empty_literal": _R_F2,
     "F5/effect[builtins.exec]/depth_used": _R_DEPTH,
-    f"{_F6_SPAWN}/present": _R_F6,
-    f"{_F6_SPAWN}/slot[argv0].prin": _R_F6,
-    f"{_F6_SPAWN}/slot[argv0].const": _R_F6,
-    f"{_F6_SPAWN}/exec_mode.shell.prin": _R_F6,
-    f"{_F6_SPAWN}/exec_mode.shell.const": _R_F6,
-    f"{_F6_PIPE}/present": _R_F6,
-    f"{_F6_PIPE}/slot[code_text].prin": _R_F6,
-    f"{_F6_PIPE}/slot[code_text].roots": _R_F6,
-    f"{_F6_PIPE}/depth_used": _R_F6 + "；さらに " + _R_DEPTH,
-    f"{_F7_WT}/present": _R_F7,
-    f"{_F7_WT}/slot[path].prin": _R_F7,
-    f"{_F7_WT}/slot[path].roots": _R_F7,
-    f"{_F7_WT}/resolution": _R_F7,
-    f"{_F7_WT}/witness_chain_includes": _R_F7,
-    "F7/effects_count[pathlib.Path.write_text]=2": _R_F7,
-    f"{_F8_ARUN}/present": _R_F8,
-    f"{_F8_ARUN}/slot[url.host].prin": _R_F8,
-    f"{_F8_ARUN}/slot[url.host].roots": _R_F8,
-    f"{_F8_ARUN}/slot[url.host].shape_k": _R_F8,
-    f"{_F8_ARUN}/slot[url.host].shape_tail": _R_F8,
+    f"{_F6_SPAWN}/present": _R_F6_SLOT,
+    f"{_F6_SPAWN}/slot[argv0].prin": _R_F6_SLOT,
+    f"{_F6_SPAWN}/slot[argv0].const": _R_F6_SLOT,
+    f"{_F6_SPAWN}/exec_mode.shell.prin": _R_F6_SLOT,
+    f"{_F6_SPAWN}/exec_mode.shell.const": _R_F6_SLOT,
+    f"{_F6_PIPE}/depth_used": _R_DEPTH,
+    "F6/effects_count_total=2": _R_F6_COUNT,
+    f"{_F7_WT}/resolution": _R_F7_REMOTE,
+    f"{_F7_WT}/witness_chain_includes": _R_F7_CHAIN,
+    "F7/effects_count[pathlib.Path.write_text]=2": _R_F7_REMOTE,
+    f"{_F8_ARUN}/slot[url.host].shape_k": _R_F8_SHAPE,
+    f"{_F8_ARUN}/slot[url.host].shape_tail": _R_F8_SHAPE,
 }
 
 

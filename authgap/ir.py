@@ -238,6 +238,8 @@ class Atom:
 
     const: Optional[Any] = None
     formal: Optional[str] = None  # "Param(i)" / "Param(name)"
+    #: `None` リテラルそのもの（`const=None` は「定数不明」と区別できないので別に持つ。D35）。
+    none: bool = False
 
     def kind(self) -> str:
         return "Atom"
@@ -488,6 +490,15 @@ def _shape_join(a: Shape, b: Shape) -> Shape:
         for extra in list(a.elems[n:]) + list(b.elems[n:]) + [t for t in (a.tail, b.tail) if t is not None]:
             tail = extra if tail is None else value_join(tail, extra)
         return type(a)(prefix, tail)
+    # `Obj ⊔ None` は `Obj`（D35）。`x: Optional[C] = None` と `x = C()` の合流で受け手型を
+    # 落とすと `x.m()` が末尾名解決 + opaque(unresolved) になり、`m` の中の `self.<f>` が
+    # 読めず sink が消える（OpenManus `Bash`、F6、false-clean）。**None リテラルに限る**
+    # （`Atom()` 一般や別の Obj とは合流しない）。None 側の分岐は属性アクセスに到達しないので
+    # 受け手としては dead であり、主体・確度・root は `value_join` が別に合流する。
+    if isinstance(a, Obj) and isinstance(b, Atom) and b.none:
+        return a
+    if isinstance(b, Obj) and isinstance(a, Atom) and a.none:
+        return b
     if a.kind() == b.kind():
         # 同種だが中身が違う: 要素は畳んで Unknown 側に倒さず、形だけ残す。
         if isinstance(a, Str):

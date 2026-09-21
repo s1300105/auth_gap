@@ -100,8 +100,10 @@ class ArgRef:
         return base if self.proj == "value" else f"{base}.{self.proj}"
 
 
-def A(pos: int, proj: str = "value") -> ArgRef:
-    return ArgRef(pos=pos, proj=proj)
+def A(pos: int, proj: str = "value", kw: Optional[str] = None) -> ArgRef:
+    """位置 `pos` の実引数。`kw` を与えると、位置に無いときキーワード `kw=` でも引く
+    （`crawler.arun(url=u)` のように仮引数名で渡される呼び出し。F8）。"""
+    return ArgRef(pos=pos, kw=kw, proj=proj)
 
 
 def KW(kw: str, proj: str = "value") -> ArgRef:
@@ -559,14 +561,15 @@ PROXY_SINKS: tuple[ProxyRow, ...] = (
         recv_types=("crawl4ai.AsyncWebCrawler",),
         method="arun",
         kind="NET",
-        slots={"url.host": A(0)},
+        slots={"url.host": A(0, kw="url")},
+        note="OpenManus は `arun(url=url, config=...)` とキーワードで渡す（F8）",
         required_by=("F8",),
     ),
     ProxyRow(
         recv_types=("crawl4ai.AsyncWebCrawler",),
         method="arun_many",
         kind="NET",
-        slots={"url.host": A(0)},
+        slots={"url.host": A(0, kw="urls")},
         required_by=("F8",),
     ),
 )

@@ -71,6 +71,10 @@ TRANSFERS: tuple[TransferRow, ...] = (
     TransferRow("str.split", "str.split", "seq", (), None, subject="receiver"),
     TransferRow("str.rsplit", "str.split", "seq", (), None, subject="receiver"),
     TransferRow("str.strip", "str.strip", "str", (), None, subject="receiver"),
+    # bytes との相互変換は内容を変えない（OpenManus `_BashSession.run` の
+    # `command.encode() + ...` が stdin に届く。F6。無いと opaque(unresolved) で MODEL が消える）
+    TransferRow("str.encode", "str.encode", "str", (), None, subject="receiver"),
+    TransferRow("bytes.decode", "bytes.decode", "str", (), None, subject="receiver"),
     TransferRow("str.lower", "str.lower", "str", (), None, subject="receiver"),
     TransferRow("str.upper", "str.upper", "str", (), None, subject="receiver"),
     TransferRow("str.replace", "str.replace", "str", (), None, subject="receiver"),
