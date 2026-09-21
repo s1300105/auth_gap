@@ -464,6 +464,22 @@ TypeScript 側の hint 語は Python の 2〜3 倍で、宣言の慣行は TypeS
   定数として現れないので全ツール帰属（保守的）。fixture `fixtures/dispatch_join`
   5 件 XPASS、既存の受け入れ関門は不変。
 
+### 2.10 NET 込み / 除きの分母（2026-09-21。**値を出す前に書く**）
+
+審査パネルの指摘（D24「見落とし」8）: `NET` は `DANGEROUS_KINDS` と verdict の両方で
+無条件に危険扱いだが、仕様書 Def 6 の P0 は private-range の NET に限る。旧枠では
+危険ユニット 577 のうち NET のみが 300 で、577 を分母にする全指標が NET の扱いで動く。
+
+- 追加するユニット分母: **`dangerous_non_net`** = NET 以外の危険効果
+  （EXEC / SPAWN / FS_WRITE / FS_READ / DB）を 1 つ以上持つユニット。
+  既存の `dangerous`（NET 込み）と**必ず併記**する。主分母は §2.2 のまま
+  （`dangerous_fp_excluded × all_paths`、NET 込み）で動かさない。
+- tests / examples 除外は既存の `src_only`（§2.3、`NON_SRC_DIRS`）で足りるので新設しない。
+- 適用先: validator 保有率（`scripts/denominators.py`）。`r_D` / `r_prev` の分母にも
+  同じ区別を出せるが、本節では validator 保有率だけを先に固定する。
+- 変えてはいけないこと: `NET` を `DANGEROUS_KINDS` から外さない（verdict の問題で
+  はなく分母の問題として扱う）。値を見てから主分母を替えない。
+
 ## 3. 併記規則
 
 1. **§2.2 の 3 分母 × §2.3 の 2 分母 = 6 通りをすべて計算し、すべて報告する。**

@@ -67,3 +67,18 @@ validator 保有（§2.2 の 6 分母）、`r_prev`（§2.7）、full scan。**�
 - 書ける: 「宣言を持つ公開 Python MCP サーバについて」の値。
 - 書けない: 生態系全体への一般化。「宣言を持つ」で選ぶと検証子も丁寧な repo に
   偏りうる（選択効果）。旧枠の値がその対照になる。
+
+
+## 結果（2026-09-20〜21。規則は列挙後に変えていない）
+
+- 列挙: 形 A 9,090 行 + 形 B 7,170 行 = 16,260 行、repo で重複除去 4,211。除外（SDK 1、
+  宣言が tests / examples 等にしか無い 379、同梱コピーのみ 4）後 **3,827 repo**
+  （`evidence/population_v2/enumeration.json`）。仕様書の関門 ≥ 300 を通過。
+- 抽出: seed 20260920 で 100（`docs/corpus_sample_v2.json`、SHA で pin）。取得 100 / 0。
+- 取得後条件（定義 2）: **87 木**が MCP サーバ、13 木は宣言ファイルが `mcp` / `fastmcp` を
+  import しない（`post_fetch_check.json`）。13 木の内訳（`excluded_13_classification.json`）:
+  claude_agent_sdk 3、OpenHands 1、既知の枠組み無し 9（自前のラッパ経由で annotation を
+  組み立てるもの等）。参考値として、repo 内のどこかで `mcp` / `fastmcp` を import する
+  ものは 13 中の数を同ファイルに記録した（**規則は変えない**。定義 2 は宣言ファイル自身の
+  import で判定する）。
+- 測定: `docs/decisions.md` D30（F0a）、D31（full scan、r_prev）、D32（CONTRADICTION）。

@@ -51,7 +51,7 @@ NON_SRC_DIRS: frozenset[str] = frozenset(
 POPULATIONS: tuple[str, ...] = ("mcp_server", "tool_package", "app")
 
 #: §2.2 のユニット分母。キーは preregistration.md の表と一致させる。
-UNIT_DENOMS: tuple[str, ...] = ("all_units", "dangerous", "dangerous_fp_excluded")
+UNIT_DENOMS: tuple[str, ...] = ("all_units", "dangerous", "dangerous_fp_excluded", "dangerous_non_net")
 
 #: §2.3 のパス分母。
 PATH_DENOMS: tuple[str, ...] = ("all_paths", "src_only")
@@ -86,7 +86,24 @@ def select(units: list[dict], population: str, path_denom: str, unit_denom: str)
         # （非 DB の `.execute()` 等）を除いても残る」ユニット。run6 時点では
         # `dangerous` と恒等（preregistration.md §2.2 の注記を参照）。
         rows = [u for u in rows if u.get("dangerous") and u.get("dangerous_fp_excluded", True)]
+    elif unit_denom == "dangerous_non_net":
+        # §2.10: NET 以外の危険効果を持つユニット（NET 込みの `dangerous` と併記）。
+        rows = [u for u in rows if _has_non_net_dangerous(u)]
     return rows
+
+
+NON_NET_DANGEROUS: frozenset[str] = frozenset({"EXEC", "SPAWN", "FS_WRITE", "FS_READ", "DB"})
+
+
+def _has_non_net_dangerous(u: dict) -> bool:
+    effs = u.get("effects") or []
+    kinds = set()
+    for e in effs:
+        if isinstance(e, dict):
+            kinds.add(e.get("kind"))
+        elif isinstance(e, str):
+            kinds.add(e.split("@")[0])
+    return bool(kinds & NON_NET_DANGEROUS)
 
 
 def compute(units: list[dict]) -> list[dict]:
