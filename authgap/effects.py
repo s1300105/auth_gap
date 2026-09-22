@@ -256,7 +256,21 @@ def _sub_kind(kind: str, slots: dict[str, Value]) -> Optional[str]:
         sql = slots.get("sql")
         text = sql.const if sql is not None else None
         if isinstance(text, str):
-            head = text.strip().split(" ", 1)[0].upper()
+            # **空白全般で切る。**`split(" ", 1)` だと `"\n  SELECT\n    id, ..."` のような
+            # 改行で始まる複数行 SQL が `head == "SELECT\n"` になり、読み取り語の一覧に
+            # 当たらず `DB_WRITE` に落ちていた（誤警報の向き。D41 の B1）。
+            parts = text.split(None, 1)
+            if not parts:
+                # 空白だけの SQL は読み / 書きが決まらない。**`DB_WRITE` に倒さない**
+                # （規則 4。母集団 v2 に該当 0 件なので観測は変わらない）。
+                return None
+            head = parts[0].upper()
+            # **`DB_WRITE` は「読み取り語で始まらない」という意味であって「データを変更する」
+            # ではない。** `PRAGMA` / `BEGIN` / `COMMIT` / `ROLLBACK` もここに入る
+            # （母集団 v2 で 105 件）。`readOnlyHint` の矛盾判定に**そのまま使ってはならない**
+            # （D41 の B2、`docs/contradiction_matrix.md` §5）。
+            # **`WITH` は読み取りとして扱うが、`WITH x AS (...) INSERT INTO ...` は書き込みで
+            # ある（潜在的な誤 clear。母集団 v2 に 0 件なので憶測で直さない。O24）。**
             return "DB_READ" if head in ("SELECT", "SHOW", "EXPLAIN", "DESCRIBE", "WITH") else "DB_WRITE"
         return None
     return kind if kind in ("EXEC", "NET", "FS_READ", "FS_WRITE", "DISPATCH") else None
