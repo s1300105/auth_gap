@@ -2219,3 +2219,94 @@ OP になっている slot も含む）。**次に full scan を取り直すと�
 
 **GAP_INJECT は増える方向である。** 主指標の CONTRADICTION は効果 kind で決まるので
 影響を受けないが、**`r_inject` 系の率は変わる。変更前後の両方を報告する。**
+
+---
+
+## D45（2026-09-22）D43 / D44 のあと母集団 v2 の full scan を取り直す（run5）。**変更前後を両方出す**
+
+`evidence/scan_v2_run5`（解析器 `229f5a29`、Python 3.12、tree budget 180 秒）。
+突き合わせは `scripts/compare_scans.py` で機械的に作った（`docs/scan_v2_run5_diff.md`）。
+
+**スキャン前にコーパスの pin を検証した**（CLAUDE.md の落とし穴）。87 木すべて
+`sample_v2_mcp.json` の `ref` と HEAD が SHA 一致、`.py` が 0 件の木なし、欠落なし。
+
+### 結果 — **回帰は 0 件**
+
+| 項目 | run4 | run5 | 差 |
+|---|---|---|---|
+| ユニット | 2,231 | 2,231 | **±0** |
+| 危険ユニット | 1,169 | 1,187 | +18 |
+| 効果 | 5,906 | 5,987 | +81 |
+| 行 | 9,492 | 9,576 | +84 |
+| **CONTRADICTION**（ユニット×site×kind） | 79 | **85** | **+6** |
+| `GAP_INJECT`（一意な位置） | 363 | **733** | +370 |
+| `GAP_INJECT`（行） | 767 | 1,928 | +1,161 |
+| `GAP_SELECT`（行） | 232 | 246 | +14 |
+| `UNKNOWN`（行） | 7,209 | 7,288 | +79 |
+| **「root はあるのに主体が OP」** | **2,053（21.6%）** | **71（0.7%）** | **−1,982** |
+| 解析時間の合計 | 852 秒 | 1,130 秒 | +278 |
+
+**消えたユニット 0 / 消えた CONTRADICTION 0 / 消えた `GAP_INJECT` 0。**
+**増えた側だけを見て「直った」と書かないために、消えた側を別建てで数えた。**
+
+### 増えた 6 件の CONTRADICTION は全部 D43（`Path` の祖先）
+
+`pathlib.Path.mkdir` が 6 件。5 件が `v2-fbratten__agentspool`、1 件が
+`v2-rwheeler007__cohort`（HintLint が見つけてこちらが落としていた例）。
+
+**`agentspool` の 5 件を一次確認した。** `comm_get_conversation` ほかは
+`readOnlyHint: True` を宣言しながら、`get_coordinator → Coordinator.__init__ →
+LocalRegistry.__init__` と **3 段降りた先**の `agent_comm/registry.py:91`
+`self.path.parent.mkdir(parents=True, exist_ok=True)` に届く。**本物の矛盾である。**
+**3 段降下なので HintLint の行単位正規表現では構造的に届かない**（D40 の段数分布）。
+
+### 増えた `GAP_INJECT` の検証
+
+一意な位置で 363 → 733（**消えた 0**）。slot の内訳は `url.host` 266 / `path` 40 /
+`params` 23 / `body` 20 ほか。site は `httpx.AsyncClient.post` 201 が最大。
+
+**標本を一次確認した。** `v2-benjaminwalkerbond__auto_grocer` の `seed_recipes` は
+
+```python
+target = f"https://www.youtube.com/watch?v={video_id}" if video_id else str(url)
+resp = requests.get(target, ...)
+```
+
+で、`else str(url)` の分岐が**モデル供給の `url` をそのまま宛先にする**。
+**`str()` を通すと主体が落ちるという D44 が直した形そのもの**であり、
+`url.host` の `GAP_INJECT` は本物である。
+
+### 残った 71 件（0.7%）の「root あり + 主体 OP」は**1 件ずつ確かめていない**
+
+内訳は `httpx.AsyncClient.post#url.host` 42 / `get#url.host` 11 /
+`urllib.request.urlopen#url.host` 9 / `builtins.open#path` 4 ほか。
+見た 1 件（`v2-fanfan-de__anybox` の `get_python_api_docs`）は
+`__file__` 由来の `Path` に `canonicalised` / `lexical_canon` が立っており、
+検証子を通った経路に見えた。**「全部妥当だ」とは言わない。未確認として記録する。**
+
+### **§3 の交差行が合格条件を満たした（重要）**
+
+| | run4（D36 の根拠） | run5 | §3 の条件 |
+|---|---|---|---|
+| 交差行の候補 | 5 | **15** | 3 以上 |
+| 由来プロジェクト数 | 2 | **5** | 3 以上 |
+| `trig = traced` | 0.6% | **0.6%（不変）** | 20% 以上 |
+
+**D36 は「5 行 / 2 プロジェクトで不合格」を根拠に統一主張を降ろした。** その数字が
+解析器を直しただけで 3 倍になった。**したがって §3 の交差行はコーパスの性質ではなく
+解析器の精度の関数である。**「統一の唯一の証拠」として事前登録された指標が
+誤 clear の修正だけで合格に転じたことは、**指標そのものの意味を本文で論じるべき事実**である。
+
+**D36 はこの commit では撤回しない。** 理由は 2 つ:
+
+1. 格下げ条項（`traced` 率 20% 未満）は依然として発火しており、§3 自身が
+   「**この条項は撤回しない**」と書いている。
+2. **数値が有利に動いたときだけ事前登録の判断を巻き戻すのは、事前登録の意味を失わせる。**
+   CLAUDE.md 規則 5（凍結後に見た結果で変えない）に触れる。
+
+**学生の判断事項として `docs/open_questions.md` O26 に置いた。私の推奨は「降ろしたまま」。**
+
+### 記録
+
+`docs/preregistration.md` の逸脱 **#12** に、変更前後の数値を両方書いた。
+`docs/intersection_rows.md` と `docs/catalog_map.md` は run5 で再生成した。

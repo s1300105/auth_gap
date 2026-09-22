@@ -17,7 +17,7 @@
 
 | # | 研究 | 主軸（宣言 D と実効 M の照合）と競合するか |
 |---|---|---|
-| R1 | HintLint | **最も近い。ただし問いが違う。** 向こうは主に「宣言が**無い**」を数え（65 件中 61 件）、こちらは「宣言が**あって反する**」を数える。**検出力で勝ったとは言えない**（比較可能な 4 件で 1 勝 3 敗） |
+| R1 | HintLint | **最も近い。ただし問いが違う。** 向こうは主に「宣言が**無い**」を数え（65 件中 61 件）、こちらは「宣言が**あって反する**」を数える。**検出力で勝ったとは言えない**（比較可能な 4 件で 2 勝 2 敗。初回は 1 勝 3 敗で、**負けの 1 件が AuthGap の誤 clear だったので直した** — D43） |
 | R2 | AgentFlow | **しない。相補的。** 解析対象が違う（下記） |
 | R3 | ReactAppScan | しない。**手法の型として引ける** |
 
@@ -83,12 +83,14 @@ R1 が同じ現象を先に触っているので「初めて照合した」と�
 
 ### 実測 — 母集団 v2 の 87 木で両方を走らせた
 
-再現: `.venv/bin/python scripts/hintlint_compare.py --hintlint <clone> --label run1`
+再現: `.venv/bin/python scripts/hintlint_compare.py --hintlint <clone> --label run2 --authgap-scan evidence/scan_v2_run5`
+（初回は run1 / `scan_v2_run4`。**HintLint 側の数値は 2 回とも同一**で、動いたのは AuthGap 側だけ）
 
 | | HintLint | AuthGap（`evidence/scan_v2_run4`） |
 |---|---|---|
 | 入口 | ツール 13,083（`coverage_status`: supported 81 木 / unsupported_pattern 4 / not_mcp_server 2） | ユニット 2,231 |
-| 検出 | finding 81（うち readOnly / destructive の **65**） | CONTRADICTION 79（ユニット × (site, kind)） |
+| 実行 | `evidence/hintlint_run2`（`5a51f2a4`） | `evidence/scan_v2_run5`（`229f5a29`） |
+| 検出 | finding 81（うち readOnly / destructive の **65**） | CONTRADICTION **85**（ユニット × (site, kind)、run5） |
 | 木の重なり | **両方に出た木 2、HintLint だけ 5、AuthGap だけ 14** | |
 
 **入口を揃えた比較ではない**（HintLint は自分でツールを抽出するので、同じ入口集合を渡す
@@ -108,18 +110,25 @@ AuthGap の CONTRADICTION は**明示の宣言 D があってそれに反する*
 （宣言の無いツールは INVENTORY 側の問い）。**したがって 61 件は同じ現象を数えていない。**
 **真に比較できるのは 4 件だけである。**
 
-#### (2) その 4 件の突き合わせ（AuthGap は 1 勝 3 敗）
+#### (2) その 4 件の突き合わせ（AuthGap は **2 勝 2 敗**）
 
-| 木 / ツール | HintLint | AuthGap | 差の原因（一次確認した） |
-|---|---|---|---|
-| `dddabtc/winremote-mcp` / `PlaySound` | DESTRUCTIVE-001（`subprocess.run(` 1 件） | **CONTRADICTION**（`open` FS_WRITE / `subprocess.run` SPAWN ×2 / `os.unlink` FS_WRITE の 4 効果） | **一致。**AuthGap の方が効果を多く出している |
-| `letsgojh0810/godsaeng-salon` / `check_reminders` | READONLY-001（`UPDATE reminders SET`） | CONTRADICTION **なし**（DB 効果 7 件は出ているが GAP_INJECT / UNKNOWN のみ） | **設計差。**`verdict.py` の CONTRADICTION は `eff.kind in ("EXEC","SPAWN","FS_WRITE")` に限る（`DESTRUCTIVE_KINDS`、D32）。**`readOnlyHint:true` + DB 書き込みは AuthGap の CONTRADICTION に入らない** |
-| `rwheeler007/cohort` / `internal_web_fetch` | READONLY-001（`mkdir(`） | 効果 **0 件** | **AuthGap の誤 clear（false-clean）。**`cohort_root = Path(__file__).resolve().parents[2]` → `cache_dir = cohort_root / ... ` → `cache_dir.mkdir(...)`。`Path(...).parent` / `.parents[n]` が受け手の Path 形を落とすため `pathlib.Path.mkdir` の sink 行に当たらない。**`opaque_reasons` に `receiver` は残るが行が 1 本も出ない** |
-| `mcparmory/registry` / `delete_snapshot_by_delete_key` | READONLY-001 | ユニット**そのものが無い** | **`AST_NODE_CAP` の打ち切り**（下記 (4)）。`servers/grafana/server.py` は 54,192 ノードで cap 20,000 を超え、`truncations` に記録されている |
+**2026-09-22 更新（run5、解析器 `229f5a29`）。** 初回の突き合わせ（run4）は **1 勝 3 敗**で、
+負けの 1 件が AuthGap の誤 clear だった。**それを直した**（D43）ので 2 勝 2 敗になった。
+**この表は「HintLint との突き合わせが AuthGap のバグを 1 件見つけた」という記録でもある。**
 
-**誤りの向きを明記する。**(3 行目) は**誤 clear 方向**（危険を見落とす側）である。
+| 木 / ツール | HintLint | AuthGap（run4） | AuthGap（run5） | 差の原因（一次確認した） |
+|---|---|---|---|---|
+| `dddabtc/winremote-mcp` / `PlaySound` | DESTRUCTIVE-001（`subprocess.run(` 1 件） | **CONTRADICTION** | **CONTRADICTION** | **一致。**AuthGap は 4 効果（`open` / `subprocess.run` ×2 / `os.unlink`）を出しており、向こうは 1 件 |
+| `rwheeler007/cohort` / `internal_web_fetch` | READONLY-001（`mkdir(`） | 効果 **0 件** | **CONTRADICTION + UNKNOWN** | **AuthGap の誤 clear だった（D43 で修正）。**`cohort_root = Path(__file__).resolve().parents[2]` → `cache_dir = cohort_root / …` → `cache_dir.mkdir(...)`。`Path(...).parent` / `.parents[n]` が受け手の Path 形を落とし、`pathlib.Path.mkdir` の sink 行に当たっていなかった |
+| `letsgojh0810/godsaeng-salon` / `check_reminders` | READONLY-001（`UPDATE reminders SET`） | CONTRADICTION **なし** | CONTRADICTION **なし**（不変） | **設計差。**`dparse.contradiction` は `eff.kind in ("EXEC","SPAWN","FS_WRITE")` に限る（`DESTRUCTIVE_KINDS`、D32）。**`readOnlyHint:true` + DB 書き込みは AuthGap の CONTRADICTION に入らない**（`docs/contradiction_matrix.md` D1、O23 #1） |
+| `mcparmory/registry` / `delete_snapshot_by_delete_key` | READONLY-001 | ユニット**そのものが無い** | 同左（不変） | **`AST_NODE_CAP` の打ち切り**（下記 (4)）。`servers/grafana/server.py` は 54,192 ノードで cap 20,000 を超え、`truncations` に記録されている |
+
+**誤りの向きを明記する。** 2 行目は**誤 clear 方向**（危険を見落とす側）だった。
 最小再現で原因を切り分けた: `Path("/tmp")/"x"`・`Path("/tmp").resolve()` は sink に当たり、
-**`Path("/tmp/a/b").parent` だけが当たらない**。`docs/open_questions.md` の作業一覧に置いた。
+**`Path("/tmp/a/b").parent` だけが当たらなかった**。
+
+**残る 2 敗はどちらもバグではない。** 1 つは表がまだ決めていないマス（O23 #1）、
+1 つは cap による欠測（O21）で、**どちらも記録済みである。**
 
 #### (3) HintLint が見ているのは関数本体の 0 段だけ
 
@@ -175,6 +184,11 @@ AuthGap の CONTRADICTION 効果 130 件の**呼び出し段数**:
 | 母集団 | 20 リポジトリの pilot（選び方は未検証） | 宣言ありを 3,827 件列挙 → 87 木を SHA pin、事前登録 |
 | 範囲 | `openWorldHint` と flow 規則 5 種を持つ | `openWorldHint` 未実装。DB / NET は CONTRADICTION に入れない |
 | 目的 | CI に載せる linter。精度優先で不確かなものを落とす | 測定研究。落とさずに率で報告する |
+
+**この突き合わせは AuthGap のバグを 1 件見つけた。** `readOnlyHint: true` のツールの
+`mkdir` が効果行を 1 本も出していなかった（`Path(...).parents[n]` が受け手の Path 形を
+落とす。D43 で修正、母集団全体で CONTRADICTION が 79 → 85 になった）。
+**先行研究との突き合わせを「位置づけの説明」で終わらせず、実際に走らせた価値はここにある。**
 
 **「解決できなかったものをどう扱うか」が最大の差である**（`docs/open_questions.md` O19 の
 最重要の確認点だった）。**HintLint には未解決を表す語彙が無く、正規表現に当たらなければ

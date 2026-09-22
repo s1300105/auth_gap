@@ -1,6 +1,6 @@
 # 事前定義の地図（何を先に決めているか、なぜ、どれが自分で考えた部分か）
 
-再現: `python scripts/catalog_map.py evidence/scan_v2_run4 --md docs/catalog_map.md`
+再現: `python scripts/catalog_map.py evidence/scan_v2_run5 --md docs/catalog_map.md`
 
 **役割と出所の分類は判断であって測定ではない**（根拠は `docs/decisions.md` D37）。
 行数と、下の「実際に使われた行」は測定値。
@@ -29,11 +29,11 @@
 
 ## 核の主張が実際に使っている行
 
-`evidence/scan_v2_run4` の CONTRADICTION から逆に数えた。
+`evidence/scan_v2_run5` の CONTRADICTION から逆に数えた。
 
 - 関係した API: **13 種類**（`DIRECT_SINKS` 67 行のうち）
-- 効果の形: {'direct': 130}
-- 呼び出しを何段降りたか: 0 段 4, 1 段 27, 2 段 39, 3 段 57, 4 段 3
+- 効果の形: {'direct': 138}
+- 呼び出しを何段降りたか: 0 段 5, 1 段 27, 2 段 40, 3 段 63, 4 段 3
 
 ```
   builtins.open  os.chmod  os.makedirs  os.remove  os.replace  os.unlink  pathlib.Path.mkdir  pathlib.Path.open  pathlib.Path.unlink  pathlib.Path.write_bytes  pathlib.Path.write_text  shutil.rmtree  subprocess.run
@@ -53,22 +53,22 @@
 | `httpx.AsyncClient.get` | {'(宣言なし)': 102, 'destructiveHint': 19, 'readOnlyHint': 17, 'destructiveHint+openWorldHint': 8, 'openWorldHint+readOnlyHint': 8} |
 | `httpx.AsyncClient.post` | {'(宣言なし)': 101, 'destructiveHint+openWorldHint': 10, 'readOnlyHint': 9, 'destructiveHint': 7} |
 | `builtins.open` | {'(宣言なし)': 45, 'readOnlyHint': 9, 'destructiveHint': 4, 'destructiveHint+openWorldHint': 1, 'openWorldHint': 1} |
+| `pathlib.Path.mkdir` | {'(宣言なし)': 23, 'destructiveHint': 19, 'readOnlyHint': 8, 'destructiveHint+openWorldHint': 3, 'openWorldHint': 1, 'openWorldHint+readOnlyHint': 1} |
 | `subprocess.run` | {'(宣言なし)': 32, 'readOnlyHint': 12, 'destructiveHint': 3, 'destructiveHint+openWorldHint': 1, 'openWorldHint+readOnlyHint': 1, 'openWorldHint': 1} |
-| `pathlib.Path.mkdir` | {'(宣言なし)': 12, 'destructiveHint': 11, 'readOnlyHint': 3, 'destructiveHint+openWorldHint': 2, 'openWorldHint': 1} |
+| `pathlib.Path.read_text` | {'readOnlyHint': 18, '(宣言なし)': 8, 'destructiveHint': 4} |
 | `psycopg.Cursor.execute` | {'readOnlyHint': 13, '(宣言なし)': 6, 'destructiveHint+openWorldHint': 3, 'destructiveHint': 3, 'openWorldHint+readOnlyHint': 2} |
 | `urllib.request.urlopen` | {'(宣言なし)': 6, 'readOnlyHint': 6, 'openWorldHint+readOnlyHint': 6, 'destructiveHint+openWorldHint': 2, 'destructiveHint': 1} |
-| `pathlib.Path.read_text` | {'readOnlyHint': 9, '(宣言なし)': 4, 'destructiveHint': 4} |
 | `os.chmod` | {'openWorldHint+readOnlyHint': 6, 'readOnlyHint': 4, '(宣言なし)': 3, 'destructiveHint': 1} |
 | `os.unlink` | {'openWorldHint+readOnlyHint': 6, '(宣言なし)': 4, 'destructiveHint': 3} |
 | `pathlib.Path.read_bytes` | {'readOnlyHint': 6, '(宣言なし)': 3, 'destructiveHint': 2} |
 | `os.replace` | {'openWorldHint+readOnlyHint': 6, 'destructiveHint': 2, '(宣言なし)': 1} |
 | `pathlib.Path.open` | {'(宣言なし)': 7, 'readOnlyHint': 1, 'destructiveHint+openWorldHint': 1} |
 | `os.remove` | {'readOnlyHint': 5, 'destructiveHint+openWorldHint': 1, '(宣言なし)': 1} |
+| `pathlib.Path.rglob` | {'(宣言なし)': 4, 'readOnlyHint': 1, 'destructiveHint': 1} |
 | `httpx.get` | {'(宣言なし)': 3, 'readOnlyHint': 2, 'destructiveHint+openWorldHint': 1} |
 | `os.makedirs` | {'(宣言なし)': 2, 'readOnlyHint': 2, 'destructiveHint+openWorldHint': 1} |
 | `os.walk` | {'readOnlyHint': 2, 'destructiveHint': 2, '(宣言なし)': 1} |
 | `os.listdir` | {'(宣言なし)': 1, 'destructiveHint+openWorldHint': 1, 'readOnlyHint': 1, 'destructiveHint': 1} |
-| `pathlib.Path.rglob` | {'(宣言なし)': 2, 'readOnlyHint': 1, 'destructiveHint': 1} |
 
 **多数決を真理として使ってはならない。** `subprocess.run` は readOnly の宣言が
 多数派になるが、プロセス起動が読み取り専用であるはずがない。多数派が誤っている。
