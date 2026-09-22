@@ -69,6 +69,9 @@
   主体（MODEL）になる。共通の先頭は要素ごとに join する。
 - **解析器を直したら `scripts/diff_effects.py` で較正対の効果行を突き合わせる。**
   受け入れテストが「両側 7/7」のまま通っても、経路の効果行は黙って消えうる。
+- **母集団の run を取り直したら `scripts/compare_scans.py` で前の run と突き合わせる。**
+  **消えたユニットと消えた CONTRADICTION は回帰**なので 1 件ずつ理由を確かめる。
+  増えた側だけ見て「直った」と書かない。
 - **解決率を上げる変更（opaque → resolved）は、突き合わせでは正しさが分からない。**
   「resolved にしてよい根拠」を 1 件ずつ崩しに行く敵対的レビューを通す。D17 の
   モジュール水準の束縛・`os.environ`・URL 分割は、`global` 再束縛、同じ関数での
@@ -118,6 +121,8 @@ uv venv .venv312 --python 3.12 && uv pip install --python .venv312/bin/python -r
 # 母集団 v2（宣言あり、D29）。F0a は f0a.py --sample evidence/population_v2/sample_v2_mcp.json、full scan は
 .venv312/bin/python scripts/scan_v2.py --label run<N>                 # → evidence/scan_v2_run<N>/{summary,contradictions}.json
 .venv/bin/python scripts/intersection_rows.py evidence/scan_v2_run<N>   # §3 の交差行と trig の内訳（D36）
+# 解析器を変えて run を取り直したら必ず通す（変更前後の両方を出す）
+.venv/bin/python scripts/compare_scans.py evidence/scan_v2_run<前> evidence/scan_v2_run<後> --md docs/scan_v2_run<後>_diff.md
 .venv/bin/python scripts/catalog_map.py evidence/scan_v2_run<N> --md docs/catalog_map.md   # 事前定義の地図（D37）
 ```
 
