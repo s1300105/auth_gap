@@ -2036,3 +2036,105 @@ verdict には出ていない**（`sub_kind` は現在どの verdict にも使�
   `sub_kind` はどの verdict にも使われていないため、`scan_v2_run4` の判定の数字
   （CONTRADICTION 130 効果ほか）は変わらない。**表の件数の出典は run4 のままでよい。**
   次に full scan を取り直すときに `sub_kind` の 2 件が直る。
+
+---
+
+## D43（2026-09-22）O22 を直す: `Path(...).parent` / `.parents[n]` が受け手の Path 形を落としていた
+
+**きっかけ**: HintLint（R1）との突き合わせ（D40）で、`v2-rwheeler007__cohort` の
+`internal_web_fetch`（`readOnlyHint: true`）が
+
+```python
+cohort_root = Path(__file__).resolve().parents[2]
+cache_dir = cohort_root / "data" / "services" / "web_cache"
+cache_dir.mkdir(parents=True, exist_ok=True)   # ← FS_WRITE
+```
+
+で **効果 0 件**だった。HintLint は `READONLY-001` として検出している。
+
+### 何がどちら向きに間違っていたか
+
+**誤 clear（false-clean）。危険を見落とす側。**
+
+`authgap/val/engine.py: _ev_Attribute` が、受け手が `Path` 形のときの属性参照
+（`.parent` / `.parents`）を扱わず `Unknown()` に落としていた。そのため
+`authgap/effects.py: _receiver_typed_key` の `isinstance(ev.receiver.shape, Path)` が
+外れ、**`pathlib.Path.mkdir` の sink 行に当たらず、効果行が 1 本も出なかった。**
+
+`opaque_reasons` に `receiver` は残るが**行が 0 本**なので、
+**「不明として残す」がユニット水準にしか効いていなかった。**
+
+最小再現で切り分けた: `Path("/tmp")/"x"`・`Path("/tmp").resolve()`・
+`(Path("/tmp")/"x").mkdir(...)` はいずれも sink に当たり、
+**`.parent` / `.parents[n]` だけが当たらない。**
+
+### 直し方 — 形だけ保ち、中身は何も引き継がない
+
+`_path_ancestor(v)` を足し、`_ev_Attribute` から呼ぶ。
+
+**引き継がない（引き継ぐと誤 clear）:**
+
+* `base` / `segs` / `tail` — 祖先は元のパスの**接頭辞**であって元のパスではない。
+  `segs` を引き継ぐと包含述語が元のパスの字面で成立しうる。
+* `attrs` — `Path.resolve()` が立てる `canonicalised` を引き継ぐと、Def 5 (i) の
+  strong-path が**別の値**について成立する。**これが最大の false-clean リスク。**
+
+**引き継ぐ（落とすと誤 clear）:**
+
+* `prin` — MODEL のパスの親は MODEL である。
+* `roots` — 主語一致（どの引数由来か）は変わらない。
+
+確度には `opaque("unresolved")` を合流する。**どこまで遡ったかは値として決まらないので、
+効果行は UNKNOWN になるのが正しい。**`.parents` は `Seq((), 祖先)` にして、
+添字が定数でも変数でも祖先の値が出るようにした。
+
+### 敵対的レビュー（CLAUDE.md の要求）
+
+**「この値を Path 形にしてよい根拠」を 8 通りの書き方で崩しに行った。**
+`tests/test_path_ancestor.py` に残した。とくに R2:
+
+```python
+root = Path("/srv/data")
+cand = (root / user_path).resolve()
+if str(cand).startswith(str(root) + os.sep):
+    cand.parent.write_text("x")      # cand は検査済みだが親は root の外に出うる
+```
+
+**祖先が `canonicalised` を引き継ぐと strong-path が誤って立ち、`write_text` が
+clear される。** 実測で等級は `None`、主体は `MODEL`、`CONTRADICTION` が立つことを確認した。
+
+**レビューで出た 2 件の反証候補は、どちらも私の変更とは無関係だった**（切り分け済み）:
+
+* `Path(x).parent.rmdir()` で効果が出ない → **`pathlib.Path.rmdir` が sink カタログに
+  無い**（`os.rmdir` だけある）。`.parent.parent.mkdir()` は正しく出る。
+* `os.makedirs(str(d))` で主体が OP になる → **`str()` を通さない `Path(user_path)`
+  単独でも OP になる。既存のバグで、O22 とは無関係。** → **O25 として記録した。
+  こちらの方が影響が広い**（`os.system("rm -rf " + str(p))` の shell_string が
+  OP になる = 誤 clear）。
+
+### 確認
+
+* **`diff_effects.py --before fead25e` を較正対 14 木で実行 →
+  消えた行 0 / 増えた行 13 / slot 変化 0。**
+  A5 の 2 木で 8 ずつ、A9 の 2 木で 5 ずつ。**両側対称なので対の比較は動かない。**
+* **増えた 13 行は元のコードを目視して全部本物だった。**
+  * A5 `benchmark/agbenchmark/challenges/webarena.py:484` —
+    `(Path(__file__).parent / "webarena_selection.json").read_bytes()`。
+  * A9 `src/praisonai/praisonai/tools/skill_manage.py:366` —
+    `target_file.parent.mkdir(...)`。`target_file = active_skill_path / proposal["file_path"]`
+    なので**モデルが握るパス**。
+  * A9 `src/praisonai/praisonai/cli/features/action_orchestrator.py:405` —
+    `target.parent.mkdir(...)`。**上の R2 と同じ形が実コードにあった。**
+    しかも包含の検査は `str(target).startswith(str(workspace))` で
+    **`os.sep` を足していない**（CLAUDE.md の既知の落とし穴そのもの）。
+* `check_gates.py`: **B3a 8/8、B3b 15/15**（不変）。
+* `pytest tests/ -q`、`scripts/mutation_test.py`、`scripts/two_sided.py`。
+* `ruff check .`。
+
+### 母集団 v2 への影響
+
+`corpus/v2-rwheeler007__cohort` を単独で走らせると **CONTRADICTION 効果が 9 → 10**、
+`internal_web_fetch` の verdict が `[]` → `["CONTRADICTION", "UNKNOWN"]` になった。
+**HintLint との 4 件比較は 1 勝 3 敗 → 2 勝 2 敗になる。**
+**full scan は取り直していない**（`evidence/scan_v2_run4` の数字はそのまま）。
+次に取り直すときに全体の増分を出し、`docs/preregistration.md` に逸脱として記録する。

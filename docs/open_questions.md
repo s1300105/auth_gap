@@ -446,7 +446,7 @@ trig が traced のユニットが 0.6% で §3 の「20% 未満なら SELECT �
 
 ---
 
-## O22. `Path(...).parent` / `.parents[n]` が受け手の Path 形を落とし、FS の sink を 1 件落とす（**誤 clear**）
+## O22. `Path(...).parent` / `.parents[n]` が受け手の Path 形を落とし、FS の sink を落とす（**誤 clear**）— **解決（D43）**
 
 - **状況**（D40 で HintLint と突き合わせて見つかった）:
   `v2-rwheeler007__cohort` の `internal_web_fetch`（`readOnlyHint: true`）は
@@ -474,7 +474,12 @@ trig が traced のユニットが 0.6% で §3 の「20% 未満なら SELECT �
 - **要る手続き**（CLAUDE.md）: これは **opaque → resolved 方向の変更**なので、
   (i) `scripts/diff_effects.py` で較正対 14 木の効果行を突き合わせ、
   (ii) 「resolved にしてよい根拠」を崩しに行く敵対的レビューを通す。
-- **今の扱い**: 未修正。**D40 の commit では解析器を触っていない。**
+- **解決（2026-09-22、D43）**: `_ev_Attribute` で受け手が `Path` 形かつ属性が
+  `parent` / `parents` のとき、**形だけ `Path` に保ち中身は何も引き継がない**値を返す
+  （`_path_ancestor`）。`prin` と `roots` は保ち、`base` / `segs` / `tail` / `attrs` は
+  落とし、確度に `opaque("unresolved")` を合流する。
+  較正対 14 木で**消えた行 0 / 増えた行 13**（A5 の 2 木で 8 ずつ、A9 の 2 木で 5 ずつ。
+  両側対称）。増えた 13 行は目視で全部本物だった。
 
 
 ## O23. 矛盾関係の表（`docs/contradiction_matrix.md`）で「決めが要る」と残した 5 マス
@@ -523,6 +528,48 @@ trig が traced のユニットが 0.6% で §3 の「20% 未満なら SELECT �
 - **要る判断**: (a) 記録して直さない（現状）、(b) `WITH` を読み取り語の一覧から外す
   （`WITH ... SELECT` が `DB_WRITE` になる = 誤警報側に倒す）、(c) 簡易な字句解析を入れる。
   **`DB_WRITE` を矛盾判定に使う段階（O23 #1）で決める。**
+
+---
+
+
+## O25. `str(x)` / `int(x)` / `os.fspath(x)` が主体を MODEL から OP に落とす（**誤 clear**）
+
+- **状況**（D43 の敵対的レビューが見つけた。O22 とは別の、**より広い**誤り）:
+
+  ```python
+  @mcp.tool()
+  async def t(p: str) -> str:
+      os.system("rm -rf " + str(p))      # shell_string の主体が OP になる
+  ```
+
+  最小再現で確かめた（`str()` を通さなければ MODEL のまま）:
+
+  | 書き方 | `path` / `shell_string` の主体 |
+  |---|---|
+  | `os.makedirs(p)` | **MODEL**（正しい） |
+  | `os.makedirs(f"{p}")` | **MODEL**（正しい） |
+  | `os.makedirs(str(p))` | **OP**（誤り） |
+  | `os.makedirs(os.fspath(p))` | **OP**（誤り） |
+  | `os.system("rm -rf " + str(p))` | **OP**（誤り） |
+  | `os.system("kill " + str(int(p)))` | **OP**（誤り） |
+
+- **誤りの向き**: **誤 clear（false-clean）。** 主体が OP になると `GAP_INJECT` が立たない。
+  **モデルが握っている shell_string が「運用者の値」として clear される。**
+  確度は `opaque` なので行は残り `UNKNOWN` は立つが、**「モデルが握っている」という
+  一番重要な情報が消える。**
+- **原因（推定。未確定）**: `str` / `int` / `os.fspath` は組込みなので
+  `authgap/catalog/transfers.py` の `TRANSFERS` に行が無く、解決できない呼び出しとして
+  `Prin.OP` + `opaque` に落ちている。`str.strip` / `str.encode` のような**メソッド**には
+  受け手主語の行があるが、**`str(x)` という構築子の形には無い。**
+- **要る判断**: (a) `TRANSFERS` に `str` / `int` / `float` / `bytes` / `os.fspath` /
+  `repr` などの値変換の行を足す（**sink 語彙ではなく transfer 表。月 3 の凍結の対象か
+  要確認**）。(b) より広く「解決できない呼び出しの戻り値は引数の主体を join する」に
+  変える（**過大近似で誤警報が増える。危険**）。
+- **なぜ (b) が危険か**: 無関係な関数（`len(p)`、`hash(p)`、`os.path.exists(p)`）の
+  戻り値まで MODEL になる。**(a) の方が安全で、既存の設計にも合う。**
+- **影響範囲は未測定。** 母集団 v2 で `str(` を通る効果が何件あるかは数えていない。
+  **直す前に数える**（変更前後の両方を出すため）。
+- **今の扱い**: **未修正。** D43 の commit では `Path` の祖先だけを直した。
 
 ---
 

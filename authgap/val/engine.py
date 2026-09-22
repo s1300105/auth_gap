@@ -459,6 +459,16 @@ class ValEngine:
             if v is not None:
                 return v
         base = self._eval(node.value, env, scope, res, depth, chain)
+        if isinstance(base.shape, Path) and node.attr in PATH_ANCESTOR_ATTRS:
+            # **`p.parent` / `p.parents[n]` は Path を返す。**形を落とすと
+            # `_receiver_typed_key` の `isinstance(shape, Path)` が外れ、
+            # `cache_dir.mkdir(...)` のような FS の sink 行が**丸ごと消えていた**
+            # （誤 clear。O22 / D43。`v2-rwheeler007__cohort` の `internal_web_fetch`）。
+            anc = _path_ancestor(base)
+            if node.attr == "parent":
+                return anc
+            # `parents` は Path の列。添字が何であれ祖先の値を返す（tail に置く）。
+            return Value(anc.prin, anc.prov, Seq((), anc), frozenset(), anc.roots)
         if isinstance(base.shape, Obj):
             for name, val in base.shape.fields:
                 if name == node.attr:
@@ -1808,6 +1818,42 @@ def _elements(v: Value) -> list[Value]:
     if isinstance(v.shape, Map):
         return [val for _k, val in v.shape.entries]
     return []
+
+
+#: `Path` を返す `pathlib.Path` の属性（`p.parent` / `p.parents[n]`）。
+#: `.name` / `.stem` / `.suffix` / `.parts` などは str / tuple なので入れない。
+PATH_ANCESTOR_ATTRS = frozenset({"parent", "parents"})
+
+
+def _path_ancestor(v: Value) -> Value:
+    """`p.parent` / `p.parents[n]` の値（O22 / D43）。
+
+    **形だけ `Path` に保ち、中身は何も引き継がない。** 目的は受け手型の解決
+    （`pathlib.Path.mkdir` などの sink 行に当てること）だけである。
+
+    引き継がないもの（**引き継ぐと誤 clear になる**）:
+
+    * `base` / `segs` / `tail` — 祖先は元のパスの**接頭辞**であって元のパスではない。
+      `segs` を引き継ぐと包含述語が元のパスの字面で成立しうる。
+    * `attrs` — `Path.resolve()` が立てる `canonicalised` を引き継ぐと、
+      Def 5 (i) の strong-path が**別の値**について成立しうる。
+
+    引き継ぐもの（**落とすと誤 clear になる**）:
+
+    * `prin` — MODEL のパスの親は MODEL である。
+    * `roots` — 主語一致（どの引数由来か）は変わらない。
+
+    確度には `opaque("unresolved")` を合流する。**どこまで遡ったかは値として
+    決まらないので、効果行は UNKNOWN になるのが正しい。**
+    """
+    unknown = Value(v.prin, prov_merge(v.prov, opaque("unresolved")), Unknown(), frozenset(), v.roots)
+    return Value(
+        v.prin,
+        prov_merge(v.prov, opaque("unresolved")),
+        Path(base=None, segs=(), tail=unknown),
+        frozenset(),
+        v.roots,
+    )
 
 
 def _element_of(v: Value) -> Value:
