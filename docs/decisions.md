@@ -2138,3 +2138,84 @@ clear される。** 実測で等級は `None`、主体は `MODEL`、`CONTRADICT
 **HintLint との 4 件比較は 1 勝 3 敗 → 2 勝 2 敗になる。**
 **full scan は取り直していない**（`evidence/scan_v2_run4` の数字はそのまま）。
 次に取り直すときに全体の増分を出し、`docs/preregistration.md` に逸脱として記録する。
+
+---
+
+## D44（2026-09-22）O25 を直す: 解決できない呼び出しの戻り値が主体を落としていた
+
+**きっかけ**: D43（`Path` の祖先）の敵対的レビューで、`os.makedirs(str(d))` の主体が
+`OP` になるのを見つけた。**当初は「`str` が `TRANSFERS` に無いから」と見ていたが、
+それは誤りで、もっと広い問題だった。**
+
+### 何がどちら向きに間違っていたか
+
+**誤 clear（false-clean）。危険を見落とす側。しかも 3 通りある。**
+
+`authgap/val/engine.py: _ev_Call` の最後の fallback:
+
+```python
+return Value(Prin.OP, opaque("unresolved"), Unknown(), frozenset(),
+             frozenset().union(*[a.roots for a in args]) if args else frozenset())
+```
+
+1. **位置引数**: root は引き継ぐが主体を `Prin.OP` に固定していた。
+   **root が「この値はツール引数 p 由来だ」と言っているのに主体が「運用者の値だ」と
+   言うのは矛盾している。** `str` は一例で、**木の外のあらゆる関数**が同じ。
+2. **キーワード引数**: root にすら入っていない。`f(value=p)` は root ごと消える。
+3. **受け手**: 同じく入っていない。`p.unknown_method()` は root ごと消える。
+
+**母集団 v2（`evidence/scan_v2_run4`）で「root はあるのに主体が OP」の slot は
+2,053 / 9,492 = 21.6%。** 実例:
+
+| 木 / ツール | slot | root | 主体 |
+|---|---|---|---|
+| `winremote-mcp` / `FileUpload` | `Path.write_bytes#content` | `data_base64` | **OP** |
+| `winremote-mcp` / `Notification` | `subprocess.run#argv[*]` | `message`, `title` | **OP** |
+| `auto_grocer` / `seed_recipes` | `requests.get#url.host` | `url` | **OP** |
+
+`Notification` は `xml_escape(title)` を通してから PowerShell の here-string に入れる。
+**here-string は `$(...)` を展開するので XML エスケープでは防げない**が、
+`xml_escape` が未解決なので注入が clear されていた。
+
+### 直し方
+
+`contributors = 位置引数 + キーワード引数 + 受け手` とし、主体を `_prin_all(contributors)`、
+root を同じ集合の和にした。**主体と root が同じ根拠から出るようにした**のが要点である。
+
+**入力に MODEL が無ければ `_prin_all` は `Prin.OP` を返す**（空列の既定が OP）。
+したがって `uuid.uuid4()` / `time.time()` / `os.path.f("lit")` / `f(kw="lit")` は
+**OP のまま**で、誤警報は増えない。
+
+### 敵対的レビュー（`tests/test_unresolved_call_principal.py`）
+
+**両方向を固定した。**MODEL にすべき 6 件（位置 / キーワード / 受け手 / MODEL 受け手 +
+定数引数 / 入れ子 / `str()`）と、**OP のままであるべき 4 件**（引数なし呼び出し、
+モジュール受け手、リテラルのキーワード、`[mystery("git"), "status"]` が列全体を
+汚さないこと）。**後者を落とすと誤警報になるので、そちらも同じ重さでテストにした。**
+
+### 確認
+
+* **`diff_effects.py --before 751e836` 較正対 14 木 →
+  消えた行 0 / 増えた行 0 / slot 変化 68。全部 `OP → MODEL` の向きで、逆向き 0。**
+  対ごとに対称（A1〜A4 が 4 ずつ、A5 が 0、A9 が 10、A18 が 8）。
+* **変化した slot を元のコードで目視した。** A1 の 4 件は
+  `repo.git.diff(f"--unified={context_lines}")` / `repo.git.log(*args)` /
+  `repo.git.branch(b_type, *contains_sha, *not_contains_sha)` で、
+  `context_lines` / `max_count` / `contains` は**いずれもツール引数**。
+  **A1 は git 引数注入の CVE 対なので、CVE が問題にしている argv が
+  ようやく MODEL として見えるようになった。**
+* `check_gates.py`: **B3a 8/8、B3b 15/15**（不変）。
+* `pytest tests/ -q`: 全通過。`scripts/mutation_test.py`: 生存 1/15（不変）。
+* **`scripts/two_sided.py` 腕 C: 8/8（3 列とも）、verdict-clearing 厳密 0/8 /
+  INJECT 座標のみ 1/8。変更前と完全に同一。** 対ごとに対称な変化なので主指標は動かない。
+* `ruff check .`: 通過。
+
+### 母集団 v2 への影響（**未測定**）
+
+**full scan は取り直していない。** 上の 21.6%（2,053 slot）は「root はあるのに OP」の
+**上限**であって、全部が MODEL に変わるとは限らない（fallback 以外の経路で
+OP になっている slot も含む）。**次に full scan を取り直すときに実数を出し、
+`docs/preregistration.md` に逸脱として記録する。**
+
+**GAP_INJECT は増える方向である。** 主指標の CONTRADICTION は効果 kind で決まるので
+影響を受けないが、**`r_inject` 系の率は変わる。変更前後の両方を報告する。**

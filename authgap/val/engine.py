@@ -745,12 +745,29 @@ class ValEngine:
             return built
 
         res.note_opaque("unresolved")
+        # **解決できない呼び出しの戻り値は、入力の主体と root を引き継ぐ**（O25 / D44）。
+        #
+        # 旧実装は root だけを引き継ぎ、主体を `Prin.OP` に固定していた。**root が
+        # 「この値はツール引数 p 由来だ」と言っているのに主体が「運用者の値だ」と言う
+        # のは矛盾しており、向きは誤 clear。**`xml_escape(title)` のような未解決の
+        # 変換を通すと、モデルが握る値が運用者の値として clear されていた
+        # （`v2-dddabtc__winremote-mcp` の `show_notification` は PowerShell の
+        # here-string に入るので `$(...)` が実行される）。
+        #
+        # 旧実装は**キーワード引数と受け手を root にも入れていなかった**ので、
+        # `f(value=p)` と `p.unknown_method()` は root ごと消えていた。3 つとも塞ぐ。
+        #
+        # **入力に MODEL が無ければ `_prin_all` は `Prin.OP` を返す**ので、
+        # `uuid.uuid4()` のような引数を取らない呼び出しは OP のままである。
+        contributors = list(args) + [kwargs[k] for k in sorted(kwargs)]
+        if receiver is not None:
+            contributors.append(receiver)
         return Value(
-            Prin.OP,
+            _prin_all(contributors),
             opaque("unresolved"),
             Unknown(),
             frozenset(),
-            frozenset().union(*[a.roots for a in args]) if args else frozenset(),
+            frozenset().union(*[c.roots for c in contributors]) if contributors else frozenset(),
         )
 
     def _apply_transfer(self, node, dotted, receiver, args, kwargs, res, scope) -> Optional[Value]:

@@ -532,7 +532,7 @@ trig が traced のユニットが 0.6% で §3 の「20% 未満なら SELECT �
 ---
 
 
-## O25. `str(x)` / `int(x)` / `os.fspath(x)` が主体を MODEL から OP に落とす（**誤 clear**）
+## O25. 解決できない呼び出しの戻り値が主体を MODEL から OP に落とす（**誤 clear**）— **解決（D44）**
 
 - **状況**（D43 の敵対的レビューが見つけた。O22 とは別の、**より広い**誤り）:
 
@@ -557,10 +557,23 @@ trig が traced のユニットが 0.6% で §3 の「20% 未満なら SELECT �
   **モデルが握っている shell_string が「運用者の値」として clear される。**
   確度は `opaque` なので行は残り `UNKNOWN` は立つが、**「モデルが握っている」という
   一番重要な情報が消える。**
-- **原因（推定。未確定）**: `str` / `int` / `os.fspath` は組込みなので
-  `authgap/catalog/transfers.py` の `TRANSFERS` に行が無く、解決できない呼び出しとして
-  `Prin.OP` + `opaque` に落ちている。`str.strip` / `str.encode` のような**メソッド**には
-  受け手主語の行があるが、**`str(x)` という構築子の形には無い。**
+- **原因（確定。`str` に限らない、もっと広い問題だった）**: `authgap/val/engine.py`
+  `_ev_Call` の最後の fallback が
+
+  ```python
+  return Value(Prin.OP, opaque("unresolved"), Unknown(), frozenset(),
+               frozenset().union(*[a.roots for a in args]) if args else frozenset())
+  ```
+
+  と、**root だけを引き継ぎ主体を `Prin.OP` に固定していた。**
+  **root が「この値はツール引数 p 由来だ」と言っているのに主体が「運用者の値だ」と
+  言うのは矛盾している。** `str` は一例にすぎず、**木の外のあらゆる関数**が同じ。
+  さらに**キーワード引数と受け手は root にも入っていなかった**ので、
+  `f(value=p)` と `p.unknown_method()` は root ごと消えていた（誤 clear が 3 通り）。
+- **実例（母集団 v2）**: `v2-dddabtc__winremote-mcp` の `Notification` は
+  `xml_escape(title)` を通してから PowerShell の here-string に入れる。
+  here-string は `$(...)` を展開するので XML エスケープでは防げないが、
+  `xml_escape` が未解決なので **`argv[*]` の主体が OP になり注入が clear されていた。**
 - **要る判断**: (a) `TRANSFERS` に `str` / `int` / `float` / `bytes` / `os.fspath` /
   `repr` などの値変換の行を足す（**sink 語彙ではなく transfer 表。月 3 の凍結の対象か
   要確認**）。(b) より広く「解決できない呼び出しの戻り値は引数の主体を join する」に
@@ -569,7 +582,12 @@ trig が traced のユニットが 0.6% で §3 の「20% 未満なら SELECT �
   戻り値まで MODEL になる。**(a) の方が安全で、既存の設計にも合う。**
 - **影響範囲は未測定。** 母集団 v2 で `str(` を通る効果が何件あるかは数えていない。
   **直す前に数える**（変更前後の両方を出すため）。
-- **今の扱い**: **未修正。** D43 の commit では `Path` の祖先だけを直した。
+- **解決（2026-09-22、D44）**: fallback の主体を `_prin_all(contributors)` にし、
+  `contributors` を**位置引数 + キーワード引数 + 受け手**にした（root も同じ集合から取る）。
+  **入力に MODEL が無ければ `_prin_all` は `Prin.OP` を返す**ので、
+  `uuid.uuid4()` / `time.time()` / `os.path.f("lit")` は OP のままである。
+  較正対 14 木で**消えた行 0 / 増えた行 0 / slot 変化 68、全部 OP → MODEL の向き**
+  （逆向き 0）。対ごとに対称。
 
 ---
 
