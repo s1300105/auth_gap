@@ -21,17 +21,22 @@
 
 ## 語彙は 1 か所でしか定義しない
 
-| 語彙 | 定義点 | 数 |
-|---|---|---|
-| validator 形状 | `authgap/catalog/validators.py: VALIDATOR_SHAPES` | 12 |
-| weak 理由 | 同 `WEAK_REASONS`（月 6 凍結） | 22 |
-| 格下げ属性 | 同 `DOWNGRADES`。**`self_granted` は weak 理由ではない** | 4 |
-| config atom の源 | 同 `CONFIG_ATOM_SOURCES` | 4 |
-| ゲート側 OPAQUE | `authgap/ir.py: GATE_OPAQUE_REASONS` | 8 |
-| ゲート側 NODOM | 同 `GATE_NODOM_REASONS` | 4 |
-| val 側 opaque | 同 `VAL_OPAQUE_REASONS`。**ゲート側とは別語彙** | 8 |
-| 効果 kind と slot | `authgap/catalog/sinks.py: SLOTS` | 7 kind |
-| パス領域の slot（strong-path が効く位置） | 同 `PATH_DOMAIN_SLOTS`（D25） | 5 |
+**役割の列は D36 / D37 による。核 = 「宣言 D と実効 M の照合」に要る。付録 = 降ろした
+主張（等級づけ / ゲート / SELECT）のもの。付録の語彙も消さないが、核の説明には使わない。**
+全体の地図は `docs/catalog_map.md`（`scripts/catalog_map.py` で再生成）。
+
+| 語彙 | 定義点 | 数 | 役割 |
+|---|---|---|---|
+| **ツール入口の規則** | `authgap/catalog/entries.py: ENTRY_RULES` | 14 | **核（領域固有の貢献の中心）** |
+| 効果 kind と slot | `authgap/catalog/sinks.py: SLOTS` | 7 kind | 核 |
+| val 側 opaque | `authgap/ir.py: VAL_OPAQUE_REASONS`。**ゲート側とは別語彙** | 8 | 核 |
+| validator 形状 | `authgap/catalog/validators.py: VALIDATOR_SHAPES` | 12 | 付録 |
+| weak 理由 | 同 `WEAK_REASONS`（月 6 凍結） | 22 | 付録 |
+| 格下げ属性 | 同 `DOWNGRADES`。**`self_granted` は weak 理由ではない** | 4 | 付録 |
+| config atom の源 | 同 `CONFIG_ATOM_SOURCES` | 4 | 付録 |
+| ゲート側 OPAQUE | `authgap/ir.py: GATE_OPAQUE_REASONS` | 8 | 付録 |
+| ゲート側 NODOM | 同 `GATE_NODOM_REASONS` | 4 | 付録 |
+| パス領域の slot（strong-path が効く位置） | `authgap/catalog/sinks.py: PATH_DOMAIN_SLOTS`（D25） | 5 | 付録 |
 
 **語彙外の値は構築時に例外になる。** `DomResult(DomKind.NODOM, "made_up")` は
 `ValueError`。
@@ -112,6 +117,8 @@ uv venv .venv312 --python 3.12 && uv pip install --python .venv312/bin/python -r
 
 # 母集団 v2（宣言あり、D29）。F0a は f0a.py --sample evidence/population_v2/sample_v2_mcp.json、full scan は
 .venv312/bin/python scripts/scan_v2.py --label run<N>                 # → evidence/scan_v2_run<N>/{summary,contradictions}.json
+.venv/bin/python scripts/intersection_rows.py evidence/scan_v2_run<N>   # §3 の交差行と trig の内訳（D36）
+.venv/bin/python scripts/catalog_map.py evidence/scan_v2_run<N> --md docs/catalog_map.md   # 事前定義の地図（D37）
 ```
 
 **手検証の入口は `docs/verification_guide.md`。**
