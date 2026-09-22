@@ -1791,3 +1791,87 @@ OpenManus を R2 の入口として認識することを要求していない。
 従いカタログは広げず、アプリ母集団のカタログ外の形の取りこぼしとして数える。**
 （F1–F10 の fixture `fixtures/val/expected.json` 自体はまだ作っていない。
 `docs/open_questions.md` の作業一覧に置いた。）
+
+---
+
+## D40（2026-09-22）HintLint（R1）を一次資料で確認し、O19 の判断を (a) にする
+
+**きっかけ**: O19 の 3 本のうち R1 だけが未確認で、しかも**主軸そのものに最も近い**。
+`complira/hintlint`（`5a51f2a4`、2026-09-11、JavaScript / Node、8,626 行）を clone して
+ソースを読み、母集団 v2 の 87 木すべてで実際に走らせた
+（`scripts/hintlint_compare.py` → `evidence/hintlint_run1/summary.json`）。
+詳細と再現手順は `docs/related_work.md` の R1 節。
+
+### 一次確認した事実（**ページの記載ではなくソースと実行結果**）
+
+1. **Python 経路は AST ではなく行単位の正規表現。** `src/extractors/python.js` の
+   `startsToolDecorator = /@(?:\w+\.)?tool(?:\s*\(|\s*$)/`。`collectFunctionText` は
+   次の `def` / `@tool` までを集めるので、判定に使うテキストは**そのツール関数の本体だけ**。
+2. **Python 側に到達解析は無い。** `src/evidence/typescript-reachability.js` に
+   `python` の出現が 0 件。**呼び出しを追わない。**
+3. sink は 10 個の `SINK_RULES`。確度の語彙は `source-backed` / `needs-review` の 2 語で、
+   **未解決を表す語が無い**。`handlers_resolved` は「デコレータから本体を取り出せたか」の数で、
+   値や効果が解決できたかではない（`src/index.js:41`）。
+
+### 実測（母集団 v2 の 87 木、`evidence/scan_v2_run4` と対比）
+
+* HintLint: ツール 13,083 / finding 81（readOnly + destructive の**比較可 65**）。
+* AuthGap: ユニット 2,231 / CONTRADICTION 79。
+* **木の重なりはほぼ無い**（両方 2、HintLint だけ 5、AuthGap だけ 14）。
+
+**比較可 65 件のうち 61 件は `declared_annotations` が `{}`、つまり宣言が無いツールである。**
+HintLint の `DESTRUCTIVE-001` は `destructiveHint` が**無い**ことで発火する。AuthGap の
+CONTRADICTION は明示の宣言 D に**反する**ことを要求する。**したがって 61 件は同じ現象を
+数えていない。真に比較できるのは 4 件だけ。**
+
+### その 4 件で AuthGap は 1 勝 3 敗。**負けの 3 件の原因を一次確認した**
+
+| ツール | AuthGap の結果 | 原因 |
+|---|---|---|
+| `winremote-mcp` / `PlaySound` | **一致**（効果は AuthGap の方が多い） | — |
+| `godsaeng-salon` / `check_reminders` | CONTRADICTION 出ず | **設計差。**`verdict.py` の CONTRADICTION は `eff.kind in ("EXEC","SPAWN","FS_WRITE")` に限る（`DESTRUCTIVE_KINDS`、D32）。`readOnlyHint:true` + DB 書き込みは対象外 |
+| `cohort` / `internal_web_fetch` | 効果 0 件 | **誤 clear（false-clean）。**`Path(...).parent` / `.parents[n]` が受け手の Path 形を落とし、`pathlib.Path.mkdir` の sink 行に当たらない。**`opaque_reasons` に `receiver` は残るが行が 1 本も出ない** |
+| `mcparmory/registry` / `delete_snapshot_by_delete_key` | ユニット無し | **`AST_NODE_CAP`（20,000）の打ち切り。**`servers/grafana/server.py` は 54,192 ノード。`truncations` に記録あり |
+
+**誤りの向きを明記する。** 3 件目は**誤 clear 方向**（危険を見落とす側）である。
+最小再現で切り分けた: `Path("/tmp")/"x"` と `Path("/tmp").resolve()` は sink に当たり、
+**`Path("/tmp/a/b").parent` だけが当たらない**（`authgap/val/engine.py` の `_ev_Attribute` が
+Path 形の属性を `Unknown()` に落とす）。`docs/open_questions.md` O22 に置き、別途直す。
+**この commit では解析器を触っていない。**
+
+### 段数の分布（HintLint が構造上届かない範囲）
+
+AuthGap の CONTRADICTION 効果 130 件の中間フレーム数（`witness_chain` の長さ）:
+0 段 **4 件（3.1%）** / 1 段 27 / 2 段 39 / 3 段 57 / 4 段 3。
+API 種で HintLint の正規表現が当たりうるのは 46 件（35.4%）だが、
+**0 段 かつ 当たりうるのは 3 件（2.3%）だけ。**
+
+`mcparmory/registry` の 48 件を目視すると、当たっている sink は
+`DeleteCustomFieldActivityCustomFieldIdRequest(` のような **pydantic のリクエスト模型の
+コンストラクタ**であり、実際の削除は `_execute_tool_request(method="DELETE", ...)`
+（`servers/close/server.py:810` のモジュール水準の補助関数、**ツール本体の外**）にある。
+**判定は正しいが、根拠として挙げた行は削除ではない。**
+
+### 公平性のための自己申告（AuthGap 側の不利ではなく、**AuthGap 側の欠測**）
+
+* `david-li0406/meta-skill-evloving` は AuthGap が 180 秒の tree budget で打ち切られ
+  **ユニット 0 件**（`budget_skipped: 716`、511.6 秒）。HintLint は比較可 12 件。
+  **この木は比較として成立していない。**
+* 母集団 v2 の `@tool` 系デコレータ 12,713 個のうち **9,816 個（77.2%）が `AST_NODE_CAP` で
+  切られたファイルの中**にある。ただし**その 9,524 個が `mcparmory/registry` 1 本**で、
+  この 1 木を除くと 292 / 2,543 = **11.5%**。分母の扱いは O21 に置いた。
+
+### 決定
+
+1. **O19 の判断は (a)「測定研究として立て直す」。** (c)「変えない」ではない。
+   R1 が同じ現象を先に触っているので「初めて照合した」とは書けない。
+   書けるのは**母集団の定義・事前登録・未解決の率の報告**であり、それは (a) の内容である。
+2. **検出力で勝ったという主張はしない。** 比較可能な 4 件で 1 勝 3 敗であり、
+   この標本で優劣は言えない。R1 節にそう書いた。
+3. **比較の限界を 3 つ本文の限界節に持つ**（TS/JS 経路を見ていない / 入口を揃えていない /
+   比較できた事例が 4 件しかない）。
+4. **HintLint の論文の有無は「確かめられなかった」と書く。**「無い」とは書かない
+   （この環境から検索できない。CLAUDE.md 規則 4）。
+
+**これは先行研究の記録であって、解析器・語彙・事前登録の変更ではない。**
+`git diff authgap/` は空である。

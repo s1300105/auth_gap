@@ -422,7 +422,62 @@ trig が traced のユニットが 0.6% で §3 の「20% 未満なら SELECT �
 
 ---
 
-## O19. 先行研究 3 本が主軸と競合する可能性 — **2/3 は解決（R2 は相補的、R3 は手法の型）。R1 のコード読解が残る**
+## O21. `AST_NODE_CAP` で切られたファイルを分母からどう扱うか（`mcparmory/registry` が 1 木で 9,524 ツール）
+
+- **状況**（D40 で HintLint と突き合わせて見つかった）: 母集団 v2 の `@tool` 系デコレータは
+  **12,713 個**あるが、うち **9,816 個（77.2%）は `AST_NODE_CAP = 20,000` で切られたファイルの中**
+  にある。AuthGap のユニットは 2,231 個。
+- **ただしこれは 1 木の話である。** 9,524 個が `v2-mcparmory__registry` 1 本
+  （生成された MCP サーバを 64 ファイルに集めた単一リポジトリ。`servers/close/server.py` は
+  60,650 ノード、`servers/grafana/server.py` は 54,192 ノード）。
+  **この 1 木を除くと 292 / 2,543 = 11.5%。**
+- **打ち切りは黙って消えてはいない。** manifest の `truncations` に
+  `{"cap": "ast_node_cap", "count": N, "relpath": ...}` として全件残る
+  （母集団 v2 全体で 135 件 / 16 木）。CLAUDE.md 規則 4 は満たしている。
+- **要る判断**: 率の分母をどれにするか。
+  - (a) 木を単位にした率だけを報告し、ツール数の率は `truncations` を注記して出さない。
+  - (b) `mcparmory/registry` を**外れ値として本文の分母から外す**（生成物の単一 repo で
+    他の木と性質が違う）。外すなら**事前登録の逸脱として `docs/preregistration.md` に記録**する。
+  - (c) `AST_NODE_CAP` を上げて取り直す。**測定後に cap を動かすことになるので、
+    事前登録の逸脱になる。**しかも 60,650 ノードのファイルは解析時間が読めない。
+- **誤りの向き**: (b)(c) はどちらも**結果を見てから母集団を動かす**方向で、CLAUDE.md 規則 5 に
+  触れる。**(a) が既定である。** 動かすなら逸脱として明記する。
+- **今の扱い**: 未決。`docs/related_work.md` R1 節に両方の数（77.2% と 11.5%）を書いた。
+
+---
+
+## O22. `Path(...).parent` / `.parents[n]` が受け手の Path 形を落とし、FS の sink を 1 件落とす（**誤 clear**）
+
+- **状況**（D40 で HintLint と突き合わせて見つかった）:
+  `v2-rwheeler007__cohort` の `internal_web_fetch`（`readOnlyHint: true`）は
+
+  ```python
+  cohort_root = Path(__file__).resolve().parents[2]
+  cache_dir = cohort_root / "data" / "services" / "web_cache"
+  cache_dir.mkdir(parents=True, exist_ok=True)   # ← FS_WRITE
+  ```
+
+  だが AuthGap の効果は **0 件**。HintLint は `READONLY-001` として検出している。
+- **切り分け済み**（最小再現）: `Path("/tmp")/"x"`・`Path("/tmp").resolve()`・
+  `(Path("/tmp")/"x").mkdir(...)` はいずれも `pathlib.Path.mkdir` の sink 行に当たる。
+  **`Path("/tmp/a/b").parent` だけが当たらない。**
+  `authgap/val/engine.py` の `_ev_Attribute` が、受け手が `Path` 形のときの属性参照
+  （`.parent` / `.parents`）を扱わず `Unknown()` に落とすため、`effects.py` の
+  `_receiver_typed_key` が `isinstance(ev.receiver.shape, Path)` で外れる。
+- **誤りの向き**: **誤 clear（false-clean）。** 危険を見落とす側である。
+  `opaque_reasons` に `receiver` は残るが**行が 1 本も出ない**ので、
+  manifest の行の集計からは完全に消える。「不明として残す」が**ユニット水準にしか効いていない**。
+- **直し方の候補**: `_ev_Attribute` で受け手が `Path` 形かつ属性が `parent` のとき、
+  **主体・roots を保ったまま形だけ `Path` に戻し、確度に `opaque(unresolved)` を合流する**
+  （`.parent` は末尾の seg を落とすので、元の segs をそのまま持たせるのは過大主張になる）。
+  `.parents[n]` は `_ev_Subscript` 側も要る。
+- **要る手続き**（CLAUDE.md）: これは **opaque → resolved 方向の変更**なので、
+  (i) `scripts/diff_effects.py` で較正対 14 木の効果行を突き合わせ、
+  (ii) 「resolved にしてよい根拠」を崩しに行く敵対的レビューを通す。
+- **今の扱い**: 未修正。**D40 の commit では解析器を触っていない。**
+
+
+## O19. 先行研究 3 本が主軸と競合する可能性 — **解決（D40: 3 本とも一次資料を読んだ。判断は (a)「測定研究として立て直す」）**
 
 **2026-09-22 追記（D39）**: 学生が PDF を提供し、R2（AgentFlow）と R3（ReactAppScan）を読了。
 **R2 は競合しない。** 解析対象がエージェント プログラム（MCP を使う側）で、MCP サーバの実装は
@@ -451,6 +506,21 @@ trig が traced のユニットが 0.6% で §3 の「20% 未満なら SELECT �
   先に進めてよい。**
   → **2026-09-22: R2 / R3 が片付いたので、この制約は R1 にだけ残る。**
 - **誤りの向き**: 先行研究を見落としたまま書くと、貢献の主張が過大になる（是正不能な誤り）。
+
+### 決着（2026-09-22、D40）
+
+**R1 もソースを読み、母集団 v2 の 87 木で実際に走らせた**（`evidence/hintlint_run1/`）。
+判断は **(a)「測定研究として立て直す」**。(c)「変えない」ではない。
+
+* HintLint の比較可能な finding 65 件のうち **61 件は宣言が無いツール**で、AuthGap の
+  CONTRADICTION（宣言があって反する）とは別の現象。**真に比較できたのは 4 件で、1 勝 3 敗。**
+* 差分は **「解決できなかったものをどう扱うか」**。HintLint の確度の語彙は 2 語で、
+  未解決を表す語が無い。正規表現に当たらなければ分母からも消えるので、
+  **率の問いには答えられない。** ここが AuthGap の位置である。
+* **「初めて照合した」とは書けない。** 書けるのは母集団の定義・事前登録・未解決の率の報告。
+* **副産物として AuthGap の誤 clear が 1 件見つかった** → O22。分母の問題が 1 件 → O21。
+
+この項目で止めていた「主張の書き方を確定させる作業」は**解禁**である。
 
 ---
 
