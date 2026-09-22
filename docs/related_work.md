@@ -13,6 +13,31 @@
 
 ---
 
+## 入手先（2026-09-21 の検索で得た URL）
+
+**印の意味**: 到達 = この実行環境から読めた。遮断 = egress proxy に止められた（論文が
+無いという意味ではない）。
+
+| # | 論文 / ツール | URL | この環境から |
+|---|---|---|---|
+| R1 | HintLint | https://github.com/complira/hintlint | **到達**（ページを読んだ） |
+| R2 | AgentFlow（arXiv 2607.01640） | https://arxiv.org/abs/2607.01640 | 遮断 |
+| R2 | 同 PDF | https://arxiv.org/pdf/2607.01640 | 遮断 |
+| R2 | 同 HTML 版 | https://arxiv.org/html/2607.01640v1 | 遮断 |
+| R3 | ReactAppScan（著者サイト PDF） | https://www.yinzhicao.org/reactappscan/reactappscan.pdf | 遮断 |
+| R3 | 同（ACM DL） | https://doi.org/10.1145/3658644.3670331 | 未試行 |
+| R3 | 同（ResearchGate） | https://www.researchgate.net/publication/386597869_ReactAppScan_Mining_React_Application_Vulnerabilities_via_Component_Graph | 未試行 |
+| 参考 | MCP 公式「Tool Annotations as Risk Vocabulary」 | https://blog.modelcontextprotocol.io/posts/2026-03-16-tool-annotations/ | **到達**（読んだ） |
+
+書誌（検索結果より。**一次確認していない**）:
+
+- R2: Z. Guo, M. Kang, V. Venkatakrishnan, R. Gjomemo, Y. Cao,
+  *ReactAppScan: Mining React Application Vulnerabilities via Component Graph*,
+  CCS '24, pp. 585–599. ← **R3 の書誌。著者名の対応は要確認**
+- AgentFlow の著者・会場は（未記入）。
+
+---
+
 ## なぜ急ぐか
 
 `docs/decisions.md` D36 で主張を「宣言 D と実効 M の照合」1 本に絞った。
