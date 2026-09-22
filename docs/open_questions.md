@@ -477,6 +477,31 @@ trig が traced のユニットが 0.6% で §3 の「20% 未満なら SELECT �
 - **今の扱い**: 未修正。**D40 の commit では解析器を触っていない。**
 
 
+## O23. 矛盾関係の表（`docs/contradiction_matrix.md`）で「決めが要る」と残した 5 マス
+
+- **状況**: 宣言 D（MCP `ToolAnnotations` の 4 つ）と効果 sub_kind の矛盾関係を
+  表として定義した（D41、`docs/contradiction_matrix.md`）。**仕様の文言から導けるマスは
+  すべて埋めた**が、5 つだけ仕様の文言から一意に決まらないマスが残った。
+  **決めるまでは報告しない**（黙ってどちらかに倒さない。CLAUDE.md 規則 4）。
+
+| # | マス | 判断が要る点 | 母集団 v2 の件数 |
+|---|---|---|---|
+| 1 | `readOnlyHint:true` × `DB_WRITE(PRAGMA)` | 接続設定は「環境の変更」か。`PRAGMA journal_mode=WAL` は `-wal` ファイルを作るので**ファイルシステムは変わる**。`busy_timeout` は何も残さない | **54**（`journal_mode=WAL` 52 / `busy_timeout` 2） |
+| 2 | `readOnlyHint:true` / `destructiveHint:false` × `NET`（`POST`/`PUT`/`DELETE`） | 仕様の `its environment` に**リモートの状態**を含めるか。含めないなら `openWorldHint` の領分になる | 9 + 57 |
+| 3 | `destructiveHint:false` × `FS_WRITE`（mode が読めない） | **D32 は矛盾に倒している。**規則 4 に照らすと「不明」が正しい。D32 を見直すか | 0（母集団に該当なし） |
+| 4 | `openWorldHint:false` の「外部ホスト」の定義 | private range / localhost / 環境変数由来のホストをどう扱うか | `NET` 効果 151 |
+| 5 | `idempotentHint:true` | 片側判定（**非冪等の証拠**を探す）を実装するか、未対応と書くか | — |
+
+- **誤りの向き**: #1 と #2 を「矛盾」に倒すと**誤警報**が増える（#1 の 54 件は
+  1 つのプロジェクトの接続設定が繰り返し数えられているだけ）。「宣言内」に倒すと
+  **誤 clear** になる。**どちらにも倒さず「決めていない」と書くのが現状の正解。**
+- **先に要る作業**: #1 を決める前に、`_sub_kind` の `DB_WRITE` から `PRAGMA` /
+  `BEGIN` / `COMMIT` / `ROLLBACK` を分ける（下の作業 B2）。分けずに
+  `readOnlyHint:true` × `DB_WRITE` を矛盾にすると **101 件の誤警報**になる。
+
+---
+
+
 ## O19. 先行研究 3 本が主軸と競合する可能性 — **解決（D40: 3 本とも一次資料を読んだ。判断は (a)「測定研究として立て直す」）**
 
 **2026-09-22 追記（D39）**: 学生が PDF を提供し、R2（AgentFlow）と R3（ReactAppScan）を読了。
@@ -543,6 +568,20 @@ trig が traced のユニットが 0.6% で §3 の「20% 未満なら SELECT �
   採点器 `tests/test_val_fixtures.py` を作った（O17）。残る作業は F9（agno 本体
   `libs/agno/agno/tools/shell.py` の取得と SHA の pin）と F10（`restapi.amap.com` を
   叩くツールの repo の選定 — 仕様書は名指ししていない）。
+- **`_sub_kind` の DB 分類のバグ 2 件**（D41 で表を書く作業が見つけた。`SUB_KINDS` の
+  語彙には触れず、`authgap/effects.py: _sub_kind` の分類規則だけの修正）:
+  - **B1**: `head = text.strip().split(" ", 1)[0]` が `" "` だけで切るので、
+    `"\n  SELECT\n    id, ..."` のような**改行で始まる複数行 SQL** が `"SELECT\n"` になり、
+    読み取り語の一覧に当たらず `DB_WRITE` になる。母集団 v2 で 2 件。
+    **向きは誤警報（false-positive）。** `split()`（空白全般）にすれば直る。
+  - **B2**: 読み取り語の一覧に無ければ `DB_WRITE` なので、`PRAGMA`（接続設定）と
+    `BEGIN` / `COMMIT` / `ROLLBACK`（トランザクション制御）がデータの書き込みと
+    同じ sub_kind になる。母集団 v2 で `PRAGMA` 101 / `BEGIN` 1 / `COMMIT` 2 /
+    `ROLLBACK` 1。**O23 #1 を決める前にこれを直す。**
+- **「不明」を verdict として出す経路**（規則 4。**向きは誤 clear**）: 母集団 v2 で
+  **833 件**が黙って落ちている（`NET` のメソッドが実行時引数 832 件 =
+  `httpx.AsyncClient.request(method, …)` ほか、SQL が読めない 1 件）。
+  `docs/contradiction_matrix.md` §7 の手順 3。**矛盾を増やすことより先に効く。**
 - **カタログ外のツールの形**（D17「直さない 3」）: llama-index
   `FunctionTool.from_defaults` / `QueryEngineTool`、SuperAGI `_execute`、OpenManus
   `BaseTool.execute`、OpenHands `ToolDefinition`、claude_agent_sdk `tool(...)` など。
