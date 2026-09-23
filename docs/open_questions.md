@@ -652,6 +652,65 @@ CLAUDE.md 規則 6 に従って残す。**
 ---
 
 
+## O27. snake_case の注釈（574 箇所 / 11 木）が `D_malformed` として記録されない
+
+- **状況**（D47 の点検で発見）: 仕様書 322 行目は
+  「snake_case 表記（`read_only_hint` 等）は `ToolAnnotations` に deserialize されず
+  protocol に届かないので **`D_malformed` として別行で報告する**」と定めている。
+  **実装されていない。**
+  - `authgap/entries.py: _read_annotations` は snake_case を集めて返すが、
+    **デコレータ経路（`entries.py:403`）が `_malformed` を捨てている。**
+  - `ToolLiteral.malformed_fields` はどこからも読まれていない。
+  - `DKind.malformed` を設定する箇所が無く、**構造的に常に空**。
+- **母集団 v2 の実数**: `read_only_hint` 195 / `destructive_hint` 174 /
+  `idempotent_hint` 159 / `open_world_hint` 46 = **574 箇所 / 11 木**。
+  manifest に `malformed` が出ているユニットは **0**。
+  **仕様の前測は「21 エントリ」だったが、実際には桁違いに多い。**
+- **誤りの向き**: 誤 clear ではない（snake_case は正しく上界を動かさない）。
+  **失われているのは測定である。**「読み取り専用のつもりで宣言したが protocol に
+  届いていない」という具体的な失敗形が、**注釈なしのツールと区別できていない。**
+  これは「宣言はどれだけ当てにならないか」という本研究の問いに直接効く。
+- **直し方**: `entries.py:403` で `_malformed` を `Unit` に載せ、`d_kind_from` に渡して
+  `DKind.malformed` を立てる。**manifest の出力が変わるので full scan の取り直しが要る。**
+- **要る判断**: 本文で `r_malformed`（snake_case を書いたツールの率）を報告するか。
+  **報告するなら分母の定義が要る**（CLAUDE.md 規則 3）: 注釈を書いたツール全体か、
+  宣言ありユニット全体か。
+- **今の扱い**: **未修正。** D47 は点検だけで解析器を触っていない。
+
+---
+
+## O28. `db_unresolved` が記録されずに消える（`effect_fp_audit` の分子が構造的に 0）
+
+- **状況**（D47 の点検で発見）: 仕様書 1118 行目は
+  「解決できない `.execute()` は **`db_unresolved` として記録し**、危険効果に数えない
+  （`effect_fp_audit.db_only_non_db_execute` の分子）」と定めている。
+
+  `authgap/effects.py:558-562` は
+
+  ```python
+  db_rule = db_execute_rule(...)
+  if db_rule != "db":
+      return None          # ← 効果ごと捨てる
+  ```
+
+  で、**「危険効果に数えない」は満たすが「記録する」を満たさない。**
+  `authgap/report.py:169` の `elif e.db_rule == "db_unresolved":` は**到達不能**で、
+  `effect_fp_audit.db_only_non_db_execute` は**構造的に常に 0**。
+- **誤りの向き**: 仕様が要求した FP 監査の分子が常に 0 になるので、
+  **「DB の判定に曖昧さは無かった」と読める出力を出している。**
+  受け手型が解決できない `.execute()` は黙って消えており、
+  **その中に本物の DB 書き込みがあっても分からない。**
+  CLAUDE.md 規則 4（黙って安全側に倒さない）に反する。
+- **直し方**: `return None` の前に件数を記録する経路を作る。
+  効果として出すかどうかは仕様どおり「出さない」のままでよい。
+  **落とした件数を出力に載せる**のが要点（D46 の `n_excluded_opaque` と同じ形）。
+- **影響の大きさは未測定。** 落としているので manifest から数えられない。
+  **直したときに初めて分かる。**
+- **今の扱い**: **未修正。** D47 は点検だけで解析器を触っていない。
+
+---
+
+
 ## O19. 先行研究 3 本が主軸と競合する可能性 — **解決（D40: 3 本とも一次資料を読んだ。判断は (a)「測定研究として立て直す」）**
 
 **2026-09-22 追記（D39）**: 学生が PDF を提供し、R2（AgentFlow）と R3（ReactAppScan）を読了。
