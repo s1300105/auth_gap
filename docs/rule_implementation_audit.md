@@ -21,7 +21,7 @@
 |---|---|---|---|---|
 | 1 | 553 | 交差行から `OPAQUE` 行を除く | `scripts/intersection_rows.py` | **不一致だった → D46 で修正** |
 | 2 | 320 | `r_kind` の分子は上界を動かすフィールドだけ | `authgap/dparse.py: d_kind_from` | **一致**（10 例で確認） |
-| 3 | 322 | snake_case は `D_malformed` として別行で報告 | `authgap/entries.py` / `dparse.py` | **不一致（O27）** |
+| 3 | 322 | snake_case は `D_malformed` として別行で報告 | `authgap/entries.py` / `dparse.py` | **不一致だった → D48 で修正（130 ユニット / 2,231）** |
 | 4 | 1118 | 解決できない `.execute()` は `db_unresolved` として**記録**し危険効果に数えない | `authgap/effects.py:561` | **半分だけ一致（O28）** |
 | 5 | 322 | 未 join 行は D にも CONTRADICTION にも寄与させない | `authgap/entries.py: join_annotations` | **一致**（`(joined, unjoined)` を返す） |
 | 6 | 7-8 | D_dom のパーサは書かず `r_dom = 0` と報告 | `scripts/f0a.py:262` | **一致** |

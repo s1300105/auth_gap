@@ -2452,3 +2452,77 @@ D46 で `intersection_rows.py` に `n_excluded_opaque` を足したのがその�
 O27 / O28 を直すときも同じにする。
 
 **この commit では解析器を触っていない**（`git diff authgap/` は空）。点検だけである。
+
+---
+
+## D48（2026-09-23）O27 を直す: snake_case の注釈を `D_malformed` として記録する。**母集団に 130 ユニット**
+
+### 何がどちら向きに間違っていたか
+
+**誤 clear ではない。失われていたのは測定である。**
+
+仕様書 322 行目は「snake_case 表記は `ToolAnnotations` に deserialize されず protocol に
+届かないので **`D_malformed` として別行で報告する**」と定めるが、実装が 3 か所で途切れていた。
+
+* `entries.py:403`（デコレータ経路）が `_read_annotations` の 3 つ目の戻り値を捨てていた。
+* `ToolLiteral.malformed_fields` は定義だけで誰も読まない。
+* `DKind.malformed` を設定する箇所が無く、**構造的に常に空**。
+
+**「読み取り専用のつもりで宣言したが protocol に届いていない」という具体的な失敗形が、
+注釈なしのツールと区別できていなかった。**
+
+### 設計上の要点 — snake_case を上界に効かせてはならない
+
+効かせると「書いただけで宣言したことになる」= **protocol に届いていないものを届いた
+ものとして扱う誤 clear**になる。`covers` / `contradiction` / `is_bottom` は `malformed` を
+見ないので verdict は動かない。`tests/test_d_malformed.py` の
+`test_snake_case_does_not_move_the_upper_bound` と
+`test_snake_case_does_not_create_a_contradiction` がこれを固定する。
+
+### 母集団 v2（`evidence/scan_v2_run6`）の実測
+
+| 項目 | 値 |
+|---|---|
+| `malformed` を持つユニット | **130 / 2,231 = 5.8%** |
+| うち**有効な宣言が 1 つも無い** | **124** |
+| 何らかの注釈を書いたユニット（分母の候補） | 1,602 → **130 / 1,602 = 8.1%** |
+| `D_kind ≠ ⊥`（上界を動かす宣言あり） | 1,036 |
+| 木 | **9 / 87 = 10.3%** |
+| キー別 | `read_only_hint` 84 / `destructive_hint` 66 / `idempotent_hint` 54 / `open_world_hint` 14 |
+
+**仕様の前測は「21 エントリ」だったが、母集団 v2 では 130 ユニット（574 箇所）ある。**
+
+### 綴りが正しければ CONTRADICTION だったユニット: **2 件**
+
+`scripts/malformed_impact.py` で測った（**解析器は変えず、測定のためだけに snake_case を
+camelCase に読み替える**）。130 ユニットのうち 103 に危険効果があり、うち 2 件。
+
+| 木 / ツール | 書かれた注釈 | 効果 |
+|---|---|---|
+| `famel-svg/apk-preview-desktop` / `apk_preview_start_session` | `destructive_hint=False` | `SPAWN`（`subprocess.Popen`） |
+| `vishalsachdev/canvas-mcp` / `download_course_file` | `read_only_hint=True` | `FS_WRITE`（`os.unlink`）+ `NET` |
+
+**どちらもソースを目視で確認した。** CONTRADICTION は 85 → 87 になりうる。
+
+**初版の script は 7 件と数えた。誤りだった。** 注釈とユニットをファイル単位で
+対応づけていたため、同じファイルの別のツールの注釈を当てていた（目視で 2 件が
+`destructive_hint=True` = 著者の宣言自体は正しい、の取り違えと分かった）。
+**関数の `lineno` で対応づけるよう直した。** 向きは過大に数える側だった。
+
+### 確認
+
+* **`diff_effects.py --before 2edf2ba` 較正対 14 木 → 全木で消えた 0 / 増えた 0 / slot 変化 0。**
+* **`compare_scans.py run5 → run6` → 全項目が完全一致（差 0）。**
+  ユニット 2,231 / 効果 5,987 / CONTRADICTION 85 / `GAP_INJECT` 1,928 /
+  「root はあるのに主体が OP」71。**設計どおり verdict は動いていない。**
+* `check_gates.py` B3a 8/8・B3b 15/15、`pytest` 全通過、`mutation_test.py` 生存 1/15、`ruff` 通過。
+
+### 学生の判断が要る（`docs/open_questions.md` O27 に残す）
+
+**`r_malformed` を本文で報告するなら分母の定義が要る**（CLAUDE.md 規則 3）。
+
+* (a) **全ユニット** 130 / 2,231 = 5.8%
+* (b) **何らかの注釈を書いたユニット** 130 / 1,602 = 8.1%
+
+**(b) の方が「注釈を書こうとした人がどれだけ間違えるか」を表す**が、
+分母に `title` だけのユニットも入る。**測定より先に決めること。**

@@ -1,0 +1,958 @@
+{
+ "_note": "母集団 v2 の full scan（run6）。O27（snake_case を D_malformed として記録、D48）の後。run5 との差は malformed 欄だけのはず。",
+ "analyzer_commit": "2d739771ac27fc20c453ea38f14901b8519374b8",
+ "n_trees": 87,
+ "n_units": 2231,
+ "n_dangerous_units": 1187,
+ "n_rows": 9576,
+ "verdict_rows": {
+  "CONTRADICTION": 178,
+  "GAP_INJECT": 1928,
+  "GAP_SELECT": 246,
+  "UNKNOWN": 7288
+ },
+ "trees": [
+  {
+   "tree": "v2-8dionysus__abyss-stack",
+   "status": "ok",
+   "n_units": 21,
+   "n_rows": 3,
+   "verdicts": {
+    "GAP_INJECT": 2,
+    "UNKNOWN": 3
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 19.2
+  },
+  {
+   "tree": "v2-adityatelange__evil-winrm-py",
+   "status": "ok",
+   "n_units": 4,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.2
+  },
+  {
+   "tree": "v2-aixolotl__microsoft-planner-mcp",
+   "status": "ok",
+   "n_units": 18,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.6
+  },
+  {
+   "tree": "v2-ajtudela__plansys2_mcp_server",
+   "status": "ok",
+   "n_units": 38,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.5
+  },
+  {
+   "tree": "v2-aokumablue__claq",
+   "status": "ok",
+   "n_units": 2,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 2.0
+  },
+  {
+   "tree": "v2-arben-adm__mcp-sequential-thinking",
+   "status": "ok",
+   "n_units": 5,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.4
+  },
+  {
+   "tree": "v2-ariffazil__wealth",
+   "status": "ok",
+   "n_units": 77,
+   "n_rows": 43,
+   "verdicts": {
+    "GAP_INJECT": 5,
+    "GAP_SELECT": 20,
+    "UNKNOWN": 6
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 13.2
+  },
+  {
+   "tree": "v2-artyomzemlyak__tg-note",
+   "status": "ok",
+   "n_units": 10,
+   "n_rows": 102,
+   "verdicts": {
+    "CONTRADICTION": 4,
+    "GAP_INJECT": 8,
+    "UNKNOWN": 54
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 3.8
+  },
+  {
+   "tree": "v2-benjaminwalkerbond__auto_grocer",
+   "status": "ok",
+   "n_units": 25,
+   "n_rows": 129,
+   "verdicts": {
+    "GAP_INJECT": 1,
+    "UNKNOWN": 129
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 1.7
+  },
+  {
+   "tree": "v2-berkay2002__yt-scribe",
+   "status": "ok",
+   "n_units": 5,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.7
+  },
+  {
+   "tree": "v2-bwu1234__rag-toolkit",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.7
+  },
+  {
+   "tree": "v2-cnseniorious000__temporary-mcp-servers",
+   "status": "ok",
+   "n_units": 14,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.2
+  },
+  {
+   "tree": "v2-compshare-cn__compshare-cli",
+   "status": "ok",
+   "n_units": 4,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 1.0
+  },
+  {
+   "tree": "v2-constripacity__claude-replay",
+   "status": "ok",
+   "n_units": 1,
+   "n_rows": 91,
+   "verdicts": {
+    "GAP_INJECT": 17,
+    "GAP_SELECT": 91,
+    "UNKNOWN": 49
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.7
+  },
+  {
+   "tree": "v2-coplaydev__unity-mcp",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 3.2
+  },
+  {
+   "tree": "v2-crystaldba__postgres-mcp",
+   "status": "ok",
+   "n_units": 8,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.9
+  },
+  {
+   "tree": "v2-daedalus__mcp-delonghi-ecam",
+   "status": "ok",
+   "n_units": 13,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.1
+  },
+  {
+   "tree": "v2-david-li0406__meta-skill-evloving",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 716,
+   "elapsed_s": 549.0
+  },
+  {
+   "tree": "v2-dbt-labs__dbt-mcp",
+   "status": "ok",
+   "n_units": 3,
+   "n_rows": 17,
+   "verdicts": {
+    "UNKNOWN": 17
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 2.0
+  },
+  {
+   "tree": "v2-dddabtc__winremote-mcp",
+   "status": "ok",
+   "n_units": 45,
+   "n_rows": 57,
+   "verdicts": {
+    "CONTRADICTION": 32,
+    "GAP_INJECT": 24,
+    "UNKNOWN": 28
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.8
+  },
+  {
+   "tree": "v2-dddoh__paper-access-mcp",
+   "status": "ok",
+   "n_units": 1,
+   "n_rows": 4,
+   "verdicts": {
+    "CONTRADICTION": 2,
+    "GAP_INJECT": 4,
+    "UNKNOWN": 4
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.2
+  },
+  {
+   "tree": "v2-deploylabs429__agent-langchain-fastapi",
+   "status": "ok",
+   "n_units": 28,
+   "n_rows": 17,
+   "verdicts": {
+    "GAP_INJECT": 8,
+    "UNKNOWN": 1
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 2.6
+  },
+  {
+   "tree": "v2-diterex__youtube-research-mcp",
+   "status": "ok",
+   "n_units": 4,
+   "n_rows": 12,
+   "verdicts": {
+    "CONTRADICTION": 8,
+    "GAP_INJECT": 4,
+    "UNKNOWN": 11
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.5
+  },
+  {
+   "tree": "v2-dondetir__codegrok_mcp",
+   "status": "ok",
+   "n_units": 8,
+   "n_rows": 21,
+   "verdicts": {
+    "CONTRADICTION": 6,
+    "GAP_INJECT": 9,
+    "UNKNOWN": 18
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.7
+  },
+  {
+   "tree": "v2-dreamscaatcher__bigquery-defense-logistics-y42",
+   "status": "ok",
+   "n_units": 9,
+   "n_rows": 6,
+   "verdicts": {
+    "UNKNOWN": 6
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.1
+  },
+  {
+   "tree": "v2-elementsinteractive__lgtm-ai",
+   "status": "ok",
+   "n_units": 1,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.7
+  },
+  {
+   "tree": "v2-elewa-git__odoo-mcp-server",
+   "status": "ok",
+   "n_units": 33,
+   "n_rows": 16,
+   "verdicts": {
+    "GAP_INJECT": 7,
+    "UNKNOWN": 16
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.7
+  },
+  {
+   "tree": "v2-elonzh__hanppie",
+   "status": "ok",
+   "n_units": 5,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 2.6
+  },
+  {
+   "tree": "v2-eromang__researches",
+   "status": "ok",
+   "n_units": 14,
+   "n_rows": 19,
+   "verdicts": {
+    "UNKNOWN": 19
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 3.1
+  },
+  {
+   "tree": "v2-famel-svg__apk-preview-desktop",
+   "status": "ok",
+   "n_units": 10,
+   "n_rows": 7,
+   "verdicts": {
+    "GAP_INJECT": 2,
+    "UNKNOWN": 7
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.3
+  },
+  {
+   "tree": "v2-fanfan-de__anybox",
+   "status": "ok",
+   "n_units": 27,
+   "n_rows": 140,
+   "verdicts": {
+    "CONTRADICTION": 15,
+    "GAP_INJECT": 57,
+    "GAP_SELECT": 96,
+    "UNKNOWN": 136
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 4.3
+  },
+  {
+   "tree": "v2-fbratten__agentspool",
+   "status": "ok",
+   "n_units": 14,
+   "n_rows": 45,
+   "verdicts": {
+    "CONTRADICTION": 11,
+    "GAP_INJECT": 1,
+    "UNKNOWN": 45
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.5
+  },
+  {
+   "tree": "v2-franklinbaldo__sinustdd",
+   "status": "ok",
+   "n_units": 9,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.4
+  },
+  {
+   "tree": "v2-gwicho38__write-like-me-mcp",
+   "status": "ok",
+   "n_units": 5,
+   "n_rows": 3,
+   "verdicts": {
+    "CONTRADICTION": 2,
+    "UNKNOWN": 3
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.4
+  },
+  {
+   "tree": "v2-gyorilab__indra_agent",
+   "status": "ok",
+   "n_units": 9,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 1.2
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "status": "ok",
+   "n_units": 47,
+   "n_rows": 251,
+   "verdicts": {
+    "GAP_INJECT": 2
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 3.3
+  },
+  {
+   "tree": "v2-heartran__vigem-mcp",
+   "status": "ok",
+   "n_units": 15,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.4
+  },
+  {
+   "tree": "v2-iheldan__sheetforge-mcp",
+   "status": "ok",
+   "n_units": 78,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 3.7
+  },
+  {
+   "tree": "v2-innovatehubph__innovatehub-ai-platform",
+   "status": "ok",
+   "n_units": 2,
+   "n_rows": 46,
+   "verdicts": {
+    "CONTRADICTION": 10,
+    "UNKNOWN": 46
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 1.5
+  },
+  {
+   "tree": "v2-jag-k__google-docs-mcp",
+   "status": "ok",
+   "n_units": 7,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.1
+  },
+  {
+   "tree": "v2-jihyukma123__test-mcp",
+   "status": "ok",
+   "n_units": 2,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.0
+  },
+  {
+   "tree": "v2-johannsenlum__canvas-api-mcp",
+   "status": "ok",
+   "n_units": 19,
+   "n_rows": 153,
+   "verdicts": {
+    "GAP_INJECT": 60,
+    "UNKNOWN": 153
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.7
+  },
+  {
+   "tree": "v2-jsyzlbw__bbwatch",
+   "status": "ok",
+   "n_units": 8,
+   "n_rows": 23,
+   "verdicts": {
+    "CONTRADICTION": 4,
+    "GAP_INJECT": 12,
+    "UNKNOWN": 23
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.7
+  },
+  {
+   "tree": "v2-justparent__simple-salesforce-mcp",
+   "status": "ok",
+   "n_units": 1,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.1
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "status": "ok",
+   "n_units": 39,
+   "n_rows": 40,
+   "verdicts": {
+    "CONTRADICTION": 30,
+    "UNKNOWN": 40
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 8.2
+  },
+  {
+   "tree": "v2-kds2626__qfind",
+   "status": "ok",
+   "n_units": 1,
+   "n_rows": 4,
+   "verdicts": {
+    "GAP_INJECT": 2,
+    "UNKNOWN": 4
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.0
+  },
+  {
+   "tree": "v2-khairu-aqsara__code-rag",
+   "status": "ok",
+   "n_units": 15,
+   "n_rows": 28,
+   "verdicts": {
+    "GAP_INJECT": 3,
+    "UNKNOWN": 28
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.6
+  },
+  {
+   "tree": "v2-kirlts__toolset",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.7
+  },
+  {
+   "tree": "v2-kyungseo__learnstead",
+   "status": "ok",
+   "n_units": 4,
+   "n_rows": 5,
+   "verdicts": {
+    "GAP_INJECT": 3,
+    "UNKNOWN": 3
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.4
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "status": "ok",
+   "n_units": 31,
+   "n_rows": 12,
+   "verdicts": {
+    "CONTRADICTION": 10,
+    "GAP_INJECT": 2,
+    "UNKNOWN": 3
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 1.1
+  },
+  {
+   "tree": "v2-leoalord__learningfocused",
+   "status": "ok",
+   "n_units": 6,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 1.1
+  },
+  {
+   "tree": "v2-letsgojh0810__godsaeng-salon",
+   "status": "ok",
+   "n_units": 9,
+   "n_rows": 65,
+   "verdicts": {
+    "GAP_INJECT": 34,
+    "UNKNOWN": 46
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.2
+  },
+  {
+   "tree": "v2-luissalet__dorianshoard",
+   "status": "ok",
+   "n_units": 10,
+   "n_rows": 30,
+   "verdicts": {
+    "GAP_INJECT": 8,
+    "UNKNOWN": 30
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.3
+  },
+  {
+   "tree": "v2-malkreide__swiss-environment-mcp",
+   "status": "ok",
+   "n_units": 21,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 1.3
+  },
+  {
+   "tree": "v2-mathis-14__docstral",
+   "status": "ok",
+   "n_units": 1,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.4
+  },
+  {
+   "tree": "v2-matt-edwards-aztech__azurepricingmcp",
+   "status": "ok",
+   "n_units": 5,
+   "n_rows": 24,
+   "verdicts": {
+    "GAP_INJECT": 6,
+    "UNKNOWN": 24
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.3
+  },
+  {
+   "tree": "v2-mcparmory__registry",
+   "status": "ok",
+   "n_units": 646,
+   "n_rows": 2584,
+   "verdicts": {
+    "GAP_INJECT": 24,
+    "UNKNOWN": 876
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 80.5
+  },
+  {
+   "tree": "v2-moon201595__agent",
+   "status": "ok",
+   "n_units": 12,
+   "n_rows": 54,
+   "verdicts": {
+    "GAP_INJECT": 10,
+    "UNKNOWN": 53
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 3.9
+  },
+  {
+   "tree": "v2-muratovnik__release-kit",
+   "status": "ok",
+   "n_units": 2,
+   "n_rows": 4,
+   "verdicts": {
+    "GAP_INJECT": 1,
+    "UNKNOWN": 4
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 2.7
+  },
+  {
+   "tree": "v2-nan-fe__agents",
+   "status": "ok",
+   "n_units": 7,
+   "n_rows": 15,
+   "verdicts": {
+    "GAP_INJECT": 1,
+    "UNKNOWN": 15
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 1.5
+  },
+  {
+   "tree": "v2-napjon__mcp-cdp",
+   "status": "ok",
+   "n_units": 14,
+   "n_rows": 4,
+   "verdicts": {
+    "GAP_INJECT": 1,
+    "GAP_SELECT": 1,
+    "UNKNOWN": 1
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 1.2
+  },
+  {
+   "tree": "v2-nightfast-app__hvac-mcp",
+   "status": "ok",
+   "n_units": 10,
+   "n_rows": 164,
+   "verdicts": {
+    "GAP_INJECT": 2,
+    "UNKNOWN": 164
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.5
+  },
+  {
+   "tree": "v2-oldmangrizzz__hughmkiii",
+   "status": "ok",
+   "n_units": 40,
+   "n_rows": 76,
+   "verdicts": {
+    "GAP_INJECT": 10,
+    "UNKNOWN": 64
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 1.6
+  },
+  {
+   "tree": "v2-outblade__kit-campus-mcp",
+   "status": "ok",
+   "n_units": 11,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.6
+  },
+  {
+   "tree": "v2-pdwhoward__llmacro-dynare-lsp",
+   "status": "ok",
+   "n_units": 2,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 1.9
+  },
+  {
+   "tree": "v2-peterhollens__dejavu",
+   "status": "ok",
+   "n_units": 4,
+   "n_rows": 27,
+   "verdicts": {
+    "GAP_INJECT": 14,
+    "UNKNOWN": 27
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.4
+  },
+  {
+   "tree": "v2-prebid__salesagent",
+   "status": "ok",
+   "n_units": 10,
+   "n_rows": 2,
+   "verdicts": {
+    "UNKNOWN": 2
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 26.6
+  },
+  {
+   "tree": "v2-rahmanef63__cowork-kit-setup",
+   "status": "ok",
+   "n_units": 9,
+   "n_rows": 9,
+   "verdicts": {
+    "GAP_INJECT": 3,
+    "UNKNOWN": 7
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.1
+  },
+  {
+   "tree": "v2-raphaelabenom__agents-repo",
+   "status": "ok",
+   "n_units": 6,
+   "n_rows": 6,
+   "verdicts": {
+    "GAP_INJECT": 2,
+    "UNKNOWN": 6
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.4
+  },
+  {
+   "tree": "v2-redhat-ai-americas__memory-hub",
+   "status": "ok",
+   "n_units": 14,
+   "n_rows": 5,
+   "verdicts": {
+    "GAP_INJECT": 1,
+    "UNKNOWN": 4
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 8.8
+  },
+  {
+   "tree": "v2-remembra-ai__remembra",
+   "status": "ok",
+   "n_units": 14,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 3.7
+  },
+  {
+   "tree": "v2-ritikakumar0204__audience-trend-miner",
+   "status": "ok",
+   "n_units": 5,
+   "n_rows": 8,
+   "verdicts": {
+    "CONTRADICTION": 1,
+    "GAP_INJECT": 2,
+    "UNKNOWN": 8
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.4
+  },
+  {
+   "tree": "v2-rootport-ai__nz-videomni",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 5.4
+  },
+  {
+   "tree": "v2-rwheeler007__cohort",
+   "status": "ok",
+   "n_units": 64,
+   "n_rows": 256,
+   "verdicts": {
+    "CONTRADICTION": 35,
+    "GAP_INJECT": 50,
+    "UNKNOWN": 253
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 7.8
+  },
+  {
+   "tree": "v2-sandraschi__kavita-mcp",
+   "status": "ok",
+   "n_units": 6,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.1
+  },
+  {
+   "tree": "v2-sontanon__docx-mcp",
+   "status": "ok",
+   "n_units": 6,
+   "n_rows": 14,
+   "verdicts": {
+    "CONTRADICTION": 4,
+    "GAP_INJECT": 10,
+    "UNKNOWN": 4
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 2.1
+  },
+  {
+   "tree": "v2-synalinks__synalinks",
+   "status": "ok",
+   "n_units": 17,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 9.5
+  },
+  {
+   "tree": "v2-thedandano__enphase-bridge-mcp",
+   "status": "ok",
+   "n_units": 8,
+   "n_rows": 8,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.4
+  },
+  {
+   "tree": "v2-thelerin__medmesh-main",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.2
+  },
+  {
+   "tree": "v2-thepapermen__django-mcp-sql",
+   "status": "ok",
+   "n_units": 3,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.6
+  },
+  {
+   "tree": "v2-tuttinator__fourex",
+   "status": "ok",
+   "n_units": 37,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 4.0
+  },
+  {
+   "tree": "v2-vishalsachdev__canvas-mcp",
+   "status": "ok",
+   "n_units": 108,
+   "n_rows": 4469,
+   "verdicts": {
+    "GAP_INJECT": 1472,
+    "UNKNOWN": 4458
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 23.8
+  },
+  {
+   "tree": "v2-wahailong__kingdeemcp",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.7
+  },
+  {
+   "tree": "v2-xorbitsai__xagent",
+   "status": "ok",
+   "n_units": 352,
+   "n_rows": 414,
+   "verdicts": {
+    "GAP_INJECT": 38,
+    "GAP_SELECT": 38,
+    "UNKNOWN": 355
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 72.7
+  },
+  {
+   "tree": "v2-yahoojp-marketing__ly-ads-mcp-server",
+   "status": "ok",
+   "n_units": 20,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 12.7
+  },
+  {
+   "tree": "v2-zelladir__asquared-mcp",
+   "status": "ok",
+   "n_units": 10,
+   "n_rows": 13,
+   "verdicts": {
+    "GAP_INJECT": 6,
+    "UNKNOWN": 10
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.3
+  },
+  {
+   "tree": "v2-zomma-dev__quantcontext-mcp-server",
+   "status": "ok",
+   "n_units": 3,
+   "n_rows": 31,
+   "verdicts": {
+    "CONTRADICTION": 4,
+    "UNKNOWN": 25
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.6
+  }
+ ]
+}
