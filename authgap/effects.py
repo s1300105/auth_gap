@@ -403,6 +403,11 @@ def _split_url_slots(slots: dict[str, Value]) -> dict[str, Value]:
 # --------------------------------------------------------------------------
 
 
+#: 仕様書 1118 行目の「非 DB の `.execute()`」の対象メソッド。
+#: **広げない。** `run` / `aql` のような一般的な名前を足すと FP 監査の分子が膨らむ。
+DB_EXECUTE_METHODS: frozenset[str] = frozenset({"execute", "executemany"})
+
+
 class EffectExtractor:
     """`CallEvent` を効果行に変える。
 
@@ -414,16 +419,49 @@ class EffectExtractor:
         self.effects: list[Effect] = []
         #: 受け手アクセスパス → `(argv0 のリテラル, shell の真偽)`。
         self.spawn_handles: dict[str, tuple[Optional[str], Optional[bool]]] = {}
+        #: **受け手型を DB に解決できなかった `.execute()`**（仕様書 1118 行目、O28 / D49）。
+        #: `effect_fp_audit.db_only_non_db_execute` の分子。
+        #: **効果には数えないが、記録はする**（規則 4。落としたものを黙って消さない）。
+        self.db_unresolved: list[dict] = []
 
     # -- 入口 -------------------------------------------------------------
 
     def on_call(self, ev: CallEvent) -> None:
+        n_before = len(self.effects)
         made = False
         made |= self._direct(ev)
         made |= self._proxy(ev)
         made |= self._pipe(ev)
+        self._note_db_unresolved(ev, self.effects[n_before:])
         if not made:
             return
+
+    def _note_db_unresolved(self, ev: CallEvent, new_effects: list[Effect]) -> None:
+        """DB 効果にならなかった `.execute()` を記録する（仕様書 1118 行目）。
+
+        **`effects.py` の `if db_rule != "db": return None` は到達不能である。**
+        DB の proxy 行の `recv_types` はすべて `DB_RECEIVER_TYPES` の部分集合なので、
+        `_from_proxy_row` に入る時点で受け手は DB 型に解決できている。
+        受け手型が分からない `.execute()` は proxy 行に一致せず、**痕跡なく消えていた。**
+        ここで拾う。
+
+        **効果は作らない**（仕様の「危険効果に数えない」）。manifest の属性として残すだけで、
+        verdict には影響しない。
+        """
+        if not isinstance(ev.node.func, ast.Attribute):
+            return
+        method = ev.node.func.attr
+        if method not in DB_EXECUTE_METHODS:
+            return
+        if any(e.kind == "DB" for e in new_effects):
+            return
+        classes = tuple(sorted(getattr(ev.receiver.shape, "classes", ())) if ev.receiver else ())
+        self.db_unresolved.append({
+            "method": method,
+            "relpath": ev.relpath,
+            "lineno": ev.lineno,
+            "receiver_classes": list(classes),
+        })
 
     # -- (a) 直接 ---------------------------------------------------------
 

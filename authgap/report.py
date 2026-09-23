@@ -166,8 +166,11 @@ def probe_json(res: RunResult, corpus_id: str, traced_ratio_null: bool = True) -
                 by_cause[r] = by_cause.get(r, 0) + 1
             if e.db_rule == "db":
                 db_only += 1
-            elif e.db_rule == "db_unresolved":
-                db_only_non_db += 1
+        # **分子は `u.db_unresolved` から取る。** 以前は `e.db_rule == "db_unresolved"` の
+        # 効果を数えていたが、**その効果は作られないので到達不能だった**（O28 / D49）。
+        # DB の proxy 行の受け手型はすべて `DB_RECEIVER_TYPES` の部分集合なので、
+        # `_from_proxy_row` に入る時点で受け手は DB 型に解決できている。
+        db_only_non_db += len(u.db_unresolved)
         for s in u.validator_shapes:
             shapes[s] = shapes.get(s, 0) + 1
         if u.val is not None:

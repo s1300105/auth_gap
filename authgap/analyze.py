@@ -100,6 +100,9 @@ class UnitReport:
     #: `effect index -> req_occ のゲート 3 値`
     occ_gate_by_effect: dict[int, dict] = field(default_factory=dict)
     rows: list[Row] = field(default_factory=list)
+    #: 受け手型を DB に解決できなかった `.execute()`（仕様書 1118 行目）。
+    #: **`effect_fp_audit.db_only_non_db_execute` の分子。効果でも verdict でもない。**
+    db_unresolved: tuple[dict, ...] = ()
     #: D_prev（直前リリースの manifest）と unit id で join できたか。
     #: **`r_prev` の分子。** Def 6 の join は unit id の完全一致のみ。
     d_prev_joined: bool = False
@@ -130,6 +133,7 @@ class UnitReport:
         d: dict[str, Any] = {
             "unit": self.unit.to_json(),
             "effects": [e.to_json() for e in self.effects],
+            **({"db_unresolved": [dict(x) for x in self.db_unresolved]} if self.db_unresolved else {}),
             "validator_shapes": list(self.validator_shapes),
             "gate_predicate_present": self.gate_predicate_present,
             "config_atoms": dict(sorted(self.config_atoms.items())),
@@ -191,6 +195,9 @@ def analyze_unit_f0a(
     engine = ValEngine(index, options or Options(), on_call=extractor.on_call)
     report.val = engine.analyze(unit.node, scope, seed)
     report.effects = extractor.effects
+    # **受け手型を DB に解決できなかった `.execute()`**（仕様書 1118 行目、O28 / D49）。
+    # 効果には数えないが記録する（規則 4）。
+    report.db_unresolved = tuple(extractor.db_unresolved)
     _mark_shape_from(report, unit)
 
     shapes, _ = _syntactic_shapes(unit.node, scope)
