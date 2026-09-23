@@ -2692,3 +2692,75 @@ ORM 呼び出し**だった（`cur.execute("INSERT INTO users ...")`、
   **`two_sided.py` 8/8 と verdict-clearing が変更前と同一**、`ruff` 通過
 
 `docs/preregistration.md` の逸脱 **#15** に変更前後を両方書いた。
+
+---
+
+## D51（2026-09-23）受け手の型の解決（その 2）。**残りの大半は深さの上限だった**
+
+### 直したこと（`7078829`）
+
+D50 の後も残っていた原因のうち、最小再現で見つかった 3 つを直した。
+
+1. **`Cls(...).method(...)` がメソッドに降りなかった（DB に限らない誤 clear）。**
+   `_resolve_in_tree` が `dotted_of(node.func)` が `None` なら即座に `return []` していた。
+   受け手が呼び出し式だと `None` になるので、**受け手の型が分かっていても降りなかった。**
+   `s = Store("x"); s.via_attr(q)` なら降りるので、**同じプログラムを 1 文で書くか 2 文で
+   書くかで結果が変わっていた。**`Store("x").via_system(q)` の中の `os.system(q)` まで落ちた。
+   → `_resolve_on_expression_receiver`: **受け手の型で裏付けられるときだけ**降りる。
+2. **`@contextmanager` の `yield` を戻り値にしていなかった。`yield` の式も評価していなかった**
+   （`_ev_Yield` が無く `dynamic` 扱い。`yield os.system(q)` の sink が落ちた）。
+   → `_ev_Yield` / `_ev_YieldFrom` を足し、`contextlib.contextmanager` /
+   `asynccontextmanager`（import で解決）で飾られた関数は yield の値を戻り値にする。
+3. **戻り値の型注釈を使っていなかった。** → D50 の仮引数の注釈と同じ規則を適用した。
+
+敵対的レビュー: `tests/test_receiver_resolution_more.py`（11 件、**実装より先に書いた**。
+書いた時点で正例 6 件が落ち、反例 5 件が通っていた）。
+
+### 母集団 v2（run9 → run10）
+
+| 項目 | run9 | run10 |
+|---|---|---|
+| 効果 | 7,462 | 7,503（+41） |
+| DB 効果 | 1,705 | 1,741（+36） |
+| SPAWN | 123 | 127（+4） |
+| `db_unresolved` | 605（一意 205） | 569（一意 181） |
+| **未解決率** | **26.2%** | **24.6%** |
+| `GAP_INJECT`（一意な位置） | 972 | 994（+22） |
+| CONTRADICTION | 85 | 85 |
+
+**消えたユニット 0 / 消えた CONTRADICTION 0 / 消えた `GAP_INJECT` 0 / 消えた効果 0。**
+
+**DB 以外の新しい効果 5 件（SPAWN 4 / NET 1）を目視で確かめ、すべて本物だった。**
+SPAWN 4 件は `v2-franklinbaldo__sinustdd` の `_engine().begin()` / `.mark_red()` ほか
+（**修正 1 の形そのもの**）で、`SinusTDDEngine.begin` → `get_head_commit` → `run_git` →
+`subprocess.run(["git", *args])`。
+
+`annotation_typed` の記録は 466 → 458 に**減った**が、これは設計どおりである。
+`auto_grocer` では `get_db_session() -> Session` の戻り値の注釈で先に型が付くので、
+下流の仮引数 `db: Session` で注釈を使う必要が無くなった（**既知の型を注釈で上書きしない**）。
+
+### **残りの 92.4% は深さの上限に当たったユニットの中にある**
+
+残り 569 件のうち 526 件（92.4%）が、`cap_hits` / `opaque_reasons` に `depth` を持つ
+ユニットの中にあった。**相関なので、実験で因果を確かめた**（解析器は変えず、`Options` で
+1 木ずつ `max_depth` だけを上げた）。
+
+| 木 | `max_depth=3`（現行） | `max_depth=5` | 所要時間 |
+|---|---|---|---|
+| `teamplay-talk` | 未解決 154 / DB 461 | **未解決 24 / DB 663** | 3.6s → 3.9s |
+| `cohort` | 未解決 64 / DB 0 | **未解決 13 / DB 312** | 7.4s → 7.5s |
+| `dejavu` | 未解決 94 / DB 0 | 未解決 94 / DB 0（**変わらない**） | 0.4s → 0.4s |
+
+**2 木では深さが原因で、上げれば大半が解ける。**`MAX_DEPTH = 3` は事前登録した上限
+（`authgap/ir.py`、解析指紋の `caps`）であり、**変えると DB に限らず全 kind・全判定が動く。**
+したがってここでは変えない。**学生の判断事項として O29 に置いた。**
+
+**`dejavu` は深さと無関係で、別の 2 つの原因が重なっている**（未修正）:
+
+* `conn` が **`@property`**。`self.conn` は属性アクセスに見えてメソッドの呼び出しだが、
+  解析器は `__init__` で代入されたフィールド（`self._conn = None`）しか見ない。
+* ツールは `db: DejavuDB = ctx.request_context.lifespan_state["db"]` で受け取る。
+  型は**注釈付き代入**（`ast.AnnAssign`）でしか分からず、それを使っていない。
+
+どちらも「DB の受け手」を超えた一般的な変更（プロパティへの降下 / 木内クラスの注釈による
+型付け）なので、ここでは手を付けない。
