@@ -488,15 +488,25 @@ PROXY_SINKS: tuple[ProxyRow, ...] = (
         slots={"sql": A(0), "params": A(1)},
         required_by=("A18",),
     ),
-    # **`psycopg.Connection` を足した**（O29 / D50）。psycopg 3 の接続は `Connection.execute()`
-    # を持つ（内部でカーソルを作る）。psycopg2 の接続は `execute` を持たないので足さない。
     ProxyRow(
-        recv_types=("sqlite3.Cursor", "sqlite3.Connection", "psycopg.Cursor", "psycopg2.cursor",
-                    "psycopg.Connection"),
+        recv_types=("sqlite3.Cursor", "sqlite3.Connection", "psycopg.Cursor", "psycopg2.cursor"),
         method="execute",
         kind="DB",
         slots={"sql": A(0), "params": A(1)},
         required_by=("A18", "S1'"),
+    ),
+    # **psycopg 3 の `Connection.execute()`**（内部でカーソルを作る。O29 / D50）。
+    # psycopg2 の接続は `execute` を持たないので足さない。
+    #
+    # **上の行に足さず、別の行にする。** 効果の site 名は `sorted(recv_types)[0]` で決まるので、
+    # 上の行に足すと既存の sqlite3 / psycopg カーソルの効果の site 名が
+    # `psycopg.Cursor.execute` → `psycopg.Connection.execute` に**付け替わり**、run をまたいだ
+    # 同一性が壊れた（run8 で「GAP_INJECT が 42 か所消えた」と見えた。本当に消えたのは 0）。
+    ProxyRow(
+        recv_types=("psycopg.Connection",),
+        method="execute",
+        kind="DB",
+        slots={"sql": A(0), "params": A(1)},
     ),
     ProxyRow(
         recv_types=("sqlite3.Cursor", "sqlite3.Connection", "psycopg.Cursor", "psycopg2.cursor"),
