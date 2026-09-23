@@ -72,6 +72,11 @@ class Unit:
     annotations: Optional[dict] = None
     #: annotations の読み取りで扱えなかった形。
     annotation_form: Optional[str] = None
+    #: **snake_case 表記の注釈キー**（`read_only_hint` 等）。仕様書 322 行目は
+    #: 「`ToolAnnotations` に deserialize されず protocol に届かないので
+    #: `D_malformed` として別行で報告する」と定める。**記録だけで上界は動かさない。**
+    #: 動かすと「書いただけで宣言したことになる」= 誤 clear になる（O27 / D48）。
+    malformed_fields: tuple[str, ...] = ()
     #: 低レベル経路のとき、ハンドラ内の name 分岐から得た候補名。
     dispatch_names: tuple[str, ...] = ()
     #: 低レベル経路のとき、`dispatch_names` で join した `Tool(...)` リテラルの
@@ -125,6 +130,8 @@ class Unit:
             d["annotations"] = self.annotations
         if self.annotation_form:
             d["annotation_form"] = self.annotation_form
+        if self.malformed_fields:
+            d["malformed_fields"] = list(self.malformed_fields)
         if self.dispatch_names:
             d["dispatch_names"] = list(self.dispatch_names)
         if self.dispatch_annotations:
@@ -399,8 +406,11 @@ def find_units(index: SourceIndex) -> list[Unit]:
             ann_node = _kwarg_node(call, "annotations")
             ann: Optional[dict] = None
             ann_form: Optional[str] = None
+            malformed: tuple[str, ...] = ()
             if ann_node is not None:
-                ann, ann_form, _malformed = _read_annotations(ann_node)
+                # **3 つ目の戻り値（snake_case）を捨てない。** 捨てていたため
+                # `D_malformed` が構造的に常に空だった（母集団 v2 に 574 箇所。O27 / D48）。
+                ann, ann_form, malformed = _read_annotations(ann_node)
             if declared is not None:
                 # **スキーマ辞書に無い仮引数は MODEL としない。**
                 # 実行文脈（`agent` など）を MODEL に数えると、フレームワークが
@@ -421,6 +431,7 @@ def find_units(index: SourceIndex) -> list[Unit]:
                     tool_name=tool_name,
                     annotations=ann,
                     annotation_form=ann_form,
+                    malformed_fields=malformed,
                     is_async=fd.is_async,
                 )
             )
@@ -909,6 +920,7 @@ def join_annotations(units: list[Unit], literals: list[ToolLiteral]) -> tuple[in
             lit = by_name[key]
             u.annotations = lit.annotations
             u.annotation_form = lit.form
+            u.malformed_fields = lit.malformed_fields
             joined += 1
             used.add(key)
             continue
@@ -920,6 +932,10 @@ def join_annotations(units: list[Unit], literals: list[ToolLiteral]) -> tuple[in
             hit = {n: (by_name[n].annotations, by_name[n].form) for n in u.dispatch_names if n in by_name}
             if hit:
                 u.dispatch_annotations = hit
+                # **join した全リテラルの snake_case の和**（1 ユニットが複数ツールを持つ）。
+                u.malformed_fields = tuple(sorted(
+                    {m for n in hit for m in by_name[n].malformed_fields}
+                ))
                 used |= set(hit)
                 joined += 1
             # §2.9 (d): 同じファイルの、名前が非リテラルのリテラルは join できない。件数を持つ。

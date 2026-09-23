@@ -14,7 +14,7 @@ from __future__ import annotations
 import ast
 import json
 import os
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any, Optional
 
 from .entries import Unit
@@ -85,8 +85,14 @@ def parse_d_kind(unit: Unit) -> DKind:
     （§2.9 (c)。効果ごとの帰属は `analyze.py`）。
     """
     if unit.dispatch_annotations and not unit.annotations:
-        return meet_d_kind([d_kind_from(a, f) for a, f in unit.dispatch_annotations.values()])
-    return d_kind_from(unit.annotations, unit.annotation_form)
+        dk = meet_d_kind([d_kind_from(a, f) for a, f in unit.dispatch_annotations.values()])
+    else:
+        dk = d_kind_from(unit.annotations, unit.annotation_form)
+    # **snake_case は記録だけ。上界にも `explicit` にも入れない**（仕様書 322 行目、O27）。
+    # `covers` / `contradiction` / `is_bottom` は `malformed` を見ないので verdict は動かない。
+    if unit.malformed_fields:
+        return replace(dk, malformed=tuple(sorted(set(dk.malformed) | set(unit.malformed_fields))))
+    return dk
 
 
 def parse_d_kind_by_tool(unit: Unit) -> dict[str, DKind]:
