@@ -7,10 +7,17 @@
 数える単位は (ユニット, site, slot)。効果行は呼び出し経路ごとに複製されるため
 （`docs/open_questions.md` O18）、行をそのまま数えない。
 
+**§3 の除外を適用した後の数である。** SELECT 系と INJECT 系を同時に持つが
+`UNKNOWN` を併せ持つため除外した行: **66**。
+D だけで説明できるため除外した行: 0。
+仕様書 §3（553 行目）: 「`Leak` だけで説明できる行と `OPAQUE` 行は数えない。
+D だけで説明できる行も除く。」**この除外を落とすと、解析器が未解決を
+正直に報告するほど交差行が増える逆さまの指標になる**（D46）。
+
 | 項目 | 実測 | §3 の条件 | 判定 |
 |---|---|---|---|
-| 交差行の候補 | 15 | 3 以上 | ○ |
-| 由来プロジェクト数 | 5 | 3 以上 | ○ |
+| 交差行の候補 | 1 | 3 以上 | × |
+| 由来プロジェクト数 | 1 | 3 以上 | × |
 | `trig = traced` のユニット | 14 / 2231 = 0.6% | 20% 以上 | × |
 
 **§3 の格下げ条項が発火している。** 仕様書の文言: 「traced 率が 20% 未満なら
@@ -21,24 +28,6 @@ SELECT の野外評価は成立しないので、その時点で SELECT は fixt
 
 - `v2-ariffazil__wealth`（1 行）
   - `wealth_fx_rate` / `httpx.AsyncClient.get` / slot `url.query`
-- `v2-constripacity__claude-replay`（4 行）
-  - `call_tool` / `pathlib.Path.mkdir` / slot `path`
-  - `call_tool` / `pathlib.Path.write_text` / slot `content`
-  - `call_tool` / `pathlib.Path.write_text` / slot `path`
-  - `call_tool` / `psycopg.Cursor.execute` / slot `params`
-- `v2-fanfan-de__anybox`（5 行）
-  - `KeynoteMCPServer._register_handlers.call_tool` / `glob.glob` / slot `path`
-  - `KeynoteMCPServer._register_handlers.call_tool` / `shutil.move` / slot `content`
-  - `KeynoteMCPServer._register_handlers.call_tool` / `shutil.move` / slot `path`
-  - `KeynoteMCPServer._register_handlers.call_tool` / `shutil.rmtree` / slot `path`
-  - `KeynoteMCPServer._register_handlers.call_tool` / `subprocess.run` / slot `argv[*]`
-- `v2-napjon__mcp-cdp`（1 行）
-  - `_run.on_call_tool` / `pathlib.Path.open` / slot `path`
-- `v2-xorbitsai__xagent`（4 行）
-  - `call_tool` / `pathlib.Path.open` / slot `path`
-  - `call_tool` / `requests.delete` / slot `url.path`
-  - `call_tool` / `requests.post` / slot `url.path`
-  - `call_tool` / `requests.put` / slot `body`
 
 ## 決定
 

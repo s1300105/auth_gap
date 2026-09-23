@@ -37,9 +37,21 @@ TRACED_GATE = 0.20
 SELECT_VERDICTS = frozenset({"GAP_SELECT", "INVENTORY"})
 INJECT_VERDICTS = frozenset({"GAP_INJECT", "GAP_DRIFT"})
 
+#: **§3（仕様書 553 行目）が「数えない」と書いた行。**
+#:
+#: > `Leak`（Def 5-b）だけで説明できる行と `OPAQUE` 行は数えない。
+#: > D だけで説明できる行も除く。
+#:
+#: `OPAQUE` 行 = `UNKNOWN` を持つ行。**この除外を落とすと、解析器が未解決を
+#: 正直に報告するほど交差行が増える**という逆さまの指標になる（D46）。
+OPAQUE_VERDICT = "UNKNOWN"
+#: D だけで説明できる行（`authgap/../scripts/ablation.py` の docstring より）。
+D_ONLY_VERDICTS = frozenset({"INVENTORY", "CONTRADICTION", "GAP_DRIFT"})
+
 
 def scan(evidence_dir: str) -> dict:
     trig: collections.Counter = collections.Counter()
+    n_excluded: collections.Counter = collections.Counter()
     rows: dict[str, set] = collections.defaultdict(set)
     n_units = 0
     for fn in sorted(os.listdir(evidence_dir)):
@@ -53,10 +65,19 @@ def scan(evidence_dir: str) -> dict:
             trig[(u.get("trig") or {}).get("mode")] += 1
             for r in u.get("rows", []):
                 v = set(r.get("verdicts", []))
-                # **`Leak` だけで説明できる行と OPAQUE 行、D だけで説明できる行は数えない**
-                # （§3）。UNKNOWN と CONTRADICTION しか持たない行はここで落ちる。
-                if (v & SELECT_VERDICTS) and (v & INJECT_VERDICTS):
-                    rows[tree].add((u["unit"]["qualname"], r["site"], r["slot"]))
+                if not ((v & SELECT_VERDICTS) and (v & INJECT_VERDICTS)):
+                    continue
+                # **§3 の除外を適用する。**
+                # 2026-09-23 まで、ここで `OPAQUE` 行を落としていなかった（D46）。
+                # そのため `UNKNOWN` を併せ持つ行まで数え、**解析器が未解決を正直に
+                # 報告するほど交差行が増える**逆さまの指標になっていた。
+                if OPAQUE_VERDICT in v:
+                    n_excluded["opaque"] += 1
+                    continue
+                if v <= D_ONLY_VERDICTS:
+                    n_excluded["d_only"] += 1
+                    continue
+                rows[tree].add((u["unit"]["qualname"], r["site"], r["slot"]))
     n_rows = sum(len(v) for v in rows.values())
     traced = trig.get("traced", 0)
     return {
@@ -65,6 +86,8 @@ def scan(evidence_dir: str) -> dict:
         "trig": {k: v for k, v in sorted(trig.items(), key=lambda kv: str(kv[0]))},
         "traced_ratio": (traced / n_units) if n_units else None,
         "traced_gate_pass": (traced / n_units >= TRACED_GATE) if n_units else None,
+        "n_excluded_opaque": n_excluded["opaque"],
+        "n_excluded_d_only": n_excluded["d_only"],
         "n_intersection_rows": n_rows,
         "n_projects": len(rows),
         "pass_rows": n_rows >= MIN_ROWS,
@@ -83,6 +106,13 @@ def to_md(res: dict) -> str:
     out.append("（同一行が SELECT 系と INJECT 系の verdict を同時に持つ）で数えた**候補**である。")
     out.append("数える単位は (ユニット, site, slot)。効果行は呼び出し経路ごとに複製されるため")
     out.append("（`docs/open_questions.md` O18）、行をそのまま数えない。")
+    out.append("")
+    out.append("**§3 の除外を適用した後の数である。** SELECT 系と INJECT 系を同時に持つが")
+    out.append(f"`UNKNOWN` を併せ持つため除外した行: **{res['n_excluded_opaque']}**。")
+    out.append(f"D だけで説明できるため除外した行: {res['n_excluded_d_only']}。")
+    out.append("仕様書 §3（553 行目）: 「`Leak` だけで説明できる行と `OPAQUE` 行は数えない。")
+    out.append("D だけで説明できる行も除く。」**この除外を落とすと、解析器が未解決を")
+    out.append("正直に報告するほど交差行が増える逆さまの指標になる**（D46）。")
     out.append("")
     out.append("| 項目 | 実測 | §3 の条件 | 判定 |")
     out.append("|---|---|---|---|")
