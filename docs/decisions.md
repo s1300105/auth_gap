@@ -2595,3 +2595,100 @@ O23 #1）を実装するかどうかに関係なく、**分母そのものが 10
 
 **この誤 clear は、仕様が求めた FP 監査の分子を実装した瞬間に見えた。**
 D47 の教訓（落としたものの件数を出力に載せる）の実例である。
+
+---
+
+## D50（2026-09-23）O29 を直す: DB 効果の受け手型の解決を広げる。**未解決率 90.0% → 26.2%**
+
+### 何がどちら向きに間違っていたか
+
+**誤 clear。** D49 で `db_unresolved` を記録した結果、母集団 v2 の `.execute()` の
+90.0%（2,078 件、一意 332）が受け手型を解決できず DB 効果になっていないこと、
+抜き取り 20 件中 15 件が本物の SQL であることが分かった。332 か所を分類すると
+
+| 受け手の書き方 | 延べ件数 |
+|---|---|
+| 型注釈つき仮引数（`Session` 696 / `AsyncSession` 131 / `sqlite3.Connection` 23） | 850 |
+| `with c.cursor() as cur:` | 573 |
+| `self.session` / `self._conn` / `self.conn` | 213 |
+
+で、原因は 3 つあった。
+
+1. **メソッド呼び出しの型遷移が一度も効いていなかった。** `ATTR_TYPE_TRANSITIONS` は
+   `_ev_Attribute`（属性アクセス）でしか引かれない。`("sqlite3.Connection", "cursor")` /
+   `("neo4j.Driver", "session")` / `("sqlalchemy.engine.Engine", "connect")` は実際には
+   メソッドなのに属性の表にあったため、**`sqlite3.connect(x).cursor().execute(q)` ですら
+   DB 効果にならなかった。**
+2. **psycopg 系の接続を作る規則が 1 つも無かった。** `psycopg.Cursor` は DB 型の一覧に
+   あるのに、それを作る CTOR が無い。
+3. **仮引数の型注釈を使っていなかった。**
+
+### 直し方
+
+* `CALL_TYPE_TRANSITIONS`（新しい表）を `_ev_Call` の CTOR の直後で引く。
+  `.cursor()` / `.session()` / `.connect()` / `.begin()` / `.connection()` / `.getconn()`。
+* CTOR: `psycopg.connect` / `psycopg2.connect` / `psycopg_pool.ConnectionPool`。
+* sink: `sqlalchemy.ext.asyncio.AsyncSession` / `AsyncConnection` を sqlalchemy の行に、
+  `psycopg.Connection`（psycopg 3 の `Connection.execute()`）を**独立した行**に足した。
+* `_seed_params`: **実引数の型が分からないときに限り**、仮引数の注釈が
+  `ANNOTATION_TYPED_RECEIVERS` の型を**被呼び出し側の import で**指していれば型を与える。
+  主体・確度・root は実引数のものを保つ。注釈で型を与えた箇所を manifest の
+  `annotation_typed` に出す（注釈は宣言であって証明ではないので、後から切り分けられるように）。
+
+### 敵対的レビュー（`tests/test_db_receiver_typing.py`、**実装より先に書いた**）
+
+**解決率を上げる変更なので、反例を正例と同じ重さで固定した。**
+正例 12 / 主体保存 12 / 定数 SQL 1 / **反例 5**（`from requests import Session` の取り違え、
+木内の同名クラス、Google API / Redis の `.execute()`、**実引数の型が既知なら注釈で上書きしない**）。
+
+**反例 n05 は初版では試したい規則を試していなかった。** `sqlalchemy` を import しておらず、
+注釈が**解決できないせいで**通っていた。実装の前に直した。
+
+### 私が持ち込んだ問題と、その訂正
+
+最初の実装（`86037d3`）は `psycopg.Connection` を**既存のカーソルの行**に足した。
+効果の site 名は `sorted(recv_types)[0]` で決まるので、**既存の sqlite3 / psycopg の効果の
+site 名がすべて `psycopg.Cursor.execute` → `psycopg.Connection.execute` に付け替わった。**
+母集団の run8 で「`GAP_INJECT` が 42 か所消えた」と見えたのはこれで、1 件ずつ確かめると
+**42 件すべてが同じ位置で、本当に消えたものは 0 件**だった。
+**向きは回帰の偽装。** run をまたいだ同一性が壊れるので、`psycopg.Connection` を
+独立した行に分けて直した（`f248bfd`）。run8 は記録として残し、**比較の基準には run9 を使う。**
+
+### 母集団 v2 の結果（run7 → run9）
+
+| 項目 | run7 | run9 | 差 |
+|---|---|---|---|
+| ユニット | 2,231 | 2,231 | ±0 |
+| 危険ユニット | 1,187 | 1,492 | +305 |
+| 効果 | 5,987 | 7,462 | +1,475 |
+| **DB 効果** | **230** | **1,705** | **+1,475（7.4 倍）** |
+| `db_unresolved` | 2,078（一意 332） | 605（一意 205） | −1,473 |
+| **未解決率** | **90.0%** | **26.2%** | |
+| CONTRADICTION | 85 | 85 | ±0 |
+| `GAP_INJECT`（一意な位置） | 733 | 972 | +239 |
+| 注釈で型を与えたユニット | 0 | 377 | `Session` 330 / `AsyncSession` 131 / `sqlite3.Connection` 5 |
+
+**消えたユニット 0 / 消えた CONTRADICTION 0 / 消えた `GAP_INJECT` 0。**
+CONTRADICTION が動かないのは想定どおり（DB は今の矛盾判定の対象外。
+`docs/contradiction_matrix.md` の D1 × DB、O23 #1）。
+
+### 新しく出た DB 効果の誤警報の点検 — **20/20 が本物**
+
+新しく出た DB 効果の位置 149 か所から等間隔で 20 件を抜き取った。**すべてが本物の SQL /
+ORM 呼び出し**だった（`cur.execute("INSERT INTO users ...")`、
+`await session.execute(stmt)` など）。うち 8 件は型注釈に依ったもの。
+
+### 残った 26.2%（一意 205）— **まだ 7 割が本物の SQL**
+
+同じ手続きで 20 件を抜き取ると、**本物の SQL 14 件 / Google API の `.execute()` 6 件**。
+残っている書き方は `self._conn` / `self.conn`（インスタンス属性）、`db()`（木内の補助関数）、
+**注釈の無い** `session` 仮引数。**O29 は部分的に解決した。** 残りは O29 に記録した。
+
+### 確認
+
+* `diff_effects.py --before 5fc32c1` 較正対 14 木 → 消えた 0 / A18 の両側で +2
+  （langroid の `self.driver.session(...)` → `session.run(query)`。目視で本物）
+* `check_gates.py` B3a 8/8・B3b 15/15、`pytest` 全通過、`mutation_test.py` 生存 1/15、
+  **`two_sided.py` 8/8 と verdict-clearing が変更前と同一**、`ruff` 通過
+
+`docs/preregistration.md` の逸脱 **#15** に変更前後を両方書いた。
