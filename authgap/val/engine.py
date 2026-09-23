@@ -31,7 +31,9 @@ from dataclasses import dataclass, field
 from typing import Any, Optional
 
 from ..catalog.transfers import (
+    ANNOTATION_TYPED_RECEIVERS,
     ATTR_TYPE_TRANSITIONS,
+    CALL_TYPE_TRANSITIONS,
     CTOR_BY_NAME,
     INDIRECT_BY_NAME,
     method_transfer_for,
@@ -196,6 +198,10 @@ class ValResult:
     cap_hits: list[str] = field(default_factory=list)
     #: `loop_probe` を有効にしたときの、2 周目と 3 周目が一致しなかった箇所。
     loop_unstable: list[str] = field(default_factory=list)
+    #: **仮引数の型注釈から受け手の型を与えた箇所**（O29 / D50）。
+    #: `(関数の qualname, 仮引数名, 与えた型)`。注釈は宣言であって証明ではないので、
+    #: **どの効果が注釈に依っているかを後から切り分けられるように残す。**
+    annotation_typed: list[tuple[str, str, str]] = field(default_factory=list)
     #: 最終 env（デバッグと手検証用）。
     env: Optional[Env] = None
 
@@ -681,6 +687,29 @@ class ValEngine:
         if dotted in CTOR_BY_NAME:
             return _build_obj(CTOR_BY_NAME[dotted], args, kwargs)
 
+        # (2b) **メソッド呼び出しの型遷移**（`conn.cursor()` → Cursor。O29 / D50）。
+        # `ATTR_TYPE_TRANSITIONS` は属性アクセスでしか引かれず、`conn.cursor()` /
+        # `driver.session()` / `engine.connect()` の**普通の書き方では一度も効いていなかった**。
+        # 受け手の型が既知の外部クラスなので、木内の同名関数（末尾名の降下）より先に見る。
+        if isinstance(node.func, ast.Attribute) and receiver is not None and isinstance(receiver.shape, Obj):
+            for cls in sorted(receiver.shape.classes):
+                trans = CALL_TYPE_TRANSITIONS.get((cls, node.func.attr))
+                if trans is None:
+                    continue
+                new_cls, carry = trans
+                fields = tuple(
+                    (dst, val)
+                    for dst, src in sorted(carry.items())
+                    for name, val in receiver.shape.fields
+                    if name == src
+                )
+                # 主体と root は受け手と実引数の join（D44 と同じ。持ち上げはしても下げない）。
+                inputs = [receiver] + list(args) + [kwargs[k] for k in sorted(kwargs)]
+                return Value(
+                    _prin_all(inputs), receiver.prov, Obj((new_cls,), fields), receiver.attrs,
+                    frozenset().union(*[v.roots for v in inputs]),
+                )
+
         # (3) INDIRECT 表（**1 段として数える**）
         if dotted in INDIRECT_BY_NAME:
             return self._descend_indirect(node, dotted, args, kwargs, env, scope, res, depth, chain)
@@ -916,7 +945,7 @@ class ValEngine:
             res.note_opaque("unresolved")
             return Value(Prin.OP, opaque("unresolved"), Unknown(), frozenset(), _roots_all(args)), None
         callee_scope = self.index.function_scope(path, callee.node)
-        seed = self._seed_params(callee, args, kwargs, receiver)
+        seed = self._seed_params(callee, args, kwargs, receiver, callee_scope, res)
         self._summaries[callee.key] = self._summaries.get(callee.key, 0) + 1
         self._active.add(callee.key)
         pushed = False
@@ -1492,8 +1521,37 @@ class ValEngine:
                 out.append(f)
         return out
 
-    def _seed_params(self, callee: FuncDef, args, kwargs, receiver) -> dict[str, Value]:
-        """呼び出し先の仮引数に実引数を割り当てる。"""
+    def _seed_params(self, callee: FuncDef, args, kwargs, receiver, scope=None, res=None) -> dict[str, Value]:
+        """呼び出し先の仮引数に実引数を割り当てる。
+
+        **型注釈による受け手の型付け**（O29 / D50）: 実引数の型が分からないとき
+        （`Obj` でないか、クラスを持たない）に限り、仮引数の注釈が
+        `ANNOTATION_TYPED_RECEIVERS` の型を**被呼び出し側の import で**指していれば、
+        その型を与える。主体・確度・root は実引数のものを保つ（型だけを足す）。
+        **実引数の型が既知なら上書きしない**（注釈は宣言であって証明ではない）。
+        """
+        seed = self._seed_params_raw(callee, args, kwargs, receiver)
+        if scope is None:
+            return seed
+        fn_args = getattr(callee.node, "args", None)
+        if fn_args is None:
+            return seed
+        for a in list(fn_args.posonlyargs) + list(fn_args.args) + list(fn_args.kwonlyargs):
+            if a.arg not in seed or a.annotation is None:
+                continue
+            v = seed[a.arg]
+            if isinstance(v.shape, Obj) and v.shape.classes:
+                continue  # **既知の型を注釈で上書きしない**
+            cls = _annotation_receiver_type(a.annotation, scope)
+            if cls is None:
+                continue
+            seed[a.arg] = Value(v.prin, v.prov, Obj((cls,), ()), v.attrs, v.roots)
+            if res is not None:
+                res.annotation_typed.append((callee.qualname, a.arg, cls))
+        return seed
+
+    def _seed_params_raw(self, callee: FuncDef, args, kwargs, receiver) -> dict[str, Value]:
+        """呼び出し先の仮引数に実引数を割り当てる（注釈による型付けの前）。"""
         seed: dict[str, Value] = {}
         fn_args = getattr(callee.node, "args", None)
         if fn_args is None:
@@ -1758,6 +1816,34 @@ def access_path(node: ast.AST, max_depth: int = RECEIVER_DEPTH) -> Optional[str]
     if len(parts) - 1 > max_depth:
         return None
     return ".".join(parts)
+
+
+def _annotation_receiver_type(ann: ast.AST, scope: Scope) -> Optional[str]:
+    """仮引数の注釈が `ANNOTATION_TYPED_RECEIVERS` の型を指していればその dotted 名（O29 / D50）。
+
+    * `Session` / `sqlite3.Connection` — **被呼び出し側の import で解決する**。
+      `from requests import Session` の `Session` は `requests.Session` になり、DB ではない。
+    * `Optional[X]` / `X | None` / `"X"`（文字列注釈）— 中の `X` を見る。
+    * それ以外（`Union[A, B]` で両方が型、`Any`、解決できない名前）は `None`。
+    """
+    node = ann
+    if isinstance(node, ast.Constant) and isinstance(node.value, str):
+        try:
+            node = ast.parse(node.value, mode="eval").body
+        except SyntaxError:
+            return None
+    if isinstance(node, ast.Subscript) and dotted_of(node.value) in ("Optional", "typing.Optional"):
+        node = node.slice
+    if isinstance(node, ast.BinOp) and isinstance(node.op, ast.BitOr):
+        sides = [x for x in (node.left, node.right)
+                 if not (isinstance(x, ast.Constant) and x.value is None)]
+        if len(sides) != 1:
+            return None
+        node = sides[0]
+    if not isinstance(node, (ast.Name, ast.Attribute)):
+        return None
+    name = resolve_call_name(node, scope)
+    return name if name in ANNOTATION_TYPED_RECEIVERS else None
 
 
 def _seed_from_annotation(arg: ast.arg) -> Value:

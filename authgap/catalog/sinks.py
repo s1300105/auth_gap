@@ -458,12 +458,17 @@ PROXY_SINKS: tuple[ProxyRow, ...] = (
         required_by=("A3",),
     ),
     # SQLAlchemy / DBAPI カーソル
+    # **`sqlalchemy.ext.asyncio.AsyncSession` / `AsyncConnection` を足した**（O29 / D50）。
+    # 母集団 v2 で `AsyncSession` の `.execute()` が 289 件、受け手型が DB 一覧に無いため
+    # 落ちていた。同期版と同じ `execute(statement, params)` の形である。
     ProxyRow(
         recv_types=(
             "sqlalchemy.engine.Connection",
             "sqlalchemy.orm.Session",
             "sqlalchemy.Connection",
             "sqlalchemy.Session",
+            "sqlalchemy.ext.asyncio.AsyncSession",
+            "sqlalchemy.ext.asyncio.AsyncConnection",
         ),
         method="execute",
         kind="DB",
@@ -476,14 +481,18 @@ PROXY_SINKS: tuple[ProxyRow, ...] = (
             "sqlalchemy.orm.Session",
             "sqlalchemy.Connection",
             "sqlalchemy.Session",
+            "sqlalchemy.ext.asyncio.AsyncConnection",
         ),
         method="exec_driver_sql",
         kind="DB",
         slots={"sql": A(0), "params": A(1)},
         required_by=("A18",),
     ),
+    # **`psycopg.Connection` を足した**（O29 / D50）。psycopg 3 の接続は `Connection.execute()`
+    # を持つ（内部でカーソルを作る）。psycopg2 の接続は `execute` を持たないので足さない。
     ProxyRow(
-        recv_types=("sqlite3.Cursor", "sqlite3.Connection", "psycopg.Cursor", "psycopg2.cursor"),
+        recv_types=("sqlite3.Cursor", "sqlite3.Connection", "psycopg.Cursor", "psycopg2.cursor",
+                    "psycopg.Connection"),
         method="execute",
         kind="DB",
         slots={"sql": A(0), "params": A(1)},

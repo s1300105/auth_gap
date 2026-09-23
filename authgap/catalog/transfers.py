@@ -203,6 +203,14 @@ CTORS: tuple[CtorRow, ...] = (
     CtorRow("neo4j.GraphDatabase.driver", "neo4j.Driver", {"uri": "arg0"}, required_by=("A14", "S2")),
     CtorRow("paramiko.SSHClient", "paramiko.SSHClient", {}),
     CtorRow("sqlalchemy.create_engine", "sqlalchemy.engine.Engine", {"url": "arg0"}),
+    # **psycopg 系の接続を作る規則**（O29 / D50）。`psycopg.Cursor` / `psycopg2.cursor` は
+    # DB 型の一覧にあるのに、それを作る規則が 1 つも無かった。母集団 v2 の
+    # `with c.cursor() as cur:` 573 件の大半がこの鎖（`psycopg_pool.ConnectionPool` →
+    # `.connection()` → `.cursor()` → `.execute()`）で落ちていた。
+    CtorRow("psycopg.connect", "psycopg.Connection", {"conninfo": "arg0"}),
+    CtorRow("psycopg.Connection.connect", "psycopg.Connection", {"conninfo": "arg0"}),
+    CtorRow("psycopg2.connect", "psycopg2.extensions.connection", {"dsn": "arg0"}),
+    CtorRow("psycopg_pool.ConnectionPool", "psycopg_pool.ConnectionPool", {"conninfo": "kw:conninfo"}),
 )
 
 CTOR_BY_NAME: dict[str, CtorRow] = {c.dotted: c for c in CTORS}
@@ -221,6 +229,39 @@ ATTR_TYPE_TRANSITIONS: dict[tuple[str, str], tuple[str, dict[str, str]]] = {
     ("neo4j.Driver", "session"): ("neo4j.Session", {"uri": "uri"}),
     ("sqlalchemy.engine.Engine", "connect"): ("sqlalchemy.engine.Connection", {"url": "url"}),
 }
+
+#: **メソッド呼び出し**で受け手の型から戻り値の型が決まる規則（`conn.cursor()` → Cursor）。
+#: キーと値の形は `ATTR_TYPE_TRANSITIONS` と同じ。
+#:
+#: **`ATTR_TYPE_TRANSITIONS` とは別の表にする。** あちらは属性アクセス（`repo.git`）で
+#: 引かれ、呼び出し（`conn.cursor()`）では引かれない。`("sqlite3.Connection", "cursor")` /
+#: `("neo4j.Driver", "session")` / `("sqlalchemy.engine.Engine", "connect")` の 3 行は
+#: **実際にはメソッドなのに属性の表にあったため、普通の書き方では一度も効いていなかった**
+#: （O29 / D50）。属性の表からは消さない（`conn.cursor` を呼ばずに渡す形が残りうる）。
+CALL_TYPE_TRANSITIONS: dict[tuple[str, str], tuple[str, dict[str, str]]] = {
+    ("sqlite3.Connection", "cursor"): ("sqlite3.Cursor", {"database": "database"}),
+    ("psycopg.Connection", "cursor"): ("psycopg.Cursor", {"conninfo": "conninfo"}),
+    ("psycopg2.extensions.connection", "cursor"): ("psycopg2.cursor", {"dsn": "dsn"}),
+    ("psycopg_pool.ConnectionPool", "connection"): ("psycopg.Connection", {"conninfo": "conninfo"}),
+    ("psycopg_pool.ConnectionPool", "getconn"): ("psycopg.Connection", {"conninfo": "conninfo"}),
+    ("neo4j.Driver", "session"): ("neo4j.Session", {"uri": "uri"}),
+    ("sqlalchemy.engine.Engine", "connect"): ("sqlalchemy.engine.Connection", {"url": "url"}),
+    ("sqlalchemy.engine.Engine", "begin"): ("sqlalchemy.engine.Connection", {"url": "url"}),
+}
+
+#: **仮引数の型注釈から受け手の型を与えてよい型**（O29 / D50）。
+#:
+#: **DB の受け手型とその接続・エンジンに限る。** 注釈は宣言であって証明ではないので、
+#: 広げると注釈の嘘がそのまま効果になる。ここに無い型の注釈は使わない。
+#: 使ってよいのは「実引数の型が分からないとき」だけで、**既知の型を注釈で上書きしない。**
+ANNOTATION_TYPED_RECEIVERS: frozenset[str] = frozenset({
+    "sqlite3.Connection", "sqlite3.Cursor",
+    "psycopg.Connection", "psycopg.Cursor", "psycopg2.extensions.connection", "psycopg2.cursor",
+    "sqlalchemy.orm.Session", "sqlalchemy.Session",
+    "sqlalchemy.engine.Connection", "sqlalchemy.Connection", "sqlalchemy.engine.Engine",
+    "sqlalchemy.ext.asyncio.AsyncSession", "sqlalchemy.ext.asyncio.AsyncConnection",
+    "neo4j.Driver", "neo4j.Session", "neo4j.AsyncDriver", "neo4j.AsyncSession",
+})
 
 
 #: 受け手を主語とする TRANSFER（メソッド名で引く）。

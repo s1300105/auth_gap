@@ -169,6 +169,13 @@ class UnitReport:
             d["alias_facts"] = [a.to_json() for a in self.val.alias_facts]
             d["opaque_reasons"] = sorted(set(self.val.opaque_reasons))
             d["cap_hits"] = sorted(set(self.val.cap_hits))
+            if self.val.annotation_typed:
+                # **型注釈から受け手の型を与えた箇所**（O29 / D50）。注釈は宣言であって
+                # 証明ではないので、どの DB 効果が注釈に依っているかを切り分けられるように出す。
+                d["annotation_typed"] = [
+                    {"function": f, "param": p_, "type": t}
+                    for f, p_, t in sorted(set(self.val.annotation_typed))
+                ]
             if self.val.loop_unstable:
                 d["loop_unstable"] = list(self.val.loop_unstable)
         return d
