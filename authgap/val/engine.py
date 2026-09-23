@@ -594,6 +594,29 @@ class ValEngine:
     def _ev_Starred(self, node, env, scope, res, depth, chain) -> Value:
         return self._eval(node.value, env, scope, res, depth, chain)
 
+    def _ev_Yield(self, node, env, scope, res, depth, chain) -> Value:
+        """`yield v`（D51）。
+
+        **yield される式を評価する。** 以前は `_ev_Yield` が無く、`yield` は丸ごと `dynamic` として
+        扱われ、**yield される式そのものが評価されなかった**（`yield os.system(q)` の sink が落ちた）。
+        値は `<yield>` に合流しておき、`@contextmanager` の戻り値として使う（`_descend_env`）。
+        **`yield` 式の結果**（`.send()` で送られる値）は消費側が決めるので従来どおり `dynamic`。
+        """
+        if node.value is not None:
+            v = self._eval(node.value, env, scope, res, depth, chain)
+            prev = env.get("<yield>")
+            env.set("<yield>", v if prev is None else value_join(prev, v))
+        res.note_opaque("dynamic")
+        return Value(Prin.OP, opaque("dynamic"), Unknown())
+
+    def _ev_YieldFrom(self, node, env, scope, res, depth, chain) -> Value:
+        """`yield from it`（D51）。yield されるのは `it` の要素。結果は従来どおり `dynamic`。"""
+        v = _element_of(self._eval(node.value, env, scope, res, depth, chain))
+        prev = env.get("<yield>")
+        env.set("<yield>", v if prev is None else value_join(prev, v))
+        res.note_opaque("dynamic")
+        return Value(Prin.OP, opaque("dynamic"), Unknown())
+
     def _ev_Await(self, node, env, scope, res, depth, chain) -> Value:
         return self._eval(node.value, env, scope, res, depth, chain)
 
@@ -865,7 +888,7 @@ class ValEngine:
         self._split_receiver = False
         name = dotted_of(node.func)
         if name is None:
-            return []
+            return self._resolve_on_expression_receiver(node, receiver)
         last = name.split(".")[-1]
         # **import 表で指したモジュール / 同じモジュールの定義を先に引く**（D17 改訂 3）。
         pinned = self._pinned_candidates(node, dotted, last, scope)
@@ -972,8 +995,23 @@ class ValEngine:
                 self._by_name_depth -= 1
             if pushed:
                 self._entry_sites.pop()
-        ret = sub.get("<return>")
-        return (ret if ret is not None else Value(Prin.OP, RESOLVED, Unknown())), sub
+        if _is_context_manager(callee.node, callee_scope):
+            # **`@contextmanager` の関数は `with f() as x` の `x` に yield した値を渡す**（D51）。
+            # `return` の値（通常は無い）ではなく `<yield>` を戻り値にする。
+            ret = sub.get("<yield>")
+        else:
+            ret = sub.get("<return>")
+        ret = ret if ret is not None else Value(Prin.OP, RESOLVED, Unknown())
+        # **戻り値の型注釈**（`-> sqlite3.Connection`。D51）。仮引数の注釈（D50）と同じ規則:
+        # 計算した戻り値の型が分からないときに限り、`ANNOTATION_TYPED_RECEIVERS` の型を
+        # 被呼び出し側の import で指していれば型を与える。**既知の型を注釈で上書きしない。**
+        returns = getattr(callee.node, "returns", None)
+        if returns is not None and not (isinstance(ret.shape, Obj) and ret.shape.classes):
+            cls = _annotation_receiver_type(returns, callee_scope)
+            if cls is not None:
+                ret = Value(ret.prin, ret.prov, Obj((cls,), ()), ret.attrs, ret.roots)
+                res.annotation_typed.append((callee.qualname, "<return>", cls))
+        return ret, sub
 
     def _descend_indirect(self, node, dotted, args, kwargs, env, scope, res, depth, chain) -> Value:
         """`multiprocessing.Process(target=f, args=(...))` 越しの到達。
@@ -1342,6 +1380,30 @@ class ValEngine:
             if hits:
                 break
         return out, None
+
+    def _resolve_on_expression_receiver(self, node, receiver: Optional[Value]) -> list[FuncDef]:
+        """受け手が**呼び出し式**のメソッド呼び出し（`Cls(...).m(...)`）を、受け手の型で解決する（D51）。
+
+        `dotted_of(node.func)` は受け手が呼び出し式だと `None` を返す。以前はそこで諦めていたので、
+        **受け手の型が分かっていても降りなかった**。`s = Cls(...); s.m(...)` なら降りるので、
+        **同じプログラムを 1 文で書くか 2 文で書くかで結果が変わっていた**（誤 clear。kind に
+        依らず、`Store("x").run(q)` の中の `os.system(q)` まで落ちた）。
+
+        **受け手の型で裏付けられるときだけ降りる。** 型の分からない受け手（`mystery().m()`）は
+        従来どおり降りない（末尾名だけの降下をここで新しく許すと範囲が広がりすぎる）。
+        候補が 2 つ以上か、同名クラスが木に 2 つ以上あるときは `_by_name_hint` を立てる
+        （行を opaque にする。どの定義が効くか型だけでは決まらない）。
+        """
+        if not (isinstance(node.func, ast.Attribute) and receiver is not None
+                and isinstance(receiver.shape, Obj) and receiver.shape.classes):
+            return []
+        typed = {c.split(".")[-1] for c in receiver.shape.classes}
+        cands = [c for c in self.index.lookup_function(node.func.attr) if c.classname in typed]
+        if not cands:
+            return []
+        if len(cands) > 1 or any(not self._class_name_unique(c) for c in typed):
+            self._by_name_hint = True
+        return cands
 
     def _class_name_unique(self, name: str) -> bool:
         """末尾名 `name` のクラス定義が木に 1 つだけか（記憶化）。"""
@@ -1816,6 +1878,19 @@ def access_path(node: ast.AST, max_depth: int = RECEIVER_DEPTH) -> Optional[str]
     if len(parts) - 1 > max_depth:
         return None
     return ".".join(parts)
+
+
+#: `with f() as x` の `x` に yield した値を渡すデコレータ。
+_CONTEXT_MANAGER_DECORATORS = frozenset({"contextlib.contextmanager", "contextlib.asynccontextmanager"})
+
+
+def _is_context_manager(fn: ast.AST, scope: Scope) -> bool:
+    """関数が `@contextmanager` / `@asynccontextmanager` で飾られているか（import で解決する）。"""
+    for dec in getattr(fn, "decorator_list", []):
+        target = dec.func if isinstance(dec, ast.Call) else dec
+        if resolve_call_name(target, scope) in _CONTEXT_MANAGER_DECORATORS:
+            return True
+    return False
 
 
 def _annotation_receiver_type(ann: ast.AST, scope: Scope) -> Optional[str]:
