@@ -28,6 +28,7 @@ sys.path.insert(0, ROOT)
 
 from authgap.report import canonical_json, manifest_json  # noqa: E402
 from authgap.runner import RunConfig, run  # noqa: E402
+from authgap.val.engine import Options  # noqa: E402
 
 
 def _contradiction_rows(tree: str, manifest: dict) -> list[dict]:
@@ -65,11 +66,15 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--sample", default=os.path.join(ROOT, "evidence", "population_v2", "sample_v2_mcp.json"))
     ap.add_argument("--tree-budget", type=float, default=180.0)
     ap.add_argument("--note", default="")
+    ap.add_argument("--max-depth", type=int, default=None,
+                    help="感度分析用（O29）。既定は authgap/ir.py の MAX_DEPTH。manifest の fingerprint は"
+                         "定数の値のままなので、実際に使った深さは summary.json の max_depth に残す。")
     args = ap.parse_args(argv)
 
     out_dir = os.path.join(ROOT, "evidence", f"scan_v2_{args.label}")
     os.makedirs(out_dir, exist_ok=True)
     targets = json.load(open(args.sample, encoding="utf-8"))["targets"]
+    options = Options() if args.max_depth is None else Options(max_depth=args.max_depth)
 
     trees: list[dict] = []
     totals: collections.Counter = collections.Counter()
@@ -84,7 +89,7 @@ def main(argv: list[str] | None = None) -> int:
             continue
         try:
             res = run(RunConfig(src_root=path, population=t.get("population", "mcp_server"),
-                                full=True, max_tree_seconds=args.tree_budget))
+                                full=True, max_tree_seconds=args.tree_budget, options=options))
         except Exception as exc:  # noqa: BLE001  1 本の失敗で全体を落とさない。件数として残す。
             trees.append({"tree": name, "status": "analysis_failed", "error": f"{type(exc).__name__}: {exc}"})
             print(f"FAIL {name}: {type(exc).__name__}: {exc}", file=sys.stderr)
@@ -116,6 +121,7 @@ def main(argv: list[str] | None = None) -> int:
     summary = {
         "_note": args.note or f"母集団 v2 の full scan（{args.label}）。scripts/scan_v2.py で作成。",
         "analyzer_commit": _git_head(),
+        "max_depth": options.max_depth,
         "n_trees": len(trees),
         "n_units": n_units,
         "n_dangerous_units": n_dangerous,
