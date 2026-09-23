@@ -2526,3 +2526,72 @@ camelCase に読み替える**）。130 ユニットのうち 103 に危険効�
 
 **(b) の方が「注釈を書こうとした人がどれだけ間違えるか」を表す**が、
 分母に `title` だけのユニットも入る。**測定より先に決めること。**
+
+---
+
+## D49（2026-09-23）O28 を直す。**その結果、DB 効果の大きな誤 clear が見えた（2,078 件）**
+
+### D47 の記述の訂正
+
+D47 は「`effects.py:561` の `if db_rule != "db": return None` が効果ごと捨てるので
+記録されない」と書いた。**これは誤りで、その guard は到達不能な死んだコードである。**
+
+DB の proxy 行 8 本の `recv_types` はすべて `DB_RECEIVER_TYPES` の部分集合なので、
+`_from_proxy_row` に入る時点で受け手はすでに DB 型に解決できている。
+**受け手型が分からない `.execute()` は proxy 行に一致せず、`_from_proxy_row` にすら
+到達しない。** 実験で確かめた（`tests/test_db_unresolved.py`）。
+
+### 直したこと
+
+仕様書 1118 行目は「**数えない**」と「**記録する**」の 2 つを求めている。
+前者は（guard ではなく proxy 行の受け手型一致によって偶然）満たされていたが、
+**後者はどこにも実装されていなかった。`.execute()` が 1 つも痕跡を残さず消えていた。**
+
+`EffectExtractor.on_call` に `_note_db_unresolved` を足し、`execute` / `executemany` で
+DB 効果にならなかった呼び出しを `(method, relpath, lineno, receiver_classes)` として
+記録する。**効果は作らない。** `report.py` の
+`effect_fp_audit.db_only_non_db_execute` を、到達不能だった分岐から
+`len(u.db_unresolved)` に変えた。
+
+### 母集団 v2（`evidence/scan_v2_run7`）の実測
+
+| 項目 | 値 |
+|---|---|
+| `db_unresolved` の記録 | **2,078 件 / 482 ユニット / 19 木**（一意な位置 332） |
+| DB 効果として出ているもの | **230** |
+| **未解決率**（未解決 / (未解決 + DB 効果)） | **90.0%** |
+| 受け手の型 | 2,066 が**型不明** / `Json2TransportClient` 11 / `Neo4jProjection` 1 |
+
+**run6 → run7 の verdict は完全に一致**（ユニット 2,231 / 効果 5,987 /
+CONTRADICTION 85 / `GAP_INJECT` 1,928）。較正対 14 木も 0/0/0。
+**記録は manifest の属性であって効果でも verdict でもない。**
+
+### **20 件の抜き取りで 15 件（75%）が本物の SQL 呼び出しだった**
+
+仕様書 1118 行目が求める「20 ユニットの抜き取り照合でこの規則の誤り率を報告する」を行った。
+一意な位置 332 件を決定論的に並べ、等間隔で 20 件を取った。
+
+**本物の SQL（15 件）**の例:
+
+```python
+cur.execute("UPDATE users SET kakao_access_token = %s, ...")     # psycopg
+cur.execute("UPDATE rooms SET status = 'deleting', ...")
+result = await self.session.execute(select(Game).where(...))     # SQLAlchemy
+db().execute("SELECT * FROM events WHERE session_id = ? ...")    # sqlite3
+```
+
+**DB でない（5 件）**: Google API クライアントの `req.execute()` / `.list(...).execute()`
+（Drive 2 / Calendar 1 / Gmail 1）と Redis の `pipe.execute()` 1。
+
+### **これは DB 効果の誤 clear である。新しい問題として O29 に置いた**
+
+**規則そのものは仕様どおりに働いている**（解決できないものを DB 効果に数えない）。
+問題は**受け手型の解決力**で、`with c.cursor() as cur:` や
+`self.conn` / `db()` のような普通の書き方で型が追えていない。
+
+**向きは誤 clear。** 母集団の DB 書き込みの大半が効果として出ていない。
+`readOnlyHint: true` + DB 書き込みの矛盾（`docs/contradiction_matrix.md` の D1、
+O23 #1）を実装するかどうかに関係なく、**分母そのものが 10 分の 1 になっている。**
+
+**この誤 clear は、仕様が求めた FP 監査の分子を実装した瞬間に見えた。**
+D47 の教訓（落としたものの件数を出力に載せる）の実例である。
