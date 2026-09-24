@@ -332,3 +332,18 @@ sink（`requests.request` / `httpx.request` / `httpx.AsyncClient.request` など
 
 SQL 以外の slot（パス・コマンド・宛先・メソッド）は接頭辞を読まないので、9.3 の規則（MODEL かつ
 resolved なら矛、MODEL で opaque なら不）だけを使う。
+
+### 9.5 O30 の修正の敵対的レビューで見つけた既存の弱点（D57）
+
+9.1 でテストの候補を外すと、**候補が 1 つだけ残る**呼び出しが増える。run14 の点検で、その 1 つが
+**クラスに属さない関数**なのに、**属性の呼び出し**（`resp.get(...)`）から**確度 resolved** で降りている
+経路が見つかった（moon201595: `s2_search_papers` → `code_ladder.get` の DB。xagent: `_client` →
+スクリプト内の関数内関数 `run_case.client`）。`_resolve_in_tree` は「メソッドの呼び出しをクラスの
+メソッドへ末尾名だけで結ぶ」ときは by_name（`opaque(unresolved)`）にしていたが、**クラスに属さない関数へ
+結ぶときはその印を付けていなかった**。run13 までは、テストファイルの同名メソッドが候補に混ざって
+2 つになり、降りていなかったので隠れていた。
+
+**規則**: 属性の呼び出し（`x.f(...)`）を、クラスに属さない関数へ**木全体の名前検索だけで**結ぶ解決は、
+受け手型で裏付けられないので by_name とする（降りるが、効果の確度に `opaque(unresolved)` を合流する。
+D17 改訂と同じ扱い）。import 表で結んだモジュールの関数（`code_ladder.get(...)` で `code_ladder` が
+import されている）は `_pinned_candidates` が先に解決するので変わらない。
