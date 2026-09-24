@@ -2904,3 +2904,45 @@ OOM になるので、深さによらず 1 本ずつ走らせる（D52）。
   連鎖が深さとともに増える。**深さ 4 → 5 の増分（位置 +178、CONTRADICTION +47）は
   3 → 4（位置 +865、CONTRADICTION +61）より小さく、上限に当たるユニットも 805 → 696 と
   減り方が鈍る。**
+
+## D54（2026-09-24）`MAX_DEPTH` を 3 → 4 に上げる（学生の決定、O29 の案 (a)）
+
+**仕様書 §（243 行目）は「深さ 3 はこの下向きの呼び出し深さ」。仕様書は書き換えない。**
+実データ（D53 の感度分析）を見て学生が 4 を選んだ。事前登録からの逸脱 #17。
+
+### 理由（D53 の数字）
+
+* 深さ 3 → 4 で DB 未解決率 24.6% → 17.6%、CONTRADICTION 85 → 146。**消えたものは 0。**
+* 増えた CONTRADICTION 61 件の手検証: 本物 35 / 遠隔の応答次第 13 / 規則どおりだが意味は
+  非破壊 8 / 誤検出 5。
+* 時間 +7%（86 木、単独実行で 396 → 424 秒）。打ち切りは増えない。
+* 深さ 5 はさらに CONTRADICTION +47（誤検出 0）を得るが時間 +24%。学生は 4 を選んだ。
+
+### 変えたもの
+
+`authgap/ir.py: MAX_DEPTH = 4`（解析指紋の `caps` に出る）。**深さ 3 の値は
+`Options(max_depth=3)`（`scripts/scan_v2.py --max-depth 3`）で出し直せる。** 仕様書が
+比較対象に挙げる DCIChecker は「手続き間深さ k=3」なので、**DCIChecker と並べる行は
+深さ 3 でも出して併記する**（条件を揃えるため）。
+
+### 確かめたこと（変更前 `ff04043` → 変更後）
+
+* pytest 618 passed / B3a 8/8 / B3b 15/15 / 変異の生存 1/15（変更前と同じ）。
+* `two_sided`: 事前登録照合 8/8、verdict-clearing 厳密 0/8・INJECT 1/8（変更前と同じ）。
+* `diff_effects`（較正 14 木）: **消えた行 0**、増えた 54（A18 20×2、A9 5×2、A5 2×2）、
+  slot 変化 90 はすべて確度の注記だけ（`opaque(depth+unresolved)` → `opaque(unresolved)` 88、
+  `opaque(depth)` → `opaque(depth+unresolved)` 2）。**slot の主体と確度の種類は 1 件も変わらない。**
+  増えた行の中に末尾名の誤解決がある（A9: `_smtp_list_emails` の `…logout()` →
+  `WhatsAppWebAdapter.logout`。O30）。
+* 母集団 v2 の run11（`evidence/scan_v2_run11`、`docs/scan_v2_run11_diff.md`）:
+  run10 から**消えたユニット 0 / 消えた CONTRADICTION 0**。深さ 4 の感度分析の run
+  （`scan_v2_depth4_sens`）とは集合差がすべて 0 で、manifest の違いは 5 木の集合の表示順だけ
+  （D52 の `stable_repr`。正規化すれば一致）。§3 の交差行は 1 行 / 1 プロジェクト（run10 と同じ）。
+* `docs/catalog_map.md` を run11 で作り直した。**D50 で足した `CALL_TYPE_TRANSITIONS` /
+  `ANNOTATION_TYPED_RECEIVERS` が未分類のままだった**ので、核・転記として分類した
+  （地図を run5 から作り直していなかったため気づかなかった）。
+
+### 深さ 4 で見えた誤検出の型（未決として残す）
+
+* **O30**: 末尾名の解決がテストファイルの定義に結びつき、段数ぶん連鎖する（誤警報、`UNKNOWN` の行）。
+* **O31**: 定数の `None` / `False` を渡した分岐を区別しない（誤警報、CONTRADICTION 4 件）。

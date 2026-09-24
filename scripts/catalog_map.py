@@ -48,6 +48,8 @@ CLASSIFY: dict[str, tuple[str, str, str]] = {
     "TRANSFERS": ("core", "転記", "realpath / Path.resolve / shlex.quote / urlparse"),
     "INDIRECTS": ("core", "転記", "multiprocessing.Process / Thread / partial / submit"),
     "CTORS": ("core", "転記", "sqlite3.connect / httpx.Client / git.Repo"),
+    "CALL_TYPE_TRANSITIONS": ("core", "転記", "受け手型 × メソッド → 戻り値の型（conn.cursor() → Cursor など）。D50"),
+    "ANNOTATION_TYPED_RECEIVERS": ("core", "転記", "型注釈から受け手型を付けてよい型（DB の型だけ）。D50"),
     "ATTR_TYPE_TRANSITIONS": ("core", "転記", "repo.git → git.cmd.Git のような型の伝播"),
     # -- 入口（この研究の領域固有の中心） --------------------------------------
     "ENTRY_RULES": ("core", "領域固有", "**既存の静的解析はどれも知らない。この研究の貢献の中心**"),

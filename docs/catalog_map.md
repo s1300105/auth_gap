@@ -1,6 +1,6 @@
 # 事前定義の地図（何を先に決めているか、なぜ、どれが自分で考えた部分か）
 
-再現: `python scripts/catalog_map.py evidence/scan_v2_run5 --md docs/catalog_map.md`
+再現: `python scripts/catalog_map.py evidence/scan_v2_run11 --md docs/catalog_map.md`
 
 **役割と出所の分類は判断であって測定ではない**（根拠は `docs/decisions.md` D37）。
 行数と、下の「実際に使われた行」は測定値。
@@ -9,15 +9,15 @@
 
 | 役割 | 表の数 | 行の合計 |
 |---|---|---|
-| 核（宣言 D と実効 M の照合に要る） | 22 | 243 |
+| 核（宣言 D と実効 M の照合に要る） | 24 | 276 |
 | 付録（D36 で降ろした主張のもの） | 30 | 200 |
-| 索引（派生。定義ではない） | 8 | 119 |
+| 索引（派生。定義ではない） | 8 | 123 |
 
 核の内訳（出所別の行数）:
 
 | 出所 | 行 |
 |---|---|
-| 既知の知識の転記 | 172 |
+| 既知の知識の転記 | 205 |
 | この研究で決めた | 53 |
 | 解析器の自己申告 | 16 |
 | 記録 | 2 |
@@ -29,11 +29,11 @@
 
 ## 核の主張が実際に使っている行
 
-`evidence/scan_v2_run5` の CONTRADICTION から逆に数えた。
+`evidence/scan_v2_run11` の CONTRADICTION から逆に数えた。
 
 - 関係した API: **13 種類**（`DIRECT_SINKS` 67 行のうち）
-- 効果の形: {'direct': 138}
-- 呼び出しを何段降りたか: 0 段 5, 1 段 27, 2 段 40, 3 段 63, 4 段 3
+- 効果の形: {'direct': 975}
+- 呼び出しを何段降りたか: 0 段 5, 1 段 27, 2 段 41, 3 段 63, 4 段 831, 5 段 8
 
 ```
   builtins.open  os.chmod  os.makedirs  os.remove  os.replace  os.unlink  pathlib.Path.mkdir  pathlib.Path.open  pathlib.Path.unlink  pathlib.Path.write_bytes  pathlib.Path.write_text  shutil.rmtree  subprocess.run
@@ -44,29 +44,33 @@
 同じ API を呼ぶツールで、readOnly と destructive の明示が両方現れるもの。
 3 ユニット以上から呼ばれる site が対象。
 
-- 効果 site の総数: 41
-- 宣言が割れている site: **20**
+- 効果 site の総数: 44
+- 宣言が割れている site: **24**
 
 | API | 宣言の分かれ方 |
 |---|---|
-| `httpx.AsyncClient.request` | {'openWorldHint+readOnlyHint': 378, 'openWorldHint': 269, 'destructiveHint': 32, '(宣言なし)': 23, 'readOnlyHint': 19, 'destructiveHint+openWorldHint': 3} |
-| `httpx.AsyncClient.get` | {'(宣言なし)': 102, 'destructiveHint': 19, 'readOnlyHint': 17, 'destructiveHint+openWorldHint': 8, 'openWorldHint+readOnlyHint': 8} |
-| `httpx.AsyncClient.post` | {'(宣言なし)': 101, 'destructiveHint+openWorldHint': 10, 'readOnlyHint': 9, 'destructiveHint': 7} |
-| `builtins.open` | {'(宣言なし)': 45, 'readOnlyHint': 9, 'destructiveHint': 4, 'destructiveHint+openWorldHint': 1, 'openWorldHint': 1} |
-| `pathlib.Path.mkdir` | {'(宣言なし)': 23, 'destructiveHint': 19, 'readOnlyHint': 8, 'destructiveHint+openWorldHint': 3, 'openWorldHint': 1, 'openWorldHint+readOnlyHint': 1} |
-| `subprocess.run` | {'(宣言なし)': 32, 'readOnlyHint': 12, 'destructiveHint': 3, 'destructiveHint+openWorldHint': 1, 'openWorldHint+readOnlyHint': 1, 'openWorldHint': 1} |
-| `pathlib.Path.read_text` | {'readOnlyHint': 18, '(宣言なし)': 8, 'destructiveHint': 4} |
-| `psycopg.Cursor.execute` | {'readOnlyHint': 13, '(宣言なし)': 6, 'destructiveHint+openWorldHint': 3, 'destructiveHint': 3, 'openWorldHint+readOnlyHint': 2} |
-| `urllib.request.urlopen` | {'(宣言なし)': 6, 'readOnlyHint': 6, 'openWorldHint+readOnlyHint': 6, 'destructiveHint+openWorldHint': 2, 'destructiveHint': 1} |
-| `os.chmod` | {'openWorldHint+readOnlyHint': 6, 'readOnlyHint': 4, '(宣言なし)': 3, 'destructiveHint': 1} |
-| `os.unlink` | {'openWorldHint+readOnlyHint': 6, '(宣言なし)': 4, 'destructiveHint': 3} |
+| `httpx.AsyncClient.request` | {'openWorldHint+readOnlyHint': 382, 'openWorldHint': 269, 'destructiveHint': 32, '(宣言なし)': 29, 'readOnlyHint': 19, 'destructiveHint+openWorldHint': 3} |
+| `sqlalchemy.Connection.execute` | {'(宣言なし)': 361, 'readOnlyHint': 24, 'destructiveHint': 8} |
+| `pathlib.Path.open` | {'(宣言なし)': 323, 'destructiveHint': 2, 'readOnlyHint': 1, 'destructiveHint+openWorldHint': 1} |
+| `httpx.AsyncClient.get` | {'(宣言なし)': 109, 'readOnlyHint': 24, 'destructiveHint': 22, 'openWorldHint+readOnlyHint': 16, 'destructiveHint+openWorldHint': 10} |
+| `httpx.AsyncClient.post` | {'(宣言なし)': 116, 'readOnlyHint': 16, 'destructiveHint': 11, 'destructiveHint+openWorldHint': 11, 'openWorldHint+readOnlyHint': 5} |
+| `psycopg.Cursor.execute` | {'destructiveHint': 32, 'readOnlyHint': 24, '(宣言なし)': 21, 'destructiveHint+openWorldHint': 13, 'openWorldHint+readOnlyHint': 2} |
+| `builtins.open` | {'(宣言なし)': 45, 'readOnlyHint': 15, 'destructiveHint': 5, 'destructiveHint+openWorldHint': 1, 'openWorldHint': 1} |
+| `pathlib.Path.read_text` | {'readOnlyHint': 30, 'destructiveHint': 23, '(宣言なし)': 12, 'destructiveHint+openWorldHint': 1} |
+| `pathlib.Path.mkdir` | {'(宣言なし)': 23, 'destructiveHint': 19, 'readOnlyHint': 8, 'destructiveHint+openWorldHint': 4, 'openWorldHint+readOnlyHint': 2, 'openWorldHint': 1} |
+| `subprocess.run` | {'(宣言なし)': 37, 'readOnlyHint': 12, 'destructiveHint': 3, 'destructiveHint+openWorldHint': 2, 'openWorldHint+readOnlyHint': 1, 'openWorldHint': 1} |
+| `urllib.request.urlopen` | {'openWorldHint+readOnlyHint': 14, '(宣言なし)': 13, 'readOnlyHint': 9, 'openWorldHint': 4, 'destructiveHint+openWorldHint': 3, 'destructiveHint': 1} |
+| `requests.post` | {'(宣言なし)': 25, 'openWorldHint': 4, 'openWorldHint+readOnlyHint': 4, 'destructiveHint+openWorldHint': 3} |
+| `os.chmod` | {'openWorldHint+readOnlyHint': 14, '(宣言なし)': 9, 'readOnlyHint': 7, 'openWorldHint': 4, 'destructiveHint': 1} |
+| `os.unlink` | {'openWorldHint+readOnlyHint': 14, '(宣言なし)': 10, 'openWorldHint': 4, 'destructiveHint': 3, 'readOnlyHint': 3} |
+| `os.replace` | {'openWorldHint+readOnlyHint': 14, '(宣言なし)': 7, 'openWorldHint': 4, 'readOnlyHint': 3, 'destructiveHint': 2} |
+| `pathlib.Path.write_text` | {'destructiveHint': 16, '(宣言なし)': 8, 'destructiveHint+openWorldHint': 2, 'openWorldHint+readOnlyHint': 1} |
+| `os.makedirs` | {'readOnlyHint': 15, '(宣言なし)': 5, 'destructiveHint+openWorldHint': 1} |
 | `pathlib.Path.read_bytes` | {'readOnlyHint': 6, '(宣言なし)': 3, 'destructiveHint': 2} |
-| `os.replace` | {'openWorldHint+readOnlyHint': 6, 'destructiveHint': 2, '(宣言なし)': 1} |
-| `pathlib.Path.open` | {'(宣言なし)': 7, 'readOnlyHint': 1, 'destructiveHint+openWorldHint': 1} |
+| `pathlib.Path.glob` | {'(宣言なし)': 4, 'readOnlyHint': 3, 'destructiveHint': 1} |
 | `os.remove` | {'readOnlyHint': 5, 'destructiveHint+openWorldHint': 1, '(宣言なし)': 1} |
 | `pathlib.Path.rglob` | {'(宣言なし)': 4, 'readOnlyHint': 1, 'destructiveHint': 1} |
 | `httpx.get` | {'(宣言なし)': 3, 'readOnlyHint': 2, 'destructiveHint+openWorldHint': 1} |
-| `os.makedirs` | {'(宣言なし)': 2, 'readOnlyHint': 2, 'destructiveHint+openWorldHint': 1} |
 | `os.walk` | {'readOnlyHint': 2, 'destructiveHint': 2, '(宣言なし)': 1} |
 | `os.listdir` | {'(宣言なし)': 1, 'destructiveHint+openWorldHint': 1, 'readOnlyHint': 1, 'destructiveHint': 1} |
 
@@ -82,12 +86,14 @@
 |---|---|---|---|---|
 | `DIRECT_SINKS` | sinks | 67 | 既知の知識の転記 | subprocess.run / open / rmtree / httpx.get。ただし destructive 印は領域固有 |
 | `TRANSFERS` | transfers | 34 | 既知の知識の転記 | realpath / Path.resolve / shlex.quote / urlparse |
-| `PROXY_SINKS` | sinks | 16 | 既知の知識の転記 | receiver 型経由の sink（git.Git.checkout など） |
-| `DB_RECEIVER_TYPES` | sinks | 14 | 既知の知識の転記 | 非 DB の .execute() を数えないための受け手型 |
+| `ANNOTATION_TYPED_RECEIVERS` | transfers | 17 | 既知の知識の転記 | 型注釈から受け手型を付けてよい型（DB の型だけ）。D50 |
+| `CTORS` | transfers | 17 | 既知の知識の転記 | sqlite3.connect / httpx.Client / git.Repo |
+| `DB_RECEIVER_TYPES` | sinks | 17 | 既知の知識の転記 | 非 DB の .execute() を数えないための受け手型 |
+| `PROXY_SINKS` | sinks | 17 | 既知の知識の転記 | receiver 型経由の sink（git.Git.checkout など） |
 | `ENTRY_RULES` | entries | 14 | この研究で決めた | **既存の静的解析はどれも知らない。この研究の貢献の中心** |
-| `CTORS` | transfers | 13 | 既知の知識の転記 | sqlite3.connect / httpx.Client / git.Repo |
 | `INDIRECTS` | transfers | 9 | 既知の知識の転記 | multiprocessing.Process / Thread / partial / submit |
 | `INTERPRETER_ARGV0` | sinks | 9 | 既知の知識の転記 | argv0 がインタプリタかの判定 |
+| `CALL_TYPE_TRANSITIONS` | transfers | 8 | 既知の知識の転記 | 受け手型 × メソッド → 戻り値の型（conn.cursor() → Cursor など）。D50 |
 | `VALUE_ATTRS` | ir | 8 | 解析器の自己申告 | 値に付く属性 8 語 |
 | `VAL_OPAQUE_REASONS` | ir | 8 | 解析器の自己申告 | 値を解決できなかった理由 8 語 |
 | `ATTR_TYPE_TRANSITIONS` | transfers | 7 | 既知の知識の転記 | repo.git → git.cmd.Git のような型の伝播 |
@@ -144,7 +150,7 @@
 |---|---|---|---|---|
 | `TRANSFER_BY_NAME` | transfers | 34 | - | TRANSFERS の索引 |
 | `WEAK_REASON_SET` | validators | 22 | - | WEAK_REASONS の集合 |
-| `CTOR_BY_NAME` | transfers | 13 | - | CTORS の索引 |
+| `CTOR_BY_NAME` | transfers | 17 | - | CTORS の索引 |
 | `SHAPE_NAMES` | validators | 12 | - | VALIDATOR_SHAPES の名前 |
 | `APPROVAL_NAMES` | entries | 11 | - | APPROVAL_INTERRUPTS の名前 |
 | `METHOD_TRANSFERS` | transfers | 11 | - | TRANSFERS の受け手主語だけ |
