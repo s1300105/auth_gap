@@ -1,6 +1,6 @@
 # 事前定義の地図（何を先に決めているか、なぜ、どれが自分で考えた部分か）
 
-再現: `python scripts/catalog_map.py evidence/scan_v2_run15 --md docs/catalog_map.md`
+再現: `python scripts/catalog_map.py evidence/scan_v2_run16 --md docs/catalog_map.md`
 
 **役割と出所の分類は判断であって測定ではない**（根拠は `docs/decisions.md` D37）。
 行数と、下の「実際に使われた行」は測定値。
@@ -29,7 +29,7 @@
 
 ## 核の主張が実際に使っている行
 
-`evidence/scan_v2_run15` の CONTRADICTION から逆に数えた。
+`evidence/scan_v2_run16` の CONTRADICTION から逆に数えた。
 
 - 関係した API: **14 種類**（`DIRECT_SINKS` 67 行のうち）
 - 効果の形: {'direct': 849, 'proxy': 675}
@@ -45,7 +45,7 @@
 3 ユニット以上から呼ばれる site が対象。
 
 - 効果 site の総数: 44
-- 宣言が割れている site: **24**
+- 宣言が割れている site: **25**
 
 | API | 宣言の分かれ方 |
 |---|---|
@@ -54,7 +54,7 @@
 | `httpx.AsyncClient.post` | {'(宣言なし)': 116, 'readOnlyHint': 18, 'destructiveHint': 11, 'destructiveHint+openWorldHint': 11, 'openWorldHint+readOnlyHint': 5} |
 | `psycopg.Cursor.execute` | {'destructiveHint': 32, 'readOnlyHint': 25, '(宣言なし)': 22, 'destructiveHint+openWorldHint': 13, 'openWorldHint+readOnlyHint': 3} |
 | `pathlib.Path.read_text` | {'readOnlyHint': 30, 'destructiveHint': 23, '(宣言なし)': 13, 'destructiveHint+openWorldHint': 1} |
-| `builtins.open` | {'(宣言なし)': 44, 'readOnlyHint': 15, 'destructiveHint': 5, 'destructiveHint+openWorldHint': 1, 'openWorldHint': 1} |
+| `builtins.open` | {'(宣言なし)': 45, 'readOnlyHint': 15, 'destructiveHint': 5, 'destructiveHint+openWorldHint': 1, 'openWorldHint': 1} |
 | `subprocess.run` | {'(宣言なし)': 37, 'readOnlyHint': 13, 'openWorldHint+readOnlyHint': 3, 'destructiveHint': 3, 'openWorldHint': 2, 'destructiveHint+openWorldHint': 2} |
 | `pathlib.Path.mkdir` | {'(宣言なし)': 23, 'destructiveHint': 19, 'readOnlyHint': 8, 'destructiveHint+openWorldHint': 3, 'openWorldHint': 1, 'openWorldHint+readOnlyHint': 1} |
 | `sqlalchemy.Connection.execute` | {'readOnlyHint': 24, '(宣言なし)': 19, 'destructiveHint': 6} |
@@ -71,6 +71,7 @@
 | `os.remove` | {'readOnlyHint': 5, 'destructiveHint+openWorldHint': 1, '(宣言なし)': 1} |
 | `pathlib.Path.rglob` | {'(宣言なし)': 4, 'readOnlyHint': 1, 'destructiveHint': 1} |
 | `httpx.get` | {'(宣言なし)': 3, 'readOnlyHint': 2, 'destructiveHint+openWorldHint': 1} |
+| `sqlalchemy.text` | {'(宣言なし)': 3, 'destructiveHint': 1, 'readOnlyHint': 1} |
 | `os.walk` | {'readOnlyHint': 2, 'destructiveHint': 2, '(宣言なし)': 1} |
 | `os.listdir` | {'(宣言なし)': 1, 'destructiveHint+openWorldHint': 1, 'readOnlyHint': 1, 'destructiveHint': 1} |
 
