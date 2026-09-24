@@ -273,14 +273,21 @@ class ValEngine:
         res: ValResult,
         depth: int,
         chain: tuple[str, ...],
-    ) -> None:
-        """**文順の前向き走査。`ast.walk` を使わない。**"""
+    ) -> bool:
+        """**文順の前向き走査。`ast.walk` を使わない。**
+
+        返り値は「この本体が必ず終わった（`return` / `raise`）か」（D58、O31）。終わった後の文は
+        実行しない（到達しない）。
+        """
         for st in body:
-            self._exec_stmt(st, env, scope, res, depth, chain)
+            if self._exec_stmt(st, env, scope, res, depth, chain):
+                return True
+        return False
 
     def _exec_stmt(
         self, st, env: Env, scope: Scope, res: ValResult, depth: int, chain: tuple[str, ...]
-    ) -> None:
+    ) -> bool:
+        """文を 1 つ実行する。返り値は「必ず終わる文か」（`return` / `raise` / 両方の枝が終わる `if`）。"""
         if isinstance(st, ast.Assign):
             value = self._eval(st.value, env, scope, res, depth, chain)
             for t in st.targets:
@@ -300,14 +307,26 @@ class ValEngine:
                 value = self._eval(st.value, env, scope, res, depth, chain)
                 prev = env.get("<return>")
                 env.set("<return>", value if prev is None else value_join(prev, value))
+            return True
         elif isinstance(st, ast.If):
             self._eval(st.test, env, scope, res, depth, chain)
+            truth = _static_truth(st.test, env)
+            if truth is not None:
+                # **条件が定数で決まるときは取られる側の枝だけを実行する**（D58、O31）。
+                # 取られない枝は実行されないので、その効果も env も持ち込まない。
+                taken = env.copy()
+                ended = self._exec_body(st.body if truth else st.orelse, taken, scope, res, depth, chain)
+                for k, v in taken.items():
+                    env.set(k, v)
+                return ended
             a, b = env.copy(), env.copy()
-            self._exec_body(st.body, a, scope, res, depth, chain)
-            self._exec_body(st.orelse, b, scope, res, depth, chain)
+            ended_a = self._exec_body(st.body, a, scope, res, depth, chain)
+            ended_b = self._exec_body(st.orelse, b, scope, res, depth, chain)
+            # env の合流は今までどおり（終わる枝の `self.x = …` は呼び出し元に残るので捨てない）。
             merged = env_join(a, b)
             for k, v in merged.items():
                 env.set(k, v)
+            return ended_a and ended_b
         elif isinstance(st, (ast.For, ast.AsyncFor)):
             self._exec_loop(st, env, scope, res, depth, chain, iter_target=True)
         elif isinstance(st, ast.While):
@@ -331,13 +350,14 @@ class ValEngine:
             for k, v in merged.items():
                 env.set(k, v)
         elif isinstance(st, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
-            return  # 入れ子定義は別ユニット。ここでは降りない
+            return False  # 入れ子定義は別ユニット。ここでは降りない
         elif isinstance(st, ast.Raise):
             if st.exc is not None:
                 self._eval(st.exc, env, scope, res, depth, chain)
+            return True
         elif isinstance(st, (ast.Import, ast.ImportFrom, ast.Pass, ast.Break, ast.Continue,
                              ast.Global, ast.Nonlocal, ast.Delete)):
-            return
+            return False
         elif isinstance(st, ast.Assert):
             self._eval(st.test, env, scope, res, depth, chain)
         elif _MATCH is not None and isinstance(st, _MATCH):
@@ -351,6 +371,7 @@ class ValEngine:
                 env.set(k, v)
         else:
             res.note_opaque("dynamic")
+        return False
 
     def _exec_loop(
         self,
@@ -1629,24 +1650,99 @@ class ValEngine:
         if fn_args is None:
             return seed
         positional = list(fn_args.posonlyargs) + list(fn_args.args)
+        defaults = list(fn_args.defaults)
+        first_default = len(positional) - len(defaults)
         offset = 0
         if callee.classname is not None and positional and positional[0].arg in ("self", "cls"):
             if receiver is not None:
                 seed[positional[0].arg] = receiver
             offset = 1
         for i, a in enumerate(positional[offset:]):
+            j = i + offset
             if i < len(args):
                 seed[a.arg] = args[i]
             elif a.arg in kwargs:
                 seed[a.arg] = kwargs[a.arg]
             else:
-                seed[a.arg] = _seed_from_annotation(a)
-        for a in fn_args.kwonlyargs:
-            seed[a.arg] = kwargs.get(a.arg, _seed_from_annotation(a))
+                # 省略された引数はリテラルの既定値を入れる（D58、O31）。注釈による受け手の型付けは
+                # `_seed_params` がこの後にかける。
+                d = _literal_default(defaults[j - first_default]) if j >= first_default else None
+                seed[a.arg] = d if d is not None else _seed_from_annotation(a)
+        for a, dn in zip(fn_args.kwonlyargs, fn_args.kw_defaults, strict=True):
+            if a.arg in kwargs:
+                seed[a.arg] = kwargs[a.arg]
+            else:
+                d = _literal_default(dn) if dn is not None else None
+                seed[a.arg] = d if d is not None else _seed_from_annotation(a)
         return seed
 
 
 _MATCH = getattr(ast, "Match", None)
+
+
+def _literal_default(node: Optional[ast.AST]) -> Optional[Value]:
+    """仮引数の既定値がリテラルの定数（None / 真偽 / 数 / 文字列）なら、その値（OP / resolved）。"""
+    if isinstance(node, ast.Constant) and (node.value is None or isinstance(node.value, (bool, int, float, str))):
+        if node.value is None:
+            return Value(Prin.OP, RESOLVED, Atom(none=True))
+        return Value(Prin.OP, RESOLVED, Atom(const=node.value))
+    return None
+
+
+_NOT_STATIC = object()
+
+
+def _static_value(node: ast.AST, env: Env) -> Any:
+    """リテラル、または確度 resolved の定数に束縛された**ローカルの名前**の値。決まらなければ `_NOT_STATIC`。"""
+    if isinstance(node, ast.Constant):
+        return node.value
+    if isinstance(node, ast.Name):
+        v = env.get(node.id)
+        if v is None or v.prov.kind != "resolved" or not isinstance(v.shape, Atom):
+            return _NOT_STATIC
+        if v.shape.none:
+            return None
+        c = v.shape.const
+        if c is not None and isinstance(c, (bool, int, float, str)):
+            return c
+    return _NOT_STATIC
+
+
+def _static_truth(test: ast.AST, env: Env) -> Optional[bool]:
+    """`if` の条件が定数で決まるなら真偽、決まらなければ `None`（D58、O31）。
+
+    名前（ローカル）とリテラル、`not` / `and` / `or` / 単一の比較（`is` / `is not` は None・真偽との
+    比較だけ、`==` / `!=`）だけを評価する。属性・呼び出し・添字は評価しない（誤って枝を捨てない）。
+    """
+    if isinstance(test, ast.UnaryOp) and isinstance(test.op, ast.Not):
+        t = _static_truth(test.operand, env)
+        return None if t is None else not t
+    if isinstance(test, ast.BoolOp):
+        vals = [_static_truth(v, env) for v in test.values]
+        if isinstance(test.op, ast.And):
+            if any(v is False for v in vals):
+                return False
+            return True if all(v is True for v in vals) else None
+        if any(v is True for v in vals):
+            return True
+        return False if all(v is False for v in vals) else None
+    if isinstance(test, ast.Compare) and len(test.ops) == 1:
+        left, right = _static_value(test.left, env), _static_value(test.comparators[0], env)
+        if left is _NOT_STATIC or right is _NOT_STATIC:
+            return None
+        op = test.ops[0]
+        if isinstance(op, (ast.Is, ast.IsNot)):
+            if not any(x is None or isinstance(x, bool) for x in (left, right)):
+                return None
+            same = left is right
+            return same if isinstance(op, ast.Is) else not same
+        if isinstance(op, ast.Eq):
+            return left == right
+        if isinstance(op, ast.NotEq):
+            return left != right
+        return None
+    v = _static_value(test, env)
+    return None if v is _NOT_STATIC else bool(v)
 
 
 def _fake_call(func_node: ast.AST) -> ast.Call:
