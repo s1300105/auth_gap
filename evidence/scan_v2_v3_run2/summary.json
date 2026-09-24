@@ -1,0 +1,993 @@
+{
+ "_note": "v3 回帰の確認（D61 の後）",
+ "analyzer_commit": "94c40b4b9516a14e759b228b2c77c0a06ad2f105",
+ "max_depth": 4,
+ "n_trees_resumed": 0,
+ "n_trees": 91,
+ "n_units": 3065,
+ "n_dangerous_units": 1024,
+ "n_rows": 9767,
+ "verdict_rows": {
+  "CONTRADICTION": 325,
+  "GAP_INJECT": 1931,
+  "GAP_SELECT": 915,
+  "INVENTORY": 670,
+  "UNKNOWN": 8234
+ },
+ "trees": [
+  {
+   "tree": "v3-abhinavnatarajan__sqlite-reader-mcp",
+   "status": "ok",
+   "n_units": 3,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.0
+  },
+  {
+   "tree": "v3-advsinai__jira-agent",
+   "status": "ok",
+   "n_units": 5,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.2
+  },
+  {
+   "tree": "v3-akougkas__helios-mcp",
+   "status": "ok",
+   "n_units": 7,
+   "n_rows": 34,
+   "verdicts": {
+    "CONTRADICTION": 1,
+    "GAP_INJECT": 3,
+    "UNKNOWN": 34
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 1.5
+  },
+  {
+   "tree": "v3-aldirrss__session-ai-mcp",
+   "status": "ok",
+   "n_units": 5,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.1
+  },
+  {
+   "tree": "v3-andrijadumancic__mcp_test",
+   "status": "ok",
+   "n_units": 14,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.0
+  },
+  {
+   "tree": "v3-andybrandt__mcp-simple-openai-assistant",
+   "status": "ok",
+   "n_units": 16,
+   "n_rows": 10,
+   "verdicts": {
+    "GAP_INJECT": 5,
+    "UNKNOWN": 10
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.1
+  },
+  {
+   "tree": "v3-aslamkhan-github__lab",
+   "status": "ok",
+   "n_units": 1056,
+   "n_rows": 1919,
+   "verdicts": {
+    "GAP_INJECT": 548,
+    "GAP_SELECT": 4,
+    "UNKNOWN": 1322
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 26.6
+  },
+  {
+   "tree": "v3-bali-zero__teman2",
+   "status": "ok",
+   "n_units": 181,
+   "n_rows": 573,
+   "verdicts": {
+    "CONTRADICTION": 4,
+    "GAP_INJECT": 33,
+    "UNKNOWN": 545
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 147.2
+  },
+  {
+   "tree": "v3-bauer-group__ip-zammad-mcpserver",
+   "status": "ok",
+   "n_units": 72,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 1.3
+  },
+  {
+   "tree": "v3-bigapple12138__test-runner",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.4
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "status": "ok",
+   "n_units": 24,
+   "n_rows": 50,
+   "verdicts": {
+    "CONTRADICTION": 39,
+    "GAP_INJECT": 50,
+    "UNKNOWN": 45
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.6
+  },
+  {
+   "tree": "v3-chris0jeky__local-asset-studio",
+   "status": "ok",
+   "n_units": 18,
+   "n_rows": 2732,
+   "verdicts": {
+    "GAP_INJECT": 12,
+    "UNKNOWN": 2732
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 25.3
+  },
+  {
+   "tree": "v3-clcc2019__agentic-infra",
+   "status": "ok",
+   "n_units": 76,
+   "n_rows": 267,
+   "verdicts": {
+    "CONTRADICTION": 8,
+    "GAP_INJECT": 76,
+    "UNKNOWN": 242
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 1.5
+  },
+  {
+   "tree": "v3-crper__py-image-compress-mcp",
+   "status": "ok",
+   "n_units": 2,
+   "n_rows": 1,
+   "verdicts": {
+    "GAP_INJECT": 1,
+    "UNKNOWN": 1
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.6
+  },
+  {
+   "tree": "v3-dannymaaz__easypanel-mcp",
+   "status": "ok",
+   "n_units": 29,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.7
+  },
+  {
+   "tree": "v3-deeepanshu__yt-learner",
+   "status": "ok",
+   "n_units": 1,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.3
+  },
+  {
+   "tree": "v3-designcomputer__mysql_mcp_server",
+   "status": "ok",
+   "n_units": 1,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.1
+  },
+  {
+   "tree": "v3-docslicer__docslicer",
+   "status": "ok",
+   "n_units": 5,
+   "n_rows": 20,
+   "verdicts": {
+    "GAP_INJECT": 15,
+    "UNKNOWN": 20
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 4.4
+  },
+  {
+   "tree": "v3-dreamrec__comfypilot",
+   "status": "ok",
+   "n_units": 96,
+   "n_rows": 96,
+   "verdicts": {
+    "CONTRADICTION": 7,
+    "GAP_INJECT": 48,
+    "UNKNOWN": 95
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 7.7
+  },
+  {
+   "tree": "v3-earchibald__yoto-smart-stream",
+   "status": "ok",
+   "n_units": 7,
+   "n_rows": 46,
+   "verdicts": {
+    "GAP_INJECT": 20,
+    "UNKNOWN": 46
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 1.3
+  },
+  {
+   "tree": "v3-elrepositoriodeloabsurdo__mpcchile",
+   "status": "ok",
+   "n_units": 12,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.2
+  },
+  {
+   "tree": "v3-engdawood__mistral-ocr",
+   "status": "ok",
+   "n_units": 3,
+   "n_rows": 4,
+   "verdicts": {
+    "GAP_INJECT": 4,
+    "UNKNOWN": 4
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.1
+  },
+  {
+   "tree": "v3-ertugrulcetinkaya-ai__qwen-codex-worker",
+   "status": "ok",
+   "n_units": 1,
+   "n_rows": 2,
+   "verdicts": {
+    "GAP_INJECT": 2,
+    "UNKNOWN": 2
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.4
+  },
+  {
+   "tree": "v3-evanniko1__cellarium",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 5.9
+  },
+  {
+   "tree": "v3-evgenygurin__dj-music-plugin",
+   "status": "ok",
+   "n_units": 63,
+   "n_rows": 61,
+   "verdicts": {
+    "CONTRADICTION": 6,
+    "GAP_INJECT": 35,
+    "UNKNOWN": 56
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 12.6
+  },
+  {
+   "tree": "v3-firefox2100__overleaf-mcp",
+   "status": "ok",
+   "n_units": 59,
+   "n_rows": 3,
+   "verdicts": {
+    "GAP_INJECT": 1,
+    "UNKNOWN": 3
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 1.0
+  },
+  {
+   "tree": "v3-gcamposgit__segundocerebro",
+   "status": "ok",
+   "n_units": 8,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 7.7
+  },
+  {
+   "tree": "v3-golinks__goprofiles-mcp",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.2
+  },
+  {
+   "tree": "v3-harshrathod7999-ops__taskpilot",
+   "status": "ok",
+   "n_units": 3,
+   "n_rows": 12,
+   "verdicts": {
+    "CONTRADICTION": 1,
+    "GAP_INJECT": 4,
+    "UNKNOWN": 2
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.2
+  },
+  {
+   "tree": "v3-ignatenkofi__memshelf-mcp",
+   "status": "ok",
+   "n_units": 14,
+   "n_rows": 282,
+   "verdicts": {
+    "CONTRADICTION": 15,
+    "GAP_INJECT": 166,
+    "UNKNOWN": 237
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 2.3
+  },
+  {
+   "tree": "v3-ilmari99__polygate-connector",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.3
+  },
+  {
+   "tree": "v3-iqmia__quollnet-mcp",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.2
+  },
+  {
+   "tree": "v3-jdiego__anvil",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.4
+  },
+  {
+   "tree": "v3-johannsenlum__is-it-ai-mcp",
+   "status": "ok",
+   "n_units": 2,
+   "n_rows": 4,
+   "verdicts": {
+    "GAP_INJECT": 2,
+    "UNKNOWN": 3
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.2
+  },
+  {
+   "tree": "v3-jonzarecki__fast-flights-mcp",
+   "status": "ok",
+   "n_units": 1,
+   "n_rows": 6,
+   "verdicts": {
+    "GAP_INJECT": 2,
+    "UNKNOWN": 6
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.1
+  },
+  {
+   "tree": "v3-josetorronteras__comunio-mcp",
+   "status": "ok",
+   "n_units": 19,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.9
+  },
+  {
+   "tree": "v3-julianobarbosa__azure-finops-mcp-server",
+   "status": "ok",
+   "n_units": 4,
+   "n_rows": 24,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.9
+  },
+  {
+   "tree": "v3-kenningai__kenning-encounter",
+   "status": "ok",
+   "n_units": 23,
+   "n_rows": 27,
+   "verdicts": {
+    "GAP_INJECT": 6,
+    "UNKNOWN": 26
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 1.6
+  },
+  {
+   "tree": "v3-kjdotio__xboxctl",
+   "status": "ok",
+   "n_units": 25,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.5
+  },
+  {
+   "tree": "v3-kolonelpanik__synapse-s2",
+   "status": "ok",
+   "n_units": 41,
+   "n_rows": 156,
+   "verdicts": {
+    "CONTRADICTION": 28,
+    "GAP_INJECT": 2,
+    "UNKNOWN": 156
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 2.8
+  },
+  {
+   "tree": "v3-kvkthecreator__yarnnnn",
+   "status": "ok",
+   "n_units": 11,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 14.1
+  },
+  {
+   "tree": "v3-lambda-capture__mcp-server",
+   "status": "ok",
+   "n_units": 1,
+   "n_rows": 4,
+   "verdicts": {
+    "GAP_INJECT": 1
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.0
+  },
+  {
+   "tree": "v3-lazyseaseal__validationtpmcp",
+   "status": "ok",
+   "n_units": 46,
+   "n_rows": 5,
+   "verdicts": {
+    "CONTRADICTION": 5,
+    "GAP_INJECT": 5,
+    "UNKNOWN": 5
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 9.2
+  },
+  {
+   "tree": "v3-lemony-ai__cascadeflow",
+   "status": "ok",
+   "n_units": 1,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 5.5
+  },
+  {
+   "tree": "v3-liammday__career-pivot-navigator",
+   "status": "ok",
+   "n_units": 4,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.2
+  },
+  {
+   "tree": "v3-lycorp-jp__awx-mcp",
+   "status": "ok",
+   "n_units": 2,
+   "n_rows": 1,
+   "verdicts": {
+    "UNKNOWN": 1
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.8
+  },
+  {
+   "tree": "v3-major__porkbun-mcp",
+   "status": "ok",
+   "n_units": 25,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.4
+  },
+  {
+   "tree": "v3-mark-usn__yt_mcp",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.2
+  },
+  {
+   "tree": "v3-markus7h__ai-rem",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.6
+  },
+  {
+   "tree": "v3-matisup10__e-boekhouden-mcp",
+   "status": "ok",
+   "n_units": 1,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.6
+  },
+  {
+   "tree": "v3-mcp-kanzennyumon-book-team__mcpbook-samples",
+   "status": "ok",
+   "n_units": 8,
+   "n_rows": 131,
+   "verdicts": {
+    "GAP_INJECT": 11,
+    "UNKNOWN": 89
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.7
+  },
+  {
+   "tree": "v3-mordechaipotash__brain-mcp",
+   "status": "ok",
+   "n_units": 7,
+   "n_rows": 10,
+   "verdicts": {
+    "GAP_INJECT": 4,
+    "UNKNOWN": 10
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.4
+  },
+  {
+   "tree": "v3-mousepotato__baidu-netdisk-xianyu",
+   "status": "ok",
+   "n_units": 28,
+   "n_rows": 76,
+   "verdicts": {
+    "GAP_INJECT": 18,
+    "UNKNOWN": 47
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.3
+  },
+  {
+   "tree": "v3-muduiclaw__clawking",
+   "status": "ok",
+   "n_units": 22,
+   "n_rows": 210,
+   "verdicts": {
+    "CONTRADICTION": 6,
+    "GAP_INJECT": 46,
+    "UNKNOWN": 196
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.8
+  },
+  {
+   "tree": "v3-myrikld__tg-mcp",
+   "status": "ok",
+   "n_units": 5,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.1
+  },
+  {
+   "tree": "v3-natejswenson__local-fitness",
+   "status": "ok",
+   "n_units": 1,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 4.3
+  },
+  {
+   "tree": "v3-nebelov__yandex-direct-for-all",
+   "status": "ok",
+   "n_units": 3,
+   "n_rows": 82,
+   "verdicts": {
+    "CONTRADICTION": 50,
+    "GAP_INJECT": 52,
+    "UNKNOWN": 72
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 1.8
+  },
+  {
+   "tree": "v3-neilcohen322__storecipe",
+   "status": "ok",
+   "n_units": 6,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 3.1
+  },
+  {
+   "tree": "v3-niduran-orion__bigquery-mcp-server",
+   "status": "ok",
+   "n_units": 5,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.1
+  },
+  {
+   "tree": "v3-nodus-compute__nodus-sdk-python",
+   "status": "ok",
+   "n_units": 39,
+   "n_rows": 12,
+   "verdicts": {
+    "CONTRADICTION": 1,
+    "GAP_INJECT": 1,
+    "UNKNOWN": 12
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 4.1
+  },
+  {
+   "tree": "v3-oogunbiyi21__stats-compass-mcp",
+   "status": "ok",
+   "n_units": 33,
+   "n_rows": 17,
+   "verdicts": {
+    "GAP_INJECT": 2,
+    "UNKNOWN": 17
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.7
+  },
+  {
+   "tree": "v3-openai__openai-apps-sdk-examples",
+   "status": "ok",
+   "n_units": 2,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.1
+  },
+  {
+   "tree": "v3-openyak__yakdb",
+   "status": "ok",
+   "n_units": 8,
+   "n_rows": 27,
+   "verdicts": {
+    "GAP_INJECT": 10,
+    "UNKNOWN": 27
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 1.0
+  },
+  {
+   "tree": "v3-p-v1shnu__pressure-harness",
+   "status": "ok",
+   "n_units": 21,
+   "n_rows": 18,
+   "verdicts": {
+    "CONTRADICTION": 6,
+    "GAP_INJECT": 2,
+    "UNKNOWN": 18
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 1.9
+  },
+  {
+   "tree": "v3-patrickfanella__homelab-overseer",
+   "status": "ok",
+   "n_units": 12,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.7
+  },
+  {
+   "tree": "v3-porkbutts__gsheets-mcp-server",
+   "status": "ok",
+   "n_units": 11,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.2
+  },
+  {
+   "tree": "v3-qwwiwi__public-gbrain-agentos",
+   "status": "ok",
+   "n_units": 84,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 4.0
+  },
+  {
+   "tree": "v3-ran-isenberg__aws-lambda-mcp-cookbook",
+   "status": "ok",
+   "n_units": 2,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.1
+  },
+  {
+   "tree": "v3-sandraschi__inkscape-mcp",
+   "status": "ok",
+   "n_units": 31,
+   "n_rows": 324,
+   "verdicts": {
+    "GAP_INJECT": 200,
+    "UNKNOWN": 230
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 3.6
+  },
+  {
+   "tree": "v3-sentien-labs__verdictswarm-mcp",
+   "status": "ok",
+   "n_units": 3,
+   "n_rows": 6,
+   "verdicts": {
+    "UNKNOWN": 6
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.2
+  },
+  {
+   "tree": "v3-shenyunhuan__gemini_mcp",
+   "status": "ok",
+   "n_units": 4,
+   "n_rows": 26,
+   "verdicts": {
+    "GAP_INJECT": 16,
+    "UNKNOWN": 24
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.3
+  },
+  {
+   "tree": "v3-shikato__mcp-instana",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 2.2
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "status": "ok",
+   "n_units": 23,
+   "n_rows": 309,
+   "verdicts": {
+    "CONTRADICTION": 92,
+    "GAP_INJECT": 23,
+    "UNKNOWN": 196
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 6.4
+  },
+  {
+   "tree": "v3-sojiropopo__arcgis-mcp",
+   "status": "ok",
+   "n_units": 36,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.9
+  },
+  {
+   "tree": "v3-soyrochus__mindstate",
+   "status": "ok",
+   "n_units": 9,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.7
+  },
+  {
+   "tree": "v3-starshipsuperjam__engine-template",
+   "status": "ok",
+   "n_units": 6,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 27.4
+  },
+  {
+   "tree": "v3-tattzy25__digital-hustle-memory",
+   "status": "ok",
+   "n_units": 10,
+   "n_rows": 79,
+   "verdicts": {
+    "GAP_INJECT": 8,
+    "GAP_SELECT": 75,
+    "INVENTORY": 4,
+    "UNKNOWN": 79
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 8.6
+  },
+  {
+   "tree": "v3-tejalpalwankar__autonomous-traders",
+   "status": "ok",
+   "n_units": 162,
+   "n_rows": 275,
+   "verdicts": {
+    "GAP_INJECT": 47,
+    "UNKNOWN": 199
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 2.8
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "status": "ok",
+   "n_units": 62,
+   "n_rows": 114,
+   "verdicts": {
+    "CONTRADICTION": 53,
+    "GAP_INJECT": 5,
+    "UNKNOWN": 100
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 6.1
+  },
+  {
+   "tree": "v3-tobi1chi__ehai",
+   "status": "ok",
+   "n_units": 1,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 4.8
+  },
+  {
+   "tree": "v3-trycaspian__caspian-sdk",
+   "status": "ok",
+   "n_units": 8,
+   "n_rows": 34,
+   "verdicts": {
+    "GAP_INJECT": 5,
+    "UNKNOWN": 30
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 4.2
+  },
+  {
+   "tree": "v3-ttokttokttok__outfix",
+   "status": "ok",
+   "n_units": 1,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 2.6
+  },
+  {
+   "tree": "v3-tuanbc__rovo-mcp-re",
+   "status": "ok",
+   "n_units": 17,
+   "n_rows": 24,
+   "verdicts": {
+    "GAP_INJECT": 17,
+    "UNKNOWN": 15
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.3
+  },
+  {
+   "tree": "v3-typerobot__klavis",
+   "status": "ok",
+   "n_units": 304,
+   "n_rows": 1643,
+   "verdicts": {
+    "CONTRADICTION": 3,
+    "GAP_INJECT": 418,
+    "GAP_SELECT": 836,
+    "INVENTORY": 666,
+    "UNKNOWN": 1267
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 27.2
+  },
+  {
+   "tree": "v3-vicampuzano__metricool-mcp",
+   "status": "ok",
+   "n_units": 7,
+   "n_rows": 4,
+   "verdicts": {
+    "UNKNOWN": 4
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.5
+  },
+  {
+   "tree": "v3-vitexsoftware__mcp-server-abraflexi",
+   "status": "ok",
+   "n_units": 69,
+   "n_rows": 4,
+   "verdicts": {
+    "GAP_INJECT": 4
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 0.9
+  },
+  {
+   "tree": "v3-vrahad-analytics__pydatarheo",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 2.6
+  },
+  {
+   "tree": "v3-w159__tech-tools",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 5.9
+  },
+  {
+   "tree": "v3-w4sp4nx2__hr-ai-operations",
+   "status": "ok",
+   "n_units": 6,
+   "n_rows": 3,
+   "verdicts": {
+    "GAP_INJECT": 1,
+    "UNKNOWN": 3
+   },
+   "budget_skipped": 0,
+   "elapsed_s": 2.7
+  },
+  {
+   "tree": "v3-z0zero__mcp-rlm",
+   "status": "ok",
+   "n_units": 5,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.1
+  },
+  {
+   "tree": "v3-zvec-ai__zvec-mcp-server",
+   "status": "ok",
+   "n_units": 17,
+   "n_rows": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "elapsed_s": 0.3
+  }
+ ]
+}

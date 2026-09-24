@@ -38,6 +38,7 @@ def main() -> int:
     ap.add_argument("--decision", required=True, help="凍結を決めた docs/decisions.md の項（例: D59）")
     ap.add_argument("--date", required=True, help="凍結の日付（YYYY-MM-DD。スクリプトは時計を読まない）")
     ap.add_argument("--out", default=os.path.join(ROOT, "docs", "fingerprint.json"))
+    ap.add_argument("--tag", default="analyzer-freeze-1", help="人が打つタグの名前（表示だけ）")
     args = ap.parse_args()
 
     if _git("status", "--porcelain", "--", "authgap"):
@@ -57,6 +58,7 @@ def main() -> int:
         **fp,
         "freeze": {
             "decision": args.decision,
+            "tag": args.tag,
             # authgap/ を最後に変えた commit（HEAD は docs だけの commit でありうる）
             "analyzer_commit": _git("log", "-1", "--format=%H", "--", "authgap"),
             "scan_run": args.run,
@@ -73,7 +75,7 @@ def main() -> int:
         fh.write(canonical_json(record))
     print(f"wrote {os.path.relpath(args.out, ROOT)}")
     print(f"実装の結合 sha256: {record['implementation_sha256_combined']}")
-    print(f"次に人が打つ: git tag -a analyzer-freeze-1 {commit} -m '解析器の凍結（{args.decision}）'")
+    print(f"次に人が打つ: git tag -a {args.tag} {commit} -m '解析器の凍結（{args.decision}）'")
     return 0
 
 
