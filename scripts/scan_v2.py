@@ -42,8 +42,10 @@ def _contradiction_rows(tree: str, manifest: dict) -> list[dict]:
             if "CONTRADICTION" not in r.get("verdicts", []):
                 continue
             key = (u["unit"]["unit_id"], r["site"], r["kind"])
+            decls = sorted({n.split(":")[1] for n in r.get("notes", []) if n.startswith("contradiction:")})
             if key in out:
                 out[key]["lineno"] = min(out[key]["lineno"], r["lineno"])
+                out[key]["declarations"] = sorted(set(out[key]["declarations"]) | set(decls))
                 continue
             e = eff_by.get((r["site"], r["kind"]), {})
             out[key] = {
@@ -56,6 +58,8 @@ def _contradiction_rows(tree: str, manifest: dict) -> list[dict]:
                 "lineno": r["lineno"],
                 "destructive": e.get("destructive"),
                 "D_explicit": list(dk.get("explicit", [])),
+                # どの宣言に反したか（D56。D1 / D2 は主指標、D3 / D4 は探索的）
+                "declarations": decls,
             }
     return [out[k] for k in sorted(out)]
 

@@ -147,7 +147,8 @@ def decide(inp: UnitVerdictInput) -> list[Row]:
         d_layers = _layers_present(inp, dk)
         # CONTRADICTION は**効果ごと**（Def 7 の CONTRADICTION(e)、D32）。ユニット内の
         # 別の効果が矛盾しても、この行の効果が宣言内（追記型など）なら立てない。
-        contradiction_flag = _contradiction_of(dk, [eff])
+        findings = _contradiction_findings(dk, eff)
+        contradiction_flag = any(status == "contradiction" for _d, status, _r in findings)
         # **行の確度で判定する。** ユニットのどこかで opaque が立ったことを
         # 全行に伝播させると、解決できている行まで UNKNOWN になり、
         # opaque 率も §3 の交差行も測れなくなる。ユニット水準の opaque 理由は
@@ -156,6 +157,12 @@ def decide(inp: UnitVerdictInput) -> list[Row]:
         sel_verdicts, sel_covered, sel_notes = _select_coordinate(
             inp, i, eff, contradiction_flag
         )
+        # 宣言ごとの結果を注記に残す（D56。宣言ごとに分けて数えるため）。
+        for d, status, r in findings:
+            if status == "contradiction":
+                sel_notes = sel_notes + (f"contradiction:{d}", f"contradiction_reason:{d}:{r}")
+            else:
+                sel_notes = sel_notes + (f"contradiction_unknown:{d}:{r}",)
 
         slots = sorted(eff.control_slots().items())
         if not slots:
@@ -186,8 +193,8 @@ def _select_coordinate(
     covered: Optional[str] = None
     notes: tuple[str, ...] = ()
     dk = inp.d_kind_by_effect.get(i, inp.d_kind)
-    # DB は `contradiction()` が SQL の先頭語で絞る（D55。表 D1 / D2 の DB 行）。
-    if contradiction_flag and eff.kind in ("EXEC", "SPAWN", "FS_WRITE", "DB"):
+    # kind の絞り込みは `contradiction_findings` が持つ（D56。§7 の判定表）。
+    if contradiction_flag:
         verdicts.add("CONTRADICTION")
     occ = inp.req_occ_by_effect.get(i, inp.req_occ)
     if inp.trig_label is Prin.MODEL and inp.trig_mode == "traced" and occ is Req.MODEL:
@@ -259,6 +266,12 @@ def _contradiction_of(dk: DKind, effects) -> bool:
     from .dparse import contradiction as _c
 
     return _c(dk, effects)
+
+
+def _contradiction_findings(dk: DKind, eff) -> list[tuple[str, str, str]]:
+    from .dparse import contradiction_findings as _f
+
+    return _f(dk, eff)
 
 
 def _layers_present(inp: UnitVerdictInput, dk: Optional[DKind] = None) -> tuple[str, ...]:

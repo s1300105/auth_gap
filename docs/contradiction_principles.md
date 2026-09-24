@@ -1,4 +1,4 @@
-# 矛盾の判定原理（案）— **件数を見ずに**選ぶための文書
+# 矛盾の判定原理 — **件数を見ずに**選ぶための文書（2026-09-24 に §6 で確定、D56）
 
 **この文書には母集団の件数を載せない。** マス（`docs/contradiction_matrix.md` の決めが要る行と
 O23 #6 / #7）を 1 つずつ件数を見て決めると、主指標（CONTRADICTION）の定義を結果に合わせて
@@ -250,3 +250,11 @@ sink の名前の末尾（`requests.put` → `PUT`、`httpx.AsyncClient.post` �
 sink（`requests.request` / `httpx.request` / `httpx.AsyncClient.request` など）は第 1 引数を読む
 （定数なら大文字にして使い、MODEL 由来なら「MODEL 由来」、それ以外は読めない）。
 `urlopen` / `urlretrieve` / `arun` などは読めない。
+
+---
+
+## 8. 結果（D56、run13）
+
+件数と感度分析は `docs/contradiction_by_decl.md`、手検証は `docs/decisions.md` D56。
+主指標（D1 + D2 の矛）165、不明 181（D1 86 / D2 95）。原理を 1 つずつ反対側にすると 153〜165、
+原理 2 を b（不明を矛盾に倒す）にしたときだけ 346。

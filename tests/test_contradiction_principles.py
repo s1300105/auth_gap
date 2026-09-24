@@ -9,6 +9,10 @@
 D3 = openWorldHint: false / D4 = idempotentHint: true（readOnly でないとき）。
 
 ツールの仮引数はモデル（MODEL）由来、リテラルは OP の定数、`os.environ[...]` は OP で定数に読めない。
+
+**注釈はインラインの辞書で書く。** 最初の版はモジュールの定数（`annotations=RO`）で渡しており、
+解析器はこの形を読めない（`D_unknown`）ので、全ツールが「宣言なし」になっていた（前提の崩れ。
+`test_premise_declarations` で検出する）。
 """
 
 from __future__ import annotations
@@ -35,256 +39,251 @@ mcp = FastMCP("t")
 def db():
     return sqlite3.connect("x.db")
 
-RO = {"readOnlyHint": True}
-ND = {"destructiveHint": False}
-CW = {"openWorldHint": False}
-ID = {"idempotentHint": True}
-
 # ---- D1 readOnly ---------------------------------------------------------
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_exec_const(p: str) -> str:
     eval("1 + 1"); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_spawn_model(cmd: str) -> str:
     subprocess.run([cmd]); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_spawn_const(p: str) -> str:
     subprocess.run(["nvidia-smi"]); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_spawn_shell_model(cmd: str) -> str:
     subprocess.run(cmd, shell=True); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_fs_mkdir(p: str) -> str:
     os.makedirs("/tmp/authgap_x"); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_db_insert(p: str) -> str:
     db().execute("INSERT INTO t (a) VALUES (?)", (p,)); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_db_pragma_wal(p: str) -> str:
     db().execute("PRAGMA journal_mode=WAL"); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_db_pragma_fk(p: str) -> str:
     db().execute("PRAGMA foreign_keys=ON"); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_db_pragma_read(p: str) -> str:
     db().execute("PRAGMA table_info(users)"); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_db_begin(p: str) -> str:
     db().execute("BEGIN"); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_db_vacuum(p: str) -> str:
     db().execute("VACUUM"); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_db_attach(p: str) -> str:
     db().execute("ATTACH DATABASE 'y.db' AS y"); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_db_model_sql(sql: str) -> str:
     db().execute(sql); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_db_op_sql(p: str) -> str:
     db().execute(os.environ["QUERY"]); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_net_get(url: str) -> str:
     httpx.get(url); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_net_post(p: str) -> str:
     httpx.post("https://api.example.com/rpc", json={"q": p}); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_net_delete(p: str) -> str:
     requests.delete("https://api.example.com/items/1"); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_net_put(p: str) -> str:
     requests.put("https://api.example.com/items/1", data=p); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_net_request_const(p: str) -> str:
     httpx.request("DELETE", "https://api.example.com/items/1"); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_net_request_get(p: str) -> str:
     httpx.request("GET", "https://api.example.com/items/1"); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_net_request_model(method: str) -> str:
     httpx.request(method, "https://api.example.com/items/1"); return "x"
 
-@mcp.tool(annotations=RO)
+@mcp.tool(annotations={"readOnlyHint": True})
 async def d1_net_urlopen(p: str) -> str:
     urllib.request.urlopen("https://api.example.com/items/1"); return "x"
 
 # ---- D2 destructive=false ------------------------------------------------
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_exec_const(p: str) -> str:
     eval("1 + 1"); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_spawn_const(p: str) -> str:
     subprocess.run(["nvidia-smi"]); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_spawn_model(cmd: str) -> str:
     subprocess.run([cmd]); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_fs_mkdir(p: str) -> str:
     os.makedirs("/tmp/authgap_x"); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_open_append(p: str) -> str:
     open("/tmp/authgap_log", "a").write(p); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_unlink_const(p: str) -> str:
     os.unlink("/tmp/authgap_x"); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_chmod_const(p: str) -> str:
     os.chmod("/tmp/authgap_x", 0o600); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_write_text_const(p: str) -> str:
     Path("/tmp/authgap_out.txt").write_text(p); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_write_text_model(path: str) -> str:
     Path(path).write_text("x"); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_open_w_const(p: str) -> str:
     open("/tmp/authgap_out.txt", "w").write(p); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_open_w_model(path: str) -> str:
     open(path, "w").write("x"); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_copy_const(p: str) -> str:
     shutil.copy("/tmp/authgap_a", "/tmp/authgap_b"); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_db_insert(p: str) -> str:
     db().execute("INSERT INTO t (a) VALUES (?)", (p,)); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_db_update(p: str) -> str:
     db().execute("UPDATE t SET a = ?", (p,)); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_db_pragma_wal(p: str) -> str:
     db().execute("PRAGMA journal_mode=WAL"); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_db_pragma_fk(p: str) -> str:
     db().execute("PRAGMA foreign_keys=ON"); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_db_model_sql(sql: str) -> str:
     db().execute(sql); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_db_unknown_head(p: str) -> str:
     db().execute("NOTIFY chan"); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_net_delete(p: str) -> str:
     requests.delete("https://api.example.com/items/1"); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_net_patch(p: str) -> str:
     requests.patch("https://api.example.com/items/1", data=p); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_net_put_const(p: str) -> str:
     requests.put("https://api.example.com/items/1", data=p); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_net_put_model(url: str) -> str:
     requests.put(url, data="x"); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_net_post(p: str) -> str:
     httpx.post("https://api.example.com/rpc", json={"q": p}); return "x"
 
-@mcp.tool(annotations=ND)
+@mcp.tool(annotations={"destructiveHint": False})
 async def d2_net_get(url: str) -> str:
     httpx.get(url); return "x"
 
 # ---- D3 openWorld=false --------------------------------------------------
-@mcp.tool(annotations=CW)
+@mcp.tool(annotations={"openWorldHint": False})
 async def d3_net_localhost(p: str) -> str:
     httpx.get("http://localhost:8080/x"); return "x"
 
-@mcp.tool(annotations=CW)
+@mcp.tool(annotations={"openWorldHint": False})
 async def d3_net_private(p: str) -> str:
     httpx.get("http://10.0.0.5/x"); return "x"
 
-@mcp.tool(annotations=CW)
+@mcp.tool(annotations={"openWorldHint": False})
 async def d3_net_external(p: str) -> str:
     httpx.get("https://api.example.com/x"); return "x"
 
-@mcp.tool(annotations=CW)
+@mcp.tool(annotations={"openWorldHint": False})
 async def d3_net_model_host(url: str) -> str:
     httpx.get(url); return "x"
 
-@mcp.tool(annotations=CW)
+@mcp.tool(annotations={"openWorldHint": False})
 async def d3_net_env_host(p: str) -> str:
     httpx.get(os.environ["API_URL"]); return "x"
 
-@mcp.tool(annotations=CW)
+@mcp.tool(annotations={"openWorldHint": False})
 async def d3_spawn_const(p: str) -> str:
     subprocess.run(["nvidia-smi"]); return "x"
 
-@mcp.tool(annotations=CW)
+@mcp.tool(annotations={"openWorldHint": False})
 async def d3_spawn_model(cmd: str) -> str:
     subprocess.run([cmd]); return "x"
 
-@mcp.tool(annotations=CW)
+@mcp.tool(annotations={"openWorldHint": False})
 async def d3_fs_mkdir(p: str) -> str:
     os.makedirs("/tmp/authgap_x"); return "x"
 
 # ---- D4 idempotent=true --------------------------------------------------
-@mcp.tool(annotations=ID)
+@mcp.tool(annotations={"idempotentHint": True})
 async def d4_open_append(p: str) -> str:
     open("/tmp/authgap_log", "a").write(p); return "x"
 
-@mcp.tool(annotations=ID)
+@mcp.tool(annotations={"idempotentHint": True})
 async def d4_open_w_model(path: str) -> str:
     open(path, "w").write("x"); return "x"
 
-@mcp.tool(annotations=ID)
+@mcp.tool(annotations={"idempotentHint": True})
 async def d4_db_insert(p: str) -> str:
     db().execute("INSERT INTO t (a) VALUES (?)", (p,)); return "x"
 
-@mcp.tool(annotations=ID)
+@mcp.tool(annotations={"idempotentHint": True})
 async def d4_db_delete(p: str) -> str:
     db().execute("DELETE FROM t WHERE a = ?", (p,)); return "x"
 
-@mcp.tool(annotations=ID)
+@mcp.tool(annotations={"idempotentHint": True})
 async def d4_net_post(p: str) -> str:
     httpx.post("https://api.example.com/rpc", json={"q": p}); return "x"
 
-@mcp.tool(annotations=ID)
+@mcp.tool(annotations={"idempotentHint": True})
 async def d4_net_put(p: str) -> str:
     requests.put("https://api.example.com/items/1", data=p); return "x"
 
-@mcp.tool(annotations=ID)
+@mcp.tool(annotations={"idempotentHint": True})
 async def d4_spawn_model(cmd: str) -> str:
     subprocess.run([cmd]); return "x"
 
@@ -407,6 +406,27 @@ CASES = [
 @pytest.mark.parametrize("tool,kind,decl,want", CASES, ids=[f"{c[0]}-{c[2]}" for c in CASES])
 def test_principle_table(units, tool, kind, decl, want):
     assert _status(units[tool], kind, decl) == want
+
+
+EXPECT_D = {
+    "d1": {"explicit": ["readOnlyHint"]},
+    "d2": {"explicit": ["destructiveHint"]},
+    "d3": {"closed_world": True},
+    "d4": {"idempotent": True},
+}
+
+
+def test_premise_declarations(units):
+    """前提: 意図した宣言が `D_kind` に読めている（読めなければ全部「内」になって通ってしまう）。"""
+    for name, u in units.items():
+        dk = u["D_kind"]
+        assert not dk.get("unknown"), f"{name}: 注釈が読めていない"
+        want = EXPECT_D.get(name[:2])
+        if want is None:
+            continue
+        for k, v in want.items():
+            got = dk.get(k)
+            assert (v[0] in (got or [])) if isinstance(v, list) else got == v, (name, k, dk)
 
 
 def test_other_declarations_silent(units):

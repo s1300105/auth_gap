@@ -14,6 +14,10 @@ D54（深さ 4）の後の run11 で readOnly × `INSERT` / `UPDATE` 12 位置�
 `UPDATE` / `DELETE` 35 位置が黙っていた（`docs/o23_cells.md`）。
 
 **決めていないマスは報告しない**（O23 #1 の `PRAGMA` など、SQL が定数に解決できないもの）。
+
+**D56 で 2 件の期待が変わった**（学生が選んだ判定原理、`docs/contradiction_principles.md` §6 / §7）:
+`ro_pragma`（`journal_mode=WAL`）は原理 1-i-b で矛盾、`ro_dynamic_sql`（モデル由来の SQL）は
+原理 3-a で矛盾。
 """
 
 from __future__ import annotations
@@ -122,11 +126,14 @@ def _db_rows(u):
         # 読み取り
         ("ro_select", False),
         ("ro_multiline_select", False),
-        # O23 #1（接続・トランザクション）は決めていないので報告しない
-        ("ro_pragma", False),
+        # 接続・トランザクション単位は宣言内。**`journal_mode` は DB ファイルに残るので矛盾**
+        # （D56: 原理 1-i-b。D55 の時点では O23 #1 が未決で False としていた）
+        ("ro_pragma", True),
         ("ro_begin", False),
-        # SQL が定数に解決できない = 不明。矛盾に倒さない（規則 4）
-        ("ro_dynamic_sql", False),
+        # SQL がモデル由来 = モデルが任意の文を渡せるので矛盾（D56: 原理 3-a。D55 の時点では
+        # 「読めない = 不明」として False としていた）。OP で読めない SQL は不明のまま
+        # （`tests/test_contradiction_principles.py` の `d1_db_op_sql`）。
+        ("ro_dynamic_sql", True),
         # destructive=false: 追記（INSERT / CREATE）は宣言内
         ("nd_insert", False),
         ("nd_create", False),

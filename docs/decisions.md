@@ -2985,3 +2985,72 @@ CONTRADICTION を同じ 3 kind に限っていた（2 か所）。表を書い�
   認証処理で `INSERT` / `UPDATE`、destructive=false のツールが `UPDATE` / `DELETE`）と
   asquared-mcp 2（destructive=false の `coord_ack` / `coord_post` が既存行を `UPDATE`）。
   原典で確かめ、いずれも表の規則どおり。
+
+## D56（2026-09-24）矛盾の判定を、学生が選んだ原理から導いた表で行う（O23 の解決）
+
+### 手続き（研究の観点。学生の決定）
+
+O23 のマスを件数を見て 1 つずつ決めると、主指標の定義を結果に合わせて選ぶことになる。そこで:
+
+1. 件数を載せない原理の文書 `docs/contradiction_principles.md` を書き（§1〜§5）、
+2. 学生が原理を選び（§6: **1-i b / 1-ii b / 2 a / 3 a / 4 a**。研究の観点を優先し、実務の観点は使わない）、
+3. 原理を §5 に機械的に当てはめた判定表（§7）を**実装より先にコミット**し（`914c4af`）、
+4. 表の行ごとのテストを**実装より先にコミット**し（`5812b08`、69 件）、
+5. 実装して run13 を取り、感度分析を出した。
+
+**判定者は 1 人**（2 人目は確保できない）。**表を書いた者は run11 の件数を見ていた。** どちらも限界として
+本文に書く。D3（openWorld）/ D4（idempotent）の規則は結果を見た後に作ったので**探索的な分析**として
+別列にし、事前登録済みの D1 / D2 と合算しない。
+
+### 実装
+
+* `authgap/catalog/statements.py`: SQL 文・HTTP メソッド・ファイル書き込みの類（§7.5 / §7.6 / §7.2）。
+* `Effect.fs_mode`（open 系の mode の定数）/ `http_method`（sink 名の末尾、`*.request` は第 1 引数）/
+  `http_method_model`。`DKind.closed_world`（openWorldHint: false）/ `idempotent`（idempotentHint: true、
+  readOnly でないとき）。
+* `dparse.contradiction_findings(dk, effect)` が宣言ごとに `(宣言, 矛 / 不, 理由)` を返す。
+  verdict は矛があれば CONTRADICTION とし、行に `contradiction:<宣言>` / `contradiction_reason:<宣言>:<理由>` /
+  `contradiction_unknown:<宣言>:<理由>` を残す。kind の門（EXEC / SPAWN / FS_WRITE / DB）は外した
+  （判定は表が持つ）。
+* テストの fixture の最初の版は、注釈をモジュールの定数（`annotations=RO`）で渡していて、解析器が
+  読めない形（`D_unknown`）だったので全ツールが「宣言なし」になっていた。インラインに直し、
+  前提テスト（意図した宣言が読めていること）を足した。**直した fixture を実装前の commit で走らせ、
+  期待とのずれで 47 件が落ちることを確かめた**（矛 29 / 不 18。他に新しい欄が無いための前提テスト 1 件）。
+* D55 のテストの期待が 2 件変わった（`journal_mode=WAL` が 1-i-b で矛、モデル由来の SQL が 3-a で矛）。
+
+### 確かめたこと
+
+* pytest 705 passed / B3a 8/8 / B3b 15/15 / 変異の生存 1/15 / two_sided 8/8（厳密 0/8・INJECT 1/8）/
+  diff_effects（較正 14 木）変化 0。すべて変更前と同じ。
+* run12 → run13（`docs/scan_v2_run13_diff.md`）: ユニット・効果・他の判定の行数は同じ。
+  CONTRADICTION（ユニット × site × kind）178 → 220（**増えた 80 / 消えた 38**）。
+
+**消えた 38 件は 1 件ずつ理由を確かめ、すべて原理の分岐で説明がついた**: D2 × 書き出しで書き先が
+モデル由来でないもの 20（#7、不明へ）、定数コマンドの SPAWN 18（#6、不明へ）。説明のつかない消失は 0。
+
+**増えた 80 件の内訳と原典での確認**:
+
+| 宣言 × 理由 | 件数 | 確認 |
+|---|---|---|
+| D3 `net_external_host` | 37 | 定数の外部ホスト（kakao 31 / feishu 4 / pushover 1 / dartmouth 1）を `openWorldHint: false` のツールが呼ぶ。**規則どおり** |
+| D3 `net_model_host` | 14 | **code-rag 3 / asquared 3 は誤検出**: 相対 URL（`"/items/" + …`）を `_split_url` が分割せず値全体を `url.host` に入れるので、パスやクエリのモデル由来が宛先のモデル由来に見える（O32）。dejavu 4 / cohort 4 は値の形が読めず主体だけ MODEL（「流れ込む」と「選べる」の区別がつかない。O33） |
+| D1 `db_persistent` | 11 | readOnly のツールが `PRAGMA journal_mode=WAL` など（1-i-b）。**規則どおり** |
+| D2 `net_modify` | 8 | `*.request` の定数メソッド `DELETE` / `PATCH`（cohort 7 / teamplay-talk 1）。**本物** |
+| D4 `fs_append` | 5 | **誤検出**: すべて xagent の `logger.error` → テストファイルのクラスへの末尾名の連鎖の先（O30） |
+| D2 / D1 `db_model_sql` | 3 / 1 | godsaeng 1 は**本物**（readOnly で `"UPDATE … IN (" + …` を連結。先頭語が定数に読めないのでこの理由になった）。**memory-hub 2 は誤検出**（SQLAlchemy の `select(...).where(... in_(値))` でモデルの値はバインド変数。O33）。**xagent 1 は誤検出**（O30） |
+| D2 `net_put_model_url` | 2 | cohort の `request("PUT", path)` で path がモデル由来。**規則どおり**（既存の資源を指せる） |
+
+### 宣言ごとの件数と感度分析（`docs/contradiction_by_decl.md`）
+
+| | D1 矛 / 不 | D2 矛 / 不 | **D1 + D2 矛（主指標）** | D3 矛 / 不 | D4 矛 / 不 |
+|---|---|---|---|---|---|
+| 採った原理 | 109 / 86 | 56 / 95 | **165** | 51 / 81 | 5 / 77 |
+| 1-i → a | 98 / 86 | 56 / 85 | 154 | 51 / 81 | 5 / 77 |
+| 1-ii → a | 109 / 38 | 46 / 40 | 155 | 51 / 81 | 5 / 77 |
+| 2 → b（不明を矛盾に） | 195 / 0 | 151 / 0 | **346** | 132 / 0 | 82 / 0 |
+| 2 → c（不明を宣言内に） | 109 / 0 | 56 / 0 | 165 | 51 / 0 | 5 / 0 |
+| 3 → b | 108 / 87 | 45 / 106 | 153 | 37 / 95 | 5 / 77 |
+| 4 → b | 109 / 86 | 56 / 95 | 165 | 0 / 0 | 0 / 0 |
+
+**主指標は 1 つの原理を反対側にしても 153〜165 に収まる。** 例外は原理 2 を b（不明を矛盾に倒す）に
+したときで 346（2.1 倍）。**不明が主指標と同じ規模（D1 + D2 で 181）ある**ことは本文に必ず書く。

@@ -48,6 +48,28 @@ CLASSIFY: dict[str, tuple[str, str, str]] = {
     "TRANSFERS": ("core", "転記", "realpath / Path.resolve / shlex.quote / urlparse"),
     "INDIRECTS": ("core", "転記", "multiprocessing.Process / Thread / partial / submit"),
     "CTORS": ("core", "転記", "sqlite3.connect / httpx.Client / git.Repo"),
+    # -- 矛盾の判定原理の語彙（D56。docs/contradiction_principles.md §7 から機械的に導いた） --
+    "SQL_MODIFY_HEADS": ("core", "転記", "データ・スキーマを変える SQL 文（D55）"),
+    "SQL_DESTRUCTIVE_HEADS": ("core", "転記", "そのうち追記でないもの（D55）"),
+    "SQL_NONIDEMPOTENT_HEADS": ("core", "転記", "冪等とは限らない SQL 文（D4、探索的）"),
+    "SQL_READ_HEADS": ("core", "転記", "読み取りの SQL 文"),
+    "SQL_CONNECTION_HEADS": ("core", "転記", "接続・トランザクション単位の文（原理 1-i）"),
+    "SQL_PERSISTENT_HEADS": ("core", "転記", "DB ファイルに残る保守の文（原理 1-i-b）"),
+    "PRAGMA_CONNECTION": ("core", "転記", "接続単位の PRAGMA"),
+    "PRAGMA_PERSISTENT_SET": ("core", "転記", "DB ファイルに残る PRAGMA（原理 1-i-b）"),
+    "PRAGMA_PERSISTENT_ACTION": ("core", "転記", "値を取らなくても書き込む PRAGMA"),
+    "SQL_CLASS_MODIFY": ("index", "-", "sql_class の戻り値の名前"),
+    "SQL_CLASS_PERSISTENT": ("index", "-", "sql_class の戻り値の名前"),
+    "SQL_CLASS_CONNECTION": ("index", "-", "sql_class の戻り値の名前"),
+    "SQL_CLASS_READ": ("index", "-", "sql_class の戻り値の名前"),
+    "SQL_CLASS_UNKNOWN": ("index", "-", "sql_class の戻り値の名前"),
+    "HTTP_SAFE": ("core", "転記", "RFC 9110 の安全なメソッド"),
+    "HTTP_MODIFY": ("core", "転記", "相手を変えるメソッド（原理 1-ii-b）"),
+    "HTTP_IDEMPOTENT": ("core", "転記", "RFC 9110 の冪等なメソッド（D4）"),
+    "HTTP_METHOD_SUFFIXES": ("core", "領域固有", "sink 名の末尾からメソッドを読む"),
+    "HTTP_METHOD_ARG_SUFFIXES": ("core", "領域固有", "第 1 引数からメソッドを読む sink"),
+    "FS_WRITEOUT_SITES": ("core", "領域固有", "新規作成か上書きかが書き先の有無で決まる書き出し（#7）"),
+    "FS_OPEN_SITES": ("core", "転記", "mode を持つ open 系"),
     "CALL_TYPE_TRANSITIONS": ("core", "転記", "受け手型 × メソッド → 戻り値の型（conn.cursor() → Cursor など）。D50"),
     "ANNOTATION_TYPED_RECEIVERS": ("core", "転記", "型注釈から受け手型を付けてよい型（DB の型だけ）。D50"),
     "ATTR_TYPE_TRANSITIONS": ("core", "転記", "repo.git → git.cmd.Git のような型の伝播"),
@@ -121,12 +143,14 @@ ORIGIN_LABEL = {
 def collect_tables() -> list[dict]:
     import authgap.catalog.entries as E
     import authgap.catalog.sinks as S
+    import authgap.catalog.statements as ST
     import authgap.catalog.transfers as T
     import authgap.catalog.validators as V
     import authgap.ir as IR
 
     out: list[dict] = []
-    for mod_name, mod in (("sinks", S), ("transfers", T), ("validators", V), ("entries", E), ("ir", IR)):
+    for mod_name, mod in (("sinks", S), ("statements", ST), ("transfers", T), ("validators", V), ("entries", E),
+                         ("ir", IR)):
         for name in dir(mod):
             if not name.isupper() and name != "_DOM_PRIORITY":
                 continue

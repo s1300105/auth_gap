@@ -1,6 +1,6 @@
 # 事前定義の地図（何を先に決めているか、なぜ、どれが自分で考えた部分か）
 
-再現: `python scripts/catalog_map.py evidence/scan_v2_run11 --md docs/catalog_map.md`
+再現: `python scripts/catalog_map.py evidence/scan_v2_run13 --md docs/catalog_map.md`
 
 **役割と出所の分類は判断であって測定ではない**（根拠は `docs/decisions.md` D37）。
 行数と、下の「実際に使われた行」は測定値。
@@ -9,7 +9,7 @@
 
 | 役割 | 表の数 | 行の合計 |
 |---|---|---|
-| 核（宣言 D と実効 M の照合に要る） | 24 | 276 |
+| 核（宣言 D と実効 M の照合に要る） | 40 | 373 |
 | 付録（D36 で降ろした主張のもの） | 30 | 200 |
 | 索引（派生。定義ではない） | 8 | 123 |
 
@@ -17,8 +17,8 @@
 
 | 出所 | 行 |
 |---|---|
-| 既知の知識の転記 | 205 |
-| この研究で決めた | 53 |
+| 既知の知識の転記 | 284 |
+| この研究で決めた | 71 |
 | 解析器の自己申告 | 16 |
 | 記録 | 2 |
 
@@ -29,14 +29,14 @@
 
 ## 核の主張が実際に使っている行
 
-`evidence/scan_v2_run11` の CONTRADICTION から逆に数えた。
+`evidence/scan_v2_run13` の CONTRADICTION から逆に数えた。
 
-- 関係した API: **13 種類**（`DIRECT_SINKS` 67 行のうち）
-- 効果の形: {'direct': 975}
-- 呼び出しを何段降りたか: 0 段 5, 1 段 27, 2 段 41, 3 段 63, 4 段 831, 5 段 8
+- 関係した API: **18 種類**（`DIRECT_SINKS` 67 行のうち）
+- 効果の形: {'direct': 914, 'proxy': 930}
+- 呼び出しを何段降りたか: 0 段 8, 1 段 243, 2 段 350, 3 段 296, 4 段 939, 5 段 8
 
 ```
-  builtins.open  os.chmod  os.makedirs  os.remove  os.replace  os.unlink  pathlib.Path.mkdir  pathlib.Path.open  pathlib.Path.unlink  pathlib.Path.write_bytes  pathlib.Path.write_text  shutil.rmtree  subprocess.run
+  builtins.open  httpx.AsyncClient.get  httpx.AsyncClient.post  httpx.AsyncClient.request  os.chmod  os.makedirs  os.remove  os.replace  os.unlink  pathlib.Path.mkdir  pathlib.Path.open  pathlib.Path.unlink  pathlib.Path.write_bytes  pathlib.Path.write_text  psycopg.Cursor.execute  shutil.rmtree  sqlalchemy.Connection.execute  urllib.request.urlopen
 ```
 
 ## 母集団の宣言が割れている API
@@ -90,22 +90,38 @@
 | `CTORS` | transfers | 17 | 既知の知識の転記 | sqlite3.connect / httpx.Client / git.Repo |
 | `DB_RECEIVER_TYPES` | sinks | 17 | 既知の知識の転記 | 非 DB の .execute() を数えないための受け手型 |
 | `PROXY_SINKS` | sinks | 17 | 既知の知識の転記 | receiver 型経由の sink（git.Git.checkout など） |
+| `PRAGMA_CONNECTION` | statements | 16 | 既知の知識の転記 | 接続単位の PRAGMA |
 | `ENTRY_RULES` | entries | 14 | この研究で決めた | **既存の静的解析はどれも知らない。この研究の貢献の中心** |
+| `SQL_CONNECTION_HEADS` | statements | 11 | 既知の知識の転記 | 接続・トランザクション単位の文（原理 1-i） |
+| `FS_WRITEOUT_SITES` | statements | 10 | この研究で決めた | 新規作成か上書きかが書き先の有無で決まる書き出し（#7） |
 | `INDIRECTS` | transfers | 9 | 既知の知識の転記 | multiprocessing.Process / Thread / partial / submit |
 | `INTERPRETER_ARGV0` | sinks | 9 | 既知の知識の転記 | argv0 がインタプリタかの判定 |
+| `SQL_MODIFY_HEADS` | statements | 9 | 既知の知識の転記 | データ・スキーマを変える SQL 文（D55） |
 | `CALL_TYPE_TRANSITIONS` | transfers | 8 | 既知の知識の転記 | 受け手型 × メソッド → 戻り値の型（conn.cursor() → Cursor など）。D50 |
 | `VALUE_ATTRS` | ir | 8 | 解析器の自己申告 | 値に付く属性 8 語 |
 | `VAL_OPAQUE_REASONS` | ir | 8 | 解析器の自己申告 | 値を解決できなかった理由 8 語 |
 | `ATTR_TYPE_TRANSITIONS` | transfers | 7 | 既知の知識の転記 | repo.git → git.cmd.Git のような型の伝播 |
+| `HTTP_METHOD_SUFFIXES` | statements | 7 | この研究で決めた | sink 名の末尾からメソッドを読む |
+| `PRAGMA_PERSISTENT_SET` | statements | 7 | 既知の知識の転記 | DB ファイルに残る PRAGMA（原理 1-i-b） |
 | `PRIMARY_SLOTS` | sinks | 7 | この研究で決めた | 主 slot 7 種（指標の分母） |
 | `SLOTS` | sinks | 7 | この研究で決めた | 効果 kind 7 種と slot。宣言の語彙に合わせて決めた |
+| `SQL_DESTRUCTIVE_HEADS` | statements | 7 | 既知の知識の転記 | そのうち追記でないもの（D55） |
 | `SUB_KINDS` | sinks | 7 | この研究で決めた | kind 粒度の副分類 |
 | `DANGEROUS_KINDS` | sinks | 6 | この研究で決めた | 危険とみなす kind |
+| `HTTP_IDEMPOTENT` | statements | 5 | 既知の知識の転記 | RFC 9110 の冪等なメソッド（D4） |
+| `SQL_READ_HEADS` | statements | 5 | 既知の知識の転記 | 読み取りの SQL 文 |
 | `TOOLMESSAGE_META_FIELDS` | entries | 5 | この研究で決めた | langroid ToolMessage のメタ欄 |
+| `SQL_NONIDEMPOTENT_HEADS` | statements | 4 | 既知の知識の転記 | 冪等とは限らない SQL 文（D4、探索的） |
 | `FORMS` | sinks | 3 | この研究で決めた | direct / proxy / pipe |
+| `FS_OPEN_SITES` | statements | 3 | 既知の知識の転記 | mode を持つ open 系 |
+| `HTTP_MODIFY` | statements | 3 | 既知の知識の転記 | 相手を変えるメソッド（原理 1-ii-b） |
+| `HTTP_SAFE` | statements | 3 | 既知の知識の転記 | RFC 9110 の安全なメソッド |
 | `PIPE_HANDLE_SOURCES` | sinks | 3 | 既知の知識の転記 | pipe ハンドルを生む spawn |
+| `PRAGMA_PERSISTENT_ACTION` | statements | 3 | 既知の知識の転記 | 値を取らなくても書き込む PRAGMA |
+| `SQL_PERSISTENT_HEADS` | statements | 3 | 既知の知識の転記 | DB ファイルに残る保守の文（原理 1-i-b） |
 | `PIPE_SINKS` | sinks | 2 | この研究で決めた | stdin.write 形。仕様が「構造的理由のみ、CVE の裏付け無し」と明記 |
 | `VOCABULARY_REVISIONS` | validators | 2 | 記録 | 語彙を動かした記録 |
+| `HTTP_METHOD_ARG_SUFFIXES` | statements | 1 | この研究で決めた | 第 1 引数からメソッドを読む sink |
 | `LOWLEVEL_V2_KWARGS` | entries | 1 | この研究で決めた | 低レベル MCP v2 の kwargs |
 | `R2_EXCEPTIONS` | entries | 1 | この研究で決めた | MODEL としない仮引数の例外 |
 

@@ -30,6 +30,7 @@
 | **ツール入口の規則** | `authgap/catalog/entries.py: ENTRY_RULES` | 14 | **核（領域固有の貢献の中心）** |
 | 効果 kind と slot | `authgap/catalog/sinks.py: SLOTS` | 7 kind | 核 |
 | val 側 opaque | `authgap/ir.py: VAL_OPAQUE_REASONS`。**ゲート側とは別語彙** | 8 | 核 |
+| 矛盾の判定の類（SQL 文 / HTTP メソッド / ファイル書き込み） | `authgap/catalog/statements.py`（D56。**規則は `docs/contradiction_principles.md` §7 から導く。件数を見て足し引きしない**） | — | 核 |
 | validator 形状 | `authgap/catalog/validators.py: VALIDATOR_SHAPES` | 12 | 付録 |
 | weak 理由 | 同 `WEAK_REASONS`（月 6 凍結） | 22 | 付録 |
 | 格下げ属性 | 同 `DOWNGRADES`。**`self_granted` は weak 理由ではない** | 4 | 付録 |
@@ -124,6 +125,7 @@ uv venv .venv312 --python 3.12 && uv pip install --python .venv312/bin/python -r
 # 解析器を変えて run を取り直したら必ず通す（変更前後の両方を出す）
 .venv/bin/python scripts/compare_scans.py evidence/scan_v2_run<前> evidence/scan_v2_run<後> --md docs/scan_v2_run<後>_diff.md
 .venv/bin/python scripts/catalog_map.py evidence/scan_v2_run<N> --md docs/catalog_map.md   # 事前定義の地図（D37）
+.venv/bin/python scripts/contradiction_by_decl.py evidence/scan_v2_run<N> --md docs/contradiction_by_decl.md   # 宣言ごとの矛 / 不と感度分析（D56）
 ```
 
 **手検証の入口は `docs/verification_guide.md`。**

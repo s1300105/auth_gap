@@ -17,6 +17,21 @@ import os
 from dataclasses import dataclass, field, replace
 from typing import Any, Optional
 
+from .catalog.statements import (
+    FS_OPEN_SITES,
+    FS_WRITEOUT_SITES,
+    HTTP_IDEMPOTENT,
+    HTTP_MODIFY,
+    HTTP_SAFE,
+    SQL_CLASS_CONNECTION,
+    SQL_CLASS_MODIFY,
+    SQL_CLASS_PERSISTENT,
+    SQL_CLASS_READ,
+    SQL_DESTRUCTIVE_HEADS,
+    SQL_MODIFY_HEADS,
+    SQL_NONIDEMPOTENT_HEADS,
+    sql_class,
+)
 from .entries import Unit
 from .srcindex import SourceIndex, dotted_of
 
@@ -30,16 +45,7 @@ READ_ONLY_UPPER = frozenset({"FS_READ", "NET"})
 #: 破壊的な kind（`destructiveHint==false` が宣言外にするもの）。
 DESTRUCTIVE_KINDS = frozenset({"EXEC", "SPAWN", "FS_WRITE"})
 
-#: **データ・スキーマを変える SQL 文の先頭語**（`docs/contradiction_matrix.md` D1 の
-#: 「`DB_WRITE`（データの変更）」、D55）。`readOnlyHint==true` に対して矛盾。
-#: `PRAGMA` / `BEGIN` / `COMMIT` など接続・トランザクションの文は**入れない**（O23 #1、未決）。
-#: ここに無い先頭語は矛盾にしない（決めていないものを倒さない）。
-SQL_MODIFY_HEADS = frozenset({"INSERT", "UPDATE", "DELETE", "REPLACE", "MERGE", "TRUNCATE",
-                              "DROP", "CREATE", "ALTER"})
-#: そのうち**追記ではない**もの（表 D2 の「`DELETE` / `DROP` / `UPDATE`」、D55）。
-#: `destructiveHint==false` に対して矛盾。`INSERT` / `CREATE` は追記なので宣言内。
-#: **既知の限界**: `INSERT ... ON CONFLICT DO UPDATE` は先頭語が `INSERT` なので宣言内になる。
-SQL_DESTRUCTIVE_HEADS = SQL_MODIFY_HEADS - {"INSERT", "CREATE"}
+#: SQL の先頭語の類は `authgap/catalog/statements.py`（D55 / D56）。
 
 
 @dataclass
@@ -62,6 +68,10 @@ class DKind:
     unknown: bool = False
     #: `openWorldHint==true` により P0 の private-range 制限だけを解除する。
     open_world: bool = False
+    #: `openWorldHint==false` の明示（D3、D56）。上界は動かさない。
+    closed_world: bool = False
+    #: `idempotentHint==true` の明示で、`readOnlyHint==true` が無いもの（D4、D56）。上界は動かさない。
+    idempotent: bool = False
 
     @property
     def is_bottom(self) -> bool:
@@ -85,6 +95,10 @@ class DKind:
             d["unknown"] = True
         if self.open_world:
             d["open_world"] = True
+        if self.closed_world:
+            d["closed_world"] = True
+        if self.idempotent:
+            d["idempotent"] = True
         return d
 
 
@@ -141,6 +155,9 @@ def meet_d_kind(dks: list[DKind]) -> DKind:
         malformed=tuple(sorted({x for d in dks for x in d.malformed})),
         unknown=any(d.unknown for d in dks),
         open_world=all(d.open_world for d in dks),
+        # どれか 1 つの明示宣言に反すれば矛盾（explicit と同じく和）。
+        closed_world=any(d.closed_world for d in dks),
+        idempotent=any(d.idempotent for d in dks),
     )
 
 
@@ -200,42 +217,240 @@ def d_kind_from(ann: Optional[dict], form: Optional[str]) -> DKind:
         explicit=tuple(sorted(set(explicit))),
         present_no_bound=tuple(sorted(set(no_bound))),
         open_world=open_world,
+        closed_world=open_world_hint is False,
+        idempotent=ann.get("idempotentHint") is True and read_only is not True,
     )
 
 
-def contradiction(dk: DKind, effects) -> bool:
-    """`CONTRADICTION(e)`: 明示した宣言に反する効果が M にある（Def 7、D32）。
+#: 判定の結果（`contradiction_findings` の各要素の第 2 要素）。
+CONTRA = "contradiction"
+CONTRA_UNKNOWN = "unknown"
 
-    * `readOnlyHint==true` の明示 → EXEC / SPAWN / FS_WRITE のすべて。
-    * `destructiveHint==false` の明示（readOnly は明示していない）→ EXEC / SPAWN、
-      および `destructive` が False **でない** FS_WRITE（削除・上書き型、または
-      mode が読めず不明のもの。追記型 `mkdir` / `open('a')` は宣言内）。
-    * DB（D55）: `readOnlyHint==true` なら先頭語が `SQL_MODIFY_HEADS`、
-      `destructiveHint==false` なら `SQL_DESTRUCTIVE_HEADS`。先頭語が読めないもの・
-      接続やトランザクションの文（O23 #1）は矛盾にしない。
 
-    `effects` は `Effect` の列。後方互換で kind の文字列集合も受け付ける
-    （その場合は FS_WRITE を削除・上書き型として扱う = 従来の規則）。
+def _slot_model(e, *names: str) -> bool:
+    from .ir import Prin
+
+    for n in names:
+        v = (getattr(e, "slots", None) or {}).get(n)
+        if v is not None and v.prin is Prin.MODEL:
+            return True
+    return False
+
+
+def _host_class(e) -> str:
+    """`url.host` の類: `local`（localhost / private / loopback）/ `external` / `model` / `unknown`。"""
+    import ipaddress
+    from urllib.parse import urlparse
+
+    v = (getattr(e, "slots", None) or {}).get("url.host")
+    if v is None:
+        return "unknown"
+    c = v.const
+    if isinstance(c, str) and c:
+        host = urlparse(c).hostname if "://" in c else c.split("/")[0].rsplit(":", 1)[0] if c.count(":") <= 1 else c
+        host = (host or "").strip("[]").lower()
+        if not host:
+            return "unknown"
+        if host == "localhost" or host.endswith(".localhost") or host.endswith(".local"):
+            return "local"
+        try:
+            ip = ipaddress.ip_address(host)
+        except ValueError:
+            return "external"
+        return "local" if (ip.is_private or ip.is_loopback or ip.is_link_local) else "external"
+    return "model" if _slot_model(e, "url.host") else "unknown"
+
+
+def _fs_class(e) -> str:
+    """FS_WRITE の類（§7.2）: `append` / `remove` / `writeout` / `unknown`。"""
+    site = e.site
+    destructive = getattr(e, "destructive", None)
+    if site in FS_WRITEOUT_SITES:
+        if site in FS_OPEN_SITES and destructive is False:
+            return "append"
+        if site in FS_OPEN_SITES and destructive is None:
+            return "unknown"
+        return "writeout"
+    if destructive is False:
+        return "append"
+    if destructive is True:
+        return "remove"
+    return "unknown"
+
+
+def _d1(e) -> Optional[tuple[str, str]]:
+    """D1 `readOnlyHint: true`（§7.1）。`None` は宣言内。"""
+    k = e.kind
+    if k == "EXEC":
+        return CONTRA, "exec"
+    if k == "SPAWN":
+        return (CONTRA, "spawn_model") if _slot_model(e, "argv0", "shell_string") else (CONTRA_UNKNOWN, "spawn_command")
+    if k == "FS_WRITE":
+        return CONTRA, "fs_write"
+    if k == "DB":
+        return _db(e, modify_heads=SQL_MODIFY_HEADS, persistent=(CONTRA, "db_persistent"))
+    if k == "NET":
+        m = getattr(e, "http_method", None)
+        if m in HTTP_SAFE:
+            return None
+        if m in HTTP_MODIFY:
+            return CONTRA, "net_modify"
+        if m == "POST":
+            return CONTRA_UNKNOWN, "net_post"
+        if getattr(e, "http_method_model", False):
+            return CONTRA, "net_method_model"
+        return CONTRA_UNKNOWN, "net_method_unknown"
+    return None
+
+
+def _d2(e) -> Optional[tuple[str, str]]:
+    """D2 `destructiveHint: false`（§7.2）。"""
+    k = e.kind
+    if k == "EXEC":
+        return CONTRA, "exec"
+    if k == "SPAWN":
+        return (CONTRA, "spawn_model") if _slot_model(e, "argv0", "shell_string") else (CONTRA_UNKNOWN, "spawn_command")
+    if k == "FS_WRITE":
+        c = _fs_class(e)
+        if c == "append":
+            return None
+        if c == "remove":
+            return CONTRA, "fs_remove"
+        if _slot_model(e, "path"):
+            return CONTRA, f"fs_{c}_model_path"
+        return CONTRA_UNKNOWN, f"fs_{c}"
+    if k == "DB":
+        return _db(e, modify_heads=SQL_DESTRUCTIVE_HEADS, persistent=(CONTRA_UNKNOWN, "db_persistent"),
+                   additive=frozenset({"INSERT", "CREATE"}))
+    if k == "NET":
+        m = getattr(e, "http_method", None)
+        if m in HTTP_SAFE:
+            return None
+        if m in ("DELETE", "PATCH"):
+            return CONTRA, "net_modify"
+        if m == "PUT":
+            return (CONTRA, "net_put_model_url") if _slot_model(e, "url.host", "url.path") else (CONTRA_UNKNOWN, "net_put")
+        if m == "POST":
+            return CONTRA_UNKNOWN, "net_post"
+        if getattr(e, "http_method_model", False):
+            return CONTRA, "net_method_model"
+        return CONTRA_UNKNOWN, "net_method_unknown"
+    return None
+
+
+def _db(e, *, modify_heads, persistent, additive=frozenset()) -> Optional[tuple[str, str]]:
+    head = getattr(e, "sql_head", None)
+    if head is None:
+        return (CONTRA, "db_model_sql") if _slot_model(e, "sql") else (CONTRA_UNKNOWN, "db_sql_unreadable")
+    if head in modify_heads:
+        return CONTRA, "db_modify"
+    if head in additive:
+        return None
+    sql = (getattr(e, "slots", None) or {}).get("sql")
+    cls = sql_class(sql.const if sql is not None else None)
+    if cls == SQL_CLASS_PERSISTENT:
+        return persistent
+    if cls in (SQL_CLASS_CONNECTION, SQL_CLASS_READ):
+        return None
+    if cls == SQL_CLASS_MODIFY:  # additive（INSERT / CREATE）は上で除いた
+        return None
+    return CONTRA_UNKNOWN, "db_unknown_statement"
+
+
+def _d3(e) -> Optional[tuple[str, str]]:
+    """D3 `openWorldHint: false`（§7.3、探索的）。"""
+    k = e.kind
+    if k == "NET":
+        c = _host_class(e)
+        if c == "local":
+            return None
+        if c == "external":
+            return CONTRA, "net_external_host"
+        if c == "model":
+            return CONTRA, "net_model_host"
+        return CONTRA_UNKNOWN, "net_host_unknown"
+    if k == "EXEC":
+        return (CONTRA, "exec_model") if _slot_model(e, "code_text") else (CONTRA_UNKNOWN, "exec")
+    if k == "SPAWN":
+        return (CONTRA, "spawn_model") if _slot_model(e, "argv0", "shell_string") else (CONTRA_UNKNOWN, "spawn_command")
+    return None
+
+
+def _d4(e) -> Optional[tuple[str, str]]:
+    """D4 `idempotentHint: true`（§7.4、探索的）。原理 3 は当てない（§7.0 の 1）。"""
+    k = e.kind
+    if k == "FS_WRITE":
+        if e.site in FS_OPEN_SITES:
+            mode = getattr(e, "fs_mode", None)
+            if mode is None:
+                return CONTRA_UNKNOWN, "fs_mode_unknown"
+            if "a" in mode:
+                return CONTRA, "fs_append"
+        return None
+    if k == "DB":
+        head = getattr(e, "sql_head", None)
+        if head is None:
+            return CONTRA_UNKNOWN, "db_sql_unreadable"
+        if head in SQL_NONIDEMPOTENT_HEADS:
+            return CONTRA_UNKNOWN, "db_nonidempotent_statement"
+        return None
+    if k == "NET":
+        m = getattr(e, "http_method", None)
+        if m in HTTP_IDEMPOTENT:
+            return None
+        if m in ("POST", "PATCH"):
+            return CONTRA_UNKNOWN, "net_nonidempotent_method"
+        return CONTRA_UNKNOWN, "net_method_unknown"
+    if k in ("EXEC", "SPAWN"):
+        return CONTRA_UNKNOWN, "exec_or_spawn"
+    return None
+
+
+def contradiction_findings(dk: DKind, e) -> list[tuple[str, str, str]]:
+    """効果 1 つを、明示された宣言ごとに判定する（Def 7、D32 / D55 / D56）。
+
+    返り値は `(宣言, 結果, 理由)` の列。宣言は `D1`（readOnlyHint: true）/ `D2`（destructiveHint:
+    false、readOnly が無いとき）/ `D3`（openWorldHint: false）/ `D4`（idempotentHint: true、
+    readOnly が無いとき）。結果は `CONTRA`（矛盾）か `CONTRA_UNKNOWN`（不明、原理 2-a）。
+    宣言内のものは返さない。規則は `docs/contradiction_principles.md` §7（原理を選んでコミットした
+    後に機械的に導いた表）。D3 / D4 は探索的な分析（§6）。
     """
     explicit = set(dk.explicit)
-    if not ({"readOnlyHint", "destructiveHint"} & explicit):
-        return False
+    out: list[tuple[str, str, str]] = []
     read_only = "readOnlyHint" in explicit
+    if read_only:
+        r = _d1(e)
+        if r:
+            out.append(("D1", *r))
+    elif "destructiveHint" in explicit:
+        r = _d2(e)
+        if r:
+            out.append(("D2", *r))
+    if dk.closed_world:
+        r = _d3(e)
+        if r:
+            out.append(("D3", *r))
+    if dk.idempotent and not read_only:
+        r = _d4(e)
+        if r:
+            out.append(("D4", *r))
+    return out
+
+
+def contradiction(dk: DKind, effects) -> bool:
+    """`CONTRADICTION(e)`: 明示した宣言に反する効果が M にある（`contradiction_findings` のどれかが矛盾）。
+
+    `effects` は `Effect` の列。後方互換で kind の文字列も受け付ける（その場合は D1 / D2 の
+    EXEC / SPAWN / FS_WRITE を矛盾とする従来の規則。実データの判定には使わない）。
+    """
+    explicit = set(dk.explicit)
     for e in effects:
-        kind = e if isinstance(e, str) else e.kind
-        if kind in ("EXEC", "SPAWN"):
+        if isinstance(e, str):
+            if ({"readOnlyHint", "destructiveHint"} & explicit) and e in ("EXEC", "SPAWN", "FS_WRITE"):
+                return True
+            continue
+        if any(status == CONTRA for _d, status, _r in contradiction_findings(dk, e)):
             return True
-        if kind == "DB" and not isinstance(e, str):
-            # 表 D1 / D2 の DB 行（D55）。SQL が定数に読めないものは不明で、矛盾にしない。
-            head = getattr(e, "sql_head", None)
-            if head in (SQL_MODIFY_HEADS if read_only else SQL_DESTRUCTIVE_HEADS):
-                return True
-        if kind == "FS_WRITE":
-            if read_only:
-                return True
-            destructive = True if isinstance(e, str) else getattr(e, "destructive", None)
-            if destructive is not False:
-                return True
     return False
 
 

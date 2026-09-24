@@ -23,6 +23,7 @@ from .catalog.sinks import (
     db_execute_rule,
     is_interpreter,
 )
+from .catalog.statements import HTTP_METHOD_ARG_SUFFIXES, HTTP_METHOD_SUFFIXES
 from .ir import REMOTE, RESOLVED, Argv, Atom, Obj, Path, Prin, Prov, Seq, Str, Value, opaque, prov_merge
 from .val import CallEvent
 
@@ -69,6 +70,12 @@ class Effect:
     destructive: Optional[bool] = None
     #: 非 DB の `.execute()` の機械判定結果（`db` / `db_unresolved`）。
     db_rule: Optional[str] = None
+    #: `open` 系の mode（確度が resolved の定数だけ。読めなければ `None`）。§7.4 の追記の判定（D56）。
+    fs_mode: Optional[str] = None
+    #: HTTP メソッド（大文字）。sink 名の末尾、または `*.request` の第 1 引数の定数（D56）。
+    http_method: Optional[str] = None
+    #: HTTP メソッドの値がモデル由来か（原理 3-a。D56）。
+    http_method_model: bool = False
     #: この行が依存する sink 表の行（triage 表と突き合わせるため）。
     required_by: tuple[str, ...] = ()
 
@@ -113,6 +120,12 @@ class Effect:
             d["db_rule"] = self.db_rule
         if self.sql_head:
             d["sql_head"] = self.sql_head
+        if self.fs_mode is not None:
+            d["fs_mode"] = self.fs_mode
+        if self.http_method:
+            d["http_method"] = self.http_method
+        if self.http_method_model:
+            d["http_method_model"] = True
         if self.required_by:
             d["required_by"] = list(self.required_by)
         return d
@@ -221,6 +234,39 @@ def _mode_is_write(ev: CallEvent, row: SinkRow) -> Optional[bool]:
     if isinstance(const, str):
         return any(c in const for c in "wax+")
     return None
+
+
+def _mode_const(ev: CallEvent, row: SinkRow) -> Optional[str]:
+    """`open` 系の mode の定数（引数が無ければ既定の `"r"`）。読めなければ `None`（D56）。"""
+    node: Optional[Value] = None
+    if row.mode_kw and row.mode_kw in ev.kwargs:
+        node = ev.kwargs[row.mode_kw]
+    elif row.mode_pos is not None and row.mode_pos < len(ev.args):
+        node = ev.args[row.mode_pos]
+    if node is None:
+        return "r"
+    const = node.const
+    return const if isinstance(const, str) else None
+
+
+def _http_method(suffix: str, ev: CallEvent) -> tuple[Optional[str], bool]:
+    """HTTP メソッド（大文字）と、それがモデル由来か（§7.6、D56）。
+
+    sink 名の末尾がメソッド名ならそれ。末尾が `request` なら第 1 引数（キーワード `method` も見る）を
+    読み、定数なら大文字、モデル由来なら `(None, True)`、それ以外は `(None, False)`（読めない）。
+    """
+    suffix = suffix.lower()
+    if suffix in HTTP_METHOD_SUFFIXES:
+        return suffix.upper(), False
+    if suffix in HTTP_METHOD_ARG_SUFFIXES:
+        v = ev.kwargs.get("method") if "method" in ev.kwargs else (ev.args[0] if ev.args else None)
+        if v is None:
+            return None, False
+        c = v.const
+        if isinstance(c, str):
+            return c.upper(), False
+        return None, v.prin is Prin.MODEL
+    return None, False
 
 
 def _mode_destructive(ev: CallEvent, row: SinkRow) -> Optional[bool]:
@@ -571,8 +617,11 @@ class EffectExtractor:
         if kind == "FS_WRITE":
             if row.mode_kw is not None or row.mode_pos is not None:
                 eff.destructive = _mode_destructive(ev, row)
+                eff.fs_mode = _mode_const(ev, row)
             else:
                 eff.destructive = row.destructive
+        if kind == "NET":
+            eff.http_method, eff.http_method_model = _http_method(key.rsplit(".", 1)[-1], ev)
         return eff
 
     # -- (b) proxy --------------------------------------------------------
@@ -641,6 +690,9 @@ class EffectExtractor:
             witness_chain=ev.chain,
             db_rule=db_rule,
             required_by=row.required_by,
+            **dict(zip(("http_method", "http_method_model"), _http_method(method, ev), strict=True))
+            if kind == "NET"
+            else {},
         )
 
     # -- (c) pipe ---------------------------------------------------------
