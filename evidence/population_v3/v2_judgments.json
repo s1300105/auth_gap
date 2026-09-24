@@ -1,0 +1,890 @@
+{
+ "_note": "docs/population_v3.md V2 の判定（本記録者。原ソースの確認はエージェントに分け、根拠を見直して採った）",
+ "judgments": [
+  {
+   "tree": "v3-bali-zero__teman2",
+   "unit": "register.newsroom_fact_gate",
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M00",
+   "verdict": "正",
+   "category": null,
+   "note": "teman2: os.replace で以前の判定ファイルを上書き（同じ項目の自分の結果。境界的）"
+  },
+  {
+   "tree": "v3-bali-zero__teman2",
+   "unit": "register.newsroom_fact_gate",
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M01",
+   "verdict": "誤",
+   "category": "own_temp_removal",
+   "note": "teman2: atomic write の一時ファイルの後始末"
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "compose_music",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M02",
+   "verdict": "正",
+   "category": null,
+   "note": "elevenlabs: 出力ディレクトリの mkdir と音声ファイルの書き込み（モデルが場所を選べる）"
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "compose_music",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M03",
+   "verdict": "正",
+   "category": null,
+   "note": "elevenlabs: 出力ディレクトリの mkdir と音声ファイルの書き込み（モデルが場所を選べる）"
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "isolate_audio",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M04",
+   "verdict": "正",
+   "category": null,
+   "note": "elevenlabs: 出力ディレクトリの mkdir と音声ファイルの書き込み（モデルが場所を選べる）"
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "speech_to_speech",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M05",
+   "verdict": "正",
+   "category": null,
+   "note": "elevenlabs: 出力ディレクトリの mkdir と音声ファイルの書き込み（モデルが場所を選べる）"
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "speech_to_text",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M06",
+   "verdict": "正",
+   "category": null,
+   "note": "elevenlabs: 出力ディレクトリの mkdir と音声ファイルの書き込み（モデルが場所を選べる）"
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "text_to_sound_effects",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M07",
+   "verdict": "正",
+   "category": null,
+   "note": "elevenlabs: 出力ディレクトリの mkdir と音声ファイルの書き込み（モデルが場所を選べる）"
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "text_to_speech",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M08",
+   "verdict": "正",
+   "category": null,
+   "note": "elevenlabs: 出力ディレクトリの mkdir と音声ファイルの書き込み（モデルが場所を選べる）"
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "text_to_voice",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M09",
+   "verdict": "正",
+   "category": null,
+   "note": "elevenlabs: 出力ディレクトリの mkdir と音声ファイルの書き込み（モデルが場所を選べる）"
+  },
+  {
+   "tree": "v3-clcc2019__agentic-infra",
+   "unit": "register_helm_tools.helm_get_values",
+   "site": "pipe:communicate",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M10",
+   "verdict": "誤",
+   "category": "pipe_stdin_as_fs_write",
+   "note": "agentic-infra: proc.communicate(input=None) を FS_WRITE とした。読み取りの helm / kubectl"
+  },
+  {
+   "tree": "v3-clcc2019__agentic-infra",
+   "unit": "register_helm_tools.helm_history",
+   "site": "pipe:communicate",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M11",
+   "verdict": "誤",
+   "category": "pipe_stdin_as_fs_write",
+   "note": "agentic-infra: proc.communicate(input=None) を FS_WRITE とした。読み取りの helm / kubectl"
+  },
+  {
+   "tree": "v3-clcc2019__agentic-infra",
+   "unit": "register_helm_tools.helm_search",
+   "site": "pipe:communicate",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M12",
+   "verdict": "誤",
+   "category": "pipe_stdin_as_fs_write",
+   "note": "agentic-infra: proc.communicate(input=None) を FS_WRITE とした。読み取りの helm / kubectl"
+  },
+  {
+   "tree": "v3-clcc2019__agentic-infra",
+   "unit": "register_kubectl_tools.kubectl_get",
+   "site": "pipe:communicate",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M13",
+   "verdict": "誤",
+   "category": "pipe_stdin_as_fs_write",
+   "note": "agentic-infra: proc.communicate(input=None) を FS_WRITE とした。読み取りの helm / kubectl"
+  },
+  {
+   "tree": "v3-dreamrec__comfypilot",
+   "unit": "comfy_install_workflow_deps",
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M14",
+   "verdict": "誤",
+   "category": "own_temp_removal",
+   "note": "comfypilot: 自分の mkstemp の削除"
+  },
+  {
+   "tree": "v3-dreamrec__comfypilot",
+   "unit": "comfy_send_to_blender",
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M15",
+   "verdict": "正",
+   "category": null,
+   "note": "comfypilot: os.replace でモデルが選ぶ名前の既存ファイルを上書き"
+  },
+  {
+   "tree": "v3-dreamrec__comfypilot",
+   "unit": "comfy_send_to_disk",
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M16",
+   "verdict": "正",
+   "category": null,
+   "note": "comfypilot: os.replace でモデルが選ぶ名前の既存ファイルを上書き"
+  },
+  {
+   "tree": "v3-dreamrec__comfypilot",
+   "unit": "comfy_send_to_td",
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M17",
+   "verdict": "正",
+   "category": null,
+   "note": "comfypilot: os.replace でモデルが選ぶ名前の既存ファイルを上書き"
+  },
+  {
+   "tree": "v3-evgenygurin__dj-music-plugin",
+   "unit": "render_diagnose",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M18",
+   "verdict": "正",
+   "category": null,
+   "note": "dj-music: workspace の mkdir と diagnostics.json / grid_check.json の書き込み（本記録者も M19 を確認）"
+  },
+  {
+   "tree": "v3-evgenygurin__dj-music-plugin",
+   "unit": "render_diagnose",
+   "site": "pathlib.Path.write_text",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M19",
+   "verdict": "正",
+   "category": null,
+   "note": "dj-music: workspace の mkdir と diagnostics.json / grid_check.json の書き込み（本記録者も M19 を確認）"
+  },
+  {
+   "tree": "v3-evgenygurin__dj-music-plugin",
+   "unit": "render_validate_grid",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M20",
+   "verdict": "正",
+   "category": null,
+   "note": "dj-music: workspace の mkdir と diagnostics.json / grid_check.json の書き込み（本記録者も M19 を確認）"
+  },
+  {
+   "tree": "v3-evgenygurin__dj-music-plugin",
+   "unit": "render_validate_grid",
+   "site": "pathlib.Path.write_text",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M21",
+   "verdict": "正",
+   "category": null,
+   "note": "dj-music: workspace の mkdir と diagnostics.json / grid_check.json の書き込み（本記録者も M19 を確認）"
+  },
+  {
+   "tree": "v3-ignatenkofi__memshelf-mcp",
+   "unit": "memshelf_rebuild",
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M22",
+   "verdict": "正",
+   "category": null,
+   "note": "memshelf: rebuild の .meta.json 削除（既存データを失いうる）"
+  },
+  {
+   "tree": "v3-ignatenkofi__memshelf-mcp",
+   "unit": "memshelf_resolve",
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M23",
+   "verdict": "正",
+   "category": null,
+   "note": "memshelf: rebuild の .meta.json 削除（既存データを失いうる）"
+  },
+  {
+   "tree": "v3-ignatenkofi__memshelf-mcp",
+   "unit": "memshelf_shelve",
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M24",
+   "verdict": "誤",
+   "category": "own_temp_removal",
+   "note": "shelve: 自分の mkstemp と、この呼び出しで作った sidecar の削除。ただし amend=True の上書き（shelve.py:545）は本当に破壊的で、解析器は報告していない"
+  },
+  {
+   "tree": "v3-kolonelpanik__synapse-s2",
+   "unit": "list_spiking_context_cursors",
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify",
+    "db_persistent"
+   ],
+   "id": "M25",
+   "verdict": "正",
+   "category": null,
+   "note": "synapse-s2: 初回（または移行時）の DB 作成・WAL・スキーマ・移行行の INSERT。条件つき"
+  },
+  {
+   "tree": "v3-kolonelpanik__synapse-s2",
+   "unit": "list_spiking_context_cursors",
+   "site": "psycopg.Cursor.executemany",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M26",
+   "verdict": "正",
+   "category": null,
+   "note": "synapse-s2: 初回（または移行時）の DB 作成・WAL・スキーマ・移行行の INSERT。条件つき"
+  },
+  {
+   "tree": "v3-kolonelpanik__synapse-s2",
+   "unit": "list_spiking_context_cursors",
+   "site": "sqlite3.Connection.executescript",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M27",
+   "verdict": "正",
+   "category": null,
+   "note": "synapse-s2: 初回（または移行時）の DB 作成・WAL・スキーマ・移行行の INSERT。条件つき"
+  },
+  {
+   "tree": "v3-kolonelpanik__synapse-s2",
+   "unit": "pull_spiking_context_deployments",
+   "site": "sqlite3.Connection.executescript",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M28",
+   "verdict": "正",
+   "category": null,
+   "note": "synapse-s2: 初回（または移行時）の DB 作成・WAL・スキーマ・移行行の INSERT。条件つき"
+  },
+  {
+   "tree": "v3-lazyseaseal__validationtpmcp",
+   "unit": "download_attachments",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M29",
+   "verdict": "正",
+   "category": null,
+   "note": "validationtpmcp: 添付をモデルが選ぶディレクトリに保存"
+  },
+  {
+   "tree": "v3-lazyseaseal__validationtpmcp",
+   "unit": "download_attachments",
+   "site": "os.makedirs",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M30",
+   "verdict": "正",
+   "category": null,
+   "note": "validationtpmcp: 添付をモデルが選ぶディレクトリに保存"
+  },
+  {
+   "tree": "v3-lazyseaseal__validationtpmcp",
+   "unit": "download_attachments",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M31",
+   "verdict": "正",
+   "category": null,
+   "note": "validationtpmcp: 添付をモデルが選ぶディレクトリに保存"
+  },
+  {
+   "tree": "v3-muduiclaw__clawking",
+   "unit": "op_get",
+   "site": "subprocess.run",
+   "kind": "SPAWN",
+   "decl": "D1",
+   "reasons": [
+    "spawn_model"
+   ],
+   "id": "M32",
+   "verdict": "誤",
+   "category": "spawn_quoted_fixed_command",
+   "note": "clawking: 固定の `op item get` に shlex.quote した値だけ。読み取り"
+  },
+  {
+   "tree": "v3-muduiclaw__clawking",
+   "unit": "op_get_raw",
+   "site": "subprocess.run",
+   "kind": "SPAWN",
+   "decl": "D1",
+   "reasons": [
+    "spawn_model"
+   ],
+   "id": "M33",
+   "verdict": "誤",
+   "category": "spawn_quoted_fixed_command",
+   "note": "clawking: 固定の `op item get` に shlex.quote した値だけ。読み取り"
+  },
+  {
+   "tree": "v3-nebelov__yandex-direct-for-all",
+   "unit": "yd_api",
+   "site": "os.chmod",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M34",
+   "verdict": "正",
+   "category": null,
+   "note": "yandex-direct: service=reports で状態ファイルとレポートを書く"
+  },
+  {
+   "tree": "v3-nebelov__yandex-direct-for-all",
+   "unit": "yd_api",
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M35",
+   "verdict": "正",
+   "category": null,
+   "note": "yandex-direct: service=reports で状態ファイルとレポートを書く"
+  },
+  {
+   "tree": "v3-nebelov__yandex-direct-for-all",
+   "unit": "yd_api",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M36",
+   "verdict": "正",
+   "category": null,
+   "note": "yandex-direct: service=reports で状態ファイルとレポートを書く"
+  },
+  {
+   "tree": "v3-p-v1shnu__pressure-harness",
+   "unit": "spike_return_image",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M37",
+   "verdict": "誤",
+   "category": "tail_name_resolution",
+   "note": "pressure-harness: ローカルの bytearray の append を AuditLog.append に末尾名で結んだ（効果の確度 opaque(unresolved)）"
+  },
+  {
+   "tree": "v3-p-v1shnu__pressure-harness",
+   "unit": "spike_return_image",
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M38",
+   "verdict": "誤",
+   "category": "tail_name_resolution",
+   "note": "pressure-harness: ローカルの bytearray の append を AuditLog.append に末尾名で結んだ（効果の確度 opaque(unresolved)）"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.get_context",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M39",
+   "verdict": "正",
+   "category": null,
+   "note": "lore: 遅延初期化（mkdir / schema DDL / WAL）と log_interaction・log_event の INSERT。intro は初回の DB アクセス時のみ"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.get_context",
+   "site": "sqlite3.Connection.executescript",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M40",
+   "verdict": "正",
+   "category": null,
+   "note": "lore: 遅延初期化（mkdir / schema DDL / WAL）と log_interaction・log_event の INSERT。intro は初回の DB アクセス時のみ"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.intro",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M41",
+   "verdict": "正",
+   "category": null,
+   "note": "lore: 遅延初期化（mkdir / schema DDL / WAL）と log_interaction・log_event の INSERT。intro は初回の DB アクセス時のみ"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.intro",
+   "site": "sqlite3.Connection.executescript",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M42",
+   "verdict": "正",
+   "category": null,
+   "note": "lore: 遅延初期化（mkdir / schema DDL / WAL）と log_interaction・log_event の INSERT。intro は初回の DB アクセス時のみ"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.search",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M43",
+   "verdict": "正",
+   "category": null,
+   "note": "lore: 遅延初期化（mkdir / schema DDL / WAL）と log_interaction・log_event の INSERT。intro は初回の DB アクセス時のみ"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.search",
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify",
+    "db_persistent"
+   ],
+   "id": "M44",
+   "verdict": "正",
+   "category": null,
+   "note": "lore: 遅延初期化（mkdir / schema DDL / WAL）と log_interaction・log_event の INSERT。intro は初回の DB アクセス時のみ"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.search_deep",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M45",
+   "verdict": "正",
+   "category": null,
+   "note": "lore: 遅延初期化（mkdir / schema DDL / WAL）と log_interaction・log_event の INSERT。intro は初回の DB アクセス時のみ"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.search_deep",
+   "site": "sqlite3.Connection.executescript",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M46",
+   "verdict": "正",
+   "category": null,
+   "note": "lore: 遅延初期化（mkdir / schema DDL / WAL）と log_interaction・log_event の INSERT。intro は初回の DB アクセス時のみ"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.wiki_get_page",
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify",
+    "db_persistent"
+   ],
+   "id": "M47",
+   "verdict": "正",
+   "category": null,
+   "note": "lore: 遅延初期化（mkdir / schema DDL / WAL）と log_interaction・log_event の INSERT。intro は初回の DB アクセス時のみ"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.wiki_get_page",
+   "site": "sqlite3.Connection.executescript",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M48",
+   "verdict": "正",
+   "category": null,
+   "note": "lore: 遅延初期化（mkdir / schema DDL / WAL）と log_interaction・log_event の INSERT。intro は初回の DB アクセス時のみ"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.wiki_search",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M49",
+   "verdict": "正",
+   "category": null,
+   "note": "lore: 遅延初期化（mkdir / schema DDL / WAL）と log_interaction・log_event の INSERT。intro は初回の DB アクセス時のみ"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.wiki_search",
+   "site": "sqlite3.Connection.executescript",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M50",
+   "verdict": "正",
+   "category": null,
+   "note": "lore: 遅延初期化（mkdir / schema DDL / WAL）と log_interaction・log_event の INSERT。intro は初回の DB アクセス時のみ"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "create_report",
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M51",
+   "verdict": "正",
+   "category": null,
+   "note": "tekla: レポートの削除・設定の書き込み・マクロのコピー・mkdir"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "export_drawings",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M52",
+   "verdict": "正",
+   "category": null,
+   "note": "tekla: レポートの削除・設定の書き込み・マクロのコピー・mkdir"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "export_drawings",
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M53",
+   "verdict": "正",
+   "category": null,
+   "note": "tekla: レポートの削除・設定の書き込み・マクロのコピー・mkdir"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "export_drawings",
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M54",
+   "verdict": "正",
+   "category": null,
+   "note": "tekla: レポートの削除・設定の書き込み・マクロのコピー・mkdir"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "export_drawings",
+   "site": "pathlib.Path.write_text",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M55",
+   "verdict": "正",
+   "category": null,
+   "note": "tekla: レポートの削除・設定の書き込み・マクロのコピー・mkdir"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "print_drawings",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M56",
+   "verdict": "正",
+   "category": null,
+   "note": "tekla: レポートの削除・設定の書き込み・マクロのコピー・mkdir"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "print_drawings",
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M57",
+   "verdict": "正",
+   "category": null,
+   "note": "tekla: レポートの削除・設定の書き込み・マクロのコピー・mkdir"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "select_model_objects_from_drawings",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M58",
+   "verdict": "正",
+   "category": null,
+   "note": "tekla: レポートの削除・設定の書き込み・マクロのコピー・mkdir"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "select_model_objects_from_drawings",
+   "site": "shutil.copy2",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M59",
+   "verdict": "正",
+   "category": null,
+   "note": "tekla: レポートの削除・設定の書き込み・マクロのコピー・mkdir"
+  },
+  {
+   "tree": "v3-akougkas__helios-mcp",
+   "unit": "create_server.get_drift_report",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D4",
+   "reasons": [
+    "fs_append"
+   ],
+   "id": "E00",
+   "verdict": "誤",
+   "category": "flock_append",
+   "note": "helios: flock のために \"a\" で開くだけで何も書かない（D4）"
+  },
+  {
+   "tree": "v3-muduiclaw__clawking",
+   "unit": "op_get",
+   "site": "subprocess.run",
+   "kind": "SPAWN",
+   "decl": "D3",
+   "reasons": [
+    "spawn_model"
+   ],
+   "id": "E01",
+   "verdict": "正",
+   "category": null,
+   "note": "clawking D3: op が 1Password のクラウドに接続する（外部）。ただし理由コード spawn_model は誤り"
+  },
+  {
+   "tree": "v3-muduiclaw__clawking",
+   "unit": "op_get_raw",
+   "site": "subprocess.run",
+   "kind": "SPAWN",
+   "decl": "D3",
+   "reasons": [
+    "spawn_model"
+   ],
+   "id": "E02",
+   "verdict": "正",
+   "category": null,
+   "note": "clawking D3: op が 1Password のクラウドに接続する（外部）。ただし理由コード spawn_model は誤り"
+  }
+ ]
+}
