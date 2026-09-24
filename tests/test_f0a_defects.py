@@ -1995,7 +1995,7 @@ def test_known_alias_import_precondition(tmp_path):
     assert _slot(u, "NET", "url.host").prin == Prin.MODEL
 
 
-@KNOWN
+# D61 G3 で直した（import 先を元の名前で引く）。印を外した。
 @pytest.mark.parametrize("form", ["relative", "absolute"])
 def test_known_aliased_from_import_descends_into_in_tree_function(tmp_path, form):
     """`from .net import fetch_url as http_get; http_get(url)` で、import 表は `pkg.net.fetch_url` を正しく引くが、

@@ -169,6 +169,11 @@ class UnitReport:
             d["alias_facts"] = [a.to_json() for a in self.val.alias_facts]
             d["opaque_reasons"] = sorted(set(self.val.opaque_reasons))
             d["cap_hits"] = sorted(set(self.val.cap_hits))
+            # 名前が木の中の定義に当たるのに解決できなかった呼び出し（D61 G5。判定には使わない）
+            d["unresolved_in_tree_calls"] = [
+                {"name": n, "relpath": r, "lineno": ln, "n_candidates": c}
+                for n, r, ln, c in sorted(self.val.unresolved_in_tree)
+            ]
             if self.val.annotation_typed:
                 # **型注釈から受け手の型を与えた箇所**（O29 / D50）。注釈は宣言であって
                 # 証明ではないので、どの DB 効果が注釈に依っているかを切り分けられるように出す。

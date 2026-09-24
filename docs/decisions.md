@@ -3420,14 +3420,21 @@ v3 の精度が上がったことを結果として報告しない — v3 は開
 - **G1 子プロセスの標準入力はファイルではない**: `communicate(input=...)` / `stdin.write(...)` はパイプへの書き込みで、
   ファイルシステムを変えない。FS_WRITE の効果にしない（インタプリタへのコード投入としての EXEC@pipe は今までどおり）。
   **実装の形**: `effects._pipe` は argv0 がインタプリタでない（または分からない）とき「FS_WRITE(content) 相当の情報行」を
-  出していた。これを出さない。子プロセスの起動そのものは SPAWN の効果として別に出る（spawn の分類で矛 / 不が決まる）ので、
-  能力は落ちない。
+  出していた。**argv0 が定数でインタプリタでなく、`shell` が False と分かるときだけ**これを出さない。子プロセスの起動そのものは
+  SPAWN の効果として別に出る（spawn の分類で矛 / 不が決まる）ので、能力は落ちない。**argv0 / shell が決まらないときは変えない**:
+  最初の実装はこの場合も行を消し、インタプリタかもしれない子プロセスへのコード投入が跡形もなく消えた（新しい誤 clear。既存の
+  テスト `test_known_pipe_precondition` が落ちて分かった）。決まらないときに EXEC を出すと、判定表（§7）で EXEC は常に矛なので
+  言い過ぎになり、表の変更が要る。一般に正しいと言える範囲に留める（D19 の既知の欠陥はそのまま）。
 - **G2 組込み型の値のメソッドを木の中の同名メソッドに結ばない**: 受け手の値がリテラル（`[]` / `{}` / `""` / `b""` /
   `()`）か組込みの構築子（`list()` / `dict()` / `set()` / `bytearray()` / `bytes()` / `str()` / `tuple()` など）から
   来ると分かっているとき、`x.append(...)` を末尾名で木の中のクラスのメソッドに解決しない（Python の意味で、それは
   組込み型のメソッドである）。
 - **G3 パッケージの `__init__.py` の再公開を追う**: `from .pkg import name` で `pkg/__init__.py` が `from .mod import name`
   と再公開しているとき、`name` を `pkg.mod.name` に解決する（import の意味そのもの）。
+  **同じ理由で、別名つきの import（`from m import f as g` の `g()`）は import 先を元の名前 `f` で引く**（テストを書く途中で、
+  別名つきで import した関数が一度も pin されていなかったことが分かった）。読む側の上書きの判定は読む側の名前 `g` で見る。
+  **これは D19 の既知の欠陥 K7**（最初の解析器からある。F0a の 98 木中 32 木・693 箇所に構文上の候補）で、`tests/test_f0a_defects.py`
+  の `test_known_aliased_from_import_descends_into_in_tree_function` の `xfail(strict=True)` の印を外した。
 - **G4 注釈で型を付ける受け手の型を、sink 表の proxy の受け手の型から導く**: D50 / D51 は `ANNOTATION_TYPED_RECEIVERS`
   を DB の型だけの手書きの一覧にしていた（O29 が DB の問題だったため）。注釈による型付けの理由（宣言された型の受け手で
   proxy sink を引く）は kind によらないので、`PROXY_SINKS` の受け手の型すべてを対象にする（httpx / requests の
