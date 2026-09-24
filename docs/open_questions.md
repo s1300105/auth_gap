@@ -482,7 +482,7 @@ trig が traced のユニットが 0.6% で §3 の「20% 未満なら SELECT �
   両側対称）。増えた 13 行は目視で全部本物だった。
 
 
-## O23. 矛盾関係の表（`docs/contradiction_matrix.md`）で「決めが要る」と残した 5 マス
+## O23. 矛盾関係の表（`docs/contradiction_matrix.md`）で「決めが要る」と残した 5 マス（+ #6 / #7）— **原理の選択待ち（`docs/contradiction_principles.md`）。DB の実装漏れは D55 で解決**
 
 - **状況**: 宣言 D（MCP `ToolAnnotations` の 4 つ）と効果 sub_kind の矛盾関係を
   表として定義した（D41、`docs/contradiction_matrix.md`）。**仕様の文言から導けるマスは
@@ -531,6 +531,16 @@ EXEC / SPAWN / FS_WRITE しか見ない。run4 では 0 件で問題にならな
 **全部おすすめどおりなら**: CONTRADICTION 146 → 146 + 32（DB）+ 37（#4）− 26（#7）= **189**
 （見込み。実装後に run を取り直して確かめる）。不明として別に出すもの: #7 の 26、
 #4 の宛先が読めない 91、DB で SQL が読めない 130。
+
+### 進め方の決定（2026-09-24、学生）
+
+**マスを件数を見て 1 つずつ決めない。** 仕様の文言から導ける原理を先に選び、コミットしてから
+機械的に当てはめる（`docs/contradiction_principles.md`）。本文にはマスごとの 3 値の件数と
+感度分析を載せる。確証は母集団 v3（未見の標本）で取る。**判定者は 1 人**（2 人目は確保できない。
+限界として本文に書く）。
+
+* **表どおりの実装漏れ（DB）は D55 で直した**（run12、CONTRADICTION 146 → 178）。
+* **原理 1〜4 は学生の選択待ち**（`docs/contradiction_principles.md` §6）。
 
 ---
 

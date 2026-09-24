@@ -186,7 +186,8 @@ def _select_coordinate(
     covered: Optional[str] = None
     notes: tuple[str, ...] = ()
     dk = inp.d_kind_by_effect.get(i, inp.d_kind)
-    if contradiction_flag and eff.kind in ("EXEC", "SPAWN", "FS_WRITE"):
+    # DB は `contradiction()` が SQL の先頭語で絞る（D55。表 D1 / D2 の DB 行）。
+    if contradiction_flag and eff.kind in ("EXEC", "SPAWN", "FS_WRITE", "DB"):
         verdicts.add("CONTRADICTION")
     occ = inp.req_occ_by_effect.get(i, inp.req_occ)
     if inp.trig_label is Prin.MODEL and inp.trig_mode == "traced" and occ is Req.MODEL:

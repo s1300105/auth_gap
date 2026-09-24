@@ -72,6 +72,18 @@ class Effect:
     #: この行が依存する sink 表の行（triage 表と突き合わせるため）。
     required_by: tuple[str, ...] = ()
 
+    @property
+    def sql_head(self) -> Optional[str]:
+        """DB 効果の SQL の先頭語（大文字）。**定数に解決できたときだけ**。読めなければ `None`。
+
+        `sub_kind` の `DB_WRITE` は「読み取り語で始まらない」という意味で `PRAGMA` / `BEGIN` も
+        含むので、矛盾の判定はこちらを使う（`dparse.contradiction`、D55）。`_sub_kind` と同じく
+        `Value.const`（確度が resolved の定数）だけを読む。
+        """
+        if self.kind != "DB":
+            return None
+        return _sql_head_of(self.slots.get("sql"))
+
     def to_json(self) -> dict:
         d: dict[str, Any] = {
             "kind": self.kind,
@@ -99,6 +111,8 @@ class Effect:
             d["destructive"] = self.destructive
         if self.db_rule:
             d["db_rule"] = self.db_rule
+        if self.sql_head:
+            d["sql_head"] = self.sql_head
         if self.required_by:
             d["required_by"] = list(self.required_by)
         return d
@@ -243,6 +257,15 @@ def _exec_mode(ev: CallEvent, row: SinkRow) -> tuple[Optional[bool], dict]:
     if isinstance(const, bool):
         return const, {"shell": {"prin": v.prin.name, "const": const, "source": "literal"}}
     return None, {"shell": {"prin": v.prin.name, "source": "config-conditional", "value": v.to_json()}}
+
+
+def _sql_head_of(sql: Optional[Value]) -> Optional[str]:
+    """定数 SQL の先頭語（大文字、末尾の `;` を除く）。空白だけ・非定数なら `None`。"""
+    text = sql.const if sql is not None else None
+    if not isinstance(text, str):
+        return None
+    parts = text.split(None, 1)
+    return parts[0].upper().rstrip(";") if parts else None
 
 
 def _sub_kind(kind: str, slots: dict[str, Value]) -> Optional[str]:

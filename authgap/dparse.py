@@ -30,6 +30,17 @@ READ_ONLY_UPPER = frozenset({"FS_READ", "NET"})
 #: 破壊的な kind（`destructiveHint==false` が宣言外にするもの）。
 DESTRUCTIVE_KINDS = frozenset({"EXEC", "SPAWN", "FS_WRITE"})
 
+#: **データ・スキーマを変える SQL 文の先頭語**（`docs/contradiction_matrix.md` D1 の
+#: 「`DB_WRITE`（データの変更）」、D55）。`readOnlyHint==true` に対して矛盾。
+#: `PRAGMA` / `BEGIN` / `COMMIT` など接続・トランザクションの文は**入れない**（O23 #1、未決）。
+#: ここに無い先頭語は矛盾にしない（決めていないものを倒さない）。
+SQL_MODIFY_HEADS = frozenset({"INSERT", "UPDATE", "DELETE", "REPLACE", "MERGE", "TRUNCATE",
+                              "DROP", "CREATE", "ALTER"})
+#: そのうち**追記ではない**もの（表 D2 の「`DELETE` / `DROP` / `UPDATE`」、D55）。
+#: `destructiveHint==false` に対して矛盾。`INSERT` / `CREATE` は追記なので宣言内。
+#: **既知の限界**: `INSERT ... ON CONFLICT DO UPDATE` は先頭語が `INSERT` なので宣言内になる。
+SQL_DESTRUCTIVE_HEADS = SQL_MODIFY_HEADS - {"INSERT", "CREATE"}
+
 
 @dataclass
 class DKind:
@@ -199,6 +210,9 @@ def contradiction(dk: DKind, effects) -> bool:
     * `destructiveHint==false` の明示（readOnly は明示していない）→ EXEC / SPAWN、
       および `destructive` が False **でない** FS_WRITE（削除・上書き型、または
       mode が読めず不明のもの。追記型 `mkdir` / `open('a')` は宣言内）。
+    * DB（D55）: `readOnlyHint==true` なら先頭語が `SQL_MODIFY_HEADS`、
+      `destructiveHint==false` なら `SQL_DESTRUCTIVE_HEADS`。先頭語が読めないもの・
+      接続やトランザクションの文（O23 #1）は矛盾にしない。
 
     `effects` は `Effect` の列。後方互換で kind の文字列集合も受け付ける
     （その場合は FS_WRITE を削除・上書き型として扱う = 従来の規則）。
@@ -211,6 +225,11 @@ def contradiction(dk: DKind, effects) -> bool:
         kind = e if isinstance(e, str) else e.kind
         if kind in ("EXEC", "SPAWN"):
             return True
+        if kind == "DB" and not isinstance(e, str):
+            # 表 D1 / D2 の DB 行（D55）。SQL が定数に読めないものは不明で、矛盾にしない。
+            head = getattr(e, "sql_head", None)
+            if head in (SQL_MODIFY_HEADS if read_only else SQL_DESTRUCTIVE_HEADS):
+                return True
         if kind == "FS_WRITE":
             if read_only:
                 return True

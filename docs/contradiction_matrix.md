@@ -109,7 +109,7 @@ CONTRADICTION(D, e)  ⟺  e の sub_kind が D の上界の外にある
 | `SPAWN`（両 sub_kind） | **矛盾** | 別プロセスは環境を変更しうる | 報告 | 16 | — |
 | `FS_WRITE`（削除・上書き） | **矛盾** | ファイルシステムの変更 | 報告 | 45 | — |
 | `FS_WRITE`（追記） | **矛盾** | 追記も変更である（D2 と違い readOnly に例外は無い） | 報告 | 12 | — |
-| `DB_WRITE`（データの変更） | **矛盾** | 記憶域の変更 | 報告しない | **0** | 該当なし |
+| `DB_WRITE`（データの変更） | **矛盾** | 記憶域の変更 | ~~報告しない~~ → **報告（D55）** | **0**（run4）。run11 で 12 位置が黙っていた | `INSERT` / `UPDATE`（teamplay-talk） |
 | `DB_WRITE`（`PRAGMA`） | **決めが要る（下の #1）** | 接続設定であってデータの変更ではない。ただし `journal_mode=WAL` は `-wal` ファイルを作る | 報告しない | **54** | `PRAGMA journal_mode=WAL` 52 / `busy_timeout=5000` 2 |
 | `DB_READ`（`SELECT`） | 宣言内 | `SELECT` は変更しない | 報告しない | 72 | — |
 | `DB`（SQL が読めない） | **不明** | 読み / 書きが決まらない | **黙っている** | 1 | — |
@@ -138,7 +138,7 @@ CONTRADICTION(D, e)  ⟺  e の sub_kind が D の上界の外にある
 | `FS_WRITE`（追記 = `mkdir` / `open('a')`） | 宣言内 | 仕様の "additive updates"（**D32 の学生の決定**） | 報告しない | 73 | — |
 | `FS_WRITE`（mode 不明） | **決めが要る（下の #3）** | D32 は矛盾側に倒している。**規則 4 に照らすと「不明」が正しい** | 矛盾に倒す | 0 | 該当なし |
 | `DB_WRITE`（`INSERT`） | 宣言内 | 追記そのもの | 報告しない | **9** | `INSERT` 9 件。**正しく宣言内** |
-| `DB_WRITE`（`DELETE` / `DROP` / `UPDATE`） | **矛盾** | 追記ではない | **報告しない** | **0** | 該当なし |
+| `DB_WRITE`（`DELETE` / `DROP` / `UPDATE`） | **矛盾** | 追記ではない | ~~報告しない~~ → **報告（D55）** | **0**（run4）。run11 で 35 位置が黙っていた | `UPDATE` / `DELETE`（teamplay-talk、asquared-mcp） |
 | `DB_READ` | 宣言内 | — | 報告しない | 7 | `SELECT` |
 | `FS_READ` | 宣言内 | — | 報告しない | 22 | — |
 | `NET`（`DELETE` メソッド） | **矛盾** | リモートの削除 | **報告しない（語彙に無い）** | **0** | 該当なし |

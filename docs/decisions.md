@@ -2946,3 +2946,42 @@ OOM になるので、深さによらず 1 本ずつ走らせる（D52）。
 
 * **O30**: 末尾名の解決がテストファイルの定義に結びつき、段数ぶん連鎖する（誤警報、`UNKNOWN` の行）。
 * **O31**: 定数の `None` / `False` を渡した分岐を区別しない（誤警報、CONTRADICTION 4 件）。
+
+## D55（2026-09-24）DB の書き込みを CONTRADICTION に数える — **表（D41）どおりに実装していなかった（誤 clear）**
+
+### 何が誤っていたか
+
+表 `docs/contradiction_matrix.md`（D41、学生の了承済み）は次を決めていた:
+readOnly × `DB_WRITE`（データの変更）= **矛盾**、destructive=false × `INSERT` = 宣言内、
+destructive=false × `DELETE` / `DROP` / `UPDATE` = **矛盾**。ところが実装は
+`dparse.contradiction()` が EXEC / SPAWN / FS_WRITE しか見ず、さらに `verdict._select_coordinate` が
+CONTRADICTION を同じ 3 kind に限っていた（2 か所）。表を書いた時点（run4）では該当が 0 件で、
+表の「現行」列にも「報告しない / 0」と書いて済ませていた。D50（DB の受け手型）と D54（深さ 4）で
+該当が現れ、**run11 で 47 位置（CONTRADICTION 32、2 木）が黙っていた。誤 clear。**
+
+これは新しい決定ではなく、**決めたルールに実装を合わせる修正**である（O23 の決めが要るマスは
+触っていない。`PRAGMA` などは報告しないまま）。
+
+### 直したこと
+
+* `Effect.sql_head`: 定数に解決できた SQL の先頭語（`Value.const` = resolved の定数だけ。
+  `_sub_kind` と同じ読み方）。manifest に `sql_head` として出す。
+* `dparse.SQL_MODIFY_HEADS` = `INSERT / UPDATE / DELETE / REPLACE / MERGE / TRUNCATE / DROP /
+  CREATE / ALTER`（readOnly に対して矛盾）、`SQL_DESTRUCTIVE_HEADS` = そこから `INSERT` / `CREATE`
+  を除いたもの（destructive=false に対して矛盾）。**`PRAGMA` / `BEGIN` / `COMMIT` などは入れない**
+  （O23 #1）。先頭語が読めないものは矛盾にしない（不明）。
+* `verdict._select_coordinate` の kind の門に DB を足した。
+* **既知の限界**: `INSERT ... ON CONFLICT DO UPDATE` は先頭語が `INSERT` なので destructive=false に
+  対して宣言内になる。`WITH ... INSERT` は O24 のまま。
+
+### 確かめたこと
+
+* テストは実装より先（`tests/test_db_contradiction.py` 17 件。書いた時点で矛盾側 6 件が落ち、
+  宣言内・不明側 10 件が通っていた）。
+* pytest 635 passed / B3a 8/8 / B3b 15/15 / 変異の生存 1/15 / two_sided 8/8（厳密 0/8・INJECT 1/8）
+  / diff_effects（較正 14 木）変化 0。すべて変更前と同じ。
+* run11 → run12: **CONTRADICTION 146 → 178（+32、消えた 0）**。ユニット・効果・他の判定の行数は
+  すべて同じ。増えた 32 件は teamplay-talk 30（readOnly の `get_poll_results` などが呼び出し元の
+  認証処理で `INSERT` / `UPDATE`、destructive=false のツールが `UPDATE` / `DELETE`）と
+  asquared-mcp 2（destructive=false の `coord_ack` / `coord_post` が既存行を `UPDATE`）。
+  原典で確かめ、いずれも表の規則どおり。
