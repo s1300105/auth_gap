@@ -3384,3 +3384,7 @@ slot が 39 → 43（+4）: xagent `onedrive_upload_file` の `url.path` で、�
 
 **凍結**: 上の run18 で D59 を終えたので、D59 の凍結の条件どおり解析器を凍結する。`docs/fingerprint.json` に
 `fingerprint()`・`authgap/` の全ファイルの sha256・commit を書いた（`scripts/freeze_analyzer.py`）。**タグは学生が打つ。**
+
+**タグ**（2026-09-24）: `analyzer-freeze-1` は `1bcace3` を指す（学生が GitHub の Release 画面で作成。軽量タグ）。
+`docs/fingerprint.json` の `git_commit` は `2562293` だが、両者の差は `docs/fingerprint.json` の追加だけで、
+`authgap/` は同一（`freeze.analyzer_commit` = `90ef6dd`、結合 sha256 `f2c2bf9e…`）。凍結後の実行はこの指紋と照合する。
