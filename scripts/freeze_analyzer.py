@@ -64,8 +64,8 @@ def main() -> int:
             "scan_run": args.run,
             "python": sys.version.split()[0],
             "note": (
-                "母集団 v2 は開発用のデータ。評価は凍結後の母集団 v3 で行う。凍結後に見つかった欠陥は直さず"
-                "既知の限界として記録し、直すなら docs/preregistration.md に逸脱として書く（D59）。"
+                "母集団 v2 と v3 は開発用のデータ。論文の評価は、学生が v2 / v3 を含まない別の新しいデータで行う（D60）。"
+                "凍結後に解析器を変えるなら docs/preregistration.md に逸脱として書く（D61）。"
             ),
         },
         "implementation_sha256": impl,
