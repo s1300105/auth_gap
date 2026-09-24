@@ -588,3 +588,24 @@ def dom_combine(*rs: DomResult) -> DomResult:
             if (r.grade or REQ_BOTTOM) > (best.grade or REQ_BOTTOM):
                 best = r
     return best
+
+
+def stable_repr(v: object) -> str:
+    """`repr` と同じ形で、**集合の要素だけを並べ替える**（manifest をプロセス間で一致させる）。
+
+    `repr(set)` の並びは文字列のハッシュで決まり、PYTHONHASHSEED がプロセスごとに変わるので
+    同じ木を 2 回走らせると manifest が一致しなかった（`tests/test_stable_repr.py`）。
+    """
+    if isinstance(v, (set, frozenset)):
+        body = ", ".join(sorted(stable_repr(x) for x in v))
+        if isinstance(v, frozenset):
+            return f"frozenset({{{body}}})" if v else "frozenset()"
+        return f"{{{body}}}" if v else "set()"
+    if isinstance(v, tuple):
+        inner = ", ".join(stable_repr(x) for x in v)
+        return f"({inner},)" if len(v) == 1 else f"({inner})"
+    if isinstance(v, list):
+        return "[" + ", ".join(stable_repr(x) for x in v) + "]"
+    if isinstance(v, dict):
+        return "{" + ", ".join(f"{stable_repr(k)}: {stable_repr(x)}" for k, x in v.items()) + "}"
+    return repr(v)

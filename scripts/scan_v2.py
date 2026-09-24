@@ -133,7 +133,8 @@ def main(argv: list[str] | None = None) -> int:
         else:
             try:
                 res = run(RunConfig(src_root=path, population=t.get("population", "mcp_server"),
-                                    full=True, max_tree_seconds=args.tree_budget, options=options))
+                                    full=True, max_tree_seconds=args.tree_budget, options=options,
+                                    prep_budget_exit=True))
             except Exception as exc:  # noqa: BLE001  1 本の失敗で全体を落とさない。件数として残す。
                 entry = {"tree": name, "status": "analysis_failed", "error": f"{type(exc).__name__}: {exc}"}
                 print(f"FAIL {name}: {type(exc).__name__}: {exc}", file=sys.stderr)

@@ -2764,3 +2764,60 @@ SPAWN 4 件は `v2-franklinbaldo__sinustdd` の `_engine().begin()` / `.mark_red
 
 どちらも「DB の受け手」を超えた一般的な変更（プロパティへの降下 / 木内クラスの注釈による
 型付け）なので、ここでは手を付けない。
+
+## D52（2026-09-24）走査の所要時間: 前処理の後でも tree budget を確かめる。manifest の集合表示を決定的にする
+
+### 何が遅かったか
+
+母集団 v2 の full scan 1 回（87 木、約 15 分）のうち **約 9 分が `meta-skill-evloving` 1 木**で、
+しかも**最後は 1 ユニットも解析しない**（716 ユニットすべてが tree budget で打ち切り）。
+内訳を測った（単独実行）:
+
+| 段階 | 時間 |
+|---|---|
+| 索引（`SourceIndex.build`） | 225 秒 |
+| ユニット発見（`find_units`、716） | 60 秒 |
+| ツール定義の照合 | 25 秒 |
+| trig 索引（`build_trig_index`） | 126 秒 |
+
+tree budget（180 秒）の判定が**ユニットの間にしか無い**ので、ユニット発見の時点で 285 秒と
+超えていても残りの前処理を続けていた。**深さとは無関係**（深さ 3 / 4 / 5 で同じ）。
+またこの木の前処理は 1 プロセスで 7〜10 GB を使い、深さの感度分析（O29）で 3 本を同時に
+走らせたときに cgroup の OOM で 3 回殺された（`dmesg`）。
+
+### 直したこと
+
+1. `RunConfig.prep_budget_exit`: 真なら**ユニット発見の直後**にも budget を確かめ、超えていれば
+   残りの前処理を省いて全ユニットを打ち切る。**打ち切るユニットの数は同じ**（分母が変わらない）。
+   省いた値（`d_op`・dispatch の位置・ツール定義の数）は 0 ではなく「無い」（`None`）にし、
+   manifest の `truncations` に `{"cap": "tree_budget_prep", "count": <ユニット数>}` を残す
+   （規則 4: 0 件と区別できるようにする）。
+   **既定は偽**。`scripts/f0a.py` / `declaration_census.py` は木全体の値を数えるので、既定で省くと
+   事前登録した F0a の測定が変わる。**`scripts/scan_v2.py` だけが真にする。**
+2. `authgap/ir.py: stable_repr`: `ConfigAtom` / `Atom` の `default` が集合のとき、`repr(set)` を
+   そのまま manifest に書いていた。文字列のハッシュはプロセスごとに変わる（PYTHONHASHSEED）ので、
+   **同じ解析器で取り直した run 2 本で 6 木・14 ユニットの `gate` が表示順だけで食い違った**。
+   判定には効かない（表示だけ）が、run の突き合わせで本物の差と区別できない。
+   `--determinism 3` は 1 プロセスの中で繰り返すので見えていなかった。
+
+### 確かめたこと
+
+* テストは実装より先に書いた（`tests/test_prep_budget_exit.py` 4 件、`tests/test_stable_repr.py`
+  4 件。後者はハッシュ種 4 つで別プロセスを起こして一致を見る。修正前の `repr` は 4 種で 4 通り）。
+* 深さ 3 の full scan を取り直し（`evidence/scan_v2_depth3_prep`）、`scan_v2_depth3_sens` と manifest を
+  全木で突き合わせた。集合の表示順を正規化すると、**違うのは `meta-skill-evloving` の
+  `d_op` / `dispatch_sites` / `truncations` だけ**（設計どおり）。ユニット・効果・判定・
+  CONTRADICTION 85 は同じ。
+* 食い違った 6 木をハッシュ種 11 / 22 で走らせ、修正後の manifest がバイト一致することを確かめた。
+* pytest 618 passed / B3a 8/8 / B3b 15/15 / 変異の生存 1/15。
+
+| | 修正前（`depth3_sens`） | 修正後（`depth3_prep`） |
+|---|---|---|
+| 全体 | 919 秒 | **622 秒** |
+| `meta-skill-evloving` | 548 秒 | **242 秒** |
+| それ以外の 86 木 | 371 秒 | 380 秒 |
+
+（`depth3_sens` の最初の 17 木は深さ 4 / 5 と同時に走らせたので、厳密な同条件の比較ではない。）
+
+**残り 242 秒は索引とユニット発見**で、ここを省くと打ち切ったユニットの数（716）が分からなくなる
+ので省かない。

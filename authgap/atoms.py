@@ -18,6 +18,7 @@ from dataclasses import dataclass, field
 from typing import Any, Optional
 
 from .catalog import validators as V
+from .ir import stable_repr
 from .srcindex import SourceIndex, dotted_of
 
 #: 曖昧（同名で既定値が食い違う）ことを表す番兵。
@@ -45,7 +46,7 @@ class Atom:
             "source": self.source,
             "default": self.default
             if isinstance(self.default, (str, int, float, bool, type(None)))
-            else repr(self.default),
+            else stable_repr(self.default),
             "default_closed": self.default_closed,
         }
 

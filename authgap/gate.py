@@ -48,7 +48,7 @@ from .dominance import (
     gates,
     subject_names,
 )
-from .ir import REQ_BOTTOM, DomKind, DomResult, Req, req_join, req_meet
+from .ir import REQ_BOTTOM, DomKind, DomResult, Req, req_join, req_meet, stable_repr
 from .srcindex import FuncDef, Scope, SourceIndex, dotted_of, resolve_call_name
 
 #: A-b のゲート要約を取るときの木内解決の深さ上限（§2.5.3）。
@@ -86,7 +86,7 @@ class ConfigAtom:
         return {
             "name": self.name,
             "source": self.source,
-            "default": self.default if isinstance(self.default, (str, int, float, bool, type(None))) else repr(self.default),
+            "default": self.default if isinstance(self.default, (str, int, float, bool, type(None))) else stable_repr(self.default),
             "default_closed": self.default_closed,
         }
 

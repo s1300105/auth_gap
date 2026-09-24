@@ -42,6 +42,14 @@ class RunConfig:
     #: 黙って止めない — 野外走査で 1 本が全体を止めないための cap であり、
     #: 打ち切った件数は母集団の分母に効くので必ず出す。
     max_tree_seconds: float = 0.0
+    #: 真なら、ユニットを見つけた直後にも `max_tree_seconds` を確かめ、超えていれば
+    #: **残りの前処理（ツール定義の照合・trig 索引・D_op ほか）を省いて**全ユニットを
+    #: `tree_budget` で打ち切る。打ち切るユニットの数は省かない場合と同じ。省いた値は
+    #: 0 ではなく「無い」（`None`）で、`cap_hits` に `tree_budget_prep` を残す。
+    #: **既定は偽**: F0a は木全体の値を数えるので、既定で省くと事前登録した測定が変わる。
+    #: `meta-skill-evloving` は前処理だけで 180 秒を超え、1 ユニットも解析しないまま
+    #: 約 150 秒を残りの前処理に使っていた（`scripts/scan_v2.py` だけが真にする）。
+    prep_budget_exit: bool = False
 
 
 @dataclass
@@ -62,6 +70,15 @@ def run(cfg: RunConfig) -> RunResult:
     index.build()
 
     units = find_units(index)
+    if cfg.prep_budget_exit and cfg.max_tree_seconds and (time.monotonic() - started) > cfg.max_tree_seconds:
+        tree = TreeReport(src_root=os.path.abspath(cfg.src_root), population=cfg.population)
+        res = RunResult(tree=tree)
+        res.tree_budget_skipped = len(units)
+        res.wall_clock_truncations.append(f"TRUNCATED(tree_budget):{len(units)} units")
+        tree.parse_failures = sorted(index.parse_failures)
+        tree.cap_hits = sorted(index.cap_hits) + [("", "tree_budget_prep", len(units))]
+        res.elapsed_s = time.monotonic() - started
+        return res
     literals = find_tool_literals(index)
     joined, unjoined = join_annotations(units, literals)
 
