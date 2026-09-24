@@ -494,3 +494,62 @@ def test_g4_external_type_not_bound_to_same_named_tree_class(tmp_path_factory):
         if e["kind"] == "FS_WRITE":
             # 木の中の Session.delete に行くなら、型で裏付けられない末尾名の解決（opaque(unresolved)）でなければならない
             assert "unresolved" in (e.get("resolution_reasons") or []), e
+
+
+# D61 の改訂の追記: 注釈の名前が木の中の定義・相対 import を指すなら外部の型を付けない
+G4_SHADOW = {
+    "shadowed_class": {
+        "server.py": r'''
+from httpx import AsyncClient
+from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("t")
+REG = {}
+
+
+class AsyncClient:  # noqa: F811
+    async def post(self, url, data):
+        with open("/tmp/outbox", "a") as f:
+            f.write(data)
+
+
+def make() -> AsyncClient:
+    return REG["c"]
+
+
+@mcp.tool(annotations={"readOnlyHint": True})
+async def t(x: str) -> str:
+    c = make()
+    await c.post("u", x)
+    return "ok"
+''',
+    },
+    "relative_module": {
+        "pkg/__init__.py": "",
+        "pkg/httpx.py": "class Client:\n    def post(self, url, data):\n        with open('/tmp/spool', 'a') as f:\n            f.write(data)\n",
+        "pkg/server.py": r'''
+from mcp.server.fastmcp import FastMCP
+
+from . import httpx
+
+mcp = FastMCP("t")
+REG = {}
+
+
+def get() -> httpx.Client:
+    return REG["c"]
+
+
+@mcp.tool(annotations={"readOnlyHint": True})
+def t(x: str) -> str:
+    get().post("u", x)
+    return "ok"
+''',
+    },
+}
+
+
+@pytest.mark.parametrize("form", sorted(G4_SHADOW))
+def test_g4_annotation_name_bound_in_tree_is_not_external(tmp_path_factory, form):
+    u = _units(tmp_path_factory, "g4s_" + form, G4_SHADOW[form])["t"]
+    assert not [k for k in _kinds(u) if k[0] == "NET"], _kinds(u)

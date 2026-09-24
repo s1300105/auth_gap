@@ -788,11 +788,8 @@ class EffectExtractor:
         """`X.stdin.write(v)` / `X.communicate(input=v)`。
 
         **導入根拠は構造的理由のみで、CVE の裏付けは無い**（Def 3 の明記事項）。
-        spawn が `shell=True` か argv0 がインタプリタ カタログに載るとき `EXEC(code_text=v)`。
-        **argv0 が定数でインタプリタでなく、`shell` が False と分かるときは効果を出さない**（D61 G1）。子プロセスの
-        標準入力はファイルではなく、以前の `FS_WRITE(content=v)` 相当の情報行は readOnlyHint との矛（`fs_write`）を
-        誤って出していた（誤警報）。子プロセスの起動そのものは SPAWN の効果として別に出る。argv0 / shell が決まらない
-        ときは以前どおり `FS_WRITE(content=v)` 相当の情報行（インタプリタかもしれない。D19 の既知の欠陥）。
+        spawn が `shell=True` か argv0 がインタプリタ カタログに載るとき
+        `EXEC(code_text=v)`、それ以外は `FS_WRITE(content=v)` 相当の情報行。
         """
         if not isinstance(ev.node.func, ast.Attribute):
             return False
@@ -830,12 +827,7 @@ class EffectExtractor:
             payload = next(iter(slots.values()))
             if shell is True or is_interpreter(argv0):
                 kind, slot_name = "EXEC", "code_text"
-            elif argv0 is not None and (shell_v is None or shell is False):
-                # **インタプリタでないと分かる子プロセスの標準入力はファイルではない**（D61 G1）。効果にしない。
-                # argv0 が定数で、`shell=` が無い（既定 False）か定数 False のときだけ。
-                continue
             else:
-                # argv0 / shell が決まらない: 以前どおりの情報行（D19 の既知の欠陥。インタプリタかもしれない）
                 kind, slot_name = "FS_WRITE", "content"
             self.effects.append(
                 Effect(
