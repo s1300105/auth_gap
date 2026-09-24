@@ -127,12 +127,126 @@ readOnly × DB のデータ変更・destructive=false × `UPDATE` / `DELETE` / `
 
 ---
 
-## 6. 選んだ原理（学生が記入する。記入後にコミットしてから実装する）
+## 6. 選んだ原理（2026-09-24、学生。**実装より先にコミットする**）
 
-| 原理 | 選択 | 日付 | 理由（1 行） |
-|---|---|---|---|
-| 1-i 永続する設定 | | | |
-| 1-ii リモートの状態 | | | |
-| 2 静的に決まらない性質 | | | |
-| 3 モデルが決める値 | | | |
-| 4 対象の宣言 | | | |
+学生の方針: **研究の観点を優先し、実務の観点（出力の見せ方・雑音の多さ）は判断に使わない。**
+（実務と研究で分けた意見は会話で示した。両者が分かれたのは 1-i と 4 の idempotent。）
+
+| 原理 | 選択 | 理由（1 行） |
+|---|---|---|
+| 1-i 永続する設定 | **b 含める** | "does not modify its environment" の字義。データに限る根拠は文言に無い |
+| 1-ii リモートの状態 | **b 含める** | readOnly は「変更するか」、openWorld は「外と関わるか」で別の軸（仕様の例: web 検索は open world かつ読み取り） |
+| 2 静的に決まらない性質 | **a 不明** | 規則 4。b / c は測定を既知の向きに偏らせる。不明の件数は必ず併記する |
+| 3 モデルが決める値 | **a 能力として読む** | AuthGap の M は「できること」の上界。b にすると M の定義が 2 つになる |
+| 4 対象の宣言 | **a 4 つすべて。宣言ごとに分けて報告** | 「宣言側は閉じているので網羅できる」が主張の芯。D3 / D4 の規則は結果を見た後に作ったので**探索的な分析**として別列にし、事前登録済みの D1 / D2 と合算しない |
+
+---
+
+## 7. 導いた判定表（§6 を §5 に機械的に当てはめたもの。**実装とテストはこの表に従う**）
+
+記号: **矛** = CONTRADICTION、**内** = 宣言内、**不** = 不明（原理 2-a。CONTRADICTION に数えず、
+行の注記 `contradiction_unknown:<宣言>:<理由>` として数える）。「MODEL 由来」= その slot の値の主体が
+MODEL。「定数」= 確度が resolved の定数（`Value.const`）。
+
+### 7.0 §5 から直した 2 点（導く途中で見つけた。原理の選択は変えていない）
+
+1. **D4（idempotent）には原理 3 を当てない。** 冪等性は「**同じ引数で**繰り返したとき」の性質なので、
+   引数が取りうる値の範囲（能力）は関係しない。モデル由来のコマンドや SQL も、繰り返しの間は同じ値で、
+   それが冪等かはコマンドの意味による → 不。
+2. **#3（mode 不明）は #7 と同じ理屈にそろえる。** mode がモデル由来で `'w'` を選べても、書き先が
+   既にあるか（上書きか新規作成か）は path による。→ path が MODEL 由来なら矛、そうでなければ不。
+   **実装の限界**: mode の主体は記録していないので、mode 不明は path だけで決める（母集団に該当 0）。
+
+### 7.1 D1 `readOnlyHint: true`（事前登録済みの主指標）
+
+| 効果 | 判定 |
+|---|---|
+| EXEC | 矛（表 D41 で決定済み） |
+| SPAWN | `argv0` または `shell_string` が MODEL 由来 → 矛（3-a）/ それ以外 → 不（コマンドの意味は名前から分からない） |
+| FS_WRITE（すべて。新規作成を含む） | 矛（決定済み） |
+| DB: データ・スキーマの変更（`SQL_MODIFY_HEADS`） | 矛（D55） |
+| DB: 永続する設定・保守（下の `SQL_PERSISTENT`） | 矛（1-i-b） |
+| DB: 接続・トランザクション単位（下の `SQL_CONNECTION`） | 内 |
+| DB: 読み取り（`SELECT` / `SHOW` / `EXPLAIN` / `DESCRIBE` / `WITH`、値を設定しない `PRAGMA`） | 内（`WITH` は O24 のまま） |
+| DB: 先頭語が上のどれでもない | 不 |
+| DB: SQL が定数に読めない | SQL が MODEL 由来 → 矛（3-a）/ それ以外 → 不 |
+| NET: メソッドが `GET` / `HEAD` / `OPTIONS` | 内（HTTP の意味論で安全なメソッド） |
+| NET: `PUT` / `PATCH` / `DELETE` | 矛（1-ii-b。HTTP の意味論で相手を変える） |
+| NET: `POST` | 不（相手を変えるかはサーバの意味による。RPC の照会も `POST`） |
+| NET: メソッドが読めない | メソッドが MODEL 由来 → 矛（3-a）/ それ以外 → 不 |
+| FS_READ / DISPATCH | 内 |
+
+### 7.2 D2 `destructiveHint: false`（`readOnlyHint: true` が無いとき。事前登録済みの主指標）
+
+| 効果 | 判定 |
+|---|---|
+| EXEC | 矛（決定済み） |
+| SPAWN | D1 と同じ（MODEL 由来 → 矛 / それ以外 → 不） |
+| FS_WRITE: 追記型（`destructive=False`: `mkdir` / `makedirs` / `symlink` / `open('a' / 'x')`） | 内（決定済み） |
+| FS_WRITE: 既存のものを消す・動かす・変える（`unlink` / `remove` / `rmdir` / `rmtree` / `rename` / `replace` / `move` / `chmod`） | 矛（決定済み） |
+| FS_WRITE: 書き出し（`write_text` / `write_bytes` / `open('w' / '+')` / `copy` / `copy2` / `copyfile` / `unpack_archive` / `urlretrieve`） | path が MODEL 由来 → 矛（3-a）/ それ以外 → 不（#7。新規作成か上書きか静的に分からない） |
+| FS_WRITE: mode 不明・`destructive` が決まらないもの | path が MODEL 由来 → 矛 / それ以外 → 不（#3、7.0 の 2） |
+| DB: `INSERT` / `CREATE` | 内（D55） |
+| DB: `SQL_DESTRUCTIVE_HEADS`（`UPDATE` / `DELETE` / `DROP` / `REPLACE` / `MERGE` / `TRUNCATE` / `ALTER`） | 矛（D55） |
+| DB: 永続する設定・保守（`SQL_PERSISTENT`） | 不（1-i-b だが「追記か破壊か」が設定の変更に当てはまらない） |
+| DB: 接続単位 / 読み取り | 内 |
+| DB: 先頭語が分類に無い | 不 |
+| DB: SQL が読めない | MODEL 由来 → 矛 / それ以外 → 不 |
+| NET: `DELETE` / `PATCH` | 矛（既存の資源を消す・変える） |
+| NET: `PUT` | URL（`url.host` / `url.path`）が MODEL 由来 → 矛 / それ以外 → 不（作成か置換か分からない。#7 と同じ理屈） |
+| NET: `POST` | 不 |
+| NET: `GET` / `HEAD` / `OPTIONS` | 内 |
+| NET: メソッドが読めない | MODEL 由来 → 矛 / それ以外 → 不 |
+| FS_READ / DISPATCH | 内 |
+
+### 7.3 D3 `openWorldHint: false`（**探索的**。別列で報告）
+
+| 効果 | 判定 |
+|---|---|
+| NET: 宛先が定数で `localhost` / private / loopback | 内 |
+| NET: 宛先が定数の外部ホスト | 矛 |
+| NET: 宛先が MODEL 由来 | 矛（3-a） |
+| NET: 宛先が読めない（それ以外） | 不 |
+| EXEC | `code_text` が MODEL 由来 → 矛 / それ以外 → 不（実行されるコードが通信するか分からない） |
+| SPAWN | `argv0` / `shell_string` が MODEL 由来 → 矛 / それ以外 → 不 |
+| FS_READ / FS_WRITE / DB / DISPATCH | 内（表 D41: ローカルの操作は閉じた範囲） |
+
+### 7.4 D4 `idempotentHint: true`（`readOnlyHint: true` が無いとき。**探索的**。別列で報告）
+
+原理 3 は当てない（7.0 の 1）。
+
+| 効果 | 判定 |
+|---|---|
+| FS_WRITE: `open` 系で mode が定数の `'a'`（追記） | 矛（2 回呼べば 2 回追記される） |
+| FS_WRITE: それ以外（上書き・作成・削除・移動・mode 不明を含む） | 内（同じ引数で繰り返しても状態は同じか、2 回目は失敗する）。mode 不明だけは不 |
+| DB: `INSERT` / `UPDATE` / `REPLACE` / `MERGE` | 不（一意制約や `x = x + 1` かどうかで決まる） |
+| DB: それ以外の先頭語 / 読み取り / 接続単位 | 内 |
+| DB: SQL が読めない | 不 |
+| NET: `POST` / `PATCH` | 不（HTTP の意味論で冪等とは限らない） |
+| NET: `GET` / `HEAD` / `OPTIONS` / `PUT` / `DELETE` | 内（HTTP の意味論で冪等） |
+| NET: メソッドが読めない | 不 |
+| EXEC / SPAWN | 不 |
+| FS_READ / DISPATCH | 内 |
+
+### 7.5 SQL の分類（先頭語、大文字）
+
+* `SQL_MODIFY_HEADS`（D55）: `INSERT UPDATE DELETE REPLACE MERGE TRUNCATE DROP CREATE ALTER`
+* `SQL_CONNECTION`（接続・トランザクション単位。接続が閉じれば残らない）:
+  `BEGIN COMMIT ROLLBACK SAVEPOINT RELEASE END SET RESET DETACH LISTEN UNLISTEN`、
+  および `PRAGMA <名前> = …` で名前が接続単位のもの
+  （`foreign_keys busy_timeout synchronous cache_size temp_store locking_mode recursive_triggers
+  query_only case_sensitive_like cache_spill mmap_size threads defer_foreign_keys trusted_schema
+  automatic_index secure_delete`）
+* `SQL_PERSISTENT`（DB ファイルに残る設定・保守）: `VACUUM ANALYZE REINDEX`、
+  `PRAGMA <名前> = …` で名前が `journal_mode user_version application_id auto_vacuum page_size
+  encoding schema_version`、値を取らなくても書き込む `PRAGMA wal_checkpoint / optimize /
+  incremental_vacuum`
+* 読み取り: `SELECT SHOW EXPLAIN DESCRIBE WITH`、および `=` の無い `PRAGMA`（上の 3 つを除く）
+* それ以外（`ATTACH`（無ければファイルを作る）、`NOTIFY`、分類に無い `PRAGMA` など）→ 不
+
+### 7.6 HTTP メソッドの読み方
+
+sink の名前の末尾（`requests.put` → `PUT`、`httpx.AsyncClient.post` → `POST`）。末尾が `request` の
+sink（`requests.request` / `httpx.request` / `httpx.AsyncClient.request` など）は第 1 引数を読む
+（定数なら大文字にして使い、MODEL 由来なら「MODEL 由来」、それ以外は読めない）。
+`urlopen` / `urlretrieve` / `arun` などは読めない。
