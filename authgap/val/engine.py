@@ -52,6 +52,7 @@ from ..ir import (
     Prin,
     Prov,
     Seq,
+    Shape,
     Str,
     Unknown,
     Value,
@@ -132,7 +133,13 @@ class Env:
 
 
 def env_join(a: Env, b: Env) -> Env:
-    """分岐の合流。片方にしか無いキーは `Unknown` と join する（消さない）。"""
+    """分岐の合流。**片方にしか無いキーはその側の値を残す**（D59、O36）。
+
+    他方の経路でその名前を読めば NameError / UnboundLocalError で止まるので、読める経路の値は
+    その側の値だけである。`Unknown` と join すると `if c: x = Client()` の後の `x.post` の受け手型が
+    落ちて効果が消える（誤 clear）。実行時に束縛するのにエンジンが記録しない文（関数本体の
+    `import`）は、文の側で束縛する（`_exec_stmt`）。
+    """
     out = Env()
     for key in sorted(set(a.keys()) | set(b.keys())):
         va, vb = a.get(key), b.get(key)
@@ -341,11 +348,17 @@ class ValEngine:
                     self._bind(item.optional_vars, value, env, scope, res, depth, chain)
             self._exec_body(st.body, env, scope, res, depth, chain)
         elif isinstance(st, (ast.Try, getattr(ast, "TryStar", ast.Try))):
-            before = env.copy()
-            self._exec_body(st.body, env, scope, res, depth, chain)
+            # **except 節の入口は、try の前と try 本体の各文（最上位）の後の env の合流**（D59、O36）。
+            # 例外はどの文の途中でも起きうる。以前は try の前だけから始め、try 本体の代入
+            # （`proc = Popen(...)`）を見ずに `proc.kill()` の効果を落としていた。
+            entry = env.copy()
+            for s in st.body:
+                if self._exec_stmt(s, env, scope, res, depth, chain):
+                    break
+                entry = env_join(entry, env)
             merged = env
             for h in st.handlers:
-                he = before.copy()
+                he = entry.copy()
                 self._exec_body(h.body, he, scope, res, depth, chain)
                 merged = env_join(merged, he)
             self._exec_body(getattr(st, "orelse", []), merged, scope, res, depth, chain)
@@ -358,8 +371,17 @@ class ValEngine:
             if st.exc is not None:
                 self._eval(st.exc, env, scope, res, depth, chain)
             return True
-        elif isinstance(st, (ast.Import, ast.ImportFrom, ast.Pass, ast.Break, ast.Continue,
-                             ast.Global, ast.Nonlocal, ast.Delete)):
+        elif isinstance(st, (ast.Import, ast.ImportFrom)):
+            # **関数本体の import は名前を束縛し直す**（D59、O36）。値は、その名前を env の外で読んだ
+            # ときの値（`_ev_Name` の後半と同じ）。以前は何も書かず、`except ImportError: f = None` の
+            # None だけが合流後に残った。
+            for alias in st.names:
+                if alias.name == "*":
+                    continue
+                name = alias.asname or alias.name.split(".")[0]
+                mv = self._module_value(scope, name, res)
+                env.set(name, mv if mv is not None else _import_placeholder(name))
+        elif isinstance(st, (ast.Pass, ast.Break, ast.Continue, ast.Global, ast.Nonlocal, ast.Delete)):
             return False
         elif isinstance(st, ast.Assert):
             self._eval(st.test, env, scope, res, depth, chain)
@@ -466,6 +488,8 @@ class ValEngine:
     def _ev_Name(self, node, env, scope, res, depth, chain) -> Value:
         v = env.get(node.id)
         if v is not None:
+            if _is_import_placeholder(v, node.id):
+                res.note_opaque("unresolved")  # 読んだときに記録する（import の文では記録しない。以前と同じ）
             return v
         # モジュール水準の束縛（定数・大域インスタンス・環境変数の読み出し）。
         # **木内で解決できる名前を opaque(unresolved) にしない**（Def 4、D17）。
@@ -608,7 +632,10 @@ class ValEngine:
         return Value(Prin.OP, RESOLVED, Atom(const=None))
 
     def _ev_UnaryOp(self, node, env, scope, res, depth, chain) -> Value:
-        return self._eval(node.operand, env, scope, res, depth, chain)
+        """単項演算の**結果**（D59、O36）。以前は被演算子の値をそのまま返していた（`not x` が `x`、
+        `-5` が `5`）。主体・確度・root は被演算子のものを保ち、属性は落とす。"""
+        v = self._eval(node.operand, env, scope, res, depth, chain)
+        return Value(v.prin, v.prov, _unary_shape(node.op, v.shape), frozenset(), v.roots)
 
     def _ev_NamedExpr(self, node, env, scope, res, depth, chain) -> Value:
         value = self._eval(node.value, env, scope, res, depth, chain)
@@ -1708,6 +1735,43 @@ def _literal_default(node: Optional[ast.AST]) -> Optional[Value]:
 
 
 _NOT_STATIC = object()
+
+
+def _import_placeholder(name: str) -> Value:
+    """関数本体の import で束縛した、木内で値の分からない名前（D59、O36）。`_ev_Name` の末尾と同じ値。"""
+    return Value(Prin.OP, opaque("unresolved"), Atom(formal=name))
+
+
+def _is_import_placeholder(v: Value, name: str) -> bool:
+    return (
+        v.prin == Prin.OP
+        and v.prov.kind == "opaque"
+        and isinstance(v.shape, Atom)
+        and v.shape.formal == name
+        and v.shape.const is None
+        and not v.shape.none
+        and not v.roots
+        and not v.attrs
+    )
+
+
+def _unary_shape(op: ast.unaryop, s: Shape) -> Shape:
+    """単項演算の結果の形（D59、O36）。定数で決まるときだけ定数、ほかは `Atom()`。"""
+    if isinstance(s, Atom) and s.formal is None:
+        if isinstance(op, ast.Not):
+            if s.none:
+                return Atom(const=True)
+            if isinstance(s.const, (bool, int, float, str)):
+                return Atom(const=not s.const)
+        elif isinstance(s.const, (int, float)) and not s.none:
+            c = s.const
+            if isinstance(op, ast.USub):
+                return Atom(const=-c)
+            if isinstance(op, ast.UAdd):
+                return Atom(const=+c)
+            if isinstance(op, ast.Invert) and isinstance(c, int):
+                return Atom(const=~c)
+    return Atom()
 
 
 def _is_literal(node: ast.AST) -> bool:

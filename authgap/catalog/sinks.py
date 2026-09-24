@@ -92,10 +92,14 @@ class ArgRef:
     kw: Optional[str] = None
     proj: str = "value"
     const_value: Optional[str] = None
+    #: 複数のキーワードの**合流**（D59、O37）。仕様書 229 行目の `body ← data|json`。
+    kws: tuple[str, ...] = ()
 
     def describe(self) -> str:
         if self.const_value is not None:
             return f"const({self.const_value!r})"
+        if self.kws:
+            return "|".join(f"{k}=" for k in self.kws)
         base = f"arg{self.pos}" if self.pos is not None else f"{self.kw}="
         return base if self.proj == "value" else f"{base}.{self.proj}"
 
@@ -108,6 +112,15 @@ def A(pos: int, proj: str = "value", kw: Optional[str] = None) -> ArgRef:
 
 def KW(kw: str, proj: str = "value") -> ArgRef:
     return ArgRef(kw=kw, proj=proj)
+
+
+def KWS(*kws: str) -> ArgRef:
+    """キーワードの合流（渡された分だけを join する。D59、O37）。"""
+    return ArgRef(kws=tuple(kws))
+
+
+#: HTTP の本体（仕様書 229 行目 `body ← data|json`。`content=` / `files=` は仕様に無いので含めない。O39）。
+HTTP_BODY = KWS("data", "json")
 
 
 def CONST(v: str) -> ArgRef:
@@ -373,17 +386,17 @@ DIRECT_SINKS: dict[str, tuple[SinkRow, ...]] = _rows(
     SinkRow(
         "requests.post",
         "NET",
-        {"url.host": A(0), "body": KW("data"), "headers": KW("headers")},
+        {"url.host": A(0), "body": HTTP_BODY, "headers": KW("headers")},
         required_by=("A16",),
     ),
-    SinkRow("requests.put", "NET", {"url.host": A(0), "body": KW("data")}),
-    SinkRow("requests.patch", "NET", {"url.host": A(0), "body": KW("data")}),
+    SinkRow("requests.put", "NET", {"url.host": A(0), "body": HTTP_BODY}),
+    SinkRow("requests.patch", "NET", {"url.host": A(0), "body": HTTP_BODY}),
     SinkRow("requests.delete", "NET", {"url.host": A(0)}),
     SinkRow("requests.head", "NET", {"url.host": A(0)}),
-    SinkRow("requests.request", "NET", {"url.host": A(1), "body": KW("data")}),
+    SinkRow("requests.request", "NET", {"url.host": A(1), "body": HTTP_BODY}),
     SinkRow("httpx.get", "NET", {"url.host": A(0), "url.query": KW("params")}),
-    SinkRow("httpx.post", "NET", {"url.host": A(0), "body": KW("json")}),
-    SinkRow("httpx.request", "NET", {"url.host": A(1)}),
+    SinkRow("httpx.post", "NET", {"url.host": A(0), "body": HTTP_BODY}),
+    SinkRow("httpx.request", "NET", {"url.host": A(1), "body": HTTP_BODY}),
     SinkRow("urllib.request.urlopen", "NET", {"url.host": A(0)}),
     SinkRow("urllib.request.urlretrieve", "NET", {"url.host": A(0)}),
     SinkRow(
@@ -525,7 +538,7 @@ PROXY_SINKS: tuple[ProxyRow, ...] = (
         recv_types=("httpx.Client", "httpx.AsyncClient", "requests.Session"),
         method="get",
         kind="NET",
-        slots={"url.host": A(0), "url.query": KW("params")},
+        slots={"url.host": A(0), "url.query": KW("params"), "body": HTTP_BODY},
         from_ctor={"url.scheme": "base_url"},
         note="httpx.Client(base_url=b) は { url.base ← b }",
         required_by=("A16",),
@@ -534,14 +547,14 @@ PROXY_SINKS: tuple[ProxyRow, ...] = (
         recv_types=("httpx.Client", "httpx.AsyncClient", "requests.Session"),
         method="post",
         kind="NET",
-        slots={"url.host": A(0), "body": KW("json")},
+        slots={"url.host": A(0), "body": HTTP_BODY},
         from_ctor={"url.scheme": "base_url"},
     ),
     ProxyRow(
         recv_types=("httpx.Client", "httpx.AsyncClient", "requests.Session"),
         method="request",
         kind="NET",
-        slots={"url.host": A(1), "body": KW("data")},
+        slots={"url.host": A(1), "body": HTTP_BODY},
         from_ctor={"url.scheme": "base_url"},
     ),
     # paramiko

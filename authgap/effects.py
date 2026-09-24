@@ -24,7 +24,22 @@ from .catalog.sinks import (
     is_interpreter,
 )
 from .catalog.statements import HTTP_METHOD_ARG_SUFFIXES, HTTP_METHOD_SUFFIXES
-from .ir import REMOTE, RESOLVED, Argv, Atom, Obj, Path, Prin, Prov, Seq, Str, Value, opaque, prov_merge
+from .ir import (
+    REMOTE,
+    RESOLVED,
+    Argv,
+    Atom,
+    Obj,
+    Path,
+    Prin,
+    Prov,
+    Seq,
+    Str,
+    Value,
+    opaque,
+    prov_merge,
+    value_join,
+)
 from .val import CallEvent
 
 #: 効果本体が木の外（別プロセス / HTTP の向こう）にある受け手型。
@@ -170,6 +185,15 @@ def _arg_value(ref: ArgRef, ev: CallEvent) -> Optional[Value]:
             frozenset(),
             frozenset().union(*[a.roots for a in ev.args]),
         )
+    if ref.kws:
+        # **渡されたキーワードだけを合流する**（D59、O37。`body ← data|json`）。
+        got = [ev.kwargs[k] for k in ref.kws if k in ev.kwargs]
+        if not got:
+            return None
+        out = got[0]
+        for v in got[1:]:
+            out = value_join(out, v)
+        return out
     base: Optional[Value]
     if ref.pos is not None:
         base = ev.args[ref.pos] if ref.pos < len(ev.args) else None

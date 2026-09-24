@@ -477,12 +477,20 @@ def value_join(a: Value, b: Value) -> Value:
 
 
 def _shape_join(a: Shape, b: Shape) -> Shape:
-    if a == b:
-        return a
+    # Atom は `==` より先に見る（dataclass の `==` は `True == 1` を等しいとみなす。D59、O36）。
     if isinstance(a, Atom) and isinstance(b, Atom):
-        if a.const == b.const and a.formal == b.formal:
+        # **none と定数の型も比べる**（D59、O36）。`none` を見ないと `Atom(none) ⊔ Atom()` が
+        # 順序で `Atom(none)` になり、`True == 1` で真偽と数を同じ定数とみなす（非可換）。
+        if (
+            a.none == b.none
+            and a.formal == b.formal
+            and type(a.const) is type(b.const)
+            and a.const == b.const
+        ):
             return a
         return Atom()
+    if a == b:
+        return a
     if isinstance(a, (Seq, Argv)) and type(a) is type(b):
         # **共通の先頭は要素ごとに join し、はみ出した要素は tail に畳む**（D17）。
         # 形だけ残して要素を捨てると、`cmd = ["sg", ...]; if f: cmd.append(x)` の合流で
