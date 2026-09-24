@@ -296,3 +296,226 @@ def test_o34_unchecked_root_keeps_inject(o34):
 def test_o34_all_roots_checked_clears(o34):
     # 反例: 両方の根が検証されていれば GAP_INJECT は出ない
     assert not _inject(o34["two_roots_both_checked"])
+
+
+# ---------------------------------------------------------------------------
+# D58 の改訂: 静的な名前は「束縛し直さない仮引数」だけ（run15 の敵対的レビューで見つけた誤 clear）
+#
+# 下の反例はどれも**実行時に sink に届く**。O31 の改訂前はここで枝を捨てていた（誤 clear）。
+# 前提として O31 より前（289624c）のエンジンではすべて効果が出ることを確かめてある。
+# ---------------------------------------------------------------------------
+
+O31R_SRC = r"""
+import asyncio
+import os
+import shutil
+
+from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("t")
+
+
+def helper_remove(p):
+    os.remove(p)
+
+
+def srch(p, focus=None):
+    if focus:
+        os.remove(p)
+
+
+def backfill(p, raw=False):
+    cached = not raw
+    if cached:
+        os.remove(p)
+
+
+def joined(p, flag, n):
+    v = None if flag else n
+    if v is not None:
+        os.remove(p)
+
+
+def extract(p, mode):
+    m = mode
+    if mode == "off":
+        m = None
+    if m == "eager":
+        os.remove(p)
+
+
+def loop_rebind(p, flag=False):
+    for flag in (True,):
+        pass
+    if flag:
+        os.remove(p)
+
+
+def aug_rebind(p, n=0):
+    n += 1
+    if n == 1:
+        os.remove(p)
+
+
+def inner(p, force=False):
+    if force:
+        shutil.rmtree(p)
+
+
+def outer(p, force=False):
+    inner(p, force=force)
+
+
+@mcp.tool()
+async def kwargs_forward(p: str) -> str:
+    srch(p, **{"focus": "x"}); return "x"
+
+
+@mcp.tool()
+async def starred_args(p: str) -> str:
+    srch(*[p, "x"]); return "x"
+
+
+@mcp.tool()
+async def indirect_thread(p: str) -> str:
+    await asyncio.to_thread(srch, p, "x"); return "x"
+
+
+@mcp.tool()
+async def not_assigned(p: str) -> str:
+    backfill(p); return "x"
+
+
+@mcp.tool()
+async def join_with_none(p: str, flag: bool) -> str:
+    joined(p, flag, 3); return "x"
+
+
+@mcp.tool()
+async def model_join_none(p: str, mode: str) -> str:
+    extract(p, mode); return "x"
+
+
+@mcp.tool()
+async def rebound_by_for(p: str) -> str:
+    loop_rebind(p); return "x"
+
+
+@mcp.tool()
+async def rebound_by_augassign(p: str) -> str:
+    aug_rebind(p); return "x"
+
+
+@mcp.tool()
+async def join_none_twice(p: str, mode: str, flag: bool) -> str:
+    m = mode
+    if flag:
+        m = None
+    if flag:
+        m = None
+    if m == "eager":
+        os.remove(p)
+    return "x"
+
+
+@mcp.tool()
+async def static_passthrough(p: str) -> str:
+    outer(p, force=False); return "x"
+
+
+@mcp.tool()
+async def static_passthrough_default(p: str) -> str:
+    outer(p); return "x"
+
+
+@mcp.tool()
+async def static_passthrough_true(p: str) -> str:
+    outer(p, force=True); return "x"
+"""
+
+
+@pytest.fixture(scope="module")
+def o31r(tmp_path_factory):
+    d = tmp_path_factory.mktemp("o31r")
+    (d / "server.py").write_text(O31R_SRC, encoding="utf-8")
+    res = run(RunConfig(src_root=str(d), population="mcp_server", full=True))
+    return {u["unit"]["qualname"]: u for u in manifest_json(res, "t")["units"]}
+
+
+def _all_sites(u):
+    return sorted({e["site"] for e in u["effects"]})
+
+
+@pytest.mark.parametrize(
+    "tool,site,present",
+    [
+        # 刈ってはいけない（改訂前は誤 clear）
+        ("kwargs_forward", "os.remove", True),        # (A) `**` で渡した focus を既定値 None にしていた
+        ("starred_args", "os.remove", True),          # (A) `*` の要素を 1 つの位置引数にしていた
+        ("indirect_thread", "os.remove", True),       # (A') 間接の降下
+        ("not_assigned", "os.remove", True),          # (B) `cached = not raw` が raw と同じ真偽になっていた
+        ("join_with_none", "os.remove", True),        # (C) None との合流が定数 None
+        ("model_join_none", "os.remove", True),       # (C) MODEL の値が if の後で定数 None
+        ("join_none_twice", "os.remove", True),       # (C) 2 回目の合流で `Atom(none)` が勝つ（memory-hub write_memory）
+        ("rebound_by_for", "os.remove", True),        # 仮引数を for で束縛し直す
+        ("rebound_by_augassign", "os.remove", True),  # 仮引数を += で束縛し直す
+        # 刈る（呼び出し元で静的な名前をそのまま渡す）
+        ("static_passthrough", "shutil.rmtree", False),
+        ("static_passthrough_default", "shutil.rmtree", False),
+        ("static_passthrough_true", "shutil.rmtree", True),
+    ],
+)
+def test_o31_revised(o31r, tool, site, present):
+    assert (site in _all_sites(o31r[tool])) is present, (tool, _all_sites(o31r[tool]))
+
+
+# (D) try の片側だけの束縛（auto_grocer `seed_recipes` の形）。同じファイルからの import は O31 より前でも
+# 解決しないので、別モジュールから import する（前提: 289624c のエンジンで `requests.get` が出る）。
+O31D_YT = """
+import requests
+
+
+def is_youtube_url(url) -> bool:
+    return "youtube" in str(url)
+
+
+def fetch(url):
+    return requests.get(url, timeout=3).text
+
+
+def youtube_recipe_from_url(url):
+    return fetch(url)
+"""
+
+O31D_SERVER = """
+from typing import Callable
+
+from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("t")
+
+
+@mcp.tool()
+def seed(url: str = "", ingredients: list | None = None) -> dict:
+    if ingredients is None:
+        ingredients = []
+    is_youtube_url: Callable[[str], bool] | None
+    try:
+        from pkg.yt import is_youtube_url, youtube_recipe_from_url
+    except Exception:
+        is_youtube_url = None
+    if is_youtube_url and is_youtube_url(url) and not ingredients:
+        youtube_recipe_from_url(url)
+    return {}
+"""
+
+
+def test_o31_revised_try_import_one_sided(tmp_path):
+    pkg = tmp_path / "pkg"
+    pkg.mkdir()
+    (pkg / "__init__.py").write_text("", encoding="utf-8")
+    (pkg / "yt.py").write_text(O31D_YT, encoding="utf-8")
+    (pkg / "server.py").write_text(O31D_SERVER, encoding="utf-8")
+    res = run(RunConfig(src_root=str(tmp_path), population="mcp_server", full=True))
+    units = {u["unit"]["qualname"]: u for u in manifest_json(res, "t")["units"]}
+    assert "requests.get" in _all_sites(units["seed"]), _all_sites(units["seed"])
