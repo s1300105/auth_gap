@@ -504,6 +504,34 @@ trig が traced のユニットが 0.6% で §3 の「20% 未満なら SELECT �
   `BEGIN` / `COMMIT` / `ROLLBACK` を分ける（下の作業 B2）。分けずに
   `readOnlyHint:true` × `DB_WRITE` を矛盾にすると **101 件の誤警報**になる。
 
+### 判断材料（2026-09-24、run11 = 深さ 4。`docs/o23_cells.md`、`scripts/o23_cells.py`）
+
+件数の単位は**効果の位置**、括弧内は CONTRADICTION（ユニット × site × kind）の増減。
+「例」は原典で確かめたもの。**#6 / #7 は O23 に無かったマス**で、D53 の手検証で
+「規則どおりだが意味は非破壊」とした 12 件がここに落ちる（現行はどちらも全件矛盾）。
+
+**表がすでに決めているのに実装が黙っているマス（O23 の外。誤 clear）**:
+`readOnlyHint: true` × DB のデータ変更（`INSERT` 6 / `UPDATE` 6）と `destructiveHint: false` ×
+（`UPDATE` 34 / `DELETE` 1）。表（D41）は「矛盾」と決めているが、`contradiction()` は
+EXEC / SPAWN / FS_WRITE しか見ない。run4 では 0 件で問題にならなかったが、D50 / D54 で見えた。
+**直すと CONTRADICTION +32（2 木）。** 例: teamplay-talk の `get_poll_results`（readOnly、
+「投票結果の取得」）が呼び出し元の認証処理 `resolve_caller` で `upsert_user`（初回は `INSERT`）と
+`set_kakao_token`（`UPDATE`）を実行する。
+
+| # | マス | run11 の件数 | 選択肢 | おすすめ |
+|---|---|---|---|---|
+| 1 | readOnly / destructive=false × `PRAGMA` | `journal_mode=WAL` 120 / `foreign_keys=ON` 56 / `busy_timeout` 2（4 木） | (a) 接続の設定なので宣言内 / (b) `journal_mode` だけ矛盾（DB ファイルに残り `-wal` を作る） / (c) すべて矛盾 | **(a)**。データを変えない。WAL は限界に書く |
+| 2 | readOnly / destructive=false × NET の `POST` | readOnly 25（6 木）/ destructive=false 40（9 木）。`PUT` / `PATCH` / `DELETE` は 0 | (a) HTTP メソッドでは決めない（報告しない、限界に書く） / (b) `POST` を書き込みとみなす | **(a)**。readOnly の 6 木は**すべて中身が読み取り**（JSON-RPC の照会、SPARQL、トークン取得、埋め込み計算）。(b) だと 25/25 が誤警報 |
+| 3 | destructive=false × FS_WRITE（mode 不明） | 0 | (a) 不明にする（規則 4） / (b) D32 のまま矛盾 | **(a)**。件数は動かない |
+| 4 | `openWorldHint: false` × NET | 宛先が外部 38（4 木: kakao / feishu / pushover / dartmouth）/ 読めない 91 / localhost 0 | (a) 定数の外部ホストだけ矛盾、読めないものは不明として件数を出す / (b) 未実装のまま限界に書く | **(a)**（+37）。ただし D32 の「CONTRADICTION は破壊的な kind だけ」を広げることになる |
+| 5 | `idempotentHint: true` の片側判定 | `POST` 36（7 木）/ 衝突指定なしの `INSERT` 23（2 木） | (a) 未対応として限界に書く / (b) 実装する | **(a)**。`POST` は #2 と同じく読み取りが多い。`INSERT` は「無ければ入れる」形（`upsert_user`）で実際は冪等 |
+| 6 | readOnly / destructive=false × SPAWN（**新**） | 21 位置 / CONTRADICTION 18（4 木）。argv0: `powershell` 8、`query` 2、`tscon` 2、`ping` 2、`nvidia-smi` 2、読めない 5 | (a) 現行のまま全件矛盾 / (b) 読むだけのコマンドの表を作って宣言内にする | **(a)**。`tscon`（セッションの切り替え）や `powershell` があり、表は保守が重い。読むだけのコマンドは精度表で「意味は非破壊」と数える |
+| 7 | destructive=false × FS_WRITE の書き出し（**新**） | CONTRADICTION 26（10 木）: `write_text` / `write_bytes` / `open('w')`。削除・移動・置換 10 は別 | (a) 現行のまま矛盾（上書きとみなす） / (b) 新規作成か上書きかが静的に分からないので不明 | **(b)**（−26）。規則 4 と #3 の考え方にそろう。削除・移動・置換（10）は矛盾のまま |
+
+**全部おすすめどおりなら**: CONTRADICTION 146 → 146 + 32（DB）+ 37（#4）− 26（#7）= **189**
+（見込み。実装後に run を取り直して確かめる）。不明として別に出すもの: #7 の 26、
+#4 の宛先が読めない 91、DB で SQL が読めない 130。
+
 ---
 
 
