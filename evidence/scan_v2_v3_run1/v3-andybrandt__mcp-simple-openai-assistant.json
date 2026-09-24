@@ -1,0 +1,2270 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [
+    {
+      "candidates": [
+        "ctx.report_progress"
+      ],
+      "form": "if_chain",
+      "lineno": 155,
+      "opaque_reason": null,
+      "relpath": "mcp_simple_openai_assistant/app.py",
+      "resolution": "resolved",
+      "selector": "event.event",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "ctx.report_progress"
+      ],
+      "form": "if_chain",
+      "lineno": 159,
+      "opaque_reason": null,
+      "relpath": "mcp_simple_openai_assistant/app.py",
+      "resolution": "resolved",
+      "selector": "event.event",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "ctx.report_progress"
+      ],
+      "form": "if_chain",
+      "lineno": 111,
+      "opaque_reason": null,
+      "relpath": "test_server.py",
+      "resolution": "resolved",
+      "selector": "event.event",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "ctx.report_progress"
+      ],
+      "form": "if_chain",
+      "lineno": 111,
+      "opaque_reason": null,
+      "relpath": "test_server.py",
+      "resolution": "resolved",
+      "selector": "event.event",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "ctx.report_progress"
+      ],
+      "form": "if_chain",
+      "lineno": 115,
+      "opaque_reason": null,
+      "relpath": "test_server.py",
+      "resolution": "resolved",
+      "selector": "event.event",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "ctx.report_progress"
+      ],
+      "form": "if_chain",
+      "lineno": 115,
+      "opaque_reason": null,
+      "relpath": "test_server.py",
+      "resolution": "resolved",
+      "selector": "event.event",
+      "selector_is_model": true
+    }
+  ],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {
+    "NODOM(no_gate)": 10
+  },
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.091,
+    "run_id": "v3_run1",
+    "src_root": "/home/user/auth_gap/corpus/v3-andybrandt__mcp-simple-openai-assistant"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "db_rule": "db",
+          "entry_lineno": 154,
+          "form": "proxy",
+          "kind": "DB",
+          "lineno": 110,
+          "relpath": "mcp_simple_openai_assistant/thread_store.py",
+          "required_by": [
+            "A18",
+            "S1'"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "params": "annotation"
+          },
+          "site": "psycopg.Cursor.execute",
+          "slots": {
+            "params": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "thread_id"
+              ],
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "shape": {
+                      "k": "Unknown"
+                    }
+                  },
+                  {
+                    "prin": "MODEL",
+                    "prov": "resolved",
+                    "roots": [
+                      "thread_id"
+                    ],
+                    "shape": {
+                      "formal": "thread_id",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            },
+            "sql": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "\n            UPDATE threads\n            SET last_used_at = ?\n            WHERE thread_id = ?\n        ",
+                "k": "Atom"
+              }
+            }
+          },
+          "sql_head": "UPDATE",
+          "sub_kind": "DB_WRITE",
+          "witness_chain": [
+            "AssistantManager.run_thread",
+            "ThreadStore.update_thread_last_used"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:params": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 10,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:sql": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 10,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 10,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 10,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:params": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:sql": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:params": "MODEL",
+        "0:sql": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "DB",
+          "lineno": 110,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "mcp_simple_openai_assistant/thread_store.py",
+          "site": "psycopg.Cursor.execute",
+          "slot": "params",
+          "unit_id": "mcp:ask_assistant_in_thread:a69e4baeeeb9",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "DB",
+          "lineno": 110,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "mcp_simple_openai_assistant/thread_store.py",
+          "site": "psycopg.Cursor.execute",
+          "slot": "sql",
+          "unit_id": "mcp:ask_assistant_in_thread:a69e4baeeeb9",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": false,
+          "title": "Ask Assistant in Thread and Stream Response"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 138,
+        "module": "mcp_simple_openai_assistant.app",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "thread_id"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "assistant_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "message"
+          },
+          {
+            "annotation": "Context",
+            "index": 3,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "ask_assistant_in_thread",
+        "relpath": "mcp_simple_openai_assistant/app.py",
+        "schema_hash": "a69e4baeeeb9",
+        "tool_name": "ask_assistant_in_thread",
+        "unit_id": "mcp:ask_assistant_in_thread:a69e4baeeeb9"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": false,
+          "title": "Create OpenAI Assistant"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 26,
+        "module": "mcp_simple_openai_assistant.app",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "name"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "instructions"
+          },
+          {
+            "annotation": "str",
+            "default": "'gpt-4o'",
+            "index": 2,
+            "name": "model"
+          }
+        ],
+        "qualname": "create_assistant",
+        "relpath": "mcp_simple_openai_assistant/app.py",
+        "schema_hash": "badb0dc2520e",
+        "tool_name": "create_assistant",
+        "unit_id": "mcp:create_assistant:badb0dc2520e"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "db_rule": "db",
+          "entry_lineno": 59,
+          "form": "proxy",
+          "kind": "DB",
+          "lineno": 66,
+          "relpath": "mcp_simple_openai_assistant/thread_store.py",
+          "required_by": [
+            "A18",
+            "S1'"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "params": "annotation"
+          },
+          "site": "psycopg.Cursor.execute",
+          "slots": {
+            "params": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "description",
+                "name"
+              ],
+              "shape": {
+                "items": [
+                  {
+                    "prin": "MODEL",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "roots": [
+                      "description",
+                      "name"
+                    ],
+                    "shape": {
+                      "k": "Unknown"
+                    }
+                  },
+                  {
+                    "prin": "MODEL",
+                    "prov": "resolved",
+                    "roots": [
+                      "name"
+                    ],
+                    "shape": {
+                      "formal": "name",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "MODEL",
+                    "prov": "resolved",
+                    "roots": [
+                      "description"
+                    ],
+                    "shape": {
+                      "formal": "description",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "shape": {
+                      "k": "Unknown"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            },
+            "sql": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "\n            INSERT INTO threads (thread_id, name, description, last_used_at)\n            VALUES (?, ?, ?, ?)\n        ",
+                "k": "Atom"
+              }
+            }
+          },
+          "sql_head": "INSERT",
+          "sub_kind": "DB_WRITE",
+          "witness_chain": [
+            "AssistantManager.create_new_assistant_thread",
+            "ThreadStore.add_thread"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:params": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:sql": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 8,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:params": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:sql": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:params": "MODEL",
+        "0:sql": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "DB",
+          "lineno": 66,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "mcp_simple_openai_assistant/thread_store.py",
+          "site": "psycopg.Cursor.execute",
+          "slot": "params",
+          "unit_id": "mcp:create_new_assistant_thread:28eb372894ff",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "DB",
+          "lineno": 66,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "mcp_simple_openai_assistant/thread_store.py",
+          "site": "psycopg.Cursor.execute",
+          "slot": "sql",
+          "unit_id": "mcp:create_new_assistant_thread:28eb372894ff",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": false,
+          "title": "Create New Assistant Thread"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 44,
+        "module": "mcp_simple_openai_assistant.app",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "name"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 1,
+            "name": "description"
+          }
+        ],
+        "qualname": "create_new_assistant_thread",
+        "relpath": "mcp_simple_openai_assistant/app.py",
+        "schema_hash": "28eb372894ff",
+        "tool_name": "create_new_assistant_thread",
+        "unit_id": "mcp:create_new_assistant_thread:28eb372894ff"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": false,
+          "title": "Delete Managed Thread"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 115,
+        "module": "mcp_simple_openai_assistant.app",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "thread_id"
+          }
+        ],
+        "qualname": "delete_thread",
+        "relpath": "mcp_simple_openai_assistant/app.py",
+        "schema_hash": "a559ee9e2fe3",
+        "tool_name": "delete_thread",
+        "unit_id": "mcp:delete_thread:a559ee9e2fe3"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": true,
+          "title": "List OpenAI Assistants"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 175,
+        "module": "mcp_simple_openai_assistant.app",
+        "params": [
+          {
+            "annotation": "int",
+            "default": "20",
+            "index": 0,
+            "name": "limit"
+          }
+        ],
+        "qualname": "list_assistants",
+        "relpath": "mcp_simple_openai_assistant/app.py",
+        "schema_hash": "cbbab5bb9059",
+        "tool_name": "list_assistants",
+        "unit_id": "mcp:list_assistants:cbbab5bb9059"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": true,
+          "title": "List Managed Threads"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 66,
+        "module": "mcp_simple_openai_assistant.app",
+        "params": [],
+        "qualname": "list_threads",
+        "relpath": "mcp_simple_openai_assistant/app.py",
+        "schema_hash": "d36d5fd42096",
+        "tool_name": "list_threads",
+        "unit_id": "mcp:list_threads:d36d5fd42096"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": true,
+          "title": "Retrieve OpenAI Assistant"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 206,
+        "module": "mcp_simple_openai_assistant.app",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "assistant_id"
+          }
+        ],
+        "qualname": "retrieve_assistant",
+        "relpath": "mcp_simple_openai_assistant/app.py",
+        "schema_hash": "8df4e6db60bb",
+        "tool_name": "retrieve_assistant",
+        "unit_id": "mcp:retrieve_assistant:8df4e6db60bb"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": false,
+          "title": "Update OpenAI Assistant"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 229,
+        "module": "mcp_simple_openai_assistant.app",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "assistant_id"
+          },
+          {
+            "annotation": "str",
+            "default": "None",
+            "index": 1,
+            "name": "name"
+          },
+          {
+            "annotation": "str",
+            "default": "None",
+            "index": 2,
+            "name": "instructions"
+          },
+          {
+            "annotation": "str",
+            "default": "None",
+            "index": 3,
+            "name": "model"
+          }
+        ],
+        "qualname": "update_assistant",
+        "relpath": "mcp_simple_openai_assistant/app.py",
+        "schema_hash": "64c3a6b7d771",
+        "tool_name": "update_assistant",
+        "unit_id": "mcp:update_assistant:64c3a6b7d771"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "db_rule": "db",
+          "entry_lineno": 108,
+          "form": "proxy",
+          "kind": "DB",
+          "lineno": 95,
+          "relpath": "mcp_simple_openai_assistant/thread_store.py",
+          "required_by": [
+            "A18",
+            "S1'"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "params": "annotation"
+          },
+          "site": "psycopg.Cursor.execute",
+          "slots": {
+            "params": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "description",
+                "name",
+                "thread_id"
+              ],
+              "shape": {
+                "items": [
+                  {
+                    "prin": "MODEL",
+                    "prov": "resolved",
+                    "roots": [
+                      "name"
+                    ],
+                    "shape": {
+                      "formal": "name",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "MODEL",
+                    "prov": "resolved",
+                    "roots": [
+                      "description"
+                    ],
+                    "shape": {
+                      "formal": "description",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "shape": {
+                      "k": "Unknown"
+                    }
+                  },
+                  {
+                    "prin": "MODEL",
+                    "prov": "resolved",
+                    "roots": [
+                      "thread_id"
+                    ],
+                    "shape": {
+                      "formal": "thread_id",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            },
+            "sql": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "\n            UPDATE threads\n            SET name = ?, description = ?, last_used_at = ?\n            WHERE thread_id = ?\n        ",
+                "k": "Atom"
+              }
+            }
+          },
+          "sql_head": "UPDATE",
+          "sub_kind": "DB_WRITE",
+          "witness_chain": [
+            "AssistantManager.update_thread",
+            "ThreadStore.update_thread_metadata"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:params": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 11,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:sql": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 11,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 11,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 11,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:params": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:sql": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:params": "MODEL",
+        "0:sql": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "DB",
+          "lineno": 95,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "mcp_simple_openai_assistant/thread_store.py",
+          "site": "psycopg.Cursor.execute",
+          "slot": "params",
+          "unit_id": "mcp:update_thread:7a3bb32c8042",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "DB",
+          "lineno": 95,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "mcp_simple_openai_assistant/thread_store.py",
+          "site": "psycopg.Cursor.execute",
+          "slot": "sql",
+          "unit_id": "mcp:update_thread:7a3bb32c8042",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": false,
+          "title": "Update Managed Thread"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 94,
+        "module": "mcp_simple_openai_assistant.app",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "thread_id"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 1,
+            "name": "name"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 2,
+            "name": "description"
+          }
+        ],
+        "qualname": "update_thread",
+        "relpath": "mcp_simple_openai_assistant/app.py",
+        "schema_hash": "7a3bb32c8042",
+        "tool_name": "update_thread",
+        "unit_id": "mcp:update_thread:7a3bb32c8042"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "db_rule": "db",
+          "entry_lineno": 110,
+          "form": "proxy",
+          "kind": "DB",
+          "lineno": 110,
+          "relpath": "mcp_simple_openai_assistant/thread_store.py",
+          "required_by": [
+            "A18",
+            "S1'"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "params": "annotation"
+          },
+          "site": "psycopg.Cursor.execute",
+          "slots": {
+            "params": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "thread_id"
+              ],
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "shape": {
+                      "k": "Unknown"
+                    }
+                  },
+                  {
+                    "prin": "MODEL",
+                    "prov": "resolved",
+                    "roots": [
+                      "thread_id"
+                    ],
+                    "shape": {
+                      "formal": "thread_id",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            },
+            "sql": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "\n            UPDATE threads\n            SET last_used_at = ?\n            WHERE thread_id = ?\n        ",
+                "k": "Atom"
+              }
+            }
+          },
+          "sql_head": "UPDATE",
+          "sub_kind": "DB_WRITE",
+          "witness_chain": [
+            "AssistantManager.run_thread",
+            "ThreadStore.update_thread_last_used"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:params": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 5,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:sql": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 5,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 5,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 5,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:params": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:sql": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:params": "MODEL",
+        "0:sql": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "DB",
+          "lineno": 110,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "mcp_simple_openai_assistant/thread_store.py",
+          "site": "psycopg.Cursor.execute",
+          "slot": "params",
+          "unit_id": "mcp:client.ask_assistant_in_thread:a69e4baeeeb9",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "DB",
+          "lineno": 110,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "mcp_simple_openai_assistant/thread_store.py",
+          "site": "psycopg.Cursor.execute",
+          "slot": "sql",
+          "unit_id": "mcp:client.ask_assistant_in_thread:a69e4baeeeb9",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": false,
+          "title": "Ask Assistant in Thread and Stream Response"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 107,
+        "module": "test_server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "thread_id"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "assistant_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "message"
+          },
+          {
+            "annotation": "Context",
+            "index": 3,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "client.ask_assistant_in_thread",
+        "relpath": "test_server.py",
+        "schema_hash": "a69e4baeeeb9",
+        "tool_name": "ask_assistant_in_thread",
+        "unit_id": "mcp:client.ask_assistant_in_thread:a69e4baeeeb9"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": false,
+          "title": "Create OpenAI Assistant"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 60,
+        "module": "test_server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "name"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "instructions"
+          },
+          {
+            "annotation": "str",
+            "default": "'gpt-4o'",
+            "index": 2,
+            "name": "model"
+          }
+        ],
+        "qualname": "client.create_assistant",
+        "relpath": "test_server.py",
+        "schema_hash": "badb0dc2520e",
+        "tool_name": "create_assistant",
+        "unit_id": "mcp:client.create_assistant:badb0dc2520e"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "db_rule": "db",
+          "entry_lineno": 79,
+          "form": "proxy",
+          "kind": "DB",
+          "lineno": 66,
+          "relpath": "mcp_simple_openai_assistant/thread_store.py",
+          "required_by": [
+            "A18",
+            "S1'"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "params": "annotation"
+          },
+          "site": "psycopg.Cursor.execute",
+          "slots": {
+            "params": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "description",
+                "name"
+              ],
+              "shape": {
+                "items": [
+                  {
+                    "prin": "MODEL",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "roots": [
+                      "description",
+                      "name"
+                    ],
+                    "shape": {
+                      "k": "Unknown"
+                    }
+                  },
+                  {
+                    "prin": "MODEL",
+                    "prov": "resolved",
+                    "roots": [
+                      "name"
+                    ],
+                    "shape": {
+                      "formal": "name",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "MODEL",
+                    "prov": "resolved",
+                    "roots": [
+                      "description"
+                    ],
+                    "shape": {
+                      "formal": "description",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "shape": {
+                      "k": "Unknown"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            },
+            "sql": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "\n            INSERT INTO threads (thread_id, name, description, last_used_at)\n            VALUES (?, ?, ?, ?)\n        ",
+                "k": "Atom"
+              }
+            }
+          },
+          "sql_head": "INSERT",
+          "sub_kind": "DB_WRITE",
+          "witness_chain": [
+            "AssistantManager.create_new_assistant_thread",
+            "ThreadStore.add_thread"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:params": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:sql": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 3,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:params": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:sql": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:params": "MODEL",
+        "0:sql": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "DB",
+          "lineno": 66,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "mcp_simple_openai_assistant/thread_store.py",
+          "site": "psycopg.Cursor.execute",
+          "slot": "params",
+          "unit_id": "mcp:client.create_new_assistant_thread:28eb372894ff",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "DB",
+          "lineno": 66,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "mcp_simple_openai_assistant/thread_store.py",
+          "site": "psycopg.Cursor.execute",
+          "slot": "sql",
+          "unit_id": "mcp:client.create_new_assistant_thread:28eb372894ff",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": false,
+          "title": "Create New Assistant Thread"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 76,
+        "module": "test_server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "name"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 1,
+            "name": "description"
+          }
+        ],
+        "qualname": "client.create_new_assistant_thread",
+        "relpath": "test_server.py",
+        "schema_hash": "28eb372894ff",
+        "tool_name": "create_new_assistant_thread",
+        "unit_id": "mcp:client.create_new_assistant_thread:28eb372894ff"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": false,
+          "title": "Delete Managed Thread"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 99,
+        "module": "test_server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "thread_id"
+          }
+        ],
+        "qualname": "client.delete_thread",
+        "relpath": "test_server.py",
+        "schema_hash": "a559ee9e2fe3",
+        "tool_name": "delete_thread",
+        "unit_id": "mcp:client.delete_thread:a559ee9e2fe3"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": true,
+          "title": "List OpenAI Assistants"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 47,
+        "module": "test_server",
+        "params": [
+          {
+            "annotation": "int",
+            "default": "20",
+            "index": 0,
+            "name": "limit"
+          }
+        ],
+        "qualname": "client.list_assistants",
+        "relpath": "test_server.py",
+        "schema_hash": "cbbab5bb9059",
+        "tool_name": "list_assistants",
+        "unit_id": "mcp:client.list_assistants:cbbab5bb9059"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": true,
+          "title": "List Managed Threads"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 83,
+        "module": "test_server",
+        "params": [],
+        "qualname": "client.list_threads",
+        "relpath": "test_server.py",
+        "schema_hash": "d36d5fd42096",
+        "tool_name": "list_threads",
+        "unit_id": "mcp:client.list_threads:d36d5fd42096"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": true,
+          "title": "Retrieve OpenAI Assistant"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 65,
+        "module": "test_server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "assistant_id"
+          }
+        ],
+        "qualname": "client.retrieve_assistant",
+        "relpath": "test_server.py",
+        "schema_hash": "8df4e6db60bb",
+        "tool_name": "retrieve_assistant",
+        "unit_id": "mcp:client.retrieve_assistant:8df4e6db60bb"
+      },
+      "validator_shapes": []
+    }
+  ]
+}

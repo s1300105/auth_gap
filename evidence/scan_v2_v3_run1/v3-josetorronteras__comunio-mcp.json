@@ -1,0 +1,1437 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {},
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.769,
+    "run_id": "v3_run1",
+    "src_root": "/home/user/auth_gap/corpus/v3-josetorronteras__comunio-mcp"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 24,
+        "malformed_fields": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.accept_offer",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "int",
+            "index": 1,
+            "name": "offer_id"
+          }
+        ],
+        "qualname": "register.accept_offer",
+        "relpath": "src/comunio_mcp/tools/accept_offer.py",
+        "schema_hash": "0a8e4122b5a8",
+        "tool_name": "accept_offer",
+        "unit_id": "mcp:register.accept_offer:0a8e4122b5a8"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 18,
+        "malformed_fields": [
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.account",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "register.get_account",
+        "relpath": "src/comunio_mcp/tools/account.py",
+        "schema_hash": "7c298b071887",
+        "tool_name": "get_account",
+        "unit_id": "mcp:register.get_account:7c298b071887"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 24,
+        "malformed_fields": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.change_bid",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "int",
+            "index": 1,
+            "name": "offer_id"
+          },
+          {
+            "annotation": "int",
+            "index": 2,
+            "name": "price"
+          }
+        ],
+        "qualname": "register.change_bid",
+        "relpath": "src/comunio_mcp/tools/change_bid.py",
+        "schema_hash": "53276a3f918e",
+        "tool_name": "change_bid",
+        "unit_id": "mcp:register.change_bid:53276a3f918e"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 24,
+        "malformed_fields": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.change_listing_price",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "int",
+            "index": 1,
+            "name": "player_id"
+          },
+          {
+            "annotation": "int",
+            "index": 2,
+            "name": "price"
+          }
+        ],
+        "qualname": "register.change_listing_price",
+        "relpath": "src/comunio_mcp/tools/change_listing_price.py",
+        "schema_hash": "96dc3f18fbea",
+        "tool_name": "change_listing_price",
+        "unit_id": "mcp:register.change_listing_price:96dc3f18fbea"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 24,
+        "malformed_fields": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.list_on_market",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "int",
+            "index": 1,
+            "name": "player_id"
+          },
+          {
+            "annotation": "int",
+            "index": 2,
+            "name": "price"
+          }
+        ],
+        "qualname": "register.list_player_on_market",
+        "relpath": "src/comunio_mcp/tools/list_on_market.py",
+        "schema_hash": "96dc3f18fbea",
+        "tool_name": "list_player_on_market",
+        "unit_id": "mcp:register.list_player_on_market:96dc3f18fbea"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 19,
+        "malformed_fields": [
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.market",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "register.get_market",
+        "relpath": "src/comunio_mcp/tools/market.py",
+        "schema_hash": "7c298b071887",
+        "tool_name": "get_market",
+        "unit_id": "mcp:register.get_market:7c298b071887"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [
+        {
+          "root": "types",
+          "site": "src/comunio_mcp/comunio/news.py:L90",
+          "transform": "str.upper"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 25,
+        "malformed_fields": [
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.news",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "Annotated[int, Field(ge=1)]",
+            "default": "DEFAULT_LIMIT",
+            "index": 1,
+            "name": "limit"
+          },
+          {
+            "annotation": "list[str] | None",
+            "default": "None",
+            "index": 2,
+            "name": "types"
+          }
+        ],
+        "qualname": "register.get_news",
+        "relpath": "src/comunio_mcp/tools/news.py",
+        "schema_hash": "cd106d221b01",
+        "tool_name": "get_news",
+        "unit_id": "mcp:register.get_news:cd106d221b01"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 19,
+        "malformed_fields": [
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.offers",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "register.get_offers",
+        "relpath": "src/comunio_mcp/tools/offers.py",
+        "schema_hash": "7c298b071887",
+        "tool_name": "get_offers",
+        "unit_id": "mcp:register.get_offers:7c298b071887"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 24,
+        "malformed_fields": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.place_bid",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "int",
+            "index": 1,
+            "name": "player_id"
+          },
+          {
+            "annotation": "int",
+            "index": 2,
+            "name": "price"
+          }
+        ],
+        "qualname": "register.place_bid",
+        "relpath": "src/comunio_mcp/tools/place_bid.py",
+        "schema_hash": "96dc3f18fbea",
+        "tool_name": "place_bid",
+        "unit_id": "mcp:register.place_bid:96dc3f18fbea"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 19,
+        "malformed_fields": [
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.player",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "int",
+            "index": 1,
+            "name": "player_id"
+          }
+        ],
+        "qualname": "register.get_player",
+        "relpath": "src/comunio_mcp/tools/player.py",
+        "schema_hash": "a1ea8d7151f5",
+        "tool_name": "get_player",
+        "unit_id": "mcp:register.get_player:a1ea8d7151f5"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 28,
+        "malformed_fields": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.set_lineup",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "Tactic",
+            "index": 1,
+            "name": "tactic"
+          },
+          {
+            "annotation": "int | None",
+            "default": "None",
+            "index": 2,
+            "name": "keeper"
+          },
+          {
+            "annotation": "list[int] | None",
+            "default": "None",
+            "index": 3,
+            "name": "defenders"
+          },
+          {
+            "annotation": "list[int] | None",
+            "default": "None",
+            "index": 4,
+            "name": "midfielders"
+          },
+          {
+            "annotation": "list[int] | None",
+            "default": "None",
+            "index": 5,
+            "name": "strikers"
+          }
+        ],
+        "qualname": "register.set_lineup",
+        "relpath": "src/comunio_mcp/tools/set_lineup.py",
+        "schema_hash": "4458757a8eb5",
+        "tool_name": "set_lineup",
+        "unit_id": "mcp:register.set_lineup:4458757a8eb5"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 19,
+        "malformed_fields": [
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.squad",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "int | None",
+            "default": "None",
+            "index": 1,
+            "name": "manager_id"
+          }
+        ],
+        "qualname": "register.get_squad",
+        "relpath": "src/comunio_mcp/tools/squad.py",
+        "schema_hash": "ae58440bf809",
+        "tool_name": "get_squad",
+        "unit_id": "mcp:register.get_squad:ae58440bf809"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 19,
+        "malformed_fields": [
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.standings",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "Period",
+            "default": "'total'",
+            "index": 1,
+            "name": "period"
+          }
+        ],
+        "qualname": "register.get_standings",
+        "relpath": "src/comunio_mcp/tools/standings.py",
+        "schema_hash": "d5e42c264067",
+        "tool_name": "get_standings",
+        "unit_id": "mcp:register.get_standings:d5e42c264067"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 22,
+        "malformed_fields": [
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.transfers",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "Annotated[int, Field(ge=1)]",
+            "default": "DEFAULT_LIMIT",
+            "index": 1,
+            "name": "limit"
+          }
+        ],
+        "qualname": "register.get_transfers",
+        "relpath": "src/comunio_mcp/tools/transfers.py",
+        "schema_hash": "9ae623db72b0",
+        "tool_name": "get_transfers",
+        "unit_id": "mcp:register.get_transfers:9ae623db72b0"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 24,
+        "malformed_fields": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.unlist_from_market",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "int",
+            "index": 1,
+            "name": "player_id"
+          }
+        ],
+        "qualname": "register.unlist_player_from_market",
+        "relpath": "src/comunio_mcp/tools/unlist_from_market.py",
+        "schema_hash": "a1ea8d7151f5",
+        "tool_name": "unlist_player_from_market",
+        "unit_id": "mcp:register.unlist_player_from_market:a1ea8d7151f5"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 21,
+        "malformed_fields": [
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.watchlist",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "register.get_watchlist",
+        "relpath": "src/comunio_mcp/tools/watchlist.py",
+        "schema_hash": "7c298b071887",
+        "tool_name": "get_watchlist",
+        "unit_id": "mcp:register.get_watchlist:7c298b071887"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 60,
+        "malformed_fields": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.watchlist",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "int",
+            "index": 1,
+            "name": "player_id"
+          }
+        ],
+        "qualname": "register.unwatch_player",
+        "relpath": "src/comunio_mcp/tools/watchlist.py",
+        "schema_hash": "a1ea8d7151f5",
+        "tool_name": "unwatch_player",
+        "unit_id": "mcp:register.unwatch_player:a1ea8d7151f5"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 42,
+        "malformed_fields": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.watchlist",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "int",
+            "index": 1,
+            "name": "player_id"
+          }
+        ],
+        "qualname": "register.watch_player",
+        "relpath": "src/comunio_mcp/tools/watchlist.py",
+        "schema_hash": "a1ea8d7151f5",
+        "tool_name": "watch_player",
+        "unit_id": "mcp:register.watch_player:a1ea8d7151f5"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {},
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 24,
+        "malformed_fields": [
+          "destructive_hint",
+          "idempotent_hint",
+          "read_only_hint"
+        ],
+        "module": "src.comunio_mcp.tools.withdraw_bid",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "int",
+            "index": 1,
+            "name": "offer_id"
+          }
+        ],
+        "qualname": "register.withdraw_bid",
+        "relpath": "src/comunio_mcp/tools/withdraw_bid.py",
+        "schema_hash": "0a8e4122b5a8",
+        "tool_name": "withdraw_bid",
+        "unit_id": "mcp:register.withdraw_bid:0a8e4122b5a8"
+      },
+      "validator_shapes": []
+    }
+  ]
+}

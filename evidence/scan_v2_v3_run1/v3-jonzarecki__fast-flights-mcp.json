@@ -1,0 +1,191 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {},
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.055,
+    "run_id": "v3_run1",
+    "src_root": "/home/user/auth_gap/corpus/v3-jonzarecki__fast-flights-mcp"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "Flight Search"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 32,
+        "module": "src.fast_flights_mcp.server",
+        "params": [
+          {
+            "annotation": "Annotated[str, Field(description=\"IATA airport code for departure airport (e.g., 'JFK', 'LAX', 'LHR')\", min_length=3, max_length=3, pattern='^[A-Z]{3}$')]",
+            "index": 0,
+            "name": "from_airport"
+          },
+          {
+            "annotation": "Annotated[str, Field(description=\"IATA airport code for arrival airport (e.g., 'JFK', 'LAX', 'LHR')\", min_length=3, max_length=3, pattern='^[A-Z]{3}$')]",
+            "index": 1,
+            "name": "to_airport"
+          },
+          {
+            "annotation": "Annotated[str, Field(description=\"Departure date in YYYY-MM-DD format (e.g., '2024-12-25')\", pattern='^\\\\d{4}-\\\\d{2}-\\\\d{2}$')]",
+            "index": 2,
+            "name": "date"
+          },
+          {
+            "annotation": "Annotated[Literal['one-way', 'round-trip'], Field(description=\"Type of trip: 'one-way' for single direction or 'round-trip' for return journey\", default='one-way')]",
+            "default": "'one-way'",
+            "index": 3,
+            "name": "trip"
+          },
+          {
+            "annotation": "Annotated[str | None, Field(description='Return date in YYYY-MM-DD format. Required for round-trip flights', pattern='^\\\\d{4}-\\\\d{2}-\\\\d{2}$')]",
+            "default": "None",
+            "index": 4,
+            "name": "return_date"
+          },
+          {
+            "annotation": "Annotated[Literal['economy', 'premium', 'business', 'first'], Field(description=\"Seat class preference: 'economy', 'premium', 'business', or 'first'\", default='economy')]",
+            "default": "'economy'",
+            "index": 5,
+            "name": "seat"
+          },
+          {
+            "annotation": "Annotated[int, Field(description='Number of adult passengers', ge=1, le=9)]",
+            "default": "1",
+            "index": 6,
+            "name": "adults"
+          },
+          {
+            "annotation": "Annotated[int | None, Field(description='Maximum number of stops allowed (0 for direct flights only, 1 for up to 1 stop)', ge=0, le=1)]",
+            "default": "None",
+            "index": 7,
+            "name": "max_stops"
+          },
+          {
+            "annotation": "Annotated[int | None, Field(description=\"Maximum price per person in the flight's currency (filters out more expensive flights)\", ge=1)]",
+            "default": "None",
+            "index": 8,
+            "name": "max_price"
+          },
+          {
+            "annotation": "Annotated[int | None, Field(description='Maximum flight duration in minutes (filters out longer flights)', ge=30, le=2000)]",
+            "default": "None",
+            "index": 9,
+            "name": "max_flight_duration_minutes"
+          },
+          {
+            "annotation": "Annotated[str | None, Field(description=\"Latest acceptable arrival time in HH:MM format (e.g., '18:30')\", pattern='^(?:[01]\\\\d|2[0-3]):[0-5]\\\\d$')]",
+            "default": "None",
+            "index": 10,
+            "name": "latest_arrival_time"
+          },
+          {
+            "annotation": "Annotated[int | None, Field(description='Maximum acceptable delay in minutes (filters out flights with longer delays)', ge=0, le=300)]",
+            "default": "None",
+            "index": 11,
+            "name": "max_delay_minutes"
+          },
+          {
+            "annotation": "Annotated[Literal['USD', 'EUR', 'ILS'] | None, Field(description=\"Convert all prices to this currency: 'USD', 'EUR', or 'ILS'\")]",
+            "default": "None",
+            "index": 12,
+            "name": "target_currency"
+          }
+        ],
+        "qualname": "search_flights",
+        "relpath": "src/fast_flights_mcp/server.py",
+        "schema_hash": "d88f4e6a5d5b",
+        "tool_name": "search_flights",
+        "unit_id": "mcp:search_flights:d88f4e6a5d5b"
+      },
+      "validator_shapes": []
+    }
+  ]
+}

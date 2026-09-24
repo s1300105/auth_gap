@@ -1,0 +1,2776 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [
+      ".claude/settings.local.json"
+    ],
+    "source": null
+  },
+  "dispatch_sites": [
+    {
+      "candidates": [],
+      "form": "if_chain",
+      "lineno": 169,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "benchmark/benchmark.py",
+      "resolution": "opaque",
+      "selector": "resp.status_code",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [],
+      "form": "if_chain",
+      "lineno": 215,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "benchmark/benchmark.py",
+      "resolution": "opaque",
+      "selector": "resp.status_code",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "print"
+      ],
+      "form": "if_chain",
+      "lineno": 574,
+      "opaque_reason": null,
+      "relpath": "benchmark/benchmark.py",
+      "resolution": "resolved",
+      "selector": "r.status",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "print"
+      ],
+      "form": "if_chain",
+      "lineno": 574,
+      "opaque_reason": null,
+      "relpath": "benchmark/benchmark.py",
+      "resolution": "resolved",
+      "selector": "r.status",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [],
+      "form": "if_chain",
+      "lineno": 635,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "benchmark/benchmark.py",
+      "resolution": "opaque",
+      "selector": "agg['success_rate']",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [],
+      "form": "if_chain",
+      "lineno": 650,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "benchmark/benchmark.py",
+      "resolution": "opaque",
+      "selector": "agg['success_rate']",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [],
+      "form": "if_chain",
+      "lineno": 830,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "benchmark/benchmark.py",
+      "resolution": "opaque",
+      "selector": "agg['success_rate']",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [],
+      "form": "if_chain",
+      "lineno": 844,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "benchmark/benchmark.py",
+      "resolution": "opaque",
+      "selector": "agg['success_rate']",
+      "selector_is_model": true
+    }
+  ],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {
+    "NODOM(no_gate)": 24,
+    "NODOM(non_binding_gate)": 3
+  },
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 1.003,
+    "run_id": "v3_run1",
+    "src_root": "/home/user/auth_gap/corpus/v3-openyak__yakdb"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": []
+      },
+      "alias_facts": [
+        {
+          "root": "command",
+          "site": "benchmark/benchmark.py:L117",
+          "transform": "str.strip"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 109,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "default"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 109,
+          "relpath": "benchmark/benchmark.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "argv[*]": "annotation"
+          },
+          "site": "subprocess.run",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "cmd",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "command"
+              ],
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "cmd",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "/c",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "MODEL",
+                    "prov": "resolved",
+                    "roots": [
+                      "command"
+                    ],
+                    "shape": {
+                      "formal": "command",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            },
+            "cwd": {
+              "attrs": [
+                "joined",
+                "lexical_canon"
+              ],
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "OP",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "shape": {
+                    "formal": "__file__",
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV"
+        }
+      ],
+      "enforcement": {
+        "path": "dynamic_schema",
+        "reason": "登録経路が執行表に無い",
+        "verdict": "D_unknown"
+      },
+      "gate": {
+        "0:argv0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:argv[*]": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:cwd": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 6,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:cwd": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:argv0": "MODEL",
+        "0:argv[*]": "MODEL",
+        "0:cwd": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 109,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "benchmark/benchmark.py",
+          "site": "subprocess.run",
+          "slot": "argv0",
+          "unit_id": "openai-agents:cmd_run_command:f3f2d5cea802",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 109,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "benchmark/benchmark.py",
+          "site": "subprocess.run",
+          "slot": "argv[*]",
+          "unit_id": "openai-agents:cmd_run_command:f3f2d5cea802",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 109,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "benchmark/benchmark.py",
+          "site": "subprocess.run",
+          "slot": "cwd",
+          "unit_id": "openai-agents:cmd_run_command:f3f2d5cea802",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "entry_kind": "decorator",
+        "framework": "openai-agents",
+        "is_async": false,
+        "lineno": 102,
+        "module": "benchmark.benchmark",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "command"
+          }
+        ],
+        "qualname": "cmd_run_command",
+        "relpath": "benchmark/benchmark.py",
+        "schema_hash": "f3f2d5cea802",
+        "tool_name": "cmd_run_command",
+        "unit_id": "openai-agents:cmd_run_command:f3f2d5cea802"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 214,
+          "form": "direct",
+          "http_method": "GET",
+          "kind": "NET",
+          "lineno": 214,
+          "relpath": "benchmark/benchmark.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "url.path": "annotation"
+          },
+          "site": "httpx.get",
+          "slots": {
+            "url.host": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            },
+            "url.path": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "filename"
+              ],
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "/read/",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "MODEL",
+                    "prov": "resolved",
+                    "roots": [
+                      "filename"
+                    ],
+                    "shape": {
+                      "formal": "filename",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Str"
+              }
+            },
+            "url.query": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "entries": [
+                  [
+                    "toc",
+                    {
+                      "prin": "OP",
+                      "prov": "resolved",
+                      "shape": {
+                        "const": "true",
+                        "k": "Atom"
+                      }
+                    }
+                  ]
+                ],
+                "k": "Map"
+              }
+            }
+          },
+          "sub_kind": "NET"
+        }
+      ],
+      "enforcement": {
+        "path": "dynamic_schema",
+        "reason": "登録経路が執行表に無い",
+        "verdict": "D_unknown"
+      },
+      "gate": {
+        "0:url.host": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.query": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 6,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:url.host": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.query": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:url.host": "MODEL",
+        "0:url.path": "MODEL",
+        "0:url.query": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "NET",
+          "lineno": 214,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "benchmark/benchmark.py",
+          "site": "httpx.get",
+          "slot": "url.host",
+          "unit_id": "openai-agents:yakdb_get_file_toc:ce1f99d613d0",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "NET",
+          "lineno": 214,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "benchmark/benchmark.py",
+          "site": "httpx.get",
+          "slot": "url.path",
+          "unit_id": "openai-agents:yakdb_get_file_toc:ce1f99d613d0",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "NET",
+          "lineno": 214,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "benchmark/benchmark.py",
+          "site": "httpx.get",
+          "slot": "url.query",
+          "unit_id": "openai-agents:yakdb_get_file_toc:ce1f99d613d0",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "entry_kind": "decorator",
+        "framework": "openai-agents",
+        "is_async": false,
+        "lineno": 207,
+        "module": "benchmark.benchmark",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "filename"
+          }
+        ],
+        "qualname": "yakdb_get_file_toc",
+        "relpath": "benchmark/benchmark.py",
+        "schema_hash": "ce1f99d613d0",
+        "tool_name": "yakdb_get_file_toc",
+        "unit_id": "openai-agents:yakdb_get_file_toc:ce1f99d613d0"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 138,
+          "form": "direct",
+          "http_method": "GET",
+          "kind": "NET",
+          "lineno": 138,
+          "relpath": "benchmark/benchmark.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "url.query": "annotation"
+          },
+          "site": "httpx.get",
+          "slots": {
+            "url.host": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            },
+            "url.path": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "/files",
+                "k": "Atom"
+              }
+            },
+            "url.query": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "tags"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            }
+          },
+          "sub_kind": "NET"
+        }
+      ],
+      "enforcement": {
+        "path": "dynamic_schema",
+        "reason": "登録経路が執行表に無い",
+        "verdict": "D_unknown"
+      },
+      "gate": {
+        "0:url.host": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.query": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 9,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:url.host": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.query": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:url.host": "MODEL",
+        "0:url.path": "MODEL",
+        "0:url.query": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "NET",
+          "lineno": 138,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "benchmark/benchmark.py",
+          "site": "httpx.get",
+          "slot": "url.host",
+          "unit_id": "openai-agents:yakdb_list_files:c7fcc2d6e2fa",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "NET",
+          "lineno": 138,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "benchmark/benchmark.py",
+          "site": "httpx.get",
+          "slot": "url.path",
+          "unit_id": "openai-agents:yakdb_list_files:c7fcc2d6e2fa",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "NET",
+          "lineno": 138,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "benchmark/benchmark.py",
+          "site": "httpx.get",
+          "slot": "url.query",
+          "unit_id": "openai-agents:yakdb_list_files:c7fcc2d6e2fa",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "entry_kind": "decorator",
+        "framework": "openai-agents",
+        "is_async": false,
+        "lineno": 128,
+        "module": "benchmark.benchmark",
+        "params": [
+          {
+            "annotation": "str",
+            "default": "''",
+            "index": 0,
+            "name": "tags"
+          }
+        ],
+        "qualname": "yakdb_list_files",
+        "relpath": "benchmark/benchmark.py",
+        "schema_hash": "c7fcc2d6e2fa",
+        "tool_name": "yakdb_list_files",
+        "unit_id": "openai-agents:yakdb_list_files:c7fcc2d6e2fa"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 168,
+          "form": "direct",
+          "http_method": "GET",
+          "kind": "NET",
+          "lineno": 168,
+          "relpath": "benchmark/benchmark.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "url.path": "annotation",
+            "url.query": "annotation"
+          },
+          "site": "httpx.get",
+          "slots": {
+            "url.host": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            },
+            "url.path": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "filename"
+              ],
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "/read/",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "MODEL",
+                    "prov": "resolved",
+                    "roots": [
+                      "filename"
+                    ],
+                    "shape": {
+                      "formal": "filename",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Str"
+              }
+            },
+            "url.query": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "grep",
+                "lines",
+                "pages"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            }
+          },
+          "sub_kind": "NET"
+        }
+      ],
+      "enforcement": {
+        "path": "dynamic_schema",
+        "reason": "登録経路が執行表に無い",
+        "verdict": "D_unknown"
+      },
+      "gate": {
+        "0:url.host": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 13,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 13,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.query": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 13,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 13,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 13,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:url.host": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.query": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:url.host": "MODEL",
+        "0:url.path": "MODEL",
+        "0:url.query": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "NET",
+          "lineno": 168,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "benchmark/benchmark.py",
+          "site": "httpx.get",
+          "slot": "url.host",
+          "unit_id": "openai-agents:yakdb_read_file:8345e2459f5b",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "NET",
+          "lineno": 168,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "benchmark/benchmark.py",
+          "site": "httpx.get",
+          "slot": "url.path",
+          "unit_id": "openai-agents:yakdb_read_file:8345e2459f5b",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "NET",
+          "lineno": 168,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "benchmark/benchmark.py",
+          "site": "httpx.get",
+          "slot": "url.query",
+          "unit_id": "openai-agents:yakdb_read_file:8345e2459f5b",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "entry_kind": "decorator",
+        "framework": "openai-agents",
+        "is_async": false,
+        "lineno": 151,
+        "module": "benchmark.benchmark",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "filename"
+          },
+          {
+            "annotation": "str",
+            "default": "''",
+            "index": 1,
+            "name": "grep"
+          },
+          {
+            "annotation": "str",
+            "default": "''",
+            "index": 2,
+            "name": "pages"
+          },
+          {
+            "annotation": "str",
+            "default": "''",
+            "index": 3,
+            "name": "lines"
+          }
+        ],
+        "qualname": "yakdb_read_file",
+        "relpath": "benchmark/benchmark.py",
+        "schema_hash": "8345e2459f5b",
+        "tool_name": "yakdb_read_file",
+        "unit_id": "openai-agents:yakdb_read_file:8345e2459f5b"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": []
+      },
+      "alias_facts": [
+        {
+          "root": "query",
+          "site": "benchmark/benchmark.py:L196",
+          "transform": "str.replace"
+        },
+        {
+          "root": "tags",
+          "site": "benchmark/benchmark.py:L196",
+          "transform": "str.replace"
+        },
+        {
+          "root": "query",
+          "site": "benchmark/benchmark.py:L196",
+          "transform": "str.replace"
+        },
+        {
+          "root": "tags",
+          "site": "benchmark/benchmark.py:L196",
+          "transform": "str.replace"
+        },
+        {
+          "root": "query",
+          "site": "benchmark/benchmark.py:L196",
+          "transform": "str.replace"
+        },
+        {
+          "root": "tags",
+          "site": "benchmark/benchmark.py:L196",
+          "transform": "str.replace"
+        },
+        {
+          "root": "query",
+          "site": "benchmark/benchmark.py:L196",
+          "transform": "str.replace"
+        },
+        {
+          "root": "tags",
+          "site": "benchmark/benchmark.py:L196",
+          "transform": "str.replace"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 188,
+          "form": "direct",
+          "http_method": "POST",
+          "kind": "NET",
+          "lineno": 188,
+          "relpath": "benchmark/benchmark.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "body": "annotation"
+          },
+          "site": "httpx.post",
+          "slots": {
+            "body": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "query",
+                "tags"
+              ],
+              "shape": {
+                "entries": [],
+                "k": "Map"
+              }
+            },
+            "url.host": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            },
+            "url.path": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "/search",
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "NET"
+        }
+      ],
+      "enforcement": {
+        "path": "dynamic_schema",
+        "reason": "登録経路が執行表に無い",
+        "verdict": "D_unknown"
+      },
+      "gate": {
+        "0:body": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.host": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 9,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:body": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.host": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:body": "MODEL",
+        "0:url.host": "MODEL",
+        "0:url.path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "NET",
+          "lineno": 188,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "benchmark/benchmark.py",
+          "site": "httpx.post",
+          "slot": "body",
+          "unit_id": "openai-agents:yakdb_search_documents:2a9599595fa1",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "NET",
+          "lineno": 188,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "benchmark/benchmark.py",
+          "site": "httpx.post",
+          "slot": "url.host",
+          "unit_id": "openai-agents:yakdb_search_documents:2a9599595fa1",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "NET",
+          "lineno": 188,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "benchmark/benchmark.py",
+          "site": "httpx.post",
+          "slot": "url.path",
+          "unit_id": "openai-agents:yakdb_search_documents:2a9599595fa1",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "entry_kind": "decorator",
+        "framework": "openai-agents",
+        "is_async": false,
+        "lineno": 177,
+        "module": "benchmark.benchmark",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "query"
+          },
+          {
+            "annotation": "str",
+            "default": "''",
+            "index": 1,
+            "name": "tags"
+          }
+        ],
+        "qualname": "yakdb_search_documents",
+        "relpath": "benchmark/benchmark.py",
+        "schema_hash": "2a9599595fa1",
+        "tool_name": "yakdb_search_documents",
+        "unit_id": "openai-agents:yakdb_search_documents:2a9599595fa1"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "openWorldHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {
+        "logger": null
+      },
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 208,
+          "form": "proxy",
+          "http_method": "GET",
+          "kind": "NET",
+          "lineno": 178,
+          "relpath": "mcp_server/client.py",
+          "required_by": [
+            "A16"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "url.query": "annotation"
+          },
+          "site": "httpx.AsyncClient.get",
+          "slots": {
+            "url.host": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "k": "Atom"
+              }
+            },
+            "url.path": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "/glob",
+                "k": "Atom"
+              }
+            },
+            "url.query": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "params"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            },
+            "url.scheme": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "NET",
+          "witness_chain": [
+            "glob_files"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:url.host": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "yakdb.glob_files",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "params",
+                "params.path",
+                "params.pattern"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L208"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.path": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "yakdb.glob_files",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "params",
+                "params.path",
+                "params.pattern"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L208"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.query": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "yakdb.glob_files",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "params",
+                "params.path",
+                "params.pattern"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L208"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.scheme": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "yakdb.glob_files",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "params",
+                "params.path",
+                "params.pattern"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L208"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:url.host": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.query": {
+          "grade": "weak",
+          "weak_reason": "no_dash_reject"
+        },
+        "0:url.scheme": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:url.host": "MODEL",
+        "0:url.path": "MODEL",
+        "0:url.query": "MODEL",
+        "0:url.scheme": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 178,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D3:net_host_unknown"
+          ],
+          "relpath": "mcp_server/client.py",
+          "site": "httpx.AsyncClient.get",
+          "slot": "url.host",
+          "unit_id": "mcp:yakdb_glob:8f13c00c1ddc",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 178,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D3:net_host_unknown"
+          ],
+          "relpath": "mcp_server/client.py",
+          "site": "httpx.AsyncClient.get",
+          "slot": "url.path",
+          "unit_id": "mcp:yakdb_glob:8f13c00c1ddc",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 178,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D3:net_host_unknown",
+            "D_layer_present:kind:NET"
+          ],
+          "relpath": "mcp_server/client.py",
+          "rule_w": true,
+          "site": "httpx.AsyncClient.get",
+          "slot": "url.query",
+          "unit_id": "mcp:yakdb_glob:8f13c00c1ddc",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 178,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D3:net_host_unknown"
+          ],
+          "relpath": "mcp_server/client.py",
+          "site": "httpx.AsyncClient.get",
+          "slot": "url.scheme",
+          "unit_id": "mcp:yakdb_glob:8f13c00c1ddc",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true,
+          "title": "Find Files"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 189,
+        "module": "mcp_server.server",
+        "params": [
+          {
+            "annotation": "GlobInput",
+            "index": 0,
+            "name": "params"
+          }
+        ],
+        "qualname": "yakdb_glob",
+        "relpath": "mcp_server/server.py",
+        "schema_hash": "8f13c00c1ddc",
+        "tool_name": "yakdb_glob",
+        "unit_id": "mcp:yakdb_glob:8f13c00c1ddc"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "openWorldHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "params",
+          "site": "mcp_server/server.py:L35",
+          "transform": "str.lower"
+        },
+        {
+          "root": "params",
+          "site": "mcp_server/server.py:L41",
+          "transform": "basename"
+        },
+        {
+          "root": "params",
+          "site": "mcp_server/client.py:L84",
+          "transform": "json.dumps"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 116,
+          "form": "proxy",
+          "http_method": "GET",
+          "kind": "NET",
+          "lineno": 78,
+          "relpath": "mcp_server/client.py",
+          "required_by": [
+            "A16"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "url.path": "annotation",
+            "url.query": "annotation"
+          },
+          "site": "httpx.AsyncClient.get",
+          "slots": {
+            "url.host": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "k": "Atom"
+              }
+            },
+            "url.path": {
+              "attrs": [
+                "joined"
+              ],
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "params"
+              ],
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "/read/",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "MODEL",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "roots": [
+                      "params"
+                    ],
+                    "shape": {
+                      "k": "Unknown"
+                    }
+                  }
+                ],
+                "k": "Str"
+              }
+            },
+            "url.query": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "params"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            },
+            "url.scheme": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "NET",
+          "witness_chain": [
+            "read_file"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:url.host": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 13,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 13,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.query": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 13,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.scheme": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 13,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 13,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 13,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:url.host": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.query": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.scheme": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:url.host": "MODEL",
+        "0:url.path": "MODEL",
+        "0:url.query": "MODEL",
+        "0:url.scheme": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 78,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D3:net_host_unknown"
+          ],
+          "relpath": "mcp_server/client.py",
+          "site": "httpx.AsyncClient.get",
+          "slot": "url.host",
+          "unit_id": "mcp:yakdb_read:d6ccc29edbb4",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 78,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D3:net_host_unknown",
+            "D_layer_present:kind:NET"
+          ],
+          "relpath": "mcp_server/client.py",
+          "site": "httpx.AsyncClient.get",
+          "slot": "url.path",
+          "unit_id": "mcp:yakdb_read:d6ccc29edbb4",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 78,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D3:net_host_unknown",
+            "D_layer_present:kind:NET"
+          ],
+          "relpath": "mcp_server/client.py",
+          "site": "httpx.AsyncClient.get",
+          "slot": "url.query",
+          "unit_id": "mcp:yakdb_read:d6ccc29edbb4",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 78,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D3:net_host_unknown"
+          ],
+          "relpath": "mcp_server/client.py",
+          "site": "httpx.AsyncClient.get",
+          "slot": "url.scheme",
+          "unit_id": "mcp:yakdb_read:d6ccc29edbb4",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true,
+          "title": "Read File"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 72,
+        "module": "mcp_server.server",
+        "params": [
+          {
+            "annotation": "ReadInput",
+            "index": 0,
+            "name": "params"
+          }
+        ],
+        "qualname": "yakdb_read",
+        "relpath": "mcp_server/server.py",
+        "schema_hash": "d6ccc29edbb4",
+        "tool_name": "yakdb_read",
+        "unit_id": "mcp:yakdb_read:d6ccc29edbb4"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "openWorldHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 167,
+          "form": "proxy",
+          "http_method": "POST",
+          "kind": "NET",
+          "lineno": 117,
+          "relpath": "mcp_server/client.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "body": "annotation"
+          },
+          "site": "httpx.AsyncClient.post",
+          "slots": {
+            "body": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "params"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            },
+            "url.host": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "k": "Atom"
+              }
+            },
+            "url.path": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "/search",
+                "k": "Atom"
+              }
+            },
+            "url.scheme": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "NET",
+          "witness_chain": [
+            "search"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:body": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.host": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.scheme": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:body": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.host": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.scheme": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:body": "MODEL",
+        "0:url.host": "MODEL",
+        "0:url.path": "MODEL",
+        "0:url.scheme": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 117,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:net_post",
+            "contradiction_unknown:D3:net_host_unknown",
+            "D_layer_present:kind:NET"
+          ],
+          "relpath": "mcp_server/client.py",
+          "site": "httpx.AsyncClient.post",
+          "slot": "body",
+          "unit_id": "mcp:yakdb_search:a27bed5c9577",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 117,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:net_post",
+            "contradiction_unknown:D3:net_host_unknown"
+          ],
+          "relpath": "mcp_server/client.py",
+          "site": "httpx.AsyncClient.post",
+          "slot": "url.host",
+          "unit_id": "mcp:yakdb_search:a27bed5c9577",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 117,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:net_post",
+            "contradiction_unknown:D3:net_host_unknown"
+          ],
+          "relpath": "mcp_server/client.py",
+          "site": "httpx.AsyncClient.post",
+          "slot": "url.path",
+          "unit_id": "mcp:yakdb_search:a27bed5c9577",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 117,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:net_post",
+            "contradiction_unknown:D3:net_host_unknown"
+          ],
+          "relpath": "mcp_server/client.py",
+          "site": "httpx.AsyncClient.post",
+          "slot": "url.scheme",
+          "unit_id": "mcp:yakdb_search:a27bed5c9577",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true,
+          "title": "Search Files"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 136,
+        "module": "mcp_server.server",
+        "params": [
+          {
+            "annotation": "SearchInput",
+            "index": 0,
+            "name": "params"
+          }
+        ],
+        "qualname": "yakdb_search",
+        "relpath": "mcp_server/server.py",
+        "schema_hash": "a27bed5c9577",
+        "tool_name": "yakdb_search",
+        "unit_id": "mcp:yakdb_search:a27bed5c9577"
+      },
+      "validator_shapes": []
+    }
+  ]
+}

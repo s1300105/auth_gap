@@ -1,0 +1,5221 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [
+      ".claude/settings.local.json"
+    ],
+    "source": null
+  },
+  "dispatch_sites": [
+    {
+      "candidates": [
+        "pd.read_excel"
+      ],
+      "form": "if_chain",
+      "lineno": 456,
+      "opaque_reason": null,
+      "relpath": "stats_compass_mcp/tools/data.py",
+      "resolution": "resolved",
+      "selector": "file_type.lower()",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "pd.read_excel"
+      ],
+      "form": "if_chain",
+      "lineno": 456,
+      "opaque_reason": null,
+      "relpath": "stats_compass_mcp/tools/data.py",
+      "resolution": "resolved",
+      "selector": "file_type.lower()",
+      "selector_is_model": true
+    }
+  ],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {
+    "NODOM(no_gate)": 3,
+    "NODOM(non_binding_gate)": 14
+  },
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.691,
+    "run_id": "v3_run1",
+    "src_root": "/home/user/auth_gap/corpus/v3-oogunbiyi21__stats-compass-mcp"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 125,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 125,
+          "relpath": "stats_compass_mcp/server.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Path",
+                "segs": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "resources",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "skills.md",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "tail": {
+                  "prin": "OP",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "shape": {
+                    "k": "Unknown"
+                  }
+                }
+              }
+            }
+          },
+          "sub_kind": "FS_READ"
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 125,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "stats_compass_mcp/server.py",
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:create_mcp_server.get_usage_guide:d36d5fd42096",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 117,
+        "module": "stats_compass_mcp.server",
+        "params": [],
+        "qualname": "create_mcp_server.get_usage_guide",
+        "relpath": "stats_compass_mcp/server.py",
+        "schema_hash": "d36d5fd42096",
+        "tool_name": "get_usage_guide",
+        "unit_id": "mcp:create_mcp_server.get_usage_guide:d36d5fd42096"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "closed_world": true,
+        "explicit": [],
+        "present_no_bound": [
+          "destructiveHint",
+          "openWorldHint",
+          "readOnlyHint"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 346,
+        "module": "stats_compass_mcp.tools.data",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "register_data_tools.delete_session",
+        "relpath": "stats_compass_mcp/tools/data.py",
+        "schema_hash": "83c5a72d4710",
+        "tool_name": "delete_session",
+        "unit_id": "mcp:register_data_tools.delete_session:83c5a72d4710"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 190,
+        "module": "stats_compass_mcp.tools.data",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 1,
+            "name": "dataframe_name"
+          },
+          {
+            "annotation": "int",
+            "default": "10",
+            "index": 2,
+            "name": "n"
+          },
+          {
+            "annotation": "str",
+            "default": "'head'",
+            "index": 3,
+            "name": "method"
+          }
+        ],
+        "qualname": "register_data_tools.get_sample",
+        "relpath": "stats_compass_mcp/tools/data.py",
+        "schema_hash": "52023fd567bd",
+        "tool_name": "get_sample",
+        "unit_id": "mcp:register_data_tools.get_sample:52023fd567bd"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 216,
+        "module": "stats_compass_mcp.tools.data",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 1,
+            "name": "dataframe_name"
+          },
+          {
+            "annotation": "int",
+            "default": "3",
+            "index": 2,
+            "name": "sample_values"
+          }
+        ],
+        "qualname": "register_data_tools.get_schema",
+        "relpath": "stats_compass_mcp/tools/data.py",
+        "schema_hash": "383caeee1e34",
+        "tool_name": "get_schema",
+        "unit_id": "mcp:register_data_tools.get_schema:383caeee1e34"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 380,
+        "module": "stats_compass_mcp.tools.data",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 1,
+            "name": "filename"
+          },
+          {
+            "annotation": "str",
+            "default": "'text/csv'",
+            "index": 2,
+            "name": "content_type"
+          }
+        ],
+        "qualname": "register_data_tools.get_upload_url",
+        "relpath": "stats_compass_mcp/tools/data.py",
+        "schema_hash": "0ff0e34b2a5a",
+        "tool_name": "get_upload_url",
+        "unit_id": "mcp:register_data_tools.get_upload_url:0ff0e34b2a5a"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 41,
+        "module": "stats_compass_mcp.tools.data",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "register_data_tools.list_dataframes",
+        "relpath": "stats_compass_mcp/tools/data.py",
+        "schema_hash": "83c5a72d4710",
+        "tool_name": "list_dataframes",
+        "unit_id": "mcp:register_data_tools.list_dataframes:83c5a72d4710"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 169,
+        "module": "stats_compass_mcp.tools.data",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "default": "'.'",
+            "index": 1,
+            "name": "directory"
+          }
+        ],
+        "qualname": "register_data_tools.list_files",
+        "relpath": "stats_compass_mcp/tools/data.py",
+        "schema_hash": "33738090099c",
+        "tool_name": "list_files",
+        "unit_id": "mcp:register_data_tools.list_files:33738090099c"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 92,
+        "module": "stats_compass_mcp.tools.data",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "path"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 2,
+            "name": "name"
+          },
+          {
+            "annotation": "str",
+            "default": "','",
+            "index": 3,
+            "name": "delimiter"
+          },
+          {
+            "annotation": "str",
+            "default": "'utf-8'",
+            "index": 4,
+            "name": "encoding"
+          },
+          {
+            "annotation": "bool",
+            "default": "True",
+            "index": 5,
+            "name": "set_active"
+          }
+        ],
+        "qualname": "register_data_tools.load_csv",
+        "relpath": "stats_compass_mcp/tools/data.py",
+        "schema_hash": "b805dde26372",
+        "tool_name": "load_csv",
+        "unit_id": "mcp:register_data_tools.load_csv:b805dde26372"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 68,
+        "module": "stats_compass_mcp.tools.data",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "name"
+          },
+          {
+            "annotation": "bool",
+            "default": "True",
+            "index": 2,
+            "name": "set_active"
+          }
+        ],
+        "qualname": "register_data_tools.load_dataset",
+        "relpath": "stats_compass_mcp/tools/data.py",
+        "schema_hash": "581df01f2599",
+        "tool_name": "load_dataset",
+        "unit_id": "mcp:register_data_tools.load_dataset:581df01f2599"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 132,
+        "module": "stats_compass_mcp.tools.data",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "path"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 2,
+            "name": "name"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 3,
+            "name": "sheet_name"
+          },
+          {
+            "annotation": "bool",
+            "default": "True",
+            "index": 4,
+            "name": "set_active"
+          }
+        ],
+        "qualname": "register_data_tools.load_excel",
+        "relpath": "stats_compass_mcp/tools/data.py",
+        "schema_hash": "b09a9236655e",
+        "tool_name": "load_excel",
+        "unit_id": "mcp:register_data_tools.load_excel:b09a9236655e"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 21,
+        "module": "stats_compass_mcp.tools.data",
+        "params": [],
+        "qualname": "register_data_tools.ping",
+        "relpath": "stats_compass_mcp/tools/data.py",
+        "schema_hash": "d36d5fd42096",
+        "tool_name": "ping",
+        "unit_id": "mcp:register_data_tools.ping:d36d5fd42096"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "file_key",
+          "site": "stats_compass_mcp/tools/data.py:L447",
+          "transform": "str.split"
+        },
+        {
+          "root": "file_key",
+          "site": "stats_compass_mcp/tools/data.py:L451",
+          "transform": "str.split"
+        },
+        {
+          "root": "file_key",
+          "site": "stats_compass_mcp/tools/data.py:L451",
+          "transform": "str.lower"
+        },
+        {
+          "root": "file_type",
+          "site": "stats_compass_mcp/tools/data.py:L456",
+          "transform": "str.lower"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 409,
+        "module": "stats_compass_mcp.tools.data",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 1,
+            "name": "file_key"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 2,
+            "name": "dataframe_name"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 3,
+            "name": "file_type"
+          },
+          {
+            "annotation": "str",
+            "default": "'utf-8'",
+            "index": 4,
+            "name": "encoding"
+          }
+        ],
+        "qualname": "register_data_tools.register_uploaded_file",
+        "relpath": "stats_compass_mcp/tools/data.py",
+        "schema_hash": "3fd649fe8c6e",
+        "tool_name": "register_uploaded_file",
+        "unit_id": "mcp:register_data_tools.register_uploaded_file:3fd649fe8c6e"
+      },
+      "validator_shapes": [
+        "split"
+      ]
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "filepath",
+          "site": "stats_compass_mcp/tools/data.py:L271",
+          "transform": "Path()"
+        },
+        {
+          "root": "filepath",
+          "site": "stats_compass_mcp/tools/data.py:L277",
+          "transform": "Path()"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": false,
+          "entry_lineno": 280,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 69,
+          "relpath": "stats_compass_mcp/exports.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "pathlib.Path.mkdir",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "OP",
+                  "prov": "resolved",
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": [
+                  {
+                    "prin": "OP",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "shape": {
+                      "k": "Unknown"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "data",
+                      "k": "Atom"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "Session.export_path",
+            "get_export_path",
+            "ensure_exports_dir"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "filepath.startswith",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "filepath"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "filepath.startswith",
+              "node": 16,
+              "recognition": "V",
+              "subjects": [
+                "filepath"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L269"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 14,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 14,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 14,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 69,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "stats_compass_mcp/exports.py",
+          "site": "pathlib.Path.mkdir",
+          "slot": "path",
+          "unit_id": "mcp:register_data_tools.save_csv:a6c35e8c672d",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 240,
+        "module": "stats_compass_mcp.tools.data",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "dataframe_name"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "filepath"
+          },
+          {
+            "annotation": "bool",
+            "default": "False",
+            "index": 3,
+            "name": "index"
+          }
+        ],
+        "qualname": "register_data_tools.save_csv",
+        "relpath": "stats_compass_mcp/tools/data.py",
+        "schema_hash": "a6c35e8c672d",
+        "tool_name": "save_csv",
+        "unit_id": "mcp:register_data_tools.save_csv:a6c35e8c672d"
+      },
+      "validator_shapes": [
+        "ctor_path",
+        "prefix"
+      ]
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "filepath",
+          "site": "stats_compass_mcp/tools/data.py:L322",
+          "transform": "Path()"
+        },
+        {
+          "root": "filepath",
+          "site": "stats_compass_mcp/tools/data.py:L326",
+          "transform": "Path()"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": false,
+          "entry_lineno": 329,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 69,
+          "relpath": "stats_compass_mcp/exports.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "pathlib.Path.mkdir",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "OP",
+                  "prov": "resolved",
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": [
+                  {
+                    "prin": "OP",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "shape": {
+                      "k": "Unknown"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "models",
+                      "k": "Atom"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "Session.export_path",
+            "get_export_path",
+            "ensure_exports_dir"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "filepath.startswith",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "filepath"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "filepath.startswith",
+              "node": 16,
+              "recognition": "V",
+              "subjects": [
+                "filepath"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L321"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 14,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 14,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 14,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 69,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "stats_compass_mcp/exports.py",
+          "site": "pathlib.Path.mkdir",
+          "slot": "path",
+          "unit_id": "mcp:register_data_tools.save_model:28fbc5e48208",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 297,
+        "module": "stats_compass_mcp.tools.data",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "model_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "filepath"
+          }
+        ],
+        "qualname": "register_data_tools.save_model",
+        "relpath": "stats_compass_mcp/tools/data.py",
+        "schema_hash": "28fbc5e48208",
+        "tool_name": "save_model",
+        "unit_id": "mcp:register_data_tools.save_model:28fbc5e48208"
+      },
+      "validator_shapes": [
+        "ctor_path",
+        "prefix"
+      ]
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 368,
+        "module": "stats_compass_mcp.tools.data",
+        "params": [],
+        "qualname": "register_data_tools.server_stats",
+        "relpath": "stats_compass_mcp/tools/data.py",
+        "schema_hash": "d36d5fd42096",
+        "tool_name": "server_stats",
+        "unit_id": "mcp:register_data_tools.server_stats:d36d5fd42096"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 30,
+        "module": "stats_compass_mcp.tools.data",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "register_data_tools.session_info",
+        "relpath": "stats_compass_mcp/tools/data.py",
+        "schema_hash": "83c5a72d4710",
+        "tool_name": "session_info",
+        "unit_id": "mcp:register_data_tools.session_info:83c5a72d4710"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 86,
+        "module": "stats_compass_mcp.tools.parent",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "register_parent_tools.describe_cleaning_tools",
+        "relpath": "stats_compass_mcp/tools/parent.py",
+        "schema_hash": "83c5a72d4710",
+        "tool_name": "describe_cleaning_tools",
+        "unit_id": "mcp:register_parent_tools.describe_cleaning_tools:83c5a72d4710"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 166,
+        "module": "stats_compass_mcp.tools.parent",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "register_parent_tools.describe_data_tools",
+        "relpath": "stats_compass_mcp/tools/parent.py",
+        "schema_hash": "83c5a72d4710",
+        "tool_name": "describe_data_tools",
+        "unit_id": "mcp:register_parent_tools.describe_data_tools:83c5a72d4710"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 39,
+        "module": "stats_compass_mcp.tools.parent",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "register_parent_tools.describe_eda_tools",
+        "relpath": "stats_compass_mcp/tools/parent.py",
+        "schema_hash": "83c5a72d4710",
+        "tool_name": "describe_eda_tools",
+        "unit_id": "mcp:register_parent_tools.describe_eda_tools:83c5a72d4710"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 219,
+        "module": "stats_compass_mcp.tools.parent",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "register_parent_tools.describe_ml_tools",
+        "relpath": "stats_compass_mcp/tools/parent.py",
+        "schema_hash": "83c5a72d4710",
+        "tool_name": "describe_ml_tools",
+        "unit_id": "mcp:register_parent_tools.describe_ml_tools:83c5a72d4710"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 276,
+        "module": "stats_compass_mcp.tools.parent",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "register_parent_tools.describe_plot_tools",
+        "relpath": "stats_compass_mcp/tools/parent.py",
+        "schema_hash": "83c5a72d4710",
+        "tool_name": "describe_plot_tools",
+        "unit_id": "mcp:register_parent_tools.describe_plot_tools:83c5a72d4710"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 126,
+        "module": "stats_compass_mcp.tools.parent",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "register_parent_tools.describe_transform_tools",
+        "relpath": "stats_compass_mcp/tools/parent.py",
+        "schema_hash": "83c5a72d4710",
+        "tool_name": "describe_transform_tools",
+        "unit_id": "mcp:register_parent_tools.describe_transform_tools:83c5a72d4710"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 98,
+        "module": "stats_compass_mcp.tools.parent",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "tool_name"
+          },
+          {
+            "annotation": "Optional[Dict[str, Any]]",
+            "default": "None",
+            "index": 2,
+            "name": "params"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 3,
+            "name": "dataframe_name"
+          }
+        ],
+        "qualname": "register_parent_tools.execute_cleaning_tool",
+        "relpath": "stats_compass_mcp/tools/parent.py",
+        "schema_hash": "dab9cdd4b08a",
+        "tool_name": "execute_cleaning_tool",
+        "unit_id": "mcp:register_parent_tools.execute_cleaning_tool:dab9cdd4b08a"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 184,
+        "module": "stats_compass_mcp.tools.parent",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "tool_name"
+          },
+          {
+            "annotation": "Optional[Dict[str, Any]]",
+            "default": "None",
+            "index": 2,
+            "name": "params"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 3,
+            "name": "dataframe_name"
+          }
+        ],
+        "qualname": "register_parent_tools.execute_data_tool",
+        "relpath": "stats_compass_mcp/tools/parent.py",
+        "schema_hash": "dab9cdd4b08a",
+        "tool_name": "execute_data_tool",
+        "unit_id": "mcp:register_parent_tools.execute_data_tool:dab9cdd4b08a"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 52,
+        "module": "stats_compass_mcp.tools.parent",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "tool_name"
+          },
+          {
+            "annotation": "Optional[Dict[str, Any]]",
+            "default": "None",
+            "index": 2,
+            "name": "params"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 3,
+            "name": "dataframe_name"
+          }
+        ],
+        "qualname": "register_parent_tools.execute_eda_tool",
+        "relpath": "stats_compass_mcp/tools/parent.py",
+        "schema_hash": "dab9cdd4b08a",
+        "tool_name": "execute_eda_tool",
+        "unit_id": "mcp:register_parent_tools.execute_eda_tool:dab9cdd4b08a"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": false,
+          "entry_lineno": 259,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 69,
+          "relpath": "stats_compass_mcp/exports.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "pathlib.Path.mkdir",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "OP",
+                  "prov": "resolved",
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": [
+                  {
+                    "prin": "OP",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "shape": {
+                      "k": "Unknown"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "plots",
+                      "k": "Atom"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "save_plot_export",
+            "get_export_path",
+            "ensure_exports_dir"
+          ]
+        },
+        {
+          "destructive": true,
+          "entry_lineno": 259,
+          "form": "direct",
+          "fs_mode": "wb",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "relpath": "stats_compass_mcp/exports.py",
+          "required_by": [
+            "P0"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "builtins.open",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "tool_name"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "OP",
+                  "prov": "resolved",
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": [
+                  {
+                    "prin": "OP",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "shape": {
+                      "k": "Unknown"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "plots",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "attrs": [
+                      "joined"
+                    ],
+                    "prin": "MODEL",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "roots": [
+                      "tool_name"
+                    ],
+                    "shape": {
+                      "items": [
+                        {
+                          "prin": "MODEL",
+                          "prov": "resolved",
+                          "roots": [
+                            "tool_name"
+                          ],
+                          "shape": {
+                            "formal": "tool_name",
+                            "k": "Atom"
+                          }
+                        },
+                        {
+                          "prin": "OP",
+                          "prov": "resolved",
+                          "shape": {
+                            "const": "_",
+                            "k": "Atom"
+                          }
+                        },
+                        {
+                          "prin": "OP",
+                          "prov": "opaque",
+                          "prov_reasons": [
+                            "unresolved"
+                          ],
+                          "shape": {
+                            "k": "Unknown"
+                          }
+                        },
+                        {
+                          "prin": "OP",
+                          "prov": "resolved",
+                          "shape": {
+                            "const": ".png",
+                            "k": "Atom"
+                          }
+                        }
+                      ],
+                      "k": "Str"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "save_plot_export"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "with_images",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "result_dict"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L269"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "with_images",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "result_dict"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L269"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 9,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:path": {
+          "grade": "unknown",
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL",
+        "1:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 69,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "stats_compass_mcp/exports.py",
+          "site": "pathlib.Path.mkdir",
+          "slot": "path",
+          "unit_id": "mcp:register_parent_tools.execute_ml_tool:dab9cdd4b08a",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D2:fs_writeout_model_path_opaque",
+            "D_layer_present:kind:FS_WRITE"
+          ],
+          "relpath": "stats_compass_mcp/exports.py",
+          "site": "builtins.open",
+          "slot": "path",
+          "unit_id": "mcp:register_parent_tools.execute_ml_tool:dab9cdd4b08a",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 232,
+        "module": "stats_compass_mcp.tools.parent",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "tool_name"
+          },
+          {
+            "annotation": "Optional[Dict[str, Any]]",
+            "default": "None",
+            "index": 2,
+            "name": "params"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 3,
+            "name": "dataframe_name"
+          }
+        ],
+        "qualname": "register_parent_tools.execute_ml_tool",
+        "relpath": "stats_compass_mcp/tools/parent.py",
+        "schema_hash": "dab9cdd4b08a",
+        "tool_name": "execute_ml_tool",
+        "unit_id": "mcp:register_parent_tools.execute_ml_tool:dab9cdd4b08a"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": false,
+          "entry_lineno": 319,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 69,
+          "relpath": "stats_compass_mcp/exports.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "pathlib.Path.mkdir",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "OP",
+                  "prov": "resolved",
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": [
+                  {
+                    "prin": "OP",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "shape": {
+                      "k": "Unknown"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "plots",
+                      "k": "Atom"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "save_plot_export",
+            "get_export_path",
+            "ensure_exports_dir"
+          ]
+        },
+        {
+          "destructive": true,
+          "entry_lineno": 319,
+          "form": "direct",
+          "fs_mode": "wb",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "relpath": "stats_compass_mcp/exports.py",
+          "required_by": [
+            "P0"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "builtins.open",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "tool_name"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "OP",
+                  "prov": "resolved",
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": [
+                  {
+                    "prin": "OP",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "shape": {
+                      "k": "Unknown"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "plots",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "attrs": [
+                      "joined"
+                    ],
+                    "prin": "MODEL",
+                    "prov": "opaque",
+                    "prov_reasons": [
+                      "unresolved"
+                    ],
+                    "roots": [
+                      "tool_name"
+                    ],
+                    "shape": {
+                      "items": [
+                        {
+                          "prin": "MODEL",
+                          "prov": "resolved",
+                          "roots": [
+                            "tool_name"
+                          ],
+                          "shape": {
+                            "formal": "tool_name",
+                            "k": "Atom"
+                          }
+                        },
+                        {
+                          "prin": "OP",
+                          "prov": "resolved",
+                          "shape": {
+                            "const": "_",
+                            "k": "Atom"
+                          }
+                        },
+                        {
+                          "prin": "OP",
+                          "prov": "opaque",
+                          "prov_reasons": [
+                            "unresolved"
+                          ],
+                          "shape": {
+                            "k": "Unknown"
+                          }
+                        },
+                        {
+                          "prin": "OP",
+                          "prov": "resolved",
+                          "shape": {
+                            "const": ".png",
+                            "k": "Atom"
+                          }
+                        }
+                      ],
+                      "k": "Str"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "save_plot_export"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "with_images",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "result_dict"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L329"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "with_images",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "result_dict"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L329"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 9,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 9,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:path": {
+          "grade": "unknown",
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL",
+        "1:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 69,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "stats_compass_mcp/exports.py",
+          "site": "pathlib.Path.mkdir",
+          "slot": "path",
+          "unit_id": "mcp:register_parent_tools.execute_plot_tool:dab9cdd4b08a",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D2:fs_writeout_model_path_opaque",
+            "D_layer_present:kind:FS_WRITE"
+          ],
+          "relpath": "stats_compass_mcp/exports.py",
+          "site": "builtins.open",
+          "slot": "path",
+          "unit_id": "mcp:register_parent_tools.execute_plot_tool:dab9cdd4b08a",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 289,
+        "module": "stats_compass_mcp.tools.parent",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "tool_name"
+          },
+          {
+            "annotation": "Optional[Dict[str, Any]]",
+            "default": "None",
+            "index": 2,
+            "name": "params"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 3,
+            "name": "dataframe_name"
+          }
+        ],
+        "qualname": "register_parent_tools.execute_plot_tool",
+        "relpath": "stats_compass_mcp/tools/parent.py",
+        "schema_hash": "dab9cdd4b08a",
+        "tool_name": "execute_plot_tool",
+        "unit_id": "mcp:register_parent_tools.execute_plot_tool:dab9cdd4b08a"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 138,
+        "module": "stats_compass_mcp.tools.parent",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "tool_name"
+          },
+          {
+            "annotation": "Optional[Dict[str, Any]]",
+            "default": "None",
+            "index": 2,
+            "name": "params"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 3,
+            "name": "dataframe_name"
+          }
+        ],
+        "qualname": "register_parent_tools.execute_transform_tool",
+        "relpath": "stats_compass_mcp/tools/parent.py",
+        "schema_hash": "dab9cdd4b08a",
+        "tool_name": "execute_transform_tool",
+        "unit_id": "mcp:register_parent_tools.execute_transform_tool:dab9cdd4b08a"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": true,
+          "entry_lineno": 163,
+          "form": "direct",
+          "fs_mode": "wb",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "relpath": "stats_compass_mcp/exports.py",
+          "required_by": [
+            "P0"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "depth",
+            "recursion",
+            "unresolved"
+          ],
+          "site": "builtins.open",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "depth",
+                "recursion",
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "save_workflow_exports",
+            "save_plot_export"
+          ]
+        },
+        {
+          "destructive": true,
+          "entry_lineno": 163,
+          "form": "direct",
+          "fs_mode": "wb",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "relpath": "stats_compass_mcp/exports.py",
+          "required_by": [
+            "P0"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "depth",
+            "recursion",
+            "unresolved"
+          ],
+          "site": "builtins.open",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "depth",
+                "recursion",
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "save_workflow_exports",
+            "save_plot_export"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "with_images",
+              "node": 9,
+              "recognition": "V",
+              "subjects": [
+                "result_dict"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L164"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "with_images",
+              "node": 9,
+              "recognition": "V",
+              "subjects": [
+                "result_dict"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L164"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 8,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL",
+        "1:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D2:fs_writeout"
+          ],
+          "relpath": "stats_compass_mcp/exports.py",
+          "site": "builtins.open",
+          "slot": "path",
+          "unit_id": "mcp:register_workflow_tools.run_classification_workflow:dcf2aa0b52bc",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D2:fs_writeout"
+          ],
+          "relpath": "stats_compass_mcp/exports.py",
+          "site": "builtins.open",
+          "slot": "path",
+          "unit_id": "mcp:register_workflow_tools.run_classification_workflow:dcf2aa0b52bc",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 134,
+        "module": "stats_compass_mcp.tools.workflows",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "target_column"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 2,
+            "name": "dataframe_name"
+          },
+          {
+            "annotation": "Optional[List[str]]",
+            "default": "None",
+            "index": 3,
+            "name": "feature_columns"
+          },
+          {
+            "annotation": "Optional[dict]",
+            "default": "None",
+            "index": 4,
+            "name": "config"
+          }
+        ],
+        "qualname": "register_workflow_tools.run_classification_workflow",
+        "relpath": "stats_compass_mcp/tools/workflows.py",
+        "schema_hash": "dcf2aa0b52bc",
+        "tool_name": "run_classification_workflow",
+        "unit_id": "mcp:register_workflow_tools.run_classification_workflow:dcf2aa0b52bc"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": true,
+          "entry_lineno": 102,
+          "form": "direct",
+          "fs_mode": "wb",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "relpath": "stats_compass_mcp/exports.py",
+          "required_by": [
+            "P0"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "depth",
+            "recursion",
+            "unresolved"
+          ],
+          "site": "builtins.open",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "depth",
+                "recursion",
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "save_workflow_exports",
+            "save_plot_export"
+          ]
+        },
+        {
+          "destructive": true,
+          "entry_lineno": 102,
+          "form": "direct",
+          "fs_mode": "wb",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "relpath": "stats_compass_mcp/exports.py",
+          "required_by": [
+            "P0"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "depth",
+            "recursion",
+            "unresolved"
+          ],
+          "site": "builtins.open",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "depth",
+                "recursion",
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "save_workflow_exports",
+            "save_plot_export"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "with_images",
+              "node": 9,
+              "recognition": "V",
+              "subjects": [
+                "result_dict"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L103"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "with_images",
+              "node": 9,
+              "recognition": "V",
+              "subjects": [
+                "result_dict"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L103"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 8,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL",
+        "1:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D2:fs_writeout"
+          ],
+          "relpath": "stats_compass_mcp/exports.py",
+          "site": "builtins.open",
+          "slot": "path",
+          "unit_id": "mcp:register_workflow_tools.run_eda_report_workflow:db487056b1c3",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D2:fs_writeout"
+          ],
+          "relpath": "stats_compass_mcp/exports.py",
+          "site": "builtins.open",
+          "slot": "path",
+          "unit_id": "mcp:register_workflow_tools.run_eda_report_workflow:db487056b1c3",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 82,
+        "module": "stats_compass_mcp.tools.workflows",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 1,
+            "name": "dataframe_name"
+          },
+          {
+            "annotation": "Optional[dict]",
+            "default": "None",
+            "index": 2,
+            "name": "config"
+          }
+        ],
+        "qualname": "register_workflow_tools.run_eda_report_workflow",
+        "relpath": "stats_compass_mcp/tools/workflows.py",
+        "schema_hash": "db487056b1c3",
+        "tool_name": "run_eda_report_workflow",
+        "unit_id": "mcp:register_workflow_tools.run_eda_report_workflow:db487056b1c3"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": true,
+          "entry_lineno": 130,
+          "form": "direct",
+          "fs_mode": "wb",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "relpath": "stats_compass_mcp/exports.py",
+          "required_by": [
+            "P0"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "depth",
+            "recursion",
+            "unresolved"
+          ],
+          "site": "builtins.open",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "depth",
+                "recursion",
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "save_workflow_exports",
+            "save_plot_export"
+          ]
+        },
+        {
+          "destructive": true,
+          "entry_lineno": 130,
+          "form": "direct",
+          "fs_mode": "wb",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "relpath": "stats_compass_mcp/exports.py",
+          "required_by": [
+            "P0"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "depth",
+            "recursion",
+            "unresolved"
+          ],
+          "site": "builtins.open",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "depth",
+                "recursion",
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "save_workflow_exports",
+            "save_plot_export"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "with_images",
+              "node": 9,
+              "recognition": "V",
+              "subjects": [
+                "result_dict"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L131"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "with_images",
+              "node": 9,
+              "recognition": "V",
+              "subjects": [
+                "result_dict"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L131"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 8,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL",
+        "1:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D2:fs_writeout"
+          ],
+          "relpath": "stats_compass_mcp/exports.py",
+          "site": "builtins.open",
+          "slot": "path",
+          "unit_id": "mcp:register_workflow_tools.run_preprocessing_workflow:092ba504638a",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D2:fs_writeout"
+          ],
+          "relpath": "stats_compass_mcp/exports.py",
+          "site": "builtins.open",
+          "slot": "path",
+          "unit_id": "mcp:register_workflow_tools.run_preprocessing_workflow:092ba504638a",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 106,
+        "module": "stats_compass_mcp.tools.workflows",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 1,
+            "name": "dataframe_name"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 2,
+            "name": "save_as"
+          },
+          {
+            "annotation": "Optional[dict]",
+            "default": "None",
+            "index": 3,
+            "name": "config"
+          }
+        ],
+        "qualname": "register_workflow_tools.run_preprocessing_workflow",
+        "relpath": "stats_compass_mcp/tools/workflows.py",
+        "schema_hash": "092ba504638a",
+        "tool_name": "run_preprocessing_workflow",
+        "unit_id": "mcp:register_workflow_tools.run_preprocessing_workflow:092ba504638a"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": true,
+          "entry_lineno": 196,
+          "form": "direct",
+          "fs_mode": "wb",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "relpath": "stats_compass_mcp/exports.py",
+          "required_by": [
+            "P0"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "depth",
+            "recursion",
+            "unresolved"
+          ],
+          "site": "builtins.open",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "depth",
+                "recursion",
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "save_workflow_exports",
+            "save_plot_export"
+          ]
+        },
+        {
+          "destructive": true,
+          "entry_lineno": 196,
+          "form": "direct",
+          "fs_mode": "wb",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "relpath": "stats_compass_mcp/exports.py",
+          "required_by": [
+            "P0"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "depth",
+            "recursion",
+            "unresolved"
+          ],
+          "site": "builtins.open",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "depth",
+                "recursion",
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "save_workflow_exports",
+            "save_plot_export"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "with_images",
+              "node": 9,
+              "recognition": "V",
+              "subjects": [
+                "result_dict"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L197"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "with_images",
+              "node": 9,
+              "recognition": "V",
+              "subjects": [
+                "result_dict"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L197"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 8,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL",
+        "1:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D2:fs_writeout"
+          ],
+          "relpath": "stats_compass_mcp/exports.py",
+          "site": "builtins.open",
+          "slot": "path",
+          "unit_id": "mcp:register_workflow_tools.run_regression_workflow:dcf2aa0b52bc",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D2:fs_writeout"
+          ],
+          "relpath": "stats_compass_mcp/exports.py",
+          "site": "builtins.open",
+          "slot": "path",
+          "unit_id": "mcp:register_workflow_tools.run_regression_workflow:dcf2aa0b52bc",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 167,
+        "module": "stats_compass_mcp.tools.workflows",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "target_column"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 2,
+            "name": "dataframe_name"
+          },
+          {
+            "annotation": "Optional[List[str]]",
+            "default": "None",
+            "index": 3,
+            "name": "feature_columns"
+          },
+          {
+            "annotation": "Optional[dict]",
+            "default": "None",
+            "index": 4,
+            "name": "config"
+          }
+        ],
+        "qualname": "register_workflow_tools.run_regression_workflow",
+        "relpath": "stats_compass_mcp/tools/workflows.py",
+        "schema_hash": "dcf2aa0b52bc",
+        "tool_name": "run_regression_workflow",
+        "unit_id": "mcp:register_workflow_tools.run_regression_workflow:dcf2aa0b52bc"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": true,
+          "entry_lineno": 259,
+          "form": "direct",
+          "fs_mode": "wb",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "relpath": "stats_compass_mcp/exports.py",
+          "required_by": [
+            "P0"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "depth",
+            "recursion",
+            "unresolved"
+          ],
+          "site": "builtins.open",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "depth",
+                "recursion",
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "save_workflow_exports",
+            "save_plot_export"
+          ]
+        },
+        {
+          "destructive": true,
+          "entry_lineno": 259,
+          "form": "direct",
+          "fs_mode": "wb",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "relpath": "stats_compass_mcp/exports.py",
+          "required_by": [
+            "P0"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "depth",
+            "recursion",
+            "unresolved"
+          ],
+          "site": "builtins.open",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "depth",
+                "recursion",
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "save_workflow_exports",
+            "save_plot_export"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "with_images",
+              "node": 21,
+              "recognition": "V",
+              "subjects": [
+                "result_dict"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L260"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 20,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "with_images",
+              "node": 21,
+              "recognition": "V",
+              "subjects": [
+                "result_dict"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L260"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 20,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 20,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 20,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 20,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL",
+        "1:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D2:fs_writeout"
+          ],
+          "relpath": "stats_compass_mcp/exports.py",
+          "site": "builtins.open",
+          "slot": "path",
+          "unit_id": "mcp:register_workflow_tools.run_timeseries_workflow:b3ed4d5f74a0",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 186,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D2:fs_writeout"
+          ],
+          "relpath": "stats_compass_mcp/exports.py",
+          "site": "builtins.open",
+          "slot": "path",
+          "unit_id": "mcp:register_workflow_tools.run_timeseries_workflow:b3ed4d5f74a0",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 200,
+        "module": "stats_compass_mcp.tools.workflows",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "target_column"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 2,
+            "name": "dataframe_name"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 3,
+            "name": "date_column"
+          },
+          {
+            "annotation": "int",
+            "default": "30",
+            "index": 4,
+            "name": "forecast_periods"
+          },
+          {
+            "annotation": "bool",
+            "default": "False",
+            "index": 5,
+            "name": "check_stationarity"
+          },
+          {
+            "annotation": "bool",
+            "default": "False",
+            "index": 6,
+            "name": "auto_find_params"
+          }
+        ],
+        "qualname": "register_workflow_tools.run_timeseries_workflow",
+        "relpath": "stats_compass_mcp/tools/workflows.py",
+        "schema_hash": "b3ed4d5f74a0",
+        "tool_name": "run_timeseries_workflow",
+        "unit_id": "mcp:register_workflow_tools.run_timeseries_workflow:b3ed4d5f74a0"
+      },
+      "validator_shapes": []
+    }
+  ]
+}

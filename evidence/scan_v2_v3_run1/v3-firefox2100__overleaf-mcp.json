@@ -1,0 +1,6687 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {
+    "NODOM(no_gate)": 3
+  },
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 1.067,
+    "run_id": "v3_run1",
+    "src_root": "/home/user/auth_gap/corpus/v3-firefox2100__overleaf-mcp"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Refresh Authentication"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 18,
+        "module": "src.overleaf_mcp.tools.auth",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "refresh_authentication",
+        "relpath": "src/overleaf_mcp/tools/auth.py",
+        "schema_hash": "83c5a72d4710",
+        "tool_name": "refresh_authentication",
+        "unit_id": "mcp:refresh_authentication:83c5a72d4710"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [],
+        "unknown": true
+      },
+      "alias_facts": [
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/files.py:L38",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/files.py:L38",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/files.py:L38",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L108",
+          "transform": "str.lower"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L108",
+          "transform": "str.lower"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L108",
+          "transform": "str.lower"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L108",
+          "transform": "str.lower"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L108",
+          "transform": "str.lower"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L108",
+          "transform": "str.lower"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": true,
+          "entry_lineno": 92,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 79,
+          "relpath": "src/overleaf_mcp/services/credential.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "os.chmod",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "CitationComponent.check_citations",
+            "CredentialStoreService.set",
+            "CredentialStoreService._write",
+            "CredentialStoreService._save_file"
+          ]
+        },
+        {
+          "destructive": true,
+          "entry_lineno": 92,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 79,
+          "relpath": "src/overleaf_mcp/services/credential.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "os.chmod",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "CitationComponent.check_citations",
+            "CredentialStoreService.set",
+            "CredentialStoreService._write",
+            "CredentialStoreService._save_file"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 6,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL",
+        "1:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "unknown"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 79,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/overleaf_mcp/services/credential.py",
+          "site": "os.chmod",
+          "slot": "path",
+          "unit_id": "mcp:check_citations:01279c452816",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "unknown"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 79,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/overleaf_mcp/services/credential.py",
+          "site": "os.chmod",
+          "slot": "path",
+          "unit_id": "mcp:check_citations:01279c452816",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "unreadable",
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 79,
+        "module": "src.overleaf_mcp.tools.citation",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          }
+        ],
+        "qualname": "check_citations",
+        "relpath": "src/overleaf_mcp/tools/citation.py",
+        "schema_hash": "01279c452816",
+        "tool_name": "check_citations",
+        "unit_id": "mcp:check_citations:01279c452816"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [],
+        "unknown": true
+      },
+      "alias_facts": [
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L62",
+          "transform": "str.lower"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/files.py:L38",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/files.py:L38",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/files.py:L38",
+          "transform": "bytes.decode"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "unreadable",
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 48,
+        "module": "src.overleaf_mcp.tools.citation",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "key"
+          }
+        ],
+        "qualname": "find_citation",
+        "relpath": "src/overleaf_mcp/tools/citation.py",
+        "schema_hash": "3d5f75d20aa4",
+        "tool_name": "find_citation",
+        "unit_id": "mcp:find_citation:3d5f75d20aa4"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [],
+        "unknown": true
+      },
+      "alias_facts": [
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/files.py:L38",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/files.py:L38",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/files.py:L38",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L91",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L91",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L91",
+          "transform": "str.split"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L91",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L91",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L91",
+          "transform": "str.split"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.split"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id[\"project\"][\"rootFolder\"]",
+          "site": "src/overleaf_mcp/components/citation.py:L147",
+          "transform": "str.strip"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "unreadable",
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 63,
+        "module": "src.overleaf_mcp.tools.citation",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "key"
+          }
+        ],
+        "qualname": "find_citation_usage",
+        "relpath": "src/overleaf_mcp/tools/citation.py",
+        "schema_hash": "3d5f75d20aa4",
+        "tool_name": "find_citation_usage",
+        "unit_id": "mcp:find_citation_usage:3d5f75d20aa4"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [],
+        "unknown": true
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "unreadable",
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 17,
+        "module": "src.overleaf_mcp.tools.citation",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          }
+        ],
+        "qualname": "list_citation_files",
+        "relpath": "src/overleaf_mcp/tools/citation.py",
+        "schema_hash": "01279c452816",
+        "tool_name": "list_citation_files",
+        "unit_id": "mcp:list_citation_files:01279c452816"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [],
+        "unknown": true
+      },
+      "alias_facts": [
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/files.py:L38",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/files.py:L38",
+          "transform": "bytes.decode"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "unreadable",
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 32,
+        "module": "src.overleaf_mcp.tools.citation",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str | None",
+            "default": "None",
+            "index": 2,
+            "name": "path"
+          }
+        ],
+        "qualname": "list_citations",
+        "relpath": "src/overleaf_mcp/tools/citation.py",
+        "schema_hash": "99b563e5d98c",
+        "tool_name": "list_citations",
+        "unit_id": "mcp:list_citations:99b563e5d98c"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Compile Project"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 23,
+        "module": "src.overleaf_mcp.tools.compile",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "bool",
+            "default": "False",
+            "index": 2,
+            "name": "draft"
+          }
+        ],
+        "qualname": "compile_project",
+        "relpath": "src/overleaf_mcp/tools/compile.py",
+        "schema_hash": "8afbcef5a752",
+        "tool_name": "compile_project",
+        "unit_id": "mcp:compile_project:8afbcef5a752"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "build_id",
+          "site": "src/overleaf_mcp/services/overleaf/compile.py:L70",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/compile.py:L70",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "build_id",
+          "site": "src/overleaf_mcp/services/overleaf/compile_log.py:L28",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/compile_log.py:L28",
+          "transform": "str.strip"
+        },
+        {
+          "root": "build_id",
+          "site": "src/overleaf_mcp/services/overleaf/compile_log.py:L36",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/compile_log.py:L36",
+          "transform": "str.strip"
+        },
+        {
+          "root": "build_id",
+          "site": "src/overleaf_mcp/services/overleaf/compile_log.py:L44",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/compile_log.py:L44",
+          "transform": "str.strip"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "Get Compile Errors"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 69,
+        "module": "src.overleaf_mcp.tools.compile",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "build_id"
+          },
+          {
+            "annotation": "str | None",
+            "default": "None",
+            "index": 3,
+            "name": "clsi_server_id"
+          }
+        ],
+        "qualname": "get_compile_errors",
+        "relpath": "src/overleaf_mcp/tools/compile.py",
+        "schema_hash": "ee6e969b585b",
+        "tool_name": "get_compile_errors",
+        "unit_id": "mcp:get_compile_errors:ee6e969b585b"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "build_id",
+          "site": "src/overleaf_mcp/services/overleaf/compile.py:L70",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/compile.py:L70",
+          "transform": "bytes.decode"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "Get Compile Log"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 46,
+        "module": "src.overleaf_mcp.tools.compile",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "build_id"
+          },
+          {
+            "annotation": "str | None",
+            "default": "None",
+            "index": 3,
+            "name": "clsi_server_id"
+          }
+        ],
+        "qualname": "get_compile_log",
+        "relpath": "src/overleaf_mcp/tools/compile.py",
+        "schema_hash": "ee6e969b585b",
+        "tool_name": "get_compile_log",
+        "unit_id": "mcp:get_compile_log:ee6e969b585b"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "destination_path",
+          "site": "src/overleaf_mcp/tools/compile.py:L123",
+          "transform": "Path()"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Get Output File"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 100,
+        "module": "src.overleaf_mcp.tools.compile",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "build_id"
+          },
+          {
+            "annotation": "str",
+            "index": 3,
+            "name": "destination_path"
+          },
+          {
+            "annotation": "str | None",
+            "default": "None",
+            "index": 4,
+            "name": "clsi_server_id"
+          }
+        ],
+        "qualname": "get_output_file",
+        "relpath": "src/overleaf_mcp/tools/compile.py",
+        "schema_hash": "c867dac796ca",
+        "tool_name": "get_output_file",
+        "unit_id": "mcp:get_output_file:c867dac796ca"
+      },
+      "validator_shapes": [
+        "ctor_path"
+      ]
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "Word Count"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 138,
+        "module": "src.overleaf_mcp.tools.compile",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str | None",
+            "default": "None",
+            "index": 2,
+            "name": "path"
+          }
+        ],
+        "qualname": "word_count",
+        "relpath": "src/overleaf_mcp/tools/compile.py",
+        "schema_hash": "99b563e5d98c",
+        "tool_name": "word_count",
+        "unit_id": "mcp:word_count:99b563e5d98c"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "Get Project Config"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 21,
+        "module": "src.overleaf_mcp.tools.config",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          }
+        ],
+        "qualname": "get_project_config",
+        "relpath": "src/overleaf_mcp/tools/config.py",
+        "schema_hash": "01279c452816",
+        "tool_name": "get_project_config",
+        "unit_id": "mcp:get_project_config:01279c452816"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Set Compile Image"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 148,
+        "module": "src.overleaf_mcp.tools.config",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "image_name"
+          }
+        ],
+        "qualname": "set_compile_image",
+        "relpath": "src/overleaf_mcp/tools/config.py",
+        "schema_hash": "1794aaab0c28",
+        "tool_name": "set_compile_image",
+        "unit_id": "mcp:set_compile_image:1794aaab0c28"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Set Compiler"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 48,
+        "module": "src.overleaf_mcp.tools.config",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "Literal['pdflatex', 'xelatex', 'lualatex', 'latex']",
+            "index": 2,
+            "name": "compiler"
+          }
+        ],
+        "qualname": "set_compiler",
+        "relpath": "src/overleaf_mcp/tools/config.py",
+        "schema_hash": "9c468731ac20",
+        "tool_name": "set_compiler",
+        "unit_id": "mcp:set_compiler:9c468731ac20"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Set Main Bibliography Document"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 101,
+        "module": "src.overleaf_mcp.tools.config",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          }
+        ],
+        "qualname": "set_main_bibliography_document",
+        "relpath": "src/overleaf_mcp/tools/config.py",
+        "schema_hash": "d6f0d9f642f4",
+        "tool_name": "set_main_bibliography_document",
+        "unit_id": "mcp:set_main_bibliography_document:d6f0d9f642f4"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Set Root Document"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 75,
+        "module": "src.overleaf_mcp.tools.config",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          }
+        ],
+        "qualname": "set_root_document",
+        "relpath": "src/overleaf_mcp/tools/config.py",
+        "schema_hash": "d6f0d9f642f4",
+        "tool_name": "set_root_document",
+        "unit_id": "mcp:set_root_document:d6f0d9f642f4"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Set Spell Check Language"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 124,
+        "module": "src.overleaf_mcp.tools.config",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "language"
+          }
+        ],
+        "qualname": "set_spell_check_language",
+        "relpath": "src/overleaf_mcp/tools/config.py",
+        "schema_hash": "20adcc7a52b3",
+        "tool_name": "set_spell_check_language",
+        "unit_id": "mcp:set_spell_check_language:20adcc7a52b3"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/editing.py:L132",
+          "transform": "str.strip"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/components/editing.py:L132",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/editing.py:L132",
+          "transform": "str.strip"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/editing.py:L132",
+          "transform": "str.strip"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/components/editing.py:L132",
+          "transform": "str.strip"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/editing.py:L132",
+          "transform": "str.strip"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "Get Outline"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 77,
+        "module": "src.overleaf_mcp.tools.editing",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          }
+        ],
+        "qualname": "get_outline",
+        "relpath": "src/overleaf_mcp/tools/editing.py",
+        "schema_hash": "d6f0d9f642f4",
+        "tool_name": "get_outline",
+        "unit_id": "mcp:get_outline:d6f0d9f642f4"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/editing.py:L110",
+          "transform": "str.split"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/components/editing.py:L110",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/editing.py:L110",
+          "transform": "str.split"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "Read Lines"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 102,
+        "module": "src.overleaf_mcp.tools.editing",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "int",
+            "index": 3,
+            "name": "start_line"
+          },
+          {
+            "annotation": "int",
+            "index": 4,
+            "name": "end_line"
+          }
+        ],
+        "qualname": "read_lines",
+        "relpath": "src/overleaf_mcp/tools/editing.py",
+        "schema_hash": "3d06e47e0c11",
+        "tool_name": "read_lines",
+        "unit_id": "mcp:read_lines:3d06e47e0c11"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/editing.py:L118",
+          "transform": "str.split"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/components/editing.py:L118",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/editing.py:L118",
+          "transform": "str.split"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "Search File"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 46,
+        "module": "src.overleaf_mcp.tools.editing",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "str",
+            "index": 3,
+            "name": "query"
+          },
+          {
+            "annotation": "bool",
+            "default": "False",
+            "index": 4,
+            "name": "regex"
+          }
+        ],
+        "qualname": "search_file",
+        "relpath": "src/overleaf_mcp/tools/editing.py",
+        "schema_hash": "51ddc9908516",
+        "tool_name": "search_file",
+        "unit_id": "mcp:search_file:51ddc9908516"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/files.py:L38",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/files.py:L38",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/editing.py:L118",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/editing.py:L118",
+          "transform": "str.split"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/components/editing.py:L118",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/components/editing.py:L118",
+          "transform": "str.split"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "Search Project"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 19,
+        "module": "src.overleaf_mcp.tools.editing",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "query"
+          },
+          {
+            "annotation": "bool",
+            "default": "False",
+            "index": 3,
+            "name": "regex"
+          }
+        ],
+        "qualname": "search_project",
+        "relpath": "src/overleaf_mcp/tools/editing.py",
+        "schema_hash": "2df44446f727",
+        "tool_name": "search_project",
+        "unit_id": "mcp:search_project:2df44446f727"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "content",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Create File"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 84,
+        "module": "src.overleaf_mcp.tools.file",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "str",
+            "default": "''",
+            "index": 3,
+            "name": "content"
+          }
+        ],
+        "qualname": "create_file",
+        "relpath": "src/overleaf_mcp/tools/file.py",
+        "schema_hash": "69489487613d",
+        "tool_name": "create_file",
+        "unit_id": "mcp:create_file:69489487613d"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Create Linked File"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 158,
+        "module": "src.overleaf_mcp.tools.file",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "str",
+            "index": 3,
+            "name": "url"
+          }
+        ],
+        "qualname": "create_linked_file",
+        "relpath": "src/overleaf_mcp/tools/file.py",
+        "schema_hash": "6113ef28a9f4",
+        "tool_name": "create_linked_file",
+        "unit_id": "mcp:create_linked_file:6113ef28a9f4"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": true,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Delete File"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 273,
+        "module": "src.overleaf_mcp.tools.file",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          }
+        ],
+        "qualname": "delete_file",
+        "relpath": "src/overleaf_mcp/tools/file.py",
+        "schema_hash": "d6f0d9f642f4",
+        "tool_name": "delete_file",
+        "unit_id": "mcp:delete_file:d6f0d9f642f4"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "List Files"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 19,
+        "module": "src.overleaf_mcp.tools.file",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "default": "''",
+            "index": 2,
+            "name": "path"
+          }
+        ],
+        "qualname": "list_files",
+        "relpath": "src/overleaf_mcp/tools/file.py",
+        "schema_hash": "4db436b7fb68",
+        "tool_name": "list_files",
+        "unit_id": "mcp:list_files:4db436b7fb68"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        },
+        {
+          "root": "destination_folder",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "destination_folder",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Move File"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 133,
+        "module": "src.overleaf_mcp.tools.file",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "str",
+            "index": 3,
+            "name": "destination_folder"
+          }
+        ],
+        "qualname": "move_file",
+        "relpath": "src/overleaf_mcp/tools/file.py",
+        "schema_hash": "6018eed6b7a1",
+        "tool_name": "move_file",
+        "unit_id": "mcp:move_file:6018eed6b7a1"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "content",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": true,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Overwrite File"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 212,
+        "module": "src.overleaf_mcp.tools.file",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "str",
+            "index": 3,
+            "name": "content"
+          }
+        ],
+        "qualname": "overwrite_file",
+        "relpath": "src/overleaf_mcp/tools/file.py",
+        "schema_hash": "1bd987588ba8",
+        "tool_name": "overwrite_file",
+        "unit_id": "mcp:overwrite_file:1bd987588ba8"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "find",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "replace",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Patch File"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 242,
+        "module": "src.overleaf_mcp.tools.file",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "str",
+            "index": 3,
+            "name": "find"
+          },
+          {
+            "annotation": "str",
+            "index": 4,
+            "name": "replace"
+          }
+        ],
+        "qualname": "patch_file",
+        "relpath": "src/overleaf_mcp/tools/file.py",
+        "schema_hash": "596562c79db1",
+        "tool_name": "patch_file",
+        "unit_id": "mcp:patch_file:596562c79db1"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/tools/file.py:L70",
+          "transform": "str.split"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/tools/file.py:L70",
+          "transform": "str.split"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/tools/file.py:L70",
+          "transform": "str.split"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "Read File"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 41,
+        "module": "src.overleaf_mcp.tools.file",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "int",
+            "default": "1",
+            "index": 3,
+            "name": "offset"
+          },
+          {
+            "annotation": "int | None",
+            "default": "None",
+            "index": 4,
+            "name": "limit"
+          }
+        ],
+        "qualname": "read_file",
+        "relpath": "src/overleaf_mcp/tools/file.py",
+        "schema_hash": "1c92b4c64b23",
+        "tool_name": "read_file",
+        "unit_id": "mcp:read_file:1c92b4c64b23"
+      },
+      "validator_shapes": [
+        "split"
+      ]
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Refresh Linked File"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 184,
+        "module": "src.overleaf_mcp.tools.file",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          }
+        ],
+        "qualname": "refresh_linked_file",
+        "relpath": "src/overleaf_mcp/tools/file.py",
+        "schema_hash": "d6f0d9f642f4",
+        "tool_name": "refresh_linked_file",
+        "unit_id": "mcp:refresh_linked_file:d6f0d9f642f4"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Rename File"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 109,
+        "module": "src.overleaf_mcp.tools.file",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "str",
+            "index": 3,
+            "name": "name"
+          }
+        ],
+        "qualname": "rename_file",
+        "relpath": "src/overleaf_mcp/tools/file.py",
+        "schema_hash": "31c6caa11d7d",
+        "tool_name": "rename_file",
+        "unit_id": "mcp:rename_file:31c6caa11d7d"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "Get Sync State"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 19,
+        "module": "src.overleaf_mcp.tools.github_sync",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          }
+        ],
+        "qualname": "get_sync_state",
+        "relpath": "src/overleaf_mcp/tools/github_sync.py",
+        "schema_hash": "01279c452816",
+        "tool_name": "get_sync_state",
+        "unit_id": "mcp:get_sync_state:01279c452816"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Trigger Sync"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 44,
+        "module": "src.overleaf_mcp.tools.github_sync",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "default": "'Updates from Overleaf'",
+            "index": 2,
+            "name": "message"
+          }
+        ],
+        "qualname": "trigger_sync",
+        "relpath": "src/overleaf_mcp/tools/github_sync.py",
+        "schema_hash": "e142d60d11e9",
+        "tool_name": "trigger_sync",
+        "unit_id": "mcp:trigger_sync:e142d60d11e9"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [],
+        "unknown": true
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "unreadable",
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 94,
+        "module": "src.overleaf_mcp.tools.history",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "comment"
+          },
+          {
+            "annotation": "int",
+            "index": 3,
+            "name": "version"
+          }
+        ],
+        "qualname": "create_label",
+        "relpath": "src/overleaf_mcp/tools/history.py",
+        "schema_hash": "dd57d47e57c2",
+        "tool_name": "create_label",
+        "unit_id": "mcp:create_label:dd57d47e57c2"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [],
+        "unknown": true
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "unreadable",
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 43,
+        "module": "src.overleaf_mcp.tools.history",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "int",
+            "index": 3,
+            "name": "from_version"
+          },
+          {
+            "annotation": "int",
+            "index": 4,
+            "name": "to_version"
+          }
+        ],
+        "qualname": "get_diff",
+        "relpath": "src/overleaf_mcp/tools/history.py",
+        "schema_hash": "d2284f11bd4e",
+        "tool_name": "get_diff",
+        "unit_id": "mcp:get_diff:d2284f11bd4e"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [],
+        "unknown": true
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "unreadable",
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 22,
+        "module": "src.overleaf_mcp.tools.history",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "int | None",
+            "default": "None",
+            "index": 2,
+            "name": "before"
+          },
+          {
+            "annotation": "int | None",
+            "default": "None",
+            "index": 3,
+            "name": "min_count"
+          }
+        ],
+        "qualname": "list_history",
+        "relpath": "src/overleaf_mcp/tools/history.py",
+        "schema_hash": "58172b66997b",
+        "tool_name": "list_history",
+        "unit_id": "mcp:list_history:58172b66997b"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [],
+        "unknown": true
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "unreadable",
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 80,
+        "module": "src.overleaf_mcp.tools.history",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          }
+        ],
+        "qualname": "list_labels",
+        "relpath": "src/overleaf_mcp/tools/history.py",
+        "schema_hash": "01279c452816",
+        "tool_name": "list_labels",
+        "unit_id": "mcp:list_labels:01279c452816"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": [],
+        "unknown": true
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "unreadable",
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 61,
+        "module": "src.overleaf_mcp.tools.history",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "int",
+            "index": 3,
+            "name": "version"
+          }
+        ],
+        "qualname": "restore_file",
+        "relpath": "src/overleaf_mcp/tools/history.py",
+        "schema_hash": "a5b1c2406bb3",
+        "tool_name": "restore_file",
+        "unit_id": "mcp:restore_file:a5b1c2406bb3"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "destination_path",
+          "site": "src/overleaf_mcp/tools/pandoc.py:L44",
+          "transform": "Path()"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Export Project"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 24,
+        "module": "src.overleaf_mcp.tools.pandoc",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "Literal['docx', 'markdown', 'html']",
+            "index": 2,
+            "name": "format"
+          },
+          {
+            "annotation": "str",
+            "index": 3,
+            "name": "destination_path"
+          }
+        ],
+        "qualname": "export_project",
+        "relpath": "src/overleaf_mcp/tools/pandoc.py",
+        "schema_hash": "eb38d50b05cd",
+        "tool_name": "export_project",
+        "unit_id": "mcp:export_project:eb38d50b05cd"
+      },
+      "validator_shapes": [
+        "ctor_path"
+      ]
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "filename",
+          "site": "src/overleaf_mcp/components/pandoc.py:L61",
+          "transform": "str.split"
+        },
+        {
+          "root": "filename",
+          "site": "src/overleaf_mcp/components/pandoc.py:L61",
+          "transform": "str.lower"
+        },
+        {
+          "root": "content_base64",
+          "site": "src/overleaf_mcp/components/pandoc.py:L65",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "destination_folder",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "filename",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "destination_folder",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        },
+        {
+          "root": "filename",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        },
+        {
+          "root": "destination_folder",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "filename",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "destination_folder",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        },
+        {
+          "root": "filename",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        },
+        {
+          "root": "destination_folder",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "filename",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "destination_folder",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        },
+        {
+          "root": "filename",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        },
+        {
+          "root": "destination_folder",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "filename",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "destination_folder",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        },
+        {
+          "root": "filename",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        },
+        {
+          "root": "destination_folder",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.strip"
+        },
+        {
+          "root": "destination_folder",
+          "site": "src/overleaf_mcp/models/project_tree.py:L63",
+          "transform": "str.split"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {
+        "_PANDOC_EXTENSIONS": null
+      },
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": true,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Import File"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 60,
+        "module": "src.overleaf_mcp.tools.pandoc",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "destination_folder"
+          },
+          {
+            "annotation": "str",
+            "index": 3,
+            "name": "filename"
+          },
+          {
+            "annotation": "str",
+            "index": 4,
+            "name": "content_base64"
+          }
+        ],
+        "qualname": "import_file",
+        "relpath": "src/overleaf_mcp/tools/pandoc.py",
+        "schema_hash": "7861ccd6a4ab",
+        "tool_name": "import_file",
+        "unit_id": "mcp:import_file:7861ccd6a4ab"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Clone Project"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 115,
+        "module": "src.overleaf_mcp.tools.project",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "name"
+          }
+        ],
+        "qualname": "clone_project",
+        "relpath": "src/overleaf_mcp/tools/project.py",
+        "schema_hash": "c5783ac9b6c5",
+        "tool_name": "clone_project",
+        "unit_id": "mcp:clone_project:c5783ac9b6c5"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Create Project"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 64,
+        "module": "src.overleaf_mcp.tools.project",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "name"
+          },
+          {
+            "annotation": "Literal['none', 'example']",
+            "default": "'none'",
+            "index": 2,
+            "name": "template"
+          }
+        ],
+        "qualname": "create_project",
+        "relpath": "src/overleaf_mcp/tools/project.py",
+        "schema_hash": "cdc1d96444e7",
+        "tool_name": "create_project",
+        "unit_id": "mcp:create_project:cdc1d96444e7"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/credential.py:L78",
+          "transform": "json.dumps"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": true,
+          "entry_lineno": 103,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 79,
+          "relpath": "src/overleaf_mcp/services/credential.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "receiver",
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "os.chmod",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "receiver",
+                "unresolved"
+              ],
+              "roots": [
+                "ctx"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "OverleafProjectService.delete_project",
+            "CredentialStoreService.delete",
+            "CredentialStoreService._delete",
+            "CredentialStoreService._save_file"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 6,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 79,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/overleaf_mcp/services/credential.py",
+          "site": "os.chmod",
+          "slot": "path",
+          "unit_id": "mcp:delete_project:01279c452816",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": true,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Delete Project"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 91,
+        "module": "src.overleaf_mcp.tools.project",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          }
+        ],
+        "qualname": "delete_project",
+        "relpath": "src/overleaf_mcp/tools/project.py",
+        "schema_hash": "01279c452816",
+        "tool_name": "delete_project",
+        "unit_id": "mcp:delete_project:01279c452816"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "destination_path",
+          "site": "src/overleaf_mcp/tools/project.py:L153",
+          "transform": "Path()"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Download Project Zip"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 139,
+        "module": "src.overleaf_mcp.tools.project",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "destination_path"
+          }
+        ],
+        "qualname": "download_project_zip",
+        "relpath": "src/overleaf_mcp/tools/project.py",
+        "schema_hash": "9b703df6441a",
+        "tool_name": "download_project_zip",
+        "unit_id": "mcp:download_project_zip:9b703df6441a"
+      },
+      "validator_shapes": [
+        "ctor_path"
+      ]
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "Get Project"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 42,
+        "module": "src.overleaf_mcp.tools.project",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          }
+        ],
+        "qualname": "get_project",
+        "relpath": "src/overleaf_mcp/tools/project.py",
+        "schema_hash": "01279c452816",
+        "tool_name": "get_project",
+        "unit_id": "mcp:get_project:01279c452816"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "List Collaborators"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 168,
+        "module": "src.overleaf_mcp.tools.project",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          }
+        ],
+        "qualname": "list_collaborators",
+        "relpath": "src/overleaf_mcp/tools/project.py",
+        "schema_hash": "01279c452816",
+        "tool_name": "list_collaborators",
+        "unit_id": "mcp:list_collaborators:01279c452816"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "List Projects"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 24,
+        "module": "src.overleaf_mcp.tools.project",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "list_projects",
+        "relpath": "src/overleaf_mcp/tools/project.py",
+        "schema_hash": "83c5a72d4710",
+        "tool_name": "list_projects",
+        "unit_id": "mcp:list_projects:83c5a72d4710"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Accept Tracked Changes"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 129,
+        "module": "src.overleaf_mcp.tools.review",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "list[str]",
+            "index": 3,
+            "name": "change_ids"
+          }
+        ],
+        "qualname": "accept_tracked_changes",
+        "relpath": "src/overleaf_mcp/tools/review.py",
+        "schema_hash": "4fe4307e0a5c",
+        "tool_name": "accept_tracked_changes",
+        "unit_id": "mcp:accept_tracked_changes:4fe4307e0a5c"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "find",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Create Comment"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 200,
+        "module": "src.overleaf_mcp.tools.review",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "str",
+            "index": 3,
+            "name": "find"
+          },
+          {
+            "annotation": "str",
+            "index": 4,
+            "name": "content"
+          }
+        ],
+        "qualname": "create_comment",
+        "relpath": "src/overleaf_mcp/tools/review.py",
+        "schema_hash": "a123f0a45c9c",
+        "tool_name": "create_comment",
+        "unit_id": "mcp:create_comment:a123f0a45c9c"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": true,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Delete Comment"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 298,
+        "module": "src.overleaf_mcp.tools.review",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "str",
+            "index": 3,
+            "name": "thread_id"
+          }
+        ],
+        "qualname": "delete_comment",
+        "relpath": "src/overleaf_mcp/tools/review.py",
+        "schema_hash": "e592b33172bb",
+        "tool_name": "delete_comment",
+        "unit_id": "mcp:delete_comment:e592b33172bb"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "List Comments"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 176,
+        "module": "src.overleaf_mcp.tools.review",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str | None",
+            "default": "None",
+            "index": 2,
+            "name": "path"
+          }
+        ],
+        "qualname": "list_comments",
+        "relpath": "src/overleaf_mcp/tools/review.py",
+        "schema_hash": "99b563e5d98c",
+        "tool_name": "list_comments",
+        "unit_id": "mcp:list_comments:99b563e5d98c"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": true,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "List Tracked Changes"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 105,
+        "module": "src.overleaf_mcp.tools.review",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str | None",
+            "default": "None",
+            "index": 2,
+            "name": "path"
+          }
+        ],
+        "qualname": "list_tracked_changes",
+        "relpath": "src/overleaf_mcp/tools/review.py",
+        "schema_hash": "99b563e5d98c",
+        "tool_name": "list_tracked_changes",
+        "unit_id": "mcp:list_tracked_changes:99b563e5d98c"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "content",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Overwrite File Tracked"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 47,
+        "module": "src.overleaf_mcp.tools.review",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "str",
+            "index": 3,
+            "name": "content"
+          }
+        ],
+        "qualname": "overwrite_file_tracked",
+        "relpath": "src/overleaf_mcp/tools/review.py",
+        "schema_hash": "1bd987588ba8",
+        "tool_name": "overwrite_file_tracked",
+        "unit_id": "mcp:overwrite_file_tracked:1bd987588ba8"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "find",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "replace",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Patch File Tracked"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 76,
+        "module": "src.overleaf_mcp.tools.review",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "str",
+            "index": 3,
+            "name": "find"
+          },
+          {
+            "annotation": "str",
+            "index": 4,
+            "name": "replace"
+          }
+        ],
+        "qualname": "patch_file_tracked",
+        "relpath": "src/overleaf_mcp/tools/review.py",
+        "schema_hash": "596562c79db1",
+        "tool_name": "patch_file_tracked",
+        "unit_id": "mcp:patch_file_tracked:596562c79db1"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L270",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "ctx",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "path",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "project_id",
+          "site": "src/overleaf_mcp/services/overleaf/socket_io.py:L250",
+          "transform": "json.dumps"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": true,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "receiver",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Reject Tracked Changes"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 153,
+        "module": "src.overleaf_mcp.tools.review",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "list[str]",
+            "index": 3,
+            "name": "change_ids"
+          }
+        ],
+        "qualname": "reject_tracked_changes",
+        "relpath": "src/overleaf_mcp/tools/review.py",
+        "schema_hash": "4fe4307e0a5c",
+        "tool_name": "reject_tracked_changes",
+        "unit_id": "mcp:reject_tracked_changes:4fe4307e0a5c"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Reopen Comment"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 274,
+        "module": "src.overleaf_mcp.tools.review",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "str",
+            "index": 3,
+            "name": "thread_id"
+          }
+        ],
+        "qualname": "reopen_comment",
+        "relpath": "src/overleaf_mcp/tools/review.py",
+        "schema_hash": "e592b33172bb",
+        "tool_name": "reopen_comment",
+        "unit_id": "mcp:reopen_comment:e592b33172bb"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Reply Comment"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 226,
+        "module": "src.overleaf_mcp.tools.review",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "thread_id"
+          },
+          {
+            "annotation": "str",
+            "index": 3,
+            "name": "content"
+          }
+        ],
+        "qualname": "reply_comment",
+        "relpath": "src/overleaf_mcp/tools/review.py",
+        "schema_hash": "97549efa6e8d",
+        "tool_name": "reply_comment",
+        "unit_id": "mcp:reply_comment:97549efa6e8d"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Resolve Comment"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 250,
+        "module": "src.overleaf_mcp.tools.review",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "str",
+            "index": 2,
+            "name": "path"
+          },
+          {
+            "annotation": "str",
+            "index": 3,
+            "name": "thread_id"
+          }
+        ],
+        "qualname": "resolve_comment",
+        "relpath": "src/overleaf_mcp/tools/review.py",
+        "schema_hash": "e592b33172bb",
+        "tool_name": "resolve_comment",
+        "unit_id": "mcp:resolve_comment:e592b33172bb"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Set Track Changes"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 21,
+        "module": "src.overleaf_mcp.tools.review",
+        "params": [
+          {
+            "annotation": "Context",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "project_id"
+          },
+          {
+            "annotation": "bool",
+            "index": 2,
+            "name": "enabled"
+          }
+        ],
+        "qualname": "set_track_changes",
+        "relpath": "src/overleaf_mcp/tools/review.py",
+        "schema_hash": "693226bee43b",
+        "tool_name": "set_track_changes",
+        "unit_id": "mcp:set_track_changes:693226bee43b"
+      },
+      "validator_shapes": []
+    }
+  ]
+}

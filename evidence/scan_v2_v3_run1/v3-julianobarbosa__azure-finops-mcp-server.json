@@ -1,0 +1,5431 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [
+    {
+      "candidates": [],
+      "form": "subscript",
+      "lineno": 341,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "azure_finops_mcp_server/monitoring.py",
+      "resolution": "opaque",
+      "selector": "'func'",
+      "selector_is_model": false
+    }
+  ],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {
+    "NODOM(non_binding_gate)": 24
+  },
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.868,
+    "run_id": "v3_run1",
+    "src_root": "/home/user/auth_gap/corpus/v3-julianobarbosa__azure-finops-mcp-server"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "tags",
+          "site": "azure_finops_mcp_server/helpers/cost_filters.py:L28",
+          "transform": "str.split"
+        },
+        {
+          "root": "tags",
+          "site": "azure_finops_mcp_server/helpers/cost_filters.py:L28",
+          "transform": "str.split"
+        },
+        {
+          "root": "dimensions",
+          "site": "azure_finops_mcp_server/helpers/cost_filters.py:L38",
+          "transform": "str.split"
+        },
+        {
+          "root": "dimensions",
+          "site": "azure_finops_mcp_server/helpers/cost_filters.py:L38",
+          "transform": "str.split"
+        },
+        {
+          "root": "tags",
+          "site": "azure_finops_mcp_server/helpers/cost_filters.py:L28",
+          "transform": "str.split"
+        },
+        {
+          "root": "tags",
+          "site": "azure_finops_mcp_server/helpers/cost_filters.py:L28",
+          "transform": "str.split"
+        },
+        {
+          "root": "dimensions",
+          "site": "azure_finops_mcp_server/helpers/cost_filters.py:L38",
+          "transform": "str.split"
+        },
+        {
+          "root": "dimensions",
+          "site": "azure_finops_mcp_server/helpers/cost_filters.py:L38",
+          "transform": "str.split"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {
+        "ApiErrors": null,
+        "logger": null
+      },
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 63,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "default"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "site": "subprocess.run",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "az",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "az",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "account",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "list",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "--output",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "json",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "profiles_to_use",
+            "get_azure_subscriptions"
+          ]
+        },
+        {
+          "entry_lineno": 67,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "default"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "site": "subprocess.run",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "az",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "az",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "account",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "list",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "--output",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "json",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "profiles_to_use",
+            "get_azure_subscriptions"
+          ]
+        },
+        {
+          "entry_lineno": 67,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "default"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 91,
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "site": "subprocess.run",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "az",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "az",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "account",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "show",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "--output",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "json",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "profiles_to_use"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:argv0": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 40,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 43,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L63"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:argv[*]": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 40,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 43,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L63"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:argv0": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 40,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 43,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L63"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:argv[*]": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 40,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 43,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L63"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2:argv0": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 40,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 43,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L63"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2:argv[*]": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 40,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 43,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L63"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [
+          {
+            "atom": {
+              "default": null,
+              "default_closed": null,
+              "name": "ApiErrors",
+              "source": "module_const"
+            },
+            "form": "value",
+            "grade": "MODEL",
+            "name": "profiles_to_use",
+            "node": 4,
+            "recognition": "V",
+            "subjects": [
+              "<no-checked-arg>"
+            ],
+            "value_grade": "allowlist"
+          },
+          {
+            "atom": {
+              "default": null,
+              "default_closed": null,
+              "name": "ApiErrors",
+              "source": "module_const"
+            },
+            "form": "value",
+            "grade": "MODEL",
+            "name": "profiles_to_use",
+            "node": 7,
+            "recognition": "V",
+            "subjects": [
+              "profiles"
+            ],
+            "value_grade": "allowlist"
+          },
+          {
+            "atom": {
+              "default": null,
+              "default_closed": null,
+              "name": "logger",
+              "source": "module_const"
+            },
+            "form": "value",
+            "grade": "MODEL",
+            "name": "cost_filters",
+            "node": 15,
+            "recognition": "V",
+            "subjects": [
+              "dimensions",
+              "tags"
+            ],
+            "value_grade": "allowlist"
+          },
+          {
+            "atom": {
+              "default": null,
+              "default_closed": null,
+              "name": "logger",
+              "source": "module_const"
+            },
+            "form": "value",
+            "grade": "MODEL",
+            "name": "cost_filters",
+            "node": 40,
+            "recognition": "V",
+            "subjects": [
+              "dimensions",
+              "tags"
+            ],
+            "value_grade": "allowlist"
+          },
+          {
+            "atom": {
+              "default": null,
+              "default_closed": null,
+              "name": "logger",
+              "source": "module_const"
+            },
+            "form": "value",
+            "grade": "MODEL",
+            "name": "cost_filters",
+            "node": 43,
+            "recognition": "V",
+            "subjects": [
+              "dimensions",
+              "tags"
+            ],
+            "value_grade": "allowlist"
+          }
+        ],
+        "gate": {
+          "reason": "non_binding_gate",
+          "verdict": "NODOM",
+          "witness": "L63"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 40,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 43,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L63"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 40,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 43,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L63"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 40,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "cost_filters",
+              "node": 43,
+              "recognition": "V",
+              "subjects": [
+                "dimensions",
+                "tags"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L63"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "2:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "2:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL",
+        "2": "MODEL"
+      },
+      "req_val": {
+        "0:argv0": "MODEL",
+        "0:argv[*]": "MODEL",
+        "1:argv0": "MODEL",
+        "1:argv[*]": "MODEL",
+        "2:argv0": "MODEL",
+        "2:argv[*]": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv0",
+          "unit_id": "mcp:get_cost:59cf950f4f12",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv[*]",
+          "unit_id": "mcp:get_cost:59cf950f4f12",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv0",
+          "unit_id": "mcp:get_cost:59cf950f4f12",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv[*]",
+          "unit_id": "mcp:get_cost:59cf950f4f12",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 91,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv0",
+          "unit_id": "mcp:get_cost:59cf950f4f12",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 91,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv[*]",
+          "unit_id": "mcp:get_cost:59cf950f4f12",
+          "verdicts": []
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 29,
+        "module": "azure_finops_mcp_server.main",
+        "params": [
+          {
+            "annotation": "Optional[List[str]]",
+            "default": "None",
+            "index": 0,
+            "name": "profiles"
+          },
+          {
+            "annotation": "bool",
+            "default": "False",
+            "index": 1,
+            "name": "all_profiles"
+          },
+          {
+            "annotation": "Optional[int]",
+            "default": "None",
+            "index": 2,
+            "name": "time_range_days"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 3,
+            "name": "start_date_iso"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 4,
+            "name": "end_date_iso"
+          },
+          {
+            "annotation": "Optional[List[str]]",
+            "default": "None",
+            "index": 5,
+            "name": "tags"
+          },
+          {
+            "annotation": "Optional[List[str]]",
+            "default": "None",
+            "index": 6,
+            "name": "dimensions"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "'ServiceName'",
+            "index": 7,
+            "name": "group_by"
+          }
+        ],
+        "qualname": "get_cost",
+        "relpath": "azure_finops_mcp_server/main.py",
+        "schema_hash": "59cf950f4f12",
+        "tool_name": "get_cost",
+        "unit_id": "mcp:get_cost:59cf950f4f12"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {
+        "ApiErrors": null
+      },
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 205,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "default"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "site": "subprocess.run",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "az",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "az",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "account",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "list",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "--output",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "json",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "profiles_to_use",
+            "get_azure_subscriptions"
+          ]
+        },
+        {
+          "entry_lineno": 209,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "default"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "site": "subprocess.run",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "az",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "az",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "account",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "list",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "--output",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "json",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "profiles_to_use",
+            "get_azure_subscriptions"
+          ]
+        },
+        {
+          "entry_lineno": 209,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "default"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 91,
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "site": "subprocess.run",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "az",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "az",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "account",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "show",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "--output",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "json",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "profiles_to_use"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:argv0": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 5,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 8,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_stopped_vms",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "regions",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unattached_disks",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unassociated_public_ips",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_stopped_vms",
+              "node": 16,
+              "recognition": "V",
+              "subjects": [
+                "regions",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unattached_disks",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unassociated_public_ips",
+              "node": 18,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L205"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 5,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:argv[*]": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 5,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 8,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_stopped_vms",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "regions",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unattached_disks",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unassociated_public_ips",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_stopped_vms",
+              "node": 16,
+              "recognition": "V",
+              "subjects": [
+                "regions",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unattached_disks",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unassociated_public_ips",
+              "node": 18,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L205"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 5,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:argv0": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 5,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 8,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_stopped_vms",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "regions",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unattached_disks",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unassociated_public_ips",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_stopped_vms",
+              "node": 16,
+              "recognition": "V",
+              "subjects": [
+                "regions",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unattached_disks",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unassociated_public_ips",
+              "node": 18,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L205"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:argv[*]": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 5,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 8,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_stopped_vms",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "regions",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unattached_disks",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unassociated_public_ips",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_stopped_vms",
+              "node": 16,
+              "recognition": "V",
+              "subjects": [
+                "regions",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unattached_disks",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unassociated_public_ips",
+              "node": 18,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L205"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2:argv0": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 5,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 8,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_stopped_vms",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "regions",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unattached_disks",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unassociated_public_ips",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_stopped_vms",
+              "node": 16,
+              "recognition": "V",
+              "subjects": [
+                "regions",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unattached_disks",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unassociated_public_ips",
+              "node": 18,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L205"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2:argv[*]": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 5,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 8,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_stopped_vms",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "regions",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unattached_disks",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unassociated_public_ips",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_stopped_vms",
+              "node": 16,
+              "recognition": "V",
+              "subjects": [
+                "regions",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unattached_disks",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "get_unassociated_public_ips",
+              "node": 18,
+              "recognition": "V",
+              "subjects": [
+                "credential",
+                "subscription_id"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L205"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 5,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 5,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "2:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "2:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL",
+        "2": "MODEL"
+      },
+      "req_val": {
+        "0:argv0": "MODEL",
+        "0:argv[*]": "MODEL",
+        "1:argv0": "MODEL",
+        "1:argv[*]": "MODEL",
+        "2:argv0": "MODEL",
+        "2:argv[*]": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv0",
+          "unit_id": "mcp:run_finops_audit:ab56173a3c99",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv[*]",
+          "unit_id": "mcp:run_finops_audit:ab56173a3c99",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv0",
+          "unit_id": "mcp:run_finops_audit:ab56173a3c99",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv[*]",
+          "unit_id": "mcp:run_finops_audit:ab56173a3c99",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 91,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv0",
+          "unit_id": "mcp:run_finops_audit:ab56173a3c99",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 91,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv[*]",
+          "unit_id": "mcp:run_finops_audit:ab56173a3c99",
+          "verdicts": []
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 181,
+        "module": "azure_finops_mcp_server.main",
+        "params": [
+          {
+            "annotation": "Optional[List[str]]",
+            "default": "None",
+            "index": 0,
+            "name": "regions"
+          },
+          {
+            "annotation": "Optional[List[str]]",
+            "default": "None",
+            "index": 1,
+            "name": "profiles"
+          },
+          {
+            "annotation": "bool",
+            "default": "False",
+            "index": 2,
+            "name": "all_profiles"
+          }
+        ],
+        "qualname": "run_finops_audit",
+        "relpath": "azure_finops_mcp_server/main.py",
+        "schema_hash": "ab56173a3c99",
+        "tool_name": "run_finops_audit",
+        "unit_id": "mcp:run_finops_audit:ab56173a3c99"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {
+        "ApiErrors": null,
+        "logger": null
+      },
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 153,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "default"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "site": "subprocess.run",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "az",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "az",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "account",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "list",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "--output",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "json",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "profiles_to_use",
+            "get_azure_subscriptions"
+          ]
+        },
+        {
+          "entry_lineno": 157,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "default"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "site": "subprocess.run",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "az",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "az",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "account",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "list",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "--output",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "json",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "profiles_to_use",
+            "get_azure_subscriptions"
+          ]
+        },
+        {
+          "entry_lineno": 157,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "default"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 91,
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "site": "subprocess.run",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "az",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "az",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "account",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "show",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "--output",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "json",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "profiles_to_use"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:argv0": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "processor.process_subscriptions",
+              "node": 33,
+              "recognition": "V",
+              "subjects": [],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "parallel_cost_aggregation",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "cost_data"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L153"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:argv[*]": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "processor.process_subscriptions",
+              "node": 33,
+              "recognition": "V",
+              "subjects": [],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "parallel_cost_aggregation",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "cost_data"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L153"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:argv0": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "processor.process_subscriptions",
+              "node": 33,
+              "recognition": "V",
+              "subjects": [],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "parallel_cost_aggregation",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "cost_data"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L153"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:argv[*]": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "processor.process_subscriptions",
+              "node": 33,
+              "recognition": "V",
+              "subjects": [],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "parallel_cost_aggregation",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "cost_data"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L153"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2:argv0": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "processor.process_subscriptions",
+              "node": 33,
+              "recognition": "V",
+              "subjects": [],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "parallel_cost_aggregation",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "cost_data"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L153"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2:argv[*]": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "processor.process_subscriptions",
+              "node": 33,
+              "recognition": "V",
+              "subjects": [],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "parallel_cost_aggregation",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "cost_data"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L153"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [
+          {
+            "atom": {
+              "default": null,
+              "default_closed": null,
+              "name": "ApiErrors",
+              "source": "module_const"
+            },
+            "form": "value",
+            "grade": "MODEL",
+            "name": "profiles_to_use",
+            "node": 4,
+            "recognition": "V",
+            "subjects": [
+              "<no-checked-arg>"
+            ],
+            "value_grade": "allowlist"
+          },
+          {
+            "atom": {
+              "default": null,
+              "default_closed": null,
+              "name": "ApiErrors",
+              "source": "module_const"
+            },
+            "form": "value",
+            "grade": "MODEL",
+            "name": "profiles_to_use",
+            "node": 7,
+            "recognition": "V",
+            "subjects": [
+              "profiles"
+            ],
+            "value_grade": "allowlist"
+          },
+          {
+            "atom": {
+              "default": null,
+              "default_closed": null,
+              "name": "logger",
+              "source": "module_const"
+            },
+            "form": "value",
+            "grade": "MODEL",
+            "name": "processor.process_subscriptions",
+            "node": 33,
+            "recognition": "V",
+            "subjects": [],
+            "value_grade": "allowlist"
+          },
+          {
+            "form": "value",
+            "grade": "MODEL",
+            "name": "parallel_cost_aggregation",
+            "node": 35,
+            "recognition": "V",
+            "subjects": [
+              "cost_data"
+            ],
+            "value_grade": "allowlist"
+          }
+        ],
+        "gate": {
+          "reason": "non_binding_gate",
+          "verdict": "NODOM",
+          "witness": "L153"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "processor.process_subscriptions",
+              "node": 33,
+              "recognition": "V",
+              "subjects": [],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "parallel_cost_aggregation",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "cost_data"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L153"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "processor.process_subscriptions",
+              "node": 33,
+              "recognition": "V",
+              "subjects": [],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "parallel_cost_aggregation",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "cost_data"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L153"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "processor.process_subscriptions",
+              "node": 33,
+              "recognition": "V",
+              "subjects": [],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "parallel_cost_aggregation",
+              "node": 35,
+              "recognition": "V",
+              "subjects": [
+                "cost_data"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L153"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "2:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "2:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL",
+        "2": "MODEL"
+      },
+      "req_val": {
+        "0:argv0": "MODEL",
+        "0:argv[*]": "MODEL",
+        "1:argv0": "MODEL",
+        "1:argv[*]": "MODEL",
+        "2:argv0": "MODEL",
+        "2:argv[*]": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv0",
+          "unit_id": "mcp:get_cost:59cf950f4f12",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv[*]",
+          "unit_id": "mcp:get_cost:59cf950f4f12",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv0",
+          "unit_id": "mcp:get_cost:59cf950f4f12",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv[*]",
+          "unit_id": "mcp:get_cost:59cf950f4f12",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 91,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv0",
+          "unit_id": "mcp:get_cost:59cf950f4f12",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 91,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv[*]",
+          "unit_id": "mcp:get_cost:59cf950f4f12",
+          "verdicts": []
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 117,
+        "module": "azure_finops_mcp_server.main_refactored",
+        "params": [
+          {
+            "annotation": "Optional[List[str]]",
+            "default": "None",
+            "index": 0,
+            "name": "profiles"
+          },
+          {
+            "annotation": "bool",
+            "default": "False",
+            "index": 1,
+            "name": "all_profiles"
+          },
+          {
+            "annotation": "Optional[int]",
+            "default": "None",
+            "index": 2,
+            "name": "time_range_days"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 3,
+            "name": "start_date_iso"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 4,
+            "name": "end_date_iso"
+          },
+          {
+            "annotation": "Optional[List[str]]",
+            "default": "None",
+            "index": 5,
+            "name": "tags"
+          },
+          {
+            "annotation": "Optional[List[str]]",
+            "default": "None",
+            "index": 6,
+            "name": "dimensions"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "'ServiceName'",
+            "index": 7,
+            "name": "group_by"
+          }
+        ],
+        "qualname": "get_cost",
+        "relpath": "azure_finops_mcp_server/main_refactored.py",
+        "schema_hash": "59cf950f4f12",
+        "tool_name": "get_cost",
+        "unit_id": "mcp:get_cost:59cf950f4f12"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {
+        "ApiErrors": null,
+        "logger": null
+      },
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 287,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "default"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "site": "subprocess.run",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "az",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "az",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "account",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "list",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "--output",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "json",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "profiles_to_use",
+            "get_azure_subscriptions"
+          ]
+        },
+        {
+          "entry_lineno": 291,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "default"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "site": "subprocess.run",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "az",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "az",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "account",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "list",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "--output",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "json",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "profiles_to_use",
+            "get_azure_subscriptions"
+          ]
+        },
+        {
+          "entry_lineno": 291,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "default"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 91,
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "site": "subprocess.run",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "az",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "az",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "account",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "show",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "--output",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "json",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "profiles_to_use"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:argv0": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "processor.process_subscriptions",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L287"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:argv[*]": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "processor.process_subscriptions",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L287"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:argv0": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "processor.process_subscriptions",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L287"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:argv[*]": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "processor.process_subscriptions",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L287"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2:argv0": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "processor.process_subscriptions",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L287"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2:argv[*]": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "<no-checked-arg>"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "ApiErrors",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "profiles_to_use",
+              "node": 7,
+              "recognition": "V",
+              "subjects": [
+                "profiles"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "logger",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "processor.process_subscriptions",
+              "node": 13,
+              "recognition": "V",
+              "subjects": [],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L287"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 7,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "2:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "2:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL",
+        "2": "MODEL"
+      },
+      "req_val": {
+        "0:argv0": "MODEL",
+        "0:argv[*]": "MODEL",
+        "1:argv0": "MODEL",
+        "1:argv[*]": "MODEL",
+        "2:argv0": "MODEL",
+        "2:argv[*]": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv0",
+          "unit_id": "mcp:run_finops_audit:ab56173a3c99",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv[*]",
+          "unit_id": "mcp:run_finops_audit:ab56173a3c99",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv0",
+          "unit_id": "mcp:run_finops_audit:ab56173a3c99",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv[*]",
+          "unit_id": "mcp:run_finops_audit:ab56173a3c99",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 91,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv0",
+          "unit_id": "mcp:run_finops_audit:ab56173a3c99",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 91,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "azure_finops_mcp_server/helpers/subscription_manager.py",
+          "site": "subprocess.run",
+          "slot": "argv[*]",
+          "unit_id": "mcp:run_finops_audit:ab56173a3c99",
+          "verdicts": []
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 263,
+        "module": "azure_finops_mcp_server.main_refactored",
+        "params": [
+          {
+            "annotation": "Optional[List[str]]",
+            "default": "None",
+            "index": 0,
+            "name": "regions"
+          },
+          {
+            "annotation": "Optional[List[str]]",
+            "default": "None",
+            "index": 1,
+            "name": "profiles"
+          },
+          {
+            "annotation": "bool",
+            "default": "False",
+            "index": 2,
+            "name": "all_profiles"
+          }
+        ],
+        "qualname": "run_finops_audit",
+        "relpath": "azure_finops_mcp_server/main_refactored.py",
+        "schema_hash": "ab56173a3c99",
+        "tool_name": "run_finops_audit",
+        "unit_id": "mcp:run_finops_audit:ab56173a3c99"
+      },
+      "validator_shapes": []
+    }
+  ]
+}

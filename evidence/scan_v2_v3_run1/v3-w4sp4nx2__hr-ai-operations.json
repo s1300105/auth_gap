@@ -1,0 +1,1150 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [
+    {
+      "candidates": [],
+      "form": "subscript",
+      "lineno": 73,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "backend/kernels/curriculum.py",
+      "resolution": "opaque",
+      "selector": "grid",
+      "selector_is_model": false
+    },
+    {
+      "candidates": [],
+      "form": "subscript",
+      "lineno": 148,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "backend/kernels/curriculum.py",
+      "resolution": "opaque",
+      "selector": "(rows,)",
+      "selector_is_model": false
+    },
+    {
+      "candidates": [],
+      "form": "subscript",
+      "lineno": 193,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "backend/kernels/curriculum.py",
+      "resolution": "opaque",
+      "selector": "(triton.cdiv(n, block_size),)",
+      "selector_is_model": false
+    },
+    {
+      "candidates": [],
+      "form": "subscript",
+      "lineno": 233,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "backend/kernels/curriculum.py",
+      "resolution": "opaque",
+      "selector": "(triton.cdiv(n, block_size),)",
+      "selector_is_model": false
+    },
+    {
+      "candidates": [],
+      "form": "subscript",
+      "lineno": 280,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "backend/kernels/curriculum.py",
+      "resolution": "opaque",
+      "selector": "(rows,)",
+      "selector_is_model": false
+    },
+    {
+      "candidates": [],
+      "form": "subscript",
+      "lineno": 339,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "backend/kernels/curriculum.py",
+      "resolution": "opaque",
+      "selector": "(block_count,)",
+      "selector_is_model": false
+    },
+    {
+      "candidates": [],
+      "form": "subscript",
+      "lineno": 469,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "backend/kernels/curriculum.py",
+      "resolution": "opaque",
+      "selector": "grid",
+      "selector_is_model": false
+    },
+    {
+      "candidates": [],
+      "form": "subscript",
+      "lineno": 130,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "backend/kernels/fused_cosine_score.py",
+      "resolution": "opaque",
+      "selector": "grid",
+      "selector_is_model": false
+    },
+    {
+      "candidates": [
+        "_bounded_json"
+      ],
+      "form": "if_chain",
+      "lineno": 169,
+      "opaque_reason": null,
+      "relpath": "backend/mcp_server/hr_command_center_mcp.py",
+      "resolution": "resolved",
+      "selector": "request.response_format",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "_bounded_json"
+      ],
+      "form": "if_chain",
+      "lineno": 236,
+      "opaque_reason": null,
+      "relpath": "backend/mcp_server/hr_command_center_mcp.py",
+      "resolution": "resolved",
+      "selector": "request.response_format",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "_bounded_json"
+      ],
+      "form": "if_chain",
+      "lineno": 303,
+      "opaque_reason": null,
+      "relpath": "backend/mcp_server/hr_command_center_mcp.py",
+      "resolution": "resolved",
+      "selector": "request.response_format",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [],
+      "form": "subscript",
+      "lineno": 121,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "backend/scripts/fireworks_batch_job.py",
+      "resolution": "opaque",
+      "selector": "args.command",
+      "selector_is_model": false
+    }
+  ],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {
+    "NODOM(no_gate)": 3
+  },
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 2.98,
+    "run_id": "v3_run1",
+    "src_root": "/home/user/auth_gap/corpus/v3-w4sp4nx2__hr-ai-operations"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "dynamic_schema",
+        "reason": "登録経路が執行表に無い",
+        "verdict": "D_unknown"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": true,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "entry_kind": "tools_list",
+        "framework": "tools-list",
+        "is_async": false,
+        "lineno": 42,
+        "module": "backend.agents.policy_qa_agent",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "doc_id"
+          }
+        ],
+        "qualname": "get_policy_doc",
+        "relpath": "backend/agents/policy_qa_agent.py",
+        "schema_hash": "4564ba6e1e82",
+        "tool_name": "get_policy_doc",
+        "unit_id": "tools-list:get_policy_doc:4564ba6e1e82"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": []
+      },
+      "alias_facts": [
+        {
+          "root": "query",
+          "site": "backend/core/embeddings.py:L91",
+          "transform": "str.lower"
+        },
+        {
+          "root": "query",
+          "site": "backend/core/embeddings.py:L145",
+          "transform": "str.encode"
+        },
+        {
+          "root": "query",
+          "site": "backend/core/embeddings.py:L145",
+          "transform": "str.encode"
+        },
+        {
+          "root": "query",
+          "site": "backend/core/embeddings.py:L91",
+          "transform": "str.lower"
+        },
+        {
+          "root": "query",
+          "site": "backend/core/embeddings.py:L145",
+          "transform": "str.encode"
+        },
+        {
+          "root": "query",
+          "site": "backend/core/embeddings.py:L145",
+          "transform": "str.encode"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 39,
+          "form": "direct",
+          "http_method": "POST",
+          "kind": "NET",
+          "lineno": 199,
+          "relpath": "backend/core/embeddings.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "depth",
+            "unresolved"
+          ],
+          "shape_from": {
+            "body": "annotation"
+          },
+          "site": "httpx.post",
+          "slots": {
+            "body": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "depth"
+              ],
+              "roots": [
+                "query"
+              ],
+              "shape": {
+                "entries": [
+                  [
+                    "input",
+                    {
+                      "prin": "MODEL",
+                      "prov": "resolved",
+                      "roots": [
+                        "query"
+                      ],
+                      "shape": {
+                        "items": [
+                          {
+                            "prin": "MODEL",
+                            "prov": "resolved",
+                            "roots": [
+                              "query"
+                            ],
+                            "shape": {
+                              "formal": "query",
+                              "k": "Atom"
+                            }
+                          }
+                        ],
+                        "k": "Seq"
+                      }
+                    }
+                  ],
+                  [
+                    "model",
+                    {
+                      "prin": "OP",
+                      "prov": "opaque",
+                      "prov_reasons": [
+                        "depth"
+                      ],
+                      "shape": {
+                        "k": "Unknown"
+                      }
+                    }
+                  ]
+                ],
+                "k": "Map"
+              }
+            },
+            "url.host": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            },
+            "url.path": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "/embeddings",
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "NET",
+          "witness_chain": [
+            "VectorStore.search",
+            "Embedder.embed",
+            "_fireworks_embed_batch"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "dynamic_schema",
+        "reason": "登録経路が執行表に無い",
+        "verdict": "D_unknown"
+      },
+      "gate": {
+        "0:body": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.host": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:body": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.host": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:body": "MODEL",
+        "0:url.host": "MODEL",
+        "0:url.path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "NET",
+          "lineno": 199,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "backend/core/embeddings.py",
+          "site": "httpx.post",
+          "slot": "body",
+          "unit_id": "tools-list:qdrant_search:d2f49fa44c8a",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "NET",
+          "lineno": 199,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "backend/core/embeddings.py",
+          "site": "httpx.post",
+          "slot": "url.host",
+          "unit_id": "tools-list:qdrant_search:d2f49fa44c8a",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "NET",
+          "lineno": 199,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "backend/core/embeddings.py",
+          "site": "httpx.post",
+          "slot": "url.path",
+          "unit_id": "tools-list:qdrant_search:d2f49fa44c8a",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "entry_kind": "tools_list",
+        "framework": "tools-list",
+        "is_async": false,
+        "lineno": 29,
+        "module": "backend.agents.policy_qa_agent",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "query"
+          },
+          {
+            "annotation": "int",
+            "default": "5",
+            "index": 1,
+            "name": "top_k"
+          }
+        ],
+        "qualname": "qdrant_search",
+        "relpath": "backend/agents/policy_qa_agent.py",
+        "schema_hash": "d2f49fa44c8a",
+        "tool_name": "qdrant_search",
+        "unit_id": "tools-list:qdrant_search:d2f49fa44c8a"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "openWorldHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true,
+          "title": "Get HR agent contracts"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 161,
+        "module": "backend.mcp_server.hr_command_center_mcp",
+        "params": [
+          {
+            "annotation": "CatalogRequest",
+            "index": 0,
+            "name": "request"
+          }
+        ],
+        "qualname": "hrcc_get_agent_catalog",
+        "relpath": "backend/mcp_server/hr_command_center_mcp.py",
+        "schema_hash": "52f9966ac9cd",
+        "tool_name": "hrcc_get_agent_catalog",
+        "unit_id": "mcp:hrcc_get_agent_catalog:52f9966ac9cd"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "request",
+          "site": "backend/services/input_shield.py:L54",
+          "transform": "str.strip"
+        },
+        {
+          "root": "request",
+          "site": "backend/core/memory.py:L396",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "request",
+          "site": "backend/services/rag.py:L231",
+          "transform": "str.strip"
+        },
+        {
+          "root": "request",
+          "site": "backend/services/rag.py:L114",
+          "transform": "str.lower"
+        },
+        {
+          "root": "request",
+          "site": "backend/services/rag.py:L115",
+          "transform": "str.lower"
+        },
+        {
+          "root": "request",
+          "site": "backend/services/rag.py:L124",
+          "transform": "str.strip"
+        },
+        {
+          "root": "request",
+          "site": "backend/services/rag.py:L124",
+          "transform": "str.lower"
+        },
+        {
+          "root": "request",
+          "site": "backend/services/rag.py:L114",
+          "transform": "str.lower"
+        },
+        {
+          "root": "request",
+          "site": "backend/services/rag.py:L115",
+          "transform": "str.lower"
+        },
+        {
+          "root": "request",
+          "site": "backend/services/rag.py:L124",
+          "transform": "str.strip"
+        },
+        {
+          "root": "request",
+          "site": "backend/services/rag.py:L124",
+          "transform": "str.lower"
+        },
+        {
+          "root": "request",
+          "site": "backend/core/memory.py:L396",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "request",
+          "site": "backend/core/memory.py:L397",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "request[\"doc_id\"]",
+          "site": "backend/core/memory.py:L397",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "request[\"score\"]",
+          "site": "backend/core/memory.py:L397",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "request[\"text\"]",
+          "site": "backend/core/memory.py:L397",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "request",
+          "site": "backend/core/memory.py:L396",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "request",
+          "site": "backend/mcp_server/hr_command_center_mcp.py:L109",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "request[\"doc_id\"]",
+          "site": "backend/mcp_server/hr_command_center_mcp.py:L109",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "request[\"score\"]",
+          "site": "backend/mcp_server/hr_command_center_mcp.py:L109",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "request[\"text\"]",
+          "site": "backend/mcp_server/hr_command_center_mcp.py:L109",
+          "transform": "json.dumps"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "db_unresolved": [
+        {
+          "lineno": 694,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 699,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 710,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 721,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 402,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 694,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 699,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 710,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 721,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 402,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 694,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 699,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 710,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 721,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 402,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 694,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 699,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 710,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        },
+        {
+          "lineno": 721,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "backend/core/memory.py"
+        }
+      ],
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": true,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "receiver",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "Get grounded HR policy guidance"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 265,
+        "module": "backend.mcp_server.hr_command_center_mcp",
+        "params": [
+          {
+            "annotation": "PolicyGuidanceRequest",
+            "index": 0,
+            "name": "request"
+          }
+        ],
+        "qualname": "hrcc_get_policy_guidance",
+        "relpath": "backend/mcp_server/hr_command_center_mcp.py",
+        "schema_hash": "51192e8c4f09",
+        "tool_name": "hrcc_get_policy_guidance",
+        "unit_id": "mcp:hrcc_get_policy_guidance:51192e8c4f09"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "openWorldHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "request",
+          "site": "backend/services/input_shield.py:L54",
+          "transform": "str.strip"
+        },
+        {
+          "root": "request",
+          "site": "backend/models/naive_baselines.py:L64",
+          "transform": "str.lower"
+        },
+        {
+          "root": "request",
+          "site": "backend/models/naive_baselines.py:L64",
+          "transform": "str.lower"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true,
+          "title": "Preview HR ticket triage"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 203,
+        "module": "backend.mcp_server.hr_command_center_mcp",
+        "params": [
+          {
+            "annotation": "TriagePreviewRequest",
+            "index": 0,
+            "name": "request"
+          }
+        ],
+        "qualname": "hrcc_preview_ticket_triage",
+        "relpath": "backend/mcp_server/hr_command_center_mcp.py",
+        "schema_hash": "3fb8fa56b8d9",
+        "tool_name": "hrcc_preview_ticket_triage",
+        "unit_id": "mcp:hrcc_preview_ticket_triage:3fb8fa56b8d9"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": []
+      },
+      "alias_facts": [
+        {
+          "root": "payload",
+          "site": "scripts/verify_amd_runtime_evidence.py:L25",
+          "transform": "str.strip"
+        },
+        {
+          "root": "payload",
+          "site": "scripts/verify_amd_runtime_evidence.py:L49",
+          "transform": "str.replace"
+        },
+        {
+          "root": "payload",
+          "site": "scripts/verify_amd_runtime_evidence.py:L25",
+          "transform": "str.strip"
+        },
+        {
+          "root": "payload",
+          "site": "scripts/verify_amd_runtime_evidence.py:L25",
+          "transform": "str.strip"
+        },
+        {
+          "root": "payload",
+          "site": "scripts/verify_amd_runtime_evidence.py:L25",
+          "transform": "str.strip"
+        },
+        {
+          "root": "payload",
+          "site": "scripts/verify_amd_runtime_evidence.py:L25",
+          "transform": "str.strip"
+        },
+        {
+          "root": "payload",
+          "site": "scripts/verify_amd_runtime_evidence.py:L31",
+          "transform": "str.lower"
+        },
+        {
+          "root": "payload",
+          "site": "scripts/verify_amd_runtime_evidence.py:L25",
+          "transform": "str.strip"
+        },
+        {
+          "root": "payload",
+          "site": "scripts/verify_amd_runtime_evidence.py:L25",
+          "transform": "str.strip"
+        },
+        {
+          "root": "payload",
+          "site": "scripts/verify_amd_runtime_evidence.py:L31",
+          "transform": "str.lower"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {
+        "CAPTURE_TARGETS": true
+      },
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "dynamic_schema",
+        "reason": "登録経路が執行表に無い",
+        "verdict": "D_unknown"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": true,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "entry_kind": "tools_list",
+        "framework": "tools-list",
+        "is_async": false,
+        "lineno": 35,
+        "module": "scripts.verify_amd_runtime_evidence",
+        "params": [
+          {
+            "annotation": "object",
+            "index": 0,
+            "name": "payload"
+          }
+        ],
+        "qualname": "validate",
+        "relpath": "scripts/verify_amd_runtime_evidence.py",
+        "schema_hash": "6b1275d539e4",
+        "tool_name": "validate",
+        "unit_id": "tools-list:validate:6b1275d539e4"
+      },
+      "validator_shapes": []
+    }
+  ]
+}

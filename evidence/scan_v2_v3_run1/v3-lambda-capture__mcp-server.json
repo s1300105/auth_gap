@@ -1,0 +1,546 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {
+    "NODOM(no_gate)": 4
+  },
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.012,
+    "run_id": "v3_run1",
+    "src_root": "/home/user/auth_gap/corpus/v3-lambda-capture__mcp-server"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 73,
+          "form": "proxy",
+          "http_method": "GET",
+          "kind": "NET",
+          "lineno": 73,
+          "relpath": "main.py",
+          "resolution": "resolved",
+          "shape_from": {
+            "body": "annotation"
+          },
+          "site": "httpx.AsyncClient.request",
+          "slots": {
+            "body": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "end_date",
+                "max_results",
+                "query_text",
+                "score",
+                "source",
+                "start_date",
+                "type"
+              ],
+              "shape": {
+                "entries": [
+                  [
+                    "api_key",
+                    {
+                      "prin": "OP",
+                      "prov": "resolved",
+                      "shape": {
+                        "k": "Atom"
+                      }
+                    }
+                  ],
+                  [
+                    "end_date",
+                    {
+                      "prin": "MODEL",
+                      "prov": "resolved",
+                      "roots": [
+                        "end_date"
+                      ],
+                      "shape": {
+                        "formal": "end_date",
+                        "k": "Atom"
+                      }
+                    }
+                  ],
+                  [
+                    "max_results",
+                    {
+                      "prin": "MODEL",
+                      "prov": "resolved",
+                      "roots": [
+                        "max_results"
+                      ],
+                      "shape": {
+                        "formal": "max_results",
+                        "k": "Atom"
+                      }
+                    }
+                  ],
+                  [
+                    "query_text",
+                    {
+                      "prin": "MODEL",
+                      "prov": "resolved",
+                      "roots": [
+                        "query_text"
+                      ],
+                      "shape": {
+                        "formal": "query_text",
+                        "k": "Atom"
+                      }
+                    }
+                  ],
+                  [
+                    "score",
+                    {
+                      "prin": "MODEL",
+                      "prov": "resolved",
+                      "roots": [
+                        "score"
+                      ],
+                      "shape": {
+                        "formal": "score",
+                        "k": "Atom"
+                      }
+                    }
+                  ],
+                  [
+                    "source",
+                    {
+                      "prin": "MODEL",
+                      "prov": "resolved",
+                      "roots": [
+                        "source"
+                      ],
+                      "shape": {
+                        "items": [],
+                        "k": "Seq",
+                        "tail": {
+                          "prin": "MODEL",
+                          "prov": "resolved",
+                          "roots": [
+                            "source"
+                          ],
+                          "shape": {
+                            "formal": "source",
+                            "k": "Atom"
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  [
+                    "start_date",
+                    {
+                      "prin": "MODEL",
+                      "prov": "resolved",
+                      "roots": [
+                        "start_date"
+                      ],
+                      "shape": {
+                        "formal": "start_date",
+                        "k": "Atom"
+                      }
+                    }
+                  ],
+                  [
+                    "type",
+                    {
+                      "prin": "MODEL",
+                      "prov": "resolved",
+                      "roots": [
+                        "type"
+                      ],
+                      "shape": {
+                        "items": [],
+                        "k": "Seq",
+                        "tail": {
+                          "prin": "MODEL",
+                          "prov": "resolved",
+                          "roots": [
+                            "type"
+                          ],
+                          "shape": {
+                            "formal": "type",
+                            "k": "Atom"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                ],
+                "k": "Map"
+              }
+            },
+            "url.host": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "app.lambda-capture.com",
+                "k": "Atom"
+              }
+            },
+            "url.path": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "/semantic-search/",
+                "k": "Atom"
+              }
+            },
+            "url.scheme": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "https",
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "NET"
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:body": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 11,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.host": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 11,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 11,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:url.scheme": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 11,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 11,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 11,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:body": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.host": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:url.scheme": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:body": "MODEL",
+        "0:url.host": "MODEL",
+        "0:url.path": "MODEL",
+        "0:url.scheme": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 73,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "D_layer_present:kind:NET"
+          ],
+          "relpath": "main.py",
+          "site": "httpx.AsyncClient.request",
+          "slot": "body",
+          "unit_id": "mcp:macroecon_semantic_search:374417c0fedd",
+          "verdicts": [
+            "GAP_INJECT"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 73,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "main.py",
+          "site": "httpx.AsyncClient.request",
+          "slot": "url.host",
+          "unit_id": "mcp:macroecon_semantic_search:374417c0fedd",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 73,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "main.py",
+          "site": "httpx.AsyncClient.request",
+          "slot": "url.path",
+          "unit_id": "mcp:macroecon_semantic_search:374417c0fedd",
+          "verdicts": []
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "proxy",
+          "kind": "NET",
+          "lineno": 73,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "main.py",
+          "site": "httpx.AsyncClient.request",
+          "slot": "url.scheme",
+          "unit_id": "mcp:macroecon_semantic_search:374417c0fedd",
+          "verdicts": []
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 30,
+        "module": "main",
+        "params": [
+          {
+            "annotation": "str",
+            "default": "Field(description='The search query text (e.g., Inflation expectations)')",
+            "index": 0,
+            "name": "query_text"
+          },
+          {
+            "annotation": "float",
+            "default": "Field(default=0.75, ge=0, le=1, description='Minimum relevance score threshold')",
+            "index": 1,
+            "name": "score"
+          },
+          {
+            "annotation": "int",
+            "default": "Field(default=10, ge=1, description='Maximum number of results to return')",
+            "index": 2,
+            "name": "max_results"
+          },
+          {
+            "annotation": "list[Literal['text', 'table', 'chart']] | None",
+            "default": "Field(default=None, description='Filter results by content type (text, table, or chart) or None for all')",
+            "index": 3,
+            "name": "type"
+          },
+          {
+            "annotation": "list[Literal['Federal Reserve', 'Bank of England', 'European Central Bank']] | None",
+            "default": "Field(default=None, description='Filter results by source institution or None for all')",
+            "index": 4,
+            "name": "source"
+          },
+          {
+            "annotation": "str",
+            "default": "Field(default='2018-01-01', description='Start date for filtering results (YYYY-MM-DD). If request needs recent/latest data, set start_date nearest to today up to 3 months ago.', pattern='^\\\\d{4}-\\\\d{2}-\\\\d{2}$')",
+            "index": 5,
+            "name": "start_date"
+          },
+          {
+            "annotation": "str",
+            "default": "Field(default=datetime.now(timezone.utc).strftime('%Y-%m-%d'), description='End date for filtering results (YYYY-MM-DD). if None, set to today - this is better for **most recent data**. default is today', pattern='^\\\\d{4}-\\\\d{2}-\\\\d{2}$')",
+            "index": 6,
+            "name": "end_date"
+          }
+        ],
+        "qualname": "macroecon_semantic_search",
+        "relpath": "main.py",
+        "schema_hash": "374417c0fedd",
+        "tool_name": "macroecon_semantic_search",
+        "unit_id": "mcp:macroecon_semantic_search:374417c0fedd"
+      },
+      "validator_shapes": []
+    }
+  ]
+}

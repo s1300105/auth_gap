@@ -1,0 +1,498 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {},
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.11,
+    "run_id": "v3_run1",
+    "src_root": "/home/user/auth_gap/corpus/v3-myrikld__tg-mcp"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "chat",
+          "site": "src/tg_mcp/client.py:L67",
+          "transform": "str.strip"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 20,
+        "module": "src.tg_mcp.tools.get_chat_history",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "chat"
+          },
+          {
+            "annotation": "int",
+            "default": "20",
+            "index": 1,
+            "name": "limit"
+          },
+          {
+            "annotation": "TelegramClient",
+            "default": "TelegramClientDep",
+            "index": 2,
+            "name": "client"
+          }
+        ],
+        "qualname": "get_chat_history",
+        "relpath": "src/tg_mcp/tools/get_chat_history.py",
+        "schema_hash": "1cbf254bff09",
+        "tool_name": "get_chat_history",
+        "unit_id": "mcp:get_chat_history:1cbf254bff09"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 19,
+        "module": "src.tg_mcp.tools.get_me",
+        "params": [
+          {
+            "annotation": "TelegramClient",
+            "default": "TelegramClientDep",
+            "index": 0,
+            "name": "client"
+          }
+        ],
+        "qualname": "get_me",
+        "relpath": "src/tg_mcp/tools/get_me.py",
+        "schema_hash": "69cf2c96d851",
+        "tool_name": "get_me",
+        "unit_id": "mcp:get_me:69cf2c96d851"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 19,
+        "module": "src.tg_mcp.tools.list_dialogs",
+        "params": [
+          {
+            "annotation": "int",
+            "default": "20",
+            "index": 0,
+            "name": "limit"
+          },
+          {
+            "annotation": "bool",
+            "default": "False",
+            "index": 1,
+            "name": "archived"
+          },
+          {
+            "annotation": "TelegramClient",
+            "default": "TelegramClientDep",
+            "index": 2,
+            "name": "client"
+          }
+        ],
+        "qualname": "list_dialogs",
+        "relpath": "src/tg_mcp/tools/list_dialogs.py",
+        "schema_hash": "741aeb54e897",
+        "tool_name": "list_dialogs",
+        "unit_id": "mcp:list_dialogs:741aeb54e897"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "chat",
+          "site": "src/tg_mcp/client.py:L67",
+          "transform": "str.strip"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 20,
+        "module": "src.tg_mcp.tools.search_messages",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "query"
+          },
+          {
+            "annotation": "str | None",
+            "default": "None",
+            "index": 1,
+            "name": "chat"
+          },
+          {
+            "annotation": "int",
+            "default": "20",
+            "index": 2,
+            "name": "limit"
+          },
+          {
+            "annotation": "TelegramClient",
+            "default": "TelegramClientDep",
+            "index": 3,
+            "name": "client"
+          }
+        ],
+        "qualname": "search_messages",
+        "relpath": "src/tg_mcp/tools/search_messages.py",
+        "schema_hash": "c23e53ce2b4c",
+        "tool_name": "search_messages",
+        "unit_id": "mcp:search_messages:c23e53ce2b4c"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "chat",
+          "site": "src/tg_mcp/client.py:L67",
+          "transform": "str.strip"
+        },
+        {
+          "root": "chat",
+          "site": "src/tg_mcp/client.py:L67",
+          "transform": "str.strip"
+        },
+        {
+          "root": "client",
+          "site": "src/tg_mcp/client.py:L67",
+          "transform": "str.strip"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 20,
+        "module": "src.tg_mcp.tools.send_message",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "chat"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "text"
+          },
+          {
+            "annotation": "int | None",
+            "default": "None",
+            "index": 2,
+            "name": "reply_to"
+          },
+          {
+            "annotation": "TelegramClient",
+            "default": "TelegramClientDep",
+            "index": 3,
+            "name": "client"
+          }
+        ],
+        "qualname": "send_message",
+        "relpath": "src/tg_mcp/tools/send_message.py",
+        "schema_hash": "5176bfb74c46",
+        "tool_name": "send_message",
+        "unit_id": "mcp:send_message:5176bfb74c46"
+      },
+      "validator_shapes": []
+    }
+  ]
+}

@@ -1,0 +1,707 @@
+{
+ "_note": "docs/population_v3.md V2 の判定対象。判定の前にコミットする。",
+ "seed": 20260924,
+ "n_main": 86,
+ "n_main_judged": 60,
+ "main_sampled": true,
+ "n_exploratory": 3,
+ "n_exploratory_judged": 3,
+ "targets": [
+  {
+   "tree": "v3-bali-zero__teman2",
+   "unit": "register.newsroom_fact_gate",
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M00"
+  },
+  {
+   "tree": "v3-bali-zero__teman2",
+   "unit": "register.newsroom_fact_gate",
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M01"
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "compose_music",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M02"
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "compose_music",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M03"
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "isolate_audio",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M04"
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "speech_to_speech",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M05"
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "speech_to_text",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M06"
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "text_to_sound_effects",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M07"
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "text_to_speech",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M08"
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "text_to_voice",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M09"
+  },
+  {
+   "tree": "v3-clcc2019__agentic-infra",
+   "unit": "register_helm_tools.helm_get_values",
+   "site": "pipe:communicate",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M10"
+  },
+  {
+   "tree": "v3-clcc2019__agentic-infra",
+   "unit": "register_helm_tools.helm_history",
+   "site": "pipe:communicate",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M11"
+  },
+  {
+   "tree": "v3-clcc2019__agentic-infra",
+   "unit": "register_helm_tools.helm_search",
+   "site": "pipe:communicate",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M12"
+  },
+  {
+   "tree": "v3-clcc2019__agentic-infra",
+   "unit": "register_kubectl_tools.kubectl_get",
+   "site": "pipe:communicate",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M13"
+  },
+  {
+   "tree": "v3-dreamrec__comfypilot",
+   "unit": "comfy_install_workflow_deps",
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M14"
+  },
+  {
+   "tree": "v3-dreamrec__comfypilot",
+   "unit": "comfy_send_to_blender",
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M15"
+  },
+  {
+   "tree": "v3-dreamrec__comfypilot",
+   "unit": "comfy_send_to_disk",
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M16"
+  },
+  {
+   "tree": "v3-dreamrec__comfypilot",
+   "unit": "comfy_send_to_td",
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M17"
+  },
+  {
+   "tree": "v3-evgenygurin__dj-music-plugin",
+   "unit": "render_diagnose",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M18"
+  },
+  {
+   "tree": "v3-evgenygurin__dj-music-plugin",
+   "unit": "render_diagnose",
+   "site": "pathlib.Path.write_text",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M19"
+  },
+  {
+   "tree": "v3-evgenygurin__dj-music-plugin",
+   "unit": "render_validate_grid",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M20"
+  },
+  {
+   "tree": "v3-evgenygurin__dj-music-plugin",
+   "unit": "render_validate_grid",
+   "site": "pathlib.Path.write_text",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M21"
+  },
+  {
+   "tree": "v3-ignatenkofi__memshelf-mcp",
+   "unit": "memshelf_rebuild",
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M22"
+  },
+  {
+   "tree": "v3-ignatenkofi__memshelf-mcp",
+   "unit": "memshelf_resolve",
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M23"
+  },
+  {
+   "tree": "v3-ignatenkofi__memshelf-mcp",
+   "unit": "memshelf_shelve",
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M24"
+  },
+  {
+   "tree": "v3-kolonelpanik__synapse-s2",
+   "unit": "list_spiking_context_cursors",
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify",
+    "db_persistent"
+   ],
+   "id": "M25"
+  },
+  {
+   "tree": "v3-kolonelpanik__synapse-s2",
+   "unit": "list_spiking_context_cursors",
+   "site": "psycopg.Cursor.executemany",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M26"
+  },
+  {
+   "tree": "v3-kolonelpanik__synapse-s2",
+   "unit": "list_spiking_context_cursors",
+   "site": "sqlite3.Connection.executescript",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M27"
+  },
+  {
+   "tree": "v3-kolonelpanik__synapse-s2",
+   "unit": "pull_spiking_context_deployments",
+   "site": "sqlite3.Connection.executescript",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M28"
+  },
+  {
+   "tree": "v3-lazyseaseal__validationtpmcp",
+   "unit": "download_attachments",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M29"
+  },
+  {
+   "tree": "v3-lazyseaseal__validationtpmcp",
+   "unit": "download_attachments",
+   "site": "os.makedirs",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M30"
+  },
+  {
+   "tree": "v3-lazyseaseal__validationtpmcp",
+   "unit": "download_attachments",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M31"
+  },
+  {
+   "tree": "v3-muduiclaw__clawking",
+   "unit": "op_get",
+   "site": "subprocess.run",
+   "kind": "SPAWN",
+   "decl": "D1",
+   "reasons": [
+    "spawn_model"
+   ],
+   "id": "M32"
+  },
+  {
+   "tree": "v3-muduiclaw__clawking",
+   "unit": "op_get_raw",
+   "site": "subprocess.run",
+   "kind": "SPAWN",
+   "decl": "D1",
+   "reasons": [
+    "spawn_model"
+   ],
+   "id": "M33"
+  },
+  {
+   "tree": "v3-nebelov__yandex-direct-for-all",
+   "unit": "yd_api",
+   "site": "os.chmod",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M34"
+  },
+  {
+   "tree": "v3-nebelov__yandex-direct-for-all",
+   "unit": "yd_api",
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M35"
+  },
+  {
+   "tree": "v3-nebelov__yandex-direct-for-all",
+   "unit": "yd_api",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M36"
+  },
+  {
+   "tree": "v3-p-v1shnu__pressure-harness",
+   "unit": "spike_return_image",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M37"
+  },
+  {
+   "tree": "v3-p-v1shnu__pressure-harness",
+   "unit": "spike_return_image",
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M38"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.get_context",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M39"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.get_context",
+   "site": "sqlite3.Connection.executescript",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M40"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.intro",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M41"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.intro",
+   "site": "sqlite3.Connection.executescript",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M42"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.search",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M43"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.search",
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify",
+    "db_persistent"
+   ],
+   "id": "M44"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.search_deep",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M45"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.search_deep",
+   "site": "sqlite3.Connection.executescript",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M46"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.wiki_get_page",
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify",
+    "db_persistent"
+   ],
+   "id": "M47"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.wiki_get_page",
+   "site": "sqlite3.Connection.executescript",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M48"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.wiki_search",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M49"
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.wiki_search",
+   "site": "sqlite3.Connection.executescript",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M50"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "create_report",
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M51"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "export_drawings",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M52"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "export_drawings",
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M53"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "export_drawings",
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M54"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "export_drawings",
+   "site": "pathlib.Path.write_text",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M55"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "print_drawings",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M56"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "print_drawings",
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M57"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "select_model_objects_from_drawings",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M58"
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "select_model_objects_from_drawings",
+   "site": "shutil.copy2",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M59"
+  },
+  {
+   "tree": "v3-akougkas__helios-mcp",
+   "unit": "create_server.get_drift_report",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D4",
+   "reasons": [
+    "fs_append"
+   ],
+   "id": "E00"
+  },
+  {
+   "tree": "v3-muduiclaw__clawking",
+   "unit": "op_get",
+   "site": "subprocess.run",
+   "kind": "SPAWN",
+   "decl": "D3",
+   "reasons": [
+    "spawn_model"
+   ],
+   "id": "E01"
+  },
+  {
+   "tree": "v3-muduiclaw__clawking",
+   "unit": "op_get_raw",
+   "site": "subprocess.run",
+   "kind": "SPAWN",
+   "decl": "D3",
+   "reasons": [
+    "spawn_model"
+   ],
+   "id": "E02"
+  }
+ ]
+}

@@ -1,0 +1,6800 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [
+    {
+      "candidates": [
+        "operator.eq",
+        "operator.ge",
+        "operator.gt",
+        "operator.le",
+        "operator.lt"
+      ],
+      "form": "subscript",
+      "lineno": 1434,
+      "opaque_reason": null,
+      "relpath": "src/docslicer/_utils/layout/gutter_detector.py",
+      "resolution": "resolved",
+      "selector": "op",
+      "selector_is_model": false
+    },
+    {
+      "candidates": [
+        "operator.eq",
+        "operator.ge",
+        "operator.gt",
+        "operator.le",
+        "operator.lt"
+      ],
+      "form": "subscript",
+      "lineno": 1032,
+      "opaque_reason": null,
+      "relpath": "src/docslicer/_utils/layout/layouts.py",
+      "resolution": "resolved",
+      "selector": "op",
+      "selector_is_model": false
+    },
+    {
+      "candidates": [],
+      "form": "if_chain",
+      "lineno": 375,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "src/docslicer/mcp/server.py",
+      "resolution": "opaque",
+      "selector": "node.heading_id",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [],
+      "form": "if_chain",
+      "lineno": 747,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "src/docslicer/mcp/server.py",
+      "resolution": "opaque",
+      "selector": "heading",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [],
+      "form": "if_chain",
+      "lineno": 986,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "src/docslicer/mcp/server.py",
+      "resolution": "opaque",
+      "selector": "descendant.heading_id",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "covered.setdefault"
+      ],
+      "form": "if_chain",
+      "lineno": 988,
+      "opaque_reason": null,
+      "relpath": "src/docslicer/mcp/server.py",
+      "resolution": "resolved",
+      "selector": "descendant.heading_id",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "headings.get",
+        "len",
+        "parts.append",
+        "text.startswith"
+      ],
+      "form": "if_chain",
+      "lineno": 1089,
+      "opaque_reason": null,
+      "relpath": "src/docslicer/mcp/server.py",
+      "resolution": "resolved",
+      "selector": "block.type",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [],
+      "form": "if_chain",
+      "lineno": 1126,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "src/docslicer/mcp/server.py",
+      "resolution": "opaque",
+      "selector": "first",
+      "selector_is_model": true
+    }
+  ],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {
+    "NODOM(no_gate)": 12,
+    "NODOM(non_binding_gate)": 8
+  },
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 4.591,
+    "run_id": "v3_run1",
+    "src_root": "/home/user/auth_gap/corpus/v3-docslicer__docslicer"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "open_world_hint",
+          "read_only_hint"
+        ],
+        "present_no_bound": [
+          "title"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/_result.py:L692",
+          "transform": "Path()"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 324,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "doc_id"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "roots": [
+                    "doc_id"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "doc_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L324"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:path": {
+          "grade": "weak",
+          "weak_reason": "no_dash_reject"
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "rule_w": true,
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:get_outline:4564ba6e1e82",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "title": "Get outline"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 316,
+        "malformed_fields": [
+          "open_world_hint",
+          "read_only_hint"
+        ],
+        "module": "src.docslicer.mcp.server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "doc_id"
+          }
+        ],
+        "qualname": "get_outline",
+        "relpath": "src/docslicer/mcp/server.py",
+        "schema_hash": "4564ba6e1e82",
+        "tool_name": "get_outline",
+        "unit_id": "mcp:get_outline:4564ba6e1e82"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "open_world_hint",
+          "read_only_hint"
+        ],
+        "present_no_bound": [
+          "title"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L180",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L182",
+          "transform": "Path.resolve"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L236",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L241",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L241",
+          "transform": "str.encode"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L158",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L159",
+          "transform": "str.strip"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L159",
+          "transform": "str.lower"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L236",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L241",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L241",
+          "transform": "str.encode"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L158",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L159",
+          "transform": "str.strip"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L159",
+          "transform": "str.lower"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/_result.py:L692",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/server.py:L193",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/server.py:L1036",
+          "transform": "str.strip"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/server.py:L1088",
+          "transform": "str.strip"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/_result.py:L692",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/server.py:L1093",
+          "transform": "str.strip"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/server.py:L1036",
+          "transform": "str.strip"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/server.py:L1088",
+          "transform": "str.strip"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/_result.py:L692",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/server.py:L1093",
+          "transform": "str.strip"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 272,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "source"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "roots": [
+                    "source"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        },
+        {
+          "entry_lineno": 291,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "depth",
+            "unresolved"
+          ],
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "depth",
+                "unresolved"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "OP",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "depth",
+                    "unresolved"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "_whole_text",
+            "_heading_blocks",
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        },
+        {
+          "entry_lineno": 291,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "depth",
+            "unresolved"
+          ],
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "depth",
+                "unresolved"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "OP",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "depth",
+                    "unresolved"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "_whole_text",
+            "_heading_blocks",
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        },
+        {
+          "entry_lineno": 291,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "depth",
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "depth",
+                "unresolved"
+              ],
+              "roots": [
+                "source"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "depth",
+                    "unresolved"
+                  ],
+                  "roots": [
+                    "source"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "_whole_text",
+            "_render",
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        },
+        {
+          "entry_lineno": 291,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "depth",
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "depth",
+                "unresolved"
+              ],
+              "roots": [
+                "source"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "depth",
+                    "unresolved"
+                  ],
+                  "roots": [
+                    "source"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "_whole_text",
+            "_render",
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "resolve_source",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "source"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_containment"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 8,
+              "recognition": "V",
+              "subjects": [
+                "cached"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 19,
+              "recognition": "V",
+              "subjects": [
+                "cached"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L272"
+          },
+          "notes": [],
+          "passing": [
+            4
+          ],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "gated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "resolve_source",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "source"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_containment"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 8,
+              "recognition": "V",
+              "subjects": [
+                "cached"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 19,
+              "recognition": "V",
+              "subjects": [
+                "cached"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L266"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 14,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "resolve_source",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "source"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_containment"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 8,
+              "recognition": "V",
+              "subjects": [
+                "cached"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 19,
+              "recognition": "V",
+              "subjects": [
+                "cached"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L266"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 14,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "3:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "resolve_source",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "source"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_containment"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 8,
+              "recognition": "V",
+              "subjects": [
+                "cached"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 19,
+              "recognition": "V",
+              "subjects": [
+                "cached"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L272"
+          },
+          "notes": [],
+          "passing": [
+            4,
+            19
+          ],
+          "per_copy": [
+            {
+              "node": 14,
+              "status": "gated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "4:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "resolve_source",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "source"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_containment"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 8,
+              "recognition": "V",
+              "subjects": [
+                "cached"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 19,
+              "recognition": "V",
+              "subjects": [
+                "cached"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L272"
+          },
+          "notes": [],
+          "passing": [
+            4,
+            19
+          ],
+          "per_copy": [
+            {
+              "node": 14,
+              "status": "gated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 8,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 8,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 14,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 14,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "3": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 14,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "4": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 14,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:path": {
+          "grade": "weak",
+          "weak_reason": "no_containment"
+        },
+        "1:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "2:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "3:path": {
+          "grade": "weak",
+          "weak_reason": "no_containment"
+        },
+        "4:path": {
+          "grade": "weak",
+          "weak_reason": "no_containment"
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "receiver",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL",
+        "2": "MODEL",
+        "3": "MODEL",
+        "4": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL",
+        "1:path": "MODEL",
+        "2:path": "MODEL",
+        "3:path": "MODEL",
+        "4:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "rule_w": true,
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:parse:22f86e89819b",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:parse:22f86e89819b",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:parse:22f86e89819b",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "rule_w": true,
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:parse:22f86e89819b",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "rule_w": true,
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:parse:22f86e89819b",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "title": "Parse document"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 235,
+        "malformed_fields": [
+          "open_world_hint",
+          "read_only_hint"
+        ],
+        "module": "src.docslicer.mcp.server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "source"
+          },
+          {
+            "annotation": "str | None",
+            "default": "None",
+            "index": 1,
+            "name": "password"
+          },
+          {
+            "annotation": "bool",
+            "default": "False",
+            "index": 2,
+            "name": "refresh"
+          },
+          {
+            "annotation": "Context | None",
+            "default": "None",
+            "index": 3,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "parse",
+        "relpath": "src/docslicer/mcp/server.py",
+        "schema_hash": "22f86e89819b",
+        "tool_name": "parse",
+        "unit_id": "mcp:parse:22f86e89819b"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "open_world_hint",
+          "read_only_hint"
+        ],
+        "present_no_bound": [
+          "title"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/_result.py:L692",
+          "transform": "Path()"
+        },
+        {
+          "root": "headings",
+          "site": "src/docslicer/mcp/server.py:L954",
+          "transform": "str.split"
+        },
+        {
+          "root": "headings",
+          "site": "src/docslicer/mcp/server.py:L954",
+          "transform": "str.strip"
+        },
+        {
+          "root": "headings",
+          "site": "src/docslicer/mcp/server.py:L955",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/server.py:L958",
+          "transform": "str.strip"
+        },
+        {
+          "root": "headings",
+          "site": "src/docslicer/mcp/server.py:L958",
+          "transform": "str.strip"
+        },
+        {
+          "root": "headings",
+          "site": "src/docslicer/mcp/server.py:L954",
+          "transform": "str.split"
+        },
+        {
+          "root": "headings",
+          "site": "src/docslicer/mcp/server.py:L954",
+          "transform": "str.strip"
+        },
+        {
+          "root": "headings",
+          "site": "src/docslicer/mcp/server.py:L955",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/server.py:L958",
+          "transform": "str.strip"
+        },
+        {
+          "root": "headings",
+          "site": "src/docslicer/mcp/server.py:L958",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/server.py:L1036",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/server.py:L1088",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/_result.py:L692",
+          "transform": "Path()"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/server.py:L1093",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/server.py:L1036",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/server.py:L1088",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/_result.py:L692",
+          "transform": "Path()"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/server.py:L1093",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/_result.py:L692",
+          "transform": "Path()"
+        },
+        {
+          "root": "headings",
+          "site": "src/docslicer/_result.py:L692",
+          "transform": "Path()"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/server.py:L1036",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/server.py:L1088",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/_result.py:L692",
+          "transform": "Path()"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/server.py:L1093",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/server.py:L1036",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/server.py:L1088",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/_result.py:L692",
+          "transform": "Path()"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/server.py:L1093",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/_result.py:L692",
+          "transform": "Path()"
+        },
+        {
+          "root": "headings",
+          "site": "src/docslicer/_result.py:L692",
+          "transform": "Path()"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {
+        "_HEADING_BLOCKS": null
+      },
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 366,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "doc_id"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "roots": [
+                    "doc_id"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        },
+        {
+          "entry_lineno": 369,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "OP",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "_heading_blocks",
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        },
+        {
+          "entry_lineno": 369,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "OP",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "_heading_blocks",
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        },
+        {
+          "entry_lineno": 386,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "doc_id"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "roots": [
+                    "doc_id"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "_render",
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        },
+        {
+          "entry_lineno": 386,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "doc_id"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "roots": [
+                    "doc_id"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "_render",
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        },
+        {
+          "entry_lineno": 391,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "doc_id",
+                "headings"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "roots": [
+                    "doc_id",
+                    "headings"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        },
+        {
+          "entry_lineno": 386,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "doc_id"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "roots": [
+                    "doc_id"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "_render",
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        },
+        {
+          "entry_lineno": 386,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "doc_id"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "roots": [
+                    "doc_id"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "_render",
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        },
+        {
+          "entry_lineno": 391,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "doc_id",
+                "headings"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "roots": [
+                    "doc_id",
+                    "headings"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "doc_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 25,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L366"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "doc_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 25,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L366"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "doc_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 25,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L366"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "3:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "doc_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 25,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L375"
+          },
+          "notes": [],
+          "passing": [
+            4,
+            6,
+            17
+          ],
+          "per_copy": [
+            {
+              "node": 22,
+              "status": "gated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "4:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "doc_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 25,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L375"
+          },
+          "notes": [],
+          "passing": [
+            4,
+            6,
+            17
+          ],
+          "per_copy": [
+            {
+              "node": 22,
+              "status": "gated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "5:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "doc_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 25,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L375"
+          },
+          "notes": [],
+          "passing": [
+            4,
+            6,
+            17
+          ],
+          "per_copy": [
+            {
+              "node": 25,
+              "status": "gated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "6:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "doc_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 25,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L375"
+          },
+          "notes": [],
+          "passing": [
+            4,
+            6,
+            17
+          ],
+          "per_copy": [
+            {
+              "node": 22,
+              "status": "gated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "7:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "doc_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 25,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L375"
+          },
+          "notes": [],
+          "passing": [
+            4,
+            6,
+            17
+          ],
+          "per_copy": [
+            {
+              "node": 22,
+              "status": "gated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "8:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "doc_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_join_chunks",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.chunks_under"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "prefix_no_canon"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "sizes.get",
+              "node": 25,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L375"
+          },
+          "notes": [],
+          "passing": [
+            4,
+            6,
+            17
+          ],
+          "per_copy": [
+            {
+              "node": 25,
+              "status": "gated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [
+          {
+            "atom": {
+              "default": null,
+              "default_closed": null,
+              "name": "_HEADING_BLOCKS",
+              "source": "module_const"
+            },
+            "form": "value",
+            "grade": "MODEL",
+            "name": "_heading_blocks",
+            "node": 6,
+            "recognition": "V",
+            "subjects": [
+              "result"
+            ],
+            "value_grade": "allowlist"
+          },
+          {
+            "form": "value",
+            "grade": "MODEL",
+            "name": "seen",
+            "node": 14,
+            "recognition": "V",
+            "subjects": [
+              "node",
+              "node.heading_id"
+            ],
+            "value_grade": "allowlist"
+          },
+          {
+            "form": "value",
+            "grade": "MODEL",
+            "name": "_drop_nested",
+            "node": 17,
+            "recognition": "V",
+            "subjects": [
+              "resolved"
+            ],
+            "value_grade": "allowlist"
+          },
+          {
+            "atom": {
+              "default": null,
+              "default_closed": null,
+              "name": "_HEADING_BLOCKS",
+              "source": "module_const"
+            },
+            "form": "value",
+            "grade": "MODEL",
+            "name": "_render",
+            "node": 20,
+            "recognition": "V",
+            "subjects": [
+              "node",
+              "result",
+              "result.blocks_under"
+            ],
+            "value_grade": "allowlist"
+          },
+          {
+            "form": "value",
+            "grade": "MODEL",
+            "name": "result.blocks_under",
+            "node": 20,
+            "recognition": "V",
+            "subjects": [
+              "node"
+            ],
+            "value_grade": "allowlist"
+          },
+          {
+            "form": "value",
+            "grade": "MODEL",
+            "name": "result.chunks_under",
+            "node": 20,
+            "recognition": "V",
+            "subjects": [
+              "node"
+            ],
+            "value_grade": "allowlist"
+          },
+          {
+            "atom": {
+              "default": null,
+              "default_closed": null,
+              "name": "_HEADING_BLOCKS",
+              "source": "module_const"
+            },
+            "form": "value",
+            "grade": "MODEL",
+            "name": "_render",
+            "node": 22,
+            "recognition": "V",
+            "subjects": [
+              "node",
+              "result",
+              "result.blocks_under"
+            ],
+            "value_grade": "allowlist"
+          },
+          {
+            "form": "value",
+            "grade": "MODEL",
+            "name": "result.blocks_under",
+            "node": 22,
+            "recognition": "V",
+            "subjects": [
+              "node"
+            ],
+            "value_grade": "allowlist"
+          },
+          {
+            "form": "value",
+            "grade": "MODEL",
+            "name": "result.chunks_under",
+            "node": 23,
+            "recognition": "V",
+            "subjects": [
+              "node"
+            ],
+            "value_grade": "allowlist"
+          }
+        ],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM",
+          "witness": "L369"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L369"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L369"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L369"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 6,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "3": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L375"
+          },
+          "notes": [],
+          "passing": [
+            6,
+            17
+          ],
+          "per_copy": [
+            {
+              "node": 22,
+              "status": "gated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "4": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L375"
+          },
+          "notes": [],
+          "passing": [
+            6,
+            17
+          ],
+          "per_copy": [
+            {
+              "node": 22,
+              "status": "gated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "5": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L375"
+          },
+          "notes": [],
+          "passing": [
+            6,
+            17
+          ],
+          "per_copy": [
+            {
+              "node": 25,
+              "status": "gated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "6": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L375"
+          },
+          "notes": [],
+          "passing": [
+            6,
+            17
+          ],
+          "per_copy": [
+            {
+              "node": 22,
+              "status": "gated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "7": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L375"
+          },
+          "notes": [],
+          "passing": [
+            6,
+            17
+          ],
+          "per_copy": [
+            {
+              "node": 22,
+              "status": "gated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "8": {
+          "candidates": [
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_heading_blocks",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "result"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "seen",
+              "node": 14,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "node.heading_id"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_drop_nested",
+              "node": 17,
+              "recognition": "V",
+              "subjects": [
+                "resolved"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 20,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "atom": {
+                "default": null,
+                "default_closed": null,
+                "name": "_HEADING_BLOCKS",
+                "source": "module_const"
+              },
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_render",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node",
+                "result",
+                "result.blocks_under"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.blocks_under",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "result.chunks_under",
+              "node": 23,
+              "recognition": "V",
+              "subjects": [
+                "node"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L375"
+          },
+          "notes": [],
+          "passing": [
+            6,
+            17
+          ],
+          "per_copy": [
+            {
+              "node": 25,
+              "status": "gated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:path": {
+          "grade": "weak",
+          "weak_reason": "no_dash_reject"
+        },
+        "1:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "2:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "3:path": {
+          "grade": "weak",
+          "weak_reason": "no_dash_reject"
+        },
+        "4:path": {
+          "grade": "weak",
+          "weak_reason": "no_dash_reject"
+        },
+        "5:path": {
+          "grade": "weak",
+          "weak_reason": "no_dash_reject"
+        },
+        "6:path": {
+          "grade": "weak",
+          "weak_reason": "no_dash_reject"
+        },
+        "7:path": {
+          "grade": "weak",
+          "weak_reason": "no_dash_reject"
+        },
+        "8:path": {
+          "grade": "weak",
+          "weak_reason": "no_dash_reject"
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL",
+        "2": "MODEL",
+        "3": "MODEL",
+        "4": "MODEL",
+        "5": "MODEL",
+        "6": "MODEL",
+        "7": "MODEL",
+        "8": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL",
+        "1:path": "MODEL",
+        "2:path": "MODEL",
+        "3:path": "MODEL",
+        "4:path": "MODEL",
+        "5:path": "MODEL",
+        "6:path": "MODEL",
+        "7:path": "MODEL",
+        "8:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "rule_w": true,
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:read:051582663da4",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:read:051582663da4",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:read:051582663da4",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "rule_w": true,
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:read:051582663da4",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "rule_w": true,
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:read:051582663da4",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "rule_w": true,
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:read:051582663da4",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "rule_w": true,
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:read:051582663da4",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "rule_w": true,
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:read:051582663da4",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "rule_w": true,
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:read:051582663da4",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "title": "Read sections"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 341,
+        "malformed_fields": [
+          "open_world_hint",
+          "read_only_hint"
+        ],
+        "module": "src.docslicer.mcp.server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "doc_id"
+          },
+          {
+            "annotation": "list[str]",
+            "index": 1,
+            "name": "headings"
+          }
+        ],
+        "qualname": "read",
+        "relpath": "src/docslicer/mcp/server.py",
+        "schema_hash": "051582663da4",
+        "tool_name": "read",
+        "unit_id": "mcp:read:051582663da4"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "open_world_hint",
+          "read_only_hint"
+        ],
+        "present_no_bound": [
+          "title"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/_result.py:L692",
+          "transform": "Path()"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 444,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "doc_id"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "roots": [
+                    "doc_id"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "doc_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L444"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:path": {
+          "grade": "weak",
+          "weak_reason": "no_dash_reject"
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "rule_w": true,
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:search:d481f5a7c06d",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "title": "Search document"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 419,
+        "malformed_fields": [
+          "open_world_hint",
+          "read_only_hint"
+        ],
+        "module": "src.docslicer.mcp.server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "doc_id"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "query"
+          },
+          {
+            "annotation": "int",
+            "default": "8",
+            "index": 2,
+            "name": "limit"
+          }
+        ],
+        "qualname": "search",
+        "relpath": "src/docslicer/mcp/server.py",
+        "schema_hash": "d481f5a7c06d",
+        "tool_name": "search",
+        "unit_id": "mcp:search:d481f5a7c06d"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "malformed": [
+          "destructive_hint",
+          "idempotent_hint",
+          "open_world_hint",
+          "read_only_hint"
+        ],
+        "present_no_bound": [
+          "title"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L180",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L182",
+          "transform": "Path.resolve"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/server.py:L1187",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/server.py:L1187",
+          "transform": "Path()"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/server.py:L1209",
+          "transform": "Path.resolve"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/server.py:L1209",
+          "transform": "Path.resolve"
+        },
+        {
+          "root": "output_path",
+          "site": "src/docslicer/mcp/_store.py:L212",
+          "transform": "Path()"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L214",
+          "transform": "Path()"
+        },
+        {
+          "root": "output_path",
+          "site": "src/docslicer/mcp/_store.py:L214",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L214",
+          "transform": "Path()"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L214",
+          "transform": "Path.resolve"
+        },
+        {
+          "root": "output_path",
+          "site": "src/docslicer/mcp/_store.py:L214",
+          "transform": "Path.resolve"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L214",
+          "transform": "Path.resolve"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L158",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L158",
+          "transform": "Path()"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L159",
+          "transform": "str.strip"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L159",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L159",
+          "transform": "str.lower"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L159",
+          "transform": "str.lower"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L212",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L212",
+          "transform": "Path()"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L214",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L214",
+          "transform": "Path()"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L214",
+          "transform": "Path.resolve"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L214",
+          "transform": "Path.resolve"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/_result.py:L692",
+          "transform": "Path()"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L236",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L236",
+          "transform": "Path()"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L241",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L241",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L241",
+          "transform": "str.encode"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L241",
+          "transform": "str.encode"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L158",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L158",
+          "transform": "Path()"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L159",
+          "transform": "str.strip"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L159",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L159",
+          "transform": "str.lower"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L159",
+          "transform": "str.lower"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/_result.py:L692",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/_result.py:L692",
+          "transform": "Path()"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L236",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L236",
+          "transform": "Path()"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L241",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L241",
+          "transform": "json.dumps"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L241",
+          "transform": "str.encode"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L241",
+          "transform": "str.encode"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L158",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L158",
+          "transform": "Path()"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L159",
+          "transform": "str.strip"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L159",
+          "transform": "str.strip"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/_store.py:L159",
+          "transform": "str.lower"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/_store.py:L159",
+          "transform": "str.lower"
+        },
+        {
+          "root": "doc_id",
+          "site": "src/docslicer/mcp/server.py:L193",
+          "transform": "Path()"
+        },
+        {
+          "root": "source",
+          "site": "src/docslicer/mcp/server.py:L193",
+          "transform": "Path()"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 510,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "OP",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "DocumentStore.source_of",
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        },
+        {
+          "entry_lineno": 521,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "doc_id"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "roots": [
+                    "doc_id"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        },
+        {
+          "entry_lineno": 528,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "relpath": "src/docslicer/_result.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.read_text",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "doc_id",
+                "source"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "roots": [
+                    "doc_id",
+                    "source"
+                  ],
+                  "shape": {
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "DocumentStore.get",
+            "ParseResult.load"
+          ]
+        },
+        {
+          "destructive": false,
+          "entry_lineno": 542,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 542,
+          "relpath": "src/docslicer/mcp/server.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.mkdir",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "doc_id",
+                "output_path",
+                "source"
+              ],
+              "shape": {
+                "k": "Path",
+                "segs": [],
+                "tail": {
+                  "prin": "MODEL",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "roots": [
+                    "doc_id",
+                    "output_path",
+                    "source"
+                  ],
+                  "shape": {
+                    "k": "Unknown"
+                  }
+                }
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE"
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "resolve_source",
+              "node": 5,
+              "recognition": "V",
+              "subjects": [
+                "source"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_containment"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 10,
+              "recognition": "V",
+              "subjects": [
+                "doc_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "cached"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "destination.exists",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "destination"
+              ],
+              "value_grade": "unknown"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L512"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "resolve_source",
+              "node": 5,
+              "recognition": "V",
+              "subjects": [
+                "source"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_containment"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 10,
+              "recognition": "V",
+              "subjects": [
+                "doc_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "cached"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "destination.exists",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "destination"
+              ],
+              "value_grade": "unknown"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L512"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 10,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "resolve_source",
+              "node": 5,
+              "recognition": "V",
+              "subjects": [
+                "source"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_containment"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 10,
+              "recognition": "V",
+              "subjects": [
+                "doc_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "cached"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "destination.exists",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "destination"
+              ],
+              "value_grade": "unknown"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L512"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 15,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "3:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "resolve_source",
+              "node": 5,
+              "recognition": "V",
+              "subjects": [
+                "source"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_containment"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 10,
+              "recognition": "V",
+              "subjects": [
+                "doc_id"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "_store.get",
+              "node": 15,
+              "recognition": "V",
+              "subjects": [
+                "cached"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            },
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "destination.exists",
+              "node": 22,
+              "recognition": "V",
+              "subjects": [
+                "destination"
+              ],
+              "value_grade": "unknown"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L512"
+          },
+          "notes": [],
+          "passing": [
+            22
+          ],
+          "per_copy": [
+            {
+              "node": 23,
+              "status": "gated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 10,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 15,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "3": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 23,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:path": {
+          "grade": "weak",
+          "weak_reason": "no_dash_reject"
+        },
+        "2:path": {
+          "grade": "weak",
+          "weak_reason": "no_containment"
+        },
+        "3:path": {
+          "grade": "weak",
+          "weak_reason": "no_containment"
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "dynamic",
+        "receiver",
+        "recursion",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL",
+        "2": "MODEL",
+        "3": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL",
+        "1:path": "MODEL",
+        "2:path": "MODEL",
+        "3:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:to_markdown:cd37e3ea05b1",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "rule_w": true,
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:to_markdown:cd37e3ea05b1",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 692,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/_result.py",
+          "rule_w": true,
+          "site": "pathlib.Path.read_text",
+          "slot": "path",
+          "unit_id": "mcp:to_markdown:cd37e3ea05b1",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 542,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "src/docslicer/mcp/server.py",
+          "rule_w": true,
+          "site": "pathlib.Path.mkdir",
+          "slot": "path",
+          "unit_id": "mcp:to_markdown:cd37e3ea05b1",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "title": "Export to markdown file"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 481,
+        "malformed_fields": [
+          "destructive_hint",
+          "idempotent_hint",
+          "open_world_hint",
+          "read_only_hint"
+        ],
+        "module": "src.docslicer.mcp.server",
+        "params": [
+          {
+            "annotation": "str | None",
+            "default": "None",
+            "index": 0,
+            "name": "source"
+          },
+          {
+            "annotation": "str | None",
+            "default": "None",
+            "index": 1,
+            "name": "doc_id"
+          },
+          {
+            "annotation": "str | None",
+            "default": "None",
+            "index": 2,
+            "name": "password"
+          },
+          {
+            "annotation": "str | None",
+            "default": "None",
+            "index": 3,
+            "name": "output_path"
+          },
+          {
+            "annotation": "Context | None",
+            "default": "None",
+            "index": 4,
+            "name": "ctx"
+          }
+        ],
+        "qualname": "to_markdown",
+        "relpath": "src/docslicer/mcp/server.py",
+        "schema_hash": "cd37e3ea05b1",
+        "tool_name": "to_markdown",
+        "unit_id": "mcp:to_markdown:cd37e3ea05b1"
+      },
+      "validator_shapes": [
+        "exists"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1425 @@
+{
+ "_note": "CONTRADICTION（ユニット × (site, kind)）。手検証の候補表。",
+ "n": 87,
+ "rows": [
+  {
+   "tree": "v3-akougkas__helios-mcp",
+   "unit": "create_server.get_drift_report",
+   "tool": "get_drift_report",
+   "relpath": "src/helios_mcp/atomic_ops.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 68,
+   "destructive": false,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D4"
+   ]
+  },
+  {
+   "tree": "v3-bali-zero__teman2",
+   "unit": "register.newsroom_fact_gate",
+   "tool": "newsroom_fact_gate",
+   "relpath": "apps/nuzantara-mcp/nuzantara_mcp/tools/workspace_marketing.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 1323,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ]
+  },
+  {
+   "tree": "v3-bali-zero__teman2",
+   "unit": "register.newsroom_fact_gate",
+   "tool": "newsroom_fact_gate",
+   "relpath": "apps/nuzantara-mcp/nuzantara_mcp/tools/workspace_marketing.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 1340,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ]
+  },
+  {
+   "tree": "v3-bali-zero__teman2",
+   "unit": "register.newsroom_fact_gate",
+   "tool": "newsroom_fact_gate",
+   "relpath": "apps/nuzantara-mcp/nuzantara_mcp/tools/workspace_marketing.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.unlink",
+   "lineno": 1343,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ]
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "compose_music",
+   "tool": "compose_music",
+   "relpath": "elevenlabs_mcp/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 372,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "compose_music",
+   "tool": "compose_music",
+   "relpath": "elevenlabs_mcp/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 56,
+   "destructive": false,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "isolate_audio",
+   "tool": "isolate_audio",
+   "relpath": "elevenlabs_mcp/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 372,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "isolate_audio",
+   "tool": "isolate_audio",
+   "relpath": "elevenlabs_mcp/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 56,
+   "destructive": false,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "speech_to_speech",
+   "tool": "speech_to_speech",
+   "relpath": "elevenlabs_mcp/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 372,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "speech_to_speech",
+   "tool": "speech_to_speech",
+   "relpath": "elevenlabs_mcp/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 56,
+   "destructive": false,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "speech_to_text",
+   "tool": "speech_to_text",
+   "relpath": "elevenlabs_mcp/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 372,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "speech_to_text",
+   "tool": "speech_to_text",
+   "relpath": "elevenlabs_mcp/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 56,
+   "destructive": false,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "text_to_sound_effects",
+   "tool": "text_to_sound_effects",
+   "relpath": "elevenlabs_mcp/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 372,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "text_to_sound_effects",
+   "tool": "text_to_sound_effects",
+   "relpath": "elevenlabs_mcp/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 56,
+   "destructive": false,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "text_to_speech",
+   "tool": "text_to_speech",
+   "relpath": "elevenlabs_mcp/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 372,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "text_to_speech",
+   "tool": "text_to_speech",
+   "relpath": "elevenlabs_mcp/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 56,
+   "destructive": false,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "text_to_voice",
+   "tool": "text_to_voice",
+   "relpath": "elevenlabs_mcp/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 372,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-brandon-fryslie__vibedungeon-voice",
+   "unit": "text_to_voice",
+   "tool": "text_to_voice",
+   "relpath": "elevenlabs_mcp/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 56,
+   "destructive": false,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-clcc2019__agentic-infra",
+   "unit": "register_helm_tools.helm_get_values",
+   "tool": "helm_get_values",
+   "relpath": "legacy/mcp-servers/deploy-mcp/tools/_command_runner.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pipe:communicate",
+   "lineno": 66,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-clcc2019__agentic-infra",
+   "unit": "register_helm_tools.helm_history",
+   "tool": "helm_history",
+   "relpath": "legacy/mcp-servers/deploy-mcp/tools/_command_runner.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pipe:communicate",
+   "lineno": 66,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-clcc2019__agentic-infra",
+   "unit": "register_helm_tools.helm_list",
+   "tool": "helm_list",
+   "relpath": "legacy/mcp-servers/deploy-mcp/tools/_command_runner.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pipe:communicate",
+   "lineno": 66,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-clcc2019__agentic-infra",
+   "unit": "register_helm_tools.helm_search",
+   "tool": "helm_search",
+   "relpath": "legacy/mcp-servers/deploy-mcp/tools/_command_runner.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pipe:communicate",
+   "lineno": 66,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-clcc2019__agentic-infra",
+   "unit": "register_helm_tools.helm_status",
+   "tool": "helm_status",
+   "relpath": "legacy/mcp-servers/deploy-mcp/tools/_command_runner.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pipe:communicate",
+   "lineno": 66,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-clcc2019__agentic-infra",
+   "unit": "register_kubectl_tools.kubectl_describe",
+   "tool": "kubectl_describe",
+   "relpath": "legacy/mcp-servers/deploy-mcp/tools/_command_runner.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pipe:communicate",
+   "lineno": 66,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-clcc2019__agentic-infra",
+   "unit": "register_kubectl_tools.kubectl_get",
+   "tool": "kubectl_get",
+   "relpath": "legacy/mcp-servers/deploy-mcp/tools/_command_runner.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pipe:communicate",
+   "lineno": 66,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-clcc2019__agentic-infra",
+   "unit": "register_kubectl_tools.kubectl_logs",
+   "tool": "kubectl_logs",
+   "relpath": "legacy/mcp-servers/deploy-mcp/tools/_command_runner.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pipe:communicate",
+   "lineno": 66,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-dreamrec__comfypilot",
+   "unit": "comfy_install_workflow_deps",
+   "tool": "comfy_install_workflow_deps",
+   "relpath": "src/comfy_mcp/tools/auto_fix_deps.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 80,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ]
+  },
+  {
+   "tree": "v3-dreamrec__comfypilot",
+   "unit": "comfy_send_to_blender",
+   "tool": "comfy_send_to_blender",
+   "relpath": "src/comfy_mcp/tools/output_routing.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 55,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ]
+  },
+  {
+   "tree": "v3-dreamrec__comfypilot",
+   "unit": "comfy_send_to_disk",
+   "tool": "comfy_send_to_disk",
+   "relpath": "src/comfy_mcp/tools/output_routing.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 55,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ]
+  },
+  {
+   "tree": "v3-dreamrec__comfypilot",
+   "unit": "comfy_send_to_td",
+   "tool": "comfy_send_to_td",
+   "relpath": "src/comfy_mcp/tools/output_routing.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 55,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ]
+  },
+  {
+   "tree": "v3-evgenygurin__dj-music-plugin",
+   "unit": "render_diagnose",
+   "tool": "render_diagnose",
+   "relpath": "app/handlers/render_diagnose.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 23,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-evgenygurin__dj-music-plugin",
+   "unit": "render_diagnose",
+   "tool": "render_diagnose",
+   "relpath": "app/handlers/render_diagnose.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.write_text",
+   "lineno": 70,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-evgenygurin__dj-music-plugin",
+   "unit": "render_validate_grid",
+   "tool": "render_validate_grid",
+   "relpath": "app/handlers/render_validate_grid.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 128,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-evgenygurin__dj-music-plugin",
+   "unit": "render_validate_grid",
+   "tool": "render_validate_grid",
+   "relpath": "app/handlers/render_validate_grid.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.write_text",
+   "lineno": 129,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-ignatenkofi__memshelf-mcp",
+   "unit": "memshelf_rebuild",
+   "tool": "memshelf_rebuild",
+   "relpath": "src/memshelf_mcp/core/rebuild.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.unlink",
+   "lineno": 288,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ]
+  },
+  {
+   "tree": "v3-ignatenkofi__memshelf-mcp",
+   "unit": "memshelf_resolve",
+   "tool": "memshelf_resolve",
+   "relpath": "src/memshelf_mcp/core/rebuild.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.unlink",
+   "lineno": 288,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ]
+  },
+  {
+   "tree": "v3-ignatenkofi__memshelf-mcp",
+   "unit": "memshelf_shelve",
+   "tool": "memshelf_shelve",
+   "relpath": "src/memshelf_mcp/core/shelve.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.unlink",
+   "lineno": 630,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ]
+  },
+  {
+   "tree": "v3-kolonelpanik__synapse-s2",
+   "unit": "list_spiking_context_cursors",
+   "tool": "list_spiking_context_cursors",
+   "relpath": "memory_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 210,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-kolonelpanik__synapse-s2",
+   "unit": "list_spiking_context_cursors",
+   "tool": "list_spiking_context_cursors",
+   "relpath": "memory_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.executemany",
+   "lineno": 247,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-kolonelpanik__synapse-s2",
+   "unit": "list_spiking_context_cursors",
+   "tool": "list_spiking_context_cursors",
+   "relpath": "memory_store.py",
+   "effect_kind": "DB",
+   "site": "sqlite3.Connection.executescript",
+   "lineno": 212,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-kolonelpanik__synapse-s2",
+   "unit": "pull_spiking_context_deployments",
+   "tool": "pull_spiking_context_deployments",
+   "relpath": "memory_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 210,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-kolonelpanik__synapse-s2",
+   "unit": "pull_spiking_context_deployments",
+   "tool": "pull_spiking_context_deployments",
+   "relpath": "memory_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.executemany",
+   "lineno": 247,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-kolonelpanik__synapse-s2",
+   "unit": "pull_spiking_context_deployments",
+   "tool": "pull_spiking_context_deployments",
+   "relpath": "memory_store.py",
+   "effect_kind": "DB",
+   "site": "sqlite3.Connection.executescript",
+   "lineno": 212,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-lazyseaseal__validationtpmcp",
+   "unit": "download_attachments",
+   "tool": "download_attachments",
+   "relpath": "src/mcp_atlassian/jira/attachments.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 49,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-lazyseaseal__validationtpmcp",
+   "unit": "download_attachments",
+   "tool": "download_attachments",
+   "relpath": "src/mcp_atlassian/jira/attachments.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 42,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-lazyseaseal__validationtpmcp",
+   "unit": "download_attachments",
+   "tool": "download_attachments",
+   "relpath": "src/mcp_atlassian/jira/attachments.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 91,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-muduiclaw__clawking",
+   "unit": "op_get",
+   "tool": "op_get",
+   "relpath": "workspace/mcp-bridge/server.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 101,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1",
+    "D3"
+   ]
+  },
+  {
+   "tree": "v3-muduiclaw__clawking",
+   "unit": "op_get_raw",
+   "tool": "op_get_raw",
+   "relpath": "workspace/mcp-bridge/server.py",
+   "effect_kind": "SPAWN",
+   "site": "subprocess.run",
+   "lineno": 101,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1",
+    "D3"
+   ]
+  },
+  {
+   "tree": "v3-nebelov__yandex-direct-for-all",
+   "unit": "yd_api",
+   "tool": "yd_api",
+   "relpath": "plugins/yandex-direct-for-all/mcp/yandex-direct/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 103,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-nebelov__yandex-direct-for-all",
+   "unit": "yd_api",
+   "tool": "yd_api",
+   "relpath": "plugins/yandex-direct-for-all/mcp/yandex-direct/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 115,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-nebelov__yandex-direct-for-all",
+   "unit": "yd_api",
+   "tool": "yd_api",
+   "relpath": "plugins/yandex-direct-for-all/mcp/yandex-direct/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 119,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-nebelov__yandex-direct-for-all",
+   "unit": "yd_api",
+   "tool": "yd_api",
+   "relpath": "plugins/yandex-direct-for-all/mcp/yandex-direct/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 102,
+   "destructive": false,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-nodus-compute__nodus-sdk-python",
+   "unit": "create_server.download_workload_output",
+   "tool": "download_workload_output",
+   "relpath": "nodus/_outputs.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 98,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ]
+  },
+  {
+   "tree": "v3-p-v1shnu__pressure-harness",
+   "unit": "spike_return_image",
+   "tool": "spike_return_image",
+   "relpath": "src/pharness/core/tools/files.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 144,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-p-v1shnu__pressure-harness",
+   "unit": "spike_return_image",
+   "tool": "spike_return_image",
+   "relpath": "src/pharness/core/tools/files.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.write_bytes",
+   "lineno": 145,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.get_context",
+   "tool": "get_context",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 149,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.get_context",
+   "tool": "get_context",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 152,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.get_context",
+   "tool": "get_context",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "DB",
+   "site": "sqlite3.Connection.executescript",
+   "lineno": 157,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.intro",
+   "tool": "intro",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 149,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.intro",
+   "tool": "intro",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 152,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.intro",
+   "tool": "intro",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "DB",
+   "site": "sqlite3.Connection.executescript",
+   "lineno": 157,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.search",
+   "tool": "search",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 149,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.search",
+   "tool": "search",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 152,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.search",
+   "tool": "search",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "DB",
+   "site": "sqlite3.Connection.executescript",
+   "lineno": 157,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.search_deep",
+   "tool": "search_deep",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 149,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.search_deep",
+   "tool": "search_deep",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 152,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.search_deep",
+   "tool": "search_deep",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "DB",
+   "site": "sqlite3.Connection.executescript",
+   "lineno": 157,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.wiki_get_page",
+   "tool": "wiki_get_page",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 149,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.wiki_get_page",
+   "tool": "wiki_get_page",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 152,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.wiki_get_page",
+   "tool": "wiki_get_page",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "DB",
+   "site": "sqlite3.Connection.executescript",
+   "lineno": 157,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.wiki_search",
+   "tool": "wiki_search",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 149,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.wiki_search",
+   "tool": "wiki_search",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 152,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-sidskarkii__lore",
+   "unit": "_register_tools.wiki_search",
+   "tool": "wiki_search",
+   "relpath": "src/lore/core/database.py",
+   "effect_kind": "DB",
+   "site": "sqlite3.Connection.executescript",
+   "lineno": 157,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "create_report",
+   "tool": "create_report",
+   "relpath": "src/tekla_mcp_server/providers/operations_provider.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.unlink",
+   "lineno": 1014,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "export_drawings",
+   "tool": "export_drawings",
+   "relpath": "src/tekla_mcp_server/drawing_export.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 130,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "export_drawings",
+   "tool": "export_drawings",
+   "relpath": "src/tekla_mcp_server/providers/drawings_provider.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.unlink",
+   "lineno": 881,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "export_drawings",
+   "tool": "export_drawings",
+   "relpath": "src/tekla_mcp_server/drawing_export.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.write_bytes",
+   "lineno": 131,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "export_drawings",
+   "tool": "export_drawings",
+   "relpath": "src/tekla_mcp_server/providers/drawings_provider.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.write_text",
+   "lineno": 871,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "export_drawings",
+   "tool": "export_drawings",
+   "relpath": "src/tekla_mcp_server/tekla/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "shutil.copy2",
+   "lineno": 557,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "print_drawings",
+   "tool": "print_drawings",
+   "relpath": "src/tekla_mcp_server/tekla/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 130,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "print_drawings",
+   "tool": "print_drawings",
+   "relpath": "src/tekla_mcp_server/providers/drawings_provider.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.unlink",
+   "lineno": 674,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "print_drawings",
+   "tool": "print_drawings",
+   "relpath": "src/tekla_mcp_server/drawing_export.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.write_bytes",
+   "lineno": 131,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "print_drawings",
+   "tool": "print_drawings",
+   "relpath": "src/tekla_mcp_server/providers/drawings_provider.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.write_text",
+   "lineno": 664,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "print_drawings",
+   "tool": "print_drawings",
+   "relpath": "src/tekla_mcp_server/tekla/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "shutil.copy2",
+   "lineno": 557,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "select_model_objects_from_drawings",
+   "tool": "select_model_objects_from_drawings",
+   "relpath": "src/tekla_mcp_server/tekla/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 556,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-teknovizier__tekla_mcp_server",
+   "unit": "select_model_objects_from_drawings",
+   "tool": "select_model_objects_from_drawings",
+   "relpath": "src/tekla_mcp_server/tekla/utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "shutil.copy2",
+   "lineno": 557,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  },
+  {
+   "tree": "v3-typerobot__klavis",
+   "unit": "main.call_tool",
+   "tool": null,
+   "relpath": "mcp_servers/google_slides/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 123,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ]
+  }
+ ]
+}

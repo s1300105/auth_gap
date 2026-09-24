@@ -36,7 +36,8 @@ def load_reasons(run_dir: str) -> dict:
     """`{(木, qualname, site, kind): {宣言: {(status, reason)}}}` を行の注記から作る。"""
     out: dict = collections.defaultdict(lambda: collections.defaultdict(set))
     for fn in sorted(os.listdir(run_dir)):
-        if not fn.startswith("v2-") or not fn.endswith(".json"):
+        # 木ごとの manifest（v2- / v3- …）。要約とは別のファイル。
+        if not fn.endswith(".json") or fn in ("summary.json", "contradictions.json") or "-" not in fn:
             continue
         t = fn[:-5]
         for u in json.load(open(os.path.join(run_dir, fn), encoding="utf-8"))["units"]:

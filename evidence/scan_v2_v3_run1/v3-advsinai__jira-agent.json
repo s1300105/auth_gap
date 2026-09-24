@@ -1,0 +1,550 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [
+    {
+      "candidates": [],
+      "form": "subscript",
+      "lineno": 214,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "src/jira_agent/mcp_server.py",
+      "resolution": "opaque",
+      "selector": "SessionMessage | Exception",
+      "selector_is_model": false
+    },
+    {
+      "candidates": [],
+      "form": "subscript",
+      "lineno": 217,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "src/jira_agent/mcp_server.py",
+      "resolution": "opaque",
+      "selector": "SessionMessage",
+      "selector_is_model": false
+    }
+  ],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {},
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.13,
+    "run_id": "v3_run1",
+    "src_root": "/home/user/auth_gap/corpus/v3-advsinai__jira-agent"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "idempotentHint",
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 169,
+        "module": "src.jira_agent.mcp_server",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "Annotated[str, Field(description='Issue key, e.g. SCRUM-12.')]",
+            "index": 1,
+            "name": "issue_key"
+          },
+          {
+            "annotation": "Annotated[str, Field(description='Plain-text comment body.')]",
+            "index": 2,
+            "name": "body"
+          }
+        ],
+        "qualname": "create_server.add_comment",
+        "relpath": "src/jira_agent/mcp_server.py",
+        "schema_hash": "03c3de14ae3d",
+        "tool_name": "add_comment",
+        "unit_id": "mcp:create_server.add_comment:03c3de14ae3d"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "idempotent": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "assignee",
+          "site": "src/jira_agent/jira_client.py:L131",
+          "transform": "str.lower"
+        },
+        {
+          "root": "assignee",
+          "site": "src/jira_agent/jira_client.py:L133",
+          "transform": "str.lower"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 189,
+        "module": "src.jira_agent.mcp_server",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "Annotated[str, Field(description='Issue key, e.g. SCRUM-12.')]",
+            "index": 1,
+            "name": "issue_key"
+          },
+          {
+            "annotation": "Annotated[str, Field(description='Email, display name, me, or unassigned.')]",
+            "index": 2,
+            "name": "assignee"
+          }
+        ],
+        "qualname": "create_server.assign_issue",
+        "relpath": "src/jira_agent/mcp_server.py",
+        "schema_hash": "2973abfe71af",
+        "tool_name": "assign_issue",
+        "unit_id": "mcp:create_server.assign_issue:2973abfe71af"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "idempotentHint",
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 68,
+        "module": "src.jira_agent.mcp_server",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "Annotated[str, Field(description='Project key, e.g. SCRUM.')]",
+            "index": 1,
+            "name": "project_key"
+          },
+          {
+            "annotation": "Annotated[str, Field(description='One-line issue title.')]",
+            "index": 2,
+            "name": "summary"
+          },
+          {
+            "annotation": "Annotated[str, Field(description='Issue type such as Bug, Task, Story, or Epic.')]",
+            "default": "'Task'",
+            "index": 3,
+            "name": "issue_type"
+          },
+          {
+            "annotation": "Annotated[str | None, Field(description='Priority name: Highest, High, Medium, Low, or Lowest. Map P1 through P5 in that order.')]",
+            "default": "None",
+            "index": 4,
+            "name": "priority"
+          },
+          {
+            "annotation": "Annotated[str | None, Field(description='Optional longer-form description.')]",
+            "default": "None",
+            "index": 5,
+            "name": "description"
+          }
+        ],
+        "qualname": "create_server.create_issue",
+        "relpath": "src/jira_agent/mcp_server.py",
+        "schema_hash": "7aa921f3398d",
+        "tool_name": "create_issue",
+        "unit_id": "mcp:create_server.create_issue:7aa921f3398d"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "closed_world": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "openWorldHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "ctx[\"fields\"]",
+          "site": "src/jira_agent/mcp_server.py:L32",
+          "transform": "str.replace"
+        },
+        {
+          "root": "ctx[\"fields\"]",
+          "site": "src/jira_agent/mcp_server.py:L32",
+          "transform": "str.replace"
+        },
+        {
+          "root": "ctx[\"fields\"]",
+          "site": "src/jira_agent/mcp_server.py:L32",
+          "transform": "str.replace"
+        },
+        {
+          "root": "ctx[\"fields\"]",
+          "site": "src/jira_agent/mcp_server.py:L32",
+          "transform": "str.replace"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 102,
+        "module": "src.jira_agent.mcp_server",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "Annotated[str, Field(description='A valid JQL query string.')]",
+            "index": 1,
+            "name": "jql"
+          },
+          {
+            "annotation": "Annotated[int, Field(ge=1, le=MAX_SEARCH_RESULTS, description='Maximum issues to return, from 1 to 50.')]",
+            "default": "20",
+            "index": 2,
+            "name": "max_results"
+          }
+        ],
+        "qualname": "create_server.search_issues",
+        "relpath": "src/jira_agent/mcp_server.py",
+        "schema_hash": "82aac537af9d",
+        "tool_name": "search_issues",
+        "unit_id": "mcp:create_server.search_issues:82aac537af9d"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "closed_world": true,
+        "explicit": [],
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "openWorldHint",
+          "readOnlyHint"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "ctx[\"transitions\"][\"name\"]",
+          "site": "src/jira_agent/jira_client.py:L108",
+          "transform": "str.lower"
+        },
+        {
+          "root": "issue_key[\"transitions\"][\"name\"]",
+          "site": "src/jira_agent/jira_client.py:L108",
+          "transform": "str.lower"
+        },
+        {
+          "root": "transition_name",
+          "site": "src/jira_agent/jira_client.py:L108",
+          "transform": "str.lower"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 147,
+        "module": "src.jira_agent.mcp_server",
+        "params": [
+          {
+            "annotation": "Context[AppContext]",
+            "index": 0,
+            "name": "ctx"
+          },
+          {
+            "annotation": "Annotated[str, Field(description='Issue key, e.g. SCRUM-12.')]",
+            "index": 1,
+            "name": "issue_key"
+          },
+          {
+            "annotation": "Annotated[str, Field(description='Workflow transition name, e.g. In Progress.')]",
+            "index": 2,
+            "name": "transition_name"
+          }
+        ],
+        "qualname": "create_server.transition_issue",
+        "relpath": "src/jira_agent/mcp_server.py",
+        "schema_hash": "0a7d485ef404",
+        "tool_name": "transition_issue",
+        "unit_id": "mcp:create_server.transition_issue:0a7d485ef404"
+      },
+      "validator_shapes": []
+    }
+  ]
+}

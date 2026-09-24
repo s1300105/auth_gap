@@ -1,0 +1,975 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {},
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.198,
+    "run_id": "v3_run1",
+    "src_root": "/home/user/auth_gap/corpus/v3-porkbutts__gsheets-mcp-server"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "db_unresolved": [
+        {
+          "lineno": 685,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "gsheets_mcp_server/server.py"
+        }
+      ],
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Add a Sheet/Tab"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 666,
+        "module": "gsheets_mcp_server.server",
+        "params": [
+          {
+            "annotation": "AddSheetInput",
+            "index": 0,
+            "name": "params"
+          }
+        ],
+        "qualname": "gsheets_add_sheet",
+        "relpath": "gsheets_mcp_server/server.py",
+        "schema_hash": "6325c3eb5090",
+        "tool_name": "gsheets_add_sheet",
+        "unit_id": "mcp:gsheets_add_sheet:6325c3eb5090"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "db_unresolved": [
+        {
+          "lineno": 572,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "gsheets_mcp_server/server.py"
+        }
+      ],
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Append Rows"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 554,
+        "module": "gsheets_mcp_server.server",
+        "params": [
+          {
+            "annotation": "AppendRowsInput",
+            "index": 0,
+            "name": "params"
+          }
+        ],
+        "qualname": "gsheets_append_rows",
+        "relpath": "gsheets_mcp_server/server.py",
+        "schema_hash": "0323434719a5",
+        "tool_name": "gsheets_append_rows",
+        "unit_id": "mcp:gsheets_append_rows:0323434719a5"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "db_unresolved": [
+        {
+          "lineno": 464,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "gsheets_mcp_server/server.py"
+        }
+      ],
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "Read Multiple Ranges"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 449,
+        "module": "gsheets_mcp_server.server",
+        "params": [
+          {
+            "annotation": "BatchReadRangesInput",
+            "index": 0,
+            "name": "params"
+          }
+        ],
+        "qualname": "gsheets_batch_read_ranges",
+        "relpath": "gsheets_mcp_server/server.py",
+        "schema_hash": "5c6baab84815",
+        "tool_name": "gsheets_batch_read_ranges",
+        "unit_id": "mcp:gsheets_batch_read_ranges:5c6baab84815"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "db_unresolved": [
+        {
+          "lineno": 767,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "gsheets_mcp_server/server.py"
+        }
+      ],
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": true,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Clear Cell Values"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 754,
+        "module": "gsheets_mcp_server.server",
+        "params": [
+          {
+            "annotation": "ClearRangeInput",
+            "index": 0,
+            "name": "params"
+          }
+        ],
+        "qualname": "gsheets_clear_range",
+        "relpath": "gsheets_mcp_server/server.py",
+        "schema_hash": "d423879f5daa",
+        "tool_name": "gsheets_clear_range",
+        "unit_id": "mcp:gsheets_clear_range:d423879f5daa"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "db_unresolved": [
+        {
+          "lineno": 631,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "gsheets_mcp_server/server.py"
+        }
+      ],
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Create a Spreadsheet"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 609,
+        "module": "gsheets_mcp_server.server",
+        "params": [
+          {
+            "annotation": "CreateSpreadsheetInput",
+            "index": 0,
+            "name": "params"
+          }
+        ],
+        "qualname": "gsheets_create_spreadsheet",
+        "relpath": "gsheets_mcp_server/server.py",
+        "schema_hash": "67798d66c5af",
+        "tool_name": "gsheets_create_spreadsheet",
+        "unit_id": "mcp:gsheets_create_spreadsheet:67798d66c5af"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "db_unresolved": [
+        {
+          "lineno": 734,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "gsheets_mcp_server/server.py"
+        }
+      ],
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": true,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Delete a Sheet/Tab"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 713,
+        "module": "gsheets_mcp_server.server",
+        "params": [
+          {
+            "annotation": "DeleteSheetInput",
+            "index": 0,
+            "name": "params"
+          }
+        ],
+        "qualname": "gsheets_delete_sheet",
+        "relpath": "gsheets_mcp_server/server.py",
+        "schema_hash": "a891225258eb",
+        "tool_name": "gsheets_delete_sheet",
+        "unit_id": "mcp:gsheets_delete_sheet:a891225258eb"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "params",
+          "site": "gsheets_mcp_server/server.py:L843",
+          "transform": "str.upper"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "db_unresolved": [
+        {
+          "lineno": 867,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "gsheets_mcp_server/server.py"
+        }
+      ],
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Format Cells"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 794,
+        "module": "gsheets_mcp_server.server",
+        "params": [
+          {
+            "annotation": "FormatCellsInput",
+            "index": 0,
+            "name": "params"
+          }
+        ],
+        "qualname": "gsheets_format_cells",
+        "relpath": "gsheets_mcp_server/server.py",
+        "schema_hash": "8cfa398905b2",
+        "tool_name": "gsheets_format_cells",
+        "unit_id": "mcp:gsheets_format_cells:8cfa398905b2"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "db_unresolved": [
+        {
+          "lineno": 364,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "gsheets_mcp_server/server.py"
+        }
+      ],
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "Get Spreadsheet Metadata"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 350,
+        "module": "gsheets_mcp_server.server",
+        "params": [
+          {
+            "annotation": "GetSpreadsheetInput",
+            "index": 0,
+            "name": "params"
+          }
+        ],
+        "qualname": "gsheets_get_spreadsheet",
+        "relpath": "gsheets_mcp_server/server.py",
+        "schema_hash": "6946163a47a0",
+        "tool_name": "gsheets_get_spreadsheet",
+        "unit_id": "mcp:gsheets_get_spreadsheet:6946163a47a0"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "params",
+          "site": "gsheets_mcp_server/server.py:L295",
+          "transform": "str.replace"
+        },
+        {
+          "root": "params",
+          "site": "gsheets_mcp_server/server.py:L295",
+          "transform": "str.replace"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "db_unresolved": [
+        {
+          "lineno": 299,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "gsheets_mcp_server/server.py"
+        }
+      ],
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "List Google Spreadsheets"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 278,
+        "module": "gsheets_mcp_server.server",
+        "params": [
+          {
+            "annotation": "ListSpreadsheetsInput",
+            "index": 0,
+            "name": "params"
+          }
+        ],
+        "qualname": "gsheets_list_spreadsheets",
+        "relpath": "gsheets_mcp_server/server.py",
+        "schema_hash": "aa49444102e1",
+        "tool_name": "gsheets_list_spreadsheets",
+        "unit_id": "mcp:gsheets_list_spreadsheets:aa49444102e1"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint",
+          "title"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "db_unresolved": [
+        {
+          "lineno": 417,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "gsheets_mcp_server/server.py"
+        }
+      ],
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": true,
+          "title": "Read Cell Values"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 403,
+        "module": "gsheets_mcp_server.server",
+        "params": [
+          {
+            "annotation": "ReadRangeInput",
+            "index": 0,
+            "name": "params"
+          }
+        ],
+        "qualname": "gsheets_read_range",
+        "relpath": "gsheets_mcp_server/server.py",
+        "schema_hash": "332a29f5126f",
+        "tool_name": "gsheets_read_range",
+        "unit_id": "mcp:gsheets_read_range:332a29f5126f"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint",
+          "openWorldHint"
+        ],
+        "idempotent": true,
+        "open_world": true,
+        "present_no_bound": [
+          "idempotentHint",
+          "readOnlyHint",
+          "title"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "db_unresolved": [
+        {
+          "lineno": 517,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "gsheets_mcp_server/server.py"
+        }
+      ],
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true,
+          "readOnlyHint": false,
+          "title": "Write Cell Values"
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 500,
+        "module": "gsheets_mcp_server.server",
+        "params": [
+          {
+            "annotation": "WriteRangeInput",
+            "index": 0,
+            "name": "params"
+          }
+        ],
+        "qualname": "gsheets_write_range",
+        "relpath": "gsheets_mcp_server/server.py",
+        "schema_hash": "a0243694d3d8",
+        "tool_name": "gsheets_write_range",
+        "unit_id": "mcp:gsheets_write_range:a0243694d3d8"
+      },
+      "validator_shapes": []
+    }
+  ]
+}

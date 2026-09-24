@@ -1,0 +1,936 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [
+    {
+      "candidates": [
+        "ValueError"
+      ],
+      "form": "if_chain",
+      "lineno": 92,
+      "opaque_reason": null,
+      "relpath": "qwen_worker_server.py",
+      "resolution": "resolved",
+      "selector": "resolved",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "ValueError"
+      ],
+      "form": "if_chain",
+      "lineno": 105,
+      "opaque_reason": null,
+      "relpath": "qwen_worker_server.py",
+      "resolution": "resolved",
+      "selector": "b'\\x00'",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "RuntimeError"
+      ],
+      "form": "if_chain",
+      "lineno": 205,
+      "opaque_reason": null,
+      "relpath": "qwen_worker_server.py",
+      "resolution": "resolved",
+      "selector": "finish_reason",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "_text_field"
+      ],
+      "form": "if_chain",
+      "lineno": 217,
+      "opaque_reason": null,
+      "relpath": "qwen_worker_server.py",
+      "resolution": "resolved",
+      "selector": "'content'",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "_text_field"
+      ],
+      "form": "if_chain",
+      "lineno": 222,
+      "opaque_reason": null,
+      "relpath": "qwen_worker_server.py",
+      "resolution": "resolved",
+      "selector": "alternate",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [],
+      "form": "if_chain",
+      "lineno": 454,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "qwen_worker_server.py",
+      "resolution": "opaque",
+      "selector": "data",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [],
+      "form": "if_chain",
+      "lineno": 476,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "qwen_worker_server.py",
+      "resolution": "opaque",
+      "selector": "choices",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "_stream_text",
+        "final_parts.append"
+      ],
+      "form": "if_chain",
+      "lineno": 492,
+      "opaque_reason": null,
+      "relpath": "qwen_worker_server.py",
+      "resolution": "resolved",
+      "selector": "'content'",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "_stream_text",
+        "final_parts.append"
+      ],
+      "form": "if_chain",
+      "lineno": 495,
+      "opaque_reason": null,
+      "relpath": "qwen_worker_server.py",
+      "resolution": "resolved",
+      "selector": "alternate",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "_stream_text",
+        "len"
+      ],
+      "form": "if_chain",
+      "lineno": 497,
+      "opaque_reason": null,
+      "relpath": "qwen_worker_server.py",
+      "resolution": "resolved",
+      "selector": "'reasoning_content'",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "RuntimeError"
+      ],
+      "form": "if_chain",
+      "lineno": 527,
+      "opaque_reason": null,
+      "relpath": "qwen_worker_server.py",
+      "resolution": "resolved",
+      "selector": "finish_reason",
+      "selector_is_model": true
+    }
+  ],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {
+    "NODOM(no_gate)": 2
+  },
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.404,
+    "run_id": "v3_run1",
+    "src_root": "/home/user/auth_gap/corpus/v3-ertugrulcetinkaya-ai__qwen-codex-worker"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "open_world": true,
+        "present_no_bound": [
+          "destructiveHint",
+          "idempotentHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "task",
+          "site": "qwen_worker_server.py:L604",
+          "transform": "str.strip"
+        },
+        {
+          "root": "repo_root",
+          "site": "qwen_worker_server.py:L72",
+          "transform": "Path()"
+        },
+        {
+          "root": "repo_root",
+          "site": "qwen_worker_server.py:L72",
+          "transform": "Path.resolve"
+        },
+        {
+          "root": "files",
+          "site": "qwen_worker_server.py:L82",
+          "transform": "Path()"
+        },
+        {
+          "root": "files",
+          "site": "qwen_worker_server.py:L86",
+          "transform": "Path.resolve"
+        },
+        {
+          "root": "repo_root",
+          "site": "qwen_worker_server.py:L86",
+          "transform": "Path.resolve"
+        },
+        {
+          "root": "files",
+          "site": "qwen_worker_server.py:L108",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "repo_root",
+          "site": "qwen_worker_server.py:L108",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "files",
+          "site": "qwen_worker_server.py:L82",
+          "transform": "Path()"
+        },
+        {
+          "root": "files",
+          "site": "qwen_worker_server.py:L86",
+          "transform": "Path.resolve"
+        },
+        {
+          "root": "repo_root",
+          "site": "qwen_worker_server.py:L86",
+          "transform": "Path.resolve"
+        },
+        {
+          "root": "files",
+          "site": "qwen_worker_server.py:L108",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "repo_root",
+          "site": "qwen_worker_server.py:L108",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "files",
+          "site": "qwen_worker_server.py:L158",
+          "transform": "str.split"
+        },
+        {
+          "root": "repo_root",
+          "site": "qwen_worker_server.py:L158",
+          "transform": "str.split"
+        },
+        {
+          "root": "task",
+          "site": "qwen_worker_server.py:L158",
+          "transform": "str.split"
+        },
+        {
+          "root": "test_output",
+          "site": "qwen_worker_server.py:L158",
+          "transform": "str.split"
+        },
+        {
+          "root": "files",
+          "site": "qwen_worker_server.py:L453",
+          "transform": "str.strip"
+        },
+        {
+          "root": "repo_root",
+          "site": "qwen_worker_server.py:L453",
+          "transform": "str.strip"
+        },
+        {
+          "root": "task",
+          "site": "qwen_worker_server.py:L453",
+          "transform": "str.strip"
+        },
+        {
+          "root": "test_output",
+          "site": "qwen_worker_server.py:L453",
+          "transform": "str.strip"
+        },
+        {
+          "root": "files",
+          "site": "qwen_worker_server.py:L453",
+          "transform": "str.strip"
+        },
+        {
+          "root": "repo_root",
+          "site": "qwen_worker_server.py:L453",
+          "transform": "str.strip"
+        },
+        {
+          "root": "task",
+          "site": "qwen_worker_server.py:L453",
+          "transform": "str.strip"
+        },
+        {
+          "root": "test_output",
+          "site": "qwen_worker_server.py:L453",
+          "transform": "str.strip"
+        },
+        {
+          "root": "files",
+          "site": "qwen_worker_server.py:L529",
+          "transform": "str.strip"
+        },
+        {
+          "root": "files[\"content\"]",
+          "site": "qwen_worker_server.py:L529",
+          "transform": "str.strip"
+        },
+        {
+          "root": "repo_root",
+          "site": "qwen_worker_server.py:L529",
+          "transform": "str.strip"
+        },
+        {
+          "root": "repo_root[\"content\"]",
+          "site": "qwen_worker_server.py:L529",
+          "transform": "str.strip"
+        },
+        {
+          "root": "task",
+          "site": "qwen_worker_server.py:L529",
+          "transform": "str.strip"
+        },
+        {
+          "root": "task[\"content\"]",
+          "site": "qwen_worker_server.py:L529",
+          "transform": "str.strip"
+        },
+        {
+          "root": "test_output",
+          "site": "qwen_worker_server.py:L529",
+          "transform": "str.strip"
+        },
+        {
+          "root": "test_output[\"content\"]",
+          "site": "qwen_worker_server.py:L529",
+          "transform": "str.strip"
+        },
+        {
+          "root": "files",
+          "site": "qwen_worker_server.py:L280",
+          "transform": "str.strip"
+        },
+        {
+          "root": "files[\"content\"]",
+          "site": "qwen_worker_server.py:L280",
+          "transform": "str.strip"
+        },
+        {
+          "root": "repo_root",
+          "site": "qwen_worker_server.py:L280",
+          "transform": "str.strip"
+        },
+        {
+          "root": "repo_root[\"content\"]",
+          "site": "qwen_worker_server.py:L280",
+          "transform": "str.strip"
+        },
+        {
+          "root": "task",
+          "site": "qwen_worker_server.py:L280",
+          "transform": "str.strip"
+        },
+        {
+          "root": "task[\"content\"]",
+          "site": "qwen_worker_server.py:L280",
+          "transform": "str.strip"
+        },
+        {
+          "root": "test_output",
+          "site": "qwen_worker_server.py:L280",
+          "transform": "str.strip"
+        },
+        {
+          "root": "test_output[\"content\"]",
+          "site": "qwen_worker_server.py:L280",
+          "transform": "str.strip"
+        },
+        {
+          "root": "files",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "str.strip"
+        },
+        {
+          "root": "files[\"content\"]",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "str.strip"
+        },
+        {
+          "root": "repo_root",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "str.strip"
+        },
+        {
+          "root": "repo_root[\"content\"]",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "str.strip"
+        },
+        {
+          "root": "task",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "str.strip"
+        },
+        {
+          "root": "task[\"content\"]",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "str.strip"
+        },
+        {
+          "root": "test_output",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "str.strip"
+        },
+        {
+          "root": "test_output[\"content\"]",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "str.strip"
+        },
+        {
+          "root": "files",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "Path()"
+        },
+        {
+          "root": "files[\"content\"]",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "Path()"
+        },
+        {
+          "root": "repo_root",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "Path()"
+        },
+        {
+          "root": "repo_root[\"content\"]",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "Path()"
+        },
+        {
+          "root": "task",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "Path()"
+        },
+        {
+          "root": "task[\"content\"]",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "Path()"
+        },
+        {
+          "root": "test_output",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "Path()"
+        },
+        {
+          "root": "test_output[\"content\"]",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "Path()"
+        },
+        {
+          "root": "files",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "str.strip"
+        },
+        {
+          "root": "files[\"content\"]",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "str.strip"
+        },
+        {
+          "root": "repo_root",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "str.strip"
+        },
+        {
+          "root": "repo_root[\"content\"]",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "str.strip"
+        },
+        {
+          "root": "task",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "str.strip"
+        },
+        {
+          "root": "task[\"content\"]",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "str.strip"
+        },
+        {
+          "root": "test_output",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "str.strip"
+        },
+        {
+          "root": "test_output[\"content\"]",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "str.strip"
+        },
+        {
+          "root": "files",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "Path()"
+        },
+        {
+          "root": "files[\"content\"]",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "Path()"
+        },
+        {
+          "root": "repo_root",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "Path()"
+        },
+        {
+          "root": "repo_root[\"content\"]",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "Path()"
+        },
+        {
+          "root": "task",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "Path()"
+        },
+        {
+          "root": "task[\"content\"]",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "Path()"
+        },
+        {
+          "root": "test_output",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "Path()"
+        },
+        {
+          "root": "test_output[\"content\"]",
+          "site": "qwen_worker_server.py:L283",
+          "transform": "Path()"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 647,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 104,
+          "relpath": "qwen_worker_server.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.read_bytes",
+          "slots": {
+            "path": {
+              "attrs": [
+                "canonicalised"
+              ],
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "files",
+                "repo_root"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "roots": [
+                    "repo_root"
+                  ],
+                  "shape": {
+                    "k": "Unknown"
+                  }
+                },
+                "k": "Path",
+                "segs": [
+                  {
+                    "prin": "MODEL",
+                    "prov": "resolved",
+                    "roots": [
+                      "files"
+                    ],
+                    "shape": {
+                      "base": {
+                        "prin": "MODEL",
+                        "prov": "resolved",
+                        "roots": [
+                          "files"
+                        ],
+                        "shape": {
+                          "formal": "files",
+                          "k": "Atom"
+                        }
+                      },
+                      "k": "Path",
+                      "segs": []
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "run_qwen_worker",
+            "_read_supplied_files"
+          ]
+        },
+        {
+          "entry_lineno": 647,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 104,
+          "relpath": "qwen_worker_server.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.read_bytes",
+          "slots": {
+            "path": {
+              "attrs": [
+                "canonicalised"
+              ],
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "files",
+                "repo_root"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "roots": [
+                    "repo_root"
+                  ],
+                  "shape": {
+                    "k": "Unknown"
+                  }
+                },
+                "k": "Path",
+                "segs": [
+                  {
+                    "prin": "MODEL",
+                    "prov": "resolved",
+                    "roots": [
+                      "files"
+                    ],
+                    "shape": {
+                      "base": {
+                        "prin": "MODEL",
+                        "prov": "resolved",
+                        "roots": [
+                          "files"
+                        ],
+                        "shape": {
+                          "formal": "files",
+                          "k": "Atom"
+                        }
+                      },
+                      "k": "Path",
+                      "segs": []
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "run_qwen_worker",
+            "_read_supplied_files"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL",
+        "1:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 104,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "D_layer_present:kind:FS_READ"
+          ],
+          "relpath": "qwen_worker_server.py",
+          "site": "pathlib.Path.read_bytes",
+          "slot": "path",
+          "unit_id": "mcp:qwen_patch:04ae774efba4",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 104,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "D_layer_present:kind:FS_READ"
+          ],
+          "relpath": "qwen_worker_server.py",
+          "site": "pathlib.Path.read_bytes",
+          "slot": "path",
+          "unit_id": "mcp:qwen_patch:04ae774efba4",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": true,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": true,
+        "lineno": 636,
+        "module": "qwen_worker_server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "task"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "repo_root"
+          },
+          {
+            "annotation": "list[str]",
+            "index": 2,
+            "name": "files"
+          },
+          {
+            "annotation": "str | None",
+            "default": "None",
+            "index": 3,
+            "name": "test_output"
+          }
+        ],
+        "qualname": "qwen_patch",
+        "relpath": "qwen_worker_server.py",
+        "schema_hash": "04ae774efba4",
+        "tool_name": "qwen_patch",
+        "unit_id": "mcp:qwen_patch:04ae774efba4"
+      },
+      "validator_shapes": []
+    }
+  ]
+}

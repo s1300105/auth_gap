@@ -1,0 +1,1702 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {
+    "NODOM(no_gate)": 4,
+    "NODOM(non_binding_gate)": 6
+  },
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.406,
+    "run_id": "v3_run1",
+    "src_root": "/home/user/auth_gap/corpus/v3-mordechaipotash__brain-mcp"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": []
+      },
+      "alias_facts": [
+        {
+          "root": "dest",
+          "site": "brain_mcp/recorder/api.py:L288",
+          "transform": "Path()"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": true,
+          "entry_lineno": 91,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 301,
+          "relpath": "brain_mcp/recorder/api.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "shutil.copy2",
+          "slots": {
+            "content": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            },
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "dest"
+              ],
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "backup"
+          ]
+        },
+        {
+          "destructive": true,
+          "entry_lineno": 91,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 301,
+          "relpath": "brain_mcp/recorder/api.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "shutil.copy2",
+          "slots": {
+            "content": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            },
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "dest"
+              ],
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "backup"
+          ]
+        },
+        {
+          "destructive": true,
+          "entry_lineno": 91,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 301,
+          "relpath": "brain_mcp/recorder/api.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "shutil.copy2",
+          "slots": {
+            "content": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            },
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "dest"
+              ],
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "backup"
+          ]
+        },
+        {
+          "destructive": true,
+          "entry_lineno": 91,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 301,
+          "relpath": "brain_mcp/recorder/api.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "shutil.copy2",
+          "slots": {
+            "content": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            },
+            "path": {
+              "prin": "MODEL",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "roots": [
+                "dest"
+              ],
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "backup"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:content": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "api.backup",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "dest"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L91"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "api.backup",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "dest"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L91"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:content": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "api.backup",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "dest"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L91"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "api.backup",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "dest"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L91"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2:content": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "api.backup",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "dest"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L91"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "api.backup",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "dest"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L91"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "3:content": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "api.backup",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "dest"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L91"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "3:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "api.backup",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [
+                "dest"
+              ],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L91"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "3": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:content": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:path": {
+          "grade": "weak",
+          "weak_reason": "no_dash_reject"
+        },
+        "1:content": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:path": {
+          "grade": "weak",
+          "weak_reason": "no_dash_reject"
+        },
+        "2:content": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "2:path": {
+          "grade": "weak",
+          "weak_reason": "no_dash_reject"
+        },
+        "3:content": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "3:path": {
+          "grade": "weak",
+          "weak_reason": "no_dash_reject"
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL",
+        "2": "MODEL",
+        "3": "MODEL"
+      },
+      "req_val": {
+        "0:content": "MODEL",
+        "0:path": "MODEL",
+        "1:content": "MODEL",
+        "1:path": "MODEL",
+        "2:content": "MODEL",
+        "2:path": "MODEL",
+        "3:content": "MODEL",
+        "3:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 301,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "brain_mcp/recorder/api.py",
+          "site": "shutil.copy2",
+          "slot": "content",
+          "unit_id": "mcp:brain_backup:80967a0fc0c9",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 301,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "brain_mcp/recorder/api.py",
+          "rule_w": true,
+          "site": "shutil.copy2",
+          "slot": "path",
+          "unit_id": "mcp:brain_backup:80967a0fc0c9",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 301,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "brain_mcp/recorder/api.py",
+          "site": "shutil.copy2",
+          "slot": "content",
+          "unit_id": "mcp:brain_backup:80967a0fc0c9",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 301,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "brain_mcp/recorder/api.py",
+          "rule_w": true,
+          "site": "shutil.copy2",
+          "slot": "path",
+          "unit_id": "mcp:brain_backup:80967a0fc0c9",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 301,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "brain_mcp/recorder/api.py",
+          "site": "shutil.copy2",
+          "slot": "content",
+          "unit_id": "mcp:brain_backup:80967a0fc0c9",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 301,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "brain_mcp/recorder/api.py",
+          "rule_w": true,
+          "site": "shutil.copy2",
+          "slot": "path",
+          "unit_id": "mcp:brain_backup:80967a0fc0c9",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 301,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "brain_mcp/recorder/api.py",
+          "site": "shutil.copy2",
+          "slot": "content",
+          "unit_id": "mcp:brain_backup:80967a0fc0c9",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 301,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "brain_mcp/recorder/api.py",
+          "rule_w": true,
+          "site": "shutil.copy2",
+          "slot": "path",
+          "unit_id": "mcp:brain_backup:80967a0fc0c9",
+          "verdicts": [
+            "GAP_INJECT",
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 87,
+        "module": "brain_mcp.recorder.server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "dest"
+          }
+        ],
+        "qualname": "brain_backup",
+        "relpath": "brain_mcp/recorder/server.py",
+        "schema_hash": "80967a0fc0c9",
+        "tool_name": "brain_backup",
+        "unit_id": "mcp:brain_backup:80967a0fc0c9"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "db_unresolved": [
+        {
+          "lineno": 38,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "brain_mcp/recorder/api.py"
+        }
+      ],
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": true,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 79,
+        "module": "brain_mcp.recorder.server",
+        "params": [],
+        "qualname": "brain_capture_status",
+        "relpath": "brain_mcp/recorder/server.py",
+        "schema_hash": "d36d5fd42096",
+        "tool_name": "brain_capture_status",
+        "unit_id": "mcp:brain_capture_status:d36d5fd42096"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "file",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "file",
+          "site": "brain_mcp/recorder/api.py:L143",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "file",
+          "site": "brain_mcp/recorder/api.py:L145",
+          "transform": "bytes.decode"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": true,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 44,
+        "module": "brain_mcp.recorder.server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "file"
+          },
+          {
+            "annotation": "list[int]",
+            "index": 1,
+            "name": "lines"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 2,
+            "name": "expect_sha256"
+          },
+          {
+            "annotation": "int",
+            "default": "0",
+            "index": 3,
+            "name": "context"
+          }
+        ],
+        "qualname": "brain_get",
+        "relpath": "brain_mcp/recorder/server.py",
+        "schema_hash": "c2b7ed87f757",
+        "tool_name": "brain_get",
+        "unit_id": "mcp:brain_get:c2b7ed87f757"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "db_unresolved": [
+        {
+          "lineno": 38,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "brain_mcp/recorder/api.py"
+        },
+        {
+          "lineno": 225,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "brain_mcp/recorder/api.py"
+        },
+        {
+          "lineno": 225,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "brain_mcp/recorder/api.py"
+        },
+        {
+          "lineno": 38,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "brain_mcp/recorder/api.py"
+        }
+      ],
+      "effects": [
+        {
+          "entry_lineno": 74,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 220,
+          "relpath": "brain_mcp/recorder/api.py",
+          "required_by": [
+            "B2"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "glob.glob",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "health"
+          ]
+        },
+        {
+          "entry_lineno": 74,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 220,
+          "relpath": "brain_mcp/recorder/api.py",
+          "required_by": [
+            "B2"
+          ],
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "glob.glob",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            }
+          },
+          "sub_kind": "FS_READ",
+          "witness_chain": [
+            "health"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "api.health",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L74"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:path": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "api.health",
+              "node": 4,
+              "recognition": "V",
+              "subjects": [],
+              "value_grade": "weak",
+              "weak_reason": "no_dash_reject"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L74"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL",
+        "1:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 220,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "brain_mcp/recorder/api.py",
+          "site": "glob.glob",
+          "slot": "path",
+          "unit_id": "mcp:brain_health:d36d5fd42096",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_READ",
+          "lineno": 220,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "brain_mcp/recorder/api.py",
+          "site": "glob.glob",
+          "slot": "path",
+          "unit_id": "mcp:brain_health:d36d5fd42096",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 70,
+        "module": "brain_mcp.recorder.server",
+        "params": [],
+        "qualname": "brain_health",
+        "relpath": "brain_mcp/recorder/server.py",
+        "schema_hash": "d36d5fd42096",
+        "tool_name": "brain_health",
+        "unit_id": "mcp:brain_health:d36d5fd42096"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "agent[\"agent\"]",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "hours[\"agent\"]",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "limit[\"agent\"]",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "role[\"agent\"]",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "db_unresolved": [
+        {
+          "lineno": 161,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "brain_mcp/recorder/api.py"
+        },
+        {
+          "lineno": 74,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "brain_mcp/recorder/api.py"
+        },
+        {
+          "lineno": 78,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "brain_mcp/recorder/api.py"
+        },
+        {
+          "lineno": 38,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "brain_mcp/recorder/api.py"
+        }
+      ],
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 53,
+        "module": "brain_mcp.recorder.server",
+        "params": [
+          {
+            "annotation": "int",
+            "default": "24",
+            "index": 0,
+            "name": "hours"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 1,
+            "name": "agent"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 2,
+            "name": "role"
+          },
+          {
+            "annotation": "int",
+            "default": "20",
+            "index": 3,
+            "name": "limit"
+          }
+        ],
+        "qualname": "brain_recent",
+        "relpath": "brain_mcp/recorder/server.py",
+        "schema_hash": "c6dcce4e2721",
+        "tool_name": "brain_recent",
+        "unit_id": "mcp:brain_recent:c6dcce4e2721"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "agent[\"agent\"]",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "limit[\"agent\"]",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "min_rank[\"agent\"]",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "query[\"agent\"]",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "role[\"agent\"]",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "agent[\"agent\"]",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "limit[\"agent\"]",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "min_rank[\"agent\"]",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "query[\"agent\"]",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "role[\"agent\"]",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "db_unresolved": [
+        {
+          "lineno": 135,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "brain_mcp/recorder/derived.py"
+        },
+        {
+          "lineno": 136,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "brain_mcp/recorder/derived.py"
+        },
+        {
+          "lineno": 74,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "brain_mcp/recorder/api.py"
+        },
+        {
+          "lineno": 78,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "brain_mcp/recorder/api.py"
+        },
+        {
+          "lineno": 38,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "brain_mcp/recorder/api.py"
+        }
+      ],
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 32,
+        "module": "brain_mcp.recorder.server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "query"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 1,
+            "name": "agent"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 2,
+            "name": "role"
+          },
+          {
+            "annotation": "int",
+            "default": "10",
+            "index": 3,
+            "name": "limit"
+          },
+          {
+            "annotation": "float",
+            "default": "0.0",
+            "index": 4,
+            "name": "min_rank"
+          },
+          {
+            "annotation": "str",
+            "default": "'rank'",
+            "index": 5,
+            "name": "order"
+          }
+        ],
+        "qualname": "brain_search",
+        "relpath": "brain_mcp/recorder/server.py",
+        "schema_hash": "27c10ccb9331",
+        "tool_name": "brain_search",
+        "unit_id": "mcp:brain_search:27c10ccb9331"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "agent",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "date",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        },
+        {
+          "root": "limit",
+          "site": "brain_mcp/recorder/api.py:L136",
+          "transform": "bytes.decode"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "db_unresolved": [
+        {
+          "lineno": 189,
+          "method": "execute",
+          "receiver_classes": [],
+          "relpath": "brain_mcp/recorder/api.py"
+        }
+      ],
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "dynamic",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 61,
+        "module": "brain_mcp.recorder.server",
+        "params": [
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 0,
+            "name": "date"
+          },
+          {
+            "annotation": "Optional[str]",
+            "default": "None",
+            "index": 1,
+            "name": "agent"
+          },
+          {
+            "annotation": "int",
+            "default": "50",
+            "index": 2,
+            "name": "limit"
+          }
+        ],
+        "qualname": "brain_sessions",
+        "relpath": "brain_mcp/recorder/server.py",
+        "schema_hash": "d472c2ee60fd",
+        "tool_name": "brain_sessions",
+        "unit_id": "mcp:brain_sessions:d472c2ee60fd"
+      },
+      "validator_shapes": []
+    }
+  ]
+}

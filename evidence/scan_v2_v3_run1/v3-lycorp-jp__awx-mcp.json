@@ -1,0 +1,337 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": false,
+    "deny": [
+      "new-host"
+    ],
+    "excluded_files": [],
+    "source": "in_tree_exposure"
+  },
+  "dispatch_sites": [
+    {
+      "candidates": [
+        "test_local",
+        "test_remote",
+        "test_serve",
+        "test_sse"
+      ],
+      "form": "subscript",
+      "lineno": 251,
+      "opaque_reason": null,
+      "relpath": "scripts/mcp_smoke_test.py",
+      "resolution": "resolved",
+      "selector": "name",
+      "selector_is_model": false
+    },
+    {
+      "candidates": [],
+      "form": "getattr",
+      "lineno": 115,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "tests/test_name_search.py",
+      "resolution": "opaque",
+      "selector": "tool_name",
+      "selector_is_model": false
+    },
+    {
+      "candidates": [],
+      "form": "getattr",
+      "lineno": 222,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "tests/test_name_search.py",
+      "resolution": "opaque",
+      "selector": "tool",
+      "selector_is_model": false
+    },
+    {
+      "candidates": [],
+      "form": "getattr",
+      "lineno": 254,
+      "opaque_reason": "dynamic_registry",
+      "relpath": "tests/test_name_search.py",
+      "resolution": "opaque",
+      "selector": "tool",
+      "selector_is_model": false
+    }
+  ],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "8c8d2f392513dc237454f9d99da9db1e06707cb200ed5a858072377dd648d2d6",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {
+    "NODOM(no_gate)": 1
+  },
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.701,
+    "run_id": "v3_run1",
+    "src_root": "/home/user/auth_gap/corpus/v3-lycorp-jp__awx-mcp"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": []
+      },
+      "alias_facts": [
+        {
+          "root": "params",
+          "site": "awx_mcp/usage.py:L286",
+          "transform": "str.strip"
+        },
+        {
+          "root": "params",
+          "site": "awx_mcp/usage.py:L286",
+          "transform": "str.strip"
+        },
+        {
+          "root": "params",
+          "site": "awx_mcp/usage.py:L499",
+          "transform": "json.dumps"
+        }
+      ],
+      "cap_hits": [
+        "depth"
+      ],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": true,
+          "entry_lineno": 179,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 84,
+          "relpath": "awx_mcp/usage.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "os.chmod",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE",
+          "witness_chain": [
+            "_relay_tool_call",
+            "record_proxy_tool_call",
+            "_get_usage_logger",
+            "make_timed_rotating_handler"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "lowlevel_v2_on_call_tool",
+        "reason": "`2713b53`(v2.0.0b2) と `9972c21`(v2.2.0) の lowlevel/server.py に jsonschema の import が無く、src/ 内の使用は client 側の output schema 検証のみ。**v2 の lowlevel/server.py に def call_tool は存在せず、ハンドラは __init__ の on_call_tool= で渡される** / API 形状で確定",
+        "verdict": "not_enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 3,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "depth",
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "op"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 84,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "awx_mcp/usage.py",
+          "site": "os.chmod",
+          "slot": "path",
+          "unit_id": "mcp-lowlevel-v2:_run_proxy_async._call_tool:7b11fabb41ec",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "entry_kind": "lowlevel_v2",
+        "framework": "mcp-lowlevel-v2",
+        "is_async": true,
+        "lineno": 175,
+        "module": "awx_mcp.proxy",
+        "params": [
+          {
+            "annotation": "ServerRequestContext[Any, Any]",
+            "index": 0,
+            "name": "_ctx"
+          },
+          {
+            "annotation": "CallToolRequestParams",
+            "index": 1,
+            "name": "params"
+          }
+        ],
+        "qualname": "_run_proxy_async._call_tool",
+        "relpath": "awx_mcp/proxy.py",
+        "schema_hash": "7b11fabb41ec",
+        "tool_name": null,
+        "unit_id": "mcp-lowlevel-v2:_run_proxy_async._call_tool:7b11fabb41ec"
+      },
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 119,
+        "module": "tests.test_tool_errors",
+        "params": [],
+        "qualname": "test_failure_text_reaches_the_client_through_mcpserver.get_ansible_version",
+        "relpath": "tests/test_tool_errors.py",
+        "schema_hash": "d36d5fd42096",
+        "tool_name": "get_ansible_version",
+        "unit_id": "mcp:test_failure_text_reaches_the_client_through_mcpserver.get_ansible_version:d36d5fd42096"
+      },
+      "validator_shapes": []
+    }
+  ]
+}
