@@ -998,7 +998,7 @@ DB 効果 230 件に対して**未解決率 90.0%**。→ **O29 へ。**
   先にコミットし、A2 を含まない母集団 v3 で効果と誤りを測る。逸脱として記録する。
   (b) 採らずに限界に書く（A2 の 7/8 と本項を併記）。
 
-## O36. val エンジンの値の欠陥 3 つ（`not` の値・None との合流の順序・片側だけの束縛）— **未決（D58 の改訂で見つけた。枝刈りには使わなくした）**
+## O36. val エンジンの値の欠陥 3 つ（`not` の値・None との合流の順序・片側だけの束縛）— **直す（D59。学生の決定）**
 
 - **状況**: (1) `_ev_UnaryOp` は被演算子の値をそのまま返す（`not x` が `x`、`-1` が `1`）。
   (2) `ir._shape_join` は `Atom` の `none` を比べず、`join(Atom(none), Atom())` が `Atom(none)` になる（順序に依る）。
@@ -1009,7 +1009,7 @@ DB 効果 230 件に対して**未解決率 90.0%**。→ **O29 へ。**
 - **要る判断**: (a) 凍結前に 3 つとも直す（値の側の変更なので `diff_effects.py` と `compare_scans.py` を通す）。
   (b) 凍結後の既知の限界として書く。
 
-## O37. `httpx` / `requests` の `.request(...)` の `body` slot が `data=` だけで、`json=` / `content=` を見ない — **未決（run15 のレビューで見つけた。O31 より前からある）**
+## O37. `httpx` / `requests` の `.request(...)` の `body` slot が `data=` だけで、`json=` / `content=` を見ない — **直す（D59。仕様書の `data|json` に合わせる。`content=` は O39）**
 
 - **状況**: `authgap/catalog/sinks.py` の ProxyRow（`httpx.Client` / `httpx.AsyncClient` / `requests.Session`
   の `request`）は `body` を `KW("data")` だけにしている。同じ表の `post` 行は `KW("json")`。
@@ -1033,6 +1033,16 @@ DB 効果 230 件に対して**未解決率 90.0%**。→ **O29 へ。**
   （受け手の型が `Path` に解決されていない可能性）。一時ファイルの削除を destructive と読むかも別の論点。
 - **表示**: nan-fe `get_lark_auth_status` の矛盾行は `declarations` が `["D3"]` なのに `D_explicit` が
   `["readOnlyHint"]` だけを示す（`openWorldHint` は既定値の読みから来ている可能性）。誤読されうるので確かめる。
+
+## O39. HTTP のメソッドと本体の引数のうち、仕様書の sink 語彙（月 3 凍結）に無いもの — **既知の限界（D59。件数は凍結前に測る）**
+
+- **状況**: 仕様書 229 行目の proxy の HTTP 行は `.get` / `.post` / `.request` と `body ← data|json` だけを定める。
+  セッション（`httpx.Client` / `AsyncClient` / `requests.Session`）の `.put` / `.patch` / `.delete` / `.head` /
+  `.options`、`httpx.put` などのモジュール関数、本体の `content=` / `files=` は sink にならない。
+- **影響**: これらを通る送信は効果にならない。**`DELETE` は D2（destructiveHint）の矛盾の典型なので、D2 の矛は
+  下限になる**（誤 clear の向き）。
+- **なぜ直さないか**: sink 語彙は月 3 凍結（仕様書 841 行目）。足すなら凍結した語彙を結果を見た後に変えることになる。
+- **要る判断**: 無し（限界として件数を併記する）。学生が語彙の拡張を決めたら、逸脱として記録し v3 で拡張前後を併記する。
 
 ## O19. 先行研究 3 本が主軸と競合する可能性 — **解決（D40: 3 本とも一次資料を読んだ。判断は (a)「測定研究として立て直す」）**
 
