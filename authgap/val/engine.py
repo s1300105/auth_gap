@@ -879,34 +879,10 @@ class ValEngine:
         return Value(
             _prin_all(contributors),
             opaque("unresolved"),
-            self._builtin_container_shape(node, dotted, args, kwargs, scope, res),
+            Unknown(),
             frozenset(),
             frozenset().union(*[c.roots for c in contributors]) if contributors else frozenset(),
         )
-
-    def _builtin_container_shape(self, node, dotted, args, kwargs, scope, res):
-        """組込みの構築子（`list()` / `dict()` / `bytearray()` など）の結果の**形**（D61 G2）。
-
-        主体・確度・root は呼び出し側が今までどおり決める（形だけを付ける）。名前が木の中や import で
-        束縛し直されていれば組込みではないので `Unknown()`。
-        """
-        func = node.func
-        # 組込みの名前は import 表に無いので `dotted` は None（import で束縛し直されていれば dotted がある）
-        if not isinstance(func, ast.Name) or func.id not in _BUILTIN_CONTAINERS or dotted not in (None, func.id):
-            return Unknown()
-        if func.id in scope.local_bindings or self._visible_defs(scope.module, func.id, node):
-            return Unknown()
-        if self._module_value(scope, func.id, res) is not None:
-            return Unknown()
-        if func.id == "dict":
-            vals = list(args) + [kwargs[k] for k in sorted(kwargs)]
-            elem = None
-            for v in vals:
-                e = _element_of(v) if isinstance(v.shape, (Map, Seq, Argv)) else v
-                elem = e if elem is None else value_join(elem, e)
-            return Map((), elem)
-        elem = _element_of(args[0]) if args and isinstance(args[0].shape, (Seq, Argv, Map)) else (args[0] if args else None)
-        return Seq((), elem)
 
     def _apply_transfer(self, node, dotted, receiver, args, kwargs, res, scope) -> Optional[Value]:
         row = transfer_for(dotted) if dotted else None
@@ -983,12 +959,6 @@ class ValEngine:
             pinned_cands, ambiguous = pinned
             self._by_name_hint = self._pinned_ambiguous = ambiguous
             return pinned_cands
-        if isinstance(node.func, ast.Attribute) and receiver is not None and _is_builtin_value(receiver):
-            # **組込み型の値のメソッドを木の中の同名メソッドに結ばない**（D61 G2）。受け手が列・辞書・
-            # 文字列だと分かっていれば、`x.append(...)` は組込み型のメソッドである（Python の意味）。
-            # 以前は `rows = bytearray(); rows.append(0)` を木の中の `AuditLog.append` に末尾名で結び、
-            # その先のファイル書き込みで readOnlyHint との矛を誤って出していた（誤警報）。
-            return []
         cands = self.index.lookup_function(last)
         # **本体からの末尾名の解決は、テストファイルの定義を候補にしない**（D57、O30）。実行中の
         # ツールのコードがテストのモジュールに届くことは無い（届くのはツール自体がテストファイルに
@@ -999,7 +969,9 @@ class ValEngine:
             return []
         typed_classes: set[str] = set()
         if receiver is not None and isinstance(receiver.shape, Obj) and receiver.shape.classes:
-            typed_classes = {c.split(".")[-1] for c in receiver.shape.classes}
+            # **外部の型（木の中に無いモジュールの dotted 名）は木の中の同名クラスへの絞り込みに使わない**
+            # （D61 の改訂 G4。`requests.Session` のオブジェクトが木の中の `Session` のインスタンスであることはない）
+            typed_classes = {c.split(".")[-1] for c in receiver.shape.classes if not self._is_external_class(c)}
             narrowed = [c for c in cands if c.classname in typed_classes]
             if narrowed:
                 cands = narrowed
@@ -1026,7 +998,11 @@ class ValEngine:
         if len(cands) != 1:
             # 絞れないものは opaque(unresolved) に落とす。**木の中の候補があるのに解決できなかった**
             # ことを数える（D61 G5）。受け手が木の外の型だと分かっているとき（ライブラリのメソッド）は数えない。
-            if not (typed_classes and not any(self.index.get_class(c) for c in typed_classes)):
+            external_only = (
+                receiver is not None and isinstance(receiver.shape, Obj) and bool(receiver.shape.classes)
+                and all(self._is_external_class(c) for c in receiver.shape.classes)
+            )
+            if not external_only and not (typed_classes and not any(self.index.get_class(c) for c in typed_classes)):
                 self._unresolved_tree_cands = len(cands)
             return []
         chosen = cands[0]
@@ -1124,7 +1100,7 @@ class ValEngine:
         # 被呼び出し側の import で指していれば型を与える。**既知の型を注釈で上書きしない。**
         returns = getattr(callee.node, "returns", None)
         if returns is not None and not (isinstance(ret.shape, Obj) and ret.shape.classes):
-            cls = _annotation_receiver_type(returns, callee_scope)
+            cls = self._annotation_type(returns, callee_scope)
             if cls is not None:
                 ret = Value(ret.prin, ret.prov, Obj((cls,), ()), ret.attrs, ret.roots)
                 res.annotation_typed.append((callee.qualname, "<return>", cls))
@@ -1514,7 +1490,8 @@ class ValEngine:
         if not (isinstance(node.func, ast.Attribute) and receiver is not None
                 and isinstance(receiver.shape, Obj) and receiver.shape.classes):
             return []
-        typed = {c.split(".")[-1] for c in receiver.shape.classes}
+        # 外部の型は木の中の同名クラスに結ばない（D61 の改訂 G4）
+        typed = {c.split(".")[-1] for c in receiver.shape.classes if not self._is_external_class(c)}
         cands = [c for c in self.index.lookup_function(node.func.attr) if c.classname in typed]
         if not cands:
             return []
@@ -1539,10 +1516,49 @@ class ValEngine:
         family = self._class_family(receiver.shape.classes)
         return any(f.classname in family for f in self.index.lookup_function(method))
 
+    def _annotation_type(self, ann: ast.AST, scope: Scope) -> Optional[str]:
+        """注釈で受け手に付ける型（`_annotation_receiver_type`）。**注釈の先頭の名前がモジュール直下で 2 回以上
+        束縛されるか、その束縛が相対 import / 木の中のモジュールの import なら付けない**（D61 の改訂の追記）。
+        import 表は相対の点を捨て、import の後の同名の `class` を見ないので、木の中の型を外部の型と取り違える。"""
+        cls = _annotation_receiver_type(ann, scope)
+        if cls is None:
+            return None
+        head = _annotation_head(ann)
+        if head is None:
+            return cls
+        path = self.index.resolve_module_path(scope.module)
+        tree = self.index.parse(path) if path is not None else None
+        if tree is None:
+            return cls
+        binds = _module_bindings(tree, head)
+        if not binds:
+            return cls  # モジュール直下に束縛が無い（関数の中の import など）: 今までどおり
+        if len(binds) > 1:
+            return None
+        b = binds[0]
+        if isinstance(b, ast.ImportFrom):
+            if b.level > 0:
+                return None
+            mod = b.module
+        elif isinstance(b, ast.Import):
+            mod = next((a.name for a in b.names if (a.asname or a.name.split(".")[0]) == head), None)
+        else:
+            return None
+        if mod and self.index.resolve_module_strict(mod) is not None:
+            return None  # 木の中のモジュール
+        return cls
+
+    def _is_external_class(self, c: str) -> bool:
+        """受け手の型が外部の型か（モジュール部分が木の中に無い dotted 名）。木の中のクラスは末尾名で持つ。"""
+        if "." not in c:
+            return False
+        return self.index.resolve_module_strict(c.rpartition(".")[0]) is None
+
     def _class_family(self, classes) -> set[str]:
         """受け手クラスとその基底（3 段まで）の名前。継承したメソッドを解決するため。"""
         out: set[str] = set()
-        frontier = [c.split(".")[-1] for c in classes]
+        # 外部の型は木の中の同名クラスの家族に入れない（D61 の改訂 G4）
+        frontier = [c.split(".")[-1] for c in classes if not self._is_external_class(c)]
         for _ in range(3):
             nxt: list[str] = []
             for c in frontier:
@@ -1687,31 +1703,52 @@ class ValEngine:
             if reader:
                 cands = cands + reader
                 ambiguous = True
+            # **読む側で呼ぶ名前が 2 回以上束縛されるか、関数の中で書き換えられるなら確定しない**（D61 の改訂 G3。
+            # `from m import f as g` の後の `g = danger` / `global g; g = danger`）。
+            rpath = self.index.resolve_module_path(scope.module)
+            rtree = self.index.parse(rpath) if rpath is not None else None
+            writes = self._module_writes(scope.module)
+            if rtree is not None and (
+                len(_module_bindings(rtree, reader_name)) > 1 or reader_name in writes or "*" in writes
+            ):
+                ambiguous = True
         return cands, ambiguous
 
     def _follow_reexport(self, module: str, name: str, hops: int = 3) -> Optional[tuple[str, str]]:
         """`module`（パッケージの `__init__` を含む）が `name` を import で再公開していれば、その元の
-        `(モジュール, 名前)`。木の外を指すか、たどれなければ `None`（D61 G3）。"""
+        `(モジュール, 名前)`。**たどるのは、その名前の束縛がモジュールにちょうど 1 つで、それがモジュール直下の
+        `from ... import` であり、関数の中で書き換えられないときだけ**（D61 の改訂 G3）。たどる先はその
+        `ImportFrom` の `level` で解く（import 表は相対の点を捨てるので使わない）。それ以外は `None`。
+        """
         for _ in range(hops):
             path = self.index.resolve_module_path(module)
-            if path is None:
+            tree = self.index.parse(path) if path is not None else None
+            if tree is None:
                 return None
-            target = self.index.module_scope(path).module_imports.get(name)
-            if not target or "." not in target:
+            binds = _module_bindings(tree, name)
+            writes = self._module_writes(module)
+            if len(binds) != 1 or name in writes or "*" in writes:
                 return None
-            tmod, _, tname = target.rpartition(".")
-            nxt = None
-            if os.path.basename(path) == "__init__.py":
-                # パッケージの `__init__` の相対 import の基準はパッケージ自身
-                cand = f"{module}.{tmod}"
-                cpath = self.index.resolve_module_path(cand)
-                if cpath is not None and self.index.module_name(cpath) == cand:
-                    nxt = cand
-            if nxt is None:
-                nxt = self.index.resolve_import_module(module, tmod)
-            if nxt is None:
+            imp = binds[0]
+            if not isinstance(imp, ast.ImportFrom) or imp not in tree.body:
                 return None
-            module, name = nxt, tname
+            alias = next(a for a in imp.names if (a.asname or a.name) == name)
+            if imp.level > 0:
+                # 相対 import の基準: `__init__.py` はパッケージ自身、ほかは親パッケージ
+                base = module if os.path.basename(path) == "__init__.py" else module.rpartition(".")[0]
+                for _lvl in range(imp.level - 1):
+                    base = base.rpartition(".")[0]
+                if not base or not imp.module:
+                    return None  # `from . import mod`（モジュールの import）はたどらない
+                nxt = f"{base}.{imp.module}"
+                npath = self.index.resolve_module_path(nxt)
+                if npath is None or self.index.module_name(npath) != nxt:
+                    return None
+            else:
+                nxt = self.index.resolve_module_strict(imp.module) if imp.module else None
+                if nxt is None:
+                    return None  # 絶対 import が木の外を指す
+            module, name = nxt, alias.name
             if self._visible_defs(module, name, None):
                 return module, name
         return None
@@ -1764,7 +1801,7 @@ class ValEngine:
             v = seed[a.arg]
             if isinstance(v.shape, Obj) and v.shape.classes:
                 continue  # **既知の型を注釈で上書きしない**
-            cls = _annotation_receiver_type(a.annotation, scope)
+            cls = self._annotation_type(a.annotation, scope)
             if cls is None:
                 continue
             seed[a.arg] = Value(v.prin, v.prov, Obj((cls,), ()), v.attrs, v.roots)
@@ -1823,21 +1860,11 @@ def _literal_default(node: Optional[ast.AST]) -> Optional[Value]:
 
 _NOT_STATIC = object()
 
-#: 組込みの容器の構築子（D61 G2）。`str()` / `bytes()` は値の形を変える影響が広いので含めない。
-_BUILTIN_CONTAINERS: frozenset[str] = frozenset({"list", "dict", "set", "frozenset", "tuple", "bytearray"})
-
 #: **注釈で受け手に型を付ける型**（D61 G4）。D50 / D51 の DB の型の一覧に、sink 表の proxy の受け手の型を
 #: 機械的に足す（注釈で型を付ける理由は kind によらない。手では足さない）。
 _ANNOTATION_TYPES: frozenset[str] = ANNOTATION_TYPED_RECEIVERS | frozenset(
     t for r in PROXY_SINKS for t in r.recv_types
 )
-
-
-def _is_builtin_value(v: Value) -> bool:
-    """値が組込みの列・辞書・文字列だと分かっているか（D61 G2）。"""
-    if isinstance(v.shape, (Seq, Argv, Map, Str)):
-        return True
-    return isinstance(v.shape, Atom) and isinstance(v.shape.const, (str, bytes)) and not v.shape.none
 
 
 def _import_placeholder(name: str) -> Value:
@@ -2182,6 +2209,62 @@ def _opaque_deep(v: Value, depth: int = 2) -> Value:
     return Value(v.prin, prov_merge(v.prov, opaque("unresolved")), s, v.attrs, v.roots)
 
 
+def _module_bindings(tree: ast.AST, name: str) -> list[ast.AST]:
+    """モジュールの本体（関数・クラスの本体の中は除く）で `name` を束縛する文（D61 の改訂 G3）。
+
+    import / from-import の別名、代入・注釈つき代入・拡張代入の対象、for / with / except の束縛、`:=`、def / class の名前。
+    `if` / `try` / `with` / ループの中も見る（条件つき・予備の束縛も 1 つとして数える）。
+    """
+    out: list[ast.AST] = []
+
+    def targets(t) -> list[str]:
+        if isinstance(t, ast.Name):
+            return [t.id]
+        if isinstance(t, (ast.Tuple, ast.List)):
+            return [n for e in t.elts for n in targets(e)]
+        if isinstance(t, ast.Starred):
+            return targets(t.value)
+        return []
+
+    def visit(stmts) -> None:
+        for st in stmts:
+            if isinstance(st, (ast.Import, ast.ImportFrom)):
+                if any((a.asname or a.name.split(".")[0]) == name for a in st.names if a.name != "*"):
+                    out.append(st)
+            elif isinstance(st, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                if st.name == name:
+                    out.append(st)
+                continue  # 本体の中は別のスコープ
+            elif isinstance(st, ast.Assign):
+                if any(name in targets(t) for t in st.targets):
+                    out.append(st)
+            elif isinstance(st, (ast.AnnAssign, ast.AugAssign)):
+                if name in targets(st.target):
+                    out.append(st)
+            elif isinstance(st, (ast.For, ast.AsyncFor)) and name in targets(st.target):
+                out.append(st)
+            elif isinstance(st, (ast.With, ast.AsyncWith)) and any(
+                i.optional_vars is not None and name in targets(i.optional_vars) for i in st.items
+            ):
+                out.append(st)
+            for n in ast.walk(st) if not isinstance(st, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) else ():
+                if isinstance(n, ast.NamedExpr) and isinstance(n.target, ast.Name) and n.target.id == name:
+                    out.append(n)
+            for field_name in ("body", "orelse", "finalbody"):
+                sub = getattr(st, field_name, None)
+                if isinstance(sub, list) and sub and isinstance(sub[0], ast.stmt):
+                    visit(sub)
+            for h in getattr(st, "handlers", []) or []:
+                if h.name == name:
+                    out.append(h)
+                visit(h.body)
+            for case in getattr(st, "cases", []) or []:
+                visit(case.body)
+
+    visit(getattr(tree, "body", []))
+    return out
+
+
 def _module_assignments(body: list, name: str) -> list[ast.AST]:
     """モジュール直下の `name = ...` / `name: T = ...` の右辺（`if` / `try` / `with` の中も見る）。"""
     out: list[ast.AST] = []
@@ -2291,6 +2374,26 @@ def _annotation_receiver_type(ann: ast.AST, scope: Scope) -> Optional[str]:
         return None
     name = resolve_call_name(node, scope)
     return name if name in _ANNOTATION_TYPES else None
+
+
+def _annotation_head(ann: ast.AST) -> Optional[str]:
+    """注釈（`Optional[X]` / `X | None` / 文字列の注釈をほどいた後）の先頭の名前（D61 の改訂の追記）。"""
+    node = ann
+    if isinstance(node, ast.Constant) and isinstance(node.value, str):
+        try:
+            node = ast.parse(node.value, mode="eval").body
+        except SyntaxError:
+            return None
+    if isinstance(node, ast.Subscript) and dotted_of(node.value) in ("Optional", "typing.Optional"):
+        node = node.slice
+    if isinstance(node, ast.BinOp) and isinstance(node.op, ast.BitOr):
+        sides = [x for x in (node.left, node.right) if not (isinstance(x, ast.Constant) and x.value is None)]
+        if len(sides) != 1:
+            return None
+        node = sides[0]
+    while isinstance(node, ast.Attribute):
+        node = node.value
+    return node.id if isinstance(node, ast.Name) else None
 
 
 def _seed_from_annotation(arg: ast.arg) -> Value:
