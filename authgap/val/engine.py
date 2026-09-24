@@ -59,7 +59,7 @@ from ..ir import (
     prov_merge,
     value_join,
 )
-from ..srcindex import FuncDef, Scope, SourceIndex, dotted_of, resolve_call_name
+from ..srcindex import FuncDef, Scope, SourceIndex, dotted_of, is_test_path, resolve_call_name
 
 #: 受け手アクセスパスの最大深さ（§2.6）。
 RECEIVER_DEPTH = 2
@@ -897,6 +897,11 @@ class ValEngine:
             self._by_name_hint = self._pinned_ambiguous = ambiguous
             return pinned_cands
         cands = self.index.lookup_function(last)
+        # **本体からの末尾名の解決は、テストファイルの定義を候補にしない**（D57、O30）。実行中の
+        # ツールのコードがテストのモジュールに届くことは無い（届くのはツール自体がテストファイルに
+        # あるときだけ）。import 表で結んだ定義（上の `_pinned_candidates`）と型で裏付けた解決は変えない。
+        if scope is not None and not is_test_path(scope.relpath):
+            cands = [c for c in cands if not is_test_path(c.relpath)]
         if not cands:
             return []
         typed_classes: set[str] = set()
@@ -935,6 +940,11 @@ class ValEngine:
                 # 降りないと真の経路（langroid の `compute_from_docs` の eval など）が消える
                 # ので降りるが、呼び出し側がその経路の効果を `opaque(unresolved)` にする。
                 self._by_name_hint = True
+        elif want_method and chosen.classname is None:
+            # **属性の呼び出しをクラス外の関数へ末尾名だけで結ぶ**のも受け手型で裏付けられない
+            # （D57、§9.5）。`resp.get(...)` が別モジュールの `get` に確度 resolved で降りていた。
+            # import 表で結んだモジュールの関数は上の `_pinned_candidates` が先に返すので、ここには来ない。
+            self._by_name_hint = True
         return [chosen]
 
     def _descend(

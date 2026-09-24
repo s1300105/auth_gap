@@ -265,7 +265,8 @@ def _http_method(suffix: str, ev: CallEvent) -> tuple[Optional[str], bool]:
         c = v.const
         if isinstance(c, str):
             return c.upper(), False
-        return None, v.prin is Prin.MODEL
+        # 「モデルが選べる」は主体 MODEL かつ確度 resolved（D57、§9.3）。opaque は読めない扱い。
+        return None, v.prin is Prin.MODEL and v.prov.kind == "resolved"
     return None, False
 
 
@@ -312,6 +313,36 @@ def _sql_head_of(sql: Optional[Value]) -> Optional[str]:
         return None
     parts = text.split(None, 1)
     return parts[0].upper().rstrip(";") if parts else None
+
+
+def sql_text(sql: Optional[Value]) -> tuple[Optional[str], bool]:
+    """SQL の定数の文字列と、それが全体か（D57、§9.4）。
+
+    全体が確度 resolved の定数なら `(文字列, True)`。連結（`Str`）で先頭の部分が resolved の定数なら
+    `(その接頭辞, False)`。どちらでもなければ `(None, False)`。
+    """
+    if sql is None:
+        return None, False
+    if isinstance(sql.const, str):
+        return sql.const, True
+    if isinstance(sql.shape, Str) and sql.shape.parts:
+        first = sql.shape.parts[0].const
+        if isinstance(first, str):
+            return first, False
+    return None, False
+
+
+def sql_head_of_text(text: Optional[str], complete: bool) -> Optional[str]:
+    """先頭語（大文字）。接頭辞のときは**最初の語の後に空白がある**ときだけ決める（`"UPD" + x` は決めない）。"""
+    if not isinstance(text, str):
+        return None
+    stripped = text.lstrip()
+    parts = stripped.split(None, 1)
+    if not parts:
+        return None
+    if not complete and len(parts) < 2 and not stripped[len(parts[0]):][:1].isspace():
+        return None
+    return parts[0].upper().rstrip(";")
 
 
 def _sub_kind(kind: str, slots: dict[str, Value]) -> Optional[str]:
@@ -423,6 +454,11 @@ def _split_url(v: Value) -> dict[str, Value]:
         return {"url.host": v}
     first, rest = parts[0], parts[1:] + ([tail] if tail is not None else [])
     text = first.const if isinstance(first.const, str) else None
+    if text is not None and len(text) >= 2 and text[0] == "/" and text[1] != "/" and "://" not in text:
+        # **相対 URL**（D57、O32）: 宛先はクライアントの base_url が決め、モデルが入れられるのは
+        # パスとクエリだけ。`"/"` だけ・`"//"` で始まるものは分割しない（`"/" + "/evil.example/x"` は
+        # `urljoin` 系で宛先が変わる。誤 clear を作らない）。
+        return {"url.path": v}
     if text is not None:
         i = text.find("://")
         if i < 0:
@@ -461,9 +497,15 @@ def _split_url_slots(slots: dict[str, Value]) -> dict[str, Value]:
     if host is None:
         return slots
     out = {k: s for k, s in slots.items() if k != "url.host"}
-    for k, s in _split_url(host).items():
+    split = _split_url(host)
+    for k, s in split.items():
         if k == "url.host" or k not in out:
             out[k] = s
+    if "url.host" not in split and "url.scheme" in out:
+        # 相対 URL: 宛先は受け手の base_url（`from_ctor` で `url.scheme` に入っている）から取る（D57）。
+        base = _split_url(out["url.scheme"]).get("url.host")
+        if base is not None:
+            out["url.host"] = base
     return dict(sorted(out.items()))
 
 

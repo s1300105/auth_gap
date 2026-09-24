@@ -227,14 +227,34 @@ CONTRA = "contradiction"
 CONTRA_UNKNOWN = "unknown"
 
 
-def _slot_model(e, *names: str) -> bool:
+def _choice(e, *names: str) -> Optional[str]:
+    """slot の値をモデルが決められるか（原理 3-a の前提。D56 / D57、§9.3）。
+
+    `"chosen"` = 主体 MODEL かつ確度 resolved（モデルの入力がモデリングした操作だけで届いた。
+    モデルが選べる）/ `"influenced"` = 主体 MODEL で確度 opaque（流れ込むだけかもしれない）/
+    `None` = 主体が MODEL でない。複数の slot は chosen を優先する。
+    """
     from .ir import Prin
 
+    out: Optional[str] = None
     for n in names:
         v = (getattr(e, "slots", None) or {}).get(n)
-        if v is not None and v.prin is Prin.MODEL:
-            return True
-    return False
+        if v is None or v.prin is not Prin.MODEL:
+            continue
+        if v.prov.kind == "resolved":
+            return "chosen"
+        out = "influenced"
+    return out
+
+
+def _by_choice(e, names: tuple[str, ...], hit: str, otherwise: tuple[str, str]) -> tuple[str, str]:
+    """3-a: chosen → 矛（`hit`）/ influenced → 不（`<hit>_opaque`）/ それ以外 → `otherwise`。"""
+    c = _choice(e, *names)
+    if c == "chosen":
+        return CONTRA, hit
+    if c == "influenced":
+        return CONTRA_UNKNOWN, f"{hit}_opaque"
+    return otherwise
 
 
 def _host_class(e) -> str:
@@ -258,7 +278,8 @@ def _host_class(e) -> str:
         except ValueError:
             return "external"
         return "local" if (ip.is_private or ip.is_loopback or ip.is_link_local) else "external"
-    return "model" if _slot_model(e, "url.host") else "unknown"
+    c = _choice(e, "url.host")
+    return "model" if c == "chosen" else ("model_opaque" if c == "influenced" else "unknown")
 
 
 def _fs_class(e) -> str:
@@ -284,7 +305,7 @@ def _d1(e) -> Optional[tuple[str, str]]:
     if k == "EXEC":
         return CONTRA, "exec"
     if k == "SPAWN":
-        return (CONTRA, "spawn_model") if _slot_model(e, "argv0", "shell_string") else (CONTRA_UNKNOWN, "spawn_command")
+        return _by_choice(e, ("argv0", "shell_string"), "spawn_model", (CONTRA_UNKNOWN, "spawn_command"))
     if k == "FS_WRITE":
         return CONTRA, "fs_write"
     if k == "DB":
@@ -309,16 +330,14 @@ def _d2(e) -> Optional[tuple[str, str]]:
     if k == "EXEC":
         return CONTRA, "exec"
     if k == "SPAWN":
-        return (CONTRA, "spawn_model") if _slot_model(e, "argv0", "shell_string") else (CONTRA_UNKNOWN, "spawn_command")
+        return _by_choice(e, ("argv0", "shell_string"), "spawn_model", (CONTRA_UNKNOWN, "spawn_command"))
     if k == "FS_WRITE":
         c = _fs_class(e)
         if c == "append":
             return None
         if c == "remove":
             return CONTRA, "fs_remove"
-        if _slot_model(e, "path"):
-            return CONTRA, f"fs_{c}_model_path"
-        return CONTRA_UNKNOWN, f"fs_{c}"
+        return _by_choice(e, ("path",), f"fs_{c}_model_path", (CONTRA_UNKNOWN, f"fs_{c}"))
     if k == "DB":
         return _db(e, modify_heads=SQL_DESTRUCTIVE_HEADS, persistent=(CONTRA_UNKNOWN, "db_persistent"),
                    additive=frozenset({"INSERT", "CREATE"}))
@@ -329,7 +348,7 @@ def _d2(e) -> Optional[tuple[str, str]]:
         if m in ("DELETE", "PATCH"):
             return CONTRA, "net_modify"
         if m == "PUT":
-            return (CONTRA, "net_put_model_url") if _slot_model(e, "url.host", "url.path") else (CONTRA_UNKNOWN, "net_put")
+            return _by_choice(e, ("url.host", "url.path"), "net_put_model_url", (CONTRA_UNKNOWN, "net_put"))
         if m == "POST":
             return CONTRA_UNKNOWN, "net_post"
         if getattr(e, "http_method_model", False):
@@ -339,21 +358,29 @@ def _d2(e) -> Optional[tuple[str, str]]:
 
 
 def _db(e, *, modify_heads, persistent, additive=frozenset()) -> Optional[tuple[str, str]]:
-    head = getattr(e, "sql_head", None)
-    if head is None:
-        return (CONTRA, "db_model_sql") if _slot_model(e, "sql") else (CONTRA_UNKNOWN, "db_sql_unreadable")
+    """DB の判定（§7.1 / §7.2、判定の順序は §9.4）。"""
+    from .effects import sql_head_of_text, sql_text
+
+    text, complete = sql_text((getattr(e, "slots", None) or {}).get("sql"))
+    head = sql_head_of_text(text, complete)
+    if not complete:
+        c = _choice(e, "sql")
+        if c == "chosen":
+            # モデルが選べる連結: 注入で任意の文を書けるので、接頭辞に関係なく矛（§9.4 の 2）
+            return CONTRA, "db_model_sql"
+        if c == "influenced":
+            return (CONTRA, "db_modify") if head in modify_heads else (CONTRA_UNKNOWN, "db_sql_model_opaque")
+        if head is None:
+            return CONTRA_UNKNOWN, "db_sql_unreadable"
     if head in modify_heads:
         return CONTRA, "db_modify"
     if head in additive:
         return None
-    sql = (getattr(e, "slots", None) or {}).get("sql")
-    cls = sql_class(sql.const if sql is not None else None)
+    cls = sql_class(text, complete)
     if cls == SQL_CLASS_PERSISTENT:
         return persistent
-    if cls in (SQL_CLASS_CONNECTION, SQL_CLASS_READ):
-        return None
-    if cls == SQL_CLASS_MODIFY:  # additive（INSERT / CREATE）は上で除いた
-        return None
+    if cls in (SQL_CLASS_CONNECTION, SQL_CLASS_READ, SQL_CLASS_MODIFY):
+        return None  # 変更の文で modify_heads に無いもの（D2 の INSERT / CREATE）は additive で除いた
     return CONTRA_UNKNOWN, "db_unknown_statement"
 
 
@@ -368,11 +395,13 @@ def _d3(e) -> Optional[tuple[str, str]]:
             return CONTRA, "net_external_host"
         if c == "model":
             return CONTRA, "net_model_host"
+        if c == "model_opaque":
+            return CONTRA_UNKNOWN, "net_model_host_opaque"
         return CONTRA_UNKNOWN, "net_host_unknown"
     if k == "EXEC":
-        return (CONTRA, "exec_model") if _slot_model(e, "code_text") else (CONTRA_UNKNOWN, "exec")
+        return _by_choice(e, ("code_text",), "exec_model", (CONTRA_UNKNOWN, "exec"))
     if k == "SPAWN":
-        return (CONTRA, "spawn_model") if _slot_model(e, "argv0", "shell_string") else (CONTRA_UNKNOWN, "spawn_command")
+        return _by_choice(e, ("argv0", "shell_string"), "spawn_model", (CONTRA_UNKNOWN, "spawn_command"))
     return None
 
 
@@ -388,7 +417,12 @@ def _d4(e) -> Optional[tuple[str, str]]:
                 return CONTRA, "fs_append"
         return None
     if k == "DB":
-        head = getattr(e, "sql_head", None)
+        from .effects import sql_head_of_text, sql_text
+
+        text, complete = sql_text((getattr(e, "slots", None) or {}).get("sql"))
+        if not complete and _choice(e, "sql") is not None:
+            return CONTRA_UNKNOWN, "db_sql_model"  # 文はモデルの値で決まる（原理 3 は当てない）
+        head = sql_head_of_text(text, complete)
         if head is None:
             return CONTRA_UNKNOWN, "db_sql_unreadable"
         if head in SQL_NONIDEMPOTENT_HEADS:

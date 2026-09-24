@@ -339,6 +339,23 @@ _SKIP_DIRS = frozenset(
 )
 
 
+#: テストのディレクトリ名（パスの途中にこの名前のディレクトリがあればテストファイル。D57）。
+TEST_DIR_NAMES: frozenset[str] = frozenset({"tests", "test", "testing"})
+
+
+def is_test_path(relpath: str) -> bool:
+    """テストファイルか（D57、`docs/contradiction_principles.md` §9.1）。
+
+    パスの途中に `tests` / `test` / `testing` のディレクトリがある、またはファイル名が
+    `test_*.py` / `*_test.py` / `conftest.py`。
+    """
+    parts = relpath.replace("\\", "/").split("/")
+    if any(p in TEST_DIR_NAMES for p in parts[:-1]):
+        return True
+    name = parts[-1]
+    return name == "conftest.py" or (name.startswith("test_") and name.endswith(".py")) or name.endswith("_test.py")
+
+
 def _base_names(node: ast.ClassDef) -> list[str]:
     out: list[str] = []
     for b in node.bases:

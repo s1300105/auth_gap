@@ -3054,3 +3054,78 @@ O23 のマスを件数を見て 1 つずつ決めると、主指標の定義を�
 
 **主指標は 1 つの原理を反対側にしても 153〜165 に収まる。** 例外は原理 2 を b（不明を矛盾に倒す）に
 したときで 346（2.1 倍）。**不明が主指標と同じ規模（D1 + D2 で 181）ある**ことは本文に必ず書く。
+
+## D57（2026-09-24）O30 / O32 / O33 を直す（と、その敵対的レビューで見つけた §9.5）
+
+学生の指示は「O30・O32・O33 の修正」。直し方は `docs/contradiction_principles.md` §9 に、§6 で選んだ
+原理から導いて**実装より先にコミット**した（`f4d13f9` / `81dc0d4` / §9.5 は `b561f90`）。テスト
+（`tests/test_fix_o30_o32_o33.py`、38 件）も実装より先にコミットし、実装前に期待とのずれで落ちることを
+確かめた（24 件 + §9.5 の 1 件）。
+
+### 直したこと
+
+* **O30**（§9.1）: 型の裏付けの無い末尾名の解決は、呼び出し元がテストファイルでなければ、テストファイルの
+  定義を候補から外す（`srcindex.is_test_path`、`engine._resolve_in_tree`）。import 表で結んだ定義・
+  型で裏付けた解決・ユニットの発見は変えない。
+* **O32**（§9.2）: 定数の先頭が `/` + 非 `/` の URL は相対 URL として `url.path` にし、`url.host` は
+  受け手の `base_url` から取る（`"/"` だけ・`"//"` は分割しない）。
+* **O33**（§9.3 / §9.4）: 原理 3-a の「モデルが選べる」は主体 MODEL **かつ確度 resolved** に限り、
+  opaque は原理 2-a で不明（理由 `*_opaque`）。SQL の先頭語を定数の接頭辞からも読み、§9.4 の順序
+  （全体が定数 / MODEL で resolved なら注入で任意の文を書けるので矛 / MODEL で opaque なら変更の接頭辞の
+  ときだけ矛 / MODEL でなければ接頭辞で判定）で判定する。`GAP_INJECT` は変えない（注入が問うのは
+  「流れ込むか」なので主体 MODEL の意味で正しい）。
+* **§9.5（敵対的レビューで見つけた既存の弱点）**: O30 で候補が 1 つだけ残る呼び出しが増え、属性の呼び出し
+  （`resp.get(...)`）が**クラスに属さない関数**へ確度 resolved で降りる経路が見つかった
+  （moon201595 `s2_search_papers` → `code_ladder.get`、xagent `_client` → スクリプト内の
+  `run_case.client`）。クラスのメソッドへ末尾名で結ぶときだけ by_name にしていたので、クラス外の関数でも
+  by_name（`opaque(unresolved)`）にした。**推測の経路を確かな経路として出す誤り**だった。
+
+### 確かめたこと
+
+* pytest 743 passed / B3a 8/8 / B3b 15/15 / 変異の生存 1/15 / two_sided 8/8（厳密 0/8・INJECT 1/8）。
+* diff_effects（較正 14 木）: A9 で 1 行消えて 1 行増えた（他は変化 0）。**消えた行**は tts ツール →
+  `AudioAgent.speech` → テストの偽物 `MockSpeechResponse.stream_to_file`（`tests/test_audio_agent.py`）。
+  本物の `response.stream_to_file` は OpenAI SDK の中でファイルを書くが、**sink の表に無いので
+  もともと追えていない効果で、テストの偽物を経由して偶然当たっていた**。**増えた行**は、テストの候補が
+  外れて本体の候補（`examples/` の `EXASearchTool.results`）が 1 つだけ残ったもの（`opaque(unresolved)`）。
+* run13 → run14（`docs/scan_v2_run14_diff.md`）:
+
+| 項目 | run13 | run14 |
+|---|---|---|
+| 効果（生の件数） | 11,500 | 10,193 |
+| 効果のある（危険な）ユニット | 1,593 | 1,346 |
+| CONTRADICTION（ユニット × site × kind） | 220 | 191（増えた 0 / 消えた 29） |
+| **D1 + D2 の矛（主指標）** | **165** | **154** |
+| D3 矛 / D4 矛 | 51 / 5 | 38 / 0 |
+| `GAP_INJECT` の行 / 一意な位置 | 2,760 / — | 2,810（一意: 消えた 123 / 増えた 61） |
+| §3 の交差行 | 1 行 / 1 プロジェクト | 1 行 / 1 プロジェクト |
+
+**消えたもの（すべて 1 件ずつ理由を確かめた）**:
+
+* **効果の位置 1,010（すべて xagent）**: run13 での**すべての経路が、テストファイルにしか無い定義を
+  経由していた**（効果の場所がテストファイル 322、本体 688）。O30 どおり。危険なユニットの減少（−247）も
+  xagent の、この連鎖でしか効果の無かったツール。
+* **CONTRADICTION 29**: O30 で効果ごと消えた 6（xagent の `fs_append` 5 / `db_model_sql` 1）、
+  O32 で宛先が不明に移った 5（asquared 3 / code-rag 2。相対 URL で `base_url` も読めない）、
+  O33 で `*_model_opaque` の不明に移った 18（dejavu / cohort / memory-hub / docx-mcp /
+  paper-access / youtube-research / codegrok）。説明のつかない消失は 0。godsaeng の readOnly ×
+  `"UPDATE … IN (" + …` は接頭辞から `db_modify` として**矛のまま残った**。
+* **`GAP_INJECT` 123**: xagent の連鎖 117（`sql` 113 / `body` 4）、相対 URL の `url.host` 5（同じ位置の
+  `url.path` に移った）、canvas-mcp の `body` 1（**下の O34。誤 clear**）。
+
+**増えたもの**: 効果の位置 56 はテストの候補が外れて本体の候補に降りたもの（memory-hub 24 / abyss-stack 11 /
+xagent 9 / compshare 4 / moon201595 4 / release-kit 4）。多くは妥当な経路（`search_memory` →
+`search_memories_with_focus` の DB など）だが、moon201595 の `get` と xagent のスクリプト内の関数は
+§9.5 で `opaque(unresolved)` になった。`GAP_INJECT` 61 は、相対 URL の `url.path` 5、odoo の
+`odoo_setup_credentials` の `url.host` 2（**今まで見逃していた**: モデルが渡した Odoo の URL を `base_url` に
+して相対パスを送る。以前は `url.host` に相対パスの定数（OP）が入っていた）、ほかは新しく届いた経路の上のもの。
+
+### O30 の修正が表に出した既存の誤 clear（O34、未修正）
+
+canvas-mcp `update_syllabus` の POST の `body` は、根が `syllabus_body`（未検証）と `course_identifier` の 2 つ。
+O30 で `get_course_id` に降りるようになって `course_identifier` の根が見え、`course_id` を主語とする
+ゲート候補（`make_canvas_request`、等級 OP）が**根の 1 つと一致しただけで `body` 全体の要求主体を OP に
+引き上げ、`GAP_INJECT` を消した。** `gate.subject_ok` が「どれか 1 つの根が一致すればよい」のままで、
+D25 が strong-path の裏付けにだけ入れた「MODEL の根すべて」を主語一致には入れていなかった。
+名前の主語で数えた上限の目安で、run13 に 41 位置（canvas 39 / paper-access 2）、run14 に 66 位置。
+**ゲート（付録）の判定を変えると事前登録の fixture と変異試験に効くので、ここでは直さず O34 に置いた。**

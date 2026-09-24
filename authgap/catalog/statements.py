@@ -53,12 +53,19 @@ SQL_CLASS_UNKNOWN = "unknown"
 _PRAGMA = re.compile(r"^\s*PRAGMA\s+(?:\w+\.)?(\w+)\s*(=|\()?", re.IGNORECASE)
 
 
-def sql_class(text: Optional[str]) -> Optional[str]:
-    """定数 SQL の類。`None` は SQL が読めない（定数でない / 空白だけ）。"""
+def sql_class(text: Optional[str], complete: bool = True) -> Optional[str]:
+    """定数 SQL の類。`None` は SQL が読めない（定数でない / 空白だけ）。
+
+    `complete=False` は `text` が連結の接頭辞であること（D57、§9.4）。先頭語は最初の語の後に空白が
+    あるときだけ決め、`PRAGMA` は接頭辞の中に名前と `=` / `(` が揃うときだけ決める。
+    """
     if not isinstance(text, str):
         return None
-    parts = text.split(None, 1)
+    stripped = text.lstrip()
+    parts = stripped.split(None, 1)
     if not parts:
+        return None
+    if not complete and not stripped[len(parts[0]):][:1].isspace():
         return None
     head = parts[0].upper().rstrip(";")
     if head in SQL_MODIFY_HEADS:
@@ -74,6 +81,8 @@ def sql_class(text: Optional[str]) -> Optional[str]:
         if not m:
             return SQL_CLASS_UNKNOWN
         name, op = m.group(1).lower(), m.group(2)
+        if not complete and op is None:
+            return SQL_CLASS_UNKNOWN  # 接頭辞の中で名前が終わっているか分からない
         if name in PRAGMA_PERSISTENT_ACTION:
             return SQL_CLASS_PERSISTENT
         if op == "=":
