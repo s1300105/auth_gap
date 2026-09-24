@@ -3336,3 +3336,21 @@ O38（深さ 5 の書き込み・`finally` の `unlink`）。
 
 **誤りの向き**: `body` を片方しか見ないと、モデル由来の本体を見落とす**誤 clear**。直すと `body` の座標
 （GAP_INJECT）と主体 MODEL の slot が増える向き。
+
+### D59 の追記（2026-09-24）: HTTP の宛先を `url=` のキーワードでも引く — **run17 の突き合わせで見つけた。O37 と同じ種類なので D59 に含める**
+
+**観察**（run17、D59 の実装後）: xagent の 158 ユニットで `requests.request` の効果が新しく出た。原因は、
+`requests.request(method=..., url=..., json=...)` のように**全部をキーワードで渡す呼び出し**では、表の
+`url.host ← A(1)`（位置だけ）も `body ← data=` も引けず slot が 1 つも無いので、**効果そのものが出ていなかった**
+こと。O37 で `json=` が body に入り、効果が出るようになった。**しかし宛先は今も引けていない**: run17 の NET 効果
+4,231 件のうち `url.host` の無いものが `.request` 1,687 件（mcparmory 1,292・xagent 395）、`.get` 6 件。
+ほかの kind で主の slot（`path` / `sql` / `argv0` / `shell_string`）が無い効果は `subprocess.Popen` 4 件と
+pipe 1 件だけ。
+
+**規則**: 仕様書 229 行目の「`url ← arg0`」は **url の引数**を指す（`.request` では第 2 引数）。requests / httpx の
+関数とメソッドの url の仮引数名はどれも `url` なので、**HTTP の行の `url.host` は位置に無ければキーワード `url=`
+でも引く**（`A(pos, kw="url")`。F8 で `crawler.arun(url=u)` に入れたのと同じ仕組み）。HTTP 以外の行は変えない
+（上の測定で影響が無視できる。Popen 4 件・pipe 1 件は既知の限界として記録する）。
+
+**誤りの向き**: 宛先の slot が無いと、SSRF の座標（`url.host` の GAP_INJECT）と D3 の外部ホストの判定を見落とす
+**誤 clear**。直すと `url.host` の行・GAP_INJECT・D3 の矛 / 不が増える向き。
