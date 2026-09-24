@@ -421,3 +421,58 @@ def test_o33(o33, tool, kind, decl, want, reason):
     assert got == want, (tool, got, reasons)
     if reason is not None:
         assert reason in reasons, (tool, reasons)
+
+
+# ---------------------------------------------------------------------------
+# §9.5: 属性の呼び出しをクラス外の関数へ末尾名だけで結ぶ解決は by_name
+# ---------------------------------------------------------------------------
+
+S95_SERVER = r'''
+from mcp.server.fastmcp import FastMCP
+import ladder
+
+mcp = FastMCP("t")
+
+
+@mcp.tool()
+async def method_to_free_fn(obj, q: str) -> str:
+    obj.get(q)
+    return "x"
+
+
+@mcp.tool()
+async def module_qualified(q: str) -> str:
+    ladder.get(q)
+    return "x"
+'''
+
+S95_LADDER = r'''
+import sqlite3
+
+
+def get(k):
+    sqlite3.connect("x.db").execute("SELECT 1")
+    return 1
+'''
+
+
+@pytest.fixture(scope="module")
+def s95(tmp_path_factory):
+    d = tmp_path_factory.mktemp("s95")
+    (d / "server.py").write_text(S95_SERVER, encoding="utf-8")
+    (d / "ladder.py").write_text(S95_LADDER, encoding="utf-8")
+    res = run(RunConfig(src_root=str(d), population="mcp_server", full=True))
+    return {u["unit"]["qualname"]: u for u in manifest_json(res, "t")["units"]}
+
+
+def test_s95_method_call_to_free_function_is_by_name(s95):
+    # obj の型は分からない。obj.get を ladder.get（クラス外の関数）に結ぶのは推測なので opaque
+    for e in _effects(s95["method_to_free_fn"], "DB"):
+        assert e["resolution"] == "opaque" and "unresolved" in e.get("resolution_reasons", []), e
+
+
+def test_s95_module_qualified_call_stays_resolved(s95):
+    # 反例: import したモジュールの関数は import 表で結ばれるので確かな経路
+    effs = _effects(s95["module_qualified"], "DB")
+    assert effs
+    assert all(e["resolution"] == "resolved" for e in effs)
