@@ -229,6 +229,9 @@ class ValEngine:
         self.on_call = on_call
         self._summaries: dict[str, int] = {}
         self._active: set[str] = set()
+        #: 実行中の呼び出し先ごとの**静的な仮引数**の集合のスタック（D58 の改訂）。`if` の条件の評価は
+        #: 一番上の集合の名前とリテラルだけを読む。入口のユニット自身の本体は空集合（何も刈らない）。
+        self._static_stack: list[frozenset[str]] = []
         #: 深さ 0 の呼び出し位置のスタック（入口 CFG 上の行）。
         self._entry_sites: list[int] = []
         #: モジュール水準の束縛の記憶化 `(module, name) -> Value | None`（D17）。
@@ -310,7 +313,7 @@ class ValEngine:
             return True
         elif isinstance(st, ast.If):
             self._eval(st.test, env, scope, res, depth, chain)
-            truth = _static_truth(st.test, env)
+            truth = _static_truth(st.test, env, self._static_stack[-1] if self._static_stack else frozenset())
             if truth is not None:
                 # **条件が定数で決まるときは取られる側の枝だけを実行する**（D58、O31）。
                 # 取られない枝は実行されないので、その効果も env も持ち込まない。
@@ -969,13 +972,15 @@ class ValEngine:
         return [chosen]
 
     def _descend(
-        self, callee: FuncDef, node, args, kwargs, receiver, env, scope, res, depth, chain, by_name: bool = False
+        self, callee: FuncDef, node, args, kwargs, receiver, env, scope, res, depth, chain, by_name: bool = False,
+        indirect: bool = False,
     ) -> Value:
-        value, _sub = self._descend_env(callee, node, args, kwargs, receiver, res, depth, chain, by_name)
+        value, _sub = self._descend_env(callee, node, args, kwargs, receiver, res, depth, chain, by_name, indirect)
         return value
 
     def _descend_env(
-        self, callee: FuncDef, node, args, kwargs, receiver, res, depth, chain, by_name: bool = False
+        self, callee: FuncDef, node, args, kwargs, receiver, res, depth, chain, by_name: bool = False,
+        indirect: bool = False,
     ) -> tuple[Value, Optional[Env]]:
         """被呼び出しの本体を実行し、`(戻り値, 実行後の env)` を返す。
 
@@ -999,7 +1004,13 @@ class ValEngine:
             res.note_opaque("unresolved")
             return Value(Prin.OP, opaque("unresolved"), Unknown(), frozenset(), _roots_all(args)), None
         callee_scope = self.index.function_scope(path, callee.node)
-        seed = self._seed_params(callee, args, kwargs, receiver, callee_scope, res)
+        # **直接の呼び出し**（`*` / `**` の実引数が無い `ast.Call`）でだけ、省いた仮引数に既定値を入れ、
+        # 静的な仮引数を決める（D58 の改訂）。`*` / `**` は `_ev_Call` が正しく割り当てていない
+        # （`**` は捨て、`*` は 1 つの位置引数）ので、既定値を入れると実際に渡された値を定数で覆う。
+        plain = not indirect and _is_plain_call(node)
+        seed = self._seed_params(callee, args, kwargs, receiver, callee_scope, res, defaults_ok=plain)
+        caller_static = self._static_stack[-1] if self._static_stack else frozenset()
+        static = _static_params(callee, node, caller_static) if plain else frozenset()
         self._summaries[callee.key] = self._summaries.get(callee.key, 0) + 1
         self._active.add(callee.key)
         pushed = False
@@ -1010,6 +1021,7 @@ class ValEngine:
         if by_name:
             self._by_name_depth += 1
         self._class_stack.append((callee.classname, callee.module))
+        self._static_stack.append(static)
         try:
             self._exec_body(
                 getattr(callee.node, "body", []),
@@ -1020,6 +1032,7 @@ class ValEngine:
                 chain + (callee.qualname,),
             )
         finally:
+            self._static_stack.pop()
             self._class_stack.pop()
             self._active.discard(callee.key)
             if by_name:
@@ -1079,7 +1092,7 @@ class ValEngine:
             res.note_opaque("unresolved")
             return Value(Prin.OP, opaque("unresolved"), Unknown())
         return self._descend(
-            callees[0], node, inner_args, {}, None, env, scope, res, depth, chain + ("<indirect>",)
+            callees[0], node, inner_args, {}, None, env, scope, res, depth, chain + ("<indirect>",), indirect=True
         )
 
     # -- D17: 組込みの値操作 / モジュール水準の束縛 / 木内クラスの構築 ----------
@@ -1614,7 +1627,9 @@ class ValEngine:
                 out.append(f)
         return out
 
-    def _seed_params(self, callee: FuncDef, args, kwargs, receiver, scope=None, res=None) -> dict[str, Value]:
+    def _seed_params(
+        self, callee: FuncDef, args, kwargs, receiver, scope=None, res=None, defaults_ok: bool = True
+    ) -> dict[str, Value]:
         """呼び出し先の仮引数に実引数を割り当てる。
 
         **型注釈による受け手の型付け**（O29 / D50）: 実引数の型が分からないとき
@@ -1623,7 +1638,7 @@ class ValEngine:
         その型を与える。主体・確度・root は実引数のものを保つ（型だけを足す）。
         **実引数の型が既知なら上書きしない**（注釈は宣言であって証明ではない）。
         """
-        seed = self._seed_params_raw(callee, args, kwargs, receiver)
+        seed = self._seed_params_raw(callee, args, kwargs, receiver, defaults_ok)
         if scope is None:
             return seed
         fn_args = getattr(callee.node, "args", None)
@@ -1643,8 +1658,11 @@ class ValEngine:
                 res.annotation_typed.append((callee.qualname, a.arg, cls))
         return seed
 
-    def _seed_params_raw(self, callee: FuncDef, args, kwargs, receiver) -> dict[str, Value]:
-        """呼び出し先の仮引数に実引数を割り当てる（注釈による型付けの前）。"""
+    def _seed_params_raw(self, callee: FuncDef, args, kwargs, receiver, defaults_ok: bool = True) -> dict[str, Value]:
+        """呼び出し先の仮引数に実引数を割り当てる（注釈による型付けの前）。
+
+        `defaults_ok` が偽（`*` / `**` のある呼び出し・間接の降下）のときは既定値を入れない（D58 の改訂）。
+        """
         seed: dict[str, Value] = {}
         fn_args = getattr(callee.node, "args", None)
         if fn_args is None:
@@ -1666,13 +1684,13 @@ class ValEngine:
             else:
                 # 省略された引数はリテラルの既定値を入れる（D58、O31）。注釈による受け手の型付けは
                 # `_seed_params` がこの後にかける。
-                d = _literal_default(defaults[j - first_default]) if j >= first_default else None
+                d = _literal_default(defaults[j - first_default]) if defaults_ok and j >= first_default else None
                 seed[a.arg] = d if d is not None else _seed_from_annotation(a)
         for a, dn in zip(fn_args.kwonlyargs, fn_args.kw_defaults, strict=True):
             if a.arg in kwargs:
                 seed[a.arg] = kwargs[a.arg]
             else:
-                d = _literal_default(dn) if dn is not None else None
+                d = _literal_default(dn) if defaults_ok and dn is not None else None
                 seed[a.arg] = d if d is not None else _seed_from_annotation(a)
         return seed
 
@@ -1692,11 +1710,92 @@ def _literal_default(node: Optional[ast.AST]) -> Optional[Value]:
 _NOT_STATIC = object()
 
 
-def _static_value(node: ast.AST, env: Env) -> Any:
-    """リテラル、または確度 resolved の定数に束縛された**ローカルの名前**の値。決まらなければ `_NOT_STATIC`。"""
+def _is_literal(node: ast.AST) -> bool:
+    return isinstance(node, ast.Constant) and (
+        node.value is None or isinstance(node.value, (bool, int, float, str))
+    )
+
+
+def _is_plain_call(node: ast.AST) -> bool:
+    """実引数に `*` も `**` も無い `ast.Call`（D58 の改訂）。"""
+    return (
+        isinstance(node, ast.Call)
+        and not any(isinstance(a, ast.Starred) for a in node.args)
+        and not any(kw.arg is None for kw in node.keywords)
+    )
+
+
+def _rebound_names(fn: ast.AST) -> frozenset[str]:
+    """関数の本体のどこかで束縛し直される名前（入れ子の定義の中も保守的に含める。D58 の改訂）。"""
+    out: set[str] = set()
+    for st in getattr(fn, "body", []):
+        for n in ast.walk(st):
+            if isinstance(n, ast.Name) and isinstance(n.ctx, (ast.Store, ast.Del)):
+                out.add(n.id)
+            elif isinstance(n, (ast.Global, ast.Nonlocal)):
+                out.update(n.names)
+            elif isinstance(n, ast.alias):
+                out.add(n.asname or n.name.split(".")[0])
+            elif isinstance(n, ast.ExceptHandler) and n.name:
+                out.add(n.name)
+            elif isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                out.add(n.name)
+            elif _MATCH is not None and isinstance(n, (ast.MatchAs, ast.MatchStar)) and n.name:
+                out.add(n.name)
+            elif _MATCH is not None and isinstance(n, ast.MatchMapping) and n.rest:
+                out.add(n.rest)
+    return frozenset(out)
+
+
+def _static_params(callee: FuncDef, node: ast.Call, caller_static: frozenset[str]) -> frozenset[str]:
+    """呼び出し先の**静的な仮引数**（D58 の改訂）。
+
+    値の出どころが、省いた仮引数のリテラルの既定値、リテラルの実引数、呼び出し元で静的な名前の
+    実引数のどれかで、本体で束縛し直さない仮引数。割り当ての添字は `_seed_params_raw` と同じにする。
+    """
+    fn_args = getattr(callee.node, "args", None)
+    if fn_args is None:
+        return frozenset()
+
+    def src_ok(e: ast.AST) -> bool:
+        return _is_literal(e) or (isinstance(e, ast.Name) and e.id in caller_static)
+
+    rebound = _rebound_names(callee.node)
+    kw_nodes = {kw.arg: kw.value for kw in node.keywords if kw.arg is not None}
+    positional = list(fn_args.posonlyargs) + list(fn_args.args)
+    defaults = list(fn_args.defaults)
+    first_default = len(positional) - len(defaults)
+    offset = 1 if callee.classname is not None and positional and positional[0].arg in ("self", "cls") else 0
+    out: set[str] = set()
+    for i, a in enumerate(positional[offset:]):
+        j = i + offset
+        if i < len(node.args):
+            ok = src_ok(node.args[i])
+        elif a.arg in kw_nodes:
+            ok = src_ok(kw_nodes[a.arg])
+        else:
+            ok = j >= first_default and _literal_default(defaults[j - first_default]) is not None
+        if ok and a.arg not in rebound:
+            out.add(a.arg)
+    for a, dn in zip(fn_args.kwonlyargs, fn_args.kw_defaults, strict=True):
+        if a.arg in kw_nodes:
+            ok = src_ok(kw_nodes[a.arg])
+        else:
+            ok = dn is not None and _literal_default(dn) is not None
+        if ok and a.arg not in rebound:
+            out.add(a.arg)
+    return frozenset(out)
+
+
+def _static_value(node: ast.AST, env: Env, static: frozenset[str]) -> Any:
+    """リテラル、または**静的な仮引数**（D58 の改訂）の値。決まらなければ `_NOT_STATIC`。
+
+    局所変数・大域の名前は、値が定数に見えても読まない（`not` の代入・None との合流・片側だけの
+    束縛の値は正しくないことがある。O36）。
+    """
     if isinstance(node, ast.Constant):
         return node.value
-    if isinstance(node, ast.Name):
+    if isinstance(node, ast.Name) and node.id in static:
         v = env.get(node.id)
         if v is None or v.prov.kind != "resolved" or not isinstance(v.shape, Atom):
             return _NOT_STATIC
@@ -1708,17 +1807,17 @@ def _static_value(node: ast.AST, env: Env) -> Any:
     return _NOT_STATIC
 
 
-def _static_truth(test: ast.AST, env: Env) -> Optional[bool]:
+def _static_truth(test: ast.AST, env: Env, static: frozenset[str] = frozenset()) -> Optional[bool]:
     """`if` の条件が定数で決まるなら真偽、決まらなければ `None`（D58、O31）。
 
     名前（ローカル）とリテラル、`not` / `and` / `or` / 単一の比較（`is` / `is not` は None・真偽との
     比較だけ、`==` / `!=`）だけを評価する。属性・呼び出し・添字は評価しない（誤って枝を捨てない）。
     """
     if isinstance(test, ast.UnaryOp) and isinstance(test.op, ast.Not):
-        t = _static_truth(test.operand, env)
+        t = _static_truth(test.operand, env, static)
         return None if t is None else not t
     if isinstance(test, ast.BoolOp):
-        vals = [_static_truth(v, env) for v in test.values]
+        vals = [_static_truth(v, env, static) for v in test.values]
         if isinstance(test.op, ast.And):
             if any(v is False for v in vals):
                 return False
@@ -1727,7 +1826,7 @@ def _static_truth(test: ast.AST, env: Env) -> Optional[bool]:
             return True
         return False if all(v is False for v in vals) else None
     if isinstance(test, ast.Compare) and len(test.ops) == 1:
-        left, right = _static_value(test.left, env), _static_value(test.comparators[0], env)
+        left, right = _static_value(test.left, env, static), _static_value(test.comparators[0], env, static)
         if left is _NOT_STATIC or right is _NOT_STATIC:
             return None
         op = test.ops[0]
@@ -1741,7 +1840,7 @@ def _static_truth(test: ast.AST, env: Env) -> Optional[bool]:
         if isinstance(op, ast.NotEq):
             return left != right
         return None
-    v = _static_value(test, env)
+    v = _static_value(test, env, static)
     return None if v is _NOT_STATIC else bool(v)
 
 
