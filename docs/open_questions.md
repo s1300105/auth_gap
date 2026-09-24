@@ -1009,6 +1009,31 @@ DB 効果 230 件に対して**未解決率 90.0%**。→ **O29 へ。**
 - **要る判断**: (a) 凍結前に 3 つとも直す（値の側の変更なので `diff_effects.py` と `compare_scans.py` を通す）。
   (b) 凍結後の既知の限界として書く。
 
+## O37. `httpx` / `requests` の `.request(...)` の `body` slot が `data=` だけで、`json=` / `content=` を見ない — **未決（run15 のレビューで見つけた。O31 より前からある）**
+
+- **状況**: `authgap/catalog/sinks.py` の ProxyRow（`httpx.Client` / `httpx.AsyncClient` / `requests.Session`
+  の `request`）は `body` を `KW("data")` だけにしている。同じ表の `post` 行は `KW("json")`。
+- **実例**: mcparmory `servers/google-sheets/server.py:720` の `_make_request` は `json=_json` で本体を送る。
+  O31 で `data=` 側の枝（form-urlencoded）が静的に偽になり、`body` の `GAP_INJECT` 24 行が消えた
+  （`data=` については正しい）。**モデル由来の本体は `json=` 側にあり、座標として数えていない。**
+- **誤りの向き**: **誤 clear**（`body` への注入の座標を見落とす）。
+- **要る判断**: (a) 凍結前に `request` / `post` / `put` / `patch` の `body` を `data` / `json` / `content` の
+  合流にする（sink 表の変更なので `compare_scans.py` で増える行を見る）。(b) 既知の限界として書く。
+
+## O38. レビューで見つけた、O31 と無関係な見落とし 2 件 — **未決（記録のみ）**
+
+- **yt-scribe `fetch_youtube_transcript_tool`**: 書き込みは `load_or_fetch_transcript` → `if cache_dir:` →
+  `write_transcript_cache` → `transcripts.py:104 mkdir` / `:106 write_text` にあり、**呼び出しの深さが 5**
+  で `MAX_DEPTH = 4`（D54）を超える。run14 の CONTRADICTION（readOnlyHint）は別の到達しない経路
+  （`write_text(None, ...)`、O31 で正しく消えた）で出ていた。**正解は「readOnlyHint と矛盾」のままで、run15 以降は
+  深さの上限による誤 clear。** 深さ 6 で走らせると CONTRADICTION（D1、`fs_write`）と GAP_INJECT が出る（レビューの報告。
+  本記録者は再現していない）。深さの限界の実例として D54 の限界に併記する。
+- **tg-note `convert_document_from_content`**: `finally` 節の `tmp_path.unlink()`（tools.py:449）が
+  run14 / run15 のどちらにも効果として出ていない。`pathlib.Path.unlink` は sink 表にある。**出ない理由は不明**
+  （受け手の型が `Path` に解決されていない可能性）。一時ファイルの削除を destructive と読むかも別の論点。
+- **表示**: nan-fe `get_lark_auth_status` の矛盾行は `declarations` が `["D3"]` なのに `D_explicit` が
+  `["readOnlyHint"]` だけを示す（`openWorldHint` は既定値の読みから来ている可能性）。誤読されうるので確かめる。
+
 ## O19. 先行研究 3 本が主軸と競合する可能性 — **解決（D40: 3 本とも一次資料を読んだ。判断は (a)「測定研究として立て直す」）**
 
 **2026-09-22 追記（D39）**: 学生が PDF を提供し、R2（AgentFlow）と R3（ReactAppScan）を読了。
