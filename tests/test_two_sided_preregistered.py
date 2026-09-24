@@ -95,7 +95,23 @@ def test_precondition_any_change_still_passes(pair):
 # --------------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("pair", sorted(EXPECTED))
+# A2 は厳格版 O34（D58）で git_diff の argv に未検証の根 `context_lines` が残り、事前登録の照合が
+# 落ちる。**規則は変えずに報告する**決定（D58 の追記、O35）。期待値は消さず xfail にする。
+_O34_XFAIL = {"A2"}
+
+
+@pytest.mark.parametrize(
+    "pair",
+    [
+        pytest.param(
+            p,
+            marks=pytest.mark.xfail(strict=True, reason="D58 の追記: 厳格版 O34 で A2 の git_diff が落ちる（O35）"),
+        )
+        if p in _O34_XFAIL
+        else p
+        for p in sorted(EXPECTED)
+    ],
+)
 def test_preregistered_direction_passes(pair):
     """`pass_preregistered` が `docs/expected_tuples.json` の向きつき照合で True。"""
     _need(EXPECTED[pair])

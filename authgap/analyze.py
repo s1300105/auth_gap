@@ -504,6 +504,14 @@ def analyze_unit_full(
             # 裏づけの有無もその「等級」の一部だからである。
             slot_cands = [replace(c, grade=Req.OP) if c.form == "value" else c for c in slot_cands]
         sc = score_gates(cfg, dom, slot_cands, nodes, "val", subjects)
+        if len(value.roots) > 1:
+            # **主語一致は MODEL の根すべてに要求する**（D58、O34）。根ごとに採点し、最も弱い
+            # 要求主体を採る（攻撃者は検証されていない根を使う）。どれか 1 つの根との一致で
+            # slot 全体を引き上げると、検証済みの引数と未検証の引数が合流した値で誤 clear になる
+            # （canvas-mcp `update_syllabus` の `body`）。D25 が strong-path の裏付けに入れた規則と同じ。
+            per_root = [score_gates(cfg, dom, slot_cands, nodes, "val", frozenset({r}))
+                        for r in sorted(value.roots)]
+            sc = min(per_root, key=lambda x: x.req)
         report.req_val[(i, slot)] = sc.req
         report.gate_results[(i, slot)] = sc.to_json()
         report.grades[(i, slot)] = _grade_of(sc.passing, sc.candidates, value, report.effects[i], slot)

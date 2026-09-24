@@ -22,7 +22,12 @@ from scripts.two_sided import compare  # noqa: E402
 PAIRS = [
     # (pair_id, 変化が出る slot, 脆弱側の等級, 修正側の等級, 最低限の変化サイト数)
     ("A1", "cwd", None, "strong-path", 8),
-    ("A2", "argv[*]", None, "strong-token", 2),
+    # A2: 厳格版 O34（D58）で git_diff の argv に未検証の根 `context_lines` が残り、変化は 1 サイト
+    # になる。**規則は変えずに 7/8 と報告する**決定（D58 の追記、O35）。期待値は消さず xfail にする。
+    pytest.param(
+        "A2", "argv[*]", None, "strong-token", 2,
+        marks=pytest.mark.xfail(strict=True, reason="D58 の追記: 厳格版 O34 で A2 の git_diff が落ちる（O35）"),
+    ),
 ]
 
 
