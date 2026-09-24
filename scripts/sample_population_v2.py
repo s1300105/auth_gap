@@ -40,7 +40,14 @@ def main() -> int:
     ap.add_argument("--seed", type=int, default=20260920)
     ap.add_argument("--enum", default="evidence/population_v2/enumeration.jsonl")
     ap.add_argument("--out", default="docs/corpus_sample_v2.json")
+    ap.add_argument("--exclude", action="append", default=[],
+                    help="除く repo の標本（`targets[].repo`）。v3 は v2 の抽出分を除く（docs/population_v3.md）")
+    ap.add_argument("--prefix", default="v2", help="木の名前の接頭辞（v3 は v3）")
     args = ap.parse_args()
+    excluded: set[str] = set()
+    for path in args.exclude:
+        with open(os.path.join(ROOT, path), encoding="utf-8") as fh:
+            excluded |= {t["repo"].lower() for t in json.load(fh)["targets"]}
     repos: dict[str, set[str]] = {}
     with open(os.path.join(ROOT, args.enum), encoding="utf-8") as fh:
         for line in fh:
@@ -53,6 +60,9 @@ def main() -> int:
     pop = sorted(repo for repo, paths in repos.items()
                  if repo != "modelcontextprotocol/python-sdk" and any(cls(p) == "src" for p in paths))
     print(f"母集団（src 側に宣言のある repo）: {len(pop)} / 列挙 repo {len(repos)}")
+    if excluded:
+        pop = [r for r in pop if r not in excluded]
+        print(f"除外（--exclude の標本）: {len(excluded)} → 抽出元 {len(pop)}")
     rng = random.Random(args.seed)
     chosen = sorted(rng.sample(pop, args.n)) if len(pop) > args.n else pop
     targets = []
@@ -61,13 +71,14 @@ def main() -> int:
         p = subprocess.run(["git", "ls-remote", url, "HEAD"], capture_output=True, text=True, timeout=120)
         sha = p.stdout.split()[0] if p.returncode == 0 and p.stdout.strip() else None
         targets.append({
-            "name": "v2-" + repo.replace("/", "__"), "repo": repo, "ref": sha or "UNRESOLVED",
-            "population": "mcp_server", "note": f"母集団 v2（seed={args.seed}）",
+            "name": f"{args.prefix}-" + repo.replace("/", "__"), "repo": repo, "ref": sha or "UNRESOLVED",
+            "population": "mcp_server", "note": f"母集団 {args.prefix}（seed={args.seed}）",
             "declaring_paths": sorted(p for p in repos[repo] if cls(p) == "src")[:10],
         })
         print(f"  {repo:50s} {sha[:10] if sha else 'UNRESOLVED'}")
-    out = {"_note": "docs/population_v2.md の抽出結果。ref は抽出時の default branch HEAD の SHA（pin）。", "seed": args.seed,
-           "n_population": len(pop), "n_enumerated_repos": len(repos), "targets": targets}
+    out = {"_note": f"docs/population_{args.prefix}.md の抽出結果。ref は抽出時の default branch HEAD の SHA（pin）。",
+           "seed": args.seed, "n_population": len(pop), "n_enumerated_repos": len(repos),
+           "excluded_samples": args.exclude, "targets": targets}
     with open(os.path.join(ROOT, args.out), "w", encoding="utf-8") as fh:
         json.dump(out, fh, ensure_ascii=False, indent=1)
         fh.write("\n")
