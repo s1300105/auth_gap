@@ -1,6 +1,6 @@
 # 事前定義の地図（何を先に決めているか、なぜ、どれが自分で考えた部分か）
 
-再現: `python scripts/catalog_map.py evidence/scan_v2_run16 --md docs/catalog_map.md`
+再現: `python scripts/catalog_map.py evidence/scan_v2_run18 --md docs/catalog_map.md`
 
 **役割と出所の分類は判断であって測定ではない**（根拠は `docs/decisions.md` D37）。
 行数と、下の「実際に使われた行」は測定値。
@@ -29,7 +29,7 @@
 
 ## 核の主張が実際に使っている行
 
-`evidence/scan_v2_run16` の CONTRADICTION から逆に数えた。
+`evidence/scan_v2_run18` の CONTRADICTION から逆に数えた。
 
 - 関係した API: **14 種類**（`DIRECT_SINKS` 67 行のうち）
 - 効果の形: {'direct': 849, 'proxy': 675}
@@ -49,7 +49,7 @@
 
 | API | 宣言の分かれ方 |
 |---|---|
-| `httpx.AsyncClient.request` | {'openWorldHint+readOnlyHint': 382, 'openWorldHint': 269, 'destructiveHint': 32, '(宣言なし)': 29, 'readOnlyHint': 19, 'destructiveHint+openWorldHint': 3} |
+| `httpx.AsyncClient.request` | {'openWorldHint+readOnlyHint': 382, 'openWorldHint': 269, '(宣言なし)': 43, 'destructiveHint': 32, 'readOnlyHint': 19, 'destructiveHint+openWorldHint': 3} |
 | `httpx.AsyncClient.get` | {'(宣言なし)': 109, 'readOnlyHint': 24, 'destructiveHint': 22, 'openWorldHint+readOnlyHint': 16, 'destructiveHint+openWorldHint': 10} |
 | `httpx.AsyncClient.post` | {'(宣言なし)': 116, 'readOnlyHint': 18, 'destructiveHint': 11, 'destructiveHint+openWorldHint': 11, 'openWorldHint+readOnlyHint': 5} |
 | `psycopg.Cursor.execute` | {'destructiveHint': 32, 'readOnlyHint': 25, '(宣言なし)': 22, 'destructiveHint+openWorldHint': 13, 'openWorldHint+readOnlyHint': 3} |

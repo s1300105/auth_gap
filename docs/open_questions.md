@@ -998,7 +998,7 @@ DB 効果 230 件に対して**未解決率 90.0%**。→ **O29 へ。**
   先にコミットし、A2 を含まない母集団 v3 で効果と誤りを測る。逸脱として記録する。
   (b) 採らずに限界に書く（A2 の 7/8 と本項を併記）。
 
-## O36. val エンジンの値の欠陥 3 つ（`not` の値・None との合流の順序・片側だけの束縛）— **直す（D59。学生の決定）**
+## O36. val エンジンの値の欠陥 3 つ（`not` の値・None との合流の順序・片側だけの束縛）— **解決（D59、`3086043`。run18 で確認）**
 
 - **状況**: (1) `_ev_UnaryOp` は被演算子の値をそのまま返す（`not x` が `x`、`-1` が `1`）。
   (2) `ir._shape_join` は `Atom` の `none` を比べず、`join(Atom(none), Atom())` が `Atom(none)` になる（順序に依る）。
@@ -1009,7 +1009,7 @@ DB 効果 230 件に対して**未解決率 90.0%**。→ **O29 へ。**
 - **要る判断**: (a) 凍結前に 3 つとも直す（値の側の変更なので `diff_effects.py` と `compare_scans.py` を通す）。
   (b) 凍結後の既知の限界として書く。
 
-## O37. `httpx` / `requests` の `.request(...)` の `body` slot が `data=` だけで、`json=` / `content=` を見ない — **直す（D59。仕様書の `data|json` に合わせる。`content=` は O39）**
+## O37. `httpx` / `requests` の `.request(...)` の `body` slot が `data=` だけで、`json=` / `content=` を見ない — **解決（D59、`3086043` と `url=` の追記 `90ef6dd`。`content=` は O39）**
 
 - **状況**: `authgap/catalog/sinks.py` の ProxyRow（`httpx.Client` / `httpx.AsyncClient` / `requests.Session`
   の `request`）は `body` を `KW("data")` だけにしている。同じ表の `post` 行は `KW("json")`。
@@ -1020,7 +1020,7 @@ DB 効果 230 件に対して**未解決率 90.0%**。→ **O29 へ。**
 - **要る判断**: (a) 凍結前に `request` / `post` / `put` / `patch` の `body` を `data` / `json` / `content` の
   合流にする（sink 表の変更なので `compare_scans.py` で増える行を見る）。(b) 既知の限界として書く。
 
-## O38. レビューで見つけた、O31 と無関係な見落とし 2 件 — **未決（記録のみ）**
+## O38. レビューで見つけた、O31 と無関係な見落とし 2 件 — **既知の限界（D59 で凍結。深さは論文で 3 / 4 / 5 を評価、`unlink` の原因は不明のまま）**
 
 - **yt-scribe `fetch_youtube_transcript_tool`**: 書き込みは `load_or_fetch_transcript` → `if cache_dir:` →
   `write_transcript_cache` → `transcripts.py:104 mkdir` / `:106 write_text` にあり、**呼び出しの深さが 5**

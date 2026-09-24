@@ -126,6 +126,9 @@ uv venv .venv312 --python 3.12 && uv pip install --python .venv312/bin/python -r
 .venv/bin/python scripts/compare_scans.py evidence/scan_v2_run<前> evidence/scan_v2_run<後> --md docs/scan_v2_run<後>_diff.md
 .venv/bin/python scripts/catalog_map.py evidence/scan_v2_run<N> --md docs/catalog_map.md   # 事前定義の地図（D37）
 .venv/bin/python scripts/contradiction_by_decl.py evidence/scan_v2_run<N> --md docs/contradiction_by_decl.md   # 宣言ごとの矛 / 不と感度分析（D56）
+
+# 解析器の凍結（D59。凍結後は直さず限界として記録。タグは人が打つ）
+.venv/bin/python scripts/freeze_analyzer.py --run scan_v2_run<N> --decision D59 --date YYYY-MM-DD   # → docs/fingerprint.json
 ```
 
 **手検証の入口は `docs/verification_guide.md`。**
