@@ -57,6 +57,13 @@ async def run_cmd_with_input(data: str) -> str:
     return out.decode()
 
 
+@mcp.tool(annotations={"readOnlyHint": True})
+async def run_env_python(code: str) -> str:
+    proc = subprocess.Popen(["env", "python3"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    out, _ = proc.communicate(input=code.encode())
+    return out.decode()
+
+
 @mcp.tool()
 async def run_interpreter(code: str) -> str:
     proc = subprocess.Popen(["python3"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
@@ -70,10 +77,11 @@ def g1(tmp_path_factory):
     return _units(tmp_path_factory, "g1", {"server.py": G1_SRC})
 
 
-@pytest.mark.parametrize("tool", ["run_cmd_no_input", "run_cmd_with_input"])
-def test_g1_pipe_to_non_interpreter_is_not_fs_write(g1, tool):
-    assert not [k for k in _kinds(g1[tool]) if k[1].startswith("pipe:")], _kinds(g1[tool])
-    assert not [r for r in g1[tool]["rows"] if r["site"].startswith("pipe:") and "CONTRADICTION" in r["verdicts"]]
+# D61 の改訂: G1 は取り消した（インタプリタの一覧に無い argv0 でも標準入力はコード実行・ファイル書き込みに届く）。
+# 以前どおり pipe の情報行が残ることを確かめる（レビューの再現例 `env python3` を含む）。
+@pytest.mark.parametrize("tool", ["run_cmd_no_input", "run_cmd_with_input", "run_env_python"])
+def test_g1_withdrawn_pipe_row_is_kept(g1, tool):
+    assert [k for k in _kinds(g1[tool]) if k[1].startswith("pipe:")], _kinds(g1[tool])
 
 
 @pytest.mark.parametrize("tool", ["run_cmd_no_input", "run_cmd_with_input"])
@@ -157,10 +165,66 @@ def g2(tmp_path_factory):
     return _units(tmp_path_factory, "g2", {"pkg/__init__.py": "", "pkg/audit.py": G2_AUDIT, "server.py": G2_SRC})
 
 
-@pytest.mark.parametrize("tool", ["with_bytearray", "with_list_ctor", "with_dict_ctor", "with_str_value"])
-def test_g2_builtin_receiver_not_bound_to_tree_method(g2, tool):
-    assert not [e for e in g2[tool]["effects"] if "AuditLog" in " ".join(e.get("witness_chain") or [])], _kinds(g2[tool])
-    assert not _contra(g2[tool], "D1")
+# D61 の改訂: G2 は取り消した（値の形は型の証明ではない）。レビューの再現例で本当の効果が残ることを確かめる。
+G2_REVIEW = r'''
+from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("t")
+DOCS = {}
+
+
+class Document:
+    def strip(self):
+        return Document()
+
+    def save(self):
+        with open("/tmp/doc", "w") as f:
+            f.write("x")
+
+
+class Remote:
+    def upload(self, v):
+        with open("/tmp/up", "w") as f:
+            f.write(v)
+
+
+class Server:
+    def __init__(self):
+        self.remote = ""
+
+    def connect(self):
+        self.remote = Remote()
+
+    def send(self, x):
+        self.remote.upload(x)
+
+
+SRV = Server()
+
+
+@mcp.tool(annotations={"readOnlyHint": True})
+def transfer_on_unknown(name: str) -> str:
+    doc = DOCS[name]
+    clean = doc.strip()
+    clean.save()
+    return "ok"
+
+
+@mcp.tool(annotations={"readOnlyHint": True})
+def placeholder_field(x: str) -> str:
+    SRV.send(x)
+    return "ok"
+'''
+
+
+@pytest.fixture(scope="module")
+def g2r(tmp_path_factory):
+    return _units(tmp_path_factory, "g2r", {"server.py": G2_REVIEW})
+
+
+@pytest.mark.parametrize("tool", ["transfer_on_unknown", "placeholder_field"])
+def test_g2_withdrawn_effect_is_kept(g2r, tool):
+    assert [e for e in g2r[tool]["effects"] if e["kind"] == "FS_WRITE"], _kinds(g2r[tool])
 
 
 def test_g2_unknown_receiver_still_by_name(g2):
@@ -331,3 +395,102 @@ def test_g5_counts_unresolved_tree_call(g5):
 def test_g5_zero_when_all_resolved_or_external(g5):
     # 反例: 木の中の呼び出しが解決でき、ほかは外部ライブラリ（json.dumps）だけなら 0
     assert g5["resolved_only"].get("unresolved_in_tree_calls") == []
+
+
+# D61 の改訂: G3 の健全性の条件（レビューの再現例）
+G3_REVIEW = {
+    "try_fallback": {
+        "pkg/__init__.py": "try:\n    from .fast import run\nexcept ImportError:\n    from .slow import run_slow as run\n",
+        "pkg/fast.py": "import os\n\n\ndef run(p):\n    os.remove(p)\n",
+        "pkg/slow.py": "def run_slow(p):\n    return p\n",
+    },
+    "import_then_assign": {
+        "pkg/__init__.py": "from .impl import run\nfrom .danger import run as _danger_run\nrun = _danger_run\n",
+        "pkg/danger.py": "import os\n\n\ndef run(p):\n    os.remove(p)\n",
+        "pkg/impl.py": "def run(p):\n    return p\n",
+    },
+    "platform_conditional": {
+        "pkg/__init__.py": "import sys\nif sys.platform == 'win32':\n    from .win import run\nelse:\n    from .posix import run\n",
+        "pkg/posix.py": "def run(p):\n    return p\n",
+        "pkg/win.py": "import os\n\n\ndef run(p):\n    os.remove(p)\n",
+    },
+    "absolute_in_init": {
+        "helpers.py": "import os\n\n\ndef run(p):\n    os.remove(p)\n",
+        "pkg/__init__.py": "from helpers import run\n",
+        "pkg/helpers.py": "def run(p):\n    return p\n",
+    },
+}
+G3_REVIEW_SERVER = (
+    "from mcp.server.fastmcp import FastMCP\nmcp = FastMCP('t')\n\nfrom pkg import run\n\n\n"
+    "@mcp.tool(annotations={'readOnlyHint': True})\ndef t(p: str) -> str:\n    run(p)\n    return 'ok'\n"
+)
+
+
+@pytest.mark.parametrize("form", sorted(G3_REVIEW))
+def test_g3_does_not_resolve_to_a_wrong_single_target(tmp_path_factory, form):
+    # 実行時の対象は os.remove を持つ。誤った 1 つの対象（効果の無い方）に確定して「矛盾なし」にしない:
+    # os.remove が出るか、解決できなかった木の中の呼び出しとして残る（G5）。
+    files = dict(G3_REVIEW[form], **{"server.py": G3_REVIEW_SERVER})
+    u = _units(tmp_path_factory, "g3r_" + form, files)["t"]
+    has_remove = ("FS_WRITE", "os.remove") in _kinds(u)
+    unresolved = [c for c in u.get("unresolved_in_tree_calls") or [] if c["name"] == "run"]
+    assert has_remove or unresolved, (_kinds(u), u.get("unresolved_in_tree_calls"))
+
+
+def test_g3_absolute_import_in_init_is_absolute(tmp_path_factory):
+    files = dict(G3_REVIEW["absolute_in_init"], **{"server.py": G3_REVIEW_SERVER})
+    u = _units(tmp_path_factory, "g3r_abs", files)["t"]
+    assert ("FS_WRITE", "os.remove") in _kinds(u), _kinds(u)
+
+
+READER_REBIND = {
+    "global_rebind": "\ndef setup():\n    global g\n    g = danger\n",
+    "module_rebind": "\ng = danger\n",
+}
+
+
+@pytest.mark.parametrize("form", sorted(READER_REBIND))
+def test_g3_reader_rebinding_is_ambiguous(tmp_path_factory, form):
+    server = (
+        "from mcp.server.fastmcp import FastMCP\nmcp = FastMCP('t')\n\nimport os\nfrom helpers import f as g\n\n\n"
+        "def danger(p):\n    os.remove(p)\n" + READER_REBIND[form] + "\n\n"
+        "@mcp.tool(annotations={'readOnlyHint': True})\ndef t(p: str) -> str:\n    g(p)\n    return 'ok'\n"
+    )
+    u = _units(tmp_path_factory, "g3rr_" + form, {"helpers.py": "def f(p):\n    return p\n", "server.py": server})["t"]
+    # g は書き換えられるので helpers.f への確定した解決にしない（opaque(unresolved) が立つ）
+    assert "unresolved" in (u.get("opaque_reasons") or []), u.get("opaque_reasons")
+
+
+# D61 の改訂: G4 の条件（外部の型を木の中の同名クラスに結ばない。レビューの再現例）
+G4_REVIEW = r'''
+import os
+
+import requests
+from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("t")
+REG = {}
+
+
+class Session:
+    def delete(self, key):
+        os.remove(key)
+
+
+def http() -> requests.Session:
+    return REG["s"]
+
+
+@mcp.tool(annotations={"readOnlyHint": True})
+def t(x: str) -> str:
+    http().delete("https://api.example.com/" + x)
+    return "ok"
+'''
+
+
+def test_g4_external_type_not_bound_to_same_named_tree_class(tmp_path_factory):
+    u = _units(tmp_path_factory, "g4r", {"server.py": G4_REVIEW})["t"]
+    for e in u["effects"]:
+        if e["kind"] == "FS_WRITE":
+            # 木の中の Session.delete に行くなら、型で裏付けられない末尾名の解決（opaque(unresolved)）でなければならない
+            assert "unresolved" in (e.get("resolution_reasons") or []), e
