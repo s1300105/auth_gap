@@ -249,3 +249,61 @@ def test_content_kw_not_in_spec(units):
 def test_const_body_is_op(units):
     (e,) = _effects(units["req_post_const_body"], "requests.post")
     assert e["slots"]["body"]["prin"] == "OP"
+
+
+# ---------------------------------------------------------------------------
+# D59 の追記: HTTP の宛先は位置に無ければ `url=` のキーワードで引く
+# ---------------------------------------------------------------------------
+
+URL_KW_SRC = r'''
+import httpx
+import requests
+from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("t")
+
+
+@mcp.tool()
+async def req_request_kw(url: str) -> str:
+    requests.request(method="GET", url=url); return "x"
+
+
+@mcp.tool()
+async def session_request_kw(url: str) -> str:
+    c = httpx.AsyncClient()
+    await c.request(method="GET", url=url); return "x"
+
+
+@mcp.tool()
+async def req_get_kw(url: str) -> str:
+    requests.get(url=url); return "x"
+
+
+@mcp.tool()
+async def req_request_pos(url: str) -> str:
+    requests.request("GET", url); return "x"
+'''
+
+
+@pytest.fixture(scope="module")
+def url_units(tmp_path_factory):
+    d = tmp_path_factory.mktemp("urlkw")
+    (d / "server.py").write_text(URL_KW_SRC, encoding="utf-8")
+    res = run(RunConfig(src_root=str(d), population="mcp_server", full=True))
+    return {u["unit"]["qualname"]: u for u in manifest_json(res, "t")["units"]}
+
+
+@pytest.mark.parametrize(
+    "tool,site",
+    [
+        ("req_request_kw", "requests.request"),
+        ("session_request_kw", ".request"),
+        ("req_get_kw", "requests.get"),
+        ("req_request_pos", "requests.request"),  # 反例（変えない）: 位置で渡す形は今までどおり
+    ],
+)
+def test_url_host_by_keyword(url_units, tool, site):
+    effs = _effects(url_units[tool], site)
+    assert effs, url_units[tool]["effects"]
+    (e,) = effs
+    assert e["slots"].get("url.host", {}).get("prin") == "MODEL", e["slots"]
