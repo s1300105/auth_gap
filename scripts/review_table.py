@@ -3,7 +3,8 @@
     .venv/bin/python scripts/review_table.py --md docs/review_findings.md
 
 入力: evidence/review/explore_*.json（所見）、exec_lens_*.json（実行）、verify_*.json（設計・一般性）。
-生き残り = 3 観点のうち 2 観点以上を生き延びたもの（§4.2）。重大度は探索役・設計・一般性の 3 つの意見を
+生き残り = 3 観点のうち 2 観点以上を生き延びたもの（§4.2）。第 5 回以降の所見は事前登録の上限（4 回）の外なので
+id に † を付ける（review_plan.md §7.3）。重大度は探索役・設計・一般性の 3 つの意見を
 並べ、代表値はその中央値（high > medium > low の順で真ん中）。
 """
 
@@ -108,7 +109,8 @@ def md(rs):
     lines.append("|---|---|---|---|---|---|---|---|---|")
     for r in surv:
         sev = " / ".join(SEV_JA.get(s, s) for s in r["severities"])
-        lines.append(f"| {r['id']} | **{SEV_JA[r['severity']]}**（{sev}） | {DIR_JA[r['direction']]} | {r['affects']} | "
+        rid = r['id'] + ("†" if (r.get("round") or 0) > 4 else "")
+        lines.append(f"| {rid} | **{SEV_JA[r['severity']]}**（{sev}） | {DIR_JA[r['direction']]} | {r['affects']} | "
                      f"{mark(r['lenses']['exec'])} | {mark(r['lenses']['design'])} | {mark(r['lenses']['generality'])} | "
                      f"{mark(r['fix_general'])} | {r['title'][:140].replace('|', '｜')} |")
     lines.append("")
@@ -128,7 +130,8 @@ def md(rs):
             lines.append(f"- {r['id']}: " + ", ".join(f"{k}={mark(v)}" for k, v in r["lenses"].items()))
     lines.append("")
     lines.append("記号: ○ = その観点を生き延びた、✗ = 反証された、— = 未実施。判定の全文は `evidence/review/verify_*.json`、"
-                 "再現は `evidence/review/exec_lens_*.json`、所見の本文は `evidence/review/explore_*.json`。")
+                 "再現は `evidence/review/exec_lens_*.json`、所見の本文は `evidence/review/explore_*.json`。"
+                 "† = 第 5 回（事前登録の上限 4 回の外。review_plan.md §7.3）。")
     return "\n".join(lines) + "\n"
 
 

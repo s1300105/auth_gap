@@ -1,14 +1,14 @@
 # 添削の所見の表（3 観点の突き合わせ。`scripts/review_table.py` で再生成）
 
-所見 111 件。3 観点そろった 111 件のうち **生き残り 110 / 落ちた 1**（未完 0）。生き残り = 2 観点以上を生き延びたもの（review_plan.md §4.2）。
+所見 143 件。3 観点そろった 143 件のうち **生き残り 142 / 落ちた 1**（未完 0）。生き残り = 2 観点以上を生き延びたもの（review_plan.md §4.2）。
 
 | 生き残りの重大度（代表値） | D1 / D2 に効く | 評価の道具 |
 |---|---|---|
-| 高 | 11 | 0 |
-| 中 | 42 | 4 |
-| 低 | 36 | 17 |
+| 高 | 14 | 0 |
+| 中 | 50 | 6 |
+| 低 | 51 | 21 |
 
-向き（生き残り）: 誤 clear 57、数え落とし 28、誤警報 20、規則との食い違い 4、非決定 1
+向き（生き残り）: 誤 clear 74、数え落とし 36、誤警報 25、規則との食い違い 6、非決定 1
 
 ## 生き残った所見（重大度順）
 
@@ -18,12 +18,15 @@
 | R1-r1-2 | **高**（高 / 高 / 高） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | `**` 実引数と呼び出し先の `*args` / `**kwargs` を捨てる: `f(**d)` の `d` は評価も受け渡しもされず受け取る仮引数が OP/resolved の `Atom(formal)` になる、`*args` / `**kwargs` は種付けされず |
 | R1-r1-3 | **高**（高 / 高 / 中） | 数え落とし | D1+D2 | ○ | ○ | ○ | ○ | 継承したメソッドの呼び出しが、木の別のクラスに同名メソッドがあるだけで解決されず効果が消える（`_resolve_in_tree` の `typed_classes` の絞り込みが受け手の自クラス名だけで、基底を含む家族 `_class_family` を使わない） |
 | R1-r3-2 | **高**（高 / 中 / 高） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | ローカルのオブジェクトへの属性書き込み `c.cmd = cmd` は env の鍵 `c.cmd` にしか記録されず `Obj.fields` に載らないので、そのオブジェクトを**引数（位置 / キーワード）として渡す / 関数から返す / 2 段の属性 `h.config. |
+| R1-r4-1 | **高**（高 / 高 / 高） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | モジュール別名経由の属性読み出し `config.ROOT` / `cfg.SQL_PURGE` / `config.client`（`from . import config` / `import pkg.config as cfg`）が木内モジュールの束縛に一度も解かれない: |
 | R2-r1-1 | **高**（高 / 高 / 高） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | snake_case の ToolAnnotations（read_only_hint= / destructive_hint=）は mcp>=2.0 では protocol に届く宣言なのに、版を見ずに常に D_malformed（⊥）にして D1 / D2 を判定しない（誤  |
 | R2-r1-2 | **高**（高 / 中 / 高） | 数え落とし | D1+D2 | ○ | ✗ | ○ | ○ | デコレータ構文でない登録（mcp.tool(...)(fn) / mcp.tool()(fn) / self.mcp.tool()(self.m) / mcp.add_tool(fn, annotations=...)）を入口にせず、ツールが宣言ごと丸ごと消える（数え落とし・誤  |
 | R2-r3-1 | **高**（高 / 高 / 高） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | mcp 2.x 低レベル（Server(on_call_tool=)）のハンドラでは `params` を裸の Atom として種付けするため `params.arguments[...]` が MODEL/opaque(unresolved) になり、原理 3-a の行（D2  |
 | R4-r1-1 | **高**（高 / 中 / 高） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | asyncio.create_subprocess_exec(*cmd) の * 展開で argv0 がリスト全体になり、定数の program でも MODEL 由来として矛（本来は不） |
 | R4-r2-1 | **高**（高 / 高 / 高） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | INDIRECT 表は `args_pos` の位置引数 1 つ（または `args=`）しか渡さず、`to_thread(f, a, b)` / `partial(f, a, b)` の 2 つ目以降の実引数と `Thread(target=f, kwargs=…)` を捨てる |
 | R4-r2-2 | **高**（高 / 高 / 高） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | INDIRECT 形（to_thread / partial / Thread(target=)）の target が bound method（`store.delete` / `self._delete`）のとき受け手を評価も受け渡しもしないので、被呼び出しの `self.< |
+| R4-r4-1 | **高**（高 / 高 / 高） | 誤 clear | D1+D2 | ○ | ✗ | ○ | ○ | FastMCP / 低レベル Server の lifespan 文脈（`ctx.request_context.lifespan_context` / `server.request_context.lifespan_context`）経由の受け手に型が付かず、その先の DB  |
+| R4-r4-2 | **高**（高 / 高 / 中） | 誤 clear | D1+D2 | ○ | ✗ | ○ | ○ | pydantic BaseModel / dataclass で型付けしたツール引数（`req: WriteReq`）のフィールド読み出し `req.path` が MODEL/opaque(unresolved) になり、原理 3-a の「選べる」（MODEL かつ resol |
 | R5-r1-1 | **高**（高 / 中 / 高） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | analyze._SELF_FIELD_CACHE が id(index) を鍵にするため、1 プロセスで複数の木を解析すると（scan_v2.py / two_sided.py）別の木のクラスのフィールドが流用され、self.<field> 経由の効果が消える（false-cl |
 | R1-r1-4 | **中**（高 / 中 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | `lambda` の本体を一度も評価しない（`_ev_Lambda` は `dynamic` を返すだけ）ので、`asyncio.to_thread(lambda: ...)` / `run_in_executor(None, lambda: ...)` / 名前に束縛した la |
 | R1-r1-5 | **中**（中 / 中 / 中） | 数え落とし | D1+D2 | ○ | ○ | ○ | ○ | INDIRECT 行 `loop.run_in_executor` は受け手がローカル変数（`loop = asyncio.get_event_loop()`）だと `resolve_call_name` が None を返すので当たらず、`asyncio.get_event_l |
@@ -43,6 +46,14 @@
 | R1-r3-7 | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | 要素をそのまま渡す組込みの反復（`enumerate` / `zip` / `sorted` / `reversed` / `dict.items` / `dict.values`）が未解決の呼び出し（D44）として扱われループ変数が MODEL/**opaque** になるので |
 | R1-r3-8 | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | D50 / G4 の注釈型付け（`sqlite3.Connection` / `httpx.Client` などの受け手型）が `_seed_params`（降下のとき）にしか無く、`_self_fields`（メソッド形ツールのクラスの `__init__` の仮引数）と `_ |
 | R1-r3-9 | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | クラス名経由の属性読み出し `Cls.ATTR`（`class Settings: ROOT = "/data"` の名前空間クラス、`class Clients: http = httpx.Client()`）が `_module_value` の対象外（`_module_as |
+| R1-r4-11 | **中**（低 / 中 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | 値（定数・モジュール水準のインスタンス）の再公開 `pkg/__init__.py: from .config import ROOT, client` を経た `from pkg import ROOT, client` が解けない: `_module_value` は `_m |
+| R1-r4-2 | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | `_element_of` が `tail` のある列 / 辞書で **tail だけ**を返し、既知の先頭要素 `elems` を捨てる: 長さの違う列の分岐合流（`cmds = [cmd]; if flag: cmds.append("rm ...")`、`[cmd, "ec |
+| R1-r4-3 | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | INDIRECT 形（`asyncio.to_thread` / `threading.Thread(target=)` / `functools.partial` / `submit` / `run_in_executor`）の target の解決が `_resolve_in |
+| R1-r4-4 | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | `super().m(...)` の解決（`_super_callees`）が**直接の基底だけ**を見て止まる（`_find_init` / `_class_family` の「基底 3 段まで」と食い違う）ので、メソッドを定義しない中間クラスを 1 つ挟む継承（`A(B)`、 |
+| R1-r5-1† | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | `_shape_join` の「None リテラルとの合流は None 側が dead」の規則（D35 (a)）が `Obj` にしか無く、`Path` / `Seq` / `Map` / `Atom(定数)` と `None` の合流が `Unknown` / `Atom()` |
+| R1-r5-2† | **中**（高 / 中 / 中） | 数え落とし | D1+D2 | ○ | ✗ | ○ | ○ | `Obj.classes` が末尾名だけ（モジュール無し）なので、木の中の別モジュールに同名クラスがあり同名メソッドを持つと、`r = Runner(cmd); r.go()` の 2 文形は `_resolve_in_tree` の型絞り込みが 2 候補のまま `[]` を返し |
+| R1-r5-3† | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ✗ | ○ | ✗ | 組込みのコンテナ構築子 `set()` / `list()` / `dict()` / `collections.deque()` が未解決の呼び出し（OP/opaque の Unknown）になるため、その後の `parts.add(cmd)` は `container`（Se |
+| R1-r5-4† | **中**（中 / 中 / 中） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | 辞書の反復が**値**を束縛する: `_element_of(Map)` は値の join（または tail）を返すので、`for k in opts:` / `[k for k in opts]` / `sep.join(opts)` / `yield from opts` / |
 | R2-r1-3 | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ✗ | ○ | ○ | 低レベルハンドラが name 分岐を別関数（dispatch(name, arguments)）に委譲すると、効果はその関数から拾うのに join は手前のハンドラ本体しか見ず、全ツールの宣言が黙って未 join（⊥）になる（誤 clear） |
 | R2-r2-1 | **中**（中 / 中 / 中） | 数え落とし | D1+D2 | ○ | ○ | ○ | ○ | デコレータを変数に束縛した登録（ro_tool = mcp.tool(annotations=...); @ro_tool def f）は末尾名が tool でないので入口にならず、ツールが宣言ごと丸ごと消える（数え落とし・誤 clear。野外 1 木で 159 登録） |
 | R2-r3-4 | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | `Tool(...)` リテラルの検出が書かれた名前の末尾成分 `Tool` にしか当たらないため、`from mcp.types import Tool as MCPTool`（corpus に 45+ 行、自前の `Tool` クラスと衝突する木で常套）で作った宣言が 1 つ |
@@ -67,6 +78,8 @@
 | R5-r1-2 | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | 同じモジュールに同名の関数定義が 2 つあると（if/else・try/except の分岐で別々に定義するツール）、2 つ目の定義が SourceIndex._funcs.setdefault で黙って捨てられ、ユニットにも記録にも残らない（count-loss → false |
 | R5-r1-5 | **中**（中 / 中 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | 起動スクリプト X.py とパッケージ X/ が同じディレクトリにあると、SourceIndex のモジュール表が X → X.py に固定され、X/__init__.py のツールが X.py の import 表で解析されて sink が黙って消える（false-clean） |
 | R5-r2-2 | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | parse に失敗した / AST_NODE_CAP で落とした木内モジュールの関数を呼ぶツールは効果も行も出ず、unit 水準の印は外部呼び出しと同じ `opaque_reasons: unresolved` だけなので、宣言 D1/D2 に対して黙って「内」に見える（記録はフ |
+| R2-r5-2† | **中**（中 / 中 / 低） | 数え落とし | tooling | ○ | ○ | ○ | ○ | `tools_list` 規則の要素解決が import 表を使わず裸の末尾名で木全体を引く: 別モジュールから import した関数は、木のどこか（tests/ の stub、examples/ の同名関数）に同名の関数があるだけで「一意でない」として黙って落ち（`fs_to |
+| R2-r5-3† | **中**（中 / 低 / 中） | 規則との食い違い | tooling | ○ | ○ | ○ | ○ | ENTRY_RULES の gptme 規則（`spec_object` / `ToolSpec`）を実装しているコードが無い: `find_units` は decorator / method の 2 形しか扱わず（`find_entry_rule` も未使用）、`ToolS |
 | R4-r1-8 | **中**（中 / 低 / 中） | 数え落とし | tooling | ○ | ✗ | ○ | ○ | ループ本体（2 周固定点）と中間の被呼び出しの複数呼び出し箇所で、バイト同一の効果行が重複して出力され、行単位の件数（compare_scans の「効果」、summary の rows / verdict 集計、review_plan §6 の 8,337）が膨らむ（run20 |
 | R5-r1-3 | **中**（中 / 中 / 中） | 数え落とし | tooling | ○ | ○ | ○ | ○ | 評価道具のユニット同一性の鍵にモジュール / relpath が無いため、別モジュールの同名ツール（同じ関数名）の D1/D2 の矛が 1 件に潰れる: contradictions.json の n（scan_v2 は unit_id = framework:qualname: |
 | R5-r1-4 | **中**（中 / 中 / 低） | 数え落とし | tooling | ○ | ○ | ○ | ○ | contradiction_by_decl.py はファイル名に '-' を含まない manifest を黙って読み飛ばす（`"-" not in fn`）ため、木の名前に '-' が無い run では矛 / 不がすべて 0 になる。intersection_rows.py /  |
@@ -81,6 +94,16 @@
 | R1-r3-12 | **低**（低 / 低 / 低） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | `try` 本体が必ず終わる（`return` / `raise`）ときも `else` 節を実行するので、到達しない `else` の sink が効果行になり readOnly の矛になる（誤警報。D58 規則 3 は try が関数を「終える」かの話で、`else` の到達 |
 | R1-r3-5 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | `match` 文の capture パターン（`case {"cmd": c}` / `case [exe, *rest]` / `case str(c)` / `case … as c` / `case c`）を一度も束縛しないので、MODEL の subject から取り出 |
 | R1-r3-6 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | 拡張アンパック `a, *rest, c = seq` で `*rest` に列全体が束縛され（スライスではない）、`*` より後の対象が左からの添字で割り当てられる（右端から数えない）ので、`_, *rest = ["prefix", exe, arg]` の argv0 がリ |
+| R1-r4-10 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | 名前を束縛し直しても古い属性パスの鍵（`s.path`）が env に残る: `_bind`（Name）は `env[name]` だけを置き換え `name.*` を消さず、`_ev_Attribute` は env の鍵を `Obj.fields` より先に読み、`_rece |
+| R1-r4-12 | **低**（低 / 中 / 低） | 数え落とし | D1+D2 | ○ | ○ | ○ | ○ | 木内で定義したデコレータ（`@audited` = 閉包 `wrapper` を返す関数）で包んだ関数 / ツールを呼ぶとき、`_descend_env` はデコレータを無視して元の def の本体だけを実行するので、wrapper の中の sink（監査ログの追記 `open( |
+| R1-r4-13 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | モジュール水準のタプル代入 `SQL_PURGE, SQL_COUNT = "DELETE FROM sessions", "SELECT ..."` を `_module_assignments` が読まない（`ast.Name` の対象しか見ない。G3 の `_module_ |
+| R1-r4-14 | **低**（低 / 低 / 低） | 数え落とし | D1+D2 | ○ | ○ | ○ | ○ | G4 / D50 の注釈型付けが、`Optional[...]` / `X ｜ None` の**中**に書いた前方参照の文字列（`conn: Optional["sqlite3.Connection"]`、`conn: "sqlite3.Connection" ｜ None`） |
+| R1-r4-15 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | `del cmds[0]` を無視する（`ast.Delete` は no-op）ので、`cmds = ["ls", cmd]; del cmds[0]; subprocess.run(cmds)` の argv0 が消したはずの定数 'ls' のまま（SPAWN_CONST_A |
+| R1-r4-5 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ✗ | ○ | ○ | G3 改訂 3 の「読む側で呼ぶ名前が関数の中で書き換えられるなら ambiguous」の実装が `_scan_module_writes`（D17 改訂 2）をそのまま使うため、**別の関数の仮引数 / 局所変数**が import した関数と同名なだけで（`from .ren |
+| R1-r4-6 | **低**（低 / 低 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | dataclass 形（`__init__` 無し）の構築で `__post_init__` を一度も実行しない: `__post_init__` で導いたフィールド（`self.cmd = "echo " + self.raw`）は `Obj.fields` に無く、読むと O |
+| R1-r4-7 | **低**（低 / 低 / 低） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | 辞書表示の `**` 展開 `{**base, "target": target}` を `_ev_Dict` が `"<dynamic>"` キーの 1 項目（base の Map 全体）として置き、base の項目を平らにしないので、`d["exe"]`（base 側の定数キ |
+| R1-r4-8 | **低**（低 / 低 / 低） | 誤警報 | D1+D2 | ○ | ✗ | ○ | ○ | G4 / D50 の注釈型付け（`_seed_params`）がリテラルの `None`（`conn: Optional[sqlite3.Connection] = None` の既定値、または明示の `None` 実引数）を `Obj(sqlite3.Connection)`  |
+| R1-r5-5† | **低**（低 / 低 / 低） | 数え落とし | D1+D2 | ○ | ○ | ○ | ○ | G4 / D50 の注釈型付けが `Optional` の包みを import 表で解かず字面 `"Optional"` / `"typing.Optional"` でしか外さない（`_annotation_receiver_type` :2365、`_annotation_he |
 | R2-r1-11 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | pydantic の lax 変換で True になる値（readOnlyHint=1 / "true"、destructiveHint=0）を『真偽値でない = 上界を動かさない』として ⊥ にする（誤 clear。まれ） |
 | R2-r1-13 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | デコレータの第 1 位置引数で与えたツール名（@mcp.tool("delete_file")）を読まず関数名を tool_name にするので、同名の Tool リテラル / D_op の名前と join できない（まれ） |
 | R2-r1-5 | **低**（低 / 低 / 低） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | Tool(...) リテラルをツール名だけで木全体から join し、リテラルがどのサーバ / モジュール（テストを含む）に属するかを見ない: 別サーバ・テストの宣言が付く（誤警報）、同名の別サーバのリテラルに先勝ちで負けて自分の宣言を失う（誤 clear） |
@@ -93,24 +116,32 @@
 | R2-r2-5 | **低**（低 / 低 / 低） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | `if name == "a" or name == "b":` の分岐は短絡 CFG で 2 つの test に分かれ、どちらも単独では効果を支配しないので join 済み全ツールに帰属し、readOnly の別ツールの D1 で矛にする（同値の `name in ("a",  |
 | R2-r3-2 | **低**（低 / 低 / 低） | 数え落とし | D1+D2 | ○ | ○ | ○ | ○ | `add_request_handler("tools/call", ...)` の入口規則が SDK の署名と合わず一度も当たらない: mcp 2.x は全リリースで `(method, params_type, handler)` の 3 引数なのに `node.args[1 |
 | R2-r3-3 | **低**（低 / 低 / 低） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | `Server(on_call_tool=h)` のハンドラを裸の末尾名で木全体から引く（呼び出し元モジュールの import 表 `scope` は作って捨てている）ので、tests/ の同名の test double や無関係な同名関数が lowlevel_v2 ユニットにな |
-| R2-r4-1 | **低**（低 / 低 / 低） | 数え落とし | D1+D2 | ○ | ○ | ○ | ○ | mcp 2.x 低レベル `Server` の**サブクラス**（`class NotesServer(Server)` で `super().__init__("notes", on_call_tool=self._call)` / `Server.__init__(self, |
-| R2-r4-2 | **低**（低 / 低 / 低） | 数え落とし | D1+D2 | ○ | ○ | ○ | ○ | デコレータの受け手が式（`@get_mcp().tool(annotations=...)` / `@SERVERS["fs"].tool(...)`、PEP 614 の一般式デコレータ）だと `_decorator_calls` の `dotted_of` が None を返し |
-| R2-r4-3 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | 同じ関数に登録デコレータが 2 つ重なると（langchain `@tool` の上に `@mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))`、`@mcp.tool()` の上に別サーバの `@admin.tool( |
+| R2-r4-1 | **低**（低 / 低 / 低） | 数え落とし | D1+D2 | ○ | ○ | ○ | ○ | R2-r4-1 [R2] mcp 2.x 低レベルの入口照合が書かれた呼び出し名の末尾 `Server` にしか当たらず、`Server` のサブクラス（`FsServer("fs", on_call_tool=h)` / `super().__init__(..., on_ca |
+| R2-r4-2 | **低**（低 / 低 / 低） | 数え落とし | D1+D2 | ○ | ○ | ○ | ○ | R2-r4-2 [R2] デコレータの受け手が Call / Subscript のとき（`@get_mcp().tool(annotations=...)` / `@SERVERS["fs"].tool(annotations={...})`）`dotted_of` が Non |
+| R2-r4-3 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | R2-r4-3 [R2] 同じ関数にカタログのデコレータが 2 段重なる（`@mcp.tool()` の下に `@admin.tool(annotations=ToolAnnotations(readOnlyHint=True))`、`@tool` の下に `@mcp.tool( |
 | R3-r1-3 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | SQLite の括弧形の設定 `PRAGMA journal_mode(WAL)` / `PRAGMA user_version(3)` を「= の無い PRAGMA = 読み取り」として内に落とす（永続する設定なのに D1 矛 / D2 不にならない） |
 | R3-r1-4 | **低**（低 / 低 / 低） | 数え落とし | D2 | ○ | ✗ | ○ | ○ | 低レベルハンドラの複数ツール帰属で `meet_d_kind` が explicit を和にするため、readOnly のツールが 1 つでも混ざると destructiveHint:false のツールの D2 が一度も評価されない（D2 の宣言別件数の数え落とし） |
 | R3-r1-5 | **低**（低 / 低 / 低） | 誤警報 | D2 | ○ | ○ | ✗ | ✗ | `open(path, "a+")` / `"x+"` を「書き出し（上書き）」に分類する — Python の open では `a+` / `x+` は既存の内容を消せない追記型なので D2 で誤警報（path MODEL → 矛、path 定数 → 不。期待は内） |
+| R3-r4-1 | **低**（中 / 低 / 低） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | 低レベル MCP ハンドラで name 判定が入れ子（外側 `name in ("peek", "rm", "mk")` の中に内側 `if name == "rm"` / `elif name == "mk"`）のとき、`_attribute_effects_to_tools` |
+| R3-r4-2 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | `_first_element` が `Str`（連結した文字列）に対して `parts[0]` を返すので、shell=False で**文字列**（列ではない）を args に渡す `subprocess.run("/usr/bin/" + tool)` / `subproc |
+| R3-r4-3 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | `%` / `str.format` の書式テンプレートの先頭がプレースホルダで実引数に非リテラルが混ざる形（`"%s FROM t WHERE id = %s" % ("DELETE", os.environ["ID"])` / `"{} FROM t WHERE id = { |
 | R4-r1-11 | **低**（低 / 中 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | 語彙にある sink の再公開別名（asyncio.subprocess.create_subprocess_exec / from asyncio.subprocess import …、sympy.parse_expr）が _suffix_match の完全一致・末尾 2 要 |
 | R4-r3-2 | **低**（低 / 低 / 低） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | `_suffix_match` の末尾 2 要素一致が、木の中のモジュールがライブラリと同名（`app/requests.py` / `app/subprocess.py` / `pkg/os.py`、相対 import `from . import os` を含む）のとき、その |
 | R4-r3-3 | **低**（中 / 低 / 低） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | スライスで複製した定数の列（`cmd = base[:]` / `base[1:]`）に MODEL を append / insert / extend / 添字代入すると、`_ev_Subscript` が Slice を要素の join（Atom）に潰し `_append_ |
 | R4-r3-4 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ✗ | ○ | ○ | `git.cmd.Git` の proxy 行（method `*`、argv0 ← 'git' 定数）が GitPython の `Git.execute(command, ..., shell=)` にも当たり、実際の argv（command の先頭）と `shell=Tr |
 | R4-r3-5 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | `is_interpreter` が `/` でしか basename を切らないので、Windows のパス（`C:\\Python311\\python.exe`）を argv0 にした Popen + stdin パイプが EXEC にならず FS_WRITE の情報行にな |
 | R4-r3-6 | **低**（低 / 低 / 低） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | `_pipe` の受け手判定 `"Popen" in c` が部分文字列一致なので、名前に Popen を含む木内クラス（`PopenRecorder` など）の `communicate(input=…)` / `stdin.write` が pipe 形の FS_WRITE  |
+| R4-r4-4 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | `_self_fields` (1) のクラス体の走査が条件を逆に書いていて（`if not name.startswith("self.")` の後で `name[len("self."):]`）、クラス体の名前 N と `self` から N[5:] という捏造フィールド（` |
+| R4-r4-5 | **低**（低 / 低 / 低） | 誤警報 | D1+D2 | ○ | ✗ | ○ | ○ | `git.cmd.Git` の proxy 行（method `*`）が GitPython の**子プロセスを起こさない**明示メソッド（`custom_environment` の with 文 / `update_environment` / `clear_cache` / |
 | R5-r1-9 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | _self_fields の再帰打ち切り用の番兵 `()` が、__init__ の評価で RecursionError が出た後も cache に残るため、同じクラスの 2 つ目以降のユニットは印なしで self のフィールドを失う（順序依存の false-clean） |
 | R5-r2-5 | **低**（低 / 低 / 低） | 数え落とし | D1+D2 | ○ | ○ | ○ | ○ | SourceIndex._index_body の再帰が If / Try / With の入れ子 1 段ごとに 1 フレーム使うため、約 1,000 段の入れ子（例: 1,200 分岐の elif 連鎖）を含むファイルが 1 つあると index.build() が Recur |
 | R2-r1-12 | **低**（低 / 低 / 低） | 数え落とし | tooling | ○ | ○ | ○ | ○ | ToolAnnotations(readOnlyHint=True, **EXTRA) のように明示キーワードと読めない展開が混ざると、確定している明示宣言まで捨てて全体を D_unknown にする（宣言の数え落とし。まれ） |
 | R2-r1-4 | **低**（低 / 低 / 低） | 規則との食い違い | tooling | ○ | ○ | ○ | ○ | annotations のフィールド値が定数でない（readOnlyHint=IS_RO / Cfg.ro / not False、{**COMMON}）とき、その項を黙って落として ⊥ にし D_unknown にしない（仕様「読めない形は D_unknown とし ⊥ と混ぜ |
 | R2-r2-6 | **低**（低 / 低 / 低） | 数え落とし | tooling | ○ | ○ | ○ | ○ | `find_tools_list_units` の `already`（裸の関数名の集合）が、別モジュールの同名関数まで除外する: `@mcp.tool() def delete_file` が木にあると `Agent(tools=[delete_file])` に並べた別モジュ |
-| R2-r4-4 | **低**（低 / 低 / 低） | 誤警報 | tooling | ○ | ○ | ○ | ○ | `_index_body` がメソッド内の入れ子 def にも `classname` を付けるため、agno `Toolkit` 派生クラスの**メソッド内の入れ子関数**（`__init__` 内の `_log`、`run` 内の `_run_impl`）が `method/ |
+| R2-r4-4 | **低**（低 / 低 / 低） | 誤警報 | tooling | ○ | ○ | ○ | ○ | R2-r4-4 [R2] agno の method 規則（bases=Toolkit, names="*"）が、メソッドの**中に入れ子で定義した局所関数**（`FileTools.__init__._log` / `FileTools.run._run_impl`）までユニッ |
+| R2-r4-5 | **低**（低 / 低 / 低） | 数え落とし | tooling | ○ | ○ | ○ | ○ | R2-r4-5 [R2] method 規則の基底照合 `_class_bases` が書かれた基底名しか見ない: (a) `from langchain_core.tools import BaseTool as LCBaseTool` の `class RmAliasTool |
+| R2-r5-1† | **低**（低 / 低 / 低） | 数え落とし | tooling | ○ | ○ | ○ | ○ | クラス形の入口（method 規則 / langroid ToolMessage）の認識が「書かれたクラス本体と直接の基底」だけを見て継承（MRO）を追わない: (a) `_run` を BaseTool 派生でない mixin から継承する / `_run = shared_f |
+| R2-r5-4† | **低**（低 / 低 / 低） | 数え落とし | tooling | ○ | ○ | ○ | ○ | langroid の handler 解決が (a) `request` 値と同名のメソッドを**どのクラスからでも**拾う（Agent でない helper クラスの `search` / `update` / `add` が toolmessage_handler ユニットに |
 | R3-r1-7 | **低**（低 / 低 / 低） | 数え落とし | tooling | ○ | ○ | ○ | ○ | MODEL が選べる（resolved）連結 SQL の接頭辞が変更の文（`"DELETE … " + x`）でも理由を `db_model_sql` にするため、感度分析 3-b が「model を含む理由」として矛 → 不に倒し、3-b の行を過小に数える |
 | R3-r1-8 | **低**（低 / 低 / 低） | 誤警報 | tooling | ○ | ○ | ○ | ✗ | `sqlalchemy.text("DELETE …")` を別の文で作って `execute(stmt)` すると、1 つの文が `text` 行の矛と `execute` 行の不（`db_sql_unreadable`）の 2 組になり、不の件数が水増しされる |
 | R5-r1-10 | **低**（低 / 低 / 低） | 数え落とし | tooling | ○ | ○ | ○ | ○ | シンボリックリンクのディレクトリは os.walk（followlinks=False）で辿られず、その中のツールはユニットにも parse_failures / truncations にも残らない |
@@ -124,6 +155,7 @@
 | R5-r3-2 | **低**（低 / 低 / 低） | 数え落とし | tooling | ○ | ○ | ○ | ○ | RecursionError で打ち切ったユニットは runner の代替 UnitReport に D_kind が無く（analyze_unit_f0a も parse_d_kind を engine.analyze の後に呼ぶ）、宣言があるのに manifest では D_ |
 | R5-r3-3 | **低**（低 / 低 / 低） | 数え落とし | tooling | ○ | ○ | ○ | ○ | compare_scans.py の「消えた CONTRADICTION」は宣言を区別しない集合差なので、同じ (木, ユニット, site, kind) に D3/D4 の矛が残っていれば D1/D2 の矛が消えても（主指標 153 が減っても）「消えた 0」になり、回帰検査を |
 | R5-r3-4 | **低**（低 / 低 / 低） | 非決定 | tooling | ○ | ○ | ○ | ○ | unit_id（schema_hash）は仮引数の既定値を ast.unparse した文字列から作るため、既定値が lambda や入れ子引用符の f-string のツールでは Python 3.10 と 3.12 で unit_id が変わる（ast.unparse の出力 |
+| R5-r4-1 | **低**（低 / 低 / 低） | 規則との食い違い | tooling | ○ | ○ | ○ | ○ | two_sided.py の事前登録照合 / 座標一致が、片側にしか無いサイト（sink の置換・呼び出し点の追加で修正側にだけ現れた site）を `from: null` の等級変化や任意の座標の「変化」として数える: `SiteRecord.value()` が欠けている側 |
 
 ## 落ちた所見（2 観点以上で反証）
 
@@ -131,4 +163,4 @@
 |---|---|---|---|---|
 | R2-r1-10 | ○ | ✗ | ✗ | FastMCP が実行時にスキーマから除く `ctx: Context` 仮引数を MODEL として種付けし、ctx 由来の path / argv が主体 MODEL になる（D1 / D2 の理由が *_model_opaque に付き、SELECT 座標では誤警報） |
 
-記号: ○ = その観点を生き延びた、✗ = 反証された、— = 未実施。判定の全文は `evidence/review/verify_*.json`、再現は `evidence/review/exec_lens_*.json`、所見の本文は `evidence/review/explore_*.json`。
+記号: ○ = その観点を生き延びた、✗ = 反証された、— = 未実施。判定の全文は `evidence/review/verify_*.json`、再現は `evidence/review/exec_lens_*.json`、所見の本文は `evidence/review/explore_*.json`。† = 第 5 回（事前登録の上限 4 回の外。review_plan.md §7.3）。
