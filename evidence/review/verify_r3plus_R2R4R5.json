@@ -1,0 +1,868 @@
+{
+ "verdicts": [
+  {
+   "id": "R2-r3-1",
+   "severity": "high",
+   "affects": "D1+D2",
+   "design": {
+    "id": "R2-r3-1",
+    "refuted": false,
+    "confidence": 0.85,
+    "reason": "問 1（意図された決定か）: 同じ根本原因（v2 低レベルの第 2 位置仮引数 `params` を裸の Atom で種付け、SDK 型のフィールド読み出しが opaque になる）を決めた記録は無い。docs/decisions.md（D1〜D61、D19 の K1〜K7 表 :1548-1556）、docs/preregistration.md §2.9（:427-465。join と帰属の規則だけで種付けの規則は無い）、docs/open_questions.md O1〜O41 を lowlevel_v2 / on_call_tool / params.arguments / CallToolRequestParams で grep して該当 0。仕様は逆に v2 形を R2 の MODEL 導入点として名指ししている（AUTHGAP_BRIEF_v3.md:203「低レベル MCP の 2 形 … v2 系の `Server(on_call_tool=...)`」）。§2.6 の種付け規則（AUTHGAP_BRIEF_v3.md:517「その他 → Atom(formal)」）を字義どおり当てれば `params` は Atom になるが、その規則は仮引数自身がモデル値である形（v1 の `arguments`、デコレータ引数）を想定したもので、v2 でモデルの入力が `params.arguments` にあることは Def 2 が言っている。O33/D57 §9.3（docs/contradiction_principles.md:296-311）の「resolved = モデリングした操作だけで slot に届いた / opaque = モデリングしていない**関数**を通った」も、Def 4（AUTHGAP_BRIEF_v3.md:227「木内で解決できない**呼び出し**は opaque(unresolved)」）と D17 改訂（docs/decisions.md:1670-1690。末尾名解決の**呼び出し**に unresolved を合流）も、入口の SDK 型のフィールド読み出しを unresolved とはしていない。engine.py:551 の Atom への属性アクセス → `opaque(\"unresolved\")` は D 番号の無い実装上の既定であり、Subscript 側（engine.py:681-698）は Atom の添字を resolved のまま root を精緻化するので v1 と v2 の非対称は設計ではなく種付けの欠落。しかも `_seed`（authgap/analyze.py:223-252）には langroid 形で `Obj((ToolMessage,), fields)` を種付ける前例（:241-252）があり、SDK 型にフィールドを与えることは既存の設計の内側。第 2 回の checked_but_ok（t58「params.arguments[...] は MODEL/opaque(unresolved) だが主体は MODEL」）と第 4 回 t90 は D1 FS_WRITE の行（path の主体に依らない）を見た所見者の注記で、設計の記録ではない。問 2: expected は規則どおり（下記）。問 3: 語彙の追加ではない。`lowlevel_v2` は既に ENTRY_RULES にある（authgap/catalog/entries.py:147-152）。修正案は analyze.py の `_seed` で、docs/fingerprint.json の凍結ブロック（enforcement_table / entry_catalog / gate_vocabulary / sink_table）に触れない（実装 sha256 は当然変わり、review_plan §4.4 の逸脱 #24 の記録は要る）。問 4: D1（SPAWN argv0 / DB 読めない SQL / NET 読めないメソッド）と D2（FS_WRITE 書き出し・mode 不明、SPAWN、DB、NET PUT の URL）の主指標に効く。D3/D4 だけではない。",
+    "citations": [
+     "AUTHGAP_BRIEF_v3.md:203",
+     "AUTHGAP_BRIEF_v3.md:227",
+     "AUTHGAP_BRIEF_v3.md:517",
+     "docs/contradiction_principles.md:163",
+     "docs/contradiction_principles.md:181-186",
+     "docs/contradiction_principles.md:296-311",
+     "docs/decisions.md:1548-1556",
+     "docs/decisions.md:1670-1690",
+     "docs/preregistration.md:427-465",
+     "authgap/analyze.py:223-252",
+     "authgap/val/engine.py:548-551",
+     "authgap/val/engine.py:681-698",
+     "authgap/val/engine.py:2420-2429",
+     "authgap/catalog/entries.py:147-152",
+     "docs/fingerprint.json",
+     "evidence/review/explore_r1_r2.json (checked_but_ok t58)"
+    ],
+    "expected_is_correct": true,
+    "corrected_expected": "所見のとおり。write_v2: §7.2「FS_WRITE 書き出し: path が MODEL 由来 → 矛（3-a）」で「MODEL 由来 = MODEL かつ resolved」（§9.3）。モデルの入力は SDK 要求型のフィールド読み出しと定数キーの添字だけで slot に届くので resolved → `contradiction:D2` / `contradiction_reason:D2:fs_writeout_model_path`（v1 形 srv_plain と同じ行）。run_or: §7.1 SPAWN「argv0 が MODEL 由来 → 矛」→ `contradiction:D1` / `contradiction_reason:D1:spawn_model`。`arguments or {}` の慣用句が resolved を保つことは v1 対照（scratchpad/verify/R2_hm_1/t_v1_or: `.argv0 MODEL/resolved roots=arguments[\"cmd\"]` → `contradiction:D1 spawn_model`）で確認した。remove_v2 は §7.2 の fs_remove（path の主体に依らない）で今も矛（不変）。readOnlyHint=True の D1 FS_WRITE 行も不変。",
+    "severity_opinion": "high",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "notes": "向きの注記: 現状は 内 ではなく 不（`contradiction_unknown:*_opaque`）に落ちるので、§9.3 の語彙では「不明への移動」だが、opaque の理由が実在しない（フィールド読み出しであって未モデリングの関数ではない）ため、主指標 D1+D2 の矛が v2 低レベル家族の 3-a 行で系統的に数え落とされる = 実質は誤 clear 方向。重大度 high は「v2 低レベルの全ユニットで書き方によらず起きる」ことによる。ただし現コーパスでの該当は 8/413 木で、D60 の新データが mcp 2.x 主流という所見の見積もりは未検証（件数の見積もりにだけ使うこと）。直し方の一般性: SDK 2.2.0 の `Server.__init__` は `on_call_tool` を `HandlerEntry(types.CallToolRequestParams, h)` で登録し（lowlevel/server.py:459,463）、`add_request_handler` も同じ `HandlerEntry` に入れる（:496）ので、両 v2 形のハンドラは同じ `(ctx, CallToolRequestParams)` で呼ばれる。`CallToolRequestParams.model_fields` = meta / input_responses / request_state / name / arguments / task（scratchpad/sdk/.venv-mcp、2.2.0 で確認）。位置（`params_of` の index 1）で種付けすれば名前に依らない。`ctx` は R2-r1-10 に委ねて変えない案で妥当。別件（この所見の対象外、記録のみ）: 2.2.0 の `add_request_handler(method, params_type, handler)` は 3 引数で、entries.py:696 の `node.args[1]` は handler ではなく params_type を指す（t74 の系統）。修正後は矛が増える向きなので compare_scans.py で増えた行を v2 低レベルの木に限って 1 件ずつ確かめる（所見の手順どおり）。"
+   },
+   "generality": {
+    "id": "R2-r3-1",
+    "refuted": false,
+    "confidence": 0.85,
+    "reason": "【実行】再現した（t70: write_v2 が contradiction_unknown:D2:fs_writeout_model_path_opaque、run_or が contradiction_unknown:D1:spawn_model_opaque。t71 の v1 形は 5 通りの注釈すべてで contradiction:D2:fs_writeout_model_path）。【一般性 Q1】主張はライブラリの仕様から導ける: mcp 2.0.0b2 / 2.0.0 / 2.1.0 の lowlevel/server.py で on_call_tool の型は Callable[[ServerRequestContext, types.CallToolRequestParams], ...]（2.1.0 は :147-152）、runner.py:216-217 は entry.params_type.model_validate(...) の結果を entry.handler(ctx, typed_params) と**位置で**渡す。仕様書 336 行目のとおり v2 低レベルは inputSchema を執行しないので params.arguments はモデルが送った辞書そのもの。解析器側は analyze._seed（analyze.py:224-240）が params を seed_model_param（engine.py:2420-2429）の裸の Atom にし、_ev_Attribute（engine.py:509-551）が Obj でない形への属性読み出しを opaque(\"unresolved\") にする一方、_ev_Subscript → _element_of（engine.py:681-700, 2512-2532）は v1 の arguments[\"x\"] を resolved のまま返す。D57 §9.3（contradiction_principles.md:296-301）の「選べる = MODEL かつ resolved」により、同じプログラムが v1 では矛、v2 では不になる。v2/v3 の特定の木の形への合わせ込みではない（私の反例の木はすべて一般形）。【設計 Q4】既知の設計判断の呼び直しではない: §9.3 が opaque と定めるのは「モデリングしていない関数を通った値」であり、入口自身の SDK 型のフィールド読み出しはそれに当たらない（opaque の出所は種の形の欠落）。D17 の合流は「木内で解決できない**呼び出し**」に限る（decisions.md:1421-1422）。同じ _seed に langroid の message_param を Obj（MODEL のフィールド）で種付ける前例がある（analyze.py:241-255）。docs/decisions.md・open_questions.md に v2 の params を Atom にする決定の記録は無い（on_call_tool / CallToolRequestParams で grep して仕様書の執行表のみ）。第 2 回の checked_but_ok t58 は opaque を観測しながら 3-a に依らない行（os.remove）しか見ていない。【反例 Q2】fix_sketch（lowlevel_v2 の第 2 位置仮引数を Obj((\"CallToolRequestParams\",), name: MODEL Atom, arguments: MODEL Map(tail=MODEL Atom)) で種付け）を scratchpad の複製に当てて検証: t70 は期待どおり contradiction:D2:fs_writeout_model_path / contradiction:D1:spawn_model（`params.arguments or {}` も value_join → Map((),None) → _element_of で MODEL/resolved になる）、t71（v1）は出力が byte 単位で同一。「位置 1 = CallToolRequestParams」の前提が崩れる形を作って今の正しい判定が壊れるか見た: A2（木内の非 mcp の Server(on_call_tool=) に v1 風 (name, arguments) ハンドラ）、A3（(ctx, params) を (name, arguments) に変える装飾子）、A10（末尾名 lookup が別モジュールの同名 v1 風関数に当たる）、A2b（dict()/{**}/pop/str()/os.path.join/items()/values()/rmtree/shell=True の 10 形）— いずれも修正前後で verdict 行が同一。理由は _element_of(Obj) が主体と確度を保つ（engine.py:2532）ので誤種付けされた Obj の添字も MODEL/resolved のまま、`.get()` は Atom でも Obj でも opaque(unresolved)（A1_get: v1 の arguments.get(\"path\") も今は不。既存の別の限界）。A7（params = params.model_copy(...) の束縛し直し）は前後とも opaque で保守的。A6（\"/opt/tools/\" + params.name を argv0）は修正後 D1 spawn_model の矛になるが、v1 の同形（A11）も今 矛なので同じ経路非感応（D57「流れ込む」）で新しい類の誤りではない。加えて A4（params 丸ごと / params.arguments を別モジュールの helper へ）と A12（class のメソッド self, ctx, params: CallToolRequestParams）は修正で正しく矛になった。複製での pytest は 741 passed（唯一の失敗 test_precondition_known_unmet_keys_exist は無修正の複製でも同じく失敗 = 複製に corpus の木が無い環境要因）、check_gates 15/15、tests/test_dispatch_join.py・test_d_malformed.py・test_fix_d61.py 46 passed。→ 反例で壊れる正しいケースは作れなかった。【直し方 Q3】解決率を上げる向きなので resolved の根拠を崩しに行った: (a) SDK は検証済みの CallToolRequestParams を位置で渡す、(b) 低レベル 2.x は arguments を検証しない、(c) _ev_Attribute は Obj のフィールドをそのまま返す — 崩れるのは前提 (a) が成り立たない非 SDK / 装飾子 / 誤 lookup の場合だが、上のとおり verdict は変わらない。残る硬化策（一般規則）: Server の名前が import 表で mcp SDK（mcp.server.lowlevel.Server / mcp.server.Server / mcp.Server）に解けるときだけ種を与える（D61 追記の束縛回数の条件つき）。",
+    "citations": [
+     "scratchpad/sdk_dl/mcp-2.1.0-py3-none-any/mcp/server/lowlevel/server.py:147-152（on_call_tool: Callable[[ServerRequestContext, types.CallToolRequestParams], ...]。2.0.0b2 :155-156、2.0.0 :151-152 も同じ）",
+     "scratchpad/sdk_dl/mcp-2.1.0-py3-none-any/mcp/server/runner.py:216-217（typed_params = entry.params_type.model_validate(...); await entry.handler(ctx, typed_params)）",
+     "AUTHGAP_BRIEF_v3.md:336（v2 低レベルは jsonschema を執行しない）",
+     "AUTHGAP_BRIEF_v3.md:203（Def 2 R2: 低レベル MCP の 2 形はカタログ化した入口）",
+     "authgap/analyze.py:224-240（_seed: 仮引数は seed_model_param の裸の Atom）",
+     "authgap/analyze.py:241-255（langroid message_param を Obj で種付ける前例）",
+     "authgap/val/engine.py:2420-2429（seed_model_param: list/dict 注釈以外は Atom）",
+     "authgap/val/engine.py:509-551（_ev_Attribute: Obj のフィールドは resolved のまま、それ以外は opaque(\"unresolved\")）",
+     "authgap/val/engine.py:681-700, 2512-2532（_ev_Subscript / _element_of: 主体と確度を保つ）",
+     "docs/contradiction_principles.md:296-301（D57 §9.3「選べる」= MODEL かつ resolved、opaque = モデリングしていない関数を通った値）",
+     "docs/contradiction_principles.md:165,187（§7: SPAWN argv0 が MODEL 由来 → 矛、FS_WRITE 書き出し path が MODEL 由来 → 矛）",
+     "docs/decisions.md:1421-1422（D17: opaque(unresolved) は木内で解決できない呼び出しに限る）",
+     "evidence/review/explore_r1_r2.json checked_but_ok（t58: opaque を観測しつつ主体 MODEL で済ませた記録）",
+     "corpus: on_call_tool= を持つ木 5（v2-napjon__mcp-cdp, v2-whoamitm__bi-mcp, v3-lycorp-jp__awx-mcp, w-ancientdev0x__nanodistill, w-zhiyuan-zhang0206__ava）はすべて params.arguments (or {}) を dispatcher に転送し、内部は args.get(...) 21/17/95/8/32 行、args[\"..\"] 12/0/27/0/12 行"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "high",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "counterexample_code": "# A2_nonmcp/myfw/core.py — 木内の非 mcp フレームワーク。同じ kwarg 名 on_call_tool= だが v1 風 (name, arguments) で呼ぶ\nclass Tool:\n    def __init__(self, name, description=\"\", inputSchema=None, annotations=None):\n        self.name = name\n        self.annotations = annotations\n\nclass Server:\n    def __init__(self, name, on_list_tools=None, on_call_tool=None):\n        self._call = on_call_tool\n    async def dispatch(self, req):\n        return await self._call(req[\"name\"], req.get(\"arguments\") or {})\n\n# A2_nonmcp/server.py\nimport os, subprocess\nfrom mcp.types import ToolAnnotations\nfrom myfw.core import Server, Tool\nTOOLS = [Tool(name=\"nm_rm\", annotations=ToolAnnotations(readOnlyHint=True))]\n\nasync def handle(name, arguments):           # 位置 1 は dict であって CallToolRequestParams ではない\n    if name == \"nm_rm\":\n        os.remove(arguments[\"path\"])\n        with open(arguments[\"out\"], \"w\") as f:\n            f.write(\"x\")\n        subprocess.run([arguments.get(\"cmd\"), \"-v\"])\n        return \"ok\"\n    raise ValueError(name)\n\nserver = Server(\"t\", on_list_tools=lambda: TOOLS, on_call_tool=handle)\n\n# A3_decorator/server.py（抜粋）— SDK の (ctx, params) を (name, arguments) に変える装飾子\ndef unpack(fn):\n    @functools.wraps(fn)\n    async def wrapper(ctx, params):\n        return await fn(params.name, params.arguments or {})\n    return wrapper\n\n@unpack\nasync def handle(name, arguments):\n    if name == \"dec_rm\":\n        os.remove(arguments[\"path\"]); ...\n\nserver = Server(\"t\", on_list_tools=list_tools, on_call_tool=handle)",
+    "counterexample_output": "# A2_nonmcp — 無修正（今の挙動、正しい）と fix_sketch 適用後で verdict 行が同一\n   E FS_WRITE os.remove      direct L13  resolved  .path MODEL/resolved Unknown roots=arguments[\"path\"]\n   E FS_WRITE builtins.open  direct L14  resolved  .path MODEL/resolved Unknown roots=arguments[\"out\"]\n   E SPAWN    subprocess.run direct L16  opaque    .argv0 MODEL/opaque(unresolved) roots=arguments\n   R {\"kind\": \"FS_WRITE\", \"notes\": [\"contradiction:D1\", \"contradiction_reason:D1:fs_write\"], \"site\": \"os.remove\"}\n   R {\"kind\": \"FS_WRITE\", \"notes\": [\"contradiction:D1\", \"contradiction_reason:D1:fs_write\"], \"site\": \"builtins.open\"}\n   R {\"kind\": \"SPAWN\", \"notes\": [\"contradiction_unknown:D1:spawn_model_opaque\"], \"site\": \"subprocess.run\"}\n（PATCH_A=1 でも同一。A3_decorator / A10_wronglookup / A2b_forms の 10 形も同一）\n\n# t70 に fix_sketch を当てた結果（所見の expected と一致）\n== handle  entry=lowlevel_v2\n   E FS_WRITE builtins.open  L19 resolved fs_mode=w  .path MODEL/resolved Atom roots=params[\"path\"]\n   R {\"kind\": \"FS_WRITE\", \"notes\": [\"contradiction:D2\", \"contradiction_reason:D2:fs_writeout_model_path\", ...], \"site\": \"builtins.open\"}\n== handle_or  entry=lowlevel_v2\n   E SPAWN subprocess.run L18 resolved  .argv0 MODEL/resolved Unknown roots=params[\"cmd\"]\n   R {\"kind\": \"SPAWN\", \"notes\": [\"contradiction:D1\", \"contradiction_reason:D1:spawn_model\"], \"site\": \"subprocess.run\"}\n# t71（v1 control）: diff 無し（IDENTICAL）",
+    "notes": "所見は残す。重大度を high と見る理由: カタログ化した入口 1 形（lowlevel_v2）の全ユニットで 3-a 依存の行（FS_WRITE 書き出し / SPAWN argv0・shell / DB model-sql / NET method・URL）が系統的に矛→不になり、D60 の新データ（mcp 2.x が主流）では家族ごとに手判定とずれる。ただし大きさの上限を明記: (i) 破壊的 sink（remove / rmtree 等）の行は 3-a に依らず今も矛、(ii) corpus の on_call_tool= 5 木は params.arguments (or {}) を dispatcher に転送し内部で args.get(...) を多用しており（21/17/95/8/32 行）、.get は v1 でも opaque(unresolved)（A1_get の v1 側で確認。この所見とは別の既存の限界で、修正後も不のまま）なので、修正で動くのは args[\"..\"] の添字行（12/0/27/0/12 行）だけ、(iii) run20 ではこれらの木は R2-r1-1 / R2-r1-3 で ⊥ のため隠れている。向きは「矛 → 不（不明）」であって「矛 → 宣言内」ではない（D57 の規則 4 どおり不明への移動）が、D1+D2 の矛の数では取りこぼしなので false_clean に置く。直し方の一般性: SDK の呼び出し規約（位置 (ctx, params)、型 CallToolRequestParams）から導かれ、名前によらず位置 1（self / cls を除いた後の 2 番目）で良い（A12 のメソッド形で確認）。任意の硬化策: Server の呼び出し名を import 表で mcp SDK に解けるときだけ種を与える（D61 追記と同じ束縛回数の条件つき）— 私の反例では無くても verdict は変わらなかったので必須ではない。add_request_handler 形（entry_kind は同じ lowlevel_v2）にも同じ署名 (ctx, params) が来るので種は共通で良いが、その入口規則自体は R2-r3-2 のとおり 2.x の署名（\"tools/call\", CallToolRequestParams, handler）に合っていない。t83 とは無関係。修正を入れるなら preregistration の逸脱として記録し、compare_scans.py で増えた矛を v2 低レベルの木に限って 1 件ずつ確かめる（fix_sketch のとおり）。作業ファイル: /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/R2_hm_1/repo（PATCH_A=1 で切り替わる複製）、同 /trees/A1_get, A2_nonmcp, A2b_forms, A3_decorator, A4_forward, A6_name, A7_reassign, A10_wronglookup, A11_v1name, A12_method。"
+   }
+  },
+  {
+   "id": "R2-r3-2",
+   "severity": "low",
+   "affects": "D1+D2",
+   "design": {
+    "id": "R2-r3-2",
+    "refuted": false,
+    "confidence": 0.85,
+    "reason": "意図された決定・記録済みの限界は無い。仕様は `add_request_handler(\"tools/call\", ...)` を Def 2 R2 の低レベル v2 形として名指しし（AUTHGAP_BRIEF_v3.md:203）、ENTRY_RULES の lowlevel_v2 も names に `add_request_handler` を持ち（authgap/catalog/entries.py:147-152）、`LOWLEVEL_V2_REQUEST = \"tools/call\"` もそのための定数。実装は `node.args[1]` をハンドラとして読む（authgap/entries.py:694-697）が、SDK の署名は 2.0.0b2 / 2.1.0 / 2.2.0 のすべてで `add_request_handler(self, method, params_type, handler)`（scratchpad の sdk_dl/mcp-2.0.0b2 server.py:476-480、mcp-2.1.0 :468-472、.venv-mcp :473-477 を自分で確認）、1.x の Server には無い。したがって規則に書いた形が実在の呼び出しで一度も当たらない = review_plan §1 (b)「書いた規則と実装が違う」。decisions.md / open_questions.md / K1〜K7 / §7 / prereg §2.9 を grep したが add_request_handler の引数位置やキーワード形を扱った記録は無い（f0a_checks.md:1200 は形の説明に名前が出るだけ）。語彙の追加ではなく、語彙にある入口が当たらない件（review_plan.md:28 の例外側）。期待の導き直し: 登録されるのは第 3 引数のハンドラで、`params.name == \"rm_pos\"` 分岐から dispatch 名が取れ（対照 handle_ctl と同じ経路）、prereg §2.9 (a) で readOnlyHint=True の Tool リテラルが join され、§7.1 の FS_WRITE → 矛。所見の expected は規則どおり。",
+    "citations": [
+     "AUTHGAP_BRIEF_v3.md:203",
+     "AUTHGAP_BRIEF_v3.md:336",
+     "authgap/catalog/entries.py:147-152",
+     "authgap/catalog/entries.py:225-227",
+     "authgap/entries.py:694-697",
+     "docs/preregistration.md:427-446",
+     "docs/contradiction_principles.md:160-177",
+     "docs/review_plan.md:28"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "count_loss",
+    "fix_is_general": true,
+    "notes": "(b) 型の食い違い（仕様が名指しした形が構造的に 0 件）なので論文の記述とは直接ずれるが、corpus での出現は 0（on_call_tool= が既定の書き方）なので D1/D2 の件数への系統的な影響は小さい → low。直し方（method を args[0] / method=、handler を args[2] / handler= から取る）は SDK の唯一の署名に合わせるだけで、壊れる正しい形は思い当たらない。記録なしに 0 件になる点は規則 4 にも触れる。"
+   },
+   "generality": {
+    "id": "R2-r3-2",
+    "refuted": false,
+    "confidence": 0.85,
+    "reason": "ライブラリの仕様から直接導ける。mcp 2.0.0b2 / 2.0.0 / 2.1.0 の lowlevel/server.py の `add_request_handler(self, method, params_type, handler)` は 3 引数（scratchpad/sdk_dl で確認。2.1.0 は :468-491）で、authgap/entries.py:694-697 は `node.args[1]`（= params_type）をハンドラとして `lookup_function('CallToolRequestParams')` を引くので実在の呼び出しでは必ず 0 ユニット、`handler=` キーワードも見ない。再実行で srv_pos / srv_kw はユニット無し、srv_ctl だけ contradiction:D1（主張どおり）。Def 2（AUTHGAP_BRIEF_v3.md:203）が名指しする形なので (b) 書いた規則と実装の食い違い。v2/v3 への合わせ込みではない（corpus の出現 0、run20 の lowlevel_v2 ユニットは napjon の 1 件だけで on_call_tool= 形）。反例: fix_sketch を字義どおり（`len(node.args) > 2` のとき args[2] だけ）当てると、今ユニットになっている 2 引数形（自前の JSON-RPC ディスパッチャ `rpc.add_request_handler(\"tools/call\", handle_two)`）が消える（ce_r3_2 で今は contradiction:D1 が出ることを確認）。これは『handler= キーワード → なければ最後の位置引数（len(args) > 1）』にすれば避けられるので一般の直し方は存在する。§5 の設計上の決定の言い換えでもない。",
+    "citations": [
+     "authgap/entries.py:694-697",
+     "authgap/entries.py:700-704",
+     "authgap/catalog/entries.py:147-152",
+     "authgap/catalog/entries.py:227",
+     "AUTHGAP_BRIEF_v3.md:203",
+     "scratchpad/sdk_dl/mcp-2.1.0-py3-none-any/mcp/server/lowlevel/server.py:468-491"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "count_loss",
+    "fix_is_general": true,
+    "counterexample_code": "# verify/R2_low_1/ce_r3_2/server.py (2-arg form of an in-house dispatcher; currently a unit)\nrpc = JsonRpcServer()\nrpc.add_request_handler(\"tools/list\", list_tools)\nrpc.add_request_handler(\"tools/call\", handle_two)   # handle_two: if params.name == \"rm_two\": os.remove(params.arguments[\"path\"]); Tool(name=\"rm_two\", annotations=ToolAnnotations(readOnlyHint=True))",
+    "counterexample_output": "== handle_two  (server.py:14)  entry=lowlevel_v2/mcp-lowlevel-v2\n   E FS_WRITE os.remove ... opaque reasons=unresolved\n   R {\"kind\": \"FS_WRITE\", \"notes\": [\"contradiction:D1\", \"contradiction_reason:D1:fs_write\"], \"site\": \"os.remove\"}\n(fix_sketch の `len(args) > 2 → args[2]` ではこのユニットが消える)",
+    "notes": "直し方: method は args[0] か method= キーワード、handler は handler= キーワード、なければ最後の位置引数 args[-1]（len(args) >= 2）。これで SDK の 3 引数形・キーワード形・既存の 2 引数形がすべて当たる。on_call_tool= 経路は不変。ハンドラ名の解決は R2-r3-3 と同じ裸名 lookup を通るので、そちらの直し方と合わせること。作業木: /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/R2_low_1/ce_r3_2"
+   }
+  },
+  {
+   "id": "R2-r3-3",
+   "severity": "low",
+   "affects": "D1+D2",
+   "design": {
+    "id": "R2-r3-3",
+    "refuted": false,
+    "confidence": 0.7,
+    "reason": "v2 ハンドラを裸の末尾名で木全体から引く（authgap/entries.py:702-704 の `index.lookup_function(hname.split('.')[-1])`）のは最初の実装 b3aa2c8 から `scope` を作って `del scope` で捨てたまま（git log -L で確認）で、意図を書いた決定は無い。近い記録はいずれも根本原因が別: §9.1 / O30（contradiction_principles.md:269-282）は呼び出しの解決（_resolve_in_tree）からテストの候補を外す規則で、『ユニットの発見（テストファイル内のツールは今までどおりユニットにする）』はテストファイルで**登録された**ツールの話であり、どの Server にも登録されていない同名関数をユニットにしてよいという決定ではない。D17 の末尾名解決の改訂（decisions.md:1643 付近）と改訂 4 の `_pinned_function`（decisions.md:1704, 1715）も呼び出し解決側。R2-r1-5 の Tool リテラル join（仕様 Def 6 の『パッケージ内の全リテラル』）は join 側で、ユニット認識とは別。tools_list 規則は『木内のユーザ定義関数に解決できる要素だけを採る（過剰収集を避ける）』（authgap/catalog/entries.py:88-91）と書いており、入口認識で過剰収集を許す方針ではない。語彙の追加でもない。期待の導き直し: Python の意味で `Server(on_call_tool=handle)` が登録するのは呼び出し元モジュールで束縛された `pkg/handlers.py:handle` 1 つ。よってユニットは 1 つで FS_READ は §7.1 で内。tests/ と worker/ の同名関数はユニットにならない。partial / lambda は解決できなければ規則 4 により記録が要る。所見の expected は規則どおり。",
+    "citations": [
+     "authgap/entries.py:679-707",
+     "authgap/entries.py:722",
+     "authgap/srcindex.py:284-296",
+     "docs/contradiction_principles.md:269-282",
+     "authgap/catalog/entries.py:88-91",
+     "docs/decisions.md:1704",
+     "docs/decisions.md:1715",
+     "AUTHGAP_BRIEF_v3.md:322",
+     "CLAUDE.md:15"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_alarm",
+    "fix_is_general": true,
+    "notes": "向きは混在: 同名の test double / 無関係関数が lowlevel_v2 ユニットになり、dispatch 名が本番の Tool リテラルと一致すれば D1 の誤警報（t72）。一致しなければユニット数・危険効果ユニット数の過大計上（評価の道具側）。partial / lambda の黙った落としは数え落とし。誤警報の成立には同名かつ同じ dispatch 名を持つ別関数が要るのでまれ → low。直し方（呼び出し元の import 表と同モジュール定義で解き、解けなければ unresolved として記録）は、`__init__.py` 再公開経由を裸名一致に落とさず記録に回す限り、正しい登録を消さない。迷い: 解けないときに今の裸名一致へフォールバックするか記録のみにするかで数え落としの向きが変わるので、フォールバックを残すなら by_name の印を付けるのが D17 の扱いと整合する。"
+   },
+   "generality": {
+    "id": "R2-r3-3",
+    "refuted": false,
+    "confidence": 0.75,
+    "reason": "Python の束縛の意味から導ける: `Server(on_call_tool=h)` が登録するのは呼び出し元モジュールで h が指す関数だけ。authgap/entries.py:703 は `index.lookup_function(hname.split('.')[-1])` で木全体の裸名一致をすべてユニットにし（srcindex.py:284-296 は module 無しなら `_funcs_by_qual` を全部返す）、作った scope は :684 / :722 で捨てている。再実行で tests/test_server.py:handle と worker/queue.py:handle がユニットになり、前者は read_cfg の readOnlyHint を join して contradiction:D1 を出す（誤警報、主張どおり）。partial / lambda は :700-702 で記録なしに continue（規則 4）。同じ種類の問題は呼び出しの解決側では §9.1（O30、D57）で『呼び出し元がテストでなければテストの候補を外す』と既に規則化されているのに、入口のハンドラ解決には入っていない。§5 の『opaque(unresolved) への合流』は効果の確度の話で、入口のユニットを増やすことの正当化ではない。反例: fix_sketch の『import 表で解けなければ裸名一致に落とさず unresolved として記録するだけ』を当てると、`from .handlers import *` 経由のハンドラ（今は正しくユニットになり contradiction:D1 が出る。ce_r3_3 で確認）が消え、新しい誤 clear になる（CLAUDE.md の落とし穴『末尾名だけの解決をやめると真の経路が消える』と同型）。これは『import 表で一意に解けたとき（G3 改訂の条件: モジュール直下の束縛がちょうど 1 つ、関数内で書き換えられない）だけその定義に絞る。解けないときは従来どおり裸名一致に落とし、§9.1 と同じくテストファイルの候補を外す』で避けられるので一般の直し方はある。",
+    "citations": [
+     "authgap/entries.py:684",
+     "authgap/entries.py:700-707",
+     "authgap/entries.py:722",
+     "authgap/srcindex.py:284-296",
+     "authgap/srcindex.py:346-356",
+     "authgap/val/engine.py:966-967",
+     "docs/contradiction_principles.md:269-282",
+     "docs/decisions.md:3459-3491"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_alarm",
+    "fix_is_general": true,
+    "counterexample_code": "# verify/R2_low_1/ce_r3_3/pkg/server.py\nfrom .handlers import *  # noqa: F403\nserver = Server(\"t\", on_list_tools=list_tools, on_call_tool=handle)  # Tool(name=\"rm_star\", annotations=ToolAnnotations(readOnlyHint=True))\n# pkg/handlers.py\n__all__ = [\"handle\"]\nasync def handle(ctx, params):\n    if params.name == \"rm_star\":\n        os.remove(params.arguments[\"path\"])",
+    "counterexample_output": "== handle  (pkg/handlers.py:8)  entry=lowlevel_v2/mcp-lowlevel-v2\n   E FS_WRITE os.remove ... opaque reasons=unresolved\n   R {\"kind\": \"FS_WRITE\", \"notes\": [\"contradiction:D1\", \"contradiction_reason:D1:fs_write\"], \"site\": \"os.remove\"}\n(import 表では `handle` は解けない。fix_sketch の『解けなければ記録だけ』ではこの正しい矛が消える)",
+    "notes": "直し方（一般に正しい範囲）: (1) import 表で一意に解ければ（G3 改訂の 3 条件を満たすとき）その定義だけをユニットにする、(2) 解けないときは裸名一致に落とすが §9.1 と同じく登録元がテストでなければテストファイルの候補を外す、(3) dotted でない handler 式（partial / lambda）は manifest に unresolved_handler として件数を残す（判定は変えない）。(1) は解決率を上げる向きなので敵対的レビューが要る（global 再束縛・条件つき import・同名の入れ子 def）。評価経路での件数: run20 の lowlevel_v2 ユニットは 1（napjon `_run.on_call_tool`）で、この誤りの実例は v2 母集団に無い → low。作業木: .../verify/R2_low_1/ce_r3_3"
+   }
+  },
+  {
+   "id": "R2-r3-4",
+   "severity": "medium",
+   "affects": "D1+D2",
+   "design": {
+    "id": "R2-r3-4",
+    "refuted": false,
+    "confidence": 0.85,
+    "reason": "問 1（意図された決定か）: `Tool(...)` リテラルの検出を「書かれた名前の末尾成分」だけで行うと決めた記録は無い。Def 6 の join 規則（AUTHGAP_BRIEF_v3.md:320）は「パッケージ内の**全** `Tool(...)` / `types.Tool(...)` リテラルを集め … 読めない形は `D_unknown` とし `⊥` と混ぜない」で、`from mcp.types import Tool as MCPTool; MCPTool(...)` は同じ構築子 `mcp.types.Tool` の呼び出し。末尾名照合は docs/f0a_checks.md:1212 で機構として**記述**され :1218 で「欠陥は無い」とされているが、その点検は D_kind のフィールド解釈（既定値補完なし・camelCase・上界）を見たもので別名は検討していない。D28 の全数調査（docs/decisions.md:634「Tool(...) リテラル 676」）も同じ機構での**測定**で、別名を除外する決定ではない。むしろこの repo は「別名の綴りで引く」を欠陥として扱ってきた: K7（docs/decisions.md:1548「別名つき from-import … import 表は正しく引くが、定義を探す名前に局所の別名を使う」）→ D61 G3 で「別名つきの import は import 先を元の名前で引く」と直した（docs/decisions.md:3427-3430）。CLAUDE.md の落とし穴にも末尾名だけの解決の危険が書かれている。第 2 回の checked_but_ok（`ToolAnnotations as TA` → unreadable → D_unknown「件数の損失」）は annotations 側で、しかも D_unknown に**なる**話。本件は `Tool` 側で D_unknown にも件数にもならず ⊥ に混ざる点が異なり、第 4 回 t95a（`Server as LowLevelServer` → ユニット 0）が同根として記録されているのも所見者の注記で設計記録ではない。問 2: expected は規則どおり（下記）。問 3: 語彙の追加ではない。`find_tool_literals`（authgap/entries.py:820-847）は Def 6 の D パーサで、docs/fingerprint.json の凍結ブロック（enforcement_table / entry_catalog / gate_vocabulary / sink_table）に入っていない。別名を既存の import 表（authgap/srcindex.py:431-459 `resolve_call_name`）で同じ `mcp.types.Tool` に解くだけで、新しい構築子や sink を足さない。review_plan §2 の「語彙にある sink が当たらない」と同型（語彙にある形が当たらない）。問 4: 宣言が丸ごと消えるので D1/D2 の矛（本例は §7.1 FS_WRITE → 矛）と r_D の分子に効く。D3/D4 だけではない。",
+    "citations": [
+     "AUTHGAP_BRIEF_v3.md:320",
+     "authgap/entries.py:820-847",
+     "authgap/entries.py:899-944",
+     "authgap/srcindex.py:431-459",
+     "docs/f0a_checks.md:1212",
+     "docs/f0a_checks.md:1218",
+     "docs/decisions.md:634",
+     "docs/decisions.md:1548",
+     "docs/decisions.md:3427-3430",
+     "docs/preregistration.md:445-447",
+     "docs/review_plan.md:28",
+     "docs/fingerprint.json",
+     "docs/contradiction_principles.md:163-166",
+     "evidence/review/explore_r3plus.json (checked_but_ok t95a)",
+     "evidence/review/explore_r1_r2.json (R2-r1-5)"
+    ],
+    "expected_is_correct": true,
+    "corrected_expected": "主張の中心はそのまま正しい: srv_alias の `call_tool` は §2.9 (a) の dispatch 名 `alias_delete` で `MCPTool(name=\"alias_delete\", annotations=ToolAnnotations(readOnlyHint=True))` を join し（Def 6「ツール名文字列の完全一致」、読める形 `ToolAnnotations(...)`）、D_kind upper = {FS_READ, NET}、os.remove の FS_WRITE は §7.1「FS_WRITE（すべて）→ 矛」で `contradiction:D1` / `contradiction_reason:D1:fs_write`（srv_ctl / srv_modalias と同一行）。副次の「少なくとも D_unknown」は規則の読みとしてやや不正確: Def 6 の `D_unknown` は**検出したが読めない annotations 形**に付くもので、検出されないリテラルは §2.9 (d)「リテラルの無い dispatch 名は件数を出す」の側に落ちる — その件数も実装されていない（entries.py:941-943 はリテラル側の未 join しか数えない）ので「黙って ⊥」という事実認定は正しい。t83（FastMCP デコレータに annotations= 無し + モジュール水準の `MCPTool(...)`）は、Def 6 の字義と現行の `join_annotations`（entries.py:913-926: デコレータ自身が宣言していなければ同名リテラルを join）では素の `Tool` なら join → D1 矛になるので、別名でも同じであるべきという非対称の指摘としては正しい。ただし「そもそも野良リテラルを join すべきか」は R2-r1-5（low / 誤警報）の別問題。",
+    "severity_opinion": "medium",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "notes": "重大度 medium: `import Tool as X` という特定の綴り（自前の `Tool` クラスと衝突する木の常套）でだけ起きる。ただし起きた木では宣言が丸ごと ⊥ になり、D_unknown にも未 join 件数にも現れないので、その木の D1/D2 は黙って 0 になる（母集団 v2 の枠は `annotations=ToolAnnotations(` の grep で選ぶので、こういう木は母集団に入ったうえで ⊥ になる）。直し方の一般性: import の意味そのもので、`resolve_call_name` は `MCPTool` → `mcp.types.Tool`、`mt.Tool` → `mcp.types.Tool`、裸の `Tool`（`from mcp.types import Tool`）→ `mcp.types.Tool` を返すので srv_ctl / srv_modalias は不変。解けない名前（star import 等）は今の末尾名一致に落とせば現状より減らない。注意点 3 つ: (1) 木内の自前 `Tool` クラス（SuperAGI の SQLAlchemy `Tool`、unstract の dataclass `Tool`。f0a_checks.md は過大計上と記録）はリテラルから外れるので `n_tool_literals` が過去の run と変わる（verdict が変わるのは同名の本物のツールがあるときだけ = R2-r1-5 の領域）。(2) 同じ手順を `_read_annotations` に当てると `ToolAnnotations as TA` が unreadable（D_unknown）から読める形に変わり、unknown → explicit の向きで新しい矛が出うるので、増えた行を 1 件ずつ確かめること。(3) t95a の `Server` 別名（find_lowlevel_units entries.py:689-690）も同根で、同じ正規化を当てる。"
+   },
+   "generality": {
+    "id": "R2-r3-4",
+    "refuted": false,
+    "confidence": 0.8,
+    "reason": "【実行】再現した（t80: srv_alias は D_kind bottom=true で os.remove に notes 無し、srv_ctl / srv_modalias は contradiction:D1:fs_write。t83 も bottom=true）。【一般性 Q1】Python の import の意味から決まる: `from mcp.types import Tool as MCPTool` は同じクラスオブジェクトを別名に束縛するだけで、MCPTool(...) は mcp.types.Tool(...) と同じ呼び出し、tools/list に載る annotations も同じ。find_tool_literals（entries.py:836-838）は書かれた名前の末尾成分が \"Tool\" でなければ捨てるので別名は不可視になり、join_annotations（entries.py:899-944）に候補が渡らず parse_d_kind が ⊥ になる。同じ木の import 表は既に別名を解けている（resolve_call_name, srcindex.py:431-459 と module_scope :300-312）— これは scratchpad の複製に「import 表で mcp.types.Tool / mcp.Tool に解けたら採る」だけを足したパッチで t80 srv_alias と t83 が join されたことで実測（他は何も変えていない）。Def 6（AUTHGAP_BRIEF_v3.md:322）は「読めない形は D_unknown とし ⊥ と混ぜない」と定めるが、別名の場合は D_unknown にもならず宣言なしの ⊥ に混ざる（第 2 回の TA 別名 = unreadable → D_unknown の件数損失とは異なり判定に効く）。自前の Tool クラスを持つ木の常套の書き方で、v2/v3 固有ではない（corpus: `as MCPTool` 59 行 + `as McpTool` 3 行 + 2 行、18 木。多くはクライアント側で run20 の D には効かない、と所見自身が言うとおり）。【設計 Q4】既知の設計判断ではない: 仕様書の「`Tool(...)` / `types.Tool(...)`」は綴りの例示で、実装は既に末尾が Tool の任意の dotted 名（t80 の mt.Tool）を採っており、§6 F0a の validator 形状のような構文的な数え方（CLAUDE.md の落とし穴、付録側）ではない。decisions.md / open_questions.md に末尾名限定の決定の記録は無い（O41 の「組込み型の末尾名解決」はメソッド解決の話）。【反例 Q2】fix_sketch を 2 通りで検証: (a) additive（末尾名 Tool は今までどおり採り、加えて import 表で mcp.types.Tool / mcp.Tool に解ける名前も採る）、(b) strict（import 表で別の場所に解ける名前は捨てる）。strict は B6（pkg/models.py の `class Tool(mcp.types.Tool)` を `from .models import Tool` で使う裸の木内ラッパー）で今の正しい矛が ⊥ に落ちる（新しい誤 clear）ので、直し方は additive でなければならない — fix_sketch の第 1 文（解けない名前だけ末尾名に落とす、現状を減らさない）はその意味で正しく、後段の「木内の自前 Tool クラスを別名で使う形は採らない」は B2（`from .models import Tool as MCPTool`、木内に解ける別名は前後とも ⊥）の意味に読むべきで、裸の Tool を落とす意味に読んではいけない。additive では今の正しい判定が壊れるケースは無かった（t80 srv_ctl / srv_modalias、B1 木内サブクラス Tool、B2 自前クラスの別名、tests/test_dispatch_join.py・test_d_malformed.py・test_fix_d61.py 46 passed、pytest 全体は無修正の複製と同じ）。ただし additive は新しい誤警報を 2 つ作る: B3（別名を import した後に同じモジュールで `class MCPTool(MCPTool)` が annotations を readOnlyHint=False に強制するラッパー → 書かれた readOnlyHint=True が join されて矛）、B5（client.py の `MCPTool(name=\"cl_search\", annotations=readOnly)` がクライアント側の目録なのに、by_name.setdefault（entries.py:907-910）の先勝ちで server.py の宣言なしツールに付き、その書き込みが矛）。しかしどちらも裸の綴りで**今も**同じ誤警報が出る（B7: `class Tool(Tool)` の上書き、B5b: client.py が裸の Tool）ので、新しい類の誤りではなく既存の限界（同名リテラルの木全体 join = R2-r1-5）の露出が別名にも広がるだけ。避ける一般的な直し方がある: (1) D61 追記と同じ「その名前がモジュール直下で 2 回以上束縛されるなら import 表で解かない」（B3 を殺す。代償は B4 の try/except ImportError 別名が ⊥ のまま = 件数損失のみ）、(2) 同名リテラルの annotations が食い違うときは先勝ちでなく D_unknown、または R2-r1-5 の同モジュール → 同パッケージ → 木全体の優先順位（B5 / B5b を殺す）。【直し方 Q3】import 表による正規化は解析器の他所と同じ機構で、val の解決率を上げる変更ではない（宣言の読み取り。⊥ → 宣言ありの向き）。",
+    "citations": [
+     "authgap/entries.py:820-847（find_tool_literals: fname.split(\".\")[-1] != \"Tool\" で捨てる。docstring は Def 6 の「読めない形は D_unknown」を引く）",
+     "authgap/entries.py:850-877（_read_annotations: ToolAnnotations も末尾名照合 → 別名は unreadable = D_unknown）",
+     "authgap/entries.py:899-944（join_annotations: by_name.setdefault の先勝ち、dispatch_names による join）",
+     "authgap/srcindex.py:300-312, 431-459（module_scope は条件つき import も拾う。resolve_call_name は別名を元の dotted 名に正規化）",
+     "AUTHGAP_BRIEF_v3.md:322（Def 6 join 規則: パッケージ内の全 Tool リテラルを集め名前の完全一致で join、読めない形は D_unknown とし ⊥ と混ぜない）",
+     "docs/decisions.md:3487-3491（D61 追記: import 表だけで解くと同名の再定義・相対 import で取り違える → 束縛回数の条件）",
+     "evidence/review/explore_r1_r2.json R2-r1-5（同名リテラルの木全体 join の誤警報 / 誤 clear）と checked_but_ok（TA 別名 = unreadable → D_unknown）",
+     "scratchpad/sdk_dl/mcp-2.1.0-py3-none-any/mcp/__init__.py:52,134（Tool は mcp 直下にも再公開 → mcp.Tool も採る）",
+     "corpus: `from mcp(.types) import ... Tool as X` は MCPTool 59 / McpTool 3 / MCPToolSDKTool 2 行、18 木（prev 複製を含む）。同じ木に低レベルハンドラを持つのは synalinks / xagent / autogen / seekvfs / monorepo-crufty-parts / openai_api_key"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "medium",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "counterexample_code": "# B5_client/client.py — クライアント側の目録。サーバの宣言とは無関係\nfrom mcp.types import Tool as MCPTool\nfrom mcp.types import ToolAnnotations\nREMOTE_TOOLS = [MCPTool(name=\"cl_search\", description=\"remote\", inputSchema={},\n                        annotations=ToolAnnotations(readOnlyHint=True))]\n\n# B5_client/server.py — 自分の宣言には annotations が無い（⊥ が正しい）\nfrom mcp.server import Server\nfrom mcp.types import TextContent, Tool\nserver = Server(\"t\")\n\n@server.list_tools()\nasync def list_tools():\n    return [Tool(name=\"cl_search\", description=\"d\", inputSchema={})]\n\n@server.call_tool()\nasync def call_tool(name: str, arguments: dict):\n    if name == \"cl_search\":\n        with open(\"/var/cache/index\", \"w\") as f:\n            f.write(arguments[\"q\"])\n        return [TextContent(type=\"text\", text=\"ok\")]\n    raise ValueError(name)\n\n# B5b_client_bare/client.py — 同じものを裸の Tool で書いたもの（今の解析器で同じ誤警報が出ることの対照）\nfrom mcp.types import Tool, ToolAnnotations\nREMOTE_TOOLS = [Tool(name=\"cl_search\", description=\"remote\", inputSchema={},\n                     annotations=ToolAnnotations(readOnlyHint=True))]\n\n# B6_bare_inhouse/pkg/models.py + server.py — strict 変種が壊す正しいケース\nimport mcp.types\nclass Tool(mcp.types.Tool):\n    category: str = \"fs\"\n# server.py: from .models import Tool ; Tool(name=\"bi_rm\", ..., annotations=ToolAnnotations(readOnlyHint=True)) ; call_tool で os.remove(arguments[\"path\"])",
+    "counterexample_output": "# B5_client  無修正（正しい: サーバの宣言は無い）\n== call_tool  D_kind: {\"bottom\": true, ...}\n   R {\"kind\": \"FS_WRITE\", \"site\": \"builtins.open\"}\n# B5_client  PATCH_B additive（新しい誤警報: client.py の別名リテラルが先勝ちで付く）\n== call_tool  D_kind: {\"bottom\": false, \"explicit\": [\"readOnlyHint\"], \"upper\": [\"FS_READ\", \"NET\"]}\n   R {\"kind\": \"FS_WRITE\", \"notes\": [\"contradiction:D1\", \"contradiction_reason:D1:fs_write\"], \"site\": \"builtins.open\"}\n# B5b_client_bare  無修正 — 裸の Tool なら今の解析器でも同じ誤警報（既存の限界 R2-r1-5）\n== call_tool  D_kind: {\"bottom\": false, \"explicit\": [\"readOnlyHint\"], ...}\n   R {\"kind\": \"FS_WRITE\", \"notes\": [\"contradiction:D1\", \"contradiction_reason:D1:fs_write\"], \"site\": \"builtins.open\"}\n\n# B6_bare_inhouse  無修正 / additive（正しい矛が残る）\n== call_tool  D_kind: {\"bottom\": false, \"explicit\": [\"readOnlyHint\"], ...}\n   R {\"kind\": \"FS_WRITE\", \"notes\": [\"contradiction:D1\", \"contradiction_reason:D1:fs_write\"], \"site\": \"os.remove\"}\n# B6_bare_inhouse  strict 変種（壊れる: 新しい誤 clear）\n== call_tool  D_kind: {\"bottom\": true, \"explicit\": [], \"present_no_bound\": []}\n   R {\"kind\": \"FS_WRITE\", \"site\": \"os.remove\"}\n\n# t80 に additive を当てた結果（所見の expected と一致）\n== call_tool (srv_alias)  D_kind: {\"bottom\": false, \"explicit\": [\"readOnlyHint\"], \"upper\": [\"FS_READ\", \"NET\"]}\n   R {\"kind\": \"FS_WRITE\", \"notes\": [\"contradiction:D1\", \"contradiction_reason:D1:fs_write\"], \"site\": \"os.remove\"}\n（srv_ctl / srv_modalias は無修正と同一。t83 も joined → contradiction:D1）",
+    "notes": "所見は残す（refuted=false）が、採用するなら次の条件を付ける: (1) 直し方は additive に限る（末尾名 Tool は今までどおり採り、import 表で mcp.types.Tool / mcp.Tool に解ける別名を足す。strict に「解決先が木内なら捨てる」を入れると B6 の木内ラッパー `class Tool(mcp.types.Tool)` の正しい矛が消える）。(2) D61 追記と同じ束縛回数の条件（モジュール直下で 2 回以上束縛される名前は import 表で解かない）を付けて B3 型のラッパー再定義を避ける。代償は B4（try: from mcp.types import Tool as MCPTool / except ImportError: MCPTool = None）が ⊥ のまま = 件数損失のみで誤った主張は作らない。(3) 同名リテラルの先勝ち（by_name.setdefault）を、annotations が食い違うときは D_unknown にする、または R2-r1-5 の近さの優先順位と一緒に入れる。別名の修正だけを入れると B5 型（クライアント側の目録が同じツール名を持つ）の既存の誤警報の露出が別名の分だけ広がる（corpus で別名を使う木の多くはクライアント側の構築: xagent / synalinks / OpenHands / autogen）。severity は medium: 影響は「別名の Tool リテラルに宣言があり、かつ同じ木に低レベルハンドラ（または現行規則で join されるデコレータユニット）がある」場合に限られ、run20 の D には効いていない（所見の自己申告どおり）が、自前の Tool クラスを持つサーバで常套なので新データでは起きうる。direction は false_clean に置くが機構は「宣言が ⊥ に落ちて宣言なしと混ざる」なので、D1/D2 の分母からの脱落（数え落とし）と一体であることを表に書くとよい（D_unknown に落ちる TA 別名の件数損失と違い、⊥ は捕まえる印が無い）。t83 の期待（デコレータユニットが木内リテラルと join されて矛）は現行の join 規則（annotation_form が None のデコレータユニットも名前で join）どおりだが、R2-r1-5 が採られればその形は D_unknown / ⊥ になるので、t83 は R2-r3-4 の受け入れテストとしては srv_alias 型（低レベル）の方を使う方が安全。_read_annotations の ToolAnnotations 別名は unreadable → D_unknown（件数損失）で、同じ手順で直せる。作業ファイル: /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/R2_hm_1/repo（PATCH_B=1 で additive、PATCH_B=strict で strict）、同 /trees/B1_subclass, B2_inhouse_alias, B3_redefined, B4_tryimport, B5_client, B5b_client_bare, B6_bare_inhouse, B7_bare_redefined。"
+   }
+  },
+  {
+   "id": "R2-r4-1",
+   "severity": "low",
+   "affects": "D1+D2",
+   "design": {
+    "id": "R2-r4-1",
+    "refuted": false,
+    "confidence": 0.6,
+    "reason": "Server のサブクラス（`super().__init__(..., on_call_tool=...)` / `Server.__init__(self, ..., on_call_tool=...)` / 継承した __init__ による `FsServer(..., on_call_tool=...)`）を入口から外すと決めた記録、または限界として記録したものは decisions.md / open_questions.md / f0a_checks.md / K1〜K7 に無い（grep: `(Server)`・`Server 派生`・`super().__init__`・`カタログ外` で該当なし。decisions.md:294 の super().__init__ は val 側の話）。R2-r1-2 を落とした根拠（f0a_checks.md に呼び出し形の登録を『カタログ外』と分類した記録があり D17『直さない 3』decisions.md:1636-1640 に当たる）に相当する記録はこの形には無い。ENTRY_RULES の lowlevel_v2 は names `Server` と注記『ハンドラは __init__ の on_call_tool= で渡される』（authgap/catalog/entries.py:147-152）で、登録の実体は Server.__init__ の on_call_tool= キーワード（仕様 AUTHGAP_BRIEF_v3.md:336 も同じ）。サブクラス経由でも同じ __init__ に同じキーワードが届くので、規則の名前・キーワードは語彙の中にあり、欠けているのは継承の解決（method 規則は `_class_bases` で既に継承を見ている: authgap/entries.py:443-455）。期待の導き直し: 3 形とも lowlevel_v2 ユニットになり、dispatch 名で readOnlyHint=True のリテラルを join、os.remove は §7.1 FS_WRITE → 矛。所見の expected は規則どおり。",
+    "citations": [
+     "authgap/catalog/entries.py:147-152",
+     "authgap/entries.py:679-699",
+     "authgap/entries.py:443-455",
+     "AUTHGAP_BRIEF_v3.md:203",
+     "AUTHGAP_BRIEF_v3.md:336",
+     "docs/decisions.md:1636-1640",
+     "docs/contradiction_principles.md:160-177",
+     "docs/review_plan.md:28"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "count_loss",
+    "fix_is_general": true,
+    "notes": "迷い: 『構築子名 Server の末尾一致』という認識の形を継承まで広げるのは、読み方によっては入口規則の拡張（review_plan §2 の対象外）とも取れる。ただし names・キーワードは変えず ENTRY_RULES（fingerprint の entry_catalog）も不変で、method 規則が既に基底の継承を見ている先例があるので『語彙にある入口が当たらない』側と判断した。v2 / v3 では該当 0（直接の Server( 呼び出しのみ）→ low。on_call_tool= を要求し続ければ uvicorn.Server 派生は入口にならない。"
+   },
+   "generality": {
+    "id": "R2-r4-1",
+    "refuted": false,
+    "confidence": 0.65,
+    "reason": "Python の意味（サブクラスの構築・super().__init__ / Base.__init__(self, ...) は基底の __init__ に on_call_tool= をそのまま渡す）と mcp 2.1.0 の `Server.__init__(..., on_call_tool=...)`（lowlevel/server.py:124-151, :454）から導ける。authgap/entries.py:689-693 は書かれた被呼び出し名の末尾が `Server` のときだけ登録点とみなすので、3 形とも 0 ユニットで記録も残らない（再実行で handle_ctl だけ。主張どおり）。v2 / v3 への合わせ込みではない（野外件数 0 と自ら書いている）。§2 の『入口の規則の追加（月 3 凍結）』に当たるかは境界で、規則 lowlevel_v2 の名前や kwarg は増やさず登録点の認識の穴を埋めるものなので対象内と判断したが、学生の判断に委ねる余地がある。反例: fix_sketch (i) を素朴に当てて、`super().__init__(name, on_call_tool=on_call_tool)` のように**仮引数を転送する**サブクラスでハンドラ名 `on_call_tool` を既存の裸名 lookup で引くと、tests/ にある同名の test double（どの Server にも登録されていない）がユニットになり、readOnlyHint の Tool を join して誤警報になる。今は 0 ユニットで誤警報は無い（ce_r4_1）。避け方: ハンドラ式が囲む関数の仮引数なら名前で引かず (ii) のサブクラスの構築点（`FwdServer(..., on_call_tool=h)`）で解く、`self._call` は囲むクラスのメソッドに絞る、R2-r3-3 のテスト候補除外を併用。一般の直し方は存在する。",
+    "citations": [
+     "authgap/entries.py:679-699",
+     "authgap/entries.py:689-693",
+     "authgap/entries.py:700-704",
+     "authgap/catalog/entries.py:147-152",
+     "authgap/catalog/entries.py:225",
+     "scratchpad/sdk_dl/mcp-2.1.0-py3-none-any/mcp/server/lowlevel/server.py:124-151",
+     "docs/review_plan.md:31"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "count_loss",
+    "fix_is_general": true,
+    "counterexample_code": "# verify/R2_low_1/ce_r4_1/server.py\nclass FwdServer(Server):\n    def __init__(self, name, on_list_tools, on_call_tool):\n        super().__init__(name, on_list_tools=on_list_tools, on_call_tool=on_call_tool)\nserver = FwdServer(\"fwd\", on_list_tools=list_ro, on_call_tool=read_only_handler)  # Tool(name=\"purge\", readOnlyHint=True); handler has no effect\n# tests/test_fwd.py (never registered)\nasync def on_call_tool(ctx, params):\n    if params.name == \"purge\":\n        os.remove(params.arguments[\"path\"])",
+    "counterexample_output": "(出力なし: ユニット 0、contradiction 0。素朴な fix (i) で `on_call_tool` を裸名で引くと tests/test_fwd.py:on_call_tool が lowlevel_v2 ユニットになり purge の readOnlyHint と contradiction:D1 の誤警報を作る)",
+    "notes": "直し方: (i) super().__init__ / Base.__init__(self, ...) は囲むクラスの基底に Server があり on_call_tool= があるときだけ登録点にし、値が囲む関数の仮引数なら解かずに (ii) へ回す; (ii) 木内クラスで基底に Server を含む X の構築 X(..., on_call_tool=h) を登録点にし h を呼び出し元のスコープで解く; self.x は囲むクラスのメソッドに絞る。解けない登録点は manifest に件数を残す。uvicorn.Server 派生は on_call_tool= の要求で外れる。作業木: .../verify/R2_low_1/ce_r4_1"
+   }
+  },
+  {
+   "id": "R2-r4-2",
+   "severity": "low",
+   "affects": "D1+D2",
+   "design": {
+    "id": "R2-r4-2",
+    "refuted": false,
+    "confidence": 0.75,
+    "reason": "`_decorator_calls` が `dotted_of` None（受け手が Call / Subscript）のデコレータを黙って捨てる（authgap/entries.py:235-247）ことを意図した決定・限界の記録は無い（decisions.md / open_questions.md / f0a_checks.md / K1〜K7 を grep: dotted_of・PEP 614・受け手の式 で該当なし）。認識の形は decorator、照合は末尾成分 `tool`（authgap/entries.py:250-259、ENTRY_RULES 規則 1: authgap/catalog/entries.py:128-133）で、どちらも語彙にある。欠けているのは受け手式の読みだけで、R2-r2-1（束縛を追う件。前回の設計検証で残った）と同じく『語彙にある入口が当たらない』側であり、語彙の追加ではない。R2-r1-2 を落とした記録（f0a_checks.md の『カタログ外』分類）はデコレータ構文でない呼び出し形の登録で、根本原因が違う。期待の導き直し: `@get_mcp().tool(annotations=ToolAnnotations(readOnlyHint=True))` / `@SERVERS[\"fs\"].tool(annotations={...})` はどちらも FastMCP.tool の登録で、Def 6 によりデコレータの annotations= はエントリ自身の宣言（ToolAnnotations 形・辞書形とも 3 形のパーサ内。AUTHGAP_BRIEF_v3.md:322）、os.remove は §7.1 FS_WRITE → 矛。所見の expected は規則どおり。",
+    "citations": [
+     "authgap/entries.py:235-259",
+     "authgap/entries.py:385-388",
+     "authgap/catalog/entries.py:128-133",
+     "AUTHGAP_BRIEF_v3.md:203",
+     "AUTHGAP_BRIEF_v3.md:322",
+     "docs/contradiction_principles.md:160-177",
+     "docs/review_plan.md:28"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "count_loss",
+    "fix_is_general": true,
+    "notes": "ユニットが宣言ごと消えるので実質は誤 clear 方向の数え落とし。v2 / v3 では出現 0 行（所見の grep）→ low。直し方（受け手が式でも末尾の属性名で照合し、受け手が式であることを記録）は、末尾名 `tool` の照合が既に全 `<x>.tool` に当たっている現状と過剰収集の性質を変えない。"
+   },
+   "generality": {
+    "id": "R2-r4-2",
+    "refuted": false,
+    "confidence": 0.7,
+    "reason": "PEP 614（Python 3.9+ で任意式のデコレータ）と FastMCP.tool の意味から導ける: `@get_mcp().tool(annotations=...)` / `@SERVERS[\"fs\"].tool(...)` は名前に束縛した受け手の `@mcp.tool(...)` と同じ登録。authgap/entries.py:238-247 の `_decorator_calls` は `dotted_of(d.func)` が None なら何も出さないので `_match_decorator` に届かず、記録なしにユニットが消える（再実行で rm_control だけ。主張どおり）。v2/v3 の出現 0 行で合わせ込みではない。反例を探したが、今正しく判定できている形を壊すものは作れなかった: 規則 1 は受け手の型を見ずに末尾名 `tool` で当てており、無関係な名前つき受け手 `box.tool(annotations=...)` も今すでに decorator/mcp ユニットになる（ce_r4_2 で確認）ので、式の受け手へ広げても過剰収集の性質は変わらない。変わるのは、式の受け手の登録と名前つきの登録が同じ関数に重なるとき first-match の相手が変わることだけで（R2-r4-3 と同じ箇所）、これはより正しい向き。§5 の設計決定の言い換えでもない。",
+    "citations": [
+     "authgap/entries.py:235-247",
+     "authgap/entries.py:250-259",
+     "authgap/entries.py:385-388",
+     "authgap/catalog/entries.py:128-133"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "count_loss",
+    "fix_is_general": true,
+    "counterexample_code": "# verify/R2_low_1/ce_r4_2/cli.py (sanity check: rule 1 already ignores receiver type)\nclass Toolbox:\n    def tool(self, **kw):\n        def deco(fn):\n            return fn\n        return deco\nbox = Toolbox()\n@box.tool(annotations={\"readOnlyHint\": True})\ndef cleanup(path: str) -> str:\n    os.remove(path)",
+    "counterexample_output": "== cleanup  (cli.py:17)  entry=decorator/mcp  form=dict\n   R {\"kind\": \"FS_WRITE\", \"notes\": [\"select_manifest_only(assumed_trig)\", \"contradiction:D1\", \"contradiction_reason:D1:fs_write\"], \"site\": \"os.remove\"}\n(壊れる反例ではなく、現行の規則が受け手の型を問わないことの確認)",
+    "notes": "fix_sketch（Attribute 連鎖の末尾名を取り、基底が Call / Subscript なら擬似 dotted 名 `<expr>.tool` にする）で一般に正しい。Unit に receiver_expr を残して manifest で数えられるようにする点も規則 4 に沿う。§2 の『入口の規則の追加』には当たらない（規則の名前は不変、読めない式の受け手の認識の穴）。評価経路での件数は 0 → low。"
+   }
+  },
+  {
+   "id": "R2-r4-3",
+   "severity": "low",
+   "affects": "D1+D2",
+   "design": {
+    "id": "R2-r4-3",
+    "refuted": false,
+    "confidence": 0.65,
+    "reason": "`find_units` が最初に規則へ当たったデコレータだけから tool_name / annotations= を読んで break する（authgap/entries.py:385-439）ことを意図した記録は無い。D17 改訂 4（decisions.md:1720）が決めたのは『同じ関数を 2 ユニットにしない』（tools-list との重複）で、1 ユニットにまとめるのは設計だが、そのユニットの宣言を最初のデコレータだけから取る決定ではない。Def 6 はデコレータの annotations= をエントリ自身の宣言とし（AUTHGAP_BRIEF_v3.md:322、entries.py:403-405 のコメント）、読めない / 食い違う形は D_unknown で ⊥ と混ぜないと定める。期待の導き直し: (1) `@tool` の下の `@mcp.tool(annotations=RO)` — Python はデコレータを下から全部適用するので RO の MCP 登録は行われる → explicit readOnlyHint、§7.1 FS_WRITE → 矛。(2) `@mcp.tool()` の上 / `@admin.tool(annotations=RO)` の下 — 同じ関数が 2 サーバに登録され、片方は ⊥・片方は RO。1 ユニットにまとめる以上、複数ツールを 1 ユニットで扱う既存規則 prereg §2.9 (c)/(g)（最も厳しい宣言、false-clean に倒さない）に倣えば RO で判定して矛、少なくとも ⊥ で黙って clear にするのは規則に反する。所見の expected（3 ユニットとも explicit readOnlyHint で D1 矛）は §2.9 に倣う読みとして規則と整合する。語彙の追加ではない。",
+    "citations": [
+     "authgap/entries.py:385-441",
+     "authgap/entries.py:403-413",
+     "docs/decisions.md:1720",
+     "AUTHGAP_BRIEF_v3.md:322",
+     "docs/preregistration.md:436-458",
+     "docs/contradiction_principles.md:160-177"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "notes": "(2) の形で 2 登録の宣言が食い違うとき（RO と ⊥、または RO と readOnlyHint=False）の合成規則は Def 6 に無い。所見の fix_sketch は『値が食い違えば unreadable = D_unknown』だが、prereg §2.9 (g) の meet に倣うなら『厳しい側』になり、どちらを採るかは学生の決定が要る（決めないなら open_questions に不明として記録）。どちらを採っても今の『最初のデコレータだけ読んで ⊥』より誤 clear が減るので直し方は一般に正しい。v2 / v3 で登録デコレータの重なりは 0 件 → low。"
+   },
+   "generality": {
+    "id": "R2-r4-3",
+    "refuted": false,
+    "confidence": 0.75,
+    "reason": "Python の意味（デコレータは下から全部適用され、FastMCP.tool の登録は上に何が重なっても行われる）と Def 6（デコレータの annotations= はエントリ自身の宣言、entries.py:403-405）から導ける。authgap/entries.py:385-441 は最初に規則へ当たったデコレータだけを読んで break（:438-439）し、裸の `@tool` や `@mcp.tool()` が上にあると下の `annotations=RO` が読まれず ⊥、form=None で join_annotations（:913-918）の経路に入る。再実行で rm_bare_tool_first / rm_plain_mcp_first は ⊥ で矛なし、control だけ contradiction:D1（主張どおり、誤 clear）。D17 改訂 4（同じ関数は 1 ユニット）は設計だが、宣言を先頭のデコレータだけから取る根拠は無く、§5 の決定の言い換えではない。反例: fix_sketch の『annotations= を持つ登録が複数あって値が一致しなければ unreadable（D_unknown）』を当てると、`@public.tool(annotations=RO)` の上下に `@admin.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True))` が重なる形（2 サーバへの別宣言）で、今正しく出ている public 側の contradiction:D1（ce_r4_3 で確認）が dparse.py:178 の DKind(unknown=True) に落ちて消える。これは『登録ごとに判定して OR する』（D1 / D2 の上界については、登録ごとの上界の交わり = どれかの登録に矛があれば矛）で避けられるので、一般の直し方は存在する。",
+    "citations": [
+     "authgap/entries.py:385-441",
+     "authgap/entries.py:403-413",
+     "authgap/entries.py:438-439",
+     "authgap/entries.py:913-918",
+     "authgap/dparse.py:178-179"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "counterexample_code": "# verify/R2_low_1/ce_r4_3/server.py\npublic = FastMCP(\"public\")\nadmin = FastMCP(\"admin\")\n@public.tool(annotations=ToolAnnotations(readOnlyHint=True))\n@admin.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True))\ndef rm_two_decls(path: str) -> str:\n    os.remove(path)\n    return \"ok\"",
+    "counterexample_output": "== rm_two_decls  (server.py:14)  entry=decorator/mcp  form=ToolAnnotations\n   annotations: {\"readOnlyHint\": true}  D_kind: {... \"explicit\": [\"readOnlyHint\"], \"upper\": [\"FS_READ\", \"NET\"]}\n   R {\"kind\": \"FS_WRITE\", \"notes\": [\"select_manifest_only(assumed_trig)\", \"contradiction:D1\", \"contradiction_reason:D1:fs_write\"], \"site\": \"os.remove\"}\n(fix_sketch の『食い違えば unreadable』ではこの正しい矛が消える)",
+    "notes": "直し方: 規則に当たる登録デコレータを全部集め、annotations= を持つ登録それぞれで D を作り、D1 / D2 は登録ごとに判定して OR する（上界の交わりで近似してもよいが、フィールドをまたいで混ぜない）。annotations= を持つ登録が 1 つも無いときだけ従来どおり form=None で join に委ねる。『食い違い → unreadable』は D_unknown に倒して矛を消すので使わない。評価経路での件数: 母集団 v2 / v3 の重なり 0（探索役の数え、未検証）→ low。"
+   }
+  },
+  {
+   "id": "R2-r4-4",
+   "severity": "low",
+   "affects": "tooling",
+   "design": {
+    "id": "R2-r4-4",
+    "refuted": false,
+    "confidence": 0.7,
+    "reason": "メソッド内の入れ子 def を agno（names `*`）の method ユニットにすることを意図した記録は無い。ENTRY_RULES の agno 規則の注記は『Toolkit のメソッドが register される』（authgap/catalog/entries.py:173-179）で、入れ子 def はクラスの属性ではなく register にも渡らない。最も近い記録 K4（decisions.md:1536『メソッドの中の入れ子 def と同名の、モジュール直下の def に決め打ちする（入れ子 def に classname が付き候補から外れる）』）は同じ仕組み（`_index_body` が入れ子 def に classname を伝播する: authgap/srcindex.py:193-200）が原因だが、症状は呼び出し解決の誤 clear で、直し方（候補の数え方）も効く場所（`_resolve_in_tree`）も違い、ユニット認識の過大計上を限界として記録したものではないので、根本原因が同じとは言えない。classname の伝播自体は self の種付けのための意図（所見も伝播は変えないと書く）。D17 改訂 4（decisions.md:1720）が避けた『同じ効果行の二重ユニット』と同種。期待の導き直し: ユニットは FileTools.remove_file と FileTools.run の 2 つ、subprocess.run は run の 1 ユニットにだけ（chain 経由）属す。所見の expected は規則どおり。語彙の追加ではない。",
+    "citations": [
+     "authgap/srcindex.py:182-200",
+     "authgap/entries.py:443-470",
+     "authgap/catalog/entries.py:173-179",
+     "docs/decisions.md:1536",
+     "docs/decisions.md:1720",
+     "docs/review_plan.md:48-49"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_alarm",
+    "fix_is_general": true,
+    "notes": "agno ユニットは宣言 D を持たないので D1 / D2 の判定は変わらない（affects は tooling: ツールパッケージ母集団のユニット数・危険効果ユニット数の過大計上）。D3 / D4 だけに効く件ではないので記録止まりにはならないが、agno Toolkit 派生は v2 / v3 に 0 件 → low。直し方（直接のメンバの印を足して method 形に要求し、classname の伝播と self の種付けは変えない）は t89 の `Srv._register.read` 形（デコレータ形で拾われる）を壊さない。"
+   },
+   "generality": {
+    "id": "R2-r4-4",
+    "refuted": false,
+    "confidence": 0.65,
+    "reason": "Python の意味（メソッド内の入れ子 def は局所名でクラスの属性ではない）と agno 規則の注記『Toolkit のメソッドが register される』（catalog/entries.py:173-179）から導ける。srcindex.py:193-200 が入れ子 def にも classname を付け、entries.py:444-455 のメソッド形は classname と基底と names=('*',) だけで判定するので、`FileTools.__init__._log` と `FileTools.run._run_impl` がユニットになり subprocess.run が 2 ユニットで数えられる（再実行で確認）。なお repro は --population tool_package で走らせているが、既定の mcp_server でも同じ 4 ユニットになる（確認済み）ので scan_v2.py の経路にも乗る。ただし宣言は ⊥（tool_name が入れ子名で Tool リテラルとまず join しない）なので D1 / D2 の矛は増えず、効くのは n_units / n_dangerous_units の過大計上だけ。run20 の agno ユニットは 0（decorator/mcp 2205、tools-list 17、lowlevel_v1 5、langchain 3、lowlevel_v2 1）。反例: fix_sketch の『direct_member を要求』を当てると、agno の `Toolkit.register` は任意の callable を受けるので、メソッド内で定義して `self.register(delete_under_root)` で登録した閉包（本当のツール）が消える。今は method/agno ユニットになり rel が MODEL/resolved で出ている（ce_r4_4）。これは『入れ子 def は、囲むメソッドの中で register(...) に渡される / tools=[...] に並ぶときだけユニットにする』で避けられるので一般の直し方はある。",
+    "citations": [
+     "authgap/srcindex.py:193-200",
+     "authgap/entries.py:443-470",
+     "authgap/entries.py:444-455",
+     "authgap/catalog/entries.py:173-179",
+     "evidence/scan_v2_run20/summary.json"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_alarm",
+    "fix_is_general": true,
+    "counterexample_code": "# verify/R2_low_1/ce_r4_4/toolkit.py\nclass DynTools(Toolkit):\n    def __init__(self, root: str) -> None:\n        super().__init__(name=\"dyn_tools\")\n        def delete_under_root(rel: str) -> str:\n            os.remove(os.path.join(root, rel))\n            return \"ok\"\n        self.register(delete_under_root)",
+    "counterexample_output": "== DynTools.__init__.delete_under_root  (toolkit.py:12)  entry=method/agno  form=None\n   E FS_WRITE os.remove  direct L13  resolved destructive=True\n       .path     MODEL/resolved Path roots=rel\n(fix_sketch の direct_member 要求ではこの本当のツールが消える)",
+    "notes": "affects=tooling の扱い: 評価経路（scan_v2.py → summary の n_units / n_dangerous_units）で起きうるが、D1 / D2 の矛の件数は変わらず、run20 で agno ユニット 0 なので severity low。直し方: 入れ子 def（qualname の段が 2 以上）は、囲むメソッドの本体で `register(<名>)` / `tools=[<名>]` に渡されるときだけユニットにし、そうでなければ外す。classname の伝播と _seed の self 種付けは変えない。直接のメソッドの '*' 規則（登録されない補助メソッドも拾う）は既存の設計なので触らない。"
+   }
+  },
+  {
+   "id": "R4-r3-2",
+   "severity": "low",
+   "affects": "D1+D2",
+   "design": {
+    "id": "R4-r3-2",
+    "refuted": false,
+    "confidence": 0.75,
+    "reason": "意図された決定は見つからない。仕様 Def 3(a) は直接 sink を『sink 表にある解決済みの dotted callable』と定める（AUTHGAP_BRIEF_v3.md:225）。`from app import requests` は import 表で木内の `app.requests.delete` に正しく解決されており、これはライブラリの `requests.delete` ではない。`_suffix_match`（effects.py:161-170）が末尾 2 要素で sink 表を引く根拠は D 番号・§7・O1〜O41・K1〜K7 のどこにも無い。むしろ設計の記録は、木内モジュールがライブラリと同名でもライブラリではない、という方向で一貫している。D17 改訂 2 では、外部 import を末尾成分一致で木内モジュールと取り違える誤りを構築側について直した（resolve_module_strict、decisions.md:1678）。D61 改訂の追記では、`from . import httpx`（木内モジュール）を外部型と取り違える誤りを注釈側について直した（decisions.md:3488）。どちらも同じ種類の誤りを別の経路で直した記録で、sink 照合の末尾一致は残っていた。decisions.md:1729 の相対 import の限界は、import 解決（絶対 import を兄弟モジュールに取り違える）の記録で、根本原因が違う。sink 語彙の追加を求める所見ではなく、語彙にある行が木内関数に誤って当たるという話なので、§2 の除外にも当たらない。expected（効果行ゼロ、矛なし）は Def 3(a) と §7.1 から導き直しても同じになる。発生条件は『木内モジュールの basename が sink 表のモジュール名と同じで、しかも同名の関数がある』場合に限られるので、まれな書き方として low。",
+    "citations": [
+     "AUTHGAP_BRIEF_v3.md:225",
+     "authgap/effects.py:161-170",
+     "authgap/effects.py:604",
+     "docs/decisions.md:1678",
+     "docs/decisions.md:3488",
+     "docs/decisions.md:1729",
+     "docs/contradiction_principles.md:160-177"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_alarm",
+    "fix_is_general": true,
+    "notes": "D1（repro の drop_cache / dry_run / which_system）にも D2 にも効くので記録止まりではない。直し方は所見の注意書きのとおり、『関数定義が木内に解決した』で判定しなければならない。『モジュールが木内』で判定すると、木内モジュールがライブラリを再公開する形（`app/compat.py: import subprocess`）で真の効果が消える。深さ上限（MAX_DEPTH=4）の直前で木内関数へ降りられない場合、今は末尾一致の行が偶然代わりに出ているが、直すとそれが消える。ただしそれは本来の効果ではないので、誤 clear にはならない。"
+   },
+   "generality": {
+    "id": "R4-r3-2",
+    "refuted": false,
+    "confidence": 0.6,
+    "reason": "Reproduces as described: `_suffix_match` (authgap/effects.py:161-170, used at :604) falls back to matching only the last two name parts. So `app.requests.delete`, `app.subprocess.run` and `pkg.os.system` hit sink rows even though the calls are known to resolve to functions defined in the tree. The claim follows from Python import semantics and the Def 3 wording (a sink is a resolved library callable), so it is not fitted to one tool. **But fix_sketch as written (never apply the sink table when the function definition resolves in the tree) creates a silent false-clean.** Counterexample: a library copied into the tree (`app/_vendor/requests/{api,sessions,adapters}.py`, called as `from app._vendor import requests; requests.delete(url)`). Today this correctly gives NET DELETE + contradiction:D1 net_modify. With the fix simulated (suffix match removed), the unit has zero effects and no contradiction. `_vendor` is not in `_SKIP_DIRS` (srcindex.py:324-339), so the copy is indexed and `delete` resolves in the tree; walking its body does not reach a sink (urllib3 is not in the sink vocabulary). No rule based on language semantics can tell a coincidental same-name module from a vendored copy. There is a general fix that avoids the counterexample: keep the effect row and merge opaque(unresolved) into it, i.e. `_resolution_of(..., by_name=True)` at effects.py:231-236 when the callee resolves to an in-tree definition. This is the existing D17 principle for name-only resolution: descend, keep the row, lower its certainty. The toy case's false contradiction becomes unknown, and the vendored case goes from contradiction to unknown instead of disappearing. The result for the toy is 'unknown', not the finding's 'no contradiction'.",
+    "citations": [
+     "/home/user/auth_gap/authgap/effects.py:161-170",
+     "/home/user/auth_gap/authgap/effects.py:604",
+     "/home/user/auth_gap/authgap/effects.py:231-236",
+     "/home/user/auth_gap/authgap/srcindex.py:324-339",
+     "/home/user/auth_gap/authgap/srcindex.py:431-459",
+     "/home/user/auth_gap/docs/decisions.md:1643-1660"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_alarm",
+    "fix_is_general": true,
+    "counterexample_code": "# app/_vendor/requests/__init__.py\nfrom .api import delete, get, request\n# app/_vendor/requests/api.py\nfrom . import sessions\ndef request(method, url, **kwargs):\n    with sessions.Session() as session:\n        return session.request(method=method, url=url, **kwargs)\ndef delete(url, **kwargs):\n    return request(\"delete\", url, **kwargs)\n# app/_vendor/requests/sessions.py\nfrom .adapters import HTTPAdapter\nclass Session:\n    def __enter__(self): return self\n    def __exit__(self, *a): return None\n    def request(self, method, url, **kw): return self.send(method, url)\n    def send(self, method, url): return HTTPAdapter().send(method, url)\n# app/_vendor/requests/adapters.py\nimport urllib3\nclass HTTPAdapter:\n    def send(self, method, url):\n        return urllib3.PoolManager().urlopen(method, url)\n# app/server.py\nfrom mcp.server.fastmcp import FastMCP\nfrom app._vendor import requests\nmcp = FastMCP(\"t\")\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef remove_remote(url: str) -> str:\n    return requests.delete(url).text\n# tree: /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/R4_low_1/vendored\n# fix simulation: .../verify/R4_low_1/sim_fix_r3_2.py",
+    "counterexample_output": "CURRENT (repro_scan.py):\n== remove_remote  (app/server.py:9)\n   E NET      requests.delete   direct L10  app/server.py  resolved  http_method=DELETE sub_kind=NET\n       .url.host MODEL/resolved Atom roots=url\n   R {\"kind\": \"NET\", \"notes\": [..., \"contradiction:D1\", \"contradiction_reason:D1:net_modify\", ...]}\nWITH FIX SIMULATED (sim_fix_r3_2.py):\n== remove_remote  (app/server.py:9)\n   (no effect rows, no verdict rows; the true HTTP DELETE disappears silently)",
+    "notes": "The fix to adopt: when the callee resolves to an in-tree definition, do not drop the suffix-matched sink row. Keep it and merge opaque(unresolved) through by_name. The drop approach in fix_sketch needs a rule telling vendored copies apart from coincidental names, and I could not find one that is general. Any such change is still a change in resolution certainty, so it needs the adversarial review. Frequency is low (the finding's estimate)."
+   }
+  },
+  {
+   "id": "R4-r3-3",
+   "severity": "medium",
+   "affects": "D1+D2",
+   "design": {
+    "id": "R4-r3-3",
+    "refuted": false,
+    "confidence": 0.85,
+    "reason": "問 1（意図された決定か）: 同じ根本原因（`ast.Slice` の添字で列の形を捨て、要素の join を確度 resolved のまま返す）を意図的に決めた記録も限界として記録した記録も無い。`authgap/` に `ast.Slice` を扱う箇所は無く、`_ev_Subscript`（engine.py:681-698）は初回 commit b3aa2c8 から変わっていない（`git log -L` で確認。レビュー記録も無い）。decisions.md の D 番号・K1〜K7・contradiction_principles §6〜§7・仕様書 §5・preregistration の逸脱 #1〜#23・O1〜O41 を grep したが、スライス / `[:]` / 複製後の追記に触れる記録は無い。近い記録はむしろ逆向きで、D17 改訂（decisions.md:1661-1665）は分岐合流で `_shape_join` が要素を捨てて argv0 のリテラルが列全体（MODEL）になった A9 の形を**退行として直しており**、CLAUDE.md:69 も「列の分岐合流で要素を捨てない」を落とし穴として挙げる。decisions.md:2193 は `[mystery(\"git\"), \"status\"]` が列全体を汚さないことをテストで固定している。つまり「列を 1 値に潰して argv0 を MODEL にする」ことは本 repo で一貫して誤りとして扱われ、設計判断ではない。K1（decisions.md:1533）はモジュール水準リストと `_pipe` の EXEC 行消失で根本原因が別（しかもモジュール水準の `BASE[:]` は decisions.md:1751 のとおり opaque → 不で判定は変わらない）。O35（要素内のオプション名 / 値の分解）と O41（`shlex.quote` した固定コマンド = shell 文字列の形）も別の根本原因。問 2（expected）: §7.1（contradiction_principles.md:165）/ §7.2（:184）は SPAWN を「argv0 または shell_string が MODEL 由来 → 矛 / それ以外 → 不」とし、§9.3（:299, :305）は MODEL 由来 = 主体 MODEL かつ確度 resolved で、resolved は「モデリングした操作だけで slot に届いた」ことを表す。Python の意味でスライスは位置を保った複製、append / extend / `cmd[2] = …` は先頭要素に触れないので、4 形の argv0 は定数 'git' → 不（spawn_command。log_plain_control と同じ）。スライスをモデリングしないと読んでも §9.3 により確度は opaque でなければならず → 不（spawn_model_opaque）。どちらの読みでも矛にはならないので、所見の expected は規則どおりで、実装（MODEL/resolved の 1 値 → 矛）は規則に反する。問 3: sink 語彙・入口規則・weak 理由の追加は求めていない（val エンジンの形の扱いのみ）。review_plan.md:28 の除外に当たらない。問 4: D1 / D2 の SPAWN 行の判定が 不 → 矛 に変わる（D3 の §7.3 :211 も同様）ので記録のみではない。",
+    "citations": [
+     "/home/user/auth_gap/authgap/val/engine.py:681-698",
+     "/home/user/auth_gap/authgap/val/engine.py:691",
+     "/home/user/auth_gap/authgap/val/engine.py:2512-2530",
+     "/home/user/auth_gap/authgap/val/engine.py:2560-2580",
+     "/home/user/auth_gap/authgap/val/engine.py:465-473",
+     "/home/user/auth_gap/authgap/effects.py:213-220",
+     "/home/user/auth_gap/docs/contradiction_principles.md:165",
+     "/home/user/auth_gap/docs/contradiction_principles.md:184",
+     "/home/user/auth_gap/docs/contradiction_principles.md:211",
+     "/home/user/auth_gap/docs/contradiction_principles.md:296-311",
+     "/home/user/auth_gap/docs/decisions.md:1661-1665",
+     "/home/user/auth_gap/docs/decisions.md:1751",
+     "/home/user/auth_gap/docs/decisions.md:2193",
+     "/home/user/auth_gap/docs/decisions.md:1533",
+     "/home/user/auth_gap/docs/decisions.md:1506",
+     "/home/user/auth_gap/docs/open_questions.md:984",
+     "/home/user/auth_gap/docs/open_questions.md:1055",
+     "/home/user/auth_gap/CLAUDE.md:69",
+     "/home/user/auth_gap/CLAUDE.md:76",
+     "/home/user/auth_gap/docs/review_plan.md:28",
+     "/home/user/auth_gap/docs/review_plan.md:65"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_alarm",
+    "fix_is_general": true,
+    "notes": "【記録のみではない】D1 / D2 の主指標（矛の件数）を膨らませる向き。ただし D19(2)（decisions.md:1506）は誤警報の向きの指摘を「凍結を妨げない。限界として記録」と定めており、直す / 限界として記録するかは review_plan §4.3 のとおり学生の判断。【重大度を low にした理由】母集団 v2 の全 .py を自分で AST 走査した（Name に束縛したスライス複製を同じ関数内で append / extend / insert / 添字代入し、かつ subprocess 系の呼び出しに渡す関数）: 該当 7 関数で、宣言付きのツールユニットは 0（4 件は skill コーパスのデータ内の同一スクリプト download_video.py の複製、3 件は vendored numpy gnu.py で源は仮引数 = tail MODEL / opaque なので判定は変わらない）。判定が変わるには「宣言あり × 局所で解決できるリスト（モジュール水準は opaque → 不で不変）× スライス複製 × MODEL の追記 × spawn」が全部要る。所見の 245 は用途を問わない見積もり。定義上「特定の書き方でだけ起きる」= medium も成り立つので、medium との境で迷った。最終評価は新データ（D60）なので発生数は不明。【直し方の一般性】言語の意味（スライスは位置を保つ）から導けるので一般に正しい直し方は存在する。ただし所見の fix_sketch に 2 つ補足が要る: (a) 位置を保つ分岐は `idx.step is None` も条件にする（`base[::-1]` を位置どおりに読むと argv0 が逆になる）。(b) `_bind` の添字代入（engine.py:465-473）は添字を無視して `_append_tail` で末尾に足すので、直した後は `cmd = base[:]; cmd[0] = model` が 不 になる（誤 clear の向き）。これは今の `cmd = [\"git\",\"log\"]; cmd[0] = model` と同じ既存の弱点で新しい類ではないが、定数添字の代入をその位置の置換（または join）にするか `Seq((), join)` に落とす対処を同時に入れるべき。(c) MODEL/resolved → OP/resolved の「clear を増やす」向きの変更なので、CLAUDE.md:76 の敵対的レビューと diff_effects / compare_scans の手順が要る。【観点「実行」への参考】repro を走らせ直し、所見の出力と一致することを確認した（slice_copy / slice_more とも）。"
+   },
+   "generality": {
+    "id": "R4-r3-3",
+    "refuted": false,
+    "confidence": 0.85,
+    "reason": "【実行】所見の再現木（slice_copy / slice_more）をそのまま再実行して一致: log_local_slice / log_tail_slice / log_slice_setitem / log_slice_extend は argv0 が MODEL/resolved Atom（列全体を 1 値に潰した結果）で contradiction:D1 spawn_model（矛）、log_plain_control は argv0 OP 'git' で spawn_command（不）。\n【一般性 1: 言語の意味から導けるか】導ける。`seq[a:b]` は位置を保った新しい列（言語仕様 §6.3.3）。`_ev_Subscript`（authgap/val/engine.py:681-698）は添字が ast.Slice のとき Seq の形を捨てて `_element_of`（engine.py:2512）の join を返し（engine.py:691）、`_append_tail`（engine.py:2560-2580）は Seq でない受け手を `value_join` する（engine.py:2580）ので MODEL が値全体に合流し、`_first_element`（authgap/effects.py:213-220）は Seq でない値をそのまま argv0 にする。「選べる」= MODEL かつ resolved（O33）→ §7.1（docs/contradiction_principles.md:165）で矛。argv0 が定数 'git' なら不が規則どおり。v2 / v3 の特定の形への合わせ込みではない: 自作の ce_forms でヘルパの仮引数の列（`def _git(base, extra): cmd = base[:]; cmd.append(extra)`、呼び出し側はリテラル）とループの中の複製（`for p in paths: cmd = base[:]; cmd.append(p)`）でも同じ矛（誤警報）が出る。既知の設計判断（MAX_DEPTH、MODEL は流れ込む、opaque(unresolved) への合流、O34、G1/G2 取り消し）のどれにも当たらず、decisions / open_questions / BRIEF / principles / preregistration にスライスを意図した記録は無い。CLAUDE.md:69 の落とし穴（列の合流で要素を捨てると argv0 のリテラルが列全体の主体 MODEL になる — D17）と同じ誤りの類で、本プロジェクトはこれを誤りとして扱ってきた。\n【一般性 2: 反例】fix_sketch をそのまま実装した試作 A（scratch のコピーにだけ当てた）で、今は偶然正しく矛になっている 5 形が不（新しい誤 clear）に変わった: (1) step つき `parts[::-1]`（sketch は step を見ない）、(2) `cmd = base[:]; cmd[0] = branch`（`_bind` の Subscript が置換でなく `_append_tail` で末尾追加、engine.py:465-473）、(3) `cmd = base[:]; cmd.insert(0, branch)`（insert を末尾追加扱い、engine.py:1185）、(4) `cmd = base[:]; del cmd[0]`（ast.Delete は no-op、engine.py:391）、(5) tail を持つ列（分岐で append）に `+ [\"--\", \"x\"]` してから `[1:]`（`_concat` engine.py:596-604 が右辺の要素を tail の後ろの位置に置き、`tail = a.tail or b.tail` で b.tail を落とす）。(2)〜(4) はスライス無しの素の列では今も誤 clear（(2) は R1-r1-9 として記録済み。insert(0,…) / del / reverse は未記録）で、sketch はそれをスライス形に広げる。\n【一般性 3: 避ける直し方】ある（言語の意味から導ける。試作 C）: step 無し・境界が None か非負 int 定数のときだけ `type(shape)(elems[lo:up], tail)`（up が elems を超えるか None のときだけ tail を保つ）、それ以外（負・非定数・step）は `Seq((), join)`；添字代入 / insert / del は定数添字なら Python の意味どおりの位置、非定数なら全位置と tail に join（列は伸びない）；reverse / sort / pop / remove / clear は位置を捨てて列だけ保つ；`_concat` は左に tail があれば右をすべて tail に畳む（`_append_tail` の「tail がある列の後ろに elems として足さない」と同じ規則）。試作 C で反例 5 形すべて矛、所見の再現 4 形は不、素の列の (2)〜(4) も矛に直り、`pytest tests/` は失敗 0（xfail / skip を除く）、check_gates B3a 8/8・B3b 15/15。opaque → resolved の向きではなく矛 → 不（誤 clear を作りうる向き）なので上の敵対的な反例で確かめた。\n【影響（v2 / v3 は見積もりにだけ使う）】v2 run20 の CONTRADICTION 191 行に SPAWN は 0（D1 の SPAWN 行はすべて不: spawn_command 17 / spawn_model_opaque 2、docs/contradiction_by_decl.md:25-26）。v3 run2 の SPAWN 2 行（clawking `_run`）は文字列の `line[7:]` で無関係。v2 100 木の subprocess 系 5,068 ファイルで「定数スライス複製 → 同名へ append/extend/insert/添字代入、同じ関数に spawn 呼び出し」は 8 関数（1 木のデータファイルの重複 4 組）。最も多い形 `cmd = BASE[:]`（モジュール水準）は D17 改訂 4（engine.py:1267-1270、可変値は opaque）で今も不。→ 一般だが観測頻度 0 なので重大度 low。",
+    "citations": [
+     "authgap/val/engine.py:681-698",
+     "authgap/val/engine.py:691",
+     "authgap/val/engine.py:2512-2532",
+     "authgap/val/engine.py:2560-2580",
+     "authgap/val/engine.py:465-473",
+     "authgap/val/engine.py:1185-1186",
+     "authgap/val/engine.py:391",
+     "authgap/val/engine.py:596-604",
+     "authgap/val/engine.py:607",
+     "authgap/val/engine.py:1267-1270",
+     "authgap/effects.py:213-220",
+     "authgap/catalog/sinks.py:274",
+     "docs/contradiction_principles.md:165",
+     "CLAUDE.md:69",
+     "docs/decisions.md:3408-3510 (D61 と改訂)",
+     "docs/review_plan.md:57-63,79-90",
+     "docs/contradiction_by_decl.md:25-26",
+     "evidence/scan_v2_run20/contradictions.json (SPAWN 0 / 191)",
+     "evidence/scan_v2_v3_run2/contradictions.json (SPAWN 2 / 89)",
+     "evidence/review/explore_r1_r2.json R1-r1-9"
+    ],
+    "expected_is_correct": true,
+    "corrected_expected": "所見の期待どおり（§7.1: argv0 が定数 → 不 spawn_command）。補足: 直した後は log_module_slice も spawn_model_opaque から spawn_command に変わるが判定は不のまま（所見も書いている）。",
+    "severity_opinion": "low",
+    "direction_opinion": "false_alarm",
+    "fix_is_general": true,
+    "counterexample_code": "# ce_mut/server.py（抜粋）と ce_concat_tail/server.py（抜粋）。いずれも readOnlyHint: True。\nimport subprocess\nfrom mcp.server.fastmcp import FastMCP\nmcp = FastMCP(\"t\")\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef ce_rev_step(branch: str) -> str:            # 実際の argv0 = branch → 矛が正しい\n    parts = [\"git\", \"log\", branch]\n    cmd = parts[::-1]\n    return subprocess.check_output(cmd).decode()\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef ce_slice_setitem0(branch: str) -> str:      # 実際の argv0 = branch → 矛が正しい\n    base = [\"git\", \"log\", \"main\"]\n    cmd = base[:]\n    cmd[0] = branch\n    return subprocess.check_output(cmd).decode()\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef ce_slice_insert0(branch: str) -> str:       # 実際の argv0 = branch → 矛が正しい\n    base = [\"git\", \"log\"]\n    cmd = base[:]\n    cmd.insert(0, branch)\n    return subprocess.check_output(cmd).decode()\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef ce_slice_del0(branch: str) -> str:          # 実際の argv0 = branch → 矛が正しい\n    base = [\"env\", branch]\n    cmd = base[:]\n    del cmd[0]\n    return subprocess.check_output(cmd).decode()\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef ce_concat_tail_slice(tool: str, flag: bool) -> str:  # flag のとき cmd = [tool, \"--\", \"x\"] → argv0 MODEL → 矛が正しい\n    base = [\"sudo\"]\n    if flag:\n        base.append(tool)\n    full = base + [\"--\", \"x\"]\n    cmd = full[1:]\n    return subprocess.check_output(cmd).decode()\n\n# 対照（スライス無し。今の解析器で既に誤 clear = 不。(2) は R1-r1-9）\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef ctl_plain_setitem0(branch: str) -> str:\n    cmd = [\"git\", \"log\", \"main\"]; cmd[0] = branch\n    return subprocess.check_output(cmd).decode()\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef ctl_plain_insert0(branch: str) -> str:\n    cmd = [\"git\", \"log\"]; cmd.insert(0, branch)\n    return subprocess.check_output(cmd).decode()\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef ctl_plain_del0(branch: str) -> str:\n    cmd = [\"env\", branch]; del cmd[0]\n    return subprocess.check_output(cmd).decode()\n\n# 保守側の確認（矛のままであるべき）: base[-1:] / base[n:] / parts[1:] で parts[1] が MODEL。\n# 直るべき形（不が正しい）: 分岐で tail を持つ列の base[1:] に append（ok_tail_join）。\n# 木: /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/R4_hm_1/{ce_mut,ce_concat_tail,ce_forms}",
+    "counterexample_output": "cd /home/user/auth_gap && .venv/bin/python scripts/repro_scan.py <verify/R4_hm_1/ce_mut> / <ce_concat_tail>（今の解析器 = 正しい）:\n  ce_rev_step          argv0=MODEL/resolved Atom roots=branch  R contradiction:D1 spawn_model\n  ce_slice_setitem0    argv0=MODEL/resolved Atom roots=branch  R contradiction:D1 spawn_model\n  ce_slice_insert0     argv0=MODEL/resolved Atom roots=branch  R contradiction:D1 spawn_model\n  ce_slice_del0        argv0=MODEL/resolved Atom roots=branch  R contradiction:D1 spawn_model\n  ce_concat_tail_slice argv0=MODEL/resolved Atom roots=tool    R contradiction:D1 spawn_model\n  ctl_plain_setitem0 / ctl_plain_insert0 / ctl_plain_del0  argv0=OP/resolved 'git'/'env'  R contradiction_unknown:D1:spawn_command（既存の誤 clear。R1-r1-9 の類）\n  ok_neg_slice / ok_dyn_slice / ok_model_head  矛（保守側）。ok_tail_join  矛（誤警報、直るべき）\n\n試作 A（fix_sketch そのまま。scratch の patched/ に AG_VARIANT=A）:\n  ce_rev_step / ce_slice_setitem0 / ce_slice_insert0 / ce_slice_del0  argv0=OP/resolved 'git'/'env' → spawn_command（不 = 新しい誤 clear）\n  ce_concat_tail_slice  argv0=OP/resolved '--' → spawn_command（不 = 新しい誤 clear）\n  所見の再現 log_local_slice / log_tail_slice / log_slice_setitem / log_slice_extend → spawn_command（不。所見の狙いどおり）\n  ok_neg / ok_dyn / ok_model_head → 矛のまま。ok_tail_join → 不（正しく直る）\n試作 B（A + step 要求 + 添字代入 / insert / del / reverse 等を位置どおり）: ce_mut の 4 形と素の列 3 形が矛に戻る。ce_concat_tail_slice は不のまま（誤 clear）\n試作 C（B + `_concat` が左の tail の後ろに要素を置かない）: 反例 5 形すべて矛、所見の再現 4 形は不、ok_* は上と同じ。`pytest tests/` 失敗 0（xfail / skip のみ）、check_gates B3a 8/8・B3b 15/15。\n\n影響の見積もり: v2 run20 CONTRADICTION 191 行に SPAWN 0（FS_WRITE 101 / NET 46 / DB 44）。v3 run2 89 行のうち SPAWN 2（文字列スライス `line[7:]` のヘルパ、無関係）。v2 100 木の subprocess 系 5,068 ファイルでこの形は 8 関数（1 木、データファイルの重複）。",
+    "notes": "直し方（一般に正しい形。試作 C = verify/R4_hm_1/apply_patch.py を AG_VARIANT=C で当てたもの。リポジトリは変えていない）: (a) `_ev_Subscript`: Seq/Argv に ast.Slice で step が None かつ lower/upper が None か非負 int 定数のときだけ `type(shape)(elems[lo:up], tail)`（up が None か len(elems) を超えるときだけ tail を保つ。主体・確度・根は残った要素と tail から取り直す）、それ以外は `Seq((), _element_of(base))`。(b) `_bind` の Subscript: Seq/Argv で範囲内の非負 int 定数なら置換、スライス代入や非定数は全位置と tail に join（列は伸びない）。Map は R1-r3-4 の扱いのまま。(c) `insert(i, v)`: 非負 int 定数なら位置 i（len 超えは append、tail があれば tail に合流）、それ以外は全位置と tail に join。(d) `del x[i]`: 範囲内の定数なら削除、それ以外は `Seq((), join)`。(e) reverse / sort / pop / remove / clear は `Seq((), join)`。(f) `_concat`: 左に tail があれば右の要素と tail をすべて左の tail に畳む（今は右の要素を tail の後ろの位置に置き、`tail = a.tail or b.tail` で右の tail を落とす）。fix_sketch 単体（step を見ず、変異子と `_concat` をそのままにする）は上の 5 形で新しい誤 clear を作るので、直すなら (a)〜(f) を一括で。(b)〜(e) は素の列でも今誤 clear であり（`cmd[0] = x` は R1-r1-9。`insert(0, x)` / `del cmd[0]` / `reverse()` は所見として未記録なので記録に値する）、この所見を直すと自動的にそちらも直る。付随して見えた既存の限界（本所見の対象外）: `_ev_List`（engine.py:607）は K=16 を超える要素を tail に畳まず捨てるので、17 要素以上のリテラル列の末尾の MODEL が argv[*] から消える。試作の検証: C で `pytest tests/`（-qq のため集計行は出ないが進捗に F/E 無し）、check_gates 23/23。A・B は check_gates 23/23、A の全テストは時間内に終わらなかった（判定には使っていない）。重大度 low の根拠は観測頻度 0（v2 191 行・v3 89 行に該当 0、v2 の該当形 8 関数はデータファイル）と誤警報の向き。ただし最終評価の新データで `cmd = base[:]; cmd.append(x)` をヘルパで使うサーバがあれば D1 の矛を 1 件ずつ増やすので、直さないなら O42 以降の限界として「スライスで複製した列に MODEL を足すと argv0 が列全体になる（誤警報）」を記録するのがよい。"
+   }
+  },
+  {
+   "id": "R4-r3-4",
+   "severity": "low",
+   "affects": "D1+D2",
+   "design": {
+    "id": "R4-r3-4",
+    "refuted": true,
+    "confidence": 0.65,
+    "reason": "実装は凍結した仕様どおり。仕様 Def 3(b) の proxy カタログは `git.Repo(p).git.*` / `git.cmd.Git.*` → `SPAWN { argv0 ← \"git\", argv[*] ← *args, cwd ← p, shell ← False }` と、メソッドを `*` にしたうえで argv0 を定数 'git'、shell を False に束縛している（AUTHGAP_BRIEF_v3.md:228）。proxy 行の slot 束縛は月 3 の sink 語彙凍結に含まれる（AUTHGAP_BRIEF_v3.md:227, 841）。sinks.py:452-463 の行と effects.py:725-728 の 'git' 定数の注入は、この規則をそのまま書いたもの。したがって §7.1 を当てると、4 ツールとも argv0 は定数 'git' で『それ以外 → 不（spawn_command）』になり、現在の出力が規則どおりの期待になる。所見の expected（argv0 = cmd[0]、shell_string を読んで矛）は、`execute` 用の行を新しく立て、`shell` の束縛を変えることを前提にしている。これは凍結した sink 語彙の行の追加・変更であり、§2 の『sink 語彙・入口の規則の追加（月 3 凍結。O39）』に当たる。O39 と同じ扱い（仕様の語彙が現実の API より粗いことによる誤 clear の下限）で、限界として記録するのが妥当。ただし迷いがある。実世界の GitPython では `Git.execute` が command の先頭を実行するので、所見の指摘する誤 clear は現実に起きる。仕様の `git.cmd.Git.*` は `__getattr__` 形（`repo.git.checkout`）を想定して書かれたと読めるので、『語彙にあるものの当て方の誤り』と見る余地も残る。",
+    "citations": [
+     "AUTHGAP_BRIEF_v3.md:227-228",
+     "AUTHGAP_BRIEF_v3.md:841",
+     "authgap/catalog/sinks.py:452-463",
+     "authgap/effects.py:725-728",
+     "docs/contradiction_principles.md:165",
+     "docs/open_questions.md:1037-1045",
+     "docs/review_plan.md:2節（sink 語彙の追加は対象外）"
+    ],
+    "expected_is_correct": false,
+    "corrected_expected": "凍結した仕様 Def 3(b)（`git.cmd.Git.*` → argv0 ← \"git\", shell ← False）と §7.1 SPAWN 行に従うと、4 ツールとも argv0 は OP/resolved の定数 'git' で、contradiction_unknown:D1:spawn_command（不）になる。これは現在の出力と同じ。execute の argv0 / shell_string を読むには sink 語彙（proxy 行の slot 束縛）の変更が要り、月 3 凍結の逸脱になる。",
+    "severity_opinion": "low",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "notes": "反証の理由は『仕様どおり、直すには凍結語彙の変更が要る』こと。現実の API に対しては誤 clear（矛 → 不）なので、O39 と並べて既知の限界（O42 以降）に書くことを勧める。コーパスの木内に `.git.execute(` は 0 件という所見の見積もりどおり、影響はまれ。"
+   },
+   "generality": {
+    "id": "R4-r3-4",
+    "refuted": false,
+    "confidence": 0.75,
+    "reason": "Reproduces. The proxy row with method `*` (sinks.py:452-461) also matches `Git.execute`. `_from_proxy_row` (effects.py:725-728) then always adds argv0='git' as a constant, so `repo.git.execute(cmd)` and `execute(\"git log \"+args, shell=True)` come out as spawn_command (unknown). In the GitPython API, `Git.execute(command, shell=...)` passes `command` to Popen as-is, so argv0 is command[0] (or the whole string), and with shell=True the string goes to the shell. `__getattr__` calls such as `repo.git.log(...)` build ['git', ...] via `_call_process`, and `execute` does not. The claim follows from the library's specification, not from one tool. Counterexample attempt: after the fix, `execute([\"git\"] + args)` must still keep 'git' as a constant. I simulated the fix (only for execute: argv0 = first element of command; shell=True gives shell_string). `[\"git\"] + args` stayed SPAWN_CONST_ARGV (unknown), and `[\"git\", \"log\", branch]` and `repo.git.log(branch)` did not change. `subprocess.run` already handles `[\"git\"]+args`, `[\"git\", *args]` and append correctly, so reusing the same first-element binding introduces no new error. Caveat: the specification (AUTHGAP_BRIEF_v3.md:227) literally says `git.cmd.Git.*` → argv0 ← \"git\", so the implementation matches the spec as written. The spec's intent is the `__getattr__` form (the A1 row `repo.git.checkout`). Under CLAUDE.md rule 6, record the spec value and the library specification side by side in decisions.md. This does not add sink vocabulary; it corrects the slot binding of an existing row.",
+    "citations": [
+     "/home/user/auth_gap/authgap/catalog/sinks.py:452-461",
+     "/home/user/auth_gap/authgap/effects.py:713-731",
+     "/home/user/auth_gap/AUTHGAP_BRIEF_v3.md:227",
+     "/home/user/auth_gap/AUTHGAP_BRIEF_v3.md:231",
+     "/home/user/auth_gap/docs/review_plan.md:24-30"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "counterexample_code": "import subprocess\nimport git\nfrom mcp.server.fastmcp import FastMCP\nmcp = FastMCP(\"t\")\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef sp_concat(args: list[str]) -> str:\n    return subprocess.run([\"git\"] + args).stdout\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef git_execute_concat(repo_path: str, args: list[str]) -> str:\n    repo = git.Repo(repo_path)\n    return repo.git.execute([\"git\"] + args)\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef git_env(repo_path: str, key: str) -> str:\n    repo = git.Repo(repo_path)\n    return repo.git.update_environment(**{key: \"1\"})\n# tree: .../verify/R4_low_1/git_cx ; fix simulation: .../verify/R4_low_1/sim_fix_r3_4.py",
+    "counterexample_output": "CURRENT: sp_concat SPAWN argv0 OP 'git' -> spawn_command (unknown); git_execute_concat argv0 OP 'git' -> unknown; git_env argv0 'git' -> unknown\nFIX SIMULATED: git_execute_concat SPAWN_CONST_ARGV -> spawn_command (unknown, unchanged); git_execute_model_argv SPAWN_MODEL_ARGV argv0 MODEL roots=cmd -> contradiction:D1 spawn_model; git_execute_const_control / git_log_control unchanged (unknown). No counterexample found where a currently correct result breaks.",
+    "notes": "Fix: special-case the execute method with argv0←A(0,'elem0') and argv[*]←A(0); if the shell keyword is True, bind shell_string←A(0). This mirrors the exec_mode_kw of the subprocess rows. The 'git' constant injection applies only to methods other than execute. Separately, the `*` row also makes unknown SPAWN rows for non-spawning methods such as update_environment (it does not change the verdict, but it inflates the count of unknowns). The corpus has 0 in-tree calls to `.git.execute(`, so frequency is low."
+   }
+  },
+  {
+   "id": "R4-r3-5",
+   "severity": "low",
+   "affects": "D1+D2",
+   "design": {
+    "id": "R4-r3-5",
+    "refuted": false,
+    "confidence": 0.7,
+    "reason": "意図された決定は見つからない。仕様 Def 3(c) はインタプリタ カタログを『`/bin/sh`, `/bin/bash`, `python*`, `node`, `psql`』と定め、argv0 がこれに載れば EXEC(code_text) とする（AUTHGAP_BRIEF_v3.md:232）。実装はすでに basename で照合して `/usr/local/bin/python3` を `python*` に当てている（sinks.py:628-635）。つまりカタログの語はパスの basename に当てる、という読みが実装上の決定になっている。その読みのもとで、`\\` 区切りの `C:\\Python311\\python.exe` だけ basename が取れず `python*` に当たらないのは、語彙にある語が当たらない形であり、§2 の『語彙の追加』ではない。所見の fix も区切りの正規化だけで、カタログの語（cmd / powershell 等）は足さない。decisions.md・open_questions.md に is_interpreter / Windows パスの記録は無い。O41 の『子プロセスの標準入力を FS_WRITE の情報行にする』（open_questions.md:1063-1065）と D61 G1 の取り消し（decisions.md:3463）は、インタプリタでない、または分からない argv0 のときに情報行を残すという決定で、根本原因が違う。この所見では argv0 は定数で、カタログの語に当たるはず。expected を導き直すと、§7.2 で EXEC は矛（contradiction:D2 exec）、FS_WRITE の destructive=None で path の無い情報行は不（fs_unknown）になり、所見の記述と一致する。",
+    "citations": [
+     "AUTHGAP_BRIEF_v3.md:232",
+     "AUTHGAP_BRIEF_v3.md:841",
+     "authgap/catalog/sinks.py:622-635",
+     "authgap/effects.py:828-831",
+     "docs/contradiction_principles.md:179-190",
+     "docs/open_questions.md:1063-1065",
+     "docs/decisions.md:3463-3466"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "notes": "D2 の判定が矛から不に変わる（D1 は矛のままで、理由が exec から fs_write に変わるだけ）。D2 に効くので記録止まりではない。起きるのは Windows 向けに `\\` の絶対パス文字列を argv0 に固定したときだけで、コーパスではテストにしか無いので low。`.exe` を落とす正規化は `python*` の前方一致なら不要だが、害も無い。"
+   },
+   "generality": {
+    "id": "R4-r3-5",
+    "refuted": false,
+    "confidence": 0.8,
+    "reason": "Reproduces. `is_interpreter` (sinks.py:628-635) takes the basename only with `rsplit(\"/\")`, so the catalog lookup fails for a Windows path such as `C:\\\\Python311\\\\python.exe`. The pipe row becomes an FS_WRITE info row, and D2 turns from contradiction(exec) into unknown(fs_unknown). `C:/Python311/python.exe` written with `/` is already EXEC, so the verdict depends on how the path separator is written. The claim follows from the OS and subprocess semantics (a Windows path accepts `\\\\` as a separator); it is not fitted to a particular tool. Counterexample attempt: I simulated separator normalisation plus stripping `.exe`. A Windows path to a non-interpreter (`C:\\\\Program Files\\\\Git\\\\bin\\\\git.exe`) and a POSIX name containing a backslash (`./tools\\\\formatter`) both stayed FS_WRITE, the `/` form and the POSIX control stayed EXEC, and only run_code_win moved to EXEC with contradiction:D2 exec. `is_interpreter` is used in only one place, effects.py:828, so the change has no other reach. Direction: strictly this is not a clear; the result drops from contradiction to unknown. It is a missed contradiction, so I file it as false_clean.",
+    "citations": [
+     "/home/user/auth_gap/authgap/catalog/sinks.py:622-635",
+     "/home/user/auth_gap/authgap/effects.py:806-831"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "counterexample_code": "import subprocess\nfrom mcp.server.fastmcp import FastMCP\nmcp = FastMCP(\"t\")\n@mcp.tool(annotations={\"readOnlyHint\": False, \"destructiveHint\": False})\ndef feed_git_win(text: str) -> str:\n    proc = subprocess.Popen([r\"C:\\Program Files\\Git\\bin\\git.exe\", \"apply\", \"-\"], stdin=subprocess.PIPE)\n    out, _ = proc.communicate(input=text.encode())\n    return str(out)\n@mcp.tool(annotations={\"readOnlyHint\": False, \"destructiveHint\": False})\ndef feed_posix_backslash_name(text: str) -> str:\n    proc = subprocess.Popen([\"./tools\\\\formatter\", \"-\"], stdin=subprocess.PIPE)\n    out, _ = proc.communicate(input=text.encode())\n    return str(out)\n@mcp.tool(annotations={\"readOnlyHint\": False, \"destructiveHint\": False})\ndef feed_python_fwd(code: str) -> str:\n    proc = subprocess.Popen([\"C:/Python311/python.exe\", \"-\"], stdin=subprocess.PIPE)\n    out, _ = proc.communicate(input=code.encode())\n    return str(out)\n# tree: .../verify/R4_low_1/win_cx ; fix simulation: .../verify/R4_low_1/sim_fix_r3_5.py",
+    "counterexample_output": "CURRENT and FIX SIMULATED identical on win_cx: feed_git_win FS_WRITE -> contradiction_unknown:D2:fs_unknown; feed_posix_backslash_name FS_WRITE -> unknown; feed_python_fwd EXEC -> contradiction:D2 exec.\nFIX SIMULATED on the finding's tree: run_code_win EXEC pipe:communicate -> contradiction:D2 exec (now matches run_code_posix_control). No counterexample found where a currently correct result breaks.",
+    "notes": "The core of the fix is normalising the separator only. `python.exe` already matches the `python` prefix without stripping `.exe`, but `bash.exe` and `node.exe` would need it. Do not add `cmd` or `powershell` to the catalog (the vocabulary is frozen). Frequency is low (in the corpus, literals like this appear only in tests)."
+   }
+  },
+  {
+   "id": "R4-r3-6",
+   "severity": "low",
+   "affects": "D1+D2",
+   "design": {
+    "id": "R4-r3-6",
+    "refuted": false,
+    "confidence": 0.75,
+    "reason": "意図された決定は見つからない。仕様 Def 3(c) の pipe 形は『`subprocess.Popen(...)` / `asyncio.create_subprocess_*` で得たハンドル』に限られる（AUTHGAP_BRIEF_v3.md:232）。ハンドルを生むコンストラクタのカタログも `subprocess.Popen` / `asyncio.subprocess.Process` と定まっており（AUTHGAP_BRIEF_v3.md:514、transfers.py:175-192、sinks.py:653-660 の PIPE_HANDLE_SOURCES）、どちらも月 3 に凍結されている。effects.py:800-803 の `\"Popen\" in c` は部分文字列で受け手型を決めているので、カタログ外の木内クラス `PopenRecorder` が pipe ハンドルとして扱われる。これを意図した記録は D 番号・§7・O1〜O41・K1〜K7 に無い。D61 G1 の取り消しと O41（pipe の情報行を落とさない）は、本物のハンドルで argv0 が分からない場合の決定で、ハンドルでないものをハンドルとみなす誤りとは根本原因が違う。語彙の追加でもない（カタログ外のものに当たるのを止めるだけ）。expected を導き直すと、PopenRecorder はハンドルではないので pipe 行は出ず、木内の `communicate` 本体にも sink が無いので効果行はゼロ、矛なしになる。所見の記述と一致する。",
+    "citations": [
+     "AUTHGAP_BRIEF_v3.md:232",
+     "AUTHGAP_BRIEF_v3.md:514",
+     "authgap/effects.py:800-803",
+     "authgap/catalog/sinks.py:653-660",
+     "authgap/catalog/transfers.py:175-192",
+     "docs/decisions.md:3463-3466",
+     "docs/open_questions.md:1063-1065",
+     "docs/contradiction_principles.md:167"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_alarm",
+    "fix_is_general": true,
+    "notes": "D1（readOnly の矛 fs_write）と D2（fs_unknown の不）に効く。直すときは、木内で `subprocess.Popen` を継承するクラスの扱いに注意が要る。今はクラス名に Popen を含むときだけ偶然当たっており、名前に Popen を含まない派生（`class MyProc(subprocess.Popen)`）はもともと当たっていない。そのため、正確な型名の一致に変えるなら `_class_family` の外部基底で派生を足すこと。足さないと `WindowsPatchedPopen` 型の行が消える（誤 clear）。Obj.classes が木内クラスを末尾名で持つ限界（decisions.md:314-316）は別件。"
+   },
+   "generality": {
+    "id": "R4-r3-6",
+    "refuted": false,
+    "confidence": 0.7,
+    "reason": "Reproduces. The substring test `\"Popen\" in c` (effects.py:801) treats the in-tree class `PopenRecorder` as a pipe handle, and a readOnly tool gets contradiction:D1 fs_write. The claim follows from Python semantics: the class name is not the type, and isinstance is decided by inheritance. **The naive exact-type fix in fix_sketch, however, creates a silent false-clean.** Counterexample: the in-tree subclass `class ManagedPopen(subprocess.Popen)`, used as `p = ManagedPopen([\"python3\",\"-\"], stdin=PIPE); p.communicate(input=code)`. Today its receiver classes are `['ManagedPopen']`, a tail name, and the substring match leaves an FS_WRITE info row with contradiction:D1 fs_write. This is a real process, so the result is correct. No SPAWN row is produced either, so the pipe row is the only trace. With the exact-type fix simulated, the unit has zero effects. The finding itself notes that the corpus contains `WindowsPatchedPopen(subprocess.Popen)`. A general fix that avoids this exists: exact types plus inheritance. For in-tree classes, `_class_family` follows the bases through the import table exactly as D17 prescribes, and a class whose bases include `subprocess.Popen` or `asyncio.subprocess.Process` counts as a handle. That is isinstance semantics, and it also newly catches subclasses whose names do not contain Popen. If a base cannot be resolved, keep the current conservative row rather than dropping it (the lesson of D61 G1). The in-tree wrapper `PopenWrapper` (delegating to `self._p.communicate`) was checked separately: the EXEC row from its body remains, so the change does not remove any true effect there.",
+    "citations": [
+     "/home/user/auth_gap/authgap/effects.py:787-831",
+     "/home/user/auth_gap/authgap/catalog/sinks.py:648-660",
+     "/home/user/auth_gap/docs/decisions.md:1678",
+     "/home/user/auth_gap/docs/decisions.md:3459-3470"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_alarm",
+    "fix_is_general": true,
+    "counterexample_code": "import subprocess\nfrom mcp.server.fastmcp import FastMCP\nmcp = FastMCP(\"t\")\nclass ManagedPopen(subprocess.Popen):\n    \"\"\"本物の Popen の派生（木内）。\"\"\"\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef subclass_popen(code: str) -> str:\n    p = ManagedPopen([\"python3\", \"-\"], stdin=subprocess.PIPE)\n    out, _ = p.communicate(input=code)\n    return out\n# tree: .../verify/R4_low_1/popen_cx (also popen_wrap) ; naive exact-type simulation: .../verify/R4_low_1/sim_fix_r3_6.py",
+    "counterexample_output": "CURRENT:\n== subclass_popen (server.py:16)\n   E FS_WRITE pipe:communicate  pipe L18  resolved destructive=None sub_kind=FS_WRITE\n   R {\"kind\": \"FS_WRITE\", \"notes\": [..., \"contradiction:D1\", \"contradiction_reason:D1:fs_write\"]}\n   (receiver classes = ['ManagedPopen'], no spawn fields)\nNAIVE EXACT-TYPE FIX SIMULATED:\n== subclass_popen (server.py:16)\n   (no effect rows; real process with MODEL stdin disappears silently)\nOther forms (subprocess.Popen.stdin, asyncio.subprocess.Process, from-import Popen, PopenWrapper body EXEC) unchanged under the simulation; record (PopenRecorder) loses its false contradiction as intended.",
+    "notes": "Adopt only as exact types plus the inheritance check (bases followed strictly through `_class_family` or the import table; keep the current row when a base cannot be resolved). The exact-type-only version marked optional in fix_sketch loses real subclasses, and the finding's claim of 'no correct case broken' does not hold for that version. Frequency is low (corpus hits are test fakes and real subclasses)."
+   }
+  },
+  {
+   "id": "R5-r3-1",
+   "severity": "medium",
+   "affects": "tooling",
+   "design": {
+    "id": "R5-r3-1",
+    "refuted": false,
+    "confidence": 0.9,
+    "reason": "(1) 意図された決定か: 候補表を「ユニット × (site, kind)」に畳むこと自体は記録された設計である（docs/decisions.md:510-511 の D31、scripts/scan_v2.py:8 の docstring）。しかし relpath を最初の CONTRADICTION 行から取り、lineno だけを別ファイルの行も含めた min で更新する（scripts/scan_v2.py:46-49、55-57）ことを決めた記録は無い。_contradiction_rows を導入した commit 38531e7 のメッセージは「scripts/scan_v2.py: 母集団 v2 の full scan の取り直し（run1–3 は手作業のループだった）」だけで min の根拠は無く、O1〜O41・D19 の K1〜K7・review_plan.md §5 のどれも候補表の位置には触れていない。同じ根本原因を意図的に決めた記録・限界として記録した記録は無い。(2) 期待される出力: 表の目的は手検証の候補表であり（scripts/scan_v2.py:8）、手検証の手順は「effect_relpath:effect_lineno を開き、効果の呼び出しと、その引数がツールの入力から来るかを確認する」（docs/verification_guide.md:498-499。判定はソースを開いて行う、同 483-485）。したがって行の (relpath, lineno) は畳んだ組に属する CONTRADICTION 行の実在する位置でなければならず、所見の expected は正しい。これは §7 の判定表の規則ではなく道具の契約なので、判定表との読み違えは存在しない。実データで確認: run20 は 6 行（すべて teamplay-talk、D1）が storage.py:36 を指すが、そこは create_room の docstring（corpus/v2-hbg1345__teamplay-talk/src/teamplay_talk/storage.py:36）で、実際の CONTRADICTION 行は kakao_store.py:36（UPDATE）と storage.py:1153（INSERT）。run18 も同じ 6 行。さらに scan_v2_v3_run1 でも 1 行（tekla_mcp_server print_drawings / pathlib.Path.mkdir / D1）が tekla/utils.py:130（`s = Seam()`。mkdir ではない）を指し、実際は config.py:478 / drawing_export.py:130 / utils.py:556。(3) 語彙の凍結には触れない（scripts の集計の話）。(4) D3 / D4 だけではない: 誤った位置になる行は run20 の 6 行も v3 の 1 行も全部 D1（主指標側）。ただし解析器の判定と件数は変わらない（compare_scans.py / contradiction_by_decl.py / intersection_rows.py は manifest を読む。v3 の V2 判定対象 evidence/population_v3/v2_judge_targets.json は (tree, unit, site, kind, decl) だけで位置を持たず、当該 M56 は「正」と判定されている）。効くのは D60 の学生の最終評価で候補表の位置を手順どおりに開く場合で、真の矛が「誤（読み違え）」に倒れて精度が過小になりうる。",
+    "citations": [
+     "scripts/scan_v2.py:8",
+     "scripts/scan_v2.py:46-49",
+     "scripts/scan_v2.py:55-57",
+     "docs/decisions.md:510-511",
+     "docs/decisions.md:492",
+     "docs/verification_guide.md:483-485",
+     "docs/verification_guide.md:498-499",
+     "docs/population_v3.md:39-41",
+     "docs/review_plan.md:22",
+     "evidence/scan_v2_run20/contradictions.json",
+     "evidence/scan_v2_v3_run1/contradictions.json",
+     "evidence/population_v3/v2_judge_targets.json",
+     "corpus/v2-hbg1345__teamplay-talk/src/teamplay_talk/storage.py:36",
+     "corpus/v2-hbg1345__teamplay-talk/src/teamplay_talk/kakao_store.py:36",
+     "corpus/v2-hbg1345__teamplay-talk/src/teamplay_talk/storage.py:1153",
+     "corpus/v3-teknovizier__tekla_mcp_server/src/tekla_mcp_server/tekla/utils.py:130",
+     "git 38531e7 (scripts/scan_v2.py 追加。min の根拠なし)"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "medium",
+    "direction_opinion": "false_alarm",
+    "fix_is_general": true,
+    "notes": "根本原因: relpath と lineno を別の行から取る（畳み込みの鍵は変えなくてよい）。同じ機構で declarations も別の位置の行から和を取る（run20 の apply_daily_checkin D2+D3）。v3 の判定対象は宣言ごとに別の源から作られているので件数には効いていない。起きる条件は「同じユニットが同じ (site, kind) を 2 ファイル以上で通り、後に列挙されるファイルの行番号のほうが小さい」で、run20 は 191 行中 6（跨る組 16 のうち）、v3_run1 は 87 行中 1。解析器の判定・件数は動かないので high ではないが、最終評価の手検証の入口で真の D1 矛を誤に倒しうるので記録のみ（low）でもない。直し方は一般に正しい: (relpath, lineno) を対で保持し（最初の対、または対の min）、locations: [(relpath, lineno, declarations), ...] を行に足す。表示属性が増えるだけで壊れる正しいケースは無い。R5-r1-8（destructive を最初の効果から取る）と同じ関数を直すことになり、その検証者が示した「各 CONTRADICTION 行の (relpath, lineno, site, kind) に一致する効果から属性を取る」形で両方を同時に直せる。凍結対象の authgap/ には触れない（scripts のみ）。"
+   },
+   "generality": {
+    "id": "R5-r3-1",
+    "refuted": false,
+    "confidence": 0.9,
+    "reason": "実行: 所見の木で再現した（contradictions.json 行 = server.py:2、実際の CONTRADICTION 行は server.py:10 と util.py:2。server.py:2 は import 文）。run20 を manifest から自分で数え直すと、候補表 191 行のうち同じ (木, ユニット, site, kind) の CONTRADICTION 行が 2 ファイル以上に跨る組 16、(relpath, lineno) が実在する CONTRADICTION 行の位置でない行 6（すべて teamplay-talk、D1、storage.py:36）。storage.py:36 は `code = _generate_invite_code()` で DB sink ではなく、実際の行は kakao_store.py:36（UPDATE）と storage.py:1153（INSERT）。所見の数値は正確。\n\n一般性 (問 1): 主張はコードの意味だけから導ける。scripts/scan_v2.py:55 は relpath を最初の CONTRADICTION 行から取り、:47 は lineno を**ファイルを見ずに**整数の min で更新する。列の意味は docs/verification_guide.md:445-446（lineno は効果そのものの行で別ファイルでありうる）と scripts/scan_v2.py:8,182（手検証の候補表）に書かれており、(relpath, lineno) は対として効果の位置を指すべきもの。発火条件は一般に「min の lineno を持つ行のファイル ≠ 最初に列挙された行のファイル」で、所見の言う『後に列挙されるヘルパの行番号が小さいとき』は一例に過ぎない。自作の cx_reverse（ヘルパが辞書順で先のファイル a_util.py:32、ツール自身の open が server.py:11、ヘルパを先に呼ぶ）でも現行は (a_util.py, 11) = `CONST_10 = 10` を指す。v2/v3 への合わせ込みではない。\n\n設計の呼び直しか (問 4): 畳み込みの鍵 ユニット × (site, kind) は D31（docs/decisions.md:509-510）の設計で、所見はそれを保つ。lineno を min で取ることは決定にも仕様にも無い（decisions.md を grep して該当なし）。§5 の既知の決定にも無い。\n\n反例 (問 2): fix_sketch（(relpath, lineno) を対で持つ + locations を足す）を scratchpad に実装し、所見の木・cx_single（同一ファイル内 2 行）・cx_reverse・cx_samefirst（自ファイルの行が先）と run20 の全 manifest にかけた。対の min 版・最初の行版とも、位置は構成上つねに実在する CONTRADICTION 行の位置になる（run20: n=191 不変、誤位置 0、変わった行はちょうど誤っていた 6 行、declarations / destructive は全行同一）。今正しい判定が壊れる反例は作れなかった。判定（verdict）や件数には一切触れない直しなので、誤 clear も矛の消失も原理的に生じない。contradictions.json を読む script は無い（intersection_rows.py:58、contradiction_by_decl.py:40、compare_scans.py:40、catalog_map.py:172/192、depth_sensitivity.py:55、hintlint_compare.py:79、malformed_impact.py:105、v3_miss_sample.py:40 はすべて読み飛ばす）ので、列の追加も評価の経路を壊さない。\n\n直し方 (問 3): 解決率を上げる向きではない（opaque → resolved の変更を含まない）ので敵対的レビューの条項は当たらない。fix_is_general = true。\n\n評価の経路で起きるか: scan_v2.py の出力そのものに run20 の実データで 6 行ある（D1+D2 主指標側 153 行中 = 3.9%）。ただし v3 の手順（最終評価の雛形）では判定対象は scripts/v3_judge_sample.py:21-36 が manifest（load_reasons）から (木, ユニット, site, kind, 宣言) だけで作り、位置は渡していない（evidence/population_v3/v2_judge_targets.json の鍵に relpath/lineno は無い）。誤った位置が判定に効くのは、判定者が docstring の言うとおり contradictions.json を候補表として開いて原ソースに当たる場合に限る。",
+    "citations": [
+     "scripts/scan_v2.py:8",
+     "scripts/scan_v2.py:44-49",
+     "scripts/scan_v2.py:55-58",
+     "scripts/scan_v2.py:182",
+     "docs/verification_guide.md:441-446",
+     "docs/population_v3.md:39-45",
+     "scripts/v3_judge_sample.py:21-36",
+     "docs/decisions.md:509-510",
+     "docs/review_plan.md:5 (§5 既知の問題に該当なし)",
+     "evidence/scan_v2_run20/contradictions.json (n=191; teamplay-talk の register.rooms / finalize_roles / get_poll_results / member_tasks / room_dashboard / view_roadmap = storage.py:36)",
+     "evidence/scan_v2_run20/v2-hbg1345__teamplay-talk.json (register.rooms の CONTRADICTION 行 = storage.py:1153 と kakao_store.py:36)",
+     "corpus/v2-hbg1345__teamplay-talk/src/teamplay_talk/storage.py:36 (`code = _generate_invite_code()`)",
+     "corpus/v2-hbg1345__teamplay-talk/src/teamplay_talk/kakao_store.py:36 (UPDATE users ...)",
+     "corpus/v2-hbg1345__teamplay-talk/src/teamplay_talk/storage.py:1153 (INSERT INTO users ...)",
+     "scripts/intersection_rows.py:58",
+     "scripts/contradiction_by_decl.py:40",
+     "scripts/compare_scans.py:40"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "medium",
+    "direction_opinion": "false_alarm",
+    "fix_is_general": true,
+    "counterexample_code": "# 直しを壊す反例は作れなかった。以下は「直しの一般性を確かめた」木（scratchpad/verify/R5_hm_1/）。\n# (1) cx_reverse: 所見の条件（ヘルパの行番号が小さい）の裏返しでも現行が誤る = 発火条件は「min の行のファイル ≠ 最初の行のファイル」\n# cx_reverse/server.py\nfrom mcp.server.fastmcp import FastMCP\n\nfrom a_util import archive\n\nmcp = FastMCP(\"t\")\n\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef save_note(path: str, text: str) -> str:\n    archive(path, text)          # helper first: enumerated first, file a_util.py sorts before server.py\n    with open(path, \"w\") as fh:  # L11\n        fh.write(text)\n    return path\n\n# cx_reverse/a_util.py  (28 lines of `CONST_i = i` padding, then)\ndef archive(path: str, text: str) -> None:\n    with open(path + \".bak\", \"w\") as fh:   # L32\n        fh.write(text)\n\n# (2) cx_single: 同一ファイル内で 2 行（helper が下に定義され先に呼ばれる）。現行と対の min 版は一致、「最初の行」版だけ行が変わる（が実在する位置）\n# cx_single/server.py\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef save_note(path: str, text: str) -> str:\n    archive(path, text)\n    with open(path, \"w\") as fh:   # L10\n        fh.write(text)\n    return path\n\ndef archive(path: str, text: str) -> None:\n    with open(path + \".bak\", \"w\") as fh:   # L16\n        fh.write(text)\n\n# (3) 直しの scratch 実装: fixed_rows.py（対の min = pairmin / 最初の行 = first、locations を追加）を run20 の全 manifest にも適用",
+    "counterexample_output": "== loc_mismatch/tree  real positions: [('server.py', 10), ('util.py', 2)]\n   current  rows=[('server.py', 2, ['D1'])]  WRONG_POSITION=[server.py:2]\n   pairmin  rows=[('server.py', 10, ['D1'])] WRONG_POSITION=[]\n   first    rows=[('server.py', 10, ['D1'])] WRONG_POSITION=[]\n== cx_single  real positions: [('server.py', 10), ('server.py', 16)]\n   current  rows=[('server.py', 10)]  WRONG_POSITION=[]\n   pairmin  rows=[('server.py', 10)]  WRONG_POSITION=[]\n   first    rows=[('server.py', 16)]  WRONG_POSITION=[]   (行は変わるが実在する位置)\n== cx_reverse  real positions: [('a_util.py', 32), ('server.py', 11)]\n   current  rows=[('a_util.py', 11)]  WRONG_POSITION=[a_util.py:11]   <- a_util.py:11 は `CONST_10 = 10`\n   pairmin  rows=[('a_util.py', 32)]  WRONG_POSITION=[]\n   first    rows=[('a_util.py', 32)]  WRONG_POSITION=[]\n== cx_samefirst  real positions: [('server.py', 10), ('util.py', 32)]\n   current / pairmin / first  rows=[('server.py', 10)]  WRONG_POSITION=[]\n\n== run20 全 manifest（evidence/scan_v2_run20）\nvariant   n   wrong_position   rows_changed_vs_current\ncurrent  191      6               0\npairmin  191      0               6\nfirst    191      0               6\ndeclarations/destructive identical to current in all variants: True\n(repro_scan の効果行・判定はどの直しでも不変。表の位置の列だけが変わる)",
+    "corrected_expected": "候補表の行の (relpath, lineno) は、その組の CONTRADICTION 行の位置の集合に属すること。対の min を採れば所見の木では server.py:10、加えて locations = [(server.py, 10, [D1]), (util.py, 2, [D1])]。run20 では teamplay-talk の 6 行が storage.py:36 → kakao_store.py:36（対の min）になり、locations に storage.py:1153 も載る。n・declarations・destructive は不変。",
+    "notes": "(1) 所見の副次的な主張「同じ機構で declarations も別の行から和を取る（run20 で 1 行: apply_daily_checkin の D2+D3）」は run20 の実例としては誤り: kakao_calendar.py:338 の各行が同じ行に contradiction:D2 と contradiction:D3 を両方持っており、run20 で行ごとの宣言集合が組内で異なる組は 0。機構（scan_v2.py:48 の和）自体は存在するので一般論としては正しいが、件数は 1 ではなく 0。主張の本体には影響しない。\n(2) 推奨する直し方: 対の辞書順 min（列挙順に依らず、全行が同一ファイルなら現行と完全に一致するので過去 run の表との対比も崩れない）+ locations 列。「最初の行」版は同一ファイル内の行番号も変える（cx_single: 10 → 16）ので、誤りではないが対比のためには対の min が良い。R5-r1-8（destructive を eff_by の最初の効果から取る、scan_v2.py:40,50,59）と同じ関数だが別の欠陥で、同時に直せる。\n(3) 重大度を medium とした理由と留保: 件数も主指標（153）も動かず、v3 の判定対象（v3_judge_sample.py）は位置を渡していないので、効くのは判定者が contradictions.json の位置から原ソースを開く場合のみ。誤った行は sink ですらない行（import 文、`code = _generate_invite_code()`）なので、自信を持った「誤」判定より「不明」や時間の浪費になりやすい。ただし docstring がこの表を手検証の候補表と呼んでおり、population_v3.md V2 の「誤: 解析器が読み違えた」に落とされうるので low にはしない。直さない場合でも、手順として「位置は manifest の rows（または locations）から取る」と書けば回避できる。\n(4) 向き: 解析器の誤警報ではなく、手判定で正しい矛が「誤」に見える（測る精度が下がる）向き。count_loss ではない（n 不変）。"
+   }
+  },
+  {
+   "id": "R5-r3-2",
+   "severity": "low",
+   "affects": "tooling",
+   "design": {
+    "id": "R5-r3-2",
+    "refuted": false,
+    "confidence": 0.75,
+    "reason": "同じ根本原因を意図として決めた記録は見つからない。D17 改訂 4（docs/decisions.md:1718）はユニット単位で RecursionError を捕まえて TRUNCATED(recursion) として『件数に数える（黙って落とさない）』と決めただけで、宣言 D_kind を落とすことは決めていない（authgap/runner.py:139-143 のコメントも同じ趣旨）。open_questions の打ち切りの記録（O21, docs/open_questions.md:434）は AST_NODE_CAP の話で別の原因。D19 の K1〜K7（docs/decisions.md:1533-1539）にも無い。仕様では D_kind は annotations だけから決まる（AUTHGAP_BRIEF_v3.md:320）。parse_d_kind(unit) は unit だけを入力にする純粋な関数なので、解析が成功したかどうかに左右されず、所見の期待は規則どおり。analyze_unit_f0a が d_kind を engine.analyze の後で設定していること（authgap/analyze.py:208-220）、および同じ関数の 'module unresolved' の早期 return（analyze.py:201）でも D_kind は ⊥ になり、根本原因は同じ。影響は評価の道具に限る。D1/D2 の判定には効かない（打ち切ったユニットには rows が無く、矛も不も出ない）。v3_miss_sample の枠と probe の n_units_with_D_kind の生の件数から、そのユニットが黙って抜ける。r_kind の分母は危険効果を持つユニットなので、効果 0 の打ち切りユニットはもともと分母に入らず、r_kind への影響は無い。引き金の深い式（v2 では 550 項の連結 1 例）はまれ。",
+    "citations": [
+     "docs/decisions.md:1718",
+     "authgap/runner.py:139-143",
+     "authgap/analyze.py:198-221",
+     "authgap/report.py:206",
+     "scripts/v3_miss_sample.py:44-50",
+     "AUTHGAP_BRIEF_v3.md:320",
+     "AUTHGAP_BRIEF_v3.md:1120",
+     "docs/review_plan.md:13"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "count_loss",
+    "fix_is_general": true,
+    "notes": "D1/D2 の判定には効かず、道具の数え落としに限る。同じ根本原因で analyze_unit_f0a の 'module unresolved' の早期 return にも D_kind が付かないので、直すなら d_kind / d_kind_by_tool の設定を関数の冒頭に移すのが一般に正しい。r_kind（§10 の分岐）の分子と分母には効かない。影響するのは生の件数 n_units_with_D_kind と V3 型の抜き取り枠だけ。"
+   },
+   "generality": {
+    "id": "R5-r3-2",
+    "refuted": false,
+    "confidence": 0.85,
+    "reason": "Reproduced: running repro_scan.py on recursion_dkind/tree gives `deep` D_kind bottom=true with notes TRUNCATED(recursion), while `shallow`, with the same annotations, gets explicit=[readOnlyHint]. Cause: the RecursionError fallback in authgap/runner.py:139-143 builds `UnitReport(unit=unit, notes=[...])` without calling parse_d_kind, and authgap/analyze.py:219-220 sets d_kind only after engine.analyze. The claim follows from the spec's own definitions: the declaration D is read from the decorator's annotations and does not depend on whether the analysis succeeded. So a declaration going missing because the analysis was truncated is a silent drop from the denominator (CLAUDE.md rule 4). It is not merely renaming a known design decision: D17 revision 4 (decisions.md:1718) only says to 'record it as TRUNCATED(recursion) and count it' and does not say to drop the declaration. It is also not fitted to v2/v3 (the trigger is a general RecursionError). Counterexample attempt: after the fix, would a truncated unit be counted somewhere as 'consistent'? contradiction_by_decl.py:37-55 and scan_v2.py:_contradiction_rows only read rows, and truncated units have no rows, so the D1/D2 contradiction and unknown counts do not change. v3_miss_sample.py:44-50 would add the unit to the pool with n_effects 0, which is the right direction for estimating misses. I also tested whether parse_d_kind itself can hit a RecursionError (a 900-term concatenation inside annotations); it read fine, so I could not produce a counterexample. It is on the evaluation path (population_v3.md:46 V3 miss sampling and probe n_units_with_D_kind), but run20 has 0 TRUNCATED(recursion) units out of 2,231, so the impact is rare. severity low.",
+    "citations": [
+     "authgap/runner.py:139-143",
+     "authgap/analyze.py:198-221",
+     "scripts/v3_miss_sample.py:44-50",
+     "authgap/report.py:206",
+     "docs/decisions.md:1718",
+     "docs/population_v3.md:46",
+     "scripts/contradiction_by_decl.py:37-55"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "count_loss",
+    "fix_is_general": true,
+    "counterexample_code": "# Test of whether parse_d_kind itself can hit RecursionError (verify/R5_low_1/deepdecl/server.py)\n@mcp.tool(annotations={\"readOnlyHint\": True, \"title\": \"a\"+\"a\"+...(900 terms)})\ndef deepdecl(sql: str) -> str:\n    conn = sqlite3.connect(\"data.db\")\n    return str(conn.execute(sql).fetchall())",
+    "counterexample_output": "== deepdecl  D_kind: {\"bottom\": false, \"explicit\": [\"readOnlyHint\"], ...}  R contradiction:D1 -> parse_d_kind is not deep-recursive, so I could not break the fix. Truncated units have no rows, so the contradiction / unknown counts in contradiction_by_decl do not change either.",
+    "notes": "Implementation caveat: in the except branch in runner, wrap the parse_d_kind / parse_d_kind_by_tool calls in their own try/except RecursionError (fall back to bottom plus a note if they fail), so that a second exception inside the handler cannot take down the whole tree. Moving the calls earlier in analyze_unit_f0a alone does not help, because the report object is not returned. Also carry notes (TRUNCATED) into v3_miss_sample's output so the judge can classify these as 'unknown (truncated)'. run20 has 0 of these units, so the numbers in effect do not change."
+   }
+  },
+  {
+   "id": "R5-r3-3",
+   "severity": "low",
+   "affects": "tooling",
+   "design": {
+    "id": "R5-r3-3",
+    "refuted": false,
+    "confidence": 0.7,
+    "reason": "compare_scans.py の鍵 (木, qualname, site, kind)（scripts/compare_scans.py:68-69、docstring 12 行）は D56 より前の設計のまま。宣言を区別しないことを意図として決めた記録は無い。一方、contradiction_principles.md §6 の 4 行目（docs/contradiction_principles.md:141）は、D1/D2 を主指標とし D3/D4 は探索的で合算しないと決めている。CLAUDE.md は『消えた CONTRADICTION は回帰』と定めている。この 2 つを合わせると、同じ (site, kind) に D3 の矛が残っていても D1 の矛が消えれば、回帰として出すべき。所見の期待は規則どおり。D56 の記録（docs/decisions.md:2989 以降）も compare_scans を宣言つきに直してはいない。D3/D4 だけに効く所見ではなく、D1/D2 の回帰を D3/D4 が覆い隠す向き。ただし次の 2 点を考え、severity は low とする。(1) contradiction_by_decl.py を両方の run で出せば、D1+D2 の件数の変化自体は見える（repro でも 1 → 0）。(2) run20 で宣言が併存する候補は 1 件。それでも、増減が相殺すると件数だけでは見えず、どの組が消えたかを出す道具は無い。§4.4 の run21 の突き合わせで使う道具なので、評価の道具への影響として残す。",
+    "citations": [
+     "scripts/compare_scans.py:12",
+     "scripts/compare_scans.py:68-69",
+     "scripts/compare_scans.py:109-116",
+     "docs/contradiction_principles.md:141",
+     "docs/decisions.md:2989",
+     "docs/review_plan.md:88"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "count_loss",
+    "fix_is_general": true,
+    "notes": "直し方（鍵に宣言を足す、または D1+D2 だけの集合を別に作る）は、宣言を落とせば従来の集合差を再現できるので、壊れる正しいケースは無い。緩和策として contradiction_by_decl の前後比較で件数の変化は見える。"
+   },
+   "generality": {
+    "id": "R5-r3-3",
+    "refuted": false,
+    "confidence": 0.85,
+    "reason": "Reproduced: compare_scans on fakeroot's scan_v2_fold_before → fold_after gives CONTRADICTION 1 → 1, added 0, removed 0, while repro_scan shows the before row carries contradiction:D1 + D3 and the after row carries D3 only. compare_scans.py:68-69 folds CONTRADICTION rows into (tree, qualname, site, kind) and does not read the contradiction:<declaration> notes. The claim follows from the written rules: after D56 the counts are split per declaration, and D1/D2 are the primary indicators and D3/D4 are not added to them (contradiction_principles.md §6, the contradiction_by_decl.py docstring); CLAUDE.md says to check vanished CONTRADICTIONs one by one. It is not fitted to v2/v3; the condition is general (a D1/D2 and a D3/D4 contradiction coexisting on one key). This tool is on the path that review_plan.md §4.4-2 prescribes: run run21 after a fix and check vanished items with compare_scans. In run20, 1 of 191 keys carries 2 or more declarations (teamplay-talk register.apply_daily_checkin, D2+D3), and 0 CONTRADICTION rows lack a declaration note. So the effect on current numbers is 0 and severity is low. Counterexample attempt: adding the declaration to the key is a strict refinement of the current set, so any vanished key that is detected today is still detected (all of its declaration tuples vanish together). A D1→D2 move would show as removed plus added, which is the right information, not a break. I found no case that breaks.",
+    "citations": [
+     "scripts/compare_scans.py:68-69",
+     "scripts/compare_scans.py:109-116",
+     "scripts/contradiction_by_decl.py:9-18",
+     "docs/review_plan.md:§4.4",
+     "CLAUDE.md（compare_scans の落とし穴）"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "count_loss",
+    "fix_is_general": true,
+    "counterexample_code": "# Refined key (tree, qualname, site, kind, decl). Rows without a declaration note keep decl='?' so they do not vanish from the set.\n# Tally of run20: 191 keys; ('D1',)109 / ('D2',)43 / ('D3',)38 / ('D2','D3')1; CONTRADICTION rows without a declaration note: 0",
+    "counterexample_output": "No break case. Every key-level vanishing detected today is still detected with the refined key; only additions to what is detected.",
+    "notes": "When implementing, give any CONTRADICTION row that has no contradiction:<declaration> note a placeholder declaration ('?'), so it does not drop out of the set (0 such rows in run20, but guard against it). Output the vanished list split into primary (D1/D2) and exploratory (D3/D4). Minimal-impact alternative: keep the current key and add a separate 'D1+D2 set difference' table."
+   }
+  },
+  {
+   "id": "R5-r3-4",
+   "severity": "low",
+   "affects": "tooling",
+   "design": {
+    "id": "R5-r3-4",
+    "refuted": false,
+    "confidence": 0.65,
+    "reason": "仕様は schema_hash を『静的に得られる入力スキーマの正規化 JSON の sha256』と定義している（AUTHGAP_BRIEF_v3.md:638、preregistration.md:191 の join は unit id の完全一致）。ast.unparse の出力は処理系の版で変わるので、正規化とは言えない。所見の期待（同じソースなら処理系によらず同じ unit_id）は仕様どおり。D16（docs/decisions.md:1488-1491）は 3.12 への切り替えを決め、run 間の差を処理系と解析器に分解するとした。しかし unit_id そのものが処理系に依存することは記録していない。D16 の確認（decisions.md:1485）は A1__fixed だけで、lambda / 入れ子引用符の f-string の既定値の形を含まないため、今回の差を検出できない。unit_id の衝突を定義どおりとした決定（decisions.md:1634、1577-1582）は複製ファイルの話で、原因が違う。実際の影響は小さい。r_prev.py は前リリースと現リリースを同じプロセスで scan する（scripts/r_prev.py:162-179）ので、D_prev の join は処理系を跨がない。scan_v2 も 3.12 で揃っている。処理系を跨いで突き合わせるのは lost_units.py / compare_f0a_runs の類だけで、D1/D2 の判定には効かない。",
+    "citations": [
+     "AUTHGAP_BRIEF_v3.md:638",
+     "docs/preregistration.md:191",
+     "docs/decisions.md:1485",
+     "docs/decisions.md:1488-1491",
+     "docs/decisions.md:1577-1582",
+     "authgap/entries.py:96-108",
+     "authgap/entries.py:213-229",
+     "scripts/r_prev.py:162-179"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "nondeterminism",
+    "fix_is_general": true,
+    "notes": "記録のみでよい水準（D1/D2 には効かない）。fix_sketch の 'ast.dump(annotate_fields=False)' は版を跨いで安定しない（3.13 で ast.dump は既定で空のフィールドを省くようになった）ので、正規化には使えない。一般に正しい直し方は『定数の既定値は JSON 化 / repr、定数でないものは \"<expr>\" に潰す』の側で、仕様の『正規化 JSON』にも合う。直すと全 run の unit_id が変わるので、凍結前に 1 回だけ行うか、『処理系を跨いで unit_id を突き合わせない』を docs に限界として記録するかを学生が選ぶ。"
+   },
+   "generality": {
+    "id": "R5-r3-4",
+    "refuted": false,
+    "confidence": 0.75,
+    "reason": "Reproduced: .venv (3.10.20) gives mcp:save:ff07f2bfe046 and .venv312 (3.12.3) gives mcp:save:ffeb0f564c7b; the defaults differ ('lambda : 0' vs 'lambda: 0', and the f-string quotes). schema_hash (entries.py:96-108) hashes default strings from ast.unparse (entries.py:213-229). ast.unparse output is not specified to be stable across versions, so the claim is general as a language/library fact. It is not fitted to v2/v3. However, the evaluation path (scan_v2.py always under .venv312, D16; population_v3.md:32 is 3.12 too) keeps each run on one interpreter. r_prev.py scans the previous release and the current release in the same process (r_prev.py:91,179), so a cross-interpreter join does not happen there either. It can only occur when comparing run1 (3.10), which D16 (decisions.md:1488-1491) already records as mixed with the interpreter change, or when a future run switches interpreter. So severity is low. The finding says compare_scans is unaffected, which is inaccurate: the units key in compare_scans.py:52 contains unit_id, so switching interpreters would also make units appear as 'vanished units' there. That is not grounds to refute; if anything it widens the impact. I could build a counterexample against both options in the fix_sketch: (1) ast.dump is also version-dependent (on 3.13.12, `lambda: 0` dumps as 'Lambda(arguments(), Constant(0))' versus 'Lambda(arguments([], [], kwonlyargs=[], ...))' on 3.10/3.12), so it does not remove the dependency; (2) collapsing non-constant defaults to '<expr>' merges the unit_ids of same-named tools in different modules. Since scan_v2._contradiction_rows keys on (unit_id, site, kind), 2 correct CONTRADICTION rows fold into 1 (a new count-loss). But there are general fixes that avoid this counterexample (record the interpreter version per run and have unit_id-joining tools stop or warn when versions differ, or build the hash from our own AST serializer with an explicit field list), so it is not refuted.",
+    "citations": [
+     "authgap/entries.py:96-108",
+     "authgap/entries.py:213-229",
+     "scripts/lost_units.py:40",
+     "scripts/compare_scans.py:52",
+     "scripts/scan_v2.py:33-60",
+     "scripts/r_prev.py:91",
+     "scripts/r_prev.py:179",
+     "docs/decisions.md:1466-1491"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "nondeterminism",
+    "fix_is_general": true,
+    "counterexample_code": "# verify/R5_low_1/collapse/{a,b}/server.py (same tree, different modules)\nfrom mcp.server.fastmcp import FastMCP\nmcp = FastMCP(\"a\")  # b is FastMCP(\"b\")\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef save(text: str, key=lambda: 0) -> str:   # b is lambda: 1\n    with open(\"/tmp/out_a.txt\", \"w\") as fh:\n        fh.write(text)\n    return \"ok\"\n# Also: ast.dump on 3.13.12 gives 'Lambda(arguments(), Constant(0))', on 3.10/3.12 'Lambda(arguments([], [], kwonlyargs=[], kw_defaults=[], defaults=[]), Constant(0))'",
+    "counterexample_output": "Now (3.12): mcp:save:9988a1eab16a a/server.py FS_WRITE contradiction:D1 / mcp:save:2d7b22a7c65f b/server.py FS_WRITE contradiction:D1 -> scan_v2._contradiction_rows gives 2 rows (correct). With fix_sketch option 2 ('<expr>' collapse) both become mcp:save:306fd5997f45 and _contradiction_rows gives 1 row (count-loss). Option 1 (ast.dump) still differs on 3.13.",
+    "notes": "The fix_sketch as written is not general: ast.dump varies by version (it changed in 3.13), and the '<expr>' collapse causes unit_id collisions that fold contradictions.json. Two general directions: (a) do not touch unit_id; instead record the interpreter version in scan_v2's summary (currently only freeze_analyzer's fingerprint has it), and have tools that join on unit_id (compare_scans / lost_units / r_prev) stop or warn when versions differ; also write down 'do not match unit_id across interpreters' (smallest change, and does not change the frozen contents); (b) to change the hash, build it from our own serializer that walks AST node types and a fixed list of fields (no ast.dump / ast.unparse). (b) changes every unit_id, so if it is done at all, do it once before the freeze. For the final evaluation on one interpreter, (a) is enough."
+   }
+  }
+ ],
+ "failed_agents": [],
+ "missing": []
+}
