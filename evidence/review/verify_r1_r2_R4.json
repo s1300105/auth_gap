@@ -673,8 +673,53 @@
    "id": "R4-r1-11",
    "severity": "low",
    "affects": "D1+D2",
-   "design": null,
-   "generality": null
+   "design": {
+    "id": "R4-r1-11",
+    "refuted": false,
+    "confidence": 0.8,
+    "reason": "設計の観点では反証できない。(1) 意図された決定の記録は見つからなかった。_suffix_match（authgap/effects.py:161-171）は完全一致と末尾 2 要素一致だけを見る。decisions.md / open_questions.md / contradiction_principles.md / BRIEF / preregistration を「再公開」「別名」「末尾」「suffix」で grep したが、ライブラリ sink の公式な再公開経路（asyncio.subprocess.X、sympy.parse_expr）を当てないと決めた記録も、限界として書いた記録も無い。記録済みの近い話はどれも根本原因が違う。O41（open_questions.md:1062）は「sink 語彙に無いライブラリ」。O39 は HTTP のメソッドが語彙に無い話。D35 の別名（decisions.md:312）は `b = a` の値の別名。K7 / D61 G3（decisions.md:1539, 3432-3435）は木の中の関数の別名・再公開を追う話で、外部ライブラリの sink 表の引き方ではない。むしろ G3 と同じ考え方（import の意味そのものに従って元の名前で引く）を sink 側でしていない、という食い違いに当たる。(2) expected は規則どおり。readOnlyHint:true なので contradiction_principles.md §7.1（:165）により SPAWN の argv0 が MODEL 由来なら矛、EXEC は矛（:164）。asyncio.create_subprocess_exec の argv0 は A(0)（sinks.py:294-298）で、cmd は MODEL なので矛。calc の parse_expr は EXEC 行（sinks.py:213-217）なので矛。実際の出力は効果行が 0 で、誤 clear になっている。(3) 凍結との関係。表にある行（asyncio.create_subprocess_exec / sympy.parsing.sympy_parser.parse_expr）と同じ関数の、ライブラリが公式に再公開した名前であり、新しい sink を足すことではない。review_plan.md §2 の「語彙にある sink が当たらない」に当たるので対象になる。ただし表には builtins.open と io.open を別行として並べた前例がある。直し方を「表に行を足す」と書くと語彙の追加に見えるので、fix_sketch のとおり照合前の正規化（別名表）として入れる必要がある。(4) 効くのは D1 / D2（SPAWN / EXEC は両方の判定表で矛）。(5) v2 母集団の corpus/v2-cnseniorious000__temporary-mcp-servers/ipython-mcp.py:99 に、MCP サーバの `from asyncio.subprocess import PIPE, create_subprocess_shell` がある。同じ経路で create_subprocess_shell の行が消えるので、まれな書き方とは言えない。重大度は medium（特定の書き方でだけ起きる）と見る。",
+    "citations": [
+     "authgap/effects.py:161",
+     "authgap/catalog/sinks.py:213",
+     "authgap/catalog/sinks.py:287",
+     "authgap/catalog/sinks.py:294",
+     "docs/contradiction_principles.md:164",
+     "docs/contradiction_principles.md:165",
+     "docs/contradiction_principles.md:180",
+     "docs/open_questions.md:1062",
+     "docs/decisions.md:312",
+     "docs/decisions.md:3432",
+     "docs/review_plan.md:21",
+     "corpus/v2-cnseniorious000__temporary-mcp-servers/ipython-mcp.py:99"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "medium",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "notes": "一般性の観点への申し送り。正規化表は、ライブラリが実際に再公開している名前だけに限れば、壊れる正しいケースは考えにくい。asyncio/__init__ は `from .subprocess import *` で、sympy/__init__ は parsing から parse_expr を再公開している。ただし木の中に同名のモジュール（asyncio.py / sympy.py）があるときの取り違えは確かめること。PIPE_HANDLE_SOURCES（sinks.py:657-658）と transfers.py:182-188 も同じ正規名で引く必要がある。同じ穴は create_subprocess_shell（v2 に実例あり）にもある。"
+   },
+   "generality": {
+    "id": "R4-r1-11",
+    "refuted": false,
+    "confidence": 0.8,
+    "reason": "実行: repro_scan.py の再実行で 3 ツールとも効果行ゼロを再現した。規則からの導出: asyncio.subprocess.create_subprocess_exec / create_subprocess_shell は asyncio.create_subprocess_exec / _shell と同じオブジェクト（.venv で `is` が True）。sympy の __init__ は `from .parsing import parse_expr` で parse_expr を再公開する（sympy は venv に無いので確かめたのはライブラリのソースだけ）。どちらも DIRECT_SINKS（authgap/catalog/sinks.py:213, 287, 294）にある関数の公式な別の import 経路で、sink 語彙の追加ではない（review_plan.md §2 の「語彙にある sink が当たらない」に当たり、対象になる）。原因は effects.py:161-171 の _suffix_match で、完全一致と末尾 2 要素しか見ない。v2 / v3 への合わせ込みではない。同じ類は他の再公開経路にもある（requests.api.get、sympy.core.sympify.sympify、sqlalchemy.sql.text、jinja2.environment.Template など）。§5 の既知の問題にも O41 にも、再公開の別名 / _suffix_match の記録は無い（grep で確かめた）。D61 G3 は木の中の __init__ の再公開を追う決定で、外部ライブラリの再公開を明示的に除いた決定ではない。反例: 木の中の sympy.py（sympify / parse_expr を無害に定義）が import を影で覆う形（ce1）では、今の解析器がすでに sympy.sympify を EXEC の矛にしている（覆われているので誤警報）。fix_sketch どおり別名表を _suffix_match の前に引くと、この既存の誤警報が parse_expr にも広がる。ただしこれは既存の表の照合順が原因で、別名表が新しく持ち込む誤りではない。避け方もある（ルートのモジュールが木の中にあるときは sink 表の照合をしない。既存の表と共通の条件）。正しい矛が消える反例、または誤 clear を新しく作る反例は作れなかった（ce2: 正規名・`as` 別名・sympy.sympify は今も正しく矛）。別名表を完全一致の dotted → 正規名にしておけば、ルートと末尾だけで照合する一般化（例: xml.*.parse）で起きる取り違えも起きない。",
+    "citations": [
+     "/home/user/auth_gap/authgap/effects.py:161",
+     "/home/user/auth_gap/authgap/catalog/sinks.py:213",
+     "/home/user/auth_gap/authgap/catalog/sinks.py:294",
+     "/home/user/auth_gap/docs/review_plan.md:31",
+     "/home/user/auth_gap/docs/decisions.md:3432",
+     "/home/user/auth_gap/docs/decisions.md:3472",
+     "/home/user/auth_gap/corpus/v2-cnseniorious000__temporary-mcp-servers/ipython-mcp.py:99"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "counterexample_code": "# ce1/sympy.py（木の中で sympy を影で覆う）\ndef sympify(s):\n    return len(s)\n\ndef parse_expr(s):\n    return len(s)\n\n# ce1/server.py\nfrom sympy import sympify, parse_expr\nfrom mcp.server.fastmcp import FastMCP\nmcp = FastMCP(\"t\")\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef calc_a(expr: str) -> str:\n    return str(sympify(expr))\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef calc_b(expr: str) -> str:\n    return str(parse_expr(expr))\n\n# ce2/server.py（対照: 正規名 / as 別名 / sympy.sympify は今も当たる）\nimport asyncio\nfrom asyncio import create_subprocess_exec as cse\nimport sympy\n... run_canon: await asyncio.create_subprocess_exec(cmd); run_alias: await cse(cmd); calc_s: sympy.sympify(expr)",
+    "counterexample_output": "ce1: calc_a -> E EXEC sympy.sympify ... contradiction:D1:exec（覆われているので、これは既存の誤警報）; calc_b -> 効果なし。fix_sketch を当てると calc_b も同じ誤警報になる（既存の照合順を受け継ぐ）。\nce2: run_canon / run_alias -> E SPAWN asyncio.create_subprocess_exec argv0 MODEL/resolved, contradiction:D1:spawn_model; calc_s -> E EXEC sympy.sympify contradiction:D1:exec（どれも正しく、別名表で壊れない）",
+    "notes": "直し方: (1) 別名表は手で選んだ 3 件にしない。DIRECT_SINKS / PIPE_HANDLE_SOURCES / CTOR_BY_NAME の各項目について、ライブラリの公開モジュールで同じオブジェクト（`is` の同一性）として再公開している dotted 名を機械的に列挙して作る（G4 の「一覧は手で足さず表から機械的に作る」と同じ方針）。そうすれば requests.api.get や sympy.core.sympify.sympify なども同じ理屈で拾える。照合は完全一致の dotted → 正規名に限り、ルートと末尾だけの一般化はしない。(2) 照合の前に、ルートのモジュールが木の中にある（ローカルの sympy.py / asyncio.py が影で覆う）ときは sink 表を引かない条件を、既存の表と別名表の両方に付ける（ce1 の既存の誤警報も直る）。これは解決率を上げる変更（opaque → resolved）ではなく、sink の照合の再現率を上げる変更。ただし効果行が増えるので、§4.4 に従い compare_scans で確かめること。影響件数: ローカルの corpus には `from asyncio.subprocess import PIPE, create_subprocess_shell` が v2 の木に 1 件ある（ipython-mcp.py:99, 390）。頻度が低いので重大度は low のまま。"
+   }
   },
   {
    "id": "R4-r2-1",
@@ -836,7 +881,39 @@
     "fix_is_general": true,
     "notes": "向きの注記: 行は残り `contradiction_unknown:D2:fs_writeout_model_path_opaque` が付くので clean ではなく「矛 → 不明」だが、主指標（D1+D2 の矛）から系統的に外れる。重大度は「`str()` で包む」という特定の書き方に限るので medium としたが、str を要求する API に Path を渡す書き方は極めて一般的で high 寄り（所見の 94 箇所 / 7 木は未検証の見積もり）。直し方の一般性: `str` / `os.fspath` / `Path.as_posix` / `__fspath__` の恒等・パス文字列化は Python 仕様で決まり木に依らない。健全性の条件として、subject が Str / Atom / Path 形のときだけ「same」とし、木内クラスの `Obj`（`__str__` を持ちうる）は従来どおり opaque に残す（D35 (e) の「TRANSFER は木内メソッドを横取りしない」と同じ）。`str(int(p))` は `int` が未解決のまま opaque で無害。組込み名 `str` の解決は `scope.local_bindings` / モジュール直下の再束縛が無いときに限る。解決率を上げる変更なので CLAUDE.md の敵対的レビューが要る。直さないなら O42 に「内容不変の組込み変換が opaque になり 3-a が不に落ちる」を限界として記録し、`*_model_opaque` の件数のうちこの形の割合を併記する。"
    },
-   "generality": null
+   "generality": {
+    "id": "R4-r2-3",
+    "refuted": false,
+    "confidence": 0.8,
+    "reason": "主張は Python の意味から導ける（`str(s)` は str に対して恒等、`str(Path)` / `os.fspath(Path)` / `Path.as_posix()` はパス文字列。合わせ込みではない）。同種の「内容を変えない変換」を TRANSFER に入れた前例が D35 (e)（authgap/catalog/transfers.py:74-77 の `str.encode` / `bytes.decode`）。D44（docs/decisions.md:2144-2200）は `str` を検討したが主体だけを直し、テスト tests/test_unresolved_call_principal.py:49-50,80-86 も `builtin_str` の prin=MODEL しか固定していない。当時は MODEL/opaque でも矛だったが、その後の D57 §9.3（docs/contradiction_principles.md:296-316）で MODEL/opaque = 不になり、`str` が未モデルであることの帰結が「矛→不の系統的な移動」に変わった。これを意図した決定は D 番号にも review_plan §5 にも無い（D19 の K 表・O41 にも無い）。再現は現行で確認（write_str / write_fspath / write_as_posix / sh_str が opaque → contradiction_unknown）。**ただし fix_sketch をそのまま入れると壊れる形がある**: モジュール直下で `def str(x)` を定義し中に sink がある木（counterexample_code）は、現行では `resolve_call_name` が None を返して木内の `str` へ降り SPAWN 矛を出す（chain=str）。`str` を BUILTIN_SINK_NAMES（authgap/srcindex.py:21,434-459）に足すと `builtins.str` になり、`_ev_Call` の (1) TRANSFER（authgap/val/engine.py:727-760, 887-937）が (4) 木内解決より先に効いて SPAWN 行が消える（新しい誤 clear）。`open` は同じ影構造でも sink 照合と木内降下の両方が走るので消えない（open_shadow で確認）。D61 改訂で G2 を取り消した理由（組込み名の束縛し直し。docs/decisions.md:3459-3470）と同じ懸念。**避ける直し方はある**（notes）。試作（scratchpad/verify/R4_hm_4/proto3, patch3.py + patch3b.py）: 守り付きで str_shadow の矛が戻り、repro 6 件は期待どおり、B3a 8/8・B3b 15/15、tests/（corpus 走査を除く）全通過、較正対 14 木 + prev5 4 木の突き合わせで消えた行 0・矛盾 note の変化 0・slot の変化 3（A5 execute_python_file の `str(file_path)`、winremote Ping の `str(count)`: いずれも MODEL/opaque → MODEL/resolved の向き）。",
+    "citations": [
+     "authgap/catalog/transfers.py:43-94",
+     "authgap/catalog/transfers.py:74-77",
+     "authgap/srcindex.py:21",
+     "authgap/srcindex.py:434-459",
+     "authgap/val/engine.py:727-760",
+     "authgap/val/engine.py:852-885",
+     "authgap/val/engine.py:887-937",
+     "authgap/val/engine.py:2212-2224",
+     "docs/decisions.md:2144-2200",
+     "tests/test_unresolved_call_principal.py:49-50",
+     "tests/test_unresolved_call_principal.py:80-86",
+     "docs/contradiction_principles.md:296-316",
+     "docs/decisions.md:269-300",
+     "docs/decisions.md:3408-3420",
+     "docs/decisions.md:3459-3470",
+     "corpus/A5__vuln/autogpts/autogpt/autogpt/commands/execute_code.py:132-136",
+     "corpus/prev5__v2-dddabtc__winremote-mcp/src/winremote/network.py:12"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "medium",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "counterexample_code": "# scratchpad/verify/R4_hm_4/trees/str_shadow/server.py  (fix_sketch そのままだと壊れる形)\nimport os\n\nfrom mcp.server.fastmcp import FastMCP\n\nmcp = FastMCP(\"t\")\n\n\ndef str(x):  # shadows the builtin at module level\n    os.system(\"logger \" + x)\n    return x\n\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef echo(cmd: str) -> str:\n    return str(cmd)\n\n# --- 補助: trees/str_dunder（木内 __str__）と trees/str_int（int 引数の str()）も走らせた。\n# str_int: os.system(\"head -n \" + str(count)) は現行 MODEL/opaque(不)、f\"head -n {count}\" は現行で既に MODEL/resolved(矛)。",
+    "counterexample_output": "[現行 analyzer] str_shadow:\n== echo  (server.py:14)\n   E SPAWN    os.system   direct L9  server.py  resolved  sub_kind=SPAWN_MODEL_ARGV chain=str\n       .shell_string MODEL/resolved Str roots=cmd\n   R {\"notes\": [..., \"contradiction:D1\", \"contradiction_reason:D1:spawn_model\"]}\n\n[proto3 = fix_sketch そのまま（builtins.str を BUILTIN_SINK_NAMES と TRANSFER に追加）] str_shadow:\n== echo  (server.py:14)\n   (効果行なし — SPAWN 矛が消えた。誤 clear)\n\n[proto3 + 守り（AG_STR_GUARD=1: モジュール直下で str が束縛される / _module_writes に str か \"*\" がある / 実引数が木内 Obj のときは TRANSFER にしない）] str_shadow:\n== echo  (server.py:14)\n   E SPAWN    os.system   direct L9  server.py  resolved  chain=str\n       .shell_string MODEL/resolved Str roots=cmd\n\n[proto3(+守り) 元の repro str_conv] sh_str / write_str / write_fspath / write_as_posix → すべて resolved、contradiction:D1 spawn_model / contradiction:D2 fs_writeout_model_path（所見の期待どおり）\n\n[比較対照 現行 open_shadow（def open を影にする）] FS_READ builtins.open と、木内 open へ降りた SPAWN の両方が出る（消えない）\n\n[str_dunder 現行 → proto3] write_dunder/write_fixed: path OP/opaque Unknown → OP/resolved Obj。verdict はどちらも contradiction_unknown:D2:fs_writeout（退行なし・改善もなし。__str__ の本体は見ない）\n\n[corpus 18 木 baseline vs proto3 / proto3g] removed 0 / contradiction note 変化 0 / slot 変化 3（A5 execute_python_file argv[*] MODEL/opaque→resolved ×2、winremote Ping argv[*] MODEL/opaque→resolved）",
+    "corrected_expected": "所見の期待値どおり（str / fspath / as_posix の 3 形は write_path と同じ contradiction:D2 fs_writeout_model_path、sh_str は sh_plain と同じ contradiction:D1 spawn_model）。ただし範囲を限る: 主語が Str / Atom / Path / Unknown のときだけ。主語が木内クラスの Obj（`str(obj)` は `type(obj).__str__` を呼ぶ）は従来どおり未解決の末尾に落とす（または木内 `__str__` / `__fspath__` へ降りる）。`str` がモジュール直下で束縛される・`global str` で書き換えられる・`globals()`/`exec` を使うモジュールでは組込みとみなさず従来どおり木内解決に回す。",
+    "notes": "避ける直し方（試作で確認済み）: (1) `_apply_transfer` で dotted == builtins.str のとき、`_module_bindings(tree, \"str\")` が空でなく、または `\"str\" in _module_writes(module)` か `\"*\"` があれば TRANSFER にしない（D61 G3 の条件 3・注釈の先頭名の規則と同じ考え方。engine.py:2212-2224, 1576-1585）。(2) 第 0 実引数の形が木内クラスの Obj なら TRANSFER にしない（`_is_external_class` で判定）。`os.fspath` も同じ守りを付ける（試作は builtins.str だけに付けた）。(3) `Path.as_posix` を receiver 主語で METHOD_TRANSFERS に入れると受け手不明の `x.as_posix()` にも当たるが、既存の split/strip と同じ扱い（`_in_tree_method` で木内メソッドは横取りしない）。shape は所見の \"str\" だと Str((Path,)) になり Path 形が落ちる（D2 判定には無関係、付録の strong-path には効きうる）ので \"same\" か \"path\" が良い。注意点: この変更は opaque → resolved の向きなので CLAUDE.md の約束どおり敵対的レビューを通す（私が当てた形: 影の def str / global str / 木内 __str__ / int 引数 / dict 引数 / Map 形 — int と dict は f 文字列で既に矛なので新しい誤警報の類ではない）。int 型の引数を「モデルが選べる」とみなすかは既存の f 文字列の扱いと同じ問題であり、この所見の範囲外。"
+   }
   },
   {
    "id": "R4-r2-4",
@@ -867,7 +944,34 @@
     "fix_is_general": true,
     "notes": "接続・クライアントをプロパティで包む書き方に限るので medium（所見の 105 箇所 / 17 木は未検証の見積もり）。直し方の一般性: 属性名が木内クラス家族の `property` / `functools.cached_property` で飾られた FunctionDef に当たるとき、getter 本体を受け手つきで評価して `<return>` を値にするのは Python のディスクリプタの意味そのもの。健全性の条件: 型で裏付けられた受け手（`Obj.classes` が木内、外部型は D61 G4 の条件で除く）に限る、深さを 1 消費、by_name にしない、setter は読みに無関係。解決率を上げる変更なので敵対的レビューが要る（D50 / D51 と同じく `db_unresolved` の減少と消えた行 0 を確かめる）。学生の判断: D51 / O29 に「未着手」として記録済みなので、「O42 で限界に格上げ（NET には痕跡が無いことを併記）」か「一般に正しい修正として直す」かの選択。"
    },
-   "generality": null
+   "generality": {
+    "id": "R4-r2-4",
+    "refuted": false,
+    "confidence": 0.8,
+    "reason": "主張は Python のディスクリプタの意味（`store.conn` は property の getter を実行しその戻り値を返す）から導け、特定の木への合わせ込みではない。現行の `_ev_Attribute`（authgap/val/engine.py:509-553）は `Obj.fields` と `ATTR_TYPE_TRANSITIONS` しか見ず、木内クラスの同名 property を評価しない（再現 3 形 + cached_property で確認、行が丸ごと消える）。**これは既知の設計上の決定の呼び直しではない**: D51（docs/decisions.md:2760-2766）が dejavu の `@property conn` で同じ欠落を見つけ「DB の受け手を超えた一般的な変更（プロパティへの降下）なのでここでは手を付けない」と**先送り**しており、O29（docs/open_questions.md:866-868）にも「未着手」とある。review_plan §5 の既知の一覧には無い。**fix_sketch の探し方（`_class_family` の集合の中の同名 property）には反例がある**: 基底が property を定義し派生が同名 property を上書きして None を返す形（counterexample_code prop_mro）で、家族集合から取ると基底の getter を採り `purge_child` に DB 矛を出す（Python では AttributeError で DB は起きない = 誤警報）。これは MRO 順（自クラス → 基底を `_base_classes` で厳密に）で最初に見つかる定義を採り、同名の普通のメソッド/フィールドが先にあれば property を採らない、というディスクリプタの解決順に従えば避けられる（一般則）。加えて `Obj.classes` は末尾名なので `_class_name_unique` が偽なら opaque のまま（同名 Store が 2 モジュールにある prop_dup で確認）、外部型は `_is_external_class` で除く（D61 G4）。試作（proto4, patch4.py; 既定 = MRO 順 + 一意性の守り、AG_PROP_NAIVE=1 = 所見の家族集合）: 既定版は repro（property_recv 3 形 + cached_property）と prop_side（getter が遅延接続して書く）・prop_pkg（別モジュールの基底の property）を DB 矛にし、prop_mro は purge_base 矛 / purge_child 無し、prop_dup 無し（正しい）。naive 版は prop_mro の purge_child に誤警報。B3a 8/8・B3b 15/15、tests/（corpus 走査を除く）全通過、較正対 14 木 + prev5 4 木の突き合わせで差分 0。現行で正しい判定が壊れる反例は作れなかった。",
+    "citations": [
+     "authgap/val/engine.py:509-553",
+     "authgap/val/engine.py:1030-1090",
+     "authgap/val/engine.py:1456-1475",
+     "authgap/val/engine.py:1490-1517",
+     "authgap/val/engine.py:1556-1572",
+     "authgap/val/engine.py:1616-1640",
+     "authgap/ir.py:29",
+     "docs/decisions.md:2760-2766",
+     "docs/open_questions.md:866-868",
+     "docs/review_plan.md:54-60",
+     "docs/decisions.md:3459-3480",
+     "AUTHGAP_BRIEF_v3.md:514-515"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "medium",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "counterexample_code": "# scratchpad/verify/R4_hm_4/trees/prop_mro/server.py  (fix_sketch の「家族の中の同名 property」だと壊れる形)\nimport sqlite3\n\nfrom mcp.server.fastmcp import FastMCP\n\nmcp = FastMCP(\"t\")\n\n\nclass Base:\n    def __init__(self):\n        self._conn = sqlite3.connect(\"/data/app.db\")\n\n    @property\n    def conn(self):\n        return self._conn\n\n\nclass Child(Base):\n    @property\n    def conn(self):\n        return None  # overrides the base property: no connection here\n\n\nchild = Child()\nbase = Base()\n\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef purge_child(item_id: str) -> str:\n    child.conn.execute(\"DELETE FROM items WHERE id = \" + item_id)\n    return \"ok\"\n\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef purge_base(item_id: str) -> str:\n    base.conn.execute(\"DELETE FROM items WHERE id = \" + item_id)\n    return \"ok\"\n\n# 補助の木: trees/prop_dup（pkg/dbstore.py と pkg/memstore.py に同名 Store、tool は memstore 側を import）、\n# trees/prop_side（getter が self._conn を遅延生成）、trees/prop_setter（setter 付き property）、trees/prop_pkg（別モジュールの基底の property）",
+    "counterexample_output": "[現行 analyzer] prop_mro: purge_base / purge_child とも効果行なし（受け手型が付かない）\n\n[proto4 AG_PROP_NAIVE=1 = fix_sketch の家族集合] prop_mro:\n== purge_base   E DB psycopg.Cursor.execute proxy L35 resolved  .sql MODEL/resolved roots=item_id   （正）\n== purge_child  E DB psycopg.Cursor.execute proxy L29 resolved  .sql MODEL/resolved roots=item_id   （誤警報: Child.conn は None を返す）\n\n[proto4 既定 = MRO 順 + _class_name_unique + 外部型除外] prop_mro:\n== purge_base   E DB ... resolved（正）\n== purge_child  効果行なし（正）\nprop_dup: purge_mem 効果行なし（同名クラスが 2 つ → 降りない。正）\nprop_side: purge_lazy_prop E DB ... resolved（getter 内の書き込みを _write_back_self で反映）\nprop_pkg: purge_inherited_property E DB ... resolved chain=Store.delete（別モジュールの基底の property）\nproperty_recv / cached_property（元の repro）: purge_property / purge_property_inline / purge_cached_property すべて E DB ... resolved, contradiction:D1 db_model_sql（所見の期待どおり）\nprop_setter: 現行・proto4 とも効果行なし（fields 優先のため __init__ の self.conn = None が勝つ。退行ではないが下の notes）\n\n[corpus 18 木 baseline vs proto4] removed 0 / added 0 / cap_hits・opaque_reasons の変化 0",
+    "corrected_expected": "所見の期待値どおり（purge_property / purge_property_inline / purge_cached_property は purge_field と同じ DB 行と contradiction:D1 db_model_sql）。付け足す条件: 同名 property が MRO 上で最初に見つかる定義であること（派生が上書きすれば派生の getter）、クラス名が木で一意であること、外部型でないこと。setter 付き property では `self.conn = X` は setter を通るので、getter を `Obj.fields` より先に見るのが Python の意味（データディスクリプタが instance dict より優先）。",
+    "notes": "一般に正しい直し方（試作 proto4 既定版）: `_ev_Attribute` で base が木内 Obj のとき、自クラス→基底（`_base_classes` で厳密に、3 段）の順に `lookup_function(f\"{cls}.{attr}\", module)` を引き、最初に見つかった定義が `property` / `functools.cached_property`（import 表で解く。試作は dotted 名の一致だけ）で飾られていればそれを `_descend_env` で実行して戻り値にする（`ast.Call(func=node)` を合成、受け手=base、深さ 1 消費）。同名の普通の定義が先に見つかれば property ではないので従来どおり。`_class_name_unique` が偽・外部型は従来どおり opaque。getter が `self.<f>` に書くときは `_write_back_self` で受け手の経路に戻す（prop_side で確認）。副作用: 降下が深さと summary の予算（SUMMARY_CAP 200, MAX_DEPTH 4）を消費するので cap_hits / opaque_reasons の列が変わりうる（18 木では変化 0）。`property(fget)` の呼び出し形と `import functools as ft` 経由の `@ft.cached_property` は試作では拾わない（拾わない側は従来どおり opaque なので安全側）。所見の fix_sketch の「attr がフィールドに無いとき」という順序は setter 付き property で逆（データディスクリプタ優先）だが、現行と同じ結果になるだけで退行ではない。"
+   }
   },
   {
    "id": "R4-r2-5",
@@ -906,7 +1010,33 @@
     "fix_is_general": true,
     "notes": "メソッド形・閉包形のユニットで、フィールドを木内の基底クラスで束縛する書き方に限るので medium。直し方の一般性: `_self_fields` を `engine._find_init(cd)` / `engine._class_body_defaults(cd, …)` にそろえ、見つけた `__init__` を `_class_stack` に (classname, module) を積んで実行する（`super().__init__()` が解ける）。Python のクラスの意味から決まり、モジュール水準の構築で既に使っている規則をそろえるだけ。`_self_fields` は `__init__` の仮引数を OP/Atom(formal) で種付けする（analyze.py:366-367）ので基底に降りても誤警報は増えない。直す場合は D35 (b) の反証（`__init__` が深さ / 再帰で走らなかったときに既定値の確度へ理由を合流）を `_self_fields` にも当てる。"
    },
-   "generality": null
+   "generality": {
+    "id": "R4-r2-5",
+    "refuted": false,
+    "confidence": 0.85,
+    "reason": "主張は Python のクラスの意味（継承した `__init__`、`super().__init__()`、基底のクラス属性はインスタンスから見える）から導け、合わせ込みではない。しかも解析器は**構築したインスタンスには既にこの規則を実装している**: `_construct_in_tree`（authgap/val/engine.py:1274-1336）は `_find_init`（:1338-1351、基底 3 段）と `_class_body_defaults`（:1353-1399、基底を先に）を使い、同じ再現の `purge_module_instance` は行が出る。D17 改訂 2 の表（docs/decisions.md:1700）は「基底の `__init__` の `self.conn` 経由の効果が消えた」を false-clean として直した記録であり、基底の `__init__` を数える意図は明確。メソッド形ユニット / 閉包の注釈つき引数の種 `_self_fields`（authgap/analyze.py:316-378）だけが自クラスの `__init__` とクラス体（:348, :363）しか見ないのは設計判断ではなく不整合。review_plan §5・D19 の K 表・O41 のどれにも無い。試作（proto5, patch5.py: `_class_body_defaults` + `_find_init` を使い、見つけた `__init__` を**それを定義するクラス**を `_class_stack` に積んで `_exec_body` する）で、再現の Inherited / ViaSuper / ClassBodyChild / register.purge_closure がすべて DB 矛になり、敵対的に作った木でも現行で正しい判定は壊れなかった: init_mro（菱形 `C(A, B)`: MRO どおり `B.__init__` の None を採り行なし = 構築形 purge_c_module と一致；基底 `__init__` が引数を要する形は形式値のまま行なし；`super()` を呼ばない上書きは行なし）、init_chain（3 段の `super().__init__()` 連鎖は矛、上書きは無し）、init_pkg（相対 import の基底の `__init__`）。B3a 8/8・B3b 15/15、tests/（corpus 走査を除く）全通過、較正対 14 木 + prev5 4 木の突き合わせで差分 0。",
+    "citations": [
+     "authgap/analyze.py:316-378",
+     "authgap/analyze.py:236-247",
+     "authgap/analyze.py:286-289",
+     "authgap/val/engine.py:1274-1336",
+     "authgap/val/engine.py:1338-1351",
+     "authgap/val/engine.py:1353-1399",
+     "authgap/val/engine.py:1456-1475",
+     "authgap/val/engine.py:1072",
+     "docs/decisions.md:1700",
+     "docs/decisions.md:269-300",
+     "AUTHGAP_BRIEF_v3.md:514-515"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "medium",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "counterexample_code": "# 反例を探した木（現行で正しい判定が壊れる形は見つからなかった）。scratchpad/verify/R4_hm_4/trees/init_mro/server.py\nimport sqlite3\n\nfrom mcp.server.fastmcp import FastMCP\n\nmcp = FastMCP(\"t\")\n\n\nclass Root:\n    def __init__(self):\n        self.conn = sqlite3.connect(\"/data/app.db\")\n\n\nclass A(Root):\n    pass\n\n\nclass B(Root):\n    def __init__(self):\n        self.conn = None\n\n\nclass C(A, B):  # MRO: C, A, B, Root -> B.__init__ -> conn is None\n    @mcp.tool(annotations={\"readOnlyHint\": True})\n    def purge_c(self, item_id: str) -> str:\n        self.conn.execute(\"DELETE FROM items WHERE id = \" + item_id)\n        return \"ok\"\n\n\nclass NeedsArg:\n    def __init__(self, conn):\n        self.conn = conn\n\n\nclass ChildNeedsArg(NeedsArg):\n    @mcp.tool(annotations={\"readOnlyHint\": True})\n    def purge_arg(self, item_id: str) -> str:\n        self.conn.execute(\"DELETE FROM items WHERE id = \" + item_id)\n        return \"ok\"\n\n\nclass Overrider(Root):\n    def __init__(self):\n        self.conn = None  # does not call super().__init__()\n\n    @mcp.tool(annotations={\"readOnlyHint\": True})\n    def purge_override(self, item_id: str) -> str:\n        self.conn.execute(\"DELETE FROM items WHERE id = \" + item_id)\n        return \"ok\"\n\n\nc = C()\n\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef purge_c_module(item_id: str) -> str:\n    c.conn.execute(\"DELETE FROM items WHERE id = \" + item_id)\n    return \"ok\"\n\n# 補助: trees/init_chain（Root ← Mid(super().__init__()) ← Leaf の 3 段）、trees/init_pkg（`from .base import BaseTool` の基底の __init__）",
+    "counterexample_output": "[現行 analyzer] init_mro: C.purge_c / ChildNeedsArg.purge_arg / Overrider.purge_override / purge_c_module すべて効果行なし（構築形 purge_c_module も B.__init__ の None を採るので無し = MRO どおり）\n[proto5] init_mro: 4 ユニットとも効果行なし（現行と同じ。壊れない）\n\n[現行] init_chain: Leaf.purge_leaf 無し / LeafOverride 無し / purge_leaf_module（構築形）E DB ... resolved\n[proto5] init_chain: Leaf.purge_leaf E DB psycopg.Cursor.execute proxy L22 resolved .sql MODEL/resolved（3 段の super() 連鎖）/ LeafOverride 無し（正）/ purge_leaf_module 変わらず\n\n[現行] init_pkg: PurgeTool.purge 無し → [proto5] E DB ... resolved（相対 import の基底）\n\n[proto5 元の repro self_fields] Inherited.purge_inherited / ViaSuper.purge_super / ClassBodyChild.purge_classbody / register.purge_closure: すべて E DB psycopg.Cursor.execute proxy resolved .sql MODEL/resolved roots=item_id（Direct.purge_direct / purge_module_instance と同じ。所見の期待どおり）。Lazy.purge_lazy は変わらず無し（R4-r2-6 の範囲）\n\n[corpus 18 木 baseline vs proto5] removed 0 / added 0",
+    "corrected_expected": "所見の期待値どおり。",
+    "notes": "一般に正しい直し方（試作 proto5）: `_self_fields` の (1) を `engine._class_body_defaults(cd, …)`（基底を先に）に、(2) を `engine._find_init(cd)` に置き換え、見つけた `__init__` のモジュールの scope（`index.function_scope(resolve_module_path(init.module), init.node)`）で仮引数を形式値に種付けして `_exec_body` する。**`_class_stack` に積むのは `(init.classname, init.module)`（`__init__` を定義するクラス）であってユニットのクラスではない** — `_super_callees`（engine.py:1456-1475）は積まれたクラスの基底から引くので、派生クラスを積むと継承した `__init__` の `super()` が自分の基底（= 同じクラス）を指す。所見の「(classname, module) を積む」は曖昧なのでここを明記する。深さは (2) の `_exec_body` を 1 から始めるので `super()` 連鎖は 2〜3 を使う（MAX_DEPTH 4 の中）。残る限界（現行と同じ）: 引数を要する基底 `__init__` は形式値のまま（型が付かない）、`_find_init` の BFS は C3 MRO の近似（菱形では一致することを確認）、`_super_callees` 自体が多重継承で次の MRO ではなく定義クラスの基底を見るのは既存の近似。"
+   }
   },
   {
    "id": "R4-r2-6",
@@ -942,45 +1072,244 @@
     "fix_is_general": false,
     "notes": "記録のみ（O42 候補）。「クラス家族の全メソッドの `self.<f> = …` を形式値で評価して join する」は上界としては健全だが、経路ベースの heap（brief §2.6）を flow-insensitive に変える設計変更で、D61 の基準「正解が Python の意味で決まる」を満たさない（どの初期化経路が走るかは静的に決まらないので、規則 4 の「不明として記録」が現行の扱い）。誤警報側では `configure(url)` 系で MODEL の値をフィールドに入れる形が全ツールに波及する。残る改善点は判定を変えない列: NET / pipe の受け手が未解決のときも `db_unresolved` と同様の site 水準の記録を出せば規則 4 の充足が DB 以外でも検査できる（D61 G5 と同じ趣旨）。向きの注記: 所見の主張は false_clean だが実態は「不明として記録」。"
    },
-   "generality": null
+   "generality": {
+    "id": "R4-r2-6",
+    "refuted": false,
+    "confidence": 0.5,
+    "reason": "観察そのものは一般的で本物（`__init__` で None、別メソッドで束縛するフィールド経由の proxy sink が消える。DB だけ manifest の `db_unresolved` に痕跡が残ることを JSON で確認、NET / pipe には無い）。D51（docs/decisions.md:2760-2766）も dejavu の `self._conn = None` で同じ形を記し「一般的な変更」として先送りしており、review_plan §5 の既知の一覧には無いので、既知の設計判断の呼び直しではない。**しかし所見の一般性の根拠は誤り**: 「解析器のモジュール水準の規則（`_module_value`）と同じ規則を当てれば Connection になる」は成り立たない。`_module_value`（authgap/val/engine.py:1207-1272）はモジュール直下の右辺だけを join し、関数内の `global` 再束縛は `_scan_module_writes`（:2077-2100）で「rebound」として**確度を opaque に落とすだけで右辺を評価しない**。実測（counterexample lazy_global）: モジュール直下 `conn = None` + `def connect(): global conn; conn = sqlite3.connect()` の tool は現行で行なし（= `Lazy.purge_lazy` と同じ）、`conn2 = sqlite3.connect()` を別関数で再束縛する形は resolved の矛。つまり現行の `_self_fields` の振る舞いは解析器自身の最も近い先例と**整合**しており、所見の直し方はインスタンスのフィールドだけをモジュール名と違う規則にする。**fix_sketch をそのまま入れると現行で正しい矛が不に落ちる**（counterexample lazy_regress, 試作 proto6 literal）: `__init__` で `self.root = Path(\"/data\")`、別メソッドで `self.root = Path(r)`、tool が `(self.root / name).write_text(data)`（destructiveHint False）→ 現行 contradiction:D2 fs_writeout_model_path（path MODEL/resolved。§7.2 #7 で正しい）→ 試作では `value_join` の `_shape_join`（authgap/ir.py:464-540）が異なる Path を潰し opaque が MODEL slot に合流して contradiction_unknown:…_opaque。同様に `self.prefix + arg` → os.system の spawn_model 矛が spawn_model_opaque に落ちる。**避ける直し方はある**（notes: None リテラルのフィールドに限り、未知インスタンスの種 `_self_fields` だけに当てる。試作 proto6 AG_LAZY_NONE_ONLY=1 で lazy_regress は不変、Lazy.purge_lazy は矛、F6 型の Proc は EXEC のまま、corpus 18 木で差分 0、tests / gates 通過）。ただしそれは spec §2.6（AUTHGAP_BRIEF_v3.md:514: fields は ctor 引数と「解析済みメソッドが書いた値」）の heap モデルを「解析していないメソッドが走ったかもしれない」へ広げる設計の拡張であり、受け手の確度は `_resolution_of`（authgap/effects.py:231-244）にも `_choice`（authgap/dparse.py:230-257）にも入らないので、仮定した状態から `resolved` の矛が出る（規則 4 の「不明として記録」ではない）。これは Python の意味から一意に決まる正解ではなく学生の設計判断（規則 → 反例テスト → 実装、opaque→resolved 型の変更として敵対的レビュー）。迷いが残るので refuted=false にする。",
+    "citations": [
+     "authgap/analyze.py:316-378",
+     "authgap/val/engine.py:1207-1272",
+     "authgap/val/engine.py:2077-2100",
+     "authgap/val/engine.py:1274-1336",
+     "authgap/val/engine.py:1420-1454",
+     "authgap/val/engine.py:2185-2200",
+     "authgap/ir.py:464-540",
+     "authgap/ir.py:360-373",
+     "authgap/effects.py:231-244",
+     "authgap/effects.py:574-600",
+     "authgap/dparse.py:230-257",
+     "docs/decisions.md:269-300",
+     "docs/decisions.md:2760-2766",
+     "docs/decisions.md:3408-3420",
+     "docs/contradiction_principles.md:22-40",
+     "docs/contradiction_principles.md:296-316",
+     "docs/open_questions.md:747",
+     "docs/open_questions.md:866-868",
+     "AUTHGAP_BRIEF_v3.md:514-515"
+    ],
+    "expected_is_correct": false,
+    "severity_opinion": "medium",
+    "direction_opinion": "false_clean",
+    "fix_is_general": false,
+    "counterexample_code": "# (A) fix_sketch で壊れる形: scratchpad/verify/R4_hm_4/trees/lazy_regress/server.py\nimport os\nfrom pathlib import Path\n\nfrom mcp.server.fastmcp import FastMCP\n\nmcp = FastMCP(\"t\")\n\n\nclass Files:\n    def __init__(self):\n        self.root = Path(\"/data\")\n        self.prefix = \"echo \"\n\n    def set_root(self, r: str) -> None:\n        self.root = Path(r)\n\n    def set_prefix(self, p: str) -> None:\n        self.prefix = p\n\n    @mcp.tool(annotations={\"destructiveHint\": False})\n    def write(self, name: str, data: str) -> str:\n        (self.root / name).write_text(data)\n        return \"ok\"\n\n    @mcp.tool(annotations={\"readOnlyHint\": True})\n    def run(self, arg: str) -> str:\n        return str(os.system(self.prefix + arg))\n\n\n# (B) 所見が引く「同じ規則」の実態: trees/lazy_global/server.py\nimport sqlite3\n\nconn = None\nconn2 = sqlite3.connect(\"/data/app.db\")\n\n\ndef connect() -> None:\n    global conn\n    conn = sqlite3.connect(\"/data/app.db\")\n\n\ndef reconnect() -> None:\n    global conn2\n    conn2 = sqlite3.connect(\"/data/other.db\")\n\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef purge_global_none(item_id: str) -> str:\n    conn.execute(\"DELETE FROM items WHERE id = \" + item_id)\n    return \"ok\"\n\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef purge_global_rebound(item_id: str) -> str:\n    conn2.execute(\"DELETE FROM items WHERE id = \" + item_id)\n    return \"ok\"\n\n# 補助: trees/lazy_more（close() で None に戻す / 2 型 / argv 定数 / Popen を start() で束縛する F6 型）、trees/lazy_post（httpx.Client と requests.Session の和）",
+    "counterexample_output": "[現行 analyzer] lazy_regress:\n== Files.write  E FS_WRITE pathlib.Path.write_text direct L22 resolved  .path MODEL/resolved Path roots=name  R contradiction:D2 fs_writeout_model_path\n== Files.run    E SPAWN os.system direct L27 resolved  .shell_string MODEL/resolved Str roots=arg  R contradiction:D1 spawn_model\n\n[proto6 = fix_sketch そのまま（全メソッドの self.<f> 書き込みを形式値で評価し opaque を合流して join、_self_fields と _construct_in_tree の両方）] lazy_regress:\n== Files.write  E FS_WRITE ... opaque reasons=unresolved  .path MODEL/opaque(unresolved) Path roots=name  R contradiction_unknown:D2:fs_writeout_model_path_opaque   ← 正しい矛が不に落ちた\n== Files.run    E SPAWN ... opaque  .shell_string MODEL/opaque(unresolved)  R contradiction_unknown:D1:spawn_model_opaque   ← 同上\n（lazy_more の CmdConst.run_cmd も argv0 の定数 'ls' を失う。verdict は spawn_command のまま）\n同じ試作で元の repro: Lazy.purge_lazy → E DB ... resolved, contradiction:D1 db_model_sql（所見の期待どおりの出力にはなる）\n\n[proto6 AG_LAZY_NONE_ONLY=1（__init__/クラス体が None リテラルのフィールドだけ）] lazy_regress: 現行と同一（矛のまま）。Lazy.purge_lazy → E DB ... resolved 矛。lazy_more: Closer 矛のまま / CmdConst 定数保持 / Proc.run_after_start EXEC 矛のまま、Proc.run_no_start にも EXEC 行。lazy_post: TwoTypes.send に NET 行（httpx.Client + requests.Session の和、url.path MODEL/resolved）\n\n[現行] lazy_global: purge_global_none 効果行なし（所見の言う「同じ規則」は Connection にしない）/ purge_global_rebound E DB ... resolved, contradiction:D1 db_model_sql（再束縛は確度を落とすだけで、行は resolved の矛）\n\n[corpus 18 木 baseline vs proto6 / proto6n] removed 0 / added 0（この 18 木には形が無い。反例は構成した木で示した）",
+    "corrected_expected": "現行の規則（§0 規則 4、§9.3、spec §2.6 の heap モデル、モジュール水準の先例）では `Lazy.purge_lazy` の受け手型は静的に決まらないので「不明として記録」が規則どおりの出力: DB は `db_unresolved` に記録される（現行どおり）、NET / pipe / FS の proxy 受け手にも同種の痕跡（`receiver_unresolved`）を残すべき。矛（resolved）は導けない。学生が「未知インスタンスのフィールドは None を仮置きとしてクラスのメソッドが束縛しうる値の上界を採る」という規則を新たに決めるなら、そのときだけ purge_lazy_after_connect と同じ DB 行 + contradiction:D1 db_model_sql になる（その行の resolved は仮定を含むことを規則に書く）。",
+    "notes": "避ける直し方（試作で退行が出なかった形）: (1) 適用先を未知インスタンスの種 `_self_fields`（メソッド形ユニット・閉包の注釈つき引数）だけにし、`_construct_in_tree` には当てない（構築点が見えるオブジェクトは D35 (c) の `_write_back_self` が連鎖の中で束縛を追う設計であり、上界の仮定で上書きしない）。(2) `__init__` / クラス体の値が None リテラル（`Atom.none`）か未定義のフィールドだけ、クラス家族（基底 3 段）の `__init__` 以外のメソッド本体を仮引数=形式値で `_exec_body` し、`self.<f>` の 1 段の書き込みを `opaque(unresolved)` を合流して join する（D35 (a) の `Obj ⊔ None = Obj` に乗る。定数で初期化されたフィールドには触れないので lazy_regress の退行を避ける）。(3) 再帰の切断（同じクラスの評価中は空）と `on_call = None`。**ただし** これは spec §2.6 の heap モデルの拡張で、所見が根拠にした `_module_value` の先例はむしろ逆（右辺を評価せず確度だけ落とす）なので、入れるならモジュール名の規則との不整合も含めて規則として決め、反例テスト → 実装 → 敵対的レビュー（opaque→resolved 型）の順で。規則 4 だけを満たす最小の直し方は verdict を変えない記録列（`db_unresolved` を全 proxy kind に広げる `receiver_unresolved`）で、これは評価の道具側（R5）の改善。severity は「学生の手判定が矛とみなす形（lifespan / start() で束縛する接続）を解析器が黙って落とす」点で medium、ただし現行規則の下では誤 clear ではなく数え落とし（記録の欠落）と読むのが正確。"
+   }
   },
   {
    "id": "R4-r2-7",
    "severity": "medium",
    "affects": "D1+D2",
-   "design": null,
-   "generality": null
+   "design": {
+    "id": "R4-r2-7",
+    "refuted": false,
+    "confidence": 0.7,
+    "reason": "意図された決定ではない（意図した機構の穴）。D17 改訂 2（docs/decisions.md:1674）は「直下の代入だけを join したので関数内の `global X; X = model` を見落とし、定数の OP/resolved にした」と認めたうえで、直し方を「global の書き込みの右辺を候補に加える」ではなく「global 宣言される名前は読まない」→改訂 3/4 で「直下の代入を読んで確度だけ opaque に落とす」に決めた（engine.py:1207-1217 の docstring、:1232-1242 の注記、:1251 `_module_assignments`）。この決定の目的は主体の false-clean（MODEL→OP/resolved）の防止であり、**型を持つ束縛が global の書き込み側にしか無い形**（`X = None` + `global X; X = connect()`）はどの記録にも無い。逆に改訂 3（:1699）と改訂 4（:1717）は「再束縛は型と主体を保ったまま確度を opaque に落とす」「None を返すと受け手の型が消え DB/NET の効果行が丸ごと消えた＝false-clean（drop）」と明示しており、本所見の行消失は設計の意図に反する。クラス水準の同型（`Optional[C] = None` と `__init__` の Obj の合流で受け手型が消える）は D35 (a)（:279、ir.py:504-511 `Obj ⊔ None = Obj`）で false-clean として直しており、設計判断ではなく欠陥として扱った前例がある。`global` に触れる既知の欠陥 K1〜K3（:1533-1535、review_plan.md:86）は根本原因が別（K1 = pipe の argv0/shell が判定不能、K2/K3 = 関数名の pin の決め打ち）。テスト（tests/test_f0a_defects.py:530-540）が固定するのは「OP/resolved にしない」だけで、global の右辺を join しないことを意図として固定してはいない。機構の確認: `ast.Global` は `_exec_stmt` で no-op（engine.py:391）、`_descend_env` は `<return>` と env を返すだけで（:1030-1107）呼び出し側が使うのは `_write_back_self`（:845-852）の `self.` 書き戻しのみなので、`init_db()` を先に呼んでも global の書き込みは呼び出し側に戻らない。変種の木で確かめた: 型のある値を直下で束縛し別関数が global で再束縛する形では DB 行 + `contradiction:D1 db_model_sql` が出る（＝設計の意図どおりの形）。型が global の書き込みにしか無い形と注釈（`_conn2: \"sqlite3.Connection | None\" = None`）にしか無い形では行が消え、G5 の `unresolved_in_tree_calls` にも数えられず無言。",
+    "citations": [
+     "docs/decisions.md:1674",
+     "docs/decisions.md:1699",
+     "docs/decisions.md:1717",
+     "docs/decisions.md:279",
+     "docs/decisions.md:1533-1535",
+     "docs/review_plan.md:86",
+     "authgap/val/engine.py:1207-1217",
+     "authgap/val/engine.py:1232-1242",
+     "authgap/val/engine.py:1251",
+     "authgap/val/engine.py:2077-2103",
+     "authgap/val/engine.py:2268-2288",
+     "authgap/val/engine.py:391",
+     "authgap/val/engine.py:1030-1107",
+     "authgap/val/engine.py:845-852",
+     "authgap/ir.py:504-511",
+     "tests/test_f0a_defects.py:530-540",
+     "docs/contradiction_principles.md:318-330"
+    ],
+    "expected_is_correct": true,
+    "corrected_expected": "（本質は所見どおり）purge_global / purge_after_init に DB 行（proxy psycopg.Cursor.execute、sql=MODEL/resolved roots=item_id）と `contradiction:D1` / `contradiction_reason:D1:db_model_sql`（§9.4 の 2）。細部: 変種の実測では、再束縛された受け手（opaque）でも行の `resolution` は `resolved` のままだった（行の確度は slot から決まり受け手の確度は行に載らない）ので、「行に UNKNOWN が付く」は必ずしも成り立たないが、矛の注記が残る点は正しい。",
+    "severity_opinion": "medium",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "notes": "直し方 (1)（同じモジュールで `global attr` を宣言した関数内の `attr = <expr>` の右辺を `_module_assignments` の候補に加えて join し、`rebound` で opaque を合流）は、D17 の「flow-insensitive な束縛の join（どの代入が効くかを決めない）」を Python の意味（global 宣言下の代入はモジュール属性の束縛）どおりに広げるもので、直下の複数代入（if/else の `X = A()` / `X = B()`）で既に使っている join 機構の範囲内。上界（呼ばれない関数の束縛の型も入る）は opaque 合流の方針と整合し、誤りは警報の向き。直す時に確かめること: 2 型以上の Obj になった受け手の分割降下（D35 (d)「候補の無い型の経路が無言で落ちる」の再発）と、`global X; X = None` の後始末関数との合流（`Obj ⊔ None = Obj` で問題無いはず）。(2)（被呼び出しの global 書き込みの呼び出し側 env への書き戻し）は流れ感応の精度向上で (1) が無くても purge_after_init を救うが、purge_global には (1) が要る。コンテナ経由（`_SESSIONS[id] = proc`）を範囲外とするのは正しい。重大度: 特定の書き方（module-level None + global 初期化）に限るので medium だが、lifespan/init でグローバルの接続を束縛する書き方は MCP サーバで一般的で（所見の見積もり 101 箇所/13 木）、消失は無言（G5 にも出ない）なので high 寄りの medium。凍結（D59/D61）後の変更なので、直すなら preregistration に逸脱として記録し、解決率を上げる変更として敵対的レビューを通す（CLAUDE.md）。",
+    "counterexample_code": "# 反例ではなく設計の意図の確認（scratchpad/verify/R4_hm_5/global_typed/server.py）\nimport sqlite3\nfrom mcp.server.fastmcp import FastMCP\nmcp = FastMCP(\"t\")\n_conn = sqlite3.connect(\"/data/app.db\")          # 変種 A: 型は直下、global で再束縛\ndef reset_db() -> None:\n    global _conn\n    _conn = sqlite3.connect(\"/data/other.db\")\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef purge_typed_global(item_id: str) -> str:\n    _conn.execute(\"DELETE FROM items WHERE id = \" + item_id)\n    return \"ok\"\n_conn2: \"sqlite3.Connection | None\" = None        # 変種 B: 型は注釈と global の書き込みにしか無い\ndef init_db2() -> None:\n    global _conn2\n    _conn2 = sqlite3.connect(\"/data/app.db\")\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef purge_annotated_none(item_id: str) -> str:\n    init_db2()\n    _conn2.execute(\"DELETE FROM items WHERE id = \" + item_id)\n    return \"ok\"",
+    "counterexample_output": "== purge_annotated_none  (server.py:32)  ... D_kind: {... \"explicit\": [\"readOnlyHint\"] ...}\n   （効果行なし・unresolved_in_tree_calls なし）\n== purge_typed_global  (server.py:17)  ...\n   E DB       psycopg.Cursor.execute       proxy  L18   server.py            resolved  db_rule=db\n       .sql      MODEL/resolved Str roots=item_id\n   R {\"kind\": \"DB\", \"notes\": [\"select_manifest_only(assumed_trig)\", \"contradiction:D1\", \"contradiction_reason:D1:db_model_sql\"], \"site\": \"psycopg.Cursor.execute\"}"
+   },
+   "generality": {
+    "id": "R4-r2-7",
+    "refuted": false,
+    "confidence": 0.8,
+    "reason": "【一般性の問い 1】主張は Python の意味（`global X; X = …` はモジュール属性 X への束縛）と解析器自身の規則（D17: モジュール水準の名前は束縛の flow-insensitive な join、D35 (a): `Obj ⊔ None = Obj`、D17 改訂 4:「再束縛される名前は読まないのではなく型と主体を保って確度を opaque に落とす」）から導ける。v2 の特定のツールに合わせた話ではない。実装の確認: `_module_value` は候補を `_module_assignments(tree.body, attr)`（engine.py:1251、モジュール直下のみ）から取り、`_scan_module_writes` の `global` 名は `rebound`（engine.py:1242）で確度を落とすだけ。`ast.Global` は `_exec_stmt` で no-op（engine.py:391）、`_descend_env` は `<return>` と `self.` の書き戻し（`_write_back_self` engine.py:1401）しか返さない。よって `_conn = None` + 関数内 `global _conn; _conn = sqlite3.connect()` では候補が None だけになり受け手の型が無く proxy sink が消える（再現: 木 global_rebound で purge_global / purge_after_init は行 0、purge_getter だけ DB 行）。これは 改訂 4 が「誤 clear」と明記した『None を返して受け手の型が消える』と同じ帰結であり、既知の設計判断ではない（§5 の一覧・O41・K1〜K6 のどれにも無い。K2/K3 は callable の pin（`_pinned_function`）の別経路で、本所見を直しても K3 は直らない）。\n【問い 2 反例】fix_sketch (1) を素の `value_join` で入れると **今は正しく出ている矛が消える**: `Y = sqlite3.connect(); def swap(): global Y; Y = external_factory()` は今は DB 行 + D1 矛（木 r7_unknown_join purge_y）だが、候補に `external_factory()`（Unknown）が加わると `_shape_join(Obj, Unknown)` は `Unknown()`（ir.py:539。None リテラルだけが特別扱い ir.py:509）→ 型が消える。同じ join を module-level で書いた purge_w が実際に行 0 になることで確かめた。fix_sketch (2) の書き戻しも、呼び出し側の同名の局所（木 r7_local_shadow local_shadow: 局所 `_conn = httpx.Client()` は別変数）を潰しうる。ただしどちらも**避ける一般的な直し方がある**（notes）。\n【問い 3】必要な直し (1) は opaque → resolved の向きではない（`rebound=True` で `_opaque_deep`）ので解決率は上がらず、型が付くだけ。上界の向き。(2) は任意の精度改善で、入れるなら敵対的レビュー対象。\n【問い 4】D17 改訂 2〜4 は『再束縛される名前の確度』を決めたのであって、『関数内 `global` の右辺を候補にしない』ことを決めた記録は無い。設計判断の呼び直しではない。\n【問い 5】verdict の向きは誤 clear（D1 も D2 も矛が出ない）。DB 受け手は `db_unresolved`（D49、manifest 列）に痕跡が残るが（再現木の manifest で確認: server.py:24 / :31 が receiver_classes=[] で記録）、NET / SPAWN / FS の受け手では G5 の列にも出ず無音。",
+    "citations": [
+     "authgap/val/engine.py:1207-1272",
+     "authgap/val/engine.py:1242",
+     "authgap/val/engine.py:1251",
+     "authgap/val/engine.py:391",
+     "authgap/val/engine.py:1030-1107",
+     "authgap/val/engine.py:1401-1436",
+     "authgap/val/engine.py:2077-2103",
+     "authgap/val/engine.py:2268-2288",
+     "authgap/ir.py:509-510",
+     "authgap/ir.py:539",
+     "authgap/srcindex.py:397-407",
+     "authgap/effects.py:574-599",
+     "docs/decisions.md D17 改訂 2 / 改訂 3 / 改訂 4（モジュール水準の束縛の行）",
+     "docs/decisions.md D35 (a)",
+     "docs/decisions.md D19 K2 / K3",
+     "docs/review_plan.md §5",
+     "/tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/R4_hm_5/r7_unknown_join/out.txt",
+     "/tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/R4_hm_5/r7_multitype/out.txt",
+     "/tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/R4_hm_5/r7_local_shadow/out.txt",
+     "/tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/R4_hm_5/r7_getter_bisect/out.txt"
+    ],
+    "expected_is_correct": true,
+    "corrected_expected": "",
+    "counterexample_code": "# r7_unknown_join/server.py（抜粋）: fix_sketch (1) を素の value_join で入れたときの結果を module-level で再現\nimport os, sqlite3\nfrom mcp.server.fastmcp import FastMCP\nfrom somewhere import external_factory\nmcp = FastMCP(\"t\")\n\n# 直しが Y に対して計算する候補 join（Obj ⊔ Unknown）と同じ形\nW = sqlite3.connect(\"/data/app.db\")\nif os.environ.get(\"EXT\"):\n    W = external_factory()\n\n# 今の挙動（関数内 global は候補に入らない → Obj/opaque のまま）\nY = sqlite3.connect(\"/data/app.db\")\ndef swap():\n    global Y\n    Y = external_factory()\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef purge_w(item_id: str) -> str:\n    W.execute(\"DELETE FROM items WHERE id = \" + item_id); return \"ok\"\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef purge_y(item_id: str) -> str:\n    Y.execute(\"DELETE FROM items WHERE id = \" + item_id); return \"ok\"\n\n# r7_local_shadow/server.py（抜粋）: fix_sketch (2) の書き戻しが潰しうる局所\n_conn = None\ndef init_db():\n    global _conn\n    _conn = sqlite3.connect(\"/data/app.db\")\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef local_shadow(item_id: str) -> str:\n    _conn = httpx.Client()   # 局所。init_db() の global 書き込みとは別変数\n    init_db()\n    _conn.get(\"http://x/\" + item_id); return \"ok\"",
+    "counterexample_output": "== purge_w  (server.py:30)   ← Obj ⊔ Unknown: 行 0（直し (1) を素の join で入れると purge_y がこうなる = 新しい誤 clear）\n   annotations: {\"readOnlyHint\": true} ...\n== purge_y  (server.py:42)   ← 今の挙動: 正しく矛\n   E DB       psycopg.Cursor.execute       proxy  L43   server.py            resolved  db_rule=db\n       .sql      MODEL/resolved Str roots=item_id\n   R {\"kind\": \"DB\", \"notes\": [..., \"contradiction:D1\", \"contradiction_reason:D1:db_model_sql\"], ...}\n(対照 purge_v: Obj ⊔ None は D35 (a) で DB 行が残る)\n\n== local_shadow  (server.py:22)   ← 今の挙動: 局所の httpx.Client だけが見える（正しい）\n   E NET      httpx.AsyncClient.get        proxy  L26   server.py            resolved  http_method=GET sub_kind=NET\n       .url.path MODEL/resolved Str roots=item_id ...",
+    "severity_opinion": "medium",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "notes": "一般に正しい直し方は存在するが、fix_sketch の書き方そのままでは無い。(a) 候補の集め方: 同じモジュールの関数（入れ子・メソッドを含む）で `global attr` を宣言した関数内の `attr = <expr>` の右辺を候補に加える。右辺は**その関数の scope**（`function_scope`、局所名は `local_bindings` で未解決になる）で評価する（module scope で評価すると仮引数名が同名のモジュール名に化ける）。(b) 候補の join は **型を保つ join** にする: `Obj` 候補と `Unknown` 候補の合流で `Unknown` に倒さず、classes を残して確度に opaque を合流する（改訂 4 の原理そのもの。`_module_value` の中だけで済ませれば `_shape_join` 全体は変えなくてよい。なお module-level の `X = connect(); if …: X = external()` が今も行 0 になるのは同じ族の既存の誤 clear で、この直しで一緒に直る）。(c) 書き戻し (2) は任意。入れるなら、呼び出し側で同名が `local_bindings` にあり `global` 宣言が無いときは書き戻さない（`_local_bindings` は Store 名を全部集めるので `ast.Global` を別に見る）。(2) だけが opaque → resolved の向きなので敵対的レビューはこちらに集中する。(1) だけで所見の期待出力（DB 行 + D1 db_model_sql の矛、受け手は opaque）は満たせる。影響の見積もり: 所見の 101 箇所 / 13 木は `global X … X = <ctor>(` の構文だけの上限。run20 の `db_unresolved` 766 件中 754 件が receiver_classes=[]（16 木）だが、抜き取った 8 サイトに本所見の形は無く（claude-replay の getter 形は単体では解決する: 木 r7_getter_bisect）、O29 の残りに占める割合は不明。狭めた構文数（module-level が None/無し + 関数内 global で Call を束縛 + 別関数で `X.<attr>` 読み）は estimate_fast2.py で走らせ中（出力: scratchpad/verify/R4_hm_5/estimate_fast2.out）。"
+   }
   },
   {
    "id": "R4-r2-8",
    "severity": "medium",
    "affects": "D1+D2",
-   "design": null,
-   "generality": null
+   "design": {
+    "id": "R4-r2-8",
+    "refuted": true,
+    "confidence": 0.7,
+    "reason": "同じ根本原因が既知の欠陥・設計判断として記録済み。出力を作る機構「argv0 が定数に読めないとき `_pipe` が FS_WRITE 側だけを出し EXEC(code_text) 行が消える」（effects.py:806-813、sinks.py:628-635 `is_interpreter` は定数しか見ない）は D19 の既知の欠陥 K1 そのもの（docs/decisions.md:1533。テスト tests/test_f0a_defects.py:1807-1816 の docstring「判定できないときに両方の行を出す分岐が無い」が機構を一般の形で固定し xfail strict）。review_plan.md:86 は K1〜K6 を未修正の既知の問題とし「再発見しても所見にしない」と定める。K1 の記述はモジュール水準のリストと global の shell= を例に挙げるだけで、所見はその機構への入力（`sys.executable`）が違うだけ。さらに D61 G1（:3424-3427）は「argv0 / shell が決まらないときは変えない。決まらないときに EXEC を出すと §7 で EXEC は常に矛なので言い過ぎになり表の変更が要る」と明示的に決め、G1 の取り消し（:3463-3467、O41 open_questions.md:1064）で FS_WRITE 情報行を「子プロセスがデータで何をしうるかの保守的な上界」として残すと決めた。値の側も記録がある: f0a_checks.md:517（OPQ[2] nuguard `create_subprocess_exec(sys.executable, ...)`）は「argv0=sys.executable はインタプリタの実行時属性で、木外かつ config atom 4 源にも TRANSFER にも無い。opaque(unresolved) は Def 4 の字義どおり妥当」と判定し、D17（この点検を根拠に直す/直さないを振り分けた）は直す対象に入れていない。Def 4（AUTHGAP_BRIEF_v3.md:244）は解決できるものを木内に限り、config atom の源は 4 種（:278: ctor kwarg / モジュール定数 / os.environ / CLI 既定値）で `sys.executable` はどれでもない。よって現行の規則のもとでは実装は規則どおりであり、所見の expected（EXEC）は Def 3(c)（brief:232「argv0 がカタログに載るとき」）を静的な値ではなく `sys.executable` の実行時の意味で読んだもの。所見の直し方（`sys.executable` に resolved の合成定数 \"python\" を与える）は sink 語彙の追加ではないが、Def 4 の解決源を増やす**新しい規則**であり、既知の欠陥の修正ではなく凍結後の逸脱として学生が判断する事項。",
+    "citations": [
+     "docs/decisions.md:1533",
+     "docs/decisions.md:1506",
+     "docs/decisions.md:1522",
+     "docs/decisions.md:3420-3427",
+     "docs/decisions.md:3463-3467",
+     "docs/open_questions.md:1064",
+     "docs/review_plan.md:86",
+     "docs/f0a_checks.md:517",
+     "AUTHGAP_BRIEF_v3.md:232",
+     "AUTHGAP_BRIEF_v3.md:244",
+     "AUTHGAP_BRIEF_v3.md:278",
+     "authgap/effects.py:806-813",
+     "authgap/catalog/sinks.py:623-635",
+     "tests/test_f0a_defects.py:1807-1816",
+     "docs/contradiction_principles.md:187-190"
+    ],
+    "expected_is_correct": false,
+    "corrected_expected": "現行規則（Def 4 + Def 3(c) + K1/D61 G1 改訂）のもとでの期待: argv0 = `sys.executable` は木内で解決できないので OP/opaque(unresolved)、SPAWN 行は `contradiction_unknown:D2:spawn_command`（不）、pipe 行は FS_WRITE 情報行（destructive=None、path 無し）で §7.2「mode 不明・destructive が決まらない → path が MODEL 由来でなければ不」により `contradiction_unknown:D2:fs_unknown`。D1（readOnlyHint）なら FS_WRITE はすべて矛なので判定は変わらない（理由が exec → fs_write）。EXEC(code_text=code) を期待するには「`sys.executable` をインタプリタと読む」新しい解決規則（Def 4 の解決源の追加）が要る。",
+    "severity_opinion": "medium",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "notes": "向きの補足: D2 では矛 → 不（「不明」への移動で、規則 4 の意味では clean ではない）、D1 は矛のまま。影響は destructiveHint:false（readOnlyHint 無し）のツールで `[sys.executable, ...]` + stdin 投入の形に限る（所見の見積もり 13 箇所/7 木）ので medium。直し方の一般性: Python の仕様上 `sys.executable` はインタプリタの実行ファイルの絶対パスで、反例は frozen app（PyInstaller では自アプリのパスになり `-` を stdin から読まない）と embedded（空文字列 / None）だけで、どちらも警報の向き（D19(2) の凍結を妨げない側）。ただし合成定数 \"python\" は偽のパスであり、所見の「SPAWN の判定は変わらない」は矛/不の判定に限れば正しいが、SPAWN 行の sub_kind が SPAWN_MODEL_ARGV → SPAWN_CONST_ARGV、argv0 の解決が opaque → resolved に変わり、opaque 率・解決率の指標も動く。入れるなら定数ではなく「インタプリタである」印（値の属性）を付けて `_pipe` だけがそれを読む形の方が副作用が小さい。いずれにせよ K1 の一般解（判定できないとき両方の行を出す / UNKNOWN を残す）とは別の、個別の解決源の追加であり、D61 の基準 1（Python の仕様で正解が決まる）は満たすが、凍結後に入れるなら preregistration に逸脱として記録し、月 3 凍結の pipe 語彙（INTERPRETER_ARGV0）自体は触らないことを明記する。"
+   },
+   "generality": {
+    "id": "R4-r2-8",
+    "refuted": false,
+    "confidence": 0.7,
+    "reason": "【問い 1】`sys.executable` は Python 標準ライブラリの仕様で「Python インタプリタの実行ファイルの絶対パス」。Def 3(c)（AUTHGAP_BRIEF_v3.md:232: argv0 がインタプリタ カタログ `python*` に載るとき EXEC(code_text)）と組み合わせれば、`[sys.executable, \"-\"]` + `communicate(input=code)` は EXEC で、§7.2 では矛。`subprocess` / `multiprocessing` の公式文書が推奨する書き方で、v2 の合わせ込みではない。実装の確認: `_ev_Name(\"sys\")` → `_module_value` は `import sys` に値を与えず（mod が空なら None）→ `_ev_Attribute` は Unknown/opaque(unresolved)（engine.py:509-553）→ `_register_handle` / `_pipe` の `first.const` が None → `is_interpreter(None)` 偽（sinks.py:628-635）→ FS_WRITE 情報行（effects.py:828）。再現どおり（run_code_sysexec は `contradiction_unknown:D2:fs_unknown`、run_code_const は `contradiction:D2 exec`）。\n【問い 4】D61 G1 の取り消しは「argv0 が**決まらない**とき FS_WRITE 情報行を保つ」という決定で、本所見はそれを動かさず『決められるものを決める』話。ただし docs/f0a_checks.md:517 で以前の点検者が「sys.executable の opaque は Def 4 の字義どおり妥当」と書いており、本所見の直しは**ライブラリ知識の追加**（`os.environ` の config atom、CTOR カタログ、D35 (e) / D43 / D50 の追加と同種）である点は明記が要る。設計判断の呼び直しではないが、凍結直前に値エンジンへ知識を足すかは学生の判断。\n【問い 2 反例】(i) 木内で `sys.executable = \"/usr/bin/node\"` と束縛し直す形（木 r8_rebound）: 今は opaque。直しは `_tree_attr_writes` 相当の除外が要るが、それは外部モジュールを集めない（engine.py:1585-1600 は strict に解決できる木内モジュールだけ）ので、`os.environ` の `_writes_environ` と同じ小さな走査を足す必要がある — 避けられる。(ii) `[sys.executable, \"-m\", \"pip\", \"install\", pkg]` + `communicate(input=\"y\\n\")` は直すと EXEC 矛になる（データ投入なので誤警報）— しかし定数 `\"python3\"` で書いた pip_const が**今もそう判定されている**（木 r8_forms）。Def 3(c) が argv0 だけで決める粗さ（O35）であり、直しが新しく作る誤りではない。(iii) PyInstaller 等の frozen / 埋め込みでは `sys.executable` はホスト実行ファイルで、直しは警報の向きに誤る。木から判別できず避けられないが、定数 `\"python\"` が PATH で差し替えられうるのと同程度の仮定で、上界の向き。よって「今は正しく判定できている形が壊れる」反例は (ii)(iii) とも『不 → 矛』で、既存の定数の扱いと同じ。\n【問い 3】opaque → resolved の向き。resolved にしてよい根拠 = ライブラリ仕様。崩せるのは (i)(iii) だけで、(i) は除外で塞げる。\n【追加で分かったこと】所見の範囲は pipe 行より広い: `subprocess.run(sys.executable + \" \" + script, shell=True)` は shell_string が MODEL/opaque になり D1 が `spawn_model_opaque`（不）だが、`\"python3 \" + script` は `spawn_model`（矛）（木 r8_forms shell_str_*）。`asyncio.create_subprocess_exec(sys.executable, \"-\", stdin=PIPE)` も Popen と同じ（木 r8_async_forms）。SPAWN 行の verdict は argv0 が OP のままなので変わらない（dash_c_const / dash_c_sysexec とも D2 不）。`shutil.copy(sys.executable, dst)` は D1 矛のまま（content の定数化は verdict に効かない）。\n【問い 5】向きは誤 clear（D2 の pipe 行で矛 → 不。D1 の pipe 行は理由が変わるだけ。shell 文字列連結では D1 / D2 とも不 → 矛）。",
+    "citations": [
+     "authgap/effects.py:766-785",
+     "authgap/effects.py:806-813",
+     "authgap/effects.py:828",
+     "authgap/catalog/sinks.py:623-635",
+     "authgap/val/engine.py:495-507",
+     "authgap/val/engine.py:509-553",
+     "authgap/val/engine.py:1207-1236",
+     "authgap/val/engine.py:1585-1600",
+     "authgap/val/engine.py:2105-2125",
+     "authgap/dparse.py:327-357",
+     "AUTHGAP_BRIEF_v3.md:232",
+     "docs/contradiction_principles.md §7.1 / §7.2（EXEC / SPAWN の行）",
+     "docs/decisions.md D61 の改訂（G1 の取り消し）",
+     "docs/f0a_checks.md:517",
+     "docs/open_questions.md O35 / O41",
+     "/tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/R4_hm_5/r8_forms/out.txt",
+     "/tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/R4_hm_5/r8_rebound/out.txt",
+     "/tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/R4_hm_5/r8_async_forms/out.txt"
+    ],
+    "expected_is_correct": true,
+    "corrected_expected": "",
+    "counterexample_code": "# r8_forms/server.py（抜粋）\nimport subprocess, sys\nfrom mcp.server.fastmcp import FastMCP\nmcp = FastMCP(\"t\")\n\n@mcp.tool(annotations={\"destructiveHint\": False})\ndef pip_const(pkg: str) -> str:   # 定数 argv0: 今も EXEC 矛（データ投入なので誤警報だが Def 3(c) の粗さ）\n    p = subprocess.Popen([\"python3\", \"-m\", \"pip\", \"install\", pkg], stdin=subprocess.PIPE, text=True)\n    p.communicate(input=\"y\\n\"); return \"ok\"\n\n@mcp.tool(annotations={\"destructiveHint\": False})\ndef pip_sysexec(pkg: str) -> str:  # 直すと pip_const と同じ EXEC 矛になる（今は FS_WRITE 不）\n    p = subprocess.Popen([sys.executable, \"-m\", \"pip\", \"install\", pkg], stdin=subprocess.PIPE, text=True)\n    p.communicate(input=\"y\\n\"); return \"ok\"\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef shell_str_sysexec(script: str) -> str:  # 所見の範囲外だった同根の誤 clear\n    subprocess.run(sys.executable + \" \" + script, shell=True); return \"ok\"\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef shell_str_const(script: str) -> str:\n    subprocess.run(\"python3 \" + script, shell=True); return \"ok\"\n\n# r8_rebound/server.py（抜粋）: 直しが除外すべき再束縛\nsys.executable = \"/usr/bin/node\"\n@mcp.tool(annotations={\"destructiveHint\": False})\ndef run_code_rebound(code: str) -> str:\n    proc = subprocess.Popen([sys.executable, \"-\"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)\n    out, _ = proc.communicate(input=code); return out",
+    "counterexample_output": "== pip_const\n   E SPAWN    subprocess.Popen   direct L22  resolved  sub_kind=SPAWN_CONST_ARGV   .argv0 OP/resolved Atom='python3'  .argv[*] MODEL/resolved Seq roots=pkg\n   E EXEC     pipe:communicate   pipe   L23  resolved  sub_kind=EXEC   .code_text OP/resolved Atom='y\\n'\n   R {\"kind\": \"EXEC\", \"notes\": [..., \"contradiction:D2\", \"contradiction_reason:D2:exec\"]}\n== pip_sysexec\n   E SPAWN    subprocess.Popen   direct L29  opaque    sub_kind=SPAWN_MODEL_ARGV reasons=unresolved   .argv0 OP/opaque(unresolved) Unknown\n   E FS_WRITE pipe:communicate   pipe   L30  resolved  destructive=None   .content OP/resolved Atom='y\\n'\n   R {\"kind\": \"FS_WRITE\", \"notes\": [..., \"contradiction_unknown:D2:fs_unknown\"]}\n== shell_str_const\n   E SPAWN    subprocess.run  direct L62  resolved  sub_kind=SPAWN_MODEL_ARGV   .shell_string MODEL/resolved Str roots=script\n   R {\"kind\": \"SPAWN\", \"notes\": [..., \"contradiction:D1\", \"contradiction_reason:D1:spawn_model\"]}\n== shell_str_sysexec\n   E SPAWN    subprocess.run  direct L56  opaque    sub_kind=SPAWN_MODEL_ARGV reasons=unresolved   .shell_string MODEL/opaque(unresolved) Str roots=script\n   R {\"kind\": \"SPAWN\", \"notes\": [..., \"contradiction_unknown:D1:spawn_model_opaque\"]}\n== run_code_rebound  (r8_rebound)\n   E SPAWN ... .argv0 OP/opaque(unresolved) Unknown\n   E FS_WRITE pipe:communicate ... .content MODEL/resolved Atom roots=code\n   R {\"kind\": \"FS_WRITE\", \"notes\": [..., \"contradiction_unknown:D2:fs_unknown\", ...]}\n(dash_c_const / dash_c_sysexec は共に contradiction_unknown:D2:spawn_command で、SPAWN の判定は直しで変わらない)",
+    "severity_opinion": "medium",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "notes": "直し方は一般: `_ev_Attribute` の `os.environ` 特例（engine.py:510）と同じ位置で `resolve_call_name(node, scope) == \"sys.executable\"`（別名 import も解決される。局所の `sys` は local_bindings で外れる）なら `Value(Prin.OP, RESOLVED, Atom(const=\"python\"))` を返す。条件: (1) 木のどこかで `sys.executable` / `setattr(sys, \"executable\", …)` に書くモジュールがあれば今までどおり opaque（`_attr_stores` を `sys` に解決される別名で集める。`_tree_attr_writes` は外部モジュールを落とすので別途）。(2) `\"python\"` は basename が `python*` に当たるための代役の文字列であることをコメントに書く（`os.path.dirname(sys.executable)` 等の連結で偽の定数パスが resolved になるが、D1 / D2 の判定に効く slot は無かった。付録のゲート等級で strong-path 等に使われないかだけ確認）。(3) frozen / 埋め込みインタプリタは限界として記録（警報の向き）。(4) `[sys.executable, \"-m\", <tool>]` + stdin データが EXEC 矛になるのは定数 `python3` と同じ Def 3(c) / O35 の粗さで、直しの責任ではないが件数は増えるので、run21 の compare_scans で増えた矛を 1 件ずつ見る。範囲外の別件（本所見に含めない）: `subprocess.run([...], input=code)` は argv0 が定数でも pipe sink にならず EXEC 行が出ない（`.stdin` slot が SPAWN 行に記録されるだけ。木 r8_async_forms run_input_const）。影響の見積もり: 所見の 13 箇所 / 7 木（stdin=PIPE）、45 / 14 木（`Popen([sys.executable`）は構文だけの上限。shell 文字列連結の分は未集計（estimate_fast2.out の string_concat 行）。"
+   }
   },
   {
    "id": "R4-r2-9",
    "severity": "medium",
    "affects": "D1+D2",
-   "design": null,
-   "generality": null
+   "design": {
+    "id": "R4-r2-9",
+    "refuted": false,
+    "confidence": 0.8,
+    "reason": "意図された決定の記録は無い。decisions.md / open_questions.md（O1〜O41）/ preregistration.md / AUTHGAP_BRIEF_v3.md / contradiction_principles.md を classmethod / `cls` で grep して、根本原因（classmethod の `cls(...)` が木内クラスの構築にならない）に触れる記録は 0 件。唯一の `cls(...)` の言及は f0a_checks.md:1262-1263（OpenHands `ToolDefinition.create()` の `cls(..., annotations=...)`）だが、それは Def 6 の宣言の join に乗らないという話で根本原因が違う。`_construct_in_tree` の `func.id in scope.local_bindings → None`（engine.py:1284）は局所変数がクラス名を隠す形（`Store = ...`）を避ける一般の防護で、仮引数 `cls` を想定した注記は無い。`_seed_params_raw`（:1825）は `cls` に受け手の値をそのまま入れるが、受け手 `Store` は `_ev_Name`（:495-507）→ `_module_value` が ClassDef に値を与えないので opaque の `Atom(formal=\"Store\")` になり、クラスの情報は `cls` に届かない。結果 `cls(...)` は `_ev_Call` 末尾（:864-885）の unresolved Unknown になる。設計は木内クラスの構築で `Obj(classes, fields)` を作り `__init__` の `self.<f>` を fields にすることを要求している（brief §2.6 :513-514、D17「木内クラスの構築」、D35 (b)(c) :280-281）。Python の意味で classmethod の `cls` は呼び出されたクラスで `cls(...)` は `Store(...)` と同じ構築なので、これが構築にならないのは意図ではなく取りこぼし。D51（:2761-2766）は「DB の受け手を超えた一般的な変更」として `@property` と注釈付き代入を未着手の限界に挙げるが classmethod は挙がっていない。D61 G5 の `unresolved_in_tree_calls` も `cls` を木内の定義名として数えないので、消失は無言（repro でも列に出ていない）。sink 語彙の追加は求めていない（sqlite3 の proxy 行は語彙にあり、受け手型が付かないだけ）ので §2 の対象外にも当たらない。",
+    "citations": [
+     "authgap/val/engine.py:1274-1290",
+     "authgap/val/engine.py:1284",
+     "authgap/val/engine.py:1812-1825",
+     "authgap/val/engine.py:495-507",
+     "authgap/val/engine.py:864-885",
+     "AUTHGAP_BRIEF_v3.md:513-514",
+     "docs/decisions.md:279-281",
+     "docs/decisions.md:2761-2766",
+     "docs/f0a_checks.md:1262-1263",
+     "docs/contradiction_principles.md:318-330"
+    ],
+    "expected_is_correct": true,
+    "corrected_expected": "",
+    "severity_opinion": "medium",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "notes": "直し方の一般性（D61 の基準）: 正解は Python の意味で決まる（classmethod の第 1 仮引数は呼び出されたクラス）。一般に正しい形の条件: (i) callee が `classmethod` デコレータ付きで `cls` が本体で再束縛されない（D58 2(c) と同じ保守的な検査）、(ii) 受け手が木内クラスに strict に解決できればそのクラスを構築、できなければ定義クラス（`_class_stack[-1]`）を構築。サブクラス経由 `Sub.open()` で基底を構築するのは fields の上界/下界がずれるが、現状は何も構築されず効果が丸ごと消えるので、誤りは警報の向き（D19(2)）に移るだけ。`type(self)(...)` / `self.__class__(...)` は別形で範囲外。解決率を上げる変更なので、直すなら敵対的レビュー（同名クラスが木に 2 つある場合、`cls` を別の値で上書きする場合、`cls` を `super()` に渡す場合）を通す。重大度: `from_config` / `create` / `open` / `connect` のファクトリ classmethod は Python で一般的で消失は無言だが、特定の書き方に限るので medium。凍結後の変更なので preregistration に逸脱として記録。"
+   },
+   "generality": {
+    "id": "R4-r2-9",
+    "refuted": false,
+    "confidence": 0.85,
+    "reason": "【問い 1】主張は Python の意味から導ける: classmethod の第 1 仮引数 `cls` は「属性を引いたクラス」（`Store.open` なら `Store`、`Sub.open` なら `Sub`、インスタンス経由なら `type(obj)`）に束縛され、`cls(...)` はそのクラスの構築。実装の確認: `Store.open(...)` は `_pinned_candidates` がメソッドを pin しない（engine.py:939-1021: head `Store` は import でも局所でもないので module=None）ため末尾名 `open` の by-name 解決で降り、`_seed_params_raw` が `cls` に受け手の値（`_ev_Name(\"Store\")` = opaque Atom(formal)、クラス定義には値が無い engine.py:495-507）を入れる（engine.py:1827）。中の `cls(...)` は `_construct_in_tree` が `func.id in scope.local_bindings`（仮引数は `_local_bindings` に入る srcindex.py:397-407）で None を返し（engine.py:1284）、`_ev_Call` 末尾で unresolved の Unknown（engine.py:857-885）。戻り値の Unknown を受け手にした `store.delete(item_id)` は末尾名で `Store.delete` に降りるが `self.conn` に型が無く proxy sink が出ない（木 r9_bymname で外部関数の戻り値でも同じことを確認）。再現どおり。`from_config` / `create` / `open` のファクトリ classmethod は一般的な書き方で v2 の合わせ込みではない。\n【問い 4】D35 の残る限界 3「継承メソッドは分割降下の対象外」、O41、K1〜K6 のどれにも当たらず、設計判断の呼び直しではない。なお G5 の列 `unresolved_in_tree_calls` は `cls(...)` の取りこぼしを数えない（木の中に `cls` という def が無いので候補 0）ため、この誤 clear は G5 でも見えない（受け手が DB のときだけ `db_unresolved` に痕跡が残る）。\n【問い 2 反例】fix_sketch の第 1 案（`_class_stack[-1]` のクラス = **定義側のクラス**を構築）には反例がある: `class ReadOnlyStore(Store): def delete(self, item_id): raise PermissionError` に対し `ReadOnlyStore.open(\"/data/app.db\")` で作った受け手の `.delete()` は、今の解析器が `ReadOnlyStore(...)` 直接構築では正しく行 0 にする（木 r9_subclass purge_ro_direct）のに、第 1 案は `Store` を構築して `Store.delete` の DB 行を **resolved で**出す（新しい誤警報、purge_base_direct と同じ出力になる）。逆に `class Audited(Store)` が `delete` を 2 文に増やす形（purge_au_direct は DB 2 行）では第 1 案は 1 行しか出さず、しかも受け手が resolved なので取りこぼしが `db_unresolved` にも残らない（誤 clear を隠す）。所見が第 1 案を「上界」と書いているのは誤り。ただし**避ける一般的な直し方がある**（第 2 案の趣旨を受け手側で決める形。notes）。\n【問い 3】opaque → resolved の向き。resolved にしてよい根拠は「受け手式が木内クラスに strict に解決できる」ことに限る。受け手が Unknown（`obj.open()` の obj が未知）のときに定義側のクラスで構築するのは根拠が無いので、今までどおり unresolved に留める。\n【問い 5】向きは誤 clear（D1 も D2 も矛が出ない）。",
+    "citations": [
+     "authgap/val/engine.py:1274-1290",
+     "authgap/val/engine.py:1284",
+     "authgap/val/engine.py:1290-1330",
+     "authgap/val/engine.py:852-885",
+     "authgap/val/engine.py:939-1021",
+     "authgap/val/engine.py:1812-1830",
+     "authgap/val/engine.py:495-507",
+     "authgap/srcindex.py:397-407",
+     "authgap/effects.py:574-599",
+     "docs/decisions.md D35（残る既知の限界）",
+     "docs/decisions.md D61 G5",
+     "docs/review_plan.md §5",
+     "/tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/R4_hm_5/r9_subclass/out.txt",
+     "/tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/R4_hm_5/r9_bymname/out.txt"
+    ],
+    "expected_is_correct": true,
+    "corrected_expected": "",
+    "counterexample_code": "# r9_subclass/server.py（抜粋）\nimport sqlite3\nfrom mcp.server.fastmcp import FastMCP\nmcp = FastMCP(\"t\")\n\nclass Store:\n    def __init__(self, conn):\n        self.conn = conn\n    @classmethod\n    def open(cls, path: str) -> \"Store\":\n        return cls(sqlite3.connect(path))\n    def delete(self, item_id: str) -> None:\n        self.conn.execute(\"DELETE FROM items WHERE id = \" + item_id)\n\nclass ReadOnlyStore(Store):\n    def delete(self, item_id: str) -> None:\n        raise PermissionError(\"read-only\")\n\nclass Audited(Store):\n    def delete(self, item_id: str) -> None:\n        self.conn.execute(\"DELETE FROM items WHERE id = \" + item_id)\n        self.conn.execute(\"INSERT INTO audit VALUES ('\" + item_id + \"')\")\n\nro_direct = ReadOnlyStore(sqlite3.connect(\"/data/app.db\"))\nro_factory = ReadOnlyStore.open(\"/data/app.db\")\nau_direct = Audited(sqlite3.connect(\"/data/app.db\"))\nau_factory = Audited.open(\"/data/app.db\")\nbase_direct = Store(sqlite3.connect(\"/data/app.db\"))\n\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef purge_ro_direct(item_id: str) -> str:\n    ro_direct.delete(item_id); return \"ok\"\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef purge_ro_factory(item_id: str) -> str:\n    ro_factory.delete(item_id); return \"ok\"\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef purge_au_direct(item_id: str) -> str:\n    au_direct.delete(item_id); return \"ok\"\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef purge_au_factory(item_id: str) -> str:\n    au_factory.delete(item_id); return \"ok\"\n@mcp.tool(annotations={\"readOnlyHint\": True})\ndef purge_base_direct(item_id: str) -> str:\n    base_direct.delete(item_id); return \"ok\"",
+    "counterexample_output": "== purge_au_direct   ← 今の解析器はサブクラスを受け手型で区別する（Audited.delete の 2 行）\n   E DB  psycopg.Cursor.execute  proxy  L27  resolved  db_rule=db chain=Audited.delete   .sql MODEL/resolved Str roots=item_id\n   E DB  psycopg.Cursor.execute  proxy  L28  resolved  db_rule=db chain=Audited.delete   .sql MODEL/resolved Str roots=item_id\n   R ... \"contradiction:D1\", \"contradiction_reason:D1:db_model_sql\" (x2)\n== purge_au_factory\n   unresolved_in_tree_calls: 1          ← 今: 行 0（誤 clear）。第 1 案: Store を構築 → Store.delete の 1 行だけ（2 行目を落とし、受け手が resolved なので痕跡も消える）\n== purge_base_direct\n   E DB  psycopg.Cursor.execute  proxy  L17  resolved  db_rule=db chain=Store.delete   .sql MODEL/resolved Str roots=item_id\n   R ... \"contradiction:D1\", \"contradiction_reason:D1:db_model_sql\"\n== purge_ro_direct   ← 行 0（正しい: ReadOnlyStore.delete は raise するだけ）\n== purge_ro_factory\n   unresolved_in_tree_calls: 1          ← 今: unresolved。第 1 案: Store を構築 → purge_base_direct と同じ DB 行を resolved で出す（新しい誤警報）。受け手式のクラス（ReadOnlyStore）で構築すれば purge_ro_direct と同じ行 0 になる",
+    "severity_opinion": "medium",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "notes": "一般に正しい直し方: `cls` を**受け手式**から決める。`_ev_Call` (4) でメソッド呼び出しの受け手式（`node.func.value`）が `ast.Name` / `ast.Attribute` で、`_construct_in_tree` と同じ strict な解決（同じモジュールの ClassDef、または import 表で指した木内モジュールの ClassDef。外部は None）で木内クラス C に当たるとき、その呼び出しを C の family のメソッドに型で解決し、被呼び出しが classmethod（decorator に `classmethod`）なら第 1 仮引数に「C のクラスオブジェクト」を種付けする。インスタンス受け手（`Obj.classes` が 1 つで木内）なら type(obj) = そのクラス。`_construct_in_tree` は `func.id` が現在実行中の classmethod の第 1 仮引数名と一致し、種付けされたクラスがあるときだけ、そのクラス（`get_class(name, module, strict=True)`）を構築する（`__init__` 探索は既存の `_find_init` が基底 3 段まで見る）。受け手が Unknown / 外部型 / 複数型なら構築しない（今までどおり unresolved）。実装上の注意: `VALUE_ATTRS`（ir.py:326）は語彙で構築時に検査されるので「クラスオブジェクト」の印に新しい attr を足さず、エンジン側のスタック（`_class_stack` と並行に受け手クラスを積む）で持つ方が語彙に触れない。`cls` を関数内で再束縛する形は env の上書きで自然に外れる。この直しは `Store.open(...)` 自体を by-name（opaque）から型つきの解決に変えるので、run21 で増える resolved 行は敵対的レビューにかける（特に `Sub.open()` が Sub の `__init__` / 上書きメソッドに正しく結ばれるか、外部基底の classmethod を木内クラスと取り違えないか）。影響の見積もり: 所見の 944 箇所 / 22 木は vendored を含む構文だけの上限。非 vendored のファイル数と、同じファイルで `Class.method(` が呼ばれる箇所数は estimate_fast2.out に出る（走らせ中）。run20 の `db_unresolved` 754 件（receiver_classes=[]）の抜き取り 8 サイトに本形は無かった。"
+   }
   }
  ],
- "failed_agents": [
-  "generality:R4:hm:4",
-  "design:R4:hm:5",
-  "generality:R4:hm:5",
-  "design:R4:low:1",
-  "generality:R4:low:1"
- ],
- "missing": [
-  "R4-r1-11",
-  "R4-r2-3",
-  "R4-r2-4",
-  "R4-r2-5",
-  "R4-r2-6",
-  "R4-r2-7",
-  "R4-r2-8",
-  "R4-r2-9"
- ]
+ "failed_agents": [],
+ "missing": []
 }
