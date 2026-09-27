@@ -58,7 +58,7 @@ def _contradiction_rows(tree: str, manifest: dict) -> list[dict]:
                 "lineno": r["lineno"],
                 "destructive": e.get("destructive"),
                 "D_explicit": list(dk.get("explicit", [])),
-                # どの宣言に反したか（D56。D1 / D2 は主指標、D3 / D4 は探索的）
+                # どの宣言に反したか（D56。D1〜D4 は 4 つとも主指標、D62）
                 "declarations": decls,
             }
     return [out[k] for k in sorted(out)]

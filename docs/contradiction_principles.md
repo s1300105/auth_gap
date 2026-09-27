@@ -199,7 +199,7 @@ MODEL。「定数」= 確度が resolved の定数（`Value.const`）。
 | NET: メソッドが読めない | MODEL 由来 → 矛 / それ以外 → 不 |
 | FS_READ / DISPATCH | 内 |
 
-### 7.3 D3 `openWorldHint: false`（**探索的**。別列で報告）
+### 7.3 D3 `openWorldHint: false`（**探索的**。別列で報告） — **D62（2026-09-28）で主指標に変更**
 
 | 効果 | 判定 |
 |---|---|
@@ -211,7 +211,7 @@ MODEL。「定数」= 確度が resolved の定数（`Value.const`）。
 | SPAWN | `argv0` / `shell_string` が MODEL 由来 → 矛 / それ以外 → 不 |
 | FS_READ / FS_WRITE / DB / DISPATCH | 内（表 D41: ローカルの操作は閉じた範囲） |
 
-### 7.4 D4 `idempotentHint: true`（`readOnlyHint: true` が無いとき。**探索的**。別列で報告）
+### 7.4 D4 `idempotentHint: true`（`readOnlyHint: true` が無いとき。**探索的**。別列で報告） — **D62（2026-09-28）で主指標に変更**
 
 原理 3 は当てない（7.0 の 1）。
 

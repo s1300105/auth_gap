@@ -11,7 +11,7 @@ manifest の行の注記（`contradiction:<宣言>` / `contradiction_unknown:<�
 * 単位は `compare_scans.py` と同じ **(木, ユニットの qualname, site, kind)**。宣言ごとに、その組の
   どれかの行に `contradiction:<宣言>` があれば「矛」、無くて `contradiction_unknown:<宣言>:…`
   があれば「不」（理由は組の中の理由の集合）。
-* D1 / D2 は事前登録済みの主指標、D3 / D4 は**探索的**（`docs/contradiction_principles.md` §6）。
+* D1〜D4 は 4 つとも主指標で、宣言ごとに報告する（D62。以前は D3 / D4 を探索的としていた — D56 / §6）。
   **合算しない。**
 * 感度分析: 理由のコードは §7 の判定表のどの分岐を通ったかを表すので、原理を反対側にしたときの
   結果は注記から正確に決まる（再走査は要らない）:
@@ -88,7 +88,7 @@ def to_md(run_dir: str) -> str:
     rs = load_reasons(run_dir)
     o = ["# CONTRADICTION の宣言ごとの件数と、判定原理の感度分析（D56）", "",
          f"再現: `python scripts/contradiction_by_decl.py {os.path.relpath(run_dir)}`", "",
-         "単位は (木, ユニット, site, kind)。**D1 / D2 は事前登録済みの主指標、D3 / D4 は探索的。合算しない。**", ""]
+         "単位は (木, ユニット, site, kind)。**D1〜D4 は 4 つとも主指標（D62）。宣言ごとに読み、合算しない。**", ""]
     o += ["## 採った原理での件数", "", "| 宣言 | 矛 | 不 | 矛の木 |", "|---|---|---|---|"]
     for d in DECLS:
         c = collections.Counter()

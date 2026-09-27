@@ -51,7 +51,7 @@ CLASSIFY: dict[str, tuple[str, str, str]] = {
     # -- 矛盾の判定原理の語彙（D56。docs/contradiction_principles.md §7 から機械的に導いた） --
     "SQL_MODIFY_HEADS": ("core", "転記", "データ・スキーマを変える SQL 文（D55）"),
     "SQL_DESTRUCTIVE_HEADS": ("core", "転記", "そのうち追記でないもの（D55）"),
-    "SQL_NONIDEMPOTENT_HEADS": ("core", "転記", "冪等とは限らない SQL 文（D4、探索的）"),
+    "SQL_NONIDEMPOTENT_HEADS": ("core", "転記", "冪等とは限らない SQL 文（D4）"),
     "SQL_READ_HEADS": ("core", "転記", "読み取りの SQL 文"),
     "SQL_CONNECTION_HEADS": ("core", "転記", "接続・トランザクション単位の文（原理 1-i）"),
     "SQL_PERSISTENT_HEADS": ("core", "転記", "DB ファイルに残る保守の文（原理 1-i-b）"),
