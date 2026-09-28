@@ -214,6 +214,9 @@ class ValResult:
     #: **名前が木の中の定義に当たるのに解決できなかった呼び出し**（D61 G5）。`(名前, relpath, 行, 候補数)`。
     #: 判定には使わない。「矛盾なし」の確からしさを読み手が判断するための列。
     unresolved_in_tree: list[tuple[str, str, int, int]] = field(default_factory=list)
+    #: **落とした木内ファイル（parse 失敗 / AST_NODE_CAP）の定義を指す呼び出し**（D64 / U49、R5-r2-2）。
+    #: `(名前, 落としたファイルの relpath)`。定義が索引に無いので G5 にも載らず、外部呼び出しと区別できなかった。
+    depends_on_dropped: list[tuple[str, str]] = field(default_factory=list)
     #: 最終 env（デバッグと手検証用）。
     env: Optional[Env] = None
 
@@ -822,6 +825,10 @@ class ValEngine:
             item = (dotted_of(node.func) or "").split(".")[-1], scope.relpath, getattr(node, "lineno", 0), self._unresolved_tree_cands
             if item not in res.unresolved_in_tree:
                 res.unresolved_in_tree.append(item)
+        if not callees and getattr(self, "_dropped_dep", None):
+            item = ((dotted_of(node.func) or "").split(".")[-1], self._dropped_dep)
+            if item not in res.depends_on_dropped:
+                res.depends_on_dropped.append(item)
         if callees:
             by_name = self._by_name_hint
             ambiguous = self._pinned_ambiguous
@@ -949,6 +956,7 @@ class ValEngine:
         self._pinned_ambiguous = False
         self._split_receiver = False
         self._unresolved_tree_cands = 0
+        self._dropped_dep = None
         name = dotted_of(node.func)
         if name is None:
             return self._resolve_on_expression_receiver(node, receiver)
@@ -1671,6 +1679,10 @@ class ValEngine:
                 module = self.index.resolve_import_module(scope.module, dotted.rpartition(".")[0])
         if module is None:
             return None
+        dropped = self._dropped_module(module)
+        if dropped is not None:
+            self._dropped_dep = dropped  # 呼び出し側が印を残す（解決はしない）
+            return None
         reader_name = func.id if isinstance(func, ast.Name) else last
         if isinstance(func, ast.Name) and dotted is not None and "." in dotted:
             # **import 先では元の名前で引く**（D61 G3。`from m import f as g` の `g()` は `m.f`）。以前は
@@ -1713,6 +1725,16 @@ class ValEngine:
             ):
                 ambiguous = True
         return cands, ambiguous
+
+    def _dropped_module(self, module: str) -> Optional[str]:
+        """木内のモジュールだが parse 失敗か AST_NODE_CAP で落としたなら、その relpath（D64 / U49）。"""
+        path = self.index.resolve_module_path(module)
+        if path is None or self.index.parse(path) is not None:
+            return None
+        rel = self.index.relpath(path)
+        if rel in self.index.parse_failures or any(r == rel for r, _c, _n in self.index.cap_hits):
+            return rel
+        return None
 
     def _follow_reexport(self, module: str, name: str, hops: int = 3) -> Optional[tuple[str, str]]:
         """`module`（パッケージの `__init__` を含む）が `name` を import で再公開していれば、その元の

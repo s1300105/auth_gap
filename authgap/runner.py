@@ -11,8 +11,16 @@ import time
 from dataclasses import dataclass, field
 from typing import Optional
 
-from .analyze import TreeReport, UnitReport, analyze_unit_f0a, analyze_unit_full
-from .dparse import DOp, DPrev, exposure_as_d_op, in_tree_exposure, parse_d_op
+from .analyze import SELF_FIELDS_TRUNCATED, TreeReport, UnitReport, analyze_unit_f0a, analyze_unit_full
+from .dparse import (
+    DOp,
+    DPrev,
+    exposure_as_d_op,
+    in_tree_exposure,
+    parse_d_kind,
+    parse_d_kind_by_tool,
+    parse_d_op,
+)
 from .enforcement import DepPin, EnforcementVerdict, classify_unit, read_dep_pins
 from .entries import find_tool_literals, find_units, join_annotations
 from .ir import WALL_CLOCK_CAP
@@ -141,6 +149,16 @@ def run(cfg: RunConfig) -> RunResult:
             # ことを TRUNCATED(recursion) として残し、件数に数える（黙って落とさない）。
             report = UnitReport(unit=unit, notes=["TRUNCATED(recursion)"])
             res.wall_clock_truncations.append(f"TRUNCATED(recursion):{unit.unit_id}")
+            # **宣言は解析の成否と関係なく残す**（D64 / U49、R5-r3-2。以前は代替の report に D_kind が無く、
+            # 宣言が ⊥ に見えて V3 の抜き取り枠と n_units_with_D_kind から消えた）。ハンドラの中でもう一度
+            # RecursionError が出たら木全体を落とさず ⊥ のまま印を残す。
+            try:
+                report.d_kind = parse_d_kind(unit)
+                report.d_kind_by_tool = parse_d_kind_by_tool(unit)
+            except RecursionError:
+                report.notes.append("D_kind_unread(recursion)")
+        if SELF_FIELDS_TRUNCATED in report.notes:
+            res.wall_clock_truncations.append(f"{SELF_FIELDS_TRUNCATED}:{unit.unit_id}")
         if time.monotonic() - t0 > WALL_CLOCK_CAP:
             res.wall_clock_truncations.append(unit.unit_id)
             report.notes.append("TRUNCATED(wall_clock)")

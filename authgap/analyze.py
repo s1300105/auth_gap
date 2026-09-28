@@ -196,13 +196,19 @@ def analyze_unit_f0a(
 ) -> UnitReport:
     """支配判定を使わずに測れるものだけを出す（§6 F0a）。"""
     report = UnitReport(unit=unit)
+    # **宣言は解析の成否と関係なく読む**（D64 / U49、R5-r3-2。以前は下の早期 return で宣言が ⊥ に見えた）
+    report.d_kind = parse_d_kind(unit)
+    report.d_kind_by_tool = parse_d_kind_by_tool(unit)
     path = index.resolve_module_path(unit.module)
     if path is None:
         report.notes.append("module unresolved")
         return report
     scope = index.function_scope(path, unit.node)
 
+    _SELF_FIELDS_FAILED_SEEN.clear()
     seed = _seed(unit, index)
+    if _SELF_FIELDS_FAILED_SEEN:
+        report.notes.append(SELF_FIELDS_TRUNCATED)
     extractor = EffectExtractor()
     engine = ValEngine(index, options or Options(), on_call=extractor.on_call)
     report.val = engine.analyze(unit.node, scope, seed)
@@ -216,8 +222,9 @@ def analyze_unit_f0a(
     report.validator_shapes = tuple(sorted(shapes))
     report.gate_predicate_present = _gate_predicate_present(index, unit, scope)
     report.config_atoms = _config_atoms(index, unit, scope)
-    report.d_kind = parse_d_kind(unit)
-    report.d_kind_by_tool = parse_d_kind_by_tool(unit)
+    # **落とした木内ファイル（parse 失敗 / AST_NODE_CAP）の定義を呼んだ**（D64 / U49、R5-r2-2）。判定は変えない。
+    for rel in sorted({r for _name, r in report.val.depends_on_dropped}):
+        report.notes.append(f"depends_on_dropped:{rel}")
     return report
 
 
@@ -309,8 +316,28 @@ def _annotated_class(index: SourceIndex, ann: Optional[ast.AST], module: str, ms
     return index.get_class(last, module, strict=True)
 
 
-#: `__init__` の解析結果を使い回すための記憶化。
-_SELF_FIELD_CACHE: dict[tuple[int, str, str], tuple] = {}
+#: 計算中の印（再帰の打ち切り。同じクラスの `__init__` が自分のフィールドを読むと戻ってくる）。
+_SELF_FIELDS_ACTIVE = ("<active>",)
+#: `__init__` の評価が RecursionError で打ち切られた印（D64 / U25、R5-r1-9）。
+_SELF_FIELDS_FAILED = ("<failed>",)
+#: 打ち切られたフィールドを使ったユニットに付ける印（runner が打ち切りの件数にも載せる）。
+SELF_FIELDS_TRUNCATED = "TRUNCATED(recursion:self_fields)"
+#: `_seed` の間に、打ち切られたフィールドを読んだか（ユニットに印を付けるため）。
+_SELF_FIELDS_FAILED_SEEN: list[tuple[str, str]] = []
+
+
+def _self_field_cache(index: SourceIndex) -> dict:
+    """**index ごとの**記憶化の表（D64 / U25、R5-r1-1）。
+
+    以前はモジュール水準の dict を `id(index)` で引いていたので、1 プロセスで木を続けて解析すると
+    （scan_v2.py / two_sided.py）解放された index の番地が次の木で再利用され、別の木の同名クラスの
+    フィールドが流用された（誤 clear と誤警報の両方。`--determinism` は同じ木を繰り返すだけなので
+    見えない）。`src_root` を鍵にするのは不可（同じパスの木を書き換えて解析し直すと古い中身が残る）。
+    """
+    cache = index.__dict__.get("_authgap_self_fields")
+    if cache is None:
+        cache = index.__dict__["_authgap_self_fields"] = {}
+    return cache
 
 
 def _self_fields(
@@ -325,10 +352,32 @@ def _self_fields(
     受け手アクセスパスの深さは 2 までで、それ以上は `opaque(receiver)`
     （val エンジンの規則をそのまま使う）。
     """
-    key = (id(index), module, classname)
-    if key in _SELF_FIELD_CACHE:
-        return _SELF_FIELD_CACHE[key]
-    _SELF_FIELD_CACHE[key] = ()  # 再帰の打ち切り
+    cache = _self_field_cache(index)
+    key = (module, classname)
+    got = cache.get(key)
+    if got is _SELF_FIELDS_ACTIVE:
+        return ()  # 再帰の打ち切り（計算中）
+    if got is _SELF_FIELDS_FAILED:
+        _SELF_FIELDS_FAILED_SEEN.append(key)
+        return ()
+    if got is not None:
+        return got
+    cache[key] = _SELF_FIELDS_ACTIVE
+    try:
+        out = _compute_self_fields(index, classname, module)
+    except RecursionError:
+        # **`__init__` の評価が深すぎた。** 仮の値を残さず失敗の印を入れ、フィールドは無し（読むと
+        # opaque(unresolved)）として解析を続け、使ったユニットに印を付ける（R5-r1-9。以前は計算中の
+        # `()` が残り、同じクラスの 2 つ目以降のユニットが印なしでフィールドを失っていた）。
+        # 印を外して計算し直すのは不可（再計算でまた RecursionError になり、直接の sink の矛まで消える）。
+        cache[key] = _SELF_FIELDS_FAILED
+        _SELF_FIELDS_FAILED_SEEN.append(key)
+        return ()
+    cache[key] = out
+    return out
+
+
+def _compute_self_fields(index: SourceIndex, classname: str, module: str) -> tuple[tuple[str, Value], ...]:
     cd = index.get_class(classname, module)
     if cd is None:
         return ()
@@ -372,9 +421,7 @@ def _self_fields(
                 fields[name[len("self.") :]] = v
         break
 
-    out = tuple(sorted(fields.items()))
-    _SELF_FIELD_CACHE[key] = out
-    return out
+    return tuple(sorted(fields.items()))
 
 
 def _mark_shape_from(report: UnitReport, unit: Unit) -> None:

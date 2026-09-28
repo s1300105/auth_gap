@@ -233,7 +233,7 @@ def probe_json(res: RunResult, corpus_id: str, traced_ratio_null: bool = True) -
         "parse_failures": list(tree.parse_failures),
         "truncations": [
             {"relpath": r, "cap": c, "count": n} for r, c, n in tree.cap_hits
-        ] + [{"unit_id": u, "cap": "wall_clock"} for u in res.wall_clock_truncations],
+        ] + [{"unit_id": u, "cap": _truncation_cap(u)} for u in res.wall_clock_truncations],
         "in_tree_resolution_ratio": tree.in_tree_resolution_ratio(),
         "opaque_ratio_primary_slots": tree.opaque_ratio(primary_only=True),
         "opaque_ratio_all_slots": tree.opaque_ratio(primary_only=False),
@@ -244,6 +244,16 @@ def probe_json(res: RunResult, corpus_id: str, traced_ratio_null: bool = True) -
             "unjoined": tree.n_annotation_unjoined,
         },
     }
+
+
+def _truncation_cap(entry: str) -> str:
+    """`TRUNCATED(<cap>)…` の印から cap の名前を取る。接頭の無いもの（WALL_CLOCK_CAP 超えの unit_id）は wall_clock。
+
+    以前は全部を wall_clock と書き、再帰の打ち切りや木の時間上限を壁時計と取り違えていた（D64 / U49、R5-r1-6）。
+    """
+    if entry.startswith("TRUNCATED(") and ")" in entry:
+        return entry[len("TRUNCATED("):entry.index(")")]
+    return "wall_clock"
 
 
 def _is_rubric_1c(u) -> bool:
@@ -266,7 +276,12 @@ def manifest_json(res: RunResult, run_id: str, volatile: bool = True) -> dict:
         "fingerprint": fingerprint(),
         "units": [_unit_manifest(u, res) for u in tree.units],
         "parse_failures": list(tree.parse_failures),
-        "truncations": [{"relpath": r, "cap": c, "count": n} for r, c, n in tree.cap_hits],
+        "truncations": [{"relpath": r, "cap": c, "count": n} for r, c, n in tree.cap_hits] + (
+            # **木の時間上限でユニットの走査の途中で打ち切った分**（D64 / U49、R5-r1-6）。前処理側の打ち切り
+            # （tree_budget_prep、D52）と同じ形で残す。前処理側で打ち切った run は二重に数えない。
+            [{"relpath": "", "cap": "tree_budget", "count": res.tree_budget_skipped}]
+            if res.tree_budget_skipped and not any(c == "tree_budget_prep" for _r, c, _n in tree.cap_hits) else []
+        ),
         "gate_verdict_counts": gate_verdict_counts(tree),
         "d_op": tree.d_op.to_json() if tree.d_op else None,
         "dispatch_sites": [s.to_json() for s in (tree.trig_index.sites if tree.trig_index else [])],

@@ -455,7 +455,7 @@ def _db_const(text, complete, modify_heads, persistent, additive) -> Optional[tu
 
 
 def _d3(e) -> Optional[tuple[str, str]]:
-    """D3 `openWorldHint: false`（§7.3、探索的）。"""
+    """D3 `openWorldHint: false`（§7.3。主指標、D62）。"""
     k = e.kind
     if k == "NET":
         c = _host_class(e)
@@ -476,7 +476,7 @@ def _d3(e) -> Optional[tuple[str, str]]:
 
 
 def _d4(e) -> Optional[tuple[str, str]]:
-    """D4 `idempotentHint: true`（§7.4、探索的）。原理 3 は当てない（§7.0 の 1）。"""
+    """D4 `idempotentHint: true`（§7.4。主指標、D62）。原理 3 は当てない（§7.0 の 1）。"""
     k = e.kind
     if k == "FS_WRITE":
         if e.site in FS_OPEN_SITES:
@@ -532,7 +532,7 @@ def contradiction_findings(dk: DKind, e) -> list[tuple[str, str, str]]:
     false、readOnly が無いとき）/ `D3`（openWorldHint: false）/ `D4`（idempotentHint: true、
     readOnly が無いとき）。結果は `CONTRA`（矛盾）か `CONTRA_UNKNOWN`（不明、原理 2-a）。
     宣言内のものは返さない。規則は `docs/contradiction_principles.md` §7（原理を選んでコミットした
-    後に機械的に導いた表）。D3 / D4 は探索的な分析（§6）。
+    後に機械的に導いた表）。D1〜D4 は 4 つとも主指標で、宣言ごとに報告する（D62。以前は D3 / D4 を探索的としていた）。
     """
     explicit = set(dk.explicit)
     out: list[tuple[str, str, str]] = []
