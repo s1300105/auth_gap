@@ -51,17 +51,104 @@ SQL_CLASS_READ = "read"
 SQL_CLASS_UNKNOWN = "unknown"
 
 _PRAGMA = re.compile(r"^\s*PRAGMA\s+(?:\w+\.)?(\w+)\s*(=|\()?", re.IGNORECASE)
+#: PostgreSQL のドル引用の開き（`$$` / `$tag$`）。`$1` のような位置パラメータは当たらない。
+_DOLLAR = re.compile(r"\$([A-Za-z_][A-Za-z0-9_]*)?\$")
+
+
+def strip_leading_sql_comments(text: str) -> Optional[str]:
+    """先頭の空白・`--` 行コメント・`/* */` ブロックコメントを剥がした残り（§9.6 の 1、D64 / U33）。
+
+    **`/*!` で始まる MySQL の実行されるコメントは剥がさない**（中身が実行されるので、剥がすと
+    `/*!50000 DROP TABLE t */ SELECT 1` が読み取りになる誤 clear。検証役の反例）。閉じないコメントと、
+    剥がした後に何も残らないときは `None`（読めない）。
+    """
+    i, n = 0, len(text)
+    while True:
+        while i < n and text[i].isspace():
+            i += 1
+        if text.startswith("--", i):
+            j = text.find("\n", i)
+            if j < 0:
+                return None
+            i = j + 1
+            continue
+        if text.startswith("/*", i) and not text.startswith("/*!", i):
+            j = text.find("*/", i + 2)
+            if j < 0:
+                return None
+            i = j + 2
+            continue
+        break
+    rest = text[i:]
+    return rest if rest.strip() else None
+
+
+def split_sql_statements(text: str) -> Optional[list[str]]:
+    """定数 SQL を、引用符・コメント・ドル引用の外の `;` で文に分ける（§9.6 の 2、D64 / U33）。
+
+    SQLite の `CREATE TRIGGER … BEGIN … END` の本体の `;` は文の終端ではないので、`;` で切るのは
+    `sqlite3.complete_statement` がそこまでを 1 文と認めるときだけにする。`$tag$ … $tag$` の中は文字列。
+    閉じない引用・ブロックコメント・ドル引用があれば **`None`（分けられない）**。空の文（末尾の `;` だけ）は
+    数えない。
+    """
+    import sqlite3
+
+    out: list[str] = []
+    start = i = 0
+    n = len(text)
+    while i < n:
+        c = text[i]
+        if c in "'\"`":
+            j = i + 1
+            while True:
+                j = text.find(c, j)
+                if j < 0:
+                    return None
+                if text.startswith(c * 2, j):  # 引用符を 2 つ重ねたエスケープ
+                    j += 2
+                    continue
+                break
+            i = j + 1
+            continue
+        if text.startswith("--", i):
+            j = text.find("\n", i)
+            i = n if j < 0 else j + 1
+            continue
+        if text.startswith("/*", i):
+            j = text.find("*/", i + 2)
+            if j < 0:
+                return None
+            i = j + 2
+            continue
+        if c == "$":
+            m = _DOLLAR.match(text, i)
+            if m:
+                j = text.find(m.group(0), m.end())
+                if j < 0:
+                    return None
+                i = j + len(m.group(0))
+                continue
+        if c == ";" and sqlite3.complete_statement(text[start:i + 1]):
+            out.append(text[start:i])
+            start = i + 1
+        i += 1
+    out.append(text[start:])
+    return [st for st in out if strip_leading_sql_comments(st) is not None]
 
 
 def sql_class(text: Optional[str], complete: bool = True) -> Optional[str]:
-    """定数 SQL の類。`None` は SQL が読めない（定数でない / 空白だけ）。
+    """定数 SQL の類。`None` は SQL が読めない（定数でない / 空白だけ / コメントだけ）。
 
     `complete=False` は `text` が連結の接頭辞であること（D57、§9.4）。先頭語は最初の語の後に空白が
     あるときだけ決め、`PRAGMA` は接頭辞の中に名前と `=` / `(` が揃うときだけ決める。
+    先頭のコメントは剥がしてから読む（§9.6 の 1）。**1 文として読む**（複文は呼び出し側が
+    `split_sql_statements` で分ける）。
     """
     if not isinstance(text, str):
         return None
-    stripped = text.lstrip()
+    stripped = strip_leading_sql_comments(text)
+    if stripped is None:
+        return None
     parts = stripped.split(None, 1)
     if not parts:
         return None
@@ -77,7 +164,7 @@ def sql_class(text: Optional[str], complete: bool = True) -> Optional[str]:
     if head in SQL_PERSISTENT_HEADS:
         return SQL_CLASS_PERSISTENT
     if head == "PRAGMA":
-        m = _PRAGMA.match(text)
+        m = _PRAGMA.match(stripped)
         if not m:
             return SQL_CLASS_UNKNOWN
         name, op = m.group(1).lower(), m.group(2)
@@ -91,7 +178,14 @@ def sql_class(text: Optional[str], complete: bool = True) -> Optional[str]:
             if name in PRAGMA_CONNECTION:
                 return SQL_CLASS_CONNECTION
             return SQL_CLASS_UNKNOWN
-        # `=` が無い: 値の読み出し（`PRAGMA table_info(t)` / `PRAGMA journal_mode`）
+        if op == "(":
+            # **括弧で値を渡す形は `=` と同じ**（§9.6 の 3、D64 / U33）。一覧にある設定の名前だけ。
+            # `table_info(t)` / `index_info(i)` など一覧に無い名前は今までどおり読み取り。
+            if name in PRAGMA_PERSISTENT_SET:
+                return SQL_CLASS_PERSISTENT
+            if name in PRAGMA_CONNECTION:
+                return SQL_CLASS_CONNECTION
+        # 値を設定しない: 値の読み出し（`PRAGMA table_info(t)` / `PRAGMA journal_mode`）
         return SQL_CLASS_READ
     return SQL_CLASS_UNKNOWN
 

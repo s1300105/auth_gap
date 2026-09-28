@@ -23,7 +23,7 @@ from .catalog.sinks import (
     db_execute_rule,
     is_interpreter,
 )
-from .catalog.statements import HTTP_METHOD_ARG_SUFFIXES, HTTP_METHOD_SUFFIXES
+from .catalog.statements import HTTP_METHOD_ARG_SUFFIXES, HTTP_METHOD_SUFFIXES, strip_leading_sql_comments
 from .ir import (
     REMOTE,
     RESOLVED,
@@ -331,12 +331,9 @@ def _exec_mode(ev: CallEvent, row: SinkRow) -> tuple[Optional[bool], dict]:
 
 
 def _sql_head_of(sql: Optional[Value]) -> Optional[str]:
-    """定数 SQL の先頭語（大文字、末尾の `;` を除く）。空白だけ・非定数なら `None`。"""
+    """定数 SQL の先頭語（大文字、末尾の `;` を除く）。空白だけ・非定数・読めない（§9.6）なら `None`。"""
     text = sql.const if sql is not None else None
-    if not isinstance(text, str):
-        return None
-    parts = text.split(None, 1)
-    return parts[0].upper().rstrip(";") if parts else None
+    return sql_head_of_text(text, True)
 
 
 def sql_text(sql: Optional[Value]) -> tuple[Optional[str], bool]:
@@ -357,16 +354,25 @@ def sql_text(sql: Optional[Value]) -> tuple[Optional[str], bool]:
 
 
 def sql_head_of_text(text: Optional[str], complete: bool) -> Optional[str]:
-    """先頭語（大文字）。接頭辞のときは**最初の語の後に空白がある**ときだけ決める（`"UPD" + x` は決めない）。"""
+    """先頭語（大文字）。接頭辞のときは**最初の語の後に空白がある**ときだけ決める（`"UPD" + x` は決めない）。
+
+    先頭のコメントは剥がしてから読む（§9.6 の 1）。書式の穴（`%` / `{` / `}`）を含む語は先頭語と読まない
+    （§9.6 の 6。`"%s FROM t" % ("DELETE", x)` の `%S` を先頭語にしていた）。
+    """
     if not isinstance(text, str):
         return None
-    stripped = text.lstrip()
+    stripped = strip_leading_sql_comments(text)
+    if stripped is None:
+        return None
     parts = stripped.split(None, 1)
     if not parts:
         return None
     if not complete and len(parts) < 2 and not stripped[len(parts[0]):][:1].isspace():
         return None
-    return parts[0].upper().rstrip(";")
+    head = parts[0].upper().rstrip(";")
+    if any(ch in head for ch in "%{}"):
+        return None
+    return head
 
 
 def _sub_kind(kind: str, slots: dict[str, Value]) -> Optional[str]:
@@ -380,6 +386,8 @@ def _sub_kind(kind: str, slots: dict[str, Value]) -> Optional[str]:
         sql = slots.get("sql")
         text = sql.const if sql is not None else None
         if isinstance(text, str):
+            # 先頭のコメントは剥がしてから読む（§9.6 の 1、D64 / U33）。コメントだけなら決めない。
+            text = strip_leading_sql_comments(text) or ""
             # **空白全般で切る。**`split(" ", 1)` だと `"\n  SELECT\n    id, ..."` のような
             # 改行で始まる複数行 SQL が `head == "SELECT\n"` になり、読み取り語の一覧に
             # 当たらず `DB_WRITE` に落ちていた（誤警報の向き。D41 の B1）。

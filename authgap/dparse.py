@@ -27,9 +27,11 @@ from .catalog.statements import (
     SQL_CLASS_MODIFY,
     SQL_CLASS_PERSISTENT,
     SQL_CLASS_READ,
+    SQL_CLASS_UNKNOWN,
     SQL_DESTRUCTIVE_HEADS,
     SQL_MODIFY_HEADS,
     SQL_NONIDEMPOTENT_HEADS,
+    split_sql_statements,
     sql_class,
 )
 from .entries import Unit
@@ -258,28 +260,55 @@ def _by_choice(e, names: tuple[str, ...], hit: str, otherwise: tuple[str, str]) 
 
 
 def _host_class(e) -> str:
-    """`url.host` の類: `local`（localhost / private / loopback）/ `external` / `model` / `unknown`。"""
-    import ipaddress
-    from urllib.parse import urlparse
+    """`url.host` の類: `local`（localhost / private / loopback）/ `external` / `model` / `unknown`。
 
+    宛先のホストは **RFC 3986 の authority の文法**（`[userinfo "@"] host [":" port]`、IP リテラルは角括弧）で
+    取り出す（§9.6 の 7、D64 / U36）。以前は scheme の無い権威部を手で分解し、`user:pass@localhost` や
+    `[::1]:8080`、末尾ドットの `localhost.` を外部ホストと読み（誤警報）、`localhost:pw@evil.example` を
+    localhost と読んでいた（誤 clear）。
+    """
     v = (getattr(e, "slots", None) or {}).get("url.host")
     if v is None:
         return "unknown"
     c = v.const
     if isinstance(c, str) and c:
-        host = urlparse(c).hostname if "://" in c else c.split("/")[0].rsplit(":", 1)[0] if c.count(":") <= 1 else c
-        host = (host or "").strip("[]").lower()
-        if not host:
-            return "unknown"
-        if host == "localhost" or host.endswith(".localhost") or host.endswith(".local"):
-            return "local"
-        try:
-            ip = ipaddress.ip_address(host)
-        except ValueError:
-            return "external"
-        return "local" if (ip.is_private or ip.is_loopback or ip.is_link_local) else "external"
+        return _const_host_class(c)
     c = _choice(e, "url.host")
     return "model" if c == "chosen" else ("model_opaque" if c == "influenced" else "unknown")
+
+
+def _const_host_class(c: str) -> str:
+    import ipaddress
+    from urllib.parse import urlparse
+
+    def _ip_class(text: str) -> Optional[str]:
+        try:
+            ip = ipaddress.ip_address(text)
+        except ValueError:
+            return None
+        return "local" if (ip.is_private or ip.is_loopback or ip.is_link_local) else "external"
+
+    # クライアントで読みが割れる（urllib3 は `\` を区切りに、urlparse / httpx は userinfo の一部に読む）ので読めない
+    if "\\" in c:
+        return "unknown"
+    # 1. IP リテラルを先に試す（角括弧の無い裸の IPv6 `fe80::1` を urlparse は `fe80` と読む。検証役の反例）
+    ip = _ip_class(c.strip("[]"))
+    if ip is not None:
+        return ip
+    # 2. authority からホストを取り出す（userinfo・ポート・角括弧を外す）
+    try:
+        host = urlparse(c if "://" in c else "//" + c).hostname
+    except ValueError:
+        return "unknown"  # 不正な角括弧など（木全体を落とさない）
+    if not host:
+        return "unknown"
+    ip = _ip_class(host)  # IP の解釈には末尾ドットを落とさない（`127.0.0.1.` は IP リテラルではない）
+    if ip is not None:
+        return ip
+    name = host.lower().rstrip(".")  # 末尾ドットは名前の比較だけで落とす（RFC 6761 の絶対形）
+    if name == "localhost" or name.endswith(".localhost") or name.endswith(".local"):
+        return "local"
+    return "external"
 
 
 def _fs_class(e) -> str:
@@ -357,8 +386,27 @@ def _d2(e) -> Optional[tuple[str, str]]:
     return None
 
 
+def _worst(results: list) -> Optional[tuple[str, str]]:
+    """文ごとの結果のうち最も厳しいもの（矛 > 不 > 内）。"""
+    for want in (CONTRA, CONTRA_UNKNOWN):
+        for r in results:
+            if r is not None and r[0] == want:
+                return r
+    return None
+
+
+def _statements(text: Optional[str], complete: bool):
+    """定数の SQL を文に分ける（§9.6 の 2）。`None` = 分けられない（`;` を含むのに引用・コメントが閉じない）。
+
+    接頭辞（`complete=False`）は分けない（§9.4 の 2・3 のまま）。`;` の無い文字列は 1 文。
+    """
+    if not complete or not isinstance(text, str) or ";" not in text:
+        return [text]
+    return split_sql_statements(text)
+
+
 def _db(e, *, modify_heads, persistent, additive=frozenset()) -> Optional[tuple[str, str]]:
-    """DB の判定（§7.1 / §7.2、判定の順序は §9.4）。"""
+    """DB の判定（§7.1 / §7.2、判定の順序は §9.4、先頭語と複文は §9.6）。"""
     from .effects import sql_head_of_text, sql_text
 
     text, complete = sql_text((getattr(e, "slots", None) or {}).get("sql"))
@@ -366,12 +414,34 @@ def _db(e, *, modify_heads, persistent, additive=frozenset()) -> Optional[tuple[
     if not complete:
         c = _choice(e, "sql")
         if c == "chosen":
-            # モデルが選べる連結: 注入で任意の文を書けるので、接頭辞に関係なく矛（§9.4 の 2）
-            return CONTRA, "db_model_sql"
+            # モデルが選べる連結: 注入で任意の文を書けるので、接頭辞に関係なく矛（§9.4 の 2）。
+            # **接頭辞が変更の文なら理由は db_modify**（§9.6 の 5。注入の有無によらず変更する。以前は
+            # db_model_sql にしていたので、感度分析 3-b がこの形まで不に倒していた）。
+            return (CONTRA, "db_modify") if head in modify_heads else (CONTRA, "db_model_sql")
         if c == "influenced":
             return (CONTRA, "db_modify") if head in modify_heads else (CONTRA_UNKNOWN, "db_sql_model_opaque")
         if head is None:
             return CONTRA_UNKNOWN, "db_sql_unreadable"
+    stmts = _statements(text, complete)
+    if stmts is None:
+        return CONTRA_UNKNOWN, "db_sql_unsplittable"  # 分割できない形は矛にしない（§9.6 の 2、規則 4）
+    if len(stmts) > 1:
+        # **定数の複文は文ごとに分類し、最も厳しい結果を採る**（§9.6 の 2）。複文から出た矛の理由は
+        # db_multi_statement（sqlite3 の execute は複文を拒むが site では区別できないので、手判定で見分ける）。
+        worst = _worst([_db_const(st, True, modify_heads, persistent, additive) for st in stmts])
+        if worst is not None and worst[0] == CONTRA:
+            return CONTRA, "db_multi_statement"
+        return worst
+    return _db_const(text, complete, modify_heads, persistent, additive)
+
+
+def _db_const(text, complete, modify_heads, persistent, additive) -> Optional[tuple[str, str]]:
+    """1 文の SQL（全体が定数か、主体が MODEL でない接頭辞）の判定（§7.5）。"""
+    from .effects import sql_head_of_text
+
+    head = sql_head_of_text(text, complete)
+    if head is None:
+        return CONTRA_UNKNOWN, "db_sql_unreadable"
     if head in modify_heads:
         return CONTRA, "db_modify"
     if head in additive:
@@ -417,17 +487,15 @@ def _d4(e) -> Optional[tuple[str, str]]:
                 return CONTRA, "fs_append"
         return None
     if k == "DB":
-        from .effects import sql_head_of_text, sql_text
+        from .effects import sql_text
 
         text, complete = sql_text((getattr(e, "slots", None) or {}).get("sql"))
         if not complete and _choice(e, "sql") is not None:
             return CONTRA_UNKNOWN, "db_sql_model"  # 文はモデルの値で決まる（原理 3 は当てない）
-        head = sql_head_of_text(text, complete)
-        if head is None:
-            return CONTRA_UNKNOWN, "db_sql_unreadable"
-        if head in SQL_NONIDEMPOTENT_HEADS:
-            return CONTRA_UNKNOWN, "db_nonidempotent_statement"
-        return None
+        stmts = _statements(text, complete)
+        if stmts is None:
+            return CONTRA_UNKNOWN, "db_sql_unsplittable"
+        return _worst([_d4_const(st, complete) for st in stmts])
     if k == "NET":
         m = getattr(e, "http_method", None)
         if m in HTTP_IDEMPOTENT:
@@ -437,6 +505,23 @@ def _d4(e) -> Optional[tuple[str, str]]:
         return CONTRA_UNKNOWN, "net_method_unknown"
     if k in ("EXEC", "SPAWN"):
         return CONTRA_UNKNOWN, "exec_or_spawn"
+    return None
+
+
+def _d4_const(text, complete) -> Optional[tuple[str, str]]:
+    """D4 の 1 文の判定（§7.4、§9.6 の 4）。"""
+    from .effects import sql_head_of_text
+
+    head = sql_head_of_text(text, complete)
+    if head is None:
+        return CONTRA_UNKNOWN, "db_sql_unreadable"
+    if head in SQL_NONIDEMPOTENT_HEADS:
+        return CONTRA_UNKNOWN, "db_nonidempotent_statement"
+    # **§7.5 の分類に無い先頭語は不**（§9.6 の 4、D64 / U34。以前は §7.4 の「それ以外の先頭語 → 内」を
+    # 文字どおり実装し、NOTIFY / CALL / COPY / ATTACH を注記なしの内にしていた）。`complete` は必ず渡す
+    # （接頭辞を全文として分類しないため）。
+    if sql_class(text, complete) == SQL_CLASS_UNKNOWN:
+        return CONTRA_UNKNOWN, "db_unknown_statement"
     return None
 
 
