@@ -1423,7 +1423,6 @@ def find_registration_units(
     ユニットになったもの）と、この中で先に登録された関数は 2 つ目のユニットにしない。
     """
     resolver = _Resolver(index)
-    snake = mcp_version_class(index)[0]  # snake_case の注釈の読み方（D64 / U38）
     seen: set[tuple[str, str]] = set(registered)
     out: list[Unit] = []
     spec_rules: list[tuple[EntryRule, tuple[str, ...], str]] = []
@@ -1459,7 +1458,11 @@ def find_registration_units(
                 ref = resolver.expr(module, chain, target)
                 if ref is not None and ref.kind == "func" and ref.fd is not None:
                     where = {"form": "call", "relpath": rel, "lineno": getattr(node, "lineno", 0)}
-                    found.append((node.lineno, node.col_offset, _decorator_unit(ref.fd, rule, decl_call, where, snake=snake)))
+                    found.append((node.lineno, node.col_offset, _decorator_unit(
+                        ref.fd, rule, decl_call, where,
+                        # snake_case の読み方は登録文のファイルのサブツリーの版（D64 / U38 の ADV-3）
+                        snake=mcp_version_for(index, where["relpath"]),
+                    )))
                 continue
             for rule, origins, kwarg in spec_rules:
                 value = _kwarg_node(node, kwarg)
