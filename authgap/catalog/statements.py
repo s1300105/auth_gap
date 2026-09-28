@@ -58,9 +58,11 @@ _DOLLAR = re.compile(r"\$([A-Za-z_][A-Za-z0-9_]*)?\$")
 def strip_leading_sql_comments(text: str) -> Optional[str]:
     """先頭の空白・`--` 行コメント・`/* */` ブロックコメントを剥がした残り（§9.6 の 1、D64 / U33）。
 
-    **`/*!` で始まる MySQL の実行されるコメントは剥がさない**（中身が実行されるので、剥がすと
-    `/*!50000 DROP TABLE t */ SELECT 1` が読み取りになる誤 clear。検証役の反例）。閉じないコメントと、
-    剥がした後に何も残らないときは `None`（読めない）。
+    **`/*!` / `/*M!` で始まる MySQL / MariaDB の実行されるコメントは剥がさない**（中身が実行されるので、剥がすと
+    `/*!50000 DROP TABLE t */ SELECT 1` が読み取りになる誤 clear。検証役の反例と §9.6 の改訂 1'(b)）。閉じないコメントと、
+    剥がした後に何も残らないときは `None`（読めない）。**方言でどこまでがコメントかが割れる形も `None`**
+    （§9.6 の改訂 1'。本体に `/*` を含むブロックコメント = 入れ子にする方言、`\\n` より前に `\\r` がある `--` 行コメント
+    = PostgreSQL は `\\r` でも終える。旧実装は `/* a /* b */ SELECT */ DELETE FROM t` を SELECT と読んでいた）。
     """
     i, n = 0, len(text)
     while True:
@@ -68,13 +70,13 @@ def strip_leading_sql_comments(text: str) -> Optional[str]:
             i += 1
         if text.startswith("--", i):
             j = text.find("\n", i)
-            if j < 0:
+            if j < 0 or "\r" in text[i:j]:
                 return None
             i = j + 1
             continue
-        if text.startswith("/*", i) and not text.startswith("/*!", i):
+        if text.startswith("/*", i) and not _executable_comment(text, i):
             j = text.find("*/", i + 2)
-            if j < 0:
+            if j < 0 or "/*" in text[i + 2:j]:
                 return None
             i = j + 2
             continue
@@ -83,19 +85,36 @@ def strip_leading_sql_comments(text: str) -> Optional[str]:
     return rest if rest.strip() else None
 
 
-def split_sql_statements(text: str) -> Optional[list[str]]:
-    """定数 SQL を、引用符・コメント・ドル引用の外の `;` で文に分ける（§9.6 の 2、D64 / U33）。
+def _executable_comment(text: str, i: int) -> bool:
+    """`text[i:]` が MySQL / MariaDB の実行されるコメント（`/*!` / `/*M!`）で始まるか。"""
+    return text.startswith("/*!", i) or text.startswith("/*M!", i)
 
-    SQLite の `CREATE TRIGGER … BEGIN … END` の本体の `;` は文の終端ではないので、`;` で切るのは
-    `sqlite3.complete_statement` がそこまでを 1 文と認めるときだけにする。`$tag$ … $tag$` の中は文字列。
-    閉じない引用・ブロックコメント・ドル引用があれば **`None`（分けられない）**。空の文（末尾の `;` だけ）は
-    数えない。
+
+#: SQLite の `CREATE [TEMP|TEMPORARY] TRIGGER`（本体の `;` をつないで読んでよい唯一の形。§9.6 の改訂 2'(b)）。
+_SQLITE_TRIGGER = re.compile(r"CREATE\s+(?:TEMP\s+|TEMPORARY\s+)?TRIGGER\b", re.IGNORECASE)
+#: 引用の中の `\` の直後の引用符（MySQL の既定のエスケープ・PostgreSQL の `E'…'`。§9.6 の改訂 2'(c)）。
+_BACKSLASH_QUOTE = re.compile(r"\\['\"`]")
+#: 識別子の文字（直後の `$` はドル引用の始まりではない。§9.6 の改訂 2'(d)）。
+_IDENT_CHAR = re.compile(r"[A-Za-z0-9_$]")
+
+
+def split_sql_statements(text: str) -> Optional[list[str]]:
+    """定数 SQL を、引用符・コメント・ドル引用の外の `;` で文に分ける（§9.6 の 2 と改訂 2'、D64 / U33）。
+
+    `;` で切るのは `sqlite3.complete_statement` がそこまでを 1 文と認めるときだけ。認めない `;` をつないで読み進めて
+    よいのは、**その文が SQLite の `CREATE TRIGGER` のとき**（本体の `;` は文の終端ではない）だけで、つないだまま
+    文字列が終わったら分けられない（改訂 2'(b)。PostgreSQL / MySQL のトリガや `SELECT $$it's$$; DELETE …` を
+    1 文に潰していた）。`$tag$ … $tag$` の中は文字列（識別子の文字の直後の `$` は除く、改訂 2'(d)）。
+    **`None`（分けられない）**: 閉じない引用・ブロックコメント・ドル引用、方言で字句が変わる印（改訂 2'(c): 引用の中の
+    `\\` の直後の引用符、引用・コメントの外の `#`、`/*!` / `/*M!`、本体に `/*` を含むブロックコメント、`\\r` を含む
+    行コメント）。空の文（末尾の `;` だけ）は数えない。
     """
     import sqlite3
 
     out: list[str] = []
     start = i = 0
     n = len(text)
+    glued = False  # complete_statement が認めない `;` を CREATE TRIGGER の本体としてつないだ
     while i < n:
         c = text[i]
         if c in "'\"`":
@@ -108,19 +127,27 @@ def split_sql_statements(text: str) -> Optional[list[str]]:
                     j += 2
                     continue
                 break
+            if _BACKSLASH_QUOTE.search(text, i + 1, j + 1):
+                return None
             i = j + 1
             continue
         if text.startswith("--", i):
             j = text.find("\n", i)
+            if "\r" in (text[i:] if j < 0 else text[i:j]):
+                return None
             i = n if j < 0 else j + 1
             continue
         if text.startswith("/*", i):
+            if _executable_comment(text, i):
+                return None
             j = text.find("*/", i + 2)
-            if j < 0:
+            if j < 0 or "/*" in text[i + 2:j]:
                 return None
             i = j + 2
             continue
-        if c == "$":
+        if c == "#":
+            return None
+        if c == "$" and not (i > 0 and _IDENT_CHAR.match(text, i - 1)):
             m = _DOLLAR.match(text, i)
             if m:
                 j = text.find(m.group(0), m.end())
@@ -128,11 +155,21 @@ def split_sql_statements(text: str) -> Optional[list[str]]:
                     return None
                 i = j + len(m.group(0))
                 continue
-        if c == ";" and sqlite3.complete_statement(text[start:i + 1]):
-            out.append(text[start:i])
-            start = i + 1
+        if c == ";":
+            if sqlite3.complete_statement(text[start:i + 1]):
+                out.append(text[start:i])
+                start = i + 1
+                glued = False
+            else:
+                head = strip_leading_sql_comments(text[start:i])
+                if head is None or not _SQLITE_TRIGGER.match(head):
+                    return None
+                glued = True
         i += 1
-    out.append(text[start:])
+    rest = text[start:]
+    if glued and not sqlite3.complete_statement(rest + ";"):
+        return None
+    out.append(rest)
     return [st for st in out if strip_leading_sql_comments(st) is not None]
 
 

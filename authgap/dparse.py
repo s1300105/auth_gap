@@ -12,6 +12,7 @@ MCP サーバ 0/141、ツールパッケージ 0/191 である。着手条件は
 from __future__ import annotations
 
 import ast
+import ipaddress
 import json
 import os
 from dataclasses import dataclass, field, replace
@@ -277,24 +278,52 @@ def _host_class(e) -> str:
     return "model" if c == "chosen" else ("model_opaque" if c == "influenced" else "unknown")
 
 
-def _const_host_class(c: str) -> str:
-    import ipaddress
-    from urllib.parse import urlparse
+#: D3 の local の網（§9.6 の改訂 7'）。**Python の `is_private` は使わない**（「グローバルでない」の意味で 6to4 `2002::/16`
+#: なども含み、CPython のパッチ版 gh-113171 でも変わる。旧実装はポートつきの 6to4 を local と読む誤 clear を作った）。
+_LOCAL_NETS = tuple(
+    ipaddress.ip_network(n)
+    for n in (
+        "127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "169.254.0.0/16", "0.0.0.0/32",
+        "::1/128", "::/128", "fc00::/7", "fe80::/10",
+    )
+)
+_NAT64 = ipaddress.ip_network("64:ff9b::/96")
 
-    def _ip_class(text: str) -> Optional[str]:
-        try:
-            ip = ipaddress.ip_address(text)
-        except ValueError:
-            return None
-        return "local" if (ip.is_private or ip.is_loopback or ip.is_link_local) else "external"
+
+def _ip_class(text: str) -> Optional[str]:
+    """IP リテラルの類（§9.6 の改訂 7'）。IP でなければ `None`。
+
+    local = loopback・RFC 1918・ULA・link-local・unspecified。IPv4 を埋め込んだ IPv6（IPv4-mapped、6to4、Teredo の
+    クライアント、NAT64 `64:ff9b::/96`）は中の IPv4 で決める。それ以外は `is_global` なら external、そうでなければ
+    unknown（`100.64.0.0/10`・文書用・予約の網は local とも external とも言えない）。
+    """
+    try:
+        ip = ipaddress.ip_address(text)
+    except ValueError:
+        return None
+    if ip.version == 6:
+        v4 = ip.ipv4_mapped or ip.sixtofour or (ip.teredo[1] if ip.teredo else None)
+        if v4 is None and ip in _NAT64:
+            v4 = ipaddress.IPv4Address(int(ip) & 0xFFFFFFFF)
+        if v4 is not None:
+            ip = v4
+    if any(ip.version == net.version and ip in net for net in _LOCAL_NETS):
+        return "local"
+    return "external" if ip.is_global else "unknown"
+
+
+def _const_host_class(c: str) -> str:
+    from urllib.parse import urlparse
 
     # クライアントで読みが割れる（urllib3 は `\` を区切りに、urlparse / httpx は userinfo の一部に読む）ので読めない
     if "\\" in c:
         return "unknown"
-    # 1. IP リテラルを先に試す（角括弧の無い裸の IPv6 `fe80::1` を urlparse は `fe80` と読む。検証役の反例）
-    ip = _ip_class(c.strip("[]"))
-    if ip is not None:
-        return ip
+    # 1. IP リテラルを先に試す（角括弧の無い裸の IPv6 `fe80::1` を urlparse は `fe80` と読む。検証役の反例）。
+    #    **権威部に `@` があるときは試さない**（`::1%x@evil.example` を scope ID つきの `::1` と読まない。§9.6 の改訂 7'）
+    if "@" not in c:
+        ip = _ip_class(c.strip("[]"))
+        if ip is not None:
+            return ip
     # 2. authority からホストを取り出す（userinfo・ポート・角括弧を外す）
     try:
         host = urlparse(c if "://" in c else "//" + c).hostname
@@ -424,7 +453,10 @@ def _db(e, *, modify_heads, persistent, additive=frozenset()) -> Optional[tuple[
             return CONTRA_UNKNOWN, "db_sql_unreadable"
     stmts = _statements(text, complete)
     if stmts is None:
-        return CONTRA_UNKNOWN, "db_sql_unsplittable"  # 分割できない形は矛にしない（§9.6 の 2、規則 4）
+        # **分割できない形は、全体を 1 文として読んだ結果と不の厳しい方**（§9.6 の改訂 2'(a)）。先頭の文は分割に
+        # よらず読めるので、`DELETE … 'O\'Brien';` の矛は残す（旧実装は不に落としていた。退行）。
+        return _worst([(CONTRA_UNKNOWN, "db_sql_unsplittable"),
+                       _db_const(text, complete, modify_heads, persistent, additive)])
     if len(stmts) > 1:
         # **定数の複文は文ごとに分類し、最も厳しい結果を採る**（§9.6 の 2）。複文から出た矛の理由は
         # db_multi_statement（sqlite3 の execute は複文を拒むが site では区別できないので、手判定で見分ける）。
@@ -432,7 +464,8 @@ def _db(e, *, modify_heads, persistent, additive=frozenset()) -> Optional[tuple[
         if worst is not None and worst[0] == CONTRA:
             return CONTRA, "db_multi_statement"
         return worst
-    return _db_const(text, complete, modify_heads, persistent, additive)
+    # 1 文に分かれたらその文を読む（§9.6 の改訂 2'(e)。`/* c */;DELETE FROM t` を全体で読むと先頭語が `;DELETE`）
+    return _db_const(stmts[0] if stmts else text, complete, modify_heads, persistent, additive)
 
 
 def _db_const(text, complete, modify_heads, persistent, additive) -> Optional[tuple[str, str]]:
@@ -494,7 +527,7 @@ def _d4(e) -> Optional[tuple[str, str]]:
             return CONTRA_UNKNOWN, "db_sql_model"  # 文はモデルの値で決まる（原理 3 は当てない）
         stmts = _statements(text, complete)
         if stmts is None:
-            return CONTRA_UNKNOWN, "db_sql_unsplittable"
+            return _worst([(CONTRA_UNKNOWN, "db_sql_unsplittable"), _d4_const(text, complete)])  # §9.6 の改訂 2'(a)
         return _worst([_d4_const(st, complete) for st in stmts])
     if k == "NET":
         m = getattr(e, "http_method", None)
