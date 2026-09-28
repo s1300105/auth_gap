@@ -8,6 +8,7 @@
 from __future__ import annotations
 
 import ast
+import re
 from dataclasses import dataclass, field
 from typing import Any, Optional
 
@@ -465,6 +466,10 @@ def _has_placeholder(text: str) -> bool:
     return "%" in text or "{" in text or "}" in text
 
 
+#: RFC 3986 の scheme（`ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )`）。
+_URL_SCHEME = re.compile(r"[A-Za-z][A-Za-z0-9+.-]*")
+
+
 def _split_url(v: Value) -> dict[str, Value]:
     """§2.6 の URL slot 分割規則。
 
@@ -493,7 +498,10 @@ def _split_url(v: Value) -> dict[str, Value]:
         return {"url.path": v}
     if text is not None:
         i = text.find("://")
-        if i < 0:
+        if i < 0 or not _URL_SCHEME.fullmatch(text[:i]):
+            # **`://` の前が RFC 3986 の scheme の文法でなければ絶対 URL ではない**（§9.6 の改訂 7''、N9）。
+            # `"oauth/authorize?redirect_uri=http://localhost:8080/cb"` のクエリの中の `://` で宛先を localhost と
+            # 読み、D3 を 内 にしていた（false-clean）。`/` で始まらない相対参照は今までどおり分割しない。
             return {"url.host": v}
         after = text[i + 3 :]
         cuts = [after.index(c) for c in "/?#" if c in after]
