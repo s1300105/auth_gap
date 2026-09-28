@@ -1,0 +1,72 @@
+{
+ "findings": [
+  {
+   "id": "U09-A1",
+   "target": "R1-r4-1 条件 (iv) と D17 改訂 2 の _tree_attr_writes（authgap/val/engine.py の _attr_stores / _module_escapes_in）",
+   "input": "pkg/__init__.py: 空。pkg/config.py: `MODE = \"a\"`。pkg/admin.py: `import pkg.config` / `def set_mode(v): pkg.config.MODE = v`。pkg/server.py: `from . import config` と `from .config import MODE`。tool append_attr（destructiveHint=False）は `open(path, config.MODE)`、tool append_from は `open(path, MODE)`（木: scratchpad/d64review/U09/t1）",
+   "observed": "直した版: append_attr は FS_WRITE fs_mode=a / destructive=False で、D2 の注記なし（内）。直す前の版: append_attr は mode 不明で D2 矛（fs_unknown_model_path）。append_from はどちらの版でも内（from-import の形にも前からあった穴）",
+   "expected": "`pkg.config.MODE = v` は木の中にある pkg.config.MODE の再束縛なので（D17 改訂 2）、MODE は opaque のままでなければならない。mode が分からないので D2 は矛（fs_unknown_model_path）で、直す前と同じになる",
+   "direction": "false_clean",
+   "new_in_this_diff": true,
+   "plausibility": "中。テストや CLI で `import app.config` のあと `app.config.DEBUG = ...` と入れ子の点つきの連鎖で書き換える形は普通にある。_attr_stores は `node.value` が Name の場合しか見ておらず、_module_escapes_in は連鎖を辿るが、Store/Del の親に着いたところで break して何も記録しない",
+   "proposed_fix": "_module_escapes_in で連鎖を辿っているときに、`par.ctx` が Store / Del の親（`alias.sub.NAME = v` / `del`）に着いたら、`(mod, par.attr)` を _tree_attr_writes に入れる（または _attr_stores が dotted_of(node.value) を受け取り、先頭の別名とサブモジュールの連鎖を解く）。from-import の形の既存の穴も同じ直しで閉じる"
+  },
+  {
+   "id": "U09-A2",
+   "target": "R1-r4-1 条件 (iv)、D17 改訂 2（_file_module_aliases は `from X import *` を飛ばす）",
+   "input": "pkg/__init__.py: `from . import config`。pkg/config.py: `MODE = \"a\"`。pkg/admin.py: `from pkg import *` / `def set_mode(v): config.MODE = v`。pkg/server.py: `from . import config`、tool（destructiveHint=False）は `open(path, config.MODE)`（木: t3。CPython で admin.set_mode('w') のあと pkg.config.MODE == 'w' になることを確かめた）",
+   "observed": "直した版: fs_mode=a / destructive=False で D2 内。直す前の版: D2 矛（fs_unknown_model_path）",
+   "expected": "admin の `config` は star import でパッケージの名前空間から来た pkg.config のモジュールオブジェクトなので、`config.MODE = v` は再束縛にあたる。MODE は opaque のまま、D2 は矛",
+   "direction": "false_clean",
+   "new_in_this_diff": true,
+   "plausibility": "低〜中。`__init__.py` でサブモジュールを import しているパッケージを `from pkg import *` し、そのあと属性に書き込む形。_attr_stores の mscope.lookup でも _file_module_aliases でも `*` は捨てられ、流出検査にも掛からない",
+   "proposed_fix": "_file_module_aliases で、木の中のパッケージ P からの `from P import *` は、P の `__init__.py` が木の中のモジュールに束縛している名前（サブモジュールの import）をすべて別名として加える。ほかに、そういう star import があるファイルでは、該当するサブモジュールを流出したものとして扱う方法もある"
+  },
+  {
+   "id": "U09-A3",
+   "target": "R1-r4-1 条件 (iv)、D17 改訂 2（_file_module_aliases は `__init__.py` がモジュールを別名で再公開する形を辿らない）",
+   "input": "pkg/__init__.py: `from . import config as settings`。pkg/config.py: `MODE = \"a\"`。pkg/admin.py: `from pkg import settings` / `def set_mode(v): settings.MODE = v`。pkg/server.py: `from . import config`、tool（destructiveHint=False）は `open(path, config.MODE)`（木: t10。CPython で set_mode('w') のあと pkg.config.MODE == 'w' になることを確かめた）",
+   "observed": "直した版: fs_mode=a / destructive=False で D2 内。直す前の版: D2 矛（fs_unknown_model_path）",
+   "expected": "`settings` は pkg.config のモジュールオブジェクトなので、`settings.MODE = v` は pkg.config.MODE の再束縛。opaque のままで D2 は矛",
+   "direction": "false_clean",
+   "new_in_this_diff": true,
+   "plausibility": "低。`from . import production as settings` のように、設定モジュールを別名でパッケージから再公開する形。_file_module_aliases は `pkg.settings` をサブモジュールとしてしか解かず、`__init__.py` の束縛を見ない。同じ別名への `setattr(settings, k, v)` も流出として検出されない",
+   "proposed_fix": "_file_module_aliases で `from P import N` を解くとき、P.N がモジュールでなければ、P の `__init__.py` での N の束縛を見る（_alias_module(P, ..., binding, N) が木の中のモジュールを返せばそれを加える）。再公開の段数は _follow_reexport と同じ上限にする"
+  },
+  {
+   "id": "U09-A4",
+   "target": "R1-r4-1 条件 (i) / (v) と R1-r3-9（入れ子関数から見た、外側の関数での import / class の束縛）",
+   "input": "(a) pkg/config.py: `MODE = \"a\"`、pkg/other.py: `MODE = \"w\"`。pkg/server.py はモジュール直下に `from . import config`。tool append_closure（destructiveHint=False）の中身は `from . import other as config` / `def inner(): open(path, config.MODE)` / `inner()`（木: t6）。(b) モジュール直下に `class Cfg: client = httpx.Client(base_url=...)`。readOnlyHint の tool の中で `class Cfg: client = LocalStore()` / `def inner(): Cfg.client.request(\"DELETE\", \"/items/\" + item)` / `inner()`（木: t9）",
+   "observed": "(a) 直した版: fs_mode=a / destructive=False で D2 内。直す前の版: D2 不（fs_unknown）。(b) 直した版: NET の行が現れ、DELETE で D1 矛（net_modify）。直す前の版: 行なし",
+   "expected": "(a) inner の `config` は外側の関数が局所に import した pkg.other で、実際の mode は \"w\"。確度を opaque にして、D2 は不（直す前と同じ）。(b) inner の `Cfg` は外側の関数の局所クラスで、その client は LocalStore なので httpx の NET 行は出ない",
+   "direction": "false_clean",
+   "new_in_this_diff": true,
+   "plausibility": "低。モジュール直下の別名と同じ名前を、tool 関数の中で別のモジュールやクラスに束縛し、それを閉包から読む形。(i) は内側の関数の local_bindings / local_imports しか見ない。_scan_module_writes は関数の中の import の別名や入れ子の ClassDef / FunctionDef の名前を書き込みに数えないので、_reader_rebinds も働かない。(b) は同じ原因による false_alarm の向き。from-import の形（`from .config import MODE` と外側の `from .other import MODE`）はどちらの版でも内で、前からあった穴（t6b）",
+   "proposed_fix": "_scan_module_writes が、関数の深さにある import / ImportFrom の別名と、入れ子の def / class の名前も書き込みに数えるようにする（こうすると _reader_rebinds が opaque にし、_class_attr_value は None を返す）。あるいは (i) の判定で、外側の関数のスコープ（local_bindings・local_imports・入れ子の def / class）もすべて見る"
+  },
+  {
+   "id": "U09-A5",
+   "target": "R1-r3-9 クラス属性（_class_body_defaults の基底の順が Python の MRO と逆）",
+   "input": "モジュール直下に `class LocalMixin: store = LocalStore()`、`class RemoteBase: store = httpx.Client(base_url=\"https://api.example.com\")`、`class Backend(LocalMixin, RemoteBase): pass`。readOnlyHint の tool の中身は `Backend.store.request(\"DELETE\", \"/items/\" + item)`（木: t4。LocalStore.request は木の中の何もしないメソッド）",
+   "observed": "直した版: NET の行（DELETE、host opaque）が出て D1 矛（net_modify）。直す前の版: 行なし。同じ木で `class C(A, B)` の M を CPython で確かめると A の値（MRO の左）になる",
+   "expected": "Python の MRO では Backend.store は LocalMixin.store（LocalStore）で、NET の効果は無い。行は出ず、D1 の矛にもならない",
+   "direction": "false_alarm",
+   "new_in_this_diff": true,
+   "plausibility": "低〜中。mixin で同名のクラス属性を上書きする多重継承の形。_class_body_defaults は `chain_cls = nxt + chain_cls` として後の基底で上書きするので、`class C(A, B)` では B が勝つ（左が勝つ Python と逆）。規則 B でも受け手の型は付くので、行が増える",
+   "proposed_fix": "クラス属性の読みでは C3 の MRO（少なくとも左優先の深さ優先）で最初に定義するクラスの値を取る。簡単に済ませるなら、_plain_class_chain の中に基底を 2 つ以上持つクラスがあり、属性を定義するクラスが 2 つ以上あるときは None を返す（型を付けない）"
+  }
+ ],
+ "could_not_break": [
+  "(iii) 親パッケージが葉の名前を別の値にする形は、どれも opaque のまま（D2 矛）: `from .settings import config`（値）、`from . import other as config`（別のモジュール）（t11 の a, b。対照の g は内になる）",
+  "(iv) 流出の検出: 他モジュールの `setattr(f.config, k, v)`（連鎖を関数に渡す）と、`c = e.config; c.MODE = v`（別名への代入）は、どちらも opaque のまま（t11 の f, e）",
+  "R1-r4-13 のタプル: 入れ子の中の Starred `(MODE, *REST), X = (\"a\",\"b\",\"c\"), 1` は位置で対応させず opaque（t11 の c）",
+  "R4-r2-7: 関数の中の global の下の内包表記の `:=` による束縛は incomplete になり opaque（t11 の d）",
+  "R4-r2-7: 仮引数から global に入れる形（`def set_base(url): global BASE; BASE = url` を tool にする）は、NET の D3 と FS の D2 の判定が直す前と同じ（不）で、主体も化けない（t5）",
+  "R4-r2-7: tool と補助関数からの global 再束縛（MODE / タプルの M2 / 補助関数の M3）は、どれも D2 矛のまま（t2）",
+  "R1-r3-9 規則 B: 別の tool からの `Cfg.ROOT = root` があっても D2 は不のままで、path は OP/opaque（定数は形としてだけ残る）（t8）",
+  "R1-r3-9 規則 B: クラス属性の METHOD 定数は http_method として読まれない（net_method_unknown のまま）（t4 の get_item2）",
+  "入れ子の tool 定義（`def make_server(): from . import other as config; @mcp.tool() def nested_tool(...)`）は local_imports の検査で読まれず、D2 矛のまま（t7）",
+  "閉包が外側の局所代入 `config = SimpleNamespace(MODE=\"w\")` を読む形は、_scan_module_writes が数えるので opaque（D2 不のまま）（t7）"
+ ],
+ "summary": "直した版（0c0770c）と直す前の版（74a5cf8 を scratchpad に git archive したもの。主 repo の HEAD は c2e99f7 で、statements.py / dparse.py が違うため使わなかった）を、同じ最小の木で実際に走らせた。確かめた所見は 5 件。U09-A1〜A4 は false_clean、U09-A5 は false_alarm で、U09-A4 の (b) だけは同じ原因から出る false_alarm。\n\n- **U09-A1〜A3（R1-r4-1 の書き込み検査の抜け）**: 次の 3 形の書き込みを _tree_attr_writes も流出検査も拾わない。\n  - 点つきの連鎖での書き込み `pkg.config.MODE = v`（A1）\n  - `from pkg import *` で来た `config` への書き込み（A2）\n  - `__init__.py` が `from . import config as settings` と別名で再公開したモジュールへの書き込み（A3）\n  - どれも、直す前は D2 矛だった `config.MODE` が resolved の \\\"a\\\" になり、D2 内に落ちる。A2 と A3 は、書き込みで実際に MODE が 'w' になることを CPython で確かめた。\n  - A1 は、from-import の形（`from .config import MODE`）では直す前から内だった。前からあった穴を、属性の形が受け継いだことになる。\n- **U09-A4（外側の関数の束縛）**: 閉包から見た外側の関数の局所 import と局所 class を、条件 (i) も _scan_module_writes も見ない。\n  - (a) モジュールの別名は、直す前は D2 不だったものが内に落ちる。\n  - (b) クラス属性は、それまで無かった NET 行が出て D1 矛になる（false_alarm）。\n- **U09-A5（R1-r3-9 の MRO）**: 多重継承 `class Backend(LocalMixin, RemoteBase)` で、右の基底の値が勝つ（Python とは逆の MRO）。httpx の受け手の型が付き、NET 行と D1 矛が新しく出る。\n\n崩せなかったもの（could_not_break）: 親パッケージが同じ葉の名前を束縛する各形、連鎖での setattr・別名への代入による流出、タプルの入れ子の Starred、global の下の内包表記の :=、global の仮引数の主体、規則 B の定数が http_method / fs_mode に漏れないこと、入れ子の tool 定義。\n\nどのファイルも書き換えていない。python は PYTHONDONTWRITEBYTECODE=1 で動かした。ただしこの設定より前の 2 回の実行では、worktree の `__pycache__` に .pyc ができた可能性がある（git の追跡外）。\n\n作業用の木と道具: /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/d64review/U09/（t1, t3, t4, t6, t6b, t9, t10 が再現用。run.sh で両方の版を走らせる。直す前の版は before/ にある）"
+}

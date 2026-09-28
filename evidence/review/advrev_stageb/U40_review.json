@@ -1,0 +1,105 @@
+{
+ "findings": [
+  {
+   "id": "U40-R1",
+   "target": "authgap/entries.py: _Resolver._overridden_below（(5) self.<m> の「木内のサブクラスが m を束縛する → 採らない」）",
+   "input": "s.py: class Server: def __init__(self): self.mcp = FastMCP('t'); self.mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))(self.handle) / def handle(self, path): return 'noop'。impl.py: from s import Server as BaseServer; class FileServer(BaseServer): def handle(self, path): open(path,'w').write('x')（木 t/cA）。同じ結果になる別形: `Base = s.Server; class FileServer(Base)`（t/cA2）、`class Server(Generic[T])` + `class FileServer(Server[str])`（t/cB）。対照: `from s import Server; class FileServer(Server)`（t/cA0）なら正しく採らない",
+   "observed": "直す前: ユニットなし。直した版: s.py:Server.handle が fw=mcp、ann={readOnlyHint: True}、行 0、矛なし（3 つの木すべて）",
+   "expected": "FileServer のインスタンスでは self.handle は FileServer.handle（書き込みあり）。スタブで実行して確かめた（登録されたのは 'FileServer.handle' と 'GF.handle'。scratchpad/d64review/U40/sem/s.py）。実装が挙げた規則では『木内のサブクラスが m を束縛するので採らない』になるはずで、採るとしても readOnlyHint に対する D1 の矛になるべき",
+   "direction": "false_clean",
+   "new_in_this_diff": true,
+   "plausibility": "中。型つきのコードでは `class X(Base[T])` がよくあり、基底の import に別名を付けるのも普通。srcindex の _base_names は Subscript の基底を捨て、_overridden_below は基底を末尾名で結ぶので、別名・Subscript・呼び出し式の基底を持つサブクラスはどれも見えない",
+   "proposed_fix": "_overridden_below で基底を末尾名ではなく _Resolver.expr で解く（Subscript は value を見る。import の別名とモジュール水準の代入 `Base = s.Server` をたどる）。解けない基底（呼び出し式、代入による別名で解けないもの、Subscript の中身が不明）を持つ木内クラスが attr を束縛していれば、見過ぎる側に倒して採らない"
+  },
+  {
+   "id": "U40-R2",
+   "target": "authgap/entries.py: _note_facts の stored_attrs（(5) の「木のどこかで属性名 m が書き換えられる → 採らない」）",
+   "input": "s.py: def write_file(path): open(path,'w').write('x')。class Server: def __init__(self, writable): if writable: object.__setattr__(self, 'handle', write_file); self.mcp = FastMCP('t'); self.mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))(self.handle) / def handle(self, path): return 'noop'（t/cQ）。別形: `super().__setattr__('handle', write_file)`（t/cQ2）",
+   "observed": "直す前: ユニットなし。直した版: s.py:Server.handle、ann={readOnlyHint: True}、行 0、矛なし（両方の木）",
+   "expected": "インスタンス属性はクラスのメソッド（非データ記述子）より先に引かれるので、writable=True のとき self.handle は write_file で、書き込みがある。実装の規則どおりなら属性名 handle の書き換えがあるので採らないはず",
+   "direction": "false_clean",
+   "new_in_this_diff": true,
+   "plausibility": "低〜中。`object.__setattr__(self, ...)` は frozen dataclass や pydantic の __post_init__ でよく使う書き方。`_last_name(node) in ('setattr','delattr')` は `__setattr__` / `__delattr__` を見ず、`super().__setattr__` は dotted_of が None になるので見ない",
+   "proposed_fix": "_note_facts で、属性名（func が Attribute なら .attr）が `__setattr__` / `__delattr__` の呼び出しも setattr として扱う（`object.__setattr__(o, 'n', v)` は args[1]、束縛メソッド形 `x.__setattr__('n', v)` は args[0] が名前）。名前が定数でなければ any_setattr。`__dict__[...] =` / `vars(x)[...] =` の書き換えも同じ扱いにするか、限界として記録する"
+  },
+  {
+   "id": "U40-R3",
+   "target": "authgap/entries.py: _is_namespace_call / _note_facts（(3) の「名前空間を書き換えうる呼び出しがあれば解かない」）",
+   "input": "s.py（モジュール直下）: def fetch(path): open(path,'w').write('x') / def dry_fetch(path): return 'noop' / locals()['fetch'] = dry_fetch / mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))(fetch)（t/cH）",
+   "observed": "直す前: ユニットなし。直した版: s.py:fetch、ann={readOnlyHint: True}、行 1、contradiction:D1",
+   "expected": "モジュール水準では locals() は globals() と同じ辞書なので、登録されるのは dry_fetch（書き込みなし。ファイルを実際に exec すると 'registered dry_fetch' と出た）。宣言と実効は食い違わない。実装の規則では名前空間の書き換えとして解かないはず",
+   "direction": "false_alarm",
+   "new_in_this_diff": true,
+   "plausibility": "低。ただ、規則は『globals() / 引数なしの vars()』に限られていて、同じ書き換え口の locals()（モジュール直下・クラス本体）、`vars(sys.modules[__name__])`、`sys.modules[__name__].__dict__` が抜けている",
+   "proposed_fix": "_is_namespace_call に `locals` を足す（少なくともモジュール直下とクラス本体で呼ばれるもの）。`vars(<何か>)[..] =` と `<何か>.__dict__` への書き込み・update も dynamic にするか、限界として記録する"
+  },
+  {
+   "id": "U40-R4",
+   "target": "authgap/entries.py: _note_facts の attr_pairs / _Resolver.attr_writes（(3) の「木のどこかでモジュール属性として書き換えられる (module, name) は解かない」）",
+   "input": "pkg/__init__.py（空）、pkg/impl.py: def purge(path): open(path,'w')...。patch.py: import pkg.impl / def dry_purge(path): return 'would purge' / pkg.impl.purge = dry_purge。s.py: import patch; from pkg.impl import purge; mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))(purge)（t/cE）。対照: patch.py を `import pkg.impl as m; m.purge = dry_purge` にすると正しく採らない（t/cE2）",
+   "observed": "直す前: ユニットなし。直した版: pkg/impl.py:purge、ann={readOnlyHint: True}、行 1、contradiction:D1。対照の cE2 はユニットなし",
+   "expected": "`pkg.impl.purge = ...` はモジュール属性の書き換えで、登録されるのは dry_purge（スタブで実行して 'dry_purge' を確認）。実装の規則では (pkg.impl, purge) の書き換えとして解かないはず。別名形では採らないのに、連鎖形では採るという不整合がある",
+   "direction": "false_alarm",
+   "new_in_this_diff": true,
+   "plausibility": "低。attr_pairs は受け手が ast.Name のときしか記録しないので、`import a.b` の後の `a.b.f = ...` と `setattr(a.b, 'f', v)` がどちらも抜ける",
+   "proposed_fix": "attr_pairs に、受け手の式（Attribute の連鎖）を記録し、attr_writes で _Resolver.expr によってモジュールに解く。解けない受け手でも属性名が一致すれば、見過ぎる側に倒して書き換えとみなす（self.m ですでに stored_attrs を使っている方針と同じ）"
+  },
+  {
+   "id": "U40-R5",
+   "target": "authgap/entries.py: _Resolver._binding_scope（(3) の「クラス本体は参照がその本体に直接あるときだけ見る」）",
+   "input": "s.py: def fetch(path): open(path,'w')... / class Tools: mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))(fetch) / def fetch(self, path): return 'noop'（登録の文が、クラスのローカルな def より前にある。t/cF）",
+   "observed": "直す前: ユニットなし。直した版: s.py:Tools.fetch、ann={readOnlyHint: True}、行 0、矛なし",
+   "expected": "クラス本体は LOAD_NAME なので、まだ束縛されていないクラスのローカル名はグローバルに落ちる。登録されるのはモジュールの fetch（書き込みあり）で、readOnlyHint に対する D1 の矛になるべき。実行して確かめた（'fetch' が登録され、Tools.got はグローバルの fetch）",
+   "direction": "false_clean",
+   "new_in_this_diff": true,
+   "plausibility": "低（クラス本体での前方参照と同名のメソッド）。ただ Python の意味とははっきり違う",
+   "proposed_fix": "最も内側のスコープがクラス本体で、その束縛が参照より後の行（参照を含む文より後）にしかないなら、クラスの束縛は採らない（解かないか、外側へ続ける）。安全側に倒すなら『クラス本体の束縛が参照より前に 1 つだけある』ときだけ採る"
+  },
+  {
+   "id": "U40-R6",
+   "target": "authgap/entries.py: _Resolver.abs_module（(4) の「絶対 import は木内モジュールと完全一致すれば木内」）",
+   "input": "tools.py（根）: def cleanup(path): open(path,'w')...。examples/demo/tools.py: def cleanup(path): return 'would clear'。examples/demo/app.py: from tools import cleanup; mcp = FastMCP('demo'); mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))(cleanup); if __name__ == '__main__': mcp.run()（t/cS）",
+   "observed": "直す前: ユニットなし。直した版: tools.py:cleanup（根の方）、ann={readOnlyHint: True}、行 1、contradiction:D1。examples 側の宣言が、根の別の関数に付く",
+   "expected": "`python examples/demo/app.py` として動かすと sys.path[0] は examples/demo なので、`from tools import cleanup` は兄弟の examples/demo/tools.py（書き込みなし）を指す。解けるのは兄弟の方で、少なくとも『決めない』にするべき。根の関数に宣言を付けると誤警報になる",
+   "direction": "false_alarm",
+   "new_in_this_diff": true,
+   "plausibility": "低〜中。examples/・scripts/ の下のスクリプトが兄弟モジュールを裸名で import するのはよくあり、根にも tools.py / utils.py / server.py がある repo は多い。ただし同名の関数が両方に要る。完全一致を優先する規則は src レイアウトの suffix 一致と違って、実装役の『崩しどころ』に挙がっていない",
+   "proposed_fix": "import する側のファイルと同じディレクトリに `<dotted の先頭>.py` か `<先頭>/__init__.py` があり、完全一致の木内モジュールと違うなら ambiguous にする（スクリプトとしての実行とパッケージとしての実行の両方がありうる）"
+  },
+  {
+   "id": "U40-R7",
+   "target": "authgap/entries.py: find_registration_units の二重登録の畳み込み（(8)、(module, qualname) で 1 ユニット、最初の登録の宣言を採る）",
+   "input": "s.py: def save(path, text): open(path,'w')... / mcp.tool(name='save', annotations=ToolAnnotations(destructiveHint=True))(save) / mcp.tool(name='save_preview', annotations=ToolAnnotations(readOnlyHint=True))(save)（t/cC）。デコレータ形 `@mcp.tool(name='save', annotations=destructive)` + 呼び出し形 `mcp.tool(name='save_preview', annotations=readOnly)(save)` も同じ（t/cC0）",
+   "observed": "cC: 直す前はユニットなし、直した版は s.py:save 1 ユニット、ann={destructiveHint: True}、行 1、矛なし。cC0: 前も後も destructive の 1 ユニットで矛なし（2 つ目の呼び出し形の readOnly の宣言は読まれずに捨てられる）",
+   "expected": "FastMCP は 2 つの別々のツール（save と save_preview）を登録する。save_preview は readOnlyHint=True を宣言しながらファイルに書くので、D1 の矛が 1 件あるべき",
+   "direction": "false_clean",
+   "new_in_this_diff": true,
+   "plausibility": "低〜中。同じ関数を別名（preview / alias）で宣言を変えて 2 度登録するのは呼び出し形でしか自然に書けない。デコレータを 2 つ重ねる既存の形にも同じ限界があるが、今回それが呼び出し形にも広がった",
+   "proposed_fix": "畳み込みを tool_name（名前つきの登録）単位にし、名前が違う登録は別ユニットにするか、1 ユニットに宣言の集合を持たせてどれか 1 つでも矛なら矛にする。直さないなら、宣言を捨てた件数を記録し、docs/open_questions.md に限界として残す"
+  },
+  {
+   "id": "U40-R8",
+   "target": "authgap/entries.py: find_units → find_tools_list_units の already（qualname の集合）に呼び出し形のユニットが入る",
+   "input": "srv.py: def search(query): return query.upper() / mcp.add_tool(search)。agent.py: from agents import Agent / def search(path): open(path,'w')... / agent = Agent(name='a', tools=[search])（t/cD）",
+   "observed": "直す前: agent.py:search が fw=tools-list、行 1（FS 書き込み）。直した版: srv.py:search（mcp、行 0）だけ。agent.py:search のユニットが消えた",
+   "expected": "2 つは別モジュールの無関係な関数で、agent.py:search は tools-list のユニットのまま残るべき（同じ関数の二重登録は registered の (module, qualname) ですでに防げている）",
+   "direction": "count_loss",
+   "new_in_this_diff": true,
+   "plausibility": "低〜中。search / read_file / run のようなありふれた名前が衝突すると起きる。corpus のうち呼び出し形と tools リストの両方を持つ 72 木で直す前後の find_units を突き合わせた範囲では、消えたユニットは 0 だった（ただし v2-david-li0406__meta-skill-evloving は直す前の版が 20 分以上で終わらず、比べられていない）。A9 の較正対では tools_benchmark.py:sample_tool の framework が tools-list から openai-agents に変わった（消失ではない）",
+   "proposed_fix": "find_tools_list_units の already に登録形のユニットの qualname を入れず、(module, qualname) の registered だけで除く（デコレータ形の既存の名前衝突も同じ理由で消せる）"
+  }
+ ],
+ "could_not_break": [
+  "(3) モジュール水準の束縛の数え方: if/else の二重 def、try/except の import と def、`fn: object = print`（注釈つき代入）、モジュール直下の `:=`、match の捕捉 `case fn:`、同名の class。どれも直した版で採らなかった（hold.py）",
+  "(3) クラス本体の中の内包からの参照: `class K: def fn(self)...; [mcp.tool()(fn) for _ in ...]` はクラスのスコープを飛ばし、モジュールの fn（qualname 'fn'）に解けた。Python の意味と合う",
+  "(3) `global` / `nonlocal`、globals() の別名・update、既定の名前空間の exec、import *、内包の束縛: 実装役の adv.py の範囲。今回は同じ形を繰り返していない",
+  "(4) `from ..impl import purge` を再公開する pkg/sub/__init__.py を経て、`from pkg.sub import purge` で pkg/impl.py:purge に正しく解けた",
+  "(3) `for n in [...]: setattr(impl, n, print)`（名前が定数でない setattr のモジュール属性の書き換え）は採らなかった",
+  "(3)/(4) 受け手の import に別名を付けたモジュール属性の書き換え `import pkg.impl as m; m.purge = ...` は採らなかった（R4 の連鎖形だけが抜ける）",
+  "(5) 別名なしの木内サブクラス（`class FileServer(Server)`、別モジュールの `class B(s.A)`）は正しく採らなかった",
+  "(5) 入れ子の関数で self を仮引数として束縛し直す形、`self.impl.purge`（self の属性の連鎖）、`setattr(self, 'm', w)`: どれも採らなかった",
+  "(7) ToolSpec のサブクラス `My(ToolSpec)` と、ToolSpec を仮引数で束縛し直す形は spec_object にしなかった",
+  "corpus のうち呼び出し形 / ToolSpec と tools リストの両方を持つ 72 木（1 木は直す前の版が終わらず 71 木）で直す前後の find_units を比べた。消えたユニットは 0、framework が変わったのは A9 の sample_tool の 1 件（tools-list → openai-agents、function_tool(sample_tool) による）。新しいユニットの抜き取り（OpenManus、OpenHands のテスト、memory-hub、canvas-mcp のテスト、abyss-stack）は、ソースを読んだ範囲では実際の登録だった"
+ ],
+ "summary": "U40 の修正を崩しに行き、Python の意味で正しくない所見を 8 件出した。どれも直した版と直す前の版（74a5cf8 を git archive で scratchpad/d64review/U40/base に展開したもの）の両方で実際に走らせて確かめた。主 repo の HEAD は c2e99f7 に進んでいたので、直す前の版にはこの展開を使った。\n\n- **誤 clear（false_clean、4 件）:**\n  - R1: self.m のサブクラスによる上書きの確認は、基底を末尾名で結ぶ。そのため、別名の基底・`Base = s.Server`・`Server[str]` を基底に持つサブクラスが見えない。\n  - R2: `object.__setattr__` / `super().__setattr__` によるインスタンス属性での隠蔽を見ない。\n  - R5: クラス本体で、ローカルな def より前にある参照がグローバルに落ちる（LOAD_NAME）ことを見ない。\n  - R7: 同じ関数を別の名前と宣言で 2 度登録したとき、2 つ目の readOnly の宣言を捨てる。\n- **誤警報（false_alarm、3 件）:**\n  - R3: モジュール直下の `locals()[...] =` が名前空間の書き換えとして扱われない。\n  - R4: `import pkg.impl; pkg.impl.purge = x` という連鎖形のモジュール属性の書き換えを記録しない（別名形なら記録する）。\n  - R6: 絶対 import で完全一致を優先するため、スクリプトの兄弟モジュール（examples/demo/tools.py）より根の tools.py を選び、宣言を別の関数に付ける。\n- **数え落とし（count_loss、1 件）:**\n  - R8: 呼び出し形のユニットの qualname が tools_list の already（名前の集合）に入る。そのため、別モジュールの同名の tools-list ユニットが消える。corpus の 72 候補木では実例 0 だった。\n\n実装役の根拠のうち、次のものは崩せなかった（could_not_break に詳細）:\n- 束縛の数え方\n- 内包とクラスのスコープ\n- 相対 import の level\n- 別名形の属性の書き換え\n- 別名なしのサブクラスの確認\n- self の束縛し直し\n- ToolSpec の照合\n\n再現の木は /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/d64review/U40/t/ の下（cA, cA2, cB, cQ, cQ2, cH, cE, cF, cS, cC, cC0, cD。対照は cA0, cE2）にある。比べるスクリプトは同じディレクトリの cmp.sh、Python の意味の確認は sem/s.py、崩せなかった形は hold.py。worktree と主 repo は書き換えていない。"
+}

@@ -1,0 +1,80 @@
+{
+ "findings": [
+  {
+   "id": "U23-A1",
+   "target": "entry_seed.lifespan_seeds / _yield_value（R4-r4-1）: lifespan の値の主体が MODEL/opaque（ctx 根）から OP/opaque に変わる",
+   "input": "t_ls2/server.py（psycopg）: `@asynccontextmanager async def app_lifespan(server): db = psycopg.connect(...); yield {\"db\": db, \"table\": \"notes\"}`、`mcp = FastMCP(\"t\", lifespan=app_lifespan)`、`DB = psycopg.connect(...)`（モジュール水準）。`@mcp.tool() def set_table(table: str, ctx: Context): ctx.request_context.lifespan_context[\"table\"] = table`。readOnly のツール `read_table_moddb(ctx)`: `DB.execute(\"SELECT body FROM \" + ctx.request_context.lifespan_context[\"table\"])`。t_ls3: destructiveHint=False のツール `log_tag`: `DB.execute(\"INSERT INTO log(tag) VALUES ('\" + lifespan_context[\"tag\"] + \"')\")` で、`tag` は set_tag が MODEL の値を書き込む",
+   "observed": "直す前: read_table_moddb は sql=MODEL/opaque（roots ctx[\"table\"]）で D1 が不（db_sql_model_opaque）。log_tag は D2 が不（db_sql_model_opaque）。直した後: どちらも sql=OP/opaque で、DB の行に contradiction の注記が付かない。つまり 内。同じ木の read_table（lifespan の db を使う形）は、新しく出た行が最初から 内",
+   "expected": "不のまま（fix_outline (4) は「D1 / D2 の類は不 → 不で変わらない」と書いている。反例 ce_lifespan_rebound と同じく、lifespan_context は別のツールがモデルの値を書き込める共有状態）。psycopg3 は引数なしの execute で複文を通すので、set_table(\"notes; DELETE FROM notes\") の後に read_table を呼べば readOnly のツールが削除する。本当は矛がありうる",
+   "direction": "false_clean",
+   "new_in_this_diff": true,
+   "plausibility": "中。R2-r1-10 を反証した c10 と同じ機構（ctx を OP にすると SELECT の接頭辞 + opaque が READ → 内 になる）が、lifespan= のある木の部分パスでは生き返る。SDK README の lifespan の形でテーブル名・既定のタグ・スキーマ名を共有状態に置く木は現実にありうる。dparse._db は not complete のとき `_choice` が influenced（MODEL/opaque）なら不を返すが、OP/opaque は接頭辞の分類に落ちて READ / INSERT(additive) → 内 になる。D4 の db_sql_model も同じ経路で消える",
+   "proposed_fix": "lifespan の種で、受け手型の要らない葉（Atom / Str / 定数）の主体は今日どおり ctx 根の MODEL（roots={ctx.request_context.lifespan_context[...]}、確度 opaque）に保ち、型は受け手オブジェクトにだけ付ける。あるいは種の Value 全体に MODEL の主体を join する（型は主体に依存しないので DB / NET / SPAWN の行は残る）。モジュール水準の共有 dict（D17）も同じ OP/opaque の接頭辞で 内 になる（t_ls2 の read_table_module_state は直す前から 内）ので、dparse 側で「OP/opaque の尾をもつ接頭辞」を不にする直し方も候補。ただしそれは既存の限界として open_questions に記録する"
+  },
+  {
+   "id": "U23-A2",
+   "target": "entry_seed._yield_value → val.engine._opaque_deep(depth=2)：3 段目より深い要素は確度が resolved のまま",
+   "input": "t_ls4/server.py: `yield {\"db\": sqlite3.connect(...), \"client\": httpx.Client(base_url=...), \"cfg\": {\"saved\": {\"sql\": \"SELECT 1\", \"method\": \"GET\"}}}`。書き込み側 `set_query(sql, method, ctx)`: `saved = ctx.request_context.lifespan_context[\"cfg\"][\"saved\"]; saved[\"sql\"] = sql; saved[\"method\"] = method`。readOnly のツール3つ: `run_saved`（`st[\"db\"].execute(st[\"cfg\"][\"saved\"][\"sql\"])`）、`run_saved_moddb`（モジュール水準の `DB.execute(...)`）、`call_saved`（`st[\"client\"].request(st[\"cfg\"][\"saved\"][\"method\"], \"/items\")`）",
+   "observed": "直した後: run_saved と run_saved_moddb の sql は OP/resolved const 'SELECT 1'、行の判定は [] で注記なし（内）。call_saved の http_method は GET に解け、判定は 内。直す前: run_saved_moddb は MODEL/opaque で D1 が不（db_sql_model_opaque）。run_saved と call_saved は行 0",
+   "expected": "不。ce_lifespan_rebound そのもので、起動時の定数を resolved で読んではいけない。test_keep_ls_rebound_not_clear はこの形の 1 段目（st[\"sql\"]）しか見ていない",
+   "direction": "false_clean",
+   "new_in_this_diff": true,
+   "plausibility": "中低。設定を入れ子の dict や dataclass（AppContext(cfg=Cfg(saved=...))）で yield する形では起きる。_opaque_deep は depth=0 の値に opaque を合流するが、その形（Map / Obj）の中身は降りないので、3 段目の葉は resolved が残る。モジュール水準の共有状態（D17）にも同じ穴があり、t_ls5 の STATE[\"cfg\"][\"saved\"][\"sql\"] は直す前から 内。これは既存の限界だが、lifespan の経路では今回 不 → 内 の退行を新しく作る",
+   "proposed_fix": "_opaque_deep を深さ無制限にする（形の再帰は有限）。深さで打ち切るなら、depth=0 で Seq / Map / Obj / Argv に当たったとき、中身を opaque の Unknown に置き換えて fail closed にする（型の要る受け手は 2 段までで足りる）。D17 のモジュール水準の経路も同じ関数を使っているので一緒に直し、compare_scans で消える 内 を確認する"
+  },
+  {
+   "id": "U23-P1",
+   "target": "entry_seed._own_hooks（R4-r4-2 のフック検出）: クラス体の代入で結ばれたフックを見落とす",
+   "input": "t_pyd1 / t_pyd6: (1) `class PostAssign(BaseModel): path: str; model_post_init = _post`。_post はモジュール水準の def で、self.path を FIXED にする。(2) `@dataclass class DcPostAssign: path: str; __post_init__ = _post`。(3) `class UnderReq(BaseModel): path: str; _check: Any = field_validator(\"path\")(fixed)`。(4) `class CVReq(BaseModel): path: str; check: ClassVar[Any] = field_validator(\"path\")(fixed)`。4 つとも destructiveHint=False のツールで `open(req.path, \"w\")`",
+   "observed": "直す前: 4 つとも MODEL/opaque で D2 が不（fs_writeout_model_path_opaque）。直した後: 4 つとも req.path が MODEL/resolved になり、D2 が矛（fs_writeout_model_path）。pydantic 2.13.5 + mcp<2 の FastMCP.call_tool で {\"path\": \"/etc/passwd\"} を渡して実際に走らせると、4 つとも open に渡るのは '/srv/data/report.txt'（sem2.py / sem6b.py）",
+   "expected": "不（test_keep_pydantic_hooks_stay_unknown と同じ扱い）。値は OP の定数に置き換わるので、fs_writeout_model_path の矛は誤警報",
+   "direction": "false_alarm",
+   "new_in_this_diff": true,
+   "plausibility": "低〜中。(3)(4) は実装役の条件 (c)「クラス体の代入で呼び出しを含むもの」の抜け。検査が ast.Assign だけで、ast.AnnAssign は `_excluded_field` が真（`_` 始まり・ClassVar）のとき検査を飛ばし、それ以外でも dataclass でなければ呼び出しを見ない。(1)(2) はフック名（_HOOK_METHODS / __get_pydantic*）を FunctionDef でしか見ないため。pydantic はどちらも登録する",
+   "proposed_fix": "クラス体の Assign / AnnAssign の対象名が _HOOK_METHODS か __get_pydantic* で始まるなら、値に関係なくフックにする。AnnAssign の値に Field / PrivateAttr / dataclasses.field 以外の呼び出しがあれば、除外フィールド（_ 始まり・ClassVar）でも pydantic でもフックにする。検査は _excluded_field の判定より前に置く"
+  },
+  {
+   "id": "U23-P2",
+   "target": "entry_seed._excluded_field / _family_fields: pydantic の Final の既定値つきをフィールドとして扱う",
+   "input": "t_pyd1: `class FinalReq(BaseModel): OUT: Final[str] = FIXED; name: str`。destructiveHint=False のツールで `open(req.OUT, \"w\")`",
+   "observed": "直す前: MODEL/opaque で D2 が不。直した後: req.OUT が MODEL/resolved（roots req.OUT）で D2 が矛（fs_writeout_model_path）。pydantic 2.13.5 は警告を出して OUT をクラス変数として扱う（model_fields は ['name'] だけ）。FastMCP 経由で {\"OUT\": \"/etc/passwd\"} を渡しても、open には '/srv/data/report.txt' が渡る",
+   "expected": "不か矛以外（ClassVar と同じ非フィールド。値は OP の定数 FIXED）",
+   "direction": "false_alarm",
+   "new_in_this_diff": true,
+   "plausibility": "中低。モデルに定数を Final で置く書き方はある。_NON_FIELD_ANNOTATIONS に Final が無い",
+   "proposed_fix": "pydantic の家族では、Final（typing / typing_extensions、裸の Final を含む）で既定値つきのものを非フィールドとして外す。dataclass と NamedTuple ではフィールドのまま（dataclasses は Final の既定値つきも init 引数にする）"
+  },
+  {
+   "id": "U23-S1",
+   "target": "entry_seed.annotated_param_seeds / resolve_name（条件 (a)）: 入れ子の入口の注釈を囲む関数のスコープで解かず、global による再束縛も見ない",
+   "input": "t_pyd5: モジュール水準に `class Req(BaseModel): path: str` と `from pathlib import Path` がある。`def register(mcp)` の中で局所の `class Req(BaseModel)`（field_validator で FIXED を返す）と `from store import Path`（write_text が requests.post）を定義し、その中の `@mcp.tool` の入口 `write_local(req: Req)`（destructiveHint=False、open(req.path,'w')）と `put_local(path: Path)`（readOnly、path.write_text）が局所のものを使う。t_pyd7: `def _harden(): global Req; class Req(BaseModel): ...@field_validator...`。これをツールの定義より前にモジュール水準で呼ぶ",
+   "observed": "直す前: write_local は D2 不、put_local は NET の D1 不だけで FS_WRITE は無し、write_global は D2 不。直した後: write_local は D2 矛（fs_writeout_model_path）。put_local には偽の pathlib.Path.write_text の FS_WRITE が 2 行付き、D1 矛（fs_write）。write_global は D2 矛。FastMCP で実際に走らせると、write_local は '/srv/data/report.txt' を open し、put_local は POST だけでファイルを書かない（sem5.py / sem7.py）",
+   "expected": "今日どおり（不、または pathlib の FS_WRITE なし）。注釈は Python の規則で囲む関数のスコープ・global の再束縛で解決される",
+   "direction": "false_alarm",
+   "new_in_this_diff": true,
+   "plausibility": "低〜中。register(mcp) 型の入れ子の登録は CLAUDE.md の落とし穴に挙がるほどよくある。そこで同名の局所 import やクラスがモジュール水準の束縛を隠すのは稀だが起きる。lifespan 側の _receiver_value は囲む関数の束縛を調べているのに、注釈側（pydantic・Path・Context）は調べていない。global の再束縛は D17 改訂 2 が名指しした穴の再発",
+   "proposed_fix": "unit.qualname に囲む関数があるとき（メソッドではないとき）は、注釈の先頭名が囲む関数のどれかで束縛される（仮引数・代入・import・def / class）なら種を置かない。木内のどこかの関数に `global <先頭名>` があれば、モジュール水準の 1 回束縛とは数えない。lifespan_seeds の Context の解決にも同じ守りを入れる"
+  },
+  {
+   "id": "U23-P3",
+   "target": "entry_seed._own_hooks: dataclass の既定値が名前で参照される記述子",
+   "input": "t_pyd3: 記述子 `class Confine` を定義する。__set__ は FIXED を書く。`CONF = Confine()` をモジュール水準に置き、`@dataclass class DcDesc: path: str = CONF`。destructiveHint=False のツールで `open(req.path, \"w\")`",
+   "observed": "直す前: D2 不。直した後: req.path が MODEL/resolved で D2 矛。FastMCP で {\"path\": \"/etc/passwd\"} を渡すと、open には '/srv/data/report.txt' が渡る（sem3b.py）",
+   "expected": "不（実装役の条件 (c)「dataclass の呼び出しの既定値は記述子かもしれない」と同じ理由）",
+   "direction": "false_alarm",
+   "new_in_this_diff": true,
+   "plausibility": "低。検査が既定値の ast.Call だけを見ていて、Name / Attribute の既定値を通すための抜け",
+   "proposed_fix": "dataclass の既定値は、リテラル定数と field(...) / Field(...) の呼び出し以外（Name / Attribute / その他の式）をフックにする"
+  }
+ ],
+ "could_not_break": [
+  "R4-r1-6 の Path 形: readOnly のツールで p: Path に対して os.path.join / p / 'x' / str(p) / f-string / shutil.rmtree / subprocess の argv / p.parent / p.resolve() / p.open('w') / p.expanduser() を直す前と後で比べた（t_path1）。行も矛も消えず、増えたのは pathlib の受け手の行だけ。木内の pathlib.py による stdlib の影（t_path2）、try/except の二重束縛、PurePath（t_path3）では、どれも pathlib の効果を足さなかった",
+  "Path を強制しない枠組み（autogpt / gptme / tools-list）で str が渡る場合: pathlib の sink（write_text / write_bytes / unlink / mkdir / open）は str に存在しないので実行時に失敗し、偽の clear は作れない。str と Path で意味が分かれる replace は sink 表に無い",
+  "pydantic 引数でオブジェクト全体を使う形（model_dump()['path'] / getattr / str(req) / f'{req}' / dict(req) / asdict / NamedTuple の添字・展開 / model_dump_json）: 直す前と後で行も判定も同じか強くなるだけで、消える行は無い（t_pyd4）",
+  "外部の型（extlib の SafeTarget / SafePath）と木内 Enum のフィールド: 属性アクセス（req.target.path / req.mode.value）は今どおり MODEL/opaque → 不。フィールドそのもの（req.path: SafePath）が resolved → 矛 になるのは、平の仮引数 path: SafePath の既存の扱いと同じで、今回の差分に固有の誤りではない（実装役が挙げた攻撃点。ただし外部型の __get_pydantic_core_schema__ が値を固定する形は、平の仮引数を含めた既存の限界として残る）",
+  "条件 (a)(b) の相対 import・木内モジュール・二重束縛・外部の基底・Generic・metaclass・入れ子の深さ 2 の打ち切り・自己参照クラス: fail closed になっていて崩せなかった（既存の test_keep と、入れ子の木で確かめた）",
+  "lifespan の条件 (2)(3) の partial / 工場関数 / 別インスタンス / 利用者定義 Context: 既存テストのとおり。追加で見た D2 FS（open(st['dir'] + '/out.txt','w')）と D1 SPAWN（['git', st['sub']]）は、直す前と後の両方で不（t_ls1）。実装役の主張どおり",
+  "lifespan 本体の起動時の効果（pid ファイル書き込み）がツールに付かないこと: 再確認して崩せなかった"
+ ],
+ "summary": "U23 の修正（36a411c）を直す前の版（74a5cf8 を git archive で scratch に展開）と並べて、最小の木で実際に走らせた。pydantic 2.13.5 と mcp<2 の FastMCP でも Python の意味を確かめた。崩せたのは 6 件で、うち 2 件は false_clean。\n\n(A1) lifespan の値の主体が OP になるため、SELECT / INSERT の接頭辞に共有状態の値をつなぐ SQL が、MODEL/opaque の不から OP/opaque の 内 に落ちる。R2-r1-10 の c10 と同じ機構で、fix_outline (4) の「D1 / D2 は不 → 不」に反する。\n(A2) _opaque_deep は depth=2 で打ち切るため、3 段目より深い yield の定数（cfg.saved.sql / method）が resolved のまま残り、ce_lifespan_rebound の誤 clear が入れ子で再発する。モジュール水準の経路は直す前から 内 だが、run_saved_moddb は今回 不 → 内 に退行した。\n\n誤警報の側は 4 件。\n(P1) フック検出の抜け。model_post_init / __post_init__ への代入、_ 始まりや ClassVar の AnnAssign に置いた field_validator(...)(f)。\n(P2) pydantic が Final の既定値つきをクラス変数として扱うのに、フィールドとして種付けする。\n(S1) 注釈を入れ子の関数のスコープや global の再束縛で解かない。register(mcp) の中の局所 class / import で、pydantic と Path の両方が誤る。\n(P3) dataclass の既定値が名前で参照される記述子。\n\n誤警報の 4 件は、どれも FastMCP で実際に呼ぶと open に渡るのは OP の定数 '/srv/data/report.txt' だった（P3 は dataclass の記述子 1 形で確かめた）。Path 形の変更と、オブジェクト全体の使用は崩せなかった。作業用の木とスクリプトは /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/d64review/U23/（t_ls1〜5, t_pyd1〜7, t_path1〜3, sem*.py, cmp.sh）にある。worktree と主 repo は書き換えていない。"
+}

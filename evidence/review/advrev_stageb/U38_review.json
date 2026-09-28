@@ -1,0 +1,81 @@
+{
+ "findings": [
+  {
+   "id": "U38-ADV-1",
+   "target": "(C) R2-r3-3 の絞り込み: entries._pin_v2_handler / _pin_in_module（_module_bindings と _scan_module_writes が star import を束縛として数えない）",
+   "input": "server.py: `from mcp.server.lowlevel import Server` / list_tools が Tool(name=\"rm\", annotations=ToolAnnotations(readOnlyHint=True)) を返す / `async def handle(ctx, params): raise NotImplementedError` / `try: from handlers_impl import *` と `except ImportError: pass` / `server = Server(\"t\", on_list_tools=list_tools, on_call_tool=handle)`。handlers_impl.py: `async def handle(ctx, params): if params.name == \"rm\": os.remove(params.arguments[\"path\"])`。変種 tA2: server.py は `from handlers import handle`、handlers/__init__.py は `from .base import handle` と `from .override import *`（本物は override.py）。木は scratchpad/d64review/U38/tA と tA2 に置いた",
+   "observed": "直した版: ユニットは server.py:handle（スタブ、v2p=params）だけ。handlers_impl.py:handle は消え、os.remove の contradiction:D1 も消える。tA2 も同じで、ユニットは handlers/base.py:handle だけ。直す前の版: handlers_impl.py:handle（tA2 では handlers/override.py:handle）がユニットで、os.remove に contradiction:D1 / contradiction_reason:D1:fs_write が出る",
+   "expected": "Python では、def の後に実行される `from X import *` が名前 handle を X.handle で上書きする。登録されるのは handlers_impl.handle（tA2 では override.handle）なので、そのユニットと os.remove の D1 矛が残るべき。一意に絞れない場合は、今までどおり裸名一致に落とすべき",
+   "direction": "false_clean",
+   "new_in_this_diff": true,
+   "plausibility": "低〜中。「既定のスタブを置き、任意の実装モジュールを star import で被せる」形（try/except ImportError の中の `from .custom import *` や、__init__.py が `from .base import h` の後に `from .override import *` を置く形）で起きる。実装役が挙げた「確かめていないもの」（setattr(sys.modules)、他モジュールの属性経由の上書き）には入っていない抜け道",
+   "proposed_fix": "_pin_v2_handler と _pin_in_module で、対象モジュールの本体（if / try の中を含む）に `from ... import *` が 1 つでもあれば絞らずに None を返す。順序を見て「def より前の star だけ」と判定するより、単に解かない方が安全。_scan_module_writes の \"*\" に star import を足す方法もあるが、その関数は U09 と共有しているので、U38 の側で閉じる方がよい"
+  },
+  {
+   "id": "U38-ADV-2",
+   "target": "(D) R2-r3-2: lowlevel_v2_registrations が add_request_handler の handler を args[-1] で取る",
+   "input": "server.py: `from rpc import JsonRpcServer` / `async def handle_three(params): if params.name == \"rm_three\": os.remove(params.arguments[\"path\"])` / list_tools が Tool(name=\"rm_three\", annotations=ToolAnnotations(readOnlyHint=True)) を返す / `rpc.add_request_handler(\"tools/call\", handle_three, CallToolRequestParams)`。rpc.py は自前の JsonRpcServer で、`def add_request_handler(self, method, handler, params_model=None)`（scratchpad/d64review/U38/tD）",
+   "observed": "直した版: ユニット 0、unresolved_handler.count=0、mcp_version=unknown。handler に CallToolRequestParams（args[-1]）を採り、裸名で関数が見つからないので登録点ごと黙って消える。直す前の版: handle_three がユニット（lowlevel_v2）で、os.remove に contradiction:D1 / contradiction_reason:D1:fs_write が出る",
+   "expected": "(method, handler, 型やオプション) の順の自前 3 引数形では handler は args[1]。handle_three のユニットと D1 の矛が残るべき。少なくとも、解けなかった登録として記録に残るべき（規則 4）",
+   "direction": "false_clean",
+   "new_in_this_diff": true,
+   "plausibility": "低〜中。ce_r3_2（自前の 2 引数形）と同じ系統の自前の dispatcher で、第 3 引数に params のモデル・timeout・スキーマを取る形は珍しくない。args[-1] が dotted 名（型名）だと unresolved_handler にも数えられず、痕跡が残らない",
+   "proposed_fix": "args[1] が mcp の CallToolRequestParams に解ける（= SDK 形と裏付けられる）ときだけ args[-1] を採る。そうでない 3 引数以上の形では、args[1] と args[-1] の両方を候補にする（どちらも関数に解けなければ unresolved_handler に数える）。dotted 名でも関数定義に 1 件も当たらない handler は unresolved_handler に記録する"
+  },
+  {
+   "id": "U38-ADV-3",
+   "target": "(A) R2-r1-1: mcp_version_class を木全体で 1 つに決めていること。fastmcp 2.x / 3.x（mcp<2 を要求する）を lt2 の票にしていないこと",
+   "input": "monorepo（scratchpad/d64review/U38/tB）。legacy_server/requirements.txt は `fastmcp>=2.10,<3`。legacy_server/server.py は `from fastmcp import FastMCP` / `from mcp.types import ToolAnnotations` / `@mcp.tool(annotations=ToolAnnotations(read_only_hint=True)) def save_note(path, text): open(path, \"w\").write(text)`。new_server/pyproject.toml は `dependencies = [\"mcp>=2.0\"]`。new_server/server.py は `from mcp.server.mcpserver import MCPServer` で注釈のないツールを 1 つ持つ",
+   "observed": "直した版: mcp_version=ge2（根拠は new_server の import と spec だけ）。legacy_server の save_note が D.explicit=[readOnlyHint]、upper=[FS_READ, NET] になり、builtins.open に contradiction:D1 / contradiction_reason:D1:fs_write（CONTRADICTION）が出る。直す前の版: D ⊥、malformed=[read_only_hint]、矛なし",
+   "expected": "legacy_server は fastmcp<3 で動き、PyPI の requires_dist で確かめたとおり fastmcp 2.3.0 は mcp<2.0.0,>=1.8.0、2.12.4 は mcp<2.0.0,>=1.12.4、3.0.0 / 3.2.0 は mcp<2.0,>=1.24.0 を要求する。つまり mcp 1.x で動く。1.x の snake_case は protocol の readOnlyHint にならないので、D は ⊥ + malformed のまま（仕様書 322 行目 / O27）で、矛にしてはいけない。少なくとも「決まらない」（D_unknown）にするべき",
+   "direction": "false_alarm",
+   "new_in_this_diff": true,
+   "plausibility": "中（D60 の新しいデータでは上がる）。2.x へ移行中の monorepo で、1 つのサーバーを MCPServer に移し、別のサーバーは standalone fastmcp 2 / 3 のまま残す形。fastmcp<4 の記載は lt2 の票にならないので、ge2 の証拠が 1 つでもあると木全体が ge2 に倒れる。lock がある木は、lock の mcp 1.x の行が lt2 の票になるので守られる。spec だけの木で起きる",
+   "proposed_fix": "(1) fastmcp の lock の版、または指定の上限が 4 未満（`fastmcp>=2.x,<3` / `==2.*` / `~=3.0` など）なら lt2 の票にする（ge2 側だけ数えている非対称をなくす）。(2) 版を木全体で 1 つに決めず、ユニットのファイルから最も近い依存記載のサブツリーごとに決める。サブツリーごとにできないなら、依存記載が複数のサブプロジェクトに分かれている木は unknown にする"
+  },
+  {
+   "id": "U38-ADV-4",
+   "target": "(A) R2-r1-1: enforcement._requirement_specs / mcp_major_votes がコメントや文字列の中の `mcp>=2` を版の記載として数える",
+   "input": "requirements.txt: `fastmcp>=2.10,<3` と、次の行にコメント `# TODO: move to mcp>=2 (MCPServer) once we drop fastmcp`。server.py は ADV-3 の legacy_server と同じ（standalone fastmcp で `ToolAnnotations(read_only_hint=True)` を付け、open(path, \"w\") に書く）。木は scratchpad/d64review/U38/tF",
+   "observed": "直した版: mcp_version=ge2、evidence=['ge2:spec:requirements.txt:mcp>=2 (MCPServer) once we drop fastmcp']。save_note に readOnlyHint の上界が付き、builtins.open に contradiction:D1 / contradiction_reason:D1:fs_write が出る。直す前の版: D ⊥ / malformed で矛なし。単体でも、`_requirement_specs('description = \"works with mcp>=2 soon\"', 'mcp')` が ['>=2 soon'] を返し、票は ge2 になった",
+   "expected": "コメント（#）や pyproject の description などの文字列は依存の指定ではない。票にならず、版は決まらない（D_unknown）か lt2 になるべきで、矛は出ない",
+   "direction": "false_alarm",
+   "new_in_this_diff": true,
+   "plausibility": "中。2.x への移行期には、requirements や pyproject に「mcp>=2 で壊れる」「mcp>=2 に移る」といったコメントや説明文が普通に現れる（SDK 自身のエラーメッセージも \"pin 'mcp<2'\" と書く）。lt2 の側に誤った票が入るのは害がないが、ge2 の側に入ると矛が出る",
+   "proposed_fix": "requirements*.txt では行頭から `#` 以降を落とし、1 行 1 要求として `_REQ_LINE` 相当で名前を先頭に取る。pyproject.toml / setup.cfg は TOML / INI として読み、dependencies / optional-dependencies / install_requires の文字列要素だけを PEP 508 で解く（tomllib は 3.11 以上、3.10 では tomli か保守的な行パーサ）。少なくとも、`#` 以降と引用符で囲まれた自由文のフィールドを除く"
+  },
+  {
+   "id": "U38-ADV-5",
+   "target": "(B) R2-r3-1: v2 の params の種付けが、既存の限界（局所の dict への添字の書き込みを追わない）を v2 に持ち込む",
+   "input": "server.py（scratchpad/d64review/U38/tC2）: Tool(name=\"w_local\", annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False)) / `async def handle(ctx, params): args = params.arguments or {}; if params.name == \"w_local\": args[\"path\"] = \"/var/lib/app/report.txt\"; open(args[\"path\"], \"w\").write(\"x\")` / `Server(\"t\", on_list_tools=list_tools, on_call_tool=handle)`",
+   "observed": "直した版: builtins.open に contradiction:D2 / contradiction_reason:D2:fs_writeout_model_path（CONTRADICTION）。直す前の版: contradiction_unknown:D2:fs_writeout_model_path_opaque（不）。参考として、v1 の同じ形（tC1: `arguments[\"path\"] = 定数` の後に open）は、直す前の版でも直した版でも D2 の矛になる（v1 に元からある限界）。一方 `params.arguments[\"path\"] = 定数` や `params.arguments = {...}` と直接書く形（tC）は、どちらの版でも不のままで、新しい誤警報は出ない",
+   "expected": "書き込み先のパスは運営者の定数で上書きされている（OP が選ぶ）ので、3-a の fs_writeout_model_path は成り立たない。矛ではない（D2 の書き出しは不か矛なし）",
+   "direction": "false_alarm",
+   "new_in_this_diff": true,
+   "plausibility": "低〜中。モデルが渡した引数を局所の辞書に移してから定数で上書きする形は多くない。根は値の解析器（局所の Map への添字の書き込みを追わない）にあり、v1 と同じ振る舞いに揃っただけなので、U38 の差分の誤りというより、既存の限界が v2 の行に広がったもの。v2 の増えた矛を compare_scans で 1 件ずつ確かめるときに、この形を除外の基準に入れる必要がある",
+   "proposed_fix": "U38 では直さず、既存の限界として O 番号で記録し、v1 / v2 の両方に効くことを書く。直すなら値の解析器の側で、局所の Map / Obj への `x[k] = v` の書き込みを強く更新する（キーが定数のとき）か、書き込みのある辞書の読み出しを opaque に落とす"
+  },
+  {
+   "id": "U38-ADV-6",
+   "target": "(C) R2-r3-3: `from pkg import m` の後の `m.h` を、pkg の __init__.py を見ずにサブモジュール pkg.m と決めている（_pin_v2_handler の m.h の枝）",
+   "input": "pkg/__init__.py は `from .impl_v2 import tools as handlers`。pkg/handlers.py は `async def handle(ctx, params): raise NotImplementedError`（旧スタブ）。pkg/impl_v2/tools.py は `async def handle(ctx, params): if params.name == \"rm\": os.remove(params.arguments[\"path\"])`。server.py は `from pkg import handlers` と `Server(\"t\", on_list_tools=list_tools, on_call_tool=handlers.handle)`（readOnlyHint=True の Tool）。木は scratchpad/d64review/U38/tG",
+   "observed": "直した版: ユニットは pkg/handlers.py:handle（スタブ）だけで、impl_v2/tools.py:handle と os.remove の contradiction:D1 が消える。直す前の版: 両方がユニットで、tools.py:handle に contradiction:D1 / fs_write が出る。mcp 2.2.0 の実行環境で `from pkg import handlers; handlers.__name__` を確かめると 'pkg.impl_v2.tools' になる",
+   "expected": "Python の `from pkg import handlers` は、__init__.py が束縛した属性をサブモジュールより優先する。登録されるのは pkg.impl_v2.tools.handle で、そのユニットと D1 の矛が残るべき",
+   "direction": "false_clean",
+   "new_in_this_diff": true,
+   "plausibility": "低。サブモジュール名と同じ名前を __init__.py で別物に束縛する形は珍しいが、版の移行で「旧モジュールを残して名前だけ差し替える」ときに起きうる。level>0 の `from . import handlers` の枝（allow_package）も同じ判定をしている",
+   "proposed_fix": "m.h の枝で `from pkg import m`（level 0 / >0 とも）を解くとき、pkg の __init__.py で _module_bindings(tree, m) が 1 つ以上あれば、サブモジュールとみなさない。その束縛を _pin_in_module と同じ条件でたどるか、たどれなければ None（裸名一致に落とす）にする"
+  }
+ ],
+ "could_not_break": [
+  "mcp 2.2.0 を scratchpad の venv（venv22）に入れて確かめた。ToolAnnotations の model_config は alias_generator=to_camel、validate_by_name=True。ToolAnnotations(read_only_hint=True) を by_alias で dump すると {'readOnlyHint': True}。camel と snake を両方書くと、kwargs でも dict でも、順序によらず camel が勝つ。Tool(annotations={'read_only_hint': True}) も readOnlyHint になる。R2-r1-1 の >=2.0 の写像と「camel が勝つ」は正しい",
+  "mcp 2.2.0 のソースで確かめた。runner.py:216-217 は `typed_params = entry.params_type.model_validate(...)` の後に `entry.handler(ctx, typed_params)` と位置で呼ぶ。add_request_handler の署名は (method, params_type, handler)。低レベル（lowlevel/ と runner.py）には inputSchema の検証が無い。mcp/server/fastmcp.py は ModuleNotFoundError を raise する。mcp.server は Server と MCPServer を再公開する。R2-r3-1 の MODEL/resolved の根拠と、版の API 形の根拠は崩れない",
+  "fastmcp 4.0.x の requires_dist は fastmcp-slim==4.0.x。fastmcp>=4 → ge2 は、slim が mcp>=2 を要求するという実装役の主張と矛盾しない（slim の METADATA そのものは見ていない）",
+  "params.arguments[\"path\"] = 定数 や params.arguments = {...} と直接書いて上書きする形（tC）は、直した版でも不のままで、新しい誤警報は出ない",
+  "代入で包むハンドラ（`handle = unpack(handle)` で (ctx, params) を (name, arguments) に変える）はデコレータの除外をすり抜け、v2_params_arg=arguments で種付けされる（tH）。ただし Obj への添字は MODEL/resolved のまま出るので、open の D2 矛と subprocess の D1 spawn_model の矛は直す前と同一で、出力は変わらなかった",
+  "match 文の case 本体の中の `from handlers_impl import handle` による再束縛は、_module_bindings が cases を見るので一意に絞られず、裸名一致に落ちる。本物のユニットと矛は残った（tE）",
+  "_requirement_specs は `pydantic-ai[mcp]>=2.0`、`fastapi-mcp==0.3`、`langchain_mcp>=2`、`mcp-types>=2`、`fastmcp>=4` を mcp の指定として拾わない。`mcp>=1.2,<2` は lt2、`mcp~=1.9` は lt2、`mcp<=2.0` は票なしと正しく判定した（単体で実行）",
+  "実装役の測定と重なる基本形（t0: 低レベル v2 の os.remove の D1 矛）は、直す前も直した後も矛。直した版では v2p=params が付き、UNKNOWN の verdict だけが消える"
+ ],
+ "summary": "U38 の修正を、直す前の版（74a5cf8 の authgap/ を scratchpad に git archive で展開したもの）と直した版（worktree 12c73b6）の両方で走らせて比べました。Python の意味で誤りになる例を 6 件作り、すべて実行して確かめました。\n\n**解決率を上げる側の根拠のうち、崩れた箇所（R2-r1-1、snake_case の版の決め方）:**\n- ADV-3（誤警報）: 版を木全体で 1 つに決めており、しかも fastmcp 2.x / 3.x（PyPI で mcp<2 を要求すると確認）を lt2 の票にしていません。そのため、monorepo の中の standalone fastmcp 2 のサーバーの `read_only_hint=True` が readOnlyHint の宣言になり、新しく D1 の矛が出ます。\n- ADV-4（誤警報）: requirements のコメントや pyproject の説明文の中の `mcp>=2` が ge2 の票になり、同じく新しい D1 の矛が出ます。\n\n**絞り込み（R2-r3-3）の抜け道。どちらも本物のハンドラのユニットと D1 の矛が消えます:**\n- ADV-1: def の後の star import による上書きを束縛として数えていません。同じモジュールでも、__init__.py の再公開の連鎖でも起きます。\n- ADV-6: `from pkg import m` の後の `m.h` を、__init__.py が m を別物に束縛していてもサブモジュール pkg.m と決めています。\n\n**R2-r3-2（add_request_handler）:**\n- ADV-2: 自前の `(method, handler, X)` の 3 引数形で、args[-1] の X を handler と取り違えます。ユニットが消え、unresolved_handler にも数えられず黙って落ちます。\n\n**R2-r3-1（params の種付け）:**\n- ADV-5: 種付けで、局所の dict への添字の書き込みを追わないという既存の限界（v1 と同じ）が v2 に持ち込まれます。`args = params.arguments or {}; args[\"path\"] = 定数` の後の open が、不から D2 の矛に変わります。\n- 種付けそのものの根拠は崩せませんでした。mcp 2.2.0 のソースで、handler(ctx, typed_params) と位置で呼ぶこと、低レベルに inputSchema の検証が無いことを確かめました。\n\n**崩せなかった根拠（could_not_break）:**\n- mcp 2.2.0 を実際に入れて、snake→camel の写像と camel が勝つことを確かめました。\n- params.arguments への直接の書き込み、代入で包むハンドラ、match 文の中の再束縛、依存名の接頭辞の除外は、どれも出力が崩れませんでした。\n\nどのファイルも書き換えていません。木と道具（cmp.sh / s.sh / run1.py、tA〜tH、venv22、mcp22）は /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/d64review/U38/ にあります。なお、主 repo の HEAD は 74a5cf8 ではなく c2e99f7 に進んでおり、その差分は authgap/dparse.py と catalog/statements.py に及んでいます。そのため、直す前の版には 74a5cf8 そのものを使いました。"
+}
