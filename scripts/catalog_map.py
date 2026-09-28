@@ -78,6 +78,7 @@ CLASSIFY: dict[str, tuple[str, str, str]] = {
     "R2_EXCEPTIONS": ("core", "領域固有", "MODEL としない仮引数の例外"),
     "LOWLEVEL_V2_KWARGS": ("core", "領域固有", "低レベル MCP v2 の kwargs"),
     "TOOLMESSAGE_META_FIELDS": ("core", "領域固有", "langroid ToolMessage のメタ欄"),
+    "SPEC_OBJECT_ORIGINS": ("core", "領域固有", "spec_object 形（gptme `ToolSpec`）の構築子の import 元（D64 / U40）"),
     # -- 解析器の自己申告 -------------------------------------------------------
     "VAL_OPAQUE_REASONS": ("core", "engine", "値を解決できなかった理由 8 語"),
     "VALUE_ATTRS": ("core", "engine", "値に付く属性 8 語"),
