@@ -660,6 +660,12 @@ def _note_facts(node: ast.AST, parent: ast.AST, info: _ModInfo, chain: tuple[ast
     elif isinstance(node, ast.Attribute) and isinstance(node.ctx, (ast.Store, ast.Del)):
         info.stored_attrs.add(node.attr)
         info.attr_pairs.append((node.value, chain, node.attr))
+        if node.attr == "__dict__":
+            # `R.__dict__ |= {...}` / `R.__dict__ = {...}` / `del R.__dict__` は R の属性の書き換え（D64 / U40-RC4）。
+            # 右辺が定数キーだけの dict ならそのキー、そうでなければどの名前でもありうる。
+            keys = _const_dict_keys(_assigned_value(parent, node))
+            for k in keys if keys is not None else [None]:
+                _note_attr_write(info, node.value, chain, k)
     elif isinstance(node, ast.Subscript) and isinstance(node.ctx, (ast.Store, ast.Del)):
         # `R.__dict__["NAME"] = v` / `vars(R)["NAME"] = v` は属性 NAME の書き換え（D64 / U40-R2）。
         owner = _ns_dict_receiver(node.value)
@@ -667,6 +673,23 @@ def _note_facts(node: ast.AST, parent: ast.AST, info: _ModInfo, chain: tuple[ast
             _note_attr_write(info, owner, chain, _str_const(node.slice))
     elif isinstance(node, ast.Call):
         _note_call_facts(node, parent, info, chain)
+
+
+def _assigned_value(parent: ast.AST, target: ast.AST) -> Optional[ast.AST]:
+    """`parent` が `target` への代入（`=` の唯一の代入先 / `op=` / 注釈つき）なら右辺。それ以外は None。"""
+    if isinstance(parent, ast.Assign) and len(parent.targets) == 1 and parent.targets[0] is target:
+        return parent.value
+    if isinstance(parent, (ast.AugAssign, ast.AnnAssign)) and parent.target is target:
+        return parent.value
+    return None
+
+
+def _const_dict_keys(node: Optional[ast.AST]) -> Optional[list[str]]:
+    """`{"a": x, "b": y}`（キーがすべて文字列定数、`**` の展開なし）ならキーの列。それ以外は None。"""
+    if not isinstance(node, ast.Dict):
+        return None
+    keys = [_str_const(k) for k in node.keys]
+    return None if any(k is None for k in keys) else [k for k in keys if k is not None]
 
 
 def _note_attr_write(
@@ -927,6 +950,13 @@ class _Resolver:
             if os.path.isfile(cand):
                 base = self.index.module_name(cand)
                 return f"{base}.{rest}" if rest else base
+        if rest and os.path.isdir(os.path.join(d, head)):
+            # `<先頭>/` が `__init__.py` の無い名前空間パッケージ（D64 / U40-RC3）。その部分は `sys.path` の順に
+            # 並ぶので、残りの dotted のファイルが兄弟の下にあれば、スクリプトとして動かすとそちらが当たる。
+            sub = os.path.join(d, head, *rest.split("."))
+            for cand in (os.path.join(sub, "__init__.py"), sub + ".py"):
+                if os.path.isfile(cand):
+                    return self.index.module_name(cand)
         return None
 
     def info(self, module: str) -> Optional[_ModInfo]:
@@ -1313,40 +1343,75 @@ class _Resolver:
         **基底は末尾名で結ばず `_base_ref` で解く**（別名の import、`Base = s.Server`、`Server[str]` を
         落とさない）。**解けない基底を持つクラスは、どのクラスのサブクラスでもありうる**ものとして扱う
         （見過ぎる側）: それ自身かその下のクラスが `attr` を束縛すれば採らない。
+
+        D64 / U40 の 3 巡目:
+
+        * RC1: **確かなサブクラス**（`("class", ...)` の辺だけで `cls` に結ばれる）と、そこから `cls` を通らずに
+          たどれる基底（`cls` 自身の祖先は除く。C3 で `cls` より後に来る）が**解けない基底**を持つなら、その
+          基底（try/except の import、呼び出し式のミックスイン）が `attr` を束縛しうるので採らない。確かな
+          サブクラスの外のクラスの解けない基底では採るのをやめない（木の全部の `self.m` を失わないため）。
+        * RC2: 木外（extern）と判定した基底でも、dotted 名の末尾が木内のクラス名（`cls`、サブクラス、`attr` を
+          束縛するクラス）と一致するなら解けない基底として扱う（走査の根がパッケージそのもので
+          `from proj.s import Server` が木外に落ちる）。
         """
         if self._building:
             return True  # 書き換え・継承の表を作っている途中（受け手の `self.x.y` など）は決めない側に倒す
         target = f"{module}.{_qual_prefix(outer)}{cls.name}"
         graph = self._class_graph()
+        binds_attr = {
+            ident
+            for ident, node, _b in graph
+            if node is not cls and (bool(_scope_bindings(node, attr)[0]) or self.ns_class(node))
+        }
+        names = {cls.name} | {node.name for ident, node, _b in graph if ident in binds_attr}
+
+        def kind(k: str, n: str) -> str:
+            return "unknown" if k == "extern" and n.rsplit(".", 1)[-1] in names else k
+
         subs: set[str] = set()
+        definite: set[str] = set()
         changed = True
         while changed:
             changed = False
             for ident, node, bases in graph:
-                if node is cls or ident in subs:
+                if node is cls or ident in definite:
                     continue
-                if any(k == "unknown" or (k == "class" and (n == target or n in subs)) for k, n in bases):
-                    subs.add(ident)
-                    changed = True
+                ks = [(kind(k, n), n) for k, n in bases]
+                if any(k == "class" and (n == target or n in definite) for k, n in ks):
+                    definite.add(ident)
+                elif ident in subs or not any(k == "unknown" or (k == "class" and n in subs) for k, n in ks):
+                    continue
+                subs.add(ident)
+                names.add(node.name)
+                changed = True
         if not subs:
             return False
-        # サブクラスと、そこから `cls` を通らずにたどれる基底（MRO で `cls` より前に来うるミックスイン）。
-        check = set(subs)
-        frontier = list(subs)
-        while frontier:
-            cur = frontier.pop()
-            for ident, _node, bases in graph:
-                if ident != cur:
-                    continue
-                for k, n in bases:
-                    if k == "class" and n != target and n not in check:
-                        check.add(n)
-                        frontier.append(n)
-        return any(
-            ident in check and node is not cls and (bool(_scope_bindings(node, attr)[0]) or self.ns_class(node))
-            for ident, node, _b in graph
-        )
 
+        def reach(start: set[str], skip: set[str]) -> set[str]:
+            out = set(start)
+            frontier = list(start)
+            while frontier:
+                cur = frontier.pop()
+                for ident, _node, bases in graph:
+                    if ident != cur:
+                        continue
+                    for k, n in bases:
+                        if k == "class" and n not in skip and n not in out:
+                            out.add(n)
+                            frontier.append(n)
+            return out
+
+        # RC1: 確かなサブクラスとそこからたどれる基底（`cls` の祖先は除く）の解けない基底。
+        ancestors = reach({target}, set())
+        dcheck = reach(definite, ancestors)
+        if any(
+            ident in dcheck and node is not cls and any(kind(k, n) == "unknown" for k, n in bases)
+            for ident, node, bases in graph
+        ):
+            return True
+        # サブクラスと、そこから `cls` を通らずにたどれる基底（MRO で `cls` より前に来うるミックスイン）。
+        check = reach(subs, {target})
+        return bool(check & binds_attr)
 
 def _walk_scoped(tree: ast.Module):
     """`(node, 親, スコープの列（外 → 内、先頭はモジュール）)` を再帰せずに列挙する。
