@@ -1273,10 +1273,14 @@ def test_keep_ls_rebound_not_clear(ls_rebound):
 
 def test_fix_ls_rebound_unreadable_const(ls_rebound):
     """R4-r4-1 fix_outline 条件 (1): `_opaque_deep` なら受け手型は残り（DB / NET の行が出る）、共有状態の定数は読めない →
-    DB は D1 不 db_sql_unreadable、NET は D1 不（メソッドが読めない）。"""
+    DB は D1 不、NET は D1 不（メソッドが読めない）。
+
+    **理由の期待値の改訂（D64 追記、敵対的レビュー U23-A1）**: 条件 (1) は「`db_sql_unreadable` 等の不」。A1 の直しで
+    受け手型の要らない葉は直す前と同じ ctx 根の MODEL / opaque に保つので、理由は `db_sql_model_opaque` になる
+    （判定の不は変わらない）。"""
     run_saved, call_saved = ls_rebound["run_saved"], ls_rebound["call_saved"]
     assert _effects(run_saved, "DB"), _brief(run_saved)
-    _check(run_saved, "DB", "D1", "不", "db_sql_unreadable")
+    _check(run_saved, "DB", "D1", "不", "db_sql_model_opaque")
     assert _effects(call_saved, "NET"), _brief(call_saved)
     _check(call_saved, "NET", "D1", "不")
 

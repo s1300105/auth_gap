@@ -307,8 +307,13 @@ def snake_ro_mono(path: str) -> str:
 
 #: lock が食い違う monorepo（fix_outline 条件 (2)）。`read_dep_pins` はどれか 1 つの lock を採るので、
 #: 2.x の lock が採られる順（b_new が後）と 1.x の lock が採られる順（b_old が後）の両方を置く。
+#: **期待値の改訂（D64 追記、敵対的レビュー ADV-3）**: 版を木全体で 1 つに決めず、ユニットのファイルに
+#: いちばん近い依存記載のサブツリーで決めるようにした。条件 (2) は「木全体で 1 つの lock を任意に採る」ことへの
+#: 守りで、サブツリーごとに決めればその任意性は無い。どちらの木もユニットは 2.x の lock（と mcpserver の形）の
+#: サブツリーにあるので >=2.0（宣言、D1 の矛）。どのサブツリーにも属さないファイルは決めない（MONOREPO_ROOT_UNIT）。
 MONOREPO_NEW_LAST = {"a_old/uv.lock": UV_LOCK_1, "b_new/uv.lock": UV_LOCK_2, "b_new/server.py": MONO_SERVER}
 MONOREPO_OLD_LAST = {"a_new/uv.lock": UV_LOCK_2, "b_old/uv.lock": UV_LOCK_1, "a_new/server.py": MONO_SERVER}
+MONOREPO_ROOT_UNIT = {"a_old/uv.lock": UV_LOCK_1, "b_new/uv.lock": UV_LOCK_2, "server.py": MONO_SERVER}
 
 
 @pytest.fixture(scope="module")
@@ -352,8 +357,11 @@ def test_r1_1_v2_camel_case_control_unchanged(t05):
         (V2_LOWLEVEL_SNAKE, "handle", "os.remove"),  # Server(on_call_tool=)
         (FASTMCP4, "fm_ro", "builtins.open"),  # fastmcp>=4
         (LOCK_ONLY_2, "fm_ro", "builtins.open"),  # 形は中立、lockfile で 2.1.1
+        (MONOREPO_NEW_LAST, "snake_ro_mono", "os.remove"),  # ユニットのサブツリーの lock が 2.x（D64 追記）
+        (MONOREPO_OLD_LAST, "snake_ro_mono", "os.remove"),  # 同じ（lock の順を入れ替えた木）
     ],
-    ids=["mcpserver_import", "lowlevel_on_call_tool", "fastmcp_ge_4", "lockfile_2x_only"],
+    ids=["mcpserver_import", "lowlevel_on_call_tool", "fastmcp_ge_4", "lockfile_2x_only",
+         "monorepo_2x_lock_last", "monorepo_1x_lock_last"],
 )
 def test_r1_1_decided_ge_2_snake_is_declared(tmp_path_factory, tree, qual, site):
     """R2-r1-1 / fix_outline: >=2.0 に決まる印（API の形・fastmcp>=4・lockfile）があれば snake_case は宣言 → D1 の矛。"""
@@ -391,11 +399,10 @@ def test_r1_1_pinned_1x_camel_control_unchanged(tmp_path_factory):
 UNDECIDED = [
     (AMBIGUOUS, "snake_ro_shim"),
     (CONFLICT_SHAPE_LOCK, "snake_ro_conflict"),
-    (MONOREPO_NEW_LAST, "snake_ro_mono"),
-    (MONOREPO_OLD_LAST, "snake_ro_mono"),
+    (MONOREPO_ROOT_UNIT, "snake_ro_mono"),
     (NEUTRAL_NOPIN, "fm_ro"),
 ]
-UNDECIDED_IDS = ["shim_both_apis", "fastmcp_import_with_2x_lock", "monorepo_2x_lock_last", "monorepo_1x_lock_last", "no_shape_no_pin"]
+UNDECIDED_IDS = ["shim_both_apis", "fastmcp_import_with_2x_lock", "monorepo_root_unit", "no_shape_no_pin"]
 
 
 @pytest.mark.parametrize("tree,qual", UNDECIDED, ids=UNDECIDED_IDS)

@@ -1962,11 +1962,11 @@ def test_known_deep_dict_precondition(tmp_path):
     assert _slot(_unit(_run(tmp_path, {"s.py": DEEP_MODULE_DICT_URL}), "forecast"), "NET", "url.host") is not None
 
 
-@KNOWN
 def test_known_deep_module_dict_url_is_not_op_resolved(tmp_path):
     """3 段入れ子のモジュール水準 dict の要素は `_opaque_deep` の深さ上限（2）を超えるので確度が resolved の
-    まま残り、tool が MODEL の URL を書き込むのに url.host = OP / resolved の定数になる（**false-clean**、
-    改訂 5 より前から。改訂 3 / 4 の `_opaque_deep` の限界）。"""
+    まま残り、tool が MODEL の URL を書き込むのに url.host = OP / resolved の定数になっていた（**false-clean**、
+    改訂 5 より前から。改訂 3 / 4 の `_opaque_deep` の限界）。**D64 / U23-A2 で直した**（`_opaque_deep` を深さで
+    打ち切らない）ので既知の欠陥の印（KNOWN）を外した。"""
     h = _slot(_unit(_run(tmp_path, {"s.py": DEEP_MODULE_DICT_URL}), "forecast"), "NET", "url.host")
     assert not (h.prin == Prin.OP and h.prov.kind == "resolved")
 
