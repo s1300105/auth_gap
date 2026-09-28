@@ -499,6 +499,8 @@ def _expr_hooked(index: SourceIndex, module: str, node: ast.AST, depth: int, see
 
 def _own_hooks(index: SourceIndex, module: str, cd: ast.ClassDef, depth: int, seen: frozenset) -> bool:
     """クラス本体（家族の 1 つ）に構築時フックがあるか。"""
+    fam = model_family(index, module, cd)
+    pydantic = fam is not None and fam[0] == "pydantic"
     for kw in cd.keywords:
         if kw.arg in _TRANSFORM_CONFIG_KEYS:
             return True
@@ -542,7 +544,7 @@ def _own_hooks(index: SourceIndex, module: str, cd: ast.ClassDef, depth: int, se
             # pydantic は登録する（以前は除外フィールドの検査を先にして見落とした）。名前で参照される既定値
             # （`path: str = CONF`）は記述子かもしれない（dataclass は `__set__` を構築時に呼ぶ）。
             # 除外フィールドかどうかの判定より**前に**見る
-            if st.value is not None and not _static_class_value(index, module, st.value):
+            if st.value is not None and not _static_class_value(index, module, st.value, pydantic=pydantic):
                 return True
             if isinstance(st, ast.Assign):
                 continue
@@ -577,13 +579,103 @@ def _literal(node: ast.AST) -> bool:
     return False
 
 
-def _static_class_value(index: SourceIndex, module: str, node: ast.AST, hops: int = 0) -> bool:
+#: pydantic の `Field(...)` / `PrivateAttr(...)` の文書だけの引数（検証される値を変えない。U23-R2）。
+_DOC_ONLY_FIELD_KWARGS = frozenset(
+    {"description", "title", "examples", "json_schema_extra", "alias", "serialization_alias"}
+)
+#: pydantic の `Field` / `PrivateAttr`（文書だけの引数を検査しない構築子）。
+_PYDANTIC_FIELD_FACTORIES = frozenset(
+    {"pydantic.Field", "pydantic.fields.Field", "pydantic.PrivateAttr", "pydantic.fields.PrivateAttr"}
+)
+#: Enum の根。
+_ENUM_ROOTS = frozenset({"enum.Enum", "enum.IntEnum", "enum.StrEnum", "enum.Flag", "enum.IntFlag"})
+#: Enum のメンバーを記述子にしうる（またはクラス属性に置いたときに呼ばれる）メソッド。
+_DESCRIPTOR_METHODS = frozenset({"__get__", "__set__", "__delete__", "__set_name__"})
+
+
+def _enum_class_ok(index: SourceIndex, module: str, cd: ast.ClassDef, depth: int = 0) -> Optional[bool]:
+    """木内の Enum クラス（とその木内の基底）が記述子のメソッドを持たず、読める形か。読めなければ None、
+    読めれば「Enum の根を持つか」。"""
+    if depth > _MAX_HOPS or cd.keywords or cd.name in _patched_class_names(index):
+        return None
+    for d in cd.decorator_list:
+        if _ext(resolve_expr(index, module, d)) != "enum.unique":
+            return None
+    for st in cd.body:
+        if isinstance(st, (ast.FunctionDef, ast.AsyncFunctionDef)) and st.name in _DESCRIPTOR_METHODS:
+            return None
+        if isinstance(st, (ast.Assign, ast.AnnAssign)):
+            targets = st.targets if isinstance(st, ast.Assign) else [st.target]
+            if any(isinstance(n, ast.Name) and n.id in _DESCRIPTOR_METHODS for t in targets for n in ast.walk(t)):
+                return None
+    rooted = False
+    for b in cd.bases:
+        if isinstance(b, ast.Name) and b.id in _BUILTIN_TYPES:
+            from .val.engine import _module_bindings
+
+            tree = _module_tree(index, module)
+            if tree is not None and not _module_bindings(tree, b.id):
+                continue
+        r = resolve_expr(index, module, b)
+        if _ext(r) in _ENUM_ROOTS:
+            rooted = True
+            continue
+        if r is not None and r[0] == "def" and isinstance(r[1][1], ast.ClassDef):  # type: ignore[index]
+            bmod, bnode = r[1]  # type: ignore[misc]
+            sub = _enum_class_ok(index, bmod, bnode, depth + 1)
+            if sub is None:
+                return None
+            rooted = rooted or sub
+            continue
+        return None
+    return rooted
+
+
+def _enum_member(index: SourceIndex, module: str, node: ast.AST) -> bool:
+    """`node` が木内の Enum クラス（`__get__` / `__set__` などを定義しない）の**メンバー**（クラス本体の直下で
+    ちょうど 1 回、リテラルか `enum.auto()` に束縛される `_` 始まりでない名前）の参照か（U23-R2）。"""
+    if not isinstance(node, ast.Attribute) or node.attr.startswith("_"):
+        return False
+    r = resolve_expr(index, module, node.value)
+    if r is None or r[0] != "def" or not isinstance(r[1][1], ast.ClassDef):  # type: ignore[index]
+        return False
+    cmod, cd = r[1]  # type: ignore[misc]
+    if not _enum_class_ok(index, cmod, cd):
+        return False
+    from .val.engine import _module_bindings
+
+    binds = _module_bindings(cd, node.attr)
+    if len(binds) != 1 or not any(st is binds[0] for st in cd.body):
+        return False
+    b = binds[0]
+    if not (isinstance(b, ast.Assign) and len(b.targets) == 1 and isinstance(b.targets[0], ast.Name)):
+        return False
+    v = b.value
+    if _literal(v):
+        return True
+    return (
+        isinstance(v, ast.Call)
+        and not v.args
+        and not v.keywords
+        and _ext(resolve_expr(index, cmod, v.func)) == "enum.auto"
+    )
+
+
+def _static_class_value(index: SourceIndex, module: str, node: ast.AST, hops: int = 0, pydantic: bool = False) -> bool:
     """クラス体の代入の値が、構築時に値を変えるもの（記述子・検証子の登録）ではないと**読める**か。
 
     読めるのは、リテラル、モジュール直下でちょうど 1 回リテラルに束縛される名前、`Field(...)` /
     `PrivateAttr(...)` / `dataclasses.field(...)` で引数が同じく読めるもの（`default_factory=` は呼び出し可能な
     値の参照なのでクラス属性の記述子にはならない）。それ以外（呼び出し・名前で参照されるオブジェクト・
     属性・解けない名前）は偽（フック扱い = 今日どおり）。
+
+    `pydantic` が真（クラスが pydantic の家族）のときだけ（U23-R2）:
+
+    * `Field(...)` / `PrivateAttr(...)` の文書だけの引数（description / title / examples / json_schema_extra /
+      alias / serialization_alias）は検査しない。以前は `Field(description=f"file under {ROOT}")` の f 文字列で
+      クラス全体をフック扱いにし、D2 の矛を不に落としていた（件数の欠落）。
+    * 木内の Enum クラス（記述子のメソッドを持たない）のメンバーは既定値として読める。
+    dataclass の既定値の規則（`__set__` を構築時に呼ぶ記述子の恐れ）は変えない。
     """
     if hops > _MAX_HOPS:
         return False
@@ -593,23 +685,31 @@ def _static_class_value(index: SourceIndex, module: str, node: ast.AST, hops: in
         r = resolve_expr(index, module, node)
         if r is not None and r[0] == "assign":
             amod, value = r[1]  # type: ignore[misc]
-            return _static_class_value(index, amod, value, hops + 1) and not isinstance(value, ast.Call)
+            return _static_class_value(index, amod, value, hops + 1, pydantic) and not isinstance(value, ast.Call)
+        if pydantic and _enum_member(index, module, node):
+            return True
         return False
-    if isinstance(node, ast.Call) and _ext(resolve_expr(index, module, node.func)) in _FIELD_FACTORIES:
-        for a in node.args:
-            if isinstance(a, ast.Starred) or not _static_class_value(index, module, a, hops + 1):
+    factory = _ext(resolve_expr(index, module, node.func)) if isinstance(node, ast.Call) else None
+    if factory in _FIELD_FACTORIES:
+        doc_ok = pydantic and factory in _PYDANTIC_FIELD_FACTORIES
+        for a in node.args:  # type: ignore[union-attr]
+            if isinstance(a, ast.Starred) or not _static_class_value(index, module, a, hops + 1, pydantic):
                 return False
-        for kw in node.keywords:
+        for kw in node.keywords:  # type: ignore[union-attr]
             if kw.arg is None:
                 return False
             if kw.arg == "default_factory":
                 if isinstance(kw.value, (ast.Name, ast.Attribute, ast.Lambda)):
                     continue
                 return False
-            if not _static_class_value(index, module, kw.value, hops + 1):
+            if doc_ok and kw.arg in _DOC_ONLY_FIELD_KWARGS:
+                continue
+            if not _static_class_value(index, module, kw.value, hops + 1, pydantic):
                 return False
         return True
     return False
+
+
 #: 構築時に値を変えないメソッドの装飾子。**これ以外の装飾子はフック扱い**（別名 import の `field_validator`・
 #: 木内の包み関数も含めて読めないものは今日どおりにする）。
 _SAFE_METHOD_DECORATORS = frozenset(
@@ -855,30 +955,115 @@ def _enclosing_scopes(index: SourceIndex, unit) -> Optional[list[ast.AST]]:
         cur = par
 
 
-def _bound_names(scope: ast.AST) -> frozenset[str]:
-    """スコープ（関数 / クラス）の中で束縛されうる名前。**入れ子の本体も含めて保守的に**数える
-    （仮引数・代入先・def / class・import・`global` / `nonlocal`・except / match の名前）。"""
-    out: set[str] = set()
-    for n in ast.walk(scope):
+def _binders(index: SourceIndex, scope: ast.AST) -> dict[str, list[ast.AST]]:
+    """スコープ（関数 / クラス）の中で名前を束縛しうるノード（名前 → ノードの列）。
+
+    * 関数: **入れ子の本体も含めて保守的に**数える（仮引数・代入先・def / class・import・`global` /
+      `nonlocal`・except / match の名前）。入れ子の関数の `nonlocal` や局所も束縛として数える（今どおり）。
+    * クラス: **クラス本体の直下の束縛だけ**（U23-R1）。メソッド / 入れ子のクラスの本体の中の局所は、
+      クラスの中の注釈の評価に使われない（Python はクラスのスコープから入れ子の関数の局所を見ない）。
+      入れ子の def / class の名前・装飾子・既定値・基底はクラス本体で評価されるので数える。
+
+    AST は `SourceIndex` の parse の結果（同じオブジェクトが保たれる）なので、スコープごとに覚えておく
+    （入口ごとに同じ関数を歩き直していた遅さも消える）。"""
+    cache = index.__dict__.setdefault("_authgap_entry_seed_binders", {})
+    hit = cache.get(id(scope))
+    if hit is not None and hit[0] is scope:
+        return hit[1]
+    out: dict[str, list[ast.AST]] = {}
+
+    def add(name: str, node: ast.AST) -> None:
+        out.setdefault(name, []).append(node)
+
+    def record(n: ast.AST) -> None:
         if isinstance(n, ast.arg):
-            out.add(n.arg)
+            add(n.arg, n)
         elif isinstance(n, ast.Name) and isinstance(n.ctx, (ast.Store, ast.Del)):
-            out.add(n.id)
+            add(n.id, n)
         elif isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) and n is not scope:
-            out.add(n.name)
+            add(n.name, n)
         elif isinstance(n, ast.Import):
-            out.update(a.asname or a.name.split(".")[0] for a in n.names)
+            for a in n.names:
+                add(a.asname or a.name.split(".")[0], n)
         elif isinstance(n, ast.ImportFrom):
-            out.update(a.asname or a.name for a in n.names)
+            for a in n.names:
+                add(a.asname or a.name, n)
         elif isinstance(n, (ast.Global, ast.Nonlocal)):
-            out.update(n.names)
+            for name in n.names:
+                add(name, n)
         elif isinstance(n, ast.ExceptHandler) and n.name:
-            out.add(n.name)
+            add(n.name, n)
         elif isinstance(n, (ast.MatchAs, ast.MatchStar)) and n.name:
-            out.add(n.name)
+            add(n.name, n)
         elif isinstance(n, ast.MatchMapping) and n.rest:
-            out.add(n.rest)
-    return frozenset(out)
+            add(n.rest, n)
+
+    if isinstance(scope, ast.ClassDef):
+        # クラス本体の直下: 入れ子のスコープの本体には降りない（名前・装飾子・既定値・基底だけ）
+        stack: list[ast.AST] = list(scope.body)
+        while stack:
+            n = stack.pop()
+            record(n)
+            if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                stack.extend(n.decorator_list)
+                stack.extend(d for d in n.args.defaults)
+                stack.extend(d for d in n.args.kw_defaults if d is not None)
+                continue
+            if isinstance(n, ast.ClassDef):
+                stack.extend(n.decorator_list)
+                stack.extend(n.bases)
+                stack.extend(kw.value for kw in n.keywords)
+                continue
+            if isinstance(n, ast.Lambda):
+                stack.extend(n.args.defaults)
+                stack.extend(d for d in n.args.kw_defaults if d is not None)
+                continue
+            stack.extend(ast.iter_child_nodes(n))
+    else:
+        for n in ast.walk(scope):
+            record(n)
+    cache[id(scope)] = (scope, out)
+    return out
+
+
+def _import_dotted(node: ast.AST, name: str) -> Optional[str]:
+    """level 0 の `import` / `from ... import` が `name` に結ぶ外部の dotted 名（:func:`_resolve_name_uncached`
+    の `ext` と同じ綴り）。level > 0・`*`・該当なしは None。"""
+    if isinstance(node, ast.Import):
+        alias = next((a for a in node.names if (a.asname or a.name.split(".")[0]) == name), None)
+        if alias is None:
+            return None
+        return alias.name if alias.asname else alias.name.split(".")[0]
+    if isinstance(node, ast.ImportFrom):
+        if node.level != 0 or not node.module:
+            return None
+        alias = next((a for a in node.names if (a.asname or a.name) == name and a.name != "*"), None)
+        if alias is None:
+            return None
+        return f"{node.module}.{alias.name}"
+    return None
+
+
+def _same_as_module_import(index: SourceIndex, module: str, scope: ast.AST, name: str, nodes: list) -> bool:
+    """囲むスコープでの `name` の束縛が、その本体の直下の level 0 の import **ちょうど 1 つ**で、モジュール水準の
+    解決と**同じ外部の dotted 名**に解けるか（U23-R1）。そうなら注釈の評価はモジュール直下で解くのと同じ。"""
+    if len(nodes) != 1:
+        return False
+    node = nodes[0]
+    if not isinstance(node, (ast.Import, ast.ImportFrom)):
+        return False
+    body = getattr(scope, "body", None)
+    if not isinstance(body, list) or not any(st is node for st in body):
+        return False  # `try:` / `if` の中の import は本体の直下ではない（今どおり隠す）
+    dotted = _import_dotted(node, name)
+    if dotted is None:
+        return False
+    if isinstance(node, ast.ImportFrom):
+        if index.resolve_import_module(module, node.module) is not None:
+            return False  # 木内のモジュール（外部の名前ではない）
+    elif index.resolve_import_module(module, dotted) is not None:
+        return False
+    return _ext(resolve_name(index, module, name)) == dotted
 
 
 def _annotation_names(ann: ast.AST) -> set[str]:
@@ -902,14 +1087,26 @@ def _shadowed_annotation(index: SourceIndex, unit, ann: ast.AST) -> bool:
 
     仮引数の注釈は定義の時点で囲むスコープで評価される。`def register(mcp): class Req(...)` / 局所の
     `from store import Path` のように囲むスコープで束縛される名前をモジュール直下の束縛で解くと、別の
-    クラス / 型の種を置く（誤警報）。囲むスコープが見つからないときも真（種を置かない = 今日どおり）。"""
+    クラス / 型の種を置く（誤警報）。囲むスコープが見つからないときも真（種を置かない = 今日どおり）。
+
+    ただし、囲むスコープでの束縛が本体の直下の level 0 の import ちょうど 1 つで、モジュール水準の解決と同じ
+    外部の dotted 名に解けるなら隠されていない（U23-R1）。以前は `def register(m): from pathlib import Path`
+    のように同じ pathlib.Path を局所でもう一度 import する形でも種を捨て、readOnlyHint の下の
+    `path.write_text(...)` の D1 矛を失っていた（誤 clear）。それ以外の束縛（def / class / 代入 / 仮引数 /
+    global、2 つ以上の束縛、`try` / `if` の中の import、別の名前に解ける import）は今どおり隠す。"""
     scopes = _enclosing_scopes(index, unit)
     if scopes is None:
         return True
     if not scopes:
         return False
     names = _annotation_names(ann)
-    return any(_bound_names(sc) & names for sc in scopes)
+    for sc in scopes:
+        binders = _binders(index, sc)
+        for name in names:
+            nodes = binders.get(name)
+            if nodes and not _same_as_module_import(index, unit.module, sc, name, nodes):
+                return True
+    return False
 
 
 def annotated_param_seeds(index: SourceIndex, unit) -> dict[str, Value]:
