@@ -96,7 +96,7 @@ def md(rs):
                  f"（未完 {n - len(comp)}）。生き残り = 2 観点以上を生き延びたもの（review_plan.md §4.2）。")
     lines.append("")
     c = Counter((r["severity"], r["affects"] == "tooling") for r in surv)
-    lines.append("| 生き残りの重大度（代表値） | D1 / D2 に効く | 評価の道具 |")
+    lines.append("| 生き残りの重大度（代表値） | D1〜D4 に効く | 評価の道具 |")
     lines.append("|---|---|---|")
     for s in ("high", "medium", "low"):
         lines.append(f"| {SEV_JA[s]} | {c[(s, False)]} | {c[(s, True)]} |")

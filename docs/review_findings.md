@@ -1,14 +1,14 @@
 # 添削の所見の表（3 観点の突き合わせ。`scripts/review_table.py` で再生成）
 
-所見 151 件。3 観点そろった 147 件のうち **生き残り 146 / 落ちた 1**（未完 4）。生き残り = 2 観点以上を生き延びたもの（review_plan.md §4.2）。
+所見 151 件。3 観点そろった 151 件のうち **生き残り 150 / 落ちた 1**（未完 0）。生き残り = 2 観点以上を生き延びたもの（review_plan.md §4.2）。
 
-| 生き残りの重大度（代表値） | D1 / D2 に効く | 評価の道具 |
+| 生き残りの重大度（代表値） | D1〜D4 に効く | 評価の道具 |
 |---|---|---|
-| 高 | 14 | 0 |
-| 中 | 50 | 6 |
-| 低 | 55 | 21 |
+| 高 | 15 | 0 |
+| 中 | 52 | 6 |
+| 低 | 56 | 21 |
 
-向き（生き残り）: 誤 clear 76、数え落とし 36、誤警報 26、規則との食い違い 7、非決定 1
+向き（生き残り）: 誤 clear 78、数え落とし 36、誤警報 28、規則との食い違い 7、非決定 1
 
 ## 生き残った所見（重大度順）
 
@@ -19,6 +19,7 @@
 | R1-r1-3 | **高**（高 / 高 / 中） | 数え落とし | D1+D2 | ○ | ○ | ○ | ○ | 継承したメソッドの呼び出しが、木の別のクラスに同名メソッドがあるだけで解決されず効果が消える（`_resolve_in_tree` の `typed_classes` の絞り込みが受け手の自クラス名だけで、基底を含む家族 `_class_family` を使わない） |
 | R1-r3-2 | **高**（高 / 中 / 高） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | ローカルのオブジェクトへの属性書き込み `c.cmd = cmd` は env の鍵 `c.cmd` にしか記録されず `Obj.fields` に載らないので、そのオブジェクトを**引数（位置 / キーワード）として渡す / 関数から返す / 2 段の属性 `h.config. |
 | R1-r4-1 | **高**（高 / 高 / 高） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | モジュール別名経由の属性読み出し `config.ROOT` / `cfg.SQL_PURGE` / `config.client`（`from . import config` / `import pkg.config as cfg`）が木内モジュールの束縛に一度も解かれない: |
+| R1d-r6-2† | **高**（高 / 高 / 中） | 誤 clear | D3 | ○ | ○ | ○ | ○ | `dict.get(k[, d])` が `_builtin_value_op` に無く未解決呼び出し（D44）として MODEL/opaque(unresolved) になるため、低レベル MCP の標準形 `arguments.get("url")` と dict 仮引数の  |
 | R2-r1-1 | **高**（高 / 高 / 高） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | snake_case の ToolAnnotations（read_only_hint= / destructive_hint=）は mcp>=2.0 では protocol に届く宣言なのに、版を見ずに常に D_malformed（⊥）にして D1 / D2 を判定しない（誤  |
 | R2-r1-2 | **高**（高 / 中 / 高） | 数え落とし | D1+D2 | ○ | ✗ | ○ | ○ | デコレータ構文でない登録（mcp.tool(...)(fn) / mcp.tool()(fn) / self.mcp.tool()(self.m) / mcp.add_tool(fn, annotations=...)）を入口にせず、ツールが宣言ごと丸ごと消える（数え落とし・誤  |
 | R2-r3-1 | **高**（高 / 高 / 高） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | mcp 2.x 低レベル（Server(on_call_tool=)）のハンドラでは `params` を裸の Atom として種付けするため `params.arguments[...]` が MODEL/opaque(unresolved) になり、原理 3-a の行（D2  |
@@ -54,12 +55,14 @@
 | R1-r5-2† | **中**（高 / 中 / 中） | 数え落とし | D1+D2 | ○ | ✗ | ○ | ○ | `Obj.classes` が末尾名だけ（モジュール無し）なので、木の中の別モジュールに同名クラスがあり同名メソッドを持つと、`r = Runner(cmd); r.go()` の 2 文形は `_resolve_in_tree` の型絞り込みが 2 候補のまま `[]` を返し |
 | R1-r5-3† | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ✗ | ○ | ✗ | 組込みのコンテナ構築子 `set()` / `list()` / `dict()` / `collections.deque()` が未解決の呼び出し（OP/opaque の Unknown）になるため、その後の `parts.add(cmd)` は `container`（Se |
 | R1-r5-4† | **中**（中 / 中 / 中） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | 辞書の反復が**値**を束縛する: `_element_of(Map)` は値の join（または tail）を返すので、`for k in opts:` / `[k for k in opts]` / `sep.join(opts)` / `yield from opts` / |
+| R1d-r6-3† | **中**（中 / 中 / 低） | 誤 clear | D3 | ○ | ○ | ○ | ○ | `str.rstrip` / `lstrip` / `removesuffix` / `removeprefix` が TRANSFER に無い（`strip` はある）ため、`BASE_URL.rstrip("/") + "/items/" + x` の定数の宛先が OP/op |
 | R2-r1-3 | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ✗ | ○ | ○ | 低レベルハンドラが name 分岐を別関数（dispatch(name, arguments)）に委譲すると、効果はその関数から拾うのに join は手前のハンドラ本体しか見ず、全ツールの宣言が黙って未 join（⊥）になる（誤 clear） |
 | R2-r2-1 | **中**（中 / 中 / 中） | 数え落とし | D1+D2 | ○ | ○ | ○ | ○ | デコレータを変数に束縛した登録（ro_tool = mcp.tool(annotations=...); @ro_tool def f）は末尾名が tool でないので入口にならず、ツールが宣言ごと丸ごと消える（数え落とし・誤 clear。野外 1 木で 159 登録） |
 | R2-r3-4 | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | `Tool(...)` リテラルの検出が書かれた名前の末尾成分 `Tool` にしか当たらないため、`from mcp.types import Tool as MCPTool`（corpus に 45+ 行、自前の `Tool` クラスと衝突する木で常套）で作った宣言が 1 つ |
 | R3-r1-1 | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | 定数の複文 SQL（executescript / psycopg execute / exec_driver_sql）を先頭語だけで判定し、2 文目以降の DELETE / DROP が黙って「内」になる |
 | R3-r1-2 | **中**（中 / 中 / 低） | 規則との食い違い | D1+D2 | ○ | ○ | ○ | ○ | SQL の先頭にコメント（`--` / `/* */`）があると先頭語が `--` になり、DELETE / UPDATE が「矛」でなく「不」になる |
 | R3-r2-1 | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | 定数どうしの Str（str.upper/strip/replace/format() の結果、定数の join、定数 + 定数）は Value.const が None なので、SQL は「接頭辞」・HTTP メソッドは「読めない」扱いになる: `requests.reques |
+| R3d-r6-1† | **中**（中 / 中 / 低） | 誤警報 | D3 | ○ | ○ | ○ | ○ | `_host_class` が `_split_url` の切り出した権威部（scheme 無し）を手書きで分解するため、ユーザ情報つき（`user:pass@localhost`）・角括弧 IPv6 + ポート（`[::1]:8080`）・末尾ドット（`localhost.`） |
 | R4-r1-10 | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | INDIRECT 形（to_thread / run_in_executor / partial）の target がライブラリ sink（subprocess.run / os.remove / os.chmod）のとき、また lambda 本体の sink と map(sin |
 | R4-r1-2 | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | proc.communicate(data)（位置引数）は pipe 行にならず、インタプリタへのコード投入 EXEC が消える（KW("input") しか引かない） |
 | R4-r1-3 | **中**（中 / 中 / 中） | 誤 clear | D1+D2 | ○ | ✗ | ○ | ○ | A(pos) に kw が無い行は、仮引数名で渡した呼び出しで slot（または効果行全体）を落とす: Popen/run(args=…)、open(file=…)、unpack_archive(…, extract_dir=…)、urlretrieve(…, filename= |
@@ -128,6 +131,7 @@
 | R3-r4-1 | **低**（中 / 低 / 低） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | 低レベル MCP ハンドラで name 判定が入れ子（外側 `name in ("peek", "rm", "mk")` の中に内側 `if name == "rm"` / `elif name == "mk"`）のとき、`_attribute_effects_to_tools` |
 | R3-r4-2 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | `_first_element` が `Str`（連結した文字列）に対して `parts[0]` を返すので、shell=False で**文字列**（列ではない）を args に渡す `subprocess.run("/usr/bin/" + tool)` / `subproc |
 | R3-r4-3 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | `%` / `str.format` の書式テンプレートの先頭がプレースホルダで実引数に非リテラルが混ざる形（`"%s FROM t WHERE id = %s" % ("DELETE", os.environ["ID"])` / `"{} FROM t WHERE id = { |
+| R3d-r6-2† | **低**（中 / 低 / 低） | 誤警報 | D3 | ○ | ○ | ○ | ○ | `_split_url` が相対 URL を「先頭が `/` で次が `/` でない」形にしか認めないため、`base_url` つきクライアントへの `"items"`（先頭スラッシュ無し）・`""`・`"?q=" + x`・`"items/" + x`・定数 `"/"` の相 |
 | R3d-r6-3† | **低**（低 / 低 / 低） | 誤警報 | D3 | ○ | ○ | ○ | ○ | D3 の「private」の判定が名前について `localhost` / `*.localhost` / `*.local` の 3 形だけで、標準で私用と定まる名前（`*.internal`（ICANN 2024 予約、`host.docker.internal` を含む）・ |
 | R4-r1-11 | **低**（低 / 中 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | 語彙にある sink の再公開別名（asyncio.subprocess.create_subprocess_exec / from asyncio.subprocess import …、sympy.parse_expr）が _suffix_match の完全一致・末尾 2 要 |
 | R4-r3-2 | **低**（低 / 低 / 低） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | `_suffix_match` の末尾 2 要素一致が、木の中のモジュールがライブラリと同名（`app/requests.py` / `app/subprocess.py` / `pkg/os.py`、相対 import `from . import os` を含む）のとき、その |
@@ -166,12 +170,5 @@
 | id | 実行 | 設計 | 一般性 | 所見 |
 |---|---|---|---|---|
 | R2-r1-10 | ○ | ✗ | ✗ | FastMCP が実行時にスキーマから除く `ctx: Context` 仮引数を MODEL として種付けし、ctx 由来の path / argv が主体 MODEL になる（D1 / D2 の理由が *_model_opaque に付き、SELECT 座標では誤警報） |
-
-## 未完（観点が欠けている）
-
-- R1d-r6-2: exec=○, design=—, generality=—
-- R1d-r6-3: exec=○, design=—, generality=—
-- R3d-r6-1: exec=○, design=○, generality=—
-- R3d-r6-2: exec=○, design=—, generality=—
 
 記号: ○ = その観点を生き延びた、✗ = 反証された、— = 未実施。判定の全文は `evidence/review/verify_*.json`、再現は `evidence/review/exec_lens_*.json`、所見の本文は `evidence/review/explore_*.json`。† = 第 5 回（事前登録の上限 4 回の外。review_plan.md §7.3）。
