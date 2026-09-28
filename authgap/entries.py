@@ -14,6 +14,7 @@ from __future__ import annotations
 import ast
 import hashlib
 import json
+import os
 from dataclasses import dataclass, field
 from typing import Any, Optional
 
@@ -23,10 +24,12 @@ from .catalog.entries import (
     LOWLEVEL_V2_KWARGS,
     LOWLEVEL_V2_REQUEST,
     R2_EXCEPTIONS,
+    SPEC_OBJECT_ORIGINS,
     TOOLMESSAGE_META_FIELDS,
     EntryRule,
+    find_entry_rule,
 )
-from .srcindex import Scope, SourceIndex, dotted_of
+from .srcindex import FuncDef, Scope, SourceIndex, dotted_of
 
 #: `match` 文は Python 3.10 以降にしか無い。
 _MATCH_CASE = getattr(ast, "match_case", None)
@@ -91,6 +94,9 @@ class Unit:
     message_fields: tuple[tuple[str, Optional[str]], ...] = ()
     #: 同じく、`ToolMessage` 派生クラス名。
     message_class: Optional[str] = None
+    #: 呼び出し形の登録（`x.tool(...)(fn)` / `x.add_tool(fn)`）と `spec_object` のとき、登録文の
+    #: `{"form", "relpath", "lineno"}`（D64 / U40）。ユニットの位置（`relpath` / `lineno`）は関数の定義。
+    registration: Optional[dict] = None
 
     @property
     def schema_hash(self) -> str:
@@ -143,6 +149,8 @@ class Unit:
             d["message_param"] = self.message_param
             d["message_class"] = self.message_class
             d["message_fields"] = [[n, a] for n, a in self.message_fields]
+        if self.registration:
+            d["registration"] = dict(self.registration)
         return d
 
 
@@ -390,51 +398,7 @@ def find_units(index: SourceIndex) -> list[Unit]:
                 # **末尾名が同じ別のデコレータと取り違えない。**
                 # `@click.command()` は位置引数も `names=` / `parameters=` も取らないので落ちる。
                 continue
-            tool_name = (
-                _kwarg_str(call, "name")
-                or _positional_str(call, rule.name_arg)
-                or _first_listed_name(call, rule)
-                or fd.qualname.split(".")[-1]
-            )
-            params = params_of(fd.node, rule.exclude_params)
-            declared = _schema_keys(call, rule.schema_arg)
-            if declared is None and rule.schema_kwarg:
-                declared = _dict_keys(_kwarg_node(call, rule.schema_kwarg))
-            # **デコレータの `annotations=` はエントリ自身の宣言**（Def 6 の 3 形）。
-            # 読まないと `@mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))` が
-            # `⊥` になり r_kind を過小に数える（D17）。
-            ann_node = _kwarg_node(call, "annotations")
-            ann: Optional[dict] = None
-            ann_form: Optional[str] = None
-            malformed: tuple[str, ...] = ()
-            if ann_node is not None:
-                # **3 つ目の戻り値（snake_case）を捨てない。** 捨てていたため
-                # `D_malformed` が構造的に常に空だった（母集団 v2 に 574 箇所。O27 / D48）。
-                ann, ann_form, malformed = _read_annotations(ann_node)
-            if declared is not None:
-                # **スキーマ辞書に無い仮引数は MODEL としない。**
-                # 実行文脈（`agent` など）を MODEL に数えると、フレームワークが
-                # 渡すオブジェクトがモデル由来の値として伝播する。
-                for pm in params:
-                    if pm.name not in declared:
-                        pm.excluded = True
-                        pm.excluded_reason = f"{rule.framework}:not_in_tool_schema"
-            units.append(
-                Unit(
-                    framework=rule.framework,
-                    entry_kind="decorator",
-                    module=fd.module,
-                    qualname=fd.qualname,
-                    relpath=fd.relpath,
-                    node=fd.node,
-                    params=params,
-                    tool_name=tool_name,
-                    annotations=ann,
-                    annotation_form=ann_form,
-                    malformed_fields=malformed,
-                    is_async=fd.is_async,
-                )
-            )
+            units.append(_decorator_unit(fd, rule, call))
             matched = True
             break
         if matched:
@@ -471,9 +435,726 @@ def find_units(index: SourceIndex) -> list[Unit]:
 
     units += find_lowlevel_units(index)
     units += find_toolmessage_units(index)
+    # **呼び出し形の登録と spec_object は tools_list より前に置き、registered で二重登録を防ぐ**（D64 / U40）。
+    # デコレータ形・メソッド形・低レベル形ですでにユニットになった関数は 2 つ目のユニットにしない。
+    registered = {(u.module, u.qualname) for u in units}
+    units += find_registration_units(index, registered)
     units += find_tools_list_units(index, {u.qualname for u in units}, {(u.module, u.qualname) for u in units})
     units.sort(key=lambda u: (u.relpath, u.qualname, u.framework))
     return units
+
+
+def _decorator_unit(
+    fd: FuncDef,
+    rule: EntryRule,
+    call: Optional[ast.Call],
+    registration: Optional[dict] = None,
+) -> Unit:
+    """デコレータ規則に当たった関数のユニット。`call` はデコレータ（呼び出し形なら外側の登録呼び出し）。"""
+    tool_name = (
+        _kwarg_str(call, "name")
+        or _positional_str(call, rule.name_arg)
+        or _first_listed_name(call, rule)
+        or fd.qualname.split(".")[-1]
+    )
+    params = params_of(fd.node, rule.exclude_params)
+    declared = _schema_keys(call, rule.schema_arg)
+    if declared is None and rule.schema_kwarg:
+        declared = _dict_keys(_kwarg_node(call, rule.schema_kwarg))
+    # **デコレータの `annotations=` はエントリ自身の宣言**（Def 6 の 3 形）。
+    # 読まないと `@mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))` が
+    # `⊥` になり r_kind を過小に数える（D17）。
+    ann_node = _kwarg_node(call, "annotations")
+    ann: Optional[dict] = None
+    ann_form: Optional[str] = None
+    malformed: tuple[str, ...] = ()
+    if ann_node is not None:
+        # **3 つ目の戻り値（snake_case）を捨てない。** 捨てていたため
+        # `D_malformed` が構造的に常に空だった（母集団 v2 に 574 箇所。O27 / D48）。
+        ann, ann_form, malformed = _read_annotations(ann_node)
+    if declared is not None:
+        # **スキーマ辞書に無い仮引数は MODEL としない。**
+        # 実行文脈（`agent` など）を MODEL に数えると、フレームワークが
+        # 渡すオブジェクトがモデル由来の値として伝播する。
+        for pm in params:
+            if pm.name not in declared:
+                pm.excluded = True
+                pm.excluded_reason = f"{rule.framework}:not_in_tool_schema"
+    return Unit(
+        framework=rule.framework,
+        entry_kind="decorator",
+        module=fd.module,
+        qualname=fd.qualname,
+        relpath=fd.relpath,
+        node=fd.node,
+        params=params,
+        tool_name=tool_name,
+        annotations=ann,
+        annotation_form=ann_form,
+        malformed_fields=malformed,
+        is_async=fd.is_async,
+        registration=registration,
+    )
+
+
+# --------------------------------------------------------------------------
+# 呼び出し形の登録と spec_object（D64 / U40）
+#
+# `x.tool(...)(fn)` / `x.tool(fn)` / `x.add_tool(fn, ...)` と `ToolSpec(execute=fn)` の `fn` を入口にする。
+# **`fn` は登録文のスコープ（囲む関数 → モジュール → import 先）で Python の意味どおりに厳密に解く。**
+# 末尾名の索引（`lookup_function(name)`）で引くと、木外の関数の登録で木内の同名の無関係な関数が偽の
+# ユニットになり、宣言に対する誤警報を作る（検証役の反例 cx_r1_2_extern）。解けないもの（束縛が 2 つ以上、
+# 呼び出し式・lambda・partial・ループ変数、`global` / `nonlocal` / `globals()` / `exec` / `import *` で動的に
+# 書き換えうる名前）は採らない（数え落としのまま。誤警報は作らない）。
+# --------------------------------------------------------------------------
+
+_FUNC_NODES = (ast.FunctionDef, ast.AsyncFunctionDef)
+_COMP_NODES = (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)
+#: 属性を名前で書き換える組込み。
+_SETATTR = ("setattr", "delattr")
+#: 関数の値ではなく記述子を返すデコレータ（`self.m` が関数にならない）。
+_NON_FUNCTION_DECORATORS = frozenset({"property", "cached_property", "setter", "getter", "deleter"})
+#: import 先をたどる回数の上限（再公開の連鎖）。
+_IMPORT_HOPS = 4
+
+
+@dataclass(frozen=True)
+class _Ref:
+    """式が指すもの。`kind` は ``func`` / ``class`` / ``module``（木内）/ ``extern``（木外の dotted 名）。"""
+
+    kind: str
+    name: str
+    fd: Optional[FuncDef] = None
+
+
+@dataclass
+class _ModInfo:
+    """1 モジュールの、名前の解決に要る事実（`find_registration_units` の 1 回の走査で集める）。"""
+
+    path: str
+    tree: ast.Module
+    is_pkg: bool
+    #: どこかの関数で `global` / `nonlocal` と宣言された名前。
+    declared: set[str] = field(default_factory=set)
+    #: モジュールの名前空間を名前で書き換えうる（`globals()` / 引数なしの `vars()` を読む以外に使う、
+    #: 既定の名前空間の `exec` / `eval`、`sys.modules[...]` への `setattr`）。モジュール水準の名前をどれも確定しない。
+    dynamic: bool = False
+    #: `alias.NAME = ...` / `del alias.NAME` / `setattr(alias, "NAME", v)` の `(alias, NAME)`（名前が定数でなければ `"*"`）。
+    attr_pairs: set[tuple[str, str]] = field(default_factory=set)
+    #: import で束縛される名前 → import 文（モジュール直下でも関数の中でも）。
+    imports: dict[str, list[ast.AST]] = field(default_factory=dict)
+    #: 受け手を問わず書き換えられる属性名と、名前が定数でない `setattr` / `delattr` があるか。
+    stored_attrs: set[str] = field(default_factory=set)
+    any_setattr: bool = False
+
+
+#: `globals()` / `vars()` の結果を読むだけの属性（名前空間を書き換えない）。
+_READ_ONLY_NS_ATTRS = frozenset({"get", "items", "keys", "values", "copy", "__contains__", "__getitem__"})
+
+
+def _is_namespace_call(node: ast.AST) -> bool:
+    return (
+        isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Name)
+        and (node.func.id == "globals" or (node.func.id == "vars" and not node.args and not node.keywords))
+    )
+
+
+def _namespace_read_only(parent: ast.AST, call: ast.AST) -> bool:
+    """`globals()` / `vars()` の呼び出し `call` を、親 `parent` が読むだけに使うか
+    （`k in globals()`、`globals()[k]`、`globals().get(k)`）。それ以外（代入先・引数・別名への束縛）は書き換えうる。"""
+    if isinstance(parent, ast.Compare):
+        return any(c is call for c in parent.comparators) and all(isinstance(o, (ast.In, ast.NotIn)) for o in parent.ops)
+    if isinstance(parent, ast.Subscript):
+        return parent.value is call and isinstance(parent.ctx, ast.Load)
+    if isinstance(parent, ast.Attribute):
+        return parent.value is call and parent.attr in _READ_ONLY_NS_ATTRS
+    return False
+
+
+def _note_facts(node: ast.AST, parent: ast.AST, info: _ModInfo) -> None:
+    """走査中のノード 1 つ（親は `parent`）から `_ModInfo` の事実を足す（`_scan_module_writes` / `_attr_stores`
+    と同じ趣旨）。"""
+    if isinstance(node, (ast.Global, ast.Nonlocal)):
+        info.declared.update(node.names)
+    elif isinstance(node, (ast.Import, ast.ImportFrom)):
+        for al in node.names:
+            if al.name != "*":
+                info.imports.setdefault(al.asname or al.name.split(".")[0], []).append(node)
+    elif isinstance(node, ast.Attribute) and isinstance(node.ctx, (ast.Store, ast.Del)):
+        info.stored_attrs.add(node.attr)
+        if isinstance(node.value, ast.Name):
+            info.attr_pairs.add((node.value.id, node.attr))
+    elif isinstance(node, ast.Call):
+        fid = node.func.id if isinstance(node.func, ast.Name) else None
+        if _is_namespace_call(node) and not _namespace_read_only(parent, node):
+            info.dynamic = True
+        if fid in ("exec", "eval") and len(node.args) + len(node.keywords) < 2:
+            info.dynamic = True  # 既定の名前空間（呼び出し位置のグローバル）で実行する
+        if _last_name(node) in _SETATTR and len(node.args) >= 2:
+            a = node.args[1]
+            const = a.value if isinstance(a, ast.Constant) and isinstance(a.value, str) else None
+            if const is not None:
+                info.stored_attrs.add(const)
+            else:
+                info.any_setattr = True
+            if isinstance(node.args[0], ast.Name):
+                info.attr_pairs.add((node.args[0].id, const or "*"))
+            elif any(isinstance(m, ast.Attribute) and m.attr == "modules" for m in ast.walk(node.args[0])):
+                info.dynamic = True  # `setattr(sys.modules[__name__], name, fn)`
+
+
+def _arg_nodes(args: ast.arguments) -> list[ast.arg]:
+    out = list(args.posonlyargs) + list(args.args) + list(args.kwonlyargs)
+    if args.vararg is not None:
+        out.append(args.vararg)
+    if args.kwarg is not None:
+        out.append(args.kwarg)
+    return out
+
+
+def _target_names(t: ast.AST) -> list[ast.Name]:
+    return [n for n in ast.walk(t) if isinstance(n, ast.Name) and isinstance(n.ctx, (ast.Store, ast.Del))]
+
+
+def _scope_bindings(scope: ast.AST, name: str) -> tuple[list[ast.AST], bool]:
+    """`scope`（モジュール / クラス本体 / 関数 / lambda / 内包）の中で `name` を束縛するもの。
+
+    入れ子の関数・クラス・lambda の本体は別のスコープなので見ない（その名前と、外側で評価される
+    デコレータ・既定値・基底は見る）。内包の中の `:=` は外側を束縛するので数える。**取りこぼすと
+    外側のスコープの別の定義に解いてしまう**（偽のユニット）ので、疑わしいものは束縛として数える。
+
+    :returns: `(束縛するノードの列, global / nonlocal / import * で動的に決まるか)`
+    """
+    binds: list[ast.AST] = []
+    dynamic = False
+    if isinstance(scope, _COMP_NODES):
+        for gen in scope.generators:
+            binds += [n for n in _target_names(gen.target) if n.id == name]
+        return binds, False
+    stack: list[ast.AST] = []
+    if isinstance(scope, (*_FUNC_NODES, ast.Lambda)):
+        binds += [a for a in _arg_nodes(scope.args) if a.arg == name]
+        body = scope.body if isinstance(scope.body, list) else [scope.body]
+        stack += list(body)
+    else:
+        stack += list(getattr(scope, "body", []))
+    while stack:
+        node = stack.pop()
+        if isinstance(node, (*_FUNC_NODES, ast.ClassDef)):
+            if node.name == name:
+                binds.append(node)
+            stack += list(node.decorator_list)
+            if isinstance(node, ast.ClassDef):
+                stack += list(node.bases) + [k.value for k in node.keywords]
+            else:
+                stack += [d for d in node.args.defaults] + [d for d in node.args.kw_defaults if d is not None]
+            continue
+        if isinstance(node, ast.Lambda):
+            stack += [d for d in node.args.defaults] + [d for d in node.args.kw_defaults if d is not None]
+            continue
+        if isinstance(node, _COMP_NODES):
+            binds += [
+                n
+                for n in ast.walk(node)
+                if isinstance(n, ast.NamedExpr) and isinstance(n.target, ast.Name) and n.target.id == name
+            ]
+            continue
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            for a in node.names:
+                if a.name == "*":
+                    dynamic = True
+                elif (a.asname or a.name.split(".")[0]) == name:
+                    binds.append(node)
+            continue
+        if isinstance(node, (ast.Global, ast.Nonlocal)):
+            if name in node.names:
+                dynamic = True
+            continue
+        if isinstance(node, ast.Name) and isinstance(node.ctx, (ast.Store, ast.Del)) and node.id == name:
+            binds.append(node)
+        elif isinstance(node, ast.ExceptHandler) and node.name == name:
+            binds.append(node)
+        elif isinstance(node, ast.alias):
+            continue
+        elif type(node).__name__ in ("MatchAs", "MatchStar") and getattr(node, "name", None) == name:
+            binds.append(node)
+        elif type(node).__name__ == "MatchMapping" and getattr(node, "rest", None) == name:
+            binds.append(node)
+        stack += list(ast.iter_child_nodes(node))
+    return binds, dynamic
+
+
+def _qual_prefix(chain: tuple[ast.AST, ...]) -> str:
+    """スコープの列（外 → 内）の中で定義される関数の qualname の接頭辞（`SourceIndex._index_body` と同じ）。"""
+    parts = [n.name for n in chain if isinstance(n, (*_FUNC_NODES, ast.ClassDef))]
+    return "".join(p + "." for p in parts)
+
+
+def _last_name(node: ast.AST) -> Optional[str]:
+    d = dotted_of(node.func if isinstance(node, ast.Call) else node)
+    return d.split(".")[-1] if d else None
+
+
+class _Resolver:
+    """登録文のスコープから、関数・クラス・モジュールへの参照を厳密に解く（D64 / U40）。"""
+
+    def __init__(self, index: SourceIndex) -> None:
+        self.index = index
+        self._modules: Optional[frozenset[str]] = None
+        #: パス → そのファイルの事実。`add_file` で走査しながら埋める（**全ファイルを入れてから解決する**）。
+        self._by_path: dict[str, _ModInfo] = {}
+        self._info: dict[str, Optional[_ModInfo]] = {}
+        self._attr_writes: Optional[frozenset[tuple[str, str]]] = None
+        self._mbinds: dict[tuple[str, str], tuple[list[ast.AST], bool]] = {}
+        self._stored_attrs: Optional[tuple[frozenset[str], bool]] = None
+
+    def add_file(self, path: str, tree: ast.Module) -> _ModInfo:
+        info = _ModInfo(path, tree, os.path.basename(path) == "__init__.py")
+        self._by_path[os.path.abspath(path)] = info
+        return info
+
+    # -- モジュール --------------------------------------------------------
+
+    def module_bindings(self, module: str, name: str) -> tuple[list[ast.AST], bool]:
+        key = (module, name)
+        if key not in self._mbinds:
+            info = self.info(module)
+            self._mbinds[key] = _scope_bindings(info.tree, name) if info is not None else ([], False)
+        return self._mbinds[key]
+
+    def stored_attrs(self) -> tuple[frozenset[str], bool]:
+        """木のどこかで `x.NAME = ...` / `del x.NAME` / `setattr(x, "NAME", v)` と書き換えられる属性名と、
+        名前が定数でない `setattr` / `delattr` があるか。"""
+        if self._stored_attrs is None:
+            names: set[str] = set()
+            any_name = False
+            for info in self._by_path.values():
+                names |= info.stored_attrs
+                any_name = any_name or info.any_setattr
+            self._stored_attrs = (frozenset(names), any_name)
+        return self._stored_attrs
+
+    def modules(self) -> frozenset[str]:
+        if self._modules is None:
+            self._modules = frozenset(self.index.module_name(p) for p in self.index.py_files())
+        return self._modules
+
+    def abs_module(self, dotted: Optional[str]) -> tuple[str, Optional[str]]:
+        """絶対 import の dotted 名を木内モジュールへ。`("tree", 名)` / `("extern", None)` / `("ambiguous", None)`。
+
+        完全一致を先に採り、なければ `.<dotted>` で終わる木内モジュールが**ちょうど 1 つ**のときだけ採る
+        （src レイアウト）。2 つ以上なら決めない（`resolve_module_path` の setdefault のように最初の 1 つを
+        採ると、別のパッケージの同名モジュールに解く）。
+        """
+        if not dotted:
+            return "ambiguous", None
+        mods = self.modules()
+        if dotted in mods:
+            return "tree", dotted
+        hits = [m for m in mods if m.endswith("." + dotted)]
+        if len(hits) == 1:
+            return "tree", hits[0]
+        return ("ambiguous", None) if hits else ("extern", None)
+
+    def info(self, module: str) -> Optional[_ModInfo]:
+        if module in self._info:
+            return self._info[module]
+        out: Optional[_ModInfo] = None
+        if module in self.modules():
+            path = self.index.resolve_module_path(module)
+            if path is not None and self.index.module_name(path) == module:
+                out = self._by_path.get(os.path.abspath(path))
+        self._info[module] = out
+        return out
+
+    def attr_writes(self) -> frozenset[tuple[str, str]]:
+        """木のどこかで**モジュール属性として**書き換えられる `(module, NAME)`（`NAME` が `"*"` なら全部）。
+
+        `mod.NAME = ...` / `del mod.NAME` / `setattr(mod, "NAME", v)`。`mod` はそのファイルの import
+        （モジュール直下でも関数の中でも）で木内モジュールに解けるもの。
+        """
+        if self._attr_writes is None:
+            # 集める間は書き換えの確認を外して import をたどる（再帰を止める）。集めた後の解決では確認する。
+            self._attr_writes = frozenset()
+            out: set[tuple[str, str]] = set()
+            for path in sorted(self._by_path):
+                info = self._by_path[path]
+                mod = self.index.module_name(path)
+                for alias, attr in sorted(info.attr_pairs):
+                    for imp in info.imports.get(alias, ()):
+                        ref = self._from_import(mod, imp, alias, _IMPORT_HOPS)
+                        if ref is not None and ref.kind == "module":
+                            out.add((ref.name, attr))
+            self._attr_writes = frozenset(out)
+        return self._attr_writes
+
+    def in_module(self, module: str, name: str, hops: int = _IMPORT_HOPS) -> Optional[_Ref]:
+        """モジュール水準の `name`。束縛が**ちょうど 1 つ**で、動的に書き換えられないときだけ解く。"""
+        info = self.info(module)
+        if info is None or hops < 0:
+            return None
+        if info.dynamic or name in info.declared:
+            return None
+        binds, dynamic = self.module_bindings(module, name)
+        if dynamic or len(binds) != 1:
+            return None
+        writes = self.attr_writes()
+        if (module, name) in writes or (module, "*") in writes:
+            return None
+        return self._from_binding(module, binds[0], name, (info.tree,), hops)
+
+    def _from_binding(
+        self, module: str, b: ast.AST, name: str, chain: tuple[ast.AST, ...], hops: int
+    ) -> Optional[_Ref]:
+        """唯一の束縛 `b` から参照を作る。`chain` は `b` を持つスコープまでの列（外 → 内）。"""
+        if isinstance(b, _FUNC_NODES):
+            qual = _qual_prefix(chain) + name
+            fds = [
+                f
+                for f in self.index.lookup_function(qual, module)
+                if f.module == module and f.qualname == qual and f.node is b
+            ]
+            return _Ref("func", qual, fds[0]) if len(fds) == 1 else None
+        if isinstance(b, ast.ClassDef):
+            return _Ref("class", f"{module}.{_qual_prefix(chain)}{name}")
+        if isinstance(b, (ast.Import, ast.ImportFrom)):
+            return self._from_import(module, b, name, hops)
+        return None
+
+    def _from_import(self, module: str, node: ast.AST, local: str, hops: int) -> Optional[_Ref]:
+        aliases = [a for a in node.names if a.name != "*" and (a.asname or a.name.split(".")[0]) == local]
+        if len(aliases) != 1:
+            return None
+        alias = aliases[0]
+        if isinstance(node, ast.Import):
+            dotted = alias.name if alias.asname else alias.name.split(".")[0]
+            status, mod = self.abs_module(dotted)
+            if status == "tree":
+                return _Ref("module", mod)
+            return _Ref("extern", dotted) if status == "extern" else None
+        assert isinstance(node, ast.ImportFrom)
+        if node.level > 0:
+            # **相対 import は `level` で解く**（import 表は相対の点を捨てるので使わない。D61 の改訂 G3）。
+            # 基準は `__init__.py` ならパッケージ自身、ほかは親パッケージ。
+            info = self.info(module)
+            if info is None:
+                return None
+            base = module if info.is_pkg else module.rpartition(".")[0]
+            for _ in range(node.level - 1):
+                base = base.rpartition(".")[0]
+            if not base:
+                return None
+            target = f"{base}.{node.module}" if node.module else base
+            if node.module and target not in self.modules():
+                return None  # 相対 import が木の中で解けない（木外ではありえない）
+        else:
+            status, target = self.abs_module(node.module)
+            if status == "extern":
+                return _Ref("extern", f"{node.module}.{alias.name}")
+            if status != "tree" or target is None:
+                return None
+        return self.member(target, alias.name, hops - 1)
+
+    def member(self, module: str, attr: str, hops: int) -> Optional[_Ref]:
+        """木内モジュール（パッケージ）`module` の属性 `attr`。
+
+        パッケージの本体が `attr` を束縛し、かつ同名のサブモジュールもあるときは決めない（import の順で
+        どちらにもなる）。
+        """
+        sub = f"{module}.{attr}"
+        sub_exists = sub in self.modules()
+        info = self.info(module)
+        bound = bool(info is not None and self.module_bindings(module, attr)[0])
+        if sub_exists and bound:
+            return None
+        if sub_exists:
+            return _Ref("module", sub)
+        if bound:
+            return self.in_module(module, attr, hops)
+        return None
+
+    # -- 登録文のスコープ ----------------------------------------------------
+
+    def _binding_scope(
+        self, module: str, chain: tuple[ast.AST, ...], name: str
+    ) -> tuple[str, Optional[int], list[ast.AST]]:
+        """`name` を束縛する最も内側のスコープ。
+
+        :returns: `("local", chain の位置, 束縛)` / `("module", None, [])` / `("dynamic", None, [])`。
+            クラス本体は、参照がその本体に直接あるときだけ見える（Python のスコープ規則）。
+        """
+        info = self.info(module)
+        if info is None or name in info.declared:
+            return "dynamic", None, []
+        for i in range(len(chain) - 1, 0, -1):
+            scope = chain[i]
+            if isinstance(scope, ast.ClassDef) and i != len(chain) - 1:
+                continue
+            binds, dynamic = _scope_bindings(scope, name)
+            if dynamic:
+                return "dynamic", None, []
+            if binds:
+                return "local", i, binds
+        return "module", None, []
+
+    def name(self, module: str, chain: tuple[ast.AST, ...], name: str) -> Optional[_Ref]:
+        where, i, binds = self._binding_scope(module, chain, name)
+        if where == "dynamic":
+            return None
+        if where == "module":
+            return self.in_module(module, name)
+        if len(binds) != 1 or i is None:
+            return None
+        return self._from_binding(module, binds[0], name, chain[: i + 1], _IMPORT_HOPS)
+
+    def expr(self, module: str, chain: tuple[ast.AST, ...], node: ast.AST) -> Optional[_Ref]:
+        """式 `node`（Name / Attribute の連鎖 / `self.<m>`）が指すもの。それ以外の式は解かない。"""
+        if isinstance(node, ast.Name):
+            return self.name(module, chain, node.id)
+        if not isinstance(node, ast.Attribute):
+            return None
+        if isinstance(node.value, ast.Name):
+            handled, ref = self._self_method(module, chain, node.value.id, node.attr)
+            if handled:
+                return ref
+        base = self.expr(module, chain, node.value)
+        if base is None:
+            return None
+        if base.kind == "module":
+            return self.member(base.name, node.attr, _IMPORT_HOPS)
+        if base.kind == "extern":
+            return _Ref("extern", f"{base.name}.{node.attr}")
+        return None
+
+    def _self_method(
+        self, module: str, chain: tuple[ast.AST, ...], head: str, attr: str
+    ) -> tuple[bool, Optional[_Ref]]:
+        """`self.<attr>` を**囲むクラスの中だけ**で解く（D64 / U40 条件 (2)）。
+
+        `head` が、クラス本体に直接ある（staticmethod / classmethod でない）メソッドの第 1 仮引数で、
+        そのメソッドの中で束縛し直されないときだけ扱う。クラス本体で `attr` を束縛するのがちょうど 1 つの
+        def で、インスタンス属性・クラス属性として書き換えられず、木内のサブクラスが上書きしないときだけ採る。
+        別クラスの同名メソッドや木外の基底から来るメソッドは採らない。
+
+        :returns: `(self 形として扱ったか, 参照)`。扱わないなら一般の解決に回す。
+        """
+        where, i, binds = self._binding_scope(module, chain, head)
+        if where != "local" or i is None:
+            return False, None
+        meth = chain[i]
+        if not isinstance(meth, _FUNC_NODES) or i < 1 or not isinstance(chain[i - 1], ast.ClassDef):
+            return False, None
+        positional = list(meth.args.posonlyargs) + list(meth.args.args)
+        if not positional or positional[0].arg != head:
+            return False, None
+        if len(binds) != 1 or binds[0] is not positional[0]:
+            return True, None  # self を束縛し直している
+        if any(_last_name(d) in ("staticmethod", "classmethod") for d in meth.decorator_list):
+            return True, None
+        cls = chain[i - 1]
+        cbinds, cdyn = _scope_bindings(cls, attr)
+        if cdyn or len(cbinds) != 1 or not isinstance(cbinds[0], _FUNC_NODES):
+            return True, None
+        target = cbinds[0]
+        if any(_last_name(d) in _NON_FUNCTION_DECORATORS for d in target.decorator_list):
+            return True, None
+        # インスタンス属性・クラス属性としての書き換え（`self.m = ...` / `C.m = ...` / `setattr(x, "m", v)`）。
+        # 受け手の型は見ず、木のどこかで同じ名前の属性が書き換えられるなら採らない。
+        stored, any_setattr = self.stored_attrs()
+        if attr in stored or any_setattr:
+            return True, None
+        # 木内のサブクラス（何段下でも）か、その MRO で `cls` より前に来うるミックスインが同名で上書きする
+        # （`self.m` は動的に束縛される）。
+        if self._overridden_below(cls.name, attr):
+            return True, None
+        ref = self._from_binding(module, target, attr, chain[:i], _IMPORT_HOPS)
+        return True, ref
+
+    def _overridden_below(self, cls_name: str, attr: str) -> bool:
+        """`cls_name` の木内のサブクラス（推移的）と、それらから `cls_name` を通らずにたどれる基底のどれかが
+        `attr` を束縛するか。クラスは基底の末尾名で結ぶ（同名のクラスが複数あれば全部を見る。見過ぎる側）。"""
+        classes = list(self.index.classes())
+
+        def bases_of(cd) -> set[str]:
+            return {b.split(".")[-1] for b in cd.bases}
+
+        subs: set[str] = set()
+        frontier = [cls_name]
+        while frontier:
+            cur = frontier.pop()
+            for cd in classes:
+                if cur in bases_of(cd) and cd.name != cls_name and cd.name not in subs:
+                    subs.add(cd.name)
+                    frontier.append(cd.name)
+        if not subs:
+            return False
+        check = set(subs)
+        frontier = list(subs)
+        while frontier:
+            cur = frontier.pop()
+            for cd in classes:
+                if cd.name != cur:
+                    continue
+                for b in bases_of(cd):
+                    if b != cls_name and b not in check:
+                        check.add(b)
+                        frontier.append(b)
+        return any(cd.name in check and _scope_bindings(cd.node, attr)[0] for cd in classes)
+
+
+def _walk_scoped(tree: ast.Module):
+    """`(node, 親, スコープの列（外 → 内、先頭はモジュール）)` を再帰せずに列挙する。
+
+    デコレータ・既定値・基底・注釈は外側のスコープで評価されるので、外側の列で出す。
+    """
+    top: tuple[ast.AST, ...] = (tree,)
+    stack: list[tuple[ast.AST, ast.AST, tuple[ast.AST, ...]]] = [(c, tree, top) for c in reversed(tree.body)]
+    while stack:
+        node, parent, outer = stack.pop()
+        yield node, parent, outer
+        if isinstance(node, (*_FUNC_NODES, ast.Lambda)):
+            inner = outer + (node,)
+            body = node.body if isinstance(node.body, list) else [node.body]
+            stack += [(c, node, inner) for c in reversed(body)]
+            if not isinstance(node, ast.Lambda):
+                stack += [(d, node, outer) for d in node.decorator_list]
+                if node.returns is not None:
+                    stack.append((node.returns, node, outer))
+            stack += [(c, node, outer) for c in ast.iter_child_nodes(node.args)]
+        elif isinstance(node, ast.ClassDef):
+            inner = outer + (node,)
+            stack += [(c, node, inner) for c in reversed(node.body)]
+            stack += [(c, node, outer) for c in node.decorator_list + node.bases + [k.value for k in node.keywords]]
+        elif isinstance(node, _COMP_NODES):
+            inner = outer + (node,)
+            stack += [(c, node, inner) for c in ast.iter_child_nodes(node)]
+        else:
+            stack += [(c, node, outer) for c in ast.iter_child_nodes(node)]
+
+
+def _registration_of(call: ast.Call) -> Optional[tuple[EntryRule, ast.Call, ast.AST]]:
+    """呼び出し形の登録なら `(規則, 宣言を読む呼び出し, 登録される式)`。
+
+    * `d(...)(fn)`: `@d(...) def fn` の糖衣を外した形（PEP 318）。宣言は内側の `d(...)` から読む。
+      `require_positional` の規則は同じ構造条件で見る（`click.command()(main)` は落ちる）。
+    * `d(fn, ...)`: `@d def fn` の糖衣を外した形と `add_tool(fn, annotations=...)`。宣言はこの呼び出しから読む。
+      `require_positional` の規則は裸のデコレータ形と同じく採らない。
+    """
+    if not call.args:
+        return None
+    f = call.func
+    if isinstance(f, ast.Call):
+        name = dotted_of(f.func)
+        rule = _match_decorator(name) if name else None
+        if rule is not None and (not rule.require_positional or _has_catalog_signature(f, rule)):
+            return rule, f, call.args[0]
+        return None
+    name = dotted_of(f)
+    rule = _match_decorator(name) if name else None
+    if rule is not None and not rule.require_positional:
+        return rule, call, call.args[0]
+    return None
+
+
+def _spec_origin(ref: Optional[_Ref], origins: tuple[str, ...]) -> bool:
+    """構築子の参照が `SPEC_OBJECT_ORIGINS` の import 元に当たるか。木内の定義は `.<元>` で終わるものも採る。"""
+    if ref is None:
+        return False
+    if ref.kind == "extern":
+        return ref.name in origins
+    if ref.kind == "class":
+        return any(ref.name == o or ref.name.endswith("." + o) for o in origins)
+    return False
+
+
+def find_registration_units(
+    index: SourceIndex, registered: set[tuple[str, str]] | frozenset[tuple[str, str]] = frozenset()
+) -> list[Unit]:
+    """呼び出し形の登録（`x.tool(...)(fn)` / `x.tool(fn)` / `x.add_tool(fn, ...)`）と `spec_object`
+    （`ToolSpec(name=..., execute=fn)`）の `fn` を入口にする（D64 / U40）。
+
+    **`fn` は登録文のスコープで厳密に解く**（`_Resolver`）。`registered` にある関数（すでに別の形で
+    ユニットになったもの）と、この中で先に登録された関数は 2 つ目のユニットにしない。
+    """
+    resolver = _Resolver(index)
+    seen: set[tuple[str, str]] = set(registered)
+    out: list[Unit] = []
+    spec_rules: list[tuple[EntryRule, tuple[str, ...], str]] = []
+    for fw, (origins, kwarg) in sorted(SPEC_OBJECT_ORIGINS.items()):
+        rule = find_entry_rule("spec_object", origins[0].split(".")[-1])
+        if rule is not None and rule.framework == fw:
+            spec_rules.append((rule, origins, kwarg))
+    spec_kwargs = {kwarg for _r, _o, kwarg in spec_rules}
+    # 1 回目の走査: 候補の呼び出しと、名前の解決に要るモジュールの事実を**全ファイルについて**集める
+    # （あるファイルの解決は、別のファイルの書き換え・再公開を見る）。
+    files: list[tuple[str, str, list[tuple[ast.Call, tuple[ast.AST, ...]]]]] = []
+    for path in index.py_files():
+        tree = index.parse(path)
+        if tree is None:
+            continue
+        info = resolver.add_file(path, tree)
+        cands: list[tuple[ast.Call, tuple[ast.AST, ...]]] = []
+        for node, parent, chain in _walk_scoped(tree):
+            _note_facts(node, parent, info)
+            if isinstance(node, ast.Call) and (
+                _registration_of(node) is not None or any(k.arg in spec_kwargs for k in node.keywords)
+            ):
+                cands.append((node, chain))
+        if cands:
+            files.append((index.module_name(path), index.relpath(path), cands))
+    # 2 回目: 候補を解く。
+    for module, rel, cands in files:
+        found: list[tuple[int, int, Unit]] = []
+        for node, chain in cands:
+            reg = _registration_of(node)
+            if reg is not None:
+                rule, decl_call, target = reg
+                ref = resolver.expr(module, chain, target)
+                if ref is not None and ref.kind == "func" and ref.fd is not None:
+                    where = {"form": "call", "relpath": rel, "lineno": getattr(node, "lineno", 0)}
+                    found.append((node.lineno, node.col_offset, _decorator_unit(ref.fd, rule, decl_call, where)))
+                continue
+            for rule, origins, kwarg in spec_rules:
+                value = _kwarg_node(node, kwarg)
+                if value is None:
+                    continue
+                if not _spec_origin(resolver.expr(module, chain, node.func), origins):
+                    continue
+                ref = resolver.expr(module, chain, value)
+                if ref is None or ref.kind != "func" or ref.fd is None:
+                    continue  # `execute=create_mcp_execute_function(...)` などの呼び出し式は採らない
+                fd = ref.fd
+                found.append(
+                    (
+                        node.lineno,
+                        node.col_offset,
+                        Unit(
+                            framework=rule.framework,
+                            entry_kind="spec_object",
+                            module=fd.module,
+                            qualname=fd.qualname,
+                            relpath=fd.relpath,
+                            node=fd.node,
+                            # **仮引数は全部 MODEL**（`confirm` も。R2 例外の語彙は月 3 凍結で、足していない）。
+                            params=params_of(fd.node, rule.exclude_params),
+                            tool_name=_kwarg_str(node, "name")
+                            or _positional_str(node, 0)
+                            or fd.qualname.split(".")[-1],
+                            is_async=fd.is_async,
+                            registration={"form": "spec_object", "relpath": rel, "lineno": node.lineno},
+                        ),
+                    )
+                )
+                break
+        found.sort(key=lambda t: (t[0], t[1]))
+        for _l, _c, unit in found:
+            key = (unit.module, unit.qualname)
+            if key in seen:
+                continue  # 二重登録（デコレータ形 + 呼び出し形、呼び出し形 2 回）は 1 ユニット
+            seen.add(key)
+            out.append(unit)
+    return out
 
 
 # --------------------------------------------------------------------------

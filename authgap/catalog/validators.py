@@ -364,4 +364,20 @@ VOCABULARY_REVISIONS: tuple[tuple[str, str, str], ...] = (
         "`statement_type_only` は A18（langroid、sqlglot 正規化 + 文型 allowlist）が"
         "既存のどの語にも当たらず、`unknown` に落ちて weak と区別できなかったため。",
     ),
+    (
+        "2026-09-28",
+        "ENTRY_RULES の mcp 規則の names に `add_tool` を追加（規則の数 14 は変えない）",
+        "D64 / U40、学生の決定（月 6 の凍結後の入口の語彙の追加なので、`docs/preregistration.md` の"
+        "逸脱としても記録する）。公式 SDK の `FastMCP.tool` / `MCPServer.tool` は "
+        "`def decorator(fn): self.add_tool(fn, ...)` を返すだけで、`add_tool` が SDK の登録の本体である。"
+        "`add_tool` だけで登録するサーバ（rag-toolkit）がユニット 0 で丸ごと消えていた（数え落とし・誤 clear）。",
+    ),
+    (
+        "2026-09-28",
+        "ENTRY_RULES の gptme 規則（`spec_object` / `ToolSpec`）の照合を末尾一致から import 元の照合に絞る"
+        "（`SPEC_OBJECT_ORIGINS`。規則の数は変えない）",
+        "D64 / U40。規則は初回コミットから実装が無かった（R2-r5-3）。裸名 `ToolSpec` の末尾一致で実装すると、"
+        "別のクラス（rag-toolkit の `handler=`、OpenHands の `ClientToolSpec`、木内の自前の ToolSpec）に当たり"
+        "MCP 母集団の分母が動くので、規則の文面からの精密化として逸脱に記録する。",
+    ),
 )

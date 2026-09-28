@@ -80,11 +80,15 @@ class EntryRule:
 
     `kind` は認識の形:
 
-    * ``decorator``      関数デコレータ（`@mcp.tool`、`@tool`、`@function_tool` …）
+    * ``decorator``      関数デコレータ（`@mcp.tool`、`@tool`、`@function_tool` …）。
+      PEP 318 で `@d(...) def f` は `f = d(...)(f)`、`@d def f` は `f = d(f)` の糖衣なので、
+      同じ名前の呼び出し形 `d(...)(fn)` / `d(fn)` も同じ規則で読む（D64 / U40）。`fn` は登録文の
+      スコープで厳密に解けるものだけを採る
     * ``method``         クラスの特定メソッド（`BaseTool._run`、CrewAI `_run` …）
     * ``lowlevel_v1``    `@server.call_tool()` デコレータ + name 分岐
     * ``lowlevel_v2``    `Server(on_call_tool=...)` / `add_request_handler("tools/call", ...)`
-    * ``spec_object``    `ToolSpec(...)` のようなオブジェクト構築（gptme）
+    * ``spec_object``    `ToolSpec(...)` のようなオブジェクト構築（gptme）。構築子は import 元で照合する
+      （`SPEC_OBJECT_ORIGINS`）
     * ``tools_list``      `Agent(tools=[f, g])` や `tools = [f, g]` の要素として
       渡される**裸の関数**（praisonai / openai-agents / agno / autogen）。
       登録デコレータを持たないので他の規則では拾えない。
@@ -128,8 +132,13 @@ ENTRY_RULES: tuple[EntryRule, ...] = (
     EntryRule(
         "decorator",
         "mcp",
-        ("mcp.tool", "server.tool", "app.tool", "tool"),
-        note="公式 SDK fastmcp(v1) / mcpserver(v2) の高レベル登録。執行表では Def 5 側",
+        # `add_tool` は D64 / U40 で足した（学生の決定。入口の語彙の追加で逸脱、`VOCABULARY_REVISIONS`）。
+        # 公式 SDK の `FastMCP.tool` / `MCPServer.tool` は `def decorator(fn): self.add_tool(fn, ...)` を
+        # 返すだけで、`add_tool(fn, annotations=...)` が登録の本体である。
+        ("mcp.tool", "server.tool", "app.tool", "tool", "add_tool"),
+        note="公式 SDK fastmcp(v1) / mcpserver(v2) の高レベル登録。執行表では Def 5 側。"
+        "デコレータ形に加え、PEP 318 の糖衣を外した呼び出し形 `x.tool(...)(fn)` / `x.tool(fn)` / "
+        "`x.add_tool(fn, ...)` も同じ規則で読む（D64 / U40）",
     ),
     EntryRule(
         "decorator",
@@ -178,7 +187,13 @@ ENTRY_RULES: tuple[EntryRule, ...] = (
         note="Toolkit のメソッドが register される。F9（ShellTools）が依存する",
     ),
     # -- gptme -------------------------------------------------------------
-    EntryRule("spec_object", "gptme", ("ToolSpec",)),
+    EntryRule(
+        "spec_object",
+        "gptme",
+        ("ToolSpec",),
+        note="`ToolSpec(name=..., execute=fn)`。構築子は裸名の末尾一致ではなく import 元で照合する"
+        "（`SPEC_OBJECT_ORIGINS`、D64 / U40）",
+    ),
     # -- AutoGPT -----------------------------------------------------------
     EntryRule(
         "decorator",
@@ -214,6 +229,16 @@ ENTRY_RULES: tuple[EntryRule, ...] = (
         "MODEL 値は ToolMessage のフィールド",
     ),
 )
+
+#: `spec_object` 形の構築子の**import 元**（dotted 名）と、入口の関数を渡すキーワード（D64 / U40）。
+#: 規則の names（`ToolSpec`）の末尾一致だけで照合すると、別のライブラリや木内の自前の `ToolSpec`
+#: （`handler=` を取るもの、`ClientToolSpec`）に当たり、MCP 母集団のユニットの分母が動く。
+#: 木内の定義は再公開（`gptme/tools/__init__.py`）をたどった先の定義のモジュールで、木外は import の
+#: dotted 名そのもので照合する。gptme の `ToolSpec` は `gptme/tools/base.py` の dataclass で、
+#: `gptme.tools` が再公開している。
+SPEC_OBJECT_ORIGINS: dict[str, tuple[tuple[str, ...], str]] = {
+    "gptme": (("gptme.tools.base.ToolSpec", "gptme.tools.ToolSpec"), "execute"),
+}
 
 #: `ToolMessage` 派生クラスのフィールドのうち **MODEL としない**もの。
 #: プロトコル上の識別子であってモデルが自由に決める値ではない。
