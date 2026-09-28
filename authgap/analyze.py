@@ -19,6 +19,7 @@ import ast
 from dataclasses import dataclass, field, replace
 from typing import Any, Optional
 
+from . import entry_seed
 from .catalog import validators as V
 from .catalog.entries import APPROVAL_INTERRUPTS
 from .catalog.sinks import DANGEROUS_KINDS, PATH_DOMAIN_SLOTS, PRIMARY_SLOTS
@@ -238,6 +239,10 @@ def _seed(unit: Unit, index: Optional[SourceIndex] = None) -> dict[str, Value]:
             seed[p.name] = Value(Prin.OP, RESOLVED, Atom(formal=p.name))
             continue
         seed[p.name] = seed_model_param(p.name, p.name, p.annotation)
+    if index is not None:
+        # 注釈による形（pydantic / dataclass / NamedTuple・Path）と lifespan の yield 値（D64 / U23）
+        seed.update(entry_seed.annotated_param_seeds(index, unit))
+        seed.update(entry_seed.lifespan_seeds(index, unit))
     if unit.entry_kind == "lowlevel_v2" and unit.v2_params_arg:
         seed[unit.v2_params_arg] = _call_tool_request_params(unit.v2_params_arg)
     if unit.qualname.count(".") >= 1:
@@ -256,6 +261,9 @@ def _seed(unit: Unit, index: Optional[SourceIndex] = None) -> dict[str, Value]:
             )
             for name, ann in unit.message_fields
         )
+        if index is not None and entry_seed.message_class_hooked(index, unit):
+            # 構築時フック（`field_validator` など）が値を変えうる: 確度を opaque に（D64 / U23、R4-r4-2）
+            fields = tuple((name, entry_seed.opaque_field(v)) for name, v in fields)
         seed[unit.message_param] = Value(
             Prin.OP, RESOLVED, Obj((unit.message_class or "ToolMessage",), fields)
         )
@@ -455,7 +463,8 @@ def _mark_shape_from(report: UnitReport, unit: Unit) -> None:
     annotated = {p.name for p in unit.params if p.annotation}
     for e in report.effects:
         for slot, v in e.control_slots().items():
-            if v.roots & annotated:
+            # フィールドごとの root（`req.path`。D64 / U23）も仮引数の注釈に由来する
+            if v.roots & annotated or any(r.split(".")[0] in annotated for r in v.roots):
                 e.shape_from[slot] = "annotation"
 
 
