@@ -238,6 +238,8 @@ def _seed(unit: Unit, index: Optional[SourceIndex] = None) -> dict[str, Value]:
             seed[p.name] = Value(Prin.OP, RESOLVED, Atom(formal=p.name))
             continue
         seed[p.name] = seed_model_param(p.name, p.name, p.annotation)
+    if unit.entry_kind == "lowlevel_v2" and unit.v2_params_arg:
+        seed[unit.v2_params_arg] = _call_tool_request_params(unit.v2_params_arg)
     if unit.qualname.count(".") >= 1:
         cls = unit.qualname.split(".")[0]
         fields = _self_fields(index, cls, unit.module) if index is not None else ()
@@ -258,6 +260,30 @@ def _seed(unit: Unit, index: Optional[SourceIndex] = None) -> dict[str, Value]:
             Prin.OP, RESOLVED, Obj((unit.message_class or "ToolMessage",), fields)
         )
     return seed
+
+
+def _call_tool_request_params(pname: str) -> Value:
+    """mcp 2.x の低レベルハンドラの第 2 位置: `CallToolRequestParams`（D64 / U38、R2-r3-1）。
+
+    SDK は `Server(on_call_tool=h)` / `add_request_handler("tools/call", CallToolRequestParams, h)` の h を
+    `h(ctx, CallToolRequestParams.model_validate(...))` と**位置で**呼ぶ（mcp 2.1.0 `server/runner.py:216-217`）。
+    `name` と `arguments` はモデルが送った値そのもの（低レベル 2.x は inputSchema を執行しない。仕様書 336 行目）
+    なので MODEL / resolved。裸の Atom で種付けすると `params.arguments[...]` が属性読み出しで
+    opaque(unresolved) になり、v1 の `arguments[...]` と同じプログラムが矛 → 不に落ちていた（誤 clear の向き）。
+    **ctx（第 1 位置）は変えない**（R2-r1-10 は反証済み）。モデルに無いフィールド（`meta` ほか）は Obj に
+    載せないので、読めば今までどおり opaque。
+    """
+    from .ir import Atom, Map, Obj
+
+    def model(root: str, shape) -> Value:
+        return Value(Prin.MODEL, RESOLVED, shape, frozenset(), frozenset({root}))
+
+    args_root = f"{pname}.arguments"
+    fields = (
+        ("name", model(f"{pname}.name", Atom(formal=f"{pname}.name"))),
+        ("arguments", model(args_root, Map((), model(args_root, Atom(formal=args_root))))),
+    )
+    return model(pname, Obj(("mcp.types.CallToolRequestParams",), fields))
 
 
 def _closure_seed(index: SourceIndex, unit: Unit) -> dict[str, Value]:

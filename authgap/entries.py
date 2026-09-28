@@ -29,7 +29,7 @@ from .catalog.entries import (
     EntryRule,
     find_entry_rule,
 )
-from .srcindex import FuncDef, Scope, SourceIndex, dotted_of
+from .srcindex import FuncDef, Scope, SourceIndex, _local_bindings, dotted_of, is_test_path, resolve_call_name
 
 #: `match` 文は Python 3.10 以降にしか無い。
 _MATCH_CASE = getattr(ast, "match_case", None)
@@ -80,11 +80,18 @@ class Unit:
     #: `D_malformed` として別行で報告する」と定める。**記録だけで上界は動かさない。**
     #: 動かすと「書いただけで宣言したことになる」= 誤 clear になる（O27 / D48）。
     malformed_fields: tuple[str, ...] = ()
+    #: **mcp の版が決まらないため読み方が決まらない snake_case のキー**（D64 / U38、R2-r1-1）。
+    #: mcp>=2.0 では `ToolAnnotations` の属性名そのもので camelCase の別名で protocol に届き、
+    #: <2.0 では届かない（`D_malformed`）。版が決まらない木では**どちらにも倒さず `D_unknown`**（⊥ とも
+    #: malformed とも混ぜない。Def 6 の版規則 (4)）。上界にも `explicit` にも入れない。
+    undetermined_fields: tuple[str, ...] = ()
     #: 低レベル経路のとき、ハンドラ内の name 分岐から得た候補名。
     dispatch_names: tuple[str, ...] = ()
     #: 低レベル経路のとき、`dispatch_names` で join した `Tool(...)` リテラルの
     #: 宣言（ツール名 → `(annotations, form)`）。`docs/preregistration.md` §2.9 (a)。
     dispatch_annotations: dict[str, tuple[Optional[dict], str]] = field(default_factory=dict)
+    #: 同じく、join したツールごとの :attr:`undetermined_fields`（空のツールは載せない）。
+    dispatch_undetermined: dict[str, tuple[str, ...]] = field(default_factory=dict)
     #: 同じファイルにあって名前が文字列リテラルでないため join できなかったリテラル数（§2.9 (d)）。
     dispatch_unjoined: int = 0
     is_async: bool = False
@@ -97,6 +104,10 @@ class Unit:
     #: 呼び出し形の登録（`x.tool(...)(fn)` / `x.add_tool(fn)`）と `spec_object` のとき、登録文の
     #: `{"form", "relpath", "lineno"}`（D64 / U40）。ユニットの位置（`relpath` / `lineno`）は関数の定義。
     registration: Optional[dict] = None
+    #: `lowlevel_v2` のとき、mcp SDK が `CallToolRequestParams` を渡す仮引数の名前（第 2 位置。self / cls を
+    #: 除いて数える。D64 / U38、R2-r3-1）。**登録が SDK の形だと裏付けられるときだけ**立てる
+    #: （:func:`find_lowlevel_units`）。`analyze._seed` がこの仮引数に `CallToolRequestParams` の形を種付ける。
+    v2_params_arg: Optional[str] = None
 
     @property
     def schema_hash(self) -> str:
@@ -138,6 +149,10 @@ class Unit:
             d["annotation_form"] = self.annotation_form
         if self.malformed_fields:
             d["malformed_fields"] = list(self.malformed_fields)
+        if self.undetermined_fields:
+            d["undetermined_fields"] = list(self.undetermined_fields)
+        if self.v2_params_arg:
+            d["v2_params_arg"] = self.v2_params_arg
         if self.dispatch_names:
             d["dispatch_names"] = list(self.dispatch_names)
         if self.dispatch_annotations:
@@ -145,6 +160,8 @@ class Unit:
                 k: {"annotations": a, "form": f} for k, (a, f) in sorted(self.dispatch_annotations.items())
             }
             d["dispatch_unjoined"] = self.dispatch_unjoined
+        if self.dispatch_undetermined:
+            d["dispatch_undetermined"] = {k: list(v) for k, v in sorted(self.dispatch_undetermined.items())}
         if self.message_param:
             d["message_param"] = self.message_param
             d["message_class"] = self.message_class
@@ -384,6 +401,8 @@ def _class_bases(index: SourceIndex, classname: str, module: Optional[str]) -> f
 def find_units(index: SourceIndex) -> list[Unit]:
     """木全体から R2 のユニットを取り出す（決定論的な順序）。"""
     units: list[Unit] = []
+    #: snake_case の注釈の読み方を決める mcp の主版（D64 / U38、R2-r1-1）。
+    snake = mcp_version_class(index)[0]
     for fd in index.functions():
         path = index.resolve_module_path(fd.module)
         if path is None:
@@ -398,7 +417,7 @@ def find_units(index: SourceIndex) -> list[Unit]:
                 # **末尾名が同じ別のデコレータと取り違えない。**
                 # `@click.command()` は位置引数も `names=` / `parameters=` も取らないので落ちる。
                 continue
-            units.append(_decorator_unit(fd, rule, call))
+            units.append(_decorator_unit(fd, rule, call, snake=snake))
             matched = True
             break
         if matched:
@@ -449,8 +468,13 @@ def _decorator_unit(
     rule: EntryRule,
     call: Optional[ast.Call],
     registration: Optional[dict] = None,
+    *,
+    snake: str,
 ) -> Unit:
-    """デコレータ規則に当たった関数のユニット。`call` はデコレータ（呼び出し形なら外側の登録呼び出し）。"""
+    """デコレータ規則に当たった関数のユニット。`call` はデコレータ（呼び出し形なら外側の登録呼び出し）。
+
+    `snake` は snake_case の注釈の読み方を決める mcp の主版（:func:`mcp_version_class`、D64 / U38）。
+    """
     tool_name = (
         _kwarg_str(call, "name")
         or _positional_str(call, rule.name_arg)
@@ -468,10 +492,11 @@ def _decorator_unit(
     ann: Optional[dict] = None
     ann_form: Optional[str] = None
     malformed: tuple[str, ...] = ()
+    undetermined: tuple[str, ...] = ()
     if ann_node is not None:
         # **3 つ目の戻り値（snake_case）を捨てない。** 捨てていたため
         # `D_malformed` が構造的に常に空だった（母集団 v2 に 574 箇所。O27 / D48）。
-        ann, ann_form, malformed = _read_annotations(ann_node)
+        ann, ann_form, malformed, undetermined = _read_annotations(ann_node, snake)
     if declared is not None:
         # **スキーマ辞書に無い仮引数は MODEL としない。**
         # 実行文脈（`agent` など）を MODEL に数えると、フレームワークが
@@ -492,6 +517,7 @@ def _decorator_unit(
         annotations=ann,
         annotation_form=ann_form,
         malformed_fields=malformed,
+        undetermined_fields=undetermined,
         is_async=fd.is_async,
         registration=registration,
     )
@@ -1078,6 +1104,7 @@ def find_registration_units(
     ユニットになったもの）と、この中で先に登録された関数は 2 つ目のユニットにしない。
     """
     resolver = _Resolver(index)
+    snake = mcp_version_class(index)[0]  # snake_case の注釈の読み方（D64 / U38）
     seen: set[tuple[str, str]] = set(registered)
     out: list[Unit] = []
     spec_rules: list[tuple[EntryRule, tuple[str, ...], str]] = []
@@ -1113,7 +1140,7 @@ def find_registration_units(
                 ref = resolver.expr(module, chain, target)
                 if ref is not None and ref.kind == "func" and ref.fd is not None:
                     where = {"form": "call", "relpath": rel, "lineno": getattr(node, "lineno", 0)}
-                    found.append((node.lineno, node.col_offset, _decorator_unit(ref.fd, rule, decl_call, where)))
+                    found.append((node.lineno, node.col_offset, _decorator_unit(ref.fd, rule, decl_call, where, snake=snake)))
                 continue
             for rule, origins, kwarg in spec_rules:
                 value = _kwarg_node(node, kwarg)
@@ -1357,51 +1384,473 @@ def find_lowlevel_units(index: SourceIndex) -> list[Unit]:  # noqa: C901
                 )
             )
 
-    # v2: `Server(on_call_tool=handler)` / `add_request_handler("tools/call", handler)`
+    # v2: `Server(on_call_tool=handler)` / `add_request_handler("tools/call", ..., handler)`
+    v2: dict[str, tuple[FuncDef, bool]] = {}
+    for reg in lowlevel_v2_registrations(index):
+        if reg.handler_name is None:
+            continue  # partial / lambda など。`unresolved_handler` として manifest に残る（規則 4）
+        cands, pinned = _resolve_v2_handler(index, reg)
+        for fd in cands:
+            key = f"{fd.module}:{fd.qualname}"
+            if key in seen:
+                continue
+            prev = v2.get(key)
+            # **種付けは、そのハンドラの登録がすべて SDK の形で、定義が handler 式の形と合うときだけ**
+            # （1 つでも外れれば種付けしない。今までどおり裸の Atom）。
+            sdk = reg.sdk and (pinned or _handler_form_matches(reg, fd))
+            v2[key] = (fd, sdk if prev is None else (prev[1] and sdk))
+    for key in sorted(v2):
+        fd, sdk = v2[key]
+        seen.add(key)
+        out.append(
+            Unit(
+                framework="mcp-lowlevel-v2",
+                entry_kind="lowlevel_v2",
+                module=fd.module,
+                qualname=fd.qualname,
+                relpath=fd.relpath,
+                node=fd.node,
+                params=params_of(fd.node),
+                tool_name=None,
+                dispatch_names=dispatch_name_candidates(fd.node, enums),
+                is_async=fd.is_async,
+                v2_params_arg=_v2_params_arg(fd.node) if sdk else None,
+            )
+        )
+    return out
+
+
+# --------------------------------------------------------------------------
+# 低レベル v2 の登録点（D64 / U38: R2-r3-2 / R2-r3-3 / R2-r4-1）
+# --------------------------------------------------------------------------
+
+#: import 表で解いた mcp SDK の低レベル `Server` の名前（R2-r4-1 の別名 import。`from mcp.server.lowlevel
+#: import Server as X` / `from mcp.server import Server as X`）。mcp 2.2.0 の `mcp/server/__init__.py` と
+#: `mcp/server/lowlevel/__init__.py` が再公開する名前。
+MCP_LOWLEVEL_SERVER_NAMES: frozenset[str] = frozenset(
+    {"mcp.server.lowlevel.Server", "mcp.server.lowlevel.server.Server", "mcp.server.Server"}
+)
+
+#: SDK の `add_request_handler(method, params_type, handler)` の `params_type` として SDK 形の裏付けになる型
+#: （import 表で解いた名前の、先頭のパッケージと末尾名）。mcp 2.2.0 は型を `mcp_types` に分けて `mcp.types` から再公開する。
+_SDK_TYPE_PACKAGES: frozenset[str] = frozenset({"mcp", "mcp_types"})
+_CALL_TOOL_PARAMS = "CallToolRequestParams"
+
+
+@dataclass
+class V2Registration:
+    """`Server(on_call_tool=h)` / `add_request_handler("tools/call", ..., h)` の登録点 1 つ。"""
+
+    relpath: str
+    module: str
+    lineno: int
+    #: `on_call_tool` / `add_request_handler`。
+    form: str
+    #: handler 式。
+    handler: ast.AST
+    #: handler 式の dotted 名。dotted でない式（partial / lambda / 添字）は None。
+    handler_name: Optional[str]
+    #: 登録が mcp SDK の形だと裏付けられるか（`Server` が import 表で mcp の `Server` に解ける、または
+    #: `add_request_handler` の `params_type` が mcp の `CallToolRequestParams` に解ける）。
+    sdk: bool
+    #: 登録を囲む定義（外側から。関数・クラス・lambda）。
+    enclosing: tuple[ast.AST, ...] = ()
+
+    def unresolved_json(self) -> dict:
+        h = self.handler
+        callee = dotted_of(h.func) if isinstance(h, ast.Call) else None
+        d: dict[str, Any] = {
+            "relpath": self.relpath,
+            "lineno": self.lineno,
+            "form": self.form,
+            "expr": type(h).__name__,
+        }
+        if callee:
+            d["callee"] = callee
+        return d
+
+
+def _calls_with_enclosing(tree: ast.AST):
+    """`(Call, 囲む定義の列)` を決定論的な順序で返す。"""
+    stack: list[tuple[ast.AST, tuple[ast.AST, ...]]] = [(tree, ())]
+    while stack:
+        node, encl = stack.pop()
+        if isinstance(node, ast.Call):
+            yield node, encl
+        inner = encl + (node,) if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Lambda)) else encl
+        stack.extend((c, inner) for c in reversed(list(ast.iter_child_nodes(node))))
+
+
+def _kw(node: ast.Call, name: str) -> Optional[ast.AST]:
+    for kw in node.keywords:
+        if kw.arg == name:
+            return kw.value
+    return None
+
+
+def lowlevel_v2_registrations(index: SourceIndex) -> list[V2Registration]:
+    """木の中の低レベル v2 の登録点（索引ごとに記憶化）。
+
+    * `Server(...)`: 被呼び出し名の末尾が `Server`、**または import 表で mcp の `Server` に解ける**
+      （別名 import。R2-r4-1）。どの形でも `on_call_tool=` キーワードを要求する（`uvicorn.Server` を拾わない）。
+    * `add_request_handler(...)`: method は `args[0]` か `method=` で `"tools/call"`。handler は `handler=`、
+      無ければ**最後の位置引数**（R2-r3-2。SDK は `(method, params_type, handler)` の 3 引数で、`args[1]` は
+      `params_type`。`args[2]` だけにすると自前の JSON-RPC の 2 引数形 `(method, handler)` が消える）。
+    """
+    cache = index.__dict__.setdefault("_authgap_v2_registrations", {})
+    if "all" in cache:
+        return cache["all"]
+    out: list[V2Registration] = []
     for path in index.py_files():
         tree = index.parse(path)
         if tree is None:
             continue
-        scope = index.module_scope(path)
-        for node in ast.walk(tree):
-            if not isinstance(node, ast.Call):
-                continue
-            handler: Optional[ast.AST] = None
+        rel = index.relpath(path)
+        mod = index.module_name(path)
+        mscope = index.module_scope(path)
+        for node, encl in _calls_with_enclosing(tree):
             fname = dotted_of(node.func) or ""
-            if fname.split(".")[-1] == "Server":
+            last = fname.split(".")[-1]
+            handler: Optional[ast.AST] = None
+            sdk = False
+            form = ""
+            if last == "add_request_handler":
+                method = node.args[0] if node.args else _kw(node, "method")
+                if not (isinstance(method, ast.Constant) and method.value == LOWLEVEL_V2_REQUEST):
+                    continue
+                handler = _kw(node, "handler")
+                if handler is None and len(node.args) >= 2:
+                    handler = node.args[-1]
+                ptype = _kw(node, "params_type")
+                if ptype is None and len(node.args) >= 3:
+                    ptype = node.args[1]
+                elif ptype is None and len(node.args) == 2 and _kw(node, "handler") is not None:
+                    ptype = node.args[1]
+                sdk = ptype is not None and _is_sdk_call_tool_params(index, ptype, _scope_at(index, path, mscope, encl))
+                form = "add_request_handler"
+            else:
+                handler = None
                 for kw in node.keywords:
                     if kw.arg in LOWLEVEL_V2_KWARGS:
                         handler = kw.value
-            elif fname.split(".")[-1] == "add_request_handler":
-                if node.args and isinstance(node.args[0], ast.Constant):
-                    if node.args[0].value == LOWLEVEL_V2_REQUEST and len(node.args) > 1:
-                        handler = node.args[1]
+                if handler is None:
+                    continue
+                resolved = resolve_call_name(node.func, _scope_at(index, path, mscope, encl))
+                sdk = resolved in MCP_LOWLEVEL_SERVER_NAMES and _outside_tree(index, resolved)
+                if last != "Server" and not sdk:
+                    continue
+                form = "on_call_tool"
             if handler is None:
                 continue
-            hname = dotted_of(handler)
-            if hname is None:
-                continue
-            for fd in index.lookup_function(hname.split(".")[-1]):
-                key = f"{fd.module}:{fd.qualname}"
-                if key in seen:
-                    continue
-                seen.add(key)
-                out.append(
-                    Unit(
-                        framework="mcp-lowlevel-v2",
-                        entry_kind="lowlevel_v2",
-                        module=fd.module,
-                        qualname=fd.qualname,
-                        relpath=fd.relpath,
-                        node=fd.node,
-                        params=params_of(fd.node),
-                        tool_name=None,
-                        dispatch_names=dispatch_name_candidates(fd.node, enums),
-                        is_async=fd.is_async,
-                    )
+            out.append(
+                V2Registration(
+                    relpath=rel,
+                    module=mod,
+                    lineno=getattr(node, "lineno", 0),
+                    form=form,
+                    handler=handler,
+                    handler_name=dotted_of(handler),
+                    sdk=sdk,
+                    enclosing=encl,
                 )
-        del scope
+            )
+    out.sort(key=lambda r: (r.relpath, r.lineno, r.form))
+    cache["all"] = out
     return out
+
+
+def unresolved_handlers(index: SourceIndex) -> list[dict]:
+    """dotted 名でない handler 式（`functools.partial(...)` / `lambda` など）の登録点（R2-r3-3、規則 4）。
+
+    ユニットにはならない（どの定義が呼ばれるかを名前で決められない）。**黙って落とさず**件数と位置を
+    manifest の `unresolved_handler` に残す。判定は変えない。
+    """
+    return [r.unresolved_json() for r in lowlevel_v2_registrations(index) if r.handler_name is None]
+
+
+def _scope_at(index: SourceIndex, path: str, mscope: Scope, encl: tuple[ast.AST, ...]) -> Scope:
+    """登録点で見える import 表（いちばん内側の関数の局所 import とモジュールの import）。"""
+    for fn in reversed(encl):
+        if isinstance(fn, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            return index.function_scope(path, fn)
+    return mscope
+
+
+def _is_sdk_call_tool_params(index: SourceIndex, node: ast.AST, scope: Scope) -> bool:
+    name = resolve_call_name(node, scope)
+    if not name:
+        return False
+    return (
+        name.split(".")[0] in _SDK_TYPE_PACKAGES
+        and name.split(".")[-1] == _CALL_TOOL_PARAMS
+        and _outside_tree(index, name)
+    )
+
+
+def _outside_tree(index: SourceIndex, dotted: str) -> bool:
+    """dotted 名のモジュール部分が木の中に無い（外部のパッケージ = SDK そのもの）か。
+
+    木の中に同じ名前のモジュール（`mcp/server/lowlevel.py` を持つ別物・SDK の fork）があれば、それが SDK と
+    同じ呼び出し規約だとは言えないので SDK の裏付けにしない（種付けしない向き。D61 の改訂 G4 と同じ考え方）。
+    """
+    return index.resolve_module_strict(dotted.rpartition(".")[0]) is None
+
+
+def _v2_params_arg(fn: ast.AST) -> Optional[str]:
+    """SDK が `CallToolRequestParams` を渡す仮引数（第 2 位置。self / cls を除いて数える。名前によらない）。
+
+    **デコレータ付きの定義には種付けしない。** 登録されるのはデコレータが返す関数で、定義の仮引数の並びは
+    SDK の呼び出し規約と一致するとは限らない（検証役の反例 A3: `(ctx, params)` を `(name, arguments)` に
+    変える装飾子）。位置引数が 2 つに満たないときも種付けしない。
+    """
+    if getattr(fn, "decorator_list", None):
+        return None
+    args = getattr(fn, "args", None)
+    if args is None:
+        return None
+    positional = [a.arg for a in list(args.posonlyargs) + list(args.args) if a.arg not in ("self", "cls")]
+    return positional[1] if len(positional) >= 2 else None
+
+
+def _binds_locally(container: ast.AST, name: str) -> bool:
+    """囲む関数の中で `name` が束縛されるか（関数の局所束縛・入れ子 def・lambda の仮引数）。"""
+    if isinstance(container, (ast.FunctionDef, ast.AsyncFunctionDef)):
+        return name in _local_bindings(container)
+    if isinstance(container, ast.Lambda):
+        a = container.args
+        return name in {x.arg for x in list(a.posonlyargs) + list(a.args) + list(a.kwonlyargs)} | {
+            x.arg for x in (a.vararg, a.kwarg) if x is not None
+        }
+    return False
+
+
+def _resolve_v2_handler(index: SourceIndex, reg: V2Registration) -> tuple[list[FuncDef], bool]:
+    """登録された handler の定義（R2-r3-3）。
+
+    1. **登録文のモジュールの import 表で一意に解けるとき**（D61 の改訂 G3 と同じ条件: モジュール直下の束縛が
+       ちょうど 1 つで、関数の中で書き換えられない。import は `level` で厳密に解く）だけ、その定義 1 つに絞る。
+       `from .handlers import handle` / 同じモジュールの `def handle` / `handlers.handle`（モジュールの別名）。
+    2. 解けなければ**今までの裸名一致に落とす**（star import・条件つき import・関数の中の束縛など。落とさないと
+       真の登録が消える。CLAUDE.md の落とし穴）。ただし §9.1 / O30 と同じく、**登録元がテストでなければ
+       テストファイルの候補を外す**（どの Server にも登録されていない同名の test double を入口にしない）。
+
+    :returns: `(候補, import 表で一意に解けたか)`
+    """
+    name = reg.handler_name or ""
+    pinned = _pin_v2_handler(index, reg, name)
+    if pinned is not None:
+        return [pinned], True
+    cands = index.lookup_function(name.split(".")[-1])
+    if not is_test_path(reg.relpath):
+        cands = [c for c in cands if not is_test_path(c.relpath)]
+    return cands, False
+
+
+def _is_direct_method(fd: FuncDef) -> bool:
+    """クラス本体に直接書かれたメソッドか（メソッドの中の入れ子関数は含めない）。"""
+    return fd.classname is not None and fd.qualname.rpartition(".")[0].split(".")[-1] == fd.classname
+
+
+def _handler_form_matches(reg: V2Registration, fd: FuncDef) -> bool:
+    """裸名一致で拾った定義が handler 式の形と合うか（種付けの条件。D64 / U38）。
+
+    裸の名前 `h` がクラス本体のメソッドを指すことは無く、`x.h` は関数の中の入れ子 def を指さない。合わない
+    定義は裸名一致の取り違え（別の同名の定義）なので、SDK の呼び出し規約を当てはめない（ユニットには今までどおりなる）。
+    """
+    if "." in (reg.handler_name or ""):
+        return _is_direct_method(fd)
+    return not _is_direct_method(fd)
+
+
+def _pin_v2_handler(index: SourceIndex, reg: V2Registration, name: str) -> Optional[FuncDef]:
+    from .val.engine import _module_bindings, _scan_module_writes
+
+    parts = name.split(".")
+    if len(parts) > 2 or not parts[0]:
+        return None
+    head = parts[0]
+    for i, c in enumerate(reg.enclosing):
+        if isinstance(c, ast.ClassDef):
+            if i == len(reg.enclosing) - 1:
+                return None  # クラス本体の名前空間は追わない（名前で決めない）
+            continue  # メソッドの中からクラス本体の名前は見えない
+        if _binds_locally(c, head):
+            return None  # 関数の仮引数・局所変数・入れ子 def（名前だけでは決めない）
+    path = index.resolve_module_path(reg.module)
+    tree = index.parse(path) if path is not None else None
+    if tree is None or index.module_name(path) != reg.module:
+        return None
+    binds = _module_bindings(tree, head)
+    writes = _scan_module_writes(tree)
+    if len(binds) != 1 or head in writes or "*" in writes:
+        return None
+    b = binds[0]
+    if len(parts) == 1:
+        if isinstance(b, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            return _unique_module_def(index, reg.module, head)
+        if isinstance(b, ast.ImportFrom) and b in tree.body:
+            alias = next(a for a in b.names if (a.asname or a.name) == head)
+            target = _import_from_base(index, reg.module, path, b)
+            if target is None:
+                return None
+            return _pin_in_module(index, target, alias.name)
+        return None
+    # `m.h`: `m` がモジュールを指す import（`import pkg.m as m` / `from pkg import m`）のときだけ
+    if b not in tree.body:
+        return None
+    target: Optional[str] = None
+    if isinstance(b, ast.Import):
+        alias = next(a for a in b.names if (a.asname or a.name.split(".")[0]) == head)
+        if alias.asname is None and alias.name != head:
+            return None  # `import pkg.m` は `pkg` を束縛する（2 段の名前は扱わない）
+        target = _unique_module(index, alias.name)
+    elif isinstance(b, ast.ImportFrom):
+        alias = next(a for a in b.names if (a.asname or a.name) == head)
+        if b.level == 0:
+            target = _unique_module(index, f"{b.module}.{alias.name}" if b.module else alias.name)
+        else:
+            base = _import_from_base(index, reg.module, path, b, allow_package=True)
+            if base is None:
+                return None
+            cand = f"{base}.{alias.name}"
+            cpath = index.resolve_module_path(cand)
+            target = cand if cpath is not None and index.module_name(cpath) == cand else None
+    if target is None:
+        return None
+    return _pin_in_module(index, target, parts[1])
+
+
+def _import_from_base(
+    index: SourceIndex, module: str, path: str, imp: ast.ImportFrom, allow_package: bool = False
+) -> Optional[str]:
+    """`from X import ...` の X を木の中のモジュールの dotted 名に厳密に解く（`level` で。D61 の改訂 G3）。"""
+    if imp.level > 0:
+        base = module if os.path.basename(path) == "__init__.py" else module.rpartition(".")[0]
+        for _ in range(imp.level - 1):
+            base = base.rpartition(".")[0]
+        if not imp.module:
+            if not allow_package or not base:
+                return None
+            nxt = base
+        else:
+            nxt = f"{base}.{imp.module}" if base else imp.module
+        npath = index.resolve_module_path(nxt)
+        return nxt if npath is not None and index.module_name(npath) == nxt else None
+    return _unique_module(index, imp.module) if imp.module else None
+
+
+def _unique_module(index: SourceIndex, dotted: str) -> Optional[str]:
+    """絶対 import の名前に当たる木の中のモジュールが**ちょうど 1 つ**ならその dotted 名。
+
+    `resolve_module_strict` は名前が `.<import 名>` で終わるモジュールの 1 つを採るので、`a/handlers.py` と
+    `b/handlers.py` があると `from handlers import h` の行き先を取り違えうる（どれが import されるかは sys.path
+    で決まる）。取り違えたまま絞るとハンドラのユニットが消える（誤 clear）ので、2 つ以上あれば解かない。
+    """
+    cache = index.__dict__.setdefault("_authgap_module_names", {})
+    if "all" not in cache:
+        cache["all"] = sorted({index.module_name(p) for p in index.py_files()})
+    hits = [m for m in cache["all"] if m == dotted or m.endswith("." + dotted)]
+    return hits[0] if len(hits) == 1 else None
+
+
+def _unique_module_def(index: SourceIndex, module: str, name: str) -> Optional[FuncDef]:
+    defs = [f for f in index.lookup_function(name) if f.module == module and f.qualname == name and f.classname is None]
+    return defs[0] if len(defs) == 1 else None
+
+
+def _pin_in_module(index: SourceIndex, module: str, name: str, hops: int = 3) -> Optional[FuncDef]:
+    """`module` で `name` がちょうど 1 回束縛され、それが def なら その定義。モジュール直下の
+    `from ... import` の再公開なら同じ条件でたどる（D61 の改訂 G3）。それ以外は None。"""
+    from .val.engine import _module_bindings, _scan_module_writes
+
+    for _ in range(hops):
+        path = index.resolve_module_path(module)
+        tree = index.parse(path) if path is not None else None
+        if tree is None or index.module_name(path) != module:
+            return None
+        binds = _module_bindings(tree, name)
+        writes = _scan_module_writes(tree)
+        if len(binds) != 1 or name in writes or "*" in writes:
+            return None
+        b = binds[0]
+        if isinstance(b, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            return _unique_module_def(index, module, name)
+        if not (isinstance(b, ast.ImportFrom) and b in tree.body):
+            return None
+        alias = next(a for a in b.names if (a.asname or a.name) == name)
+        nxt = _import_from_base(index, module, path, b)
+        if nxt is None:
+            return None
+        module, name = nxt, alias.name
+    return None
+
+
+# --------------------------------------------------------------------------
+# mcp の主版（snake_case の注釈の読み方。D64 / U38、R2-r1-1）
+# --------------------------------------------------------------------------
+
+#: `>=2.0` にしか無い import（mcp 2.2.0: `mcp.server.mcpserver`、`mcp/server/__init__.py` の `MCPServer`）。
+MCP_GE2_IMPORTS: tuple[str, ...] = ("mcp.server.mcpserver", "mcp.server.MCPServer")
+#: `<2.0` にしか無い import（mcp 1.30.0: `mcp.server.fastmcp`、`mcp/server/__init__.py` の `FastMCP`。2.x では
+#: `ModuleNotFoundError: This is mcp 2.x, where FastMCP was renamed to MCPServer`）。
+MCP_LT2_IMPORTS: tuple[str, ...] = ("mcp.server.fastmcp", "mcp.server.FastMCP")
+
+
+def _import_hits(dotted: str, prefixes: tuple[str, ...]) -> bool:
+    return any(dotted == p or dotted.startswith(p + ".") for p in prefixes)
+
+
+def mcp_version_class(index: SourceIndex) -> tuple[str, tuple[str, ...]]:
+    """木の mcp の主版: ``"ge2"`` / ``"lt2"`` / ``"unknown"`` と、その根拠（索引ごとに記憶化）。
+
+    Def 6 の執行表と同じ **(1) API の形 → (2) 版の記載** の順の証拠を集める（fix_outline）:
+
+    * API の形で >=2.0: `mcp.server.mcpserver` の import、mcp SDK に解ける `Server(on_call_tool=)`、
+      SDK の 3 引数形の `add_request_handler`。
+    * API の形で <2.0: `mcp.server.fastmcp` の import、`@<x>.call_tool()`（低レベル v1。2.x に無い）。
+    * 版の記載: :func:`enforcement.mcp_major_votes`（lock・`==`・`>=2`・`<2`・fastmcp>=4。**ファイルごと**）。
+
+    **両方の向きの証拠があれば決めない**（移行用の shim・形と lock の食い違い・lock が食い違う monorepo。
+    fix_outline 条件 (1)(2)）。どちらの証拠も無ければ決めない。**既定でどちらにも仮定しない**（版規則 (4)）。
+    """
+    from .enforcement import mcp_major_votes
+
+    cache = index.__dict__.setdefault("_authgap_mcp_version", {})
+    if "v" in cache:
+        return cache["v"]
+    ge2: list[str] = []
+    lt2: list[str] = []
+    for path in index.py_files():
+        tree = index.parse(path)
+        if tree is None:
+            continue
+        rel = index.relpath(path)
+        for node in ast.walk(tree):
+            names: list[str] = []
+            if isinstance(node, ast.Import):
+                names = [a.name for a in node.names]
+            elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
+                names = [node.module] + [f"{node.module}.{a.name}" for a in node.names]
+            for n in names:
+                for pfx in MCP_GE2_IMPORTS:
+                    if _import_hits(n, (pfx,)):
+                        ge2.append(f"import:{rel}:{pfx}")
+                for pfx in MCP_LT2_IMPORTS:
+                    if _import_hits(n, (pfx,)):
+                        lt2.append(f"import:{rel}:{pfx}")
+    for reg in lowlevel_v2_registrations(index):
+        if reg.sdk:
+            ge2.append(f"shape:{reg.relpath}:{reg.lineno}:{reg.form}")
+    for fd in index.functions():
+        for name, call, _node in _decorator_calls(fd.node):
+            if call is not None and name.split(".")[-1] == "call_tool":
+                lt2.append(f"shape:{fd.relpath}:{fd.qualname}:call_tool")
+    for label, vote in mcp_major_votes(index.src_root):
+        (ge2 if vote == "ge2" else lt2).append(label)
+    ev = tuple(sorted(set(f"ge2:{x}" for x in ge2) | set(f"lt2:{x}" for x in lt2)))
+    cls = "unknown" if (ge2 and lt2) or not (ge2 or lt2) else ("ge2" if ge2 else "lt2")
+    cache["v"] = (cls, ev)
+    return cache["v"]
 
 
 def enum_string_members(index: SourceIndex) -> dict[str, str]:
@@ -1496,6 +1945,8 @@ class ToolLiteral:
     malformed_fields: tuple[str, ...] = ()
     relpath: str = ""
     lineno: int = 0
+    #: 版が決まらないため読み方が決まらない snake_case のキー（:attr:`Unit.undetermined_fields`）。
+    undetermined_fields: tuple[str, ...] = ()
 
 
 def find_tool_literals(index: SourceIndex) -> list[ToolLiteral]:
@@ -1506,6 +1957,7 @@ def find_tool_literals(index: SourceIndex) -> list[ToolLiteral]:
     64.6% が後 2 形だった）。**読めない形は `D_unknown` とし `⊥` と混ぜない。**
     """
     out: list[ToolLiteral] = []
+    snake = mcp_version_class(index)[0]
     for path in index.py_files():
         tree = index.parse(path)
         if tree is None:
@@ -1522,28 +1974,53 @@ def find_tool_literals(index: SourceIndex) -> list[ToolLiteral]:
             for kw in node.keywords:
                 if kw.arg == "annotations":
                     ann_node = kw.value
-            ann, form, malformed = _read_annotations(ann_node)
-            out.append(ToolLiteral(name, ann, form, malformed, rel, getattr(node, "lineno", 0)))
+            ann, form, malformed, undetermined = _read_annotations(ann_node, snake)
+            out.append(ToolLiteral(name, ann, form, malformed, rel, getattr(node, "lineno", 0), undetermined))
     out.sort(key=lambda t: (t.relpath, t.lineno))
     return out
 
 
-def _read_annotations(node: Optional[ast.AST]) -> tuple[Optional[dict], str, tuple[str, ...]]:
+def _read_annotations(
+    node: Optional[ast.AST], snake: str = "lt2"
+) -> tuple[Optional[dict], str, tuple[str, ...], tuple[str, ...]]:
+    """注釈の式を `(値, 形, malformed, undetermined)` に読む。
+
+    **snake_case のキー（`read_only_hint` ほか）の読み方は木の mcp の主版で決める**（D64 / U38、R2-r1-1。
+    :func:`mcp_version_class`）:
+
+    * ``"ge2"``（mcp>=2.0）: `ToolAnnotations` の属性名そのもの（alias_generator=to_camel、validate_by_name）で、
+      protocol には camelCase で届く（mcp 2.2.0 で `ToolAnnotations(read_only_hint=True).model_dump(by_alias=True)
+      == {"readOnlyHint": True}`、辞書の `annotations={"read_only_hint": True}` も同じ）。**宣言として
+      `SNAKE_ALIASES` で camelCase に写す。** 同じ注釈に camelCase もあれば camelCase が勝つ（2.2.0 で実測:
+      `ToolAnnotations(readOnlyHint=True, read_only_hint=False)` → `{"readOnlyHint": True}`）。
+    * ``"lt2"``（mcp<2.0）: `extra="allow"` で protocol のフィールドにならない → 今までどおり `D_malformed`
+      （仕様書 322 行目、O27 / D48）。
+    * ``"unknown"``: 版が決まらない → camelCase の対が無いキーは `undetermined`（`D_unknown`）。malformed にも
+      宣言にもしない。camelCase の対があるキーはどちらの版でも宣言を変えない（2.x は camelCase が勝ち、1.x は
+      無視される）ので載せない。
+    """
     if node is None:
-        return None, "absent", ()
+        return None, "absent", (), ()
     if isinstance(node, ast.Constant) and node.value is None:
         # **`annotations=None` は読める明示の「無い」**であり `⊥`。読めない形
         # （`D_unknown`）ではない。unreadable にすると同名ツールの `D_unknown` を
         # 過大に数える（野外 run 1 で 5 件）。
-        return None, "absent", ()
+        return None, "absent", (), ()
     malformed: list[str] = []
+    snake_values: dict[str, Any] = {}
     values: dict[str, Any] = {}
 
     def take(key: Optional[str], value_node: ast.AST) -> None:
         if key is None:
             return
         if key in SNAKE_ALIASES:
-            malformed.append(key)
+            if snake == "lt2":
+                malformed.append(key)
+                return
+            try:
+                snake_values[key] = ast.literal_eval(value_node)
+            except (ValueError, TypeError, SyntaxError):
+                snake_values[key] = _UNREAD
             return
         if key not in ANNOTATION_FIELDS:
             return  # 仕様外のフィールド（`category` 等）は D ではない
@@ -1552,10 +2029,23 @@ def _read_annotations(node: Optional[ast.AST]) -> tuple[Optional[dict], str, tup
         except (ValueError, TypeError, SyntaxError):
             pass
 
+    def finish(form: str) -> tuple[Optional[dict], str, tuple[str, ...], tuple[str, ...]]:
+        undetermined: list[str] = []
+        for key, v in sorted(snake_values.items()):
+            camel = SNAKE_ALIASES[key]
+            if camel in values:
+                continue  # camelCase が勝つ（2.x）/ snake は無視される（1.x）。どちらの版でも宣言は同じ
+            if snake == "ge2":
+                if v is not _UNREAD:
+                    values[camel] = v
+            else:
+                undetermined.append(key)
+        return values, form, tuple(sorted(set(malformed))), tuple(undetermined)
+
     if isinstance(node, ast.Call):
         fname = dotted_of(node.func) or ""
         if fname.split(".")[-1] != "ToolAnnotations":
-            return None, "unreadable", ()
+            return None, "unreadable", (), ()
         form = "ToolAnnotations"
         for kw in node.keywords:
             if kw.arg is None:  # ToolAnnotations(**{...})
@@ -1565,16 +2055,20 @@ def _read_annotations(node: Optional[ast.AST]) -> tuple[Optional[dict], str, tup
                         if isinstance(k, ast.Constant) and isinstance(k.value, str):
                             take(k.value, v)
                 else:
-                    return None, "unreadable", ()
+                    return None, "unreadable", (), ()
             else:
                 take(kw.arg, kw.value)
-        return values, form, tuple(sorted(set(malformed)))
+        return finish(form)
     if isinstance(node, ast.Dict):
         for k, v in zip(node.keys, node.values, strict=False):
             if isinstance(k, ast.Constant) and isinstance(k.value, str):
                 take(k.value, v)
-        return values, "dict", tuple(sorted(set(malformed)))
-    return None, "unreadable", ()
+        return finish("dict")
+    return None, "unreadable", (), ()
+
+
+#: snake_case のキーの値がリテラルとして読めなかった印（camelCase の値が読めないときと同じく値を入れない）。
+_UNREAD = object()
 
 
 def join_annotations(units: list[Unit], literals: list[ToolLiteral]) -> tuple[int, int]:
@@ -1602,6 +2096,7 @@ def join_annotations(units: list[Unit], literals: list[ToolLiteral]) -> tuple[in
             u.annotations = lit.annotations
             u.annotation_form = lit.form
             u.malformed_fields = lit.malformed_fields
+            u.undetermined_fields = lit.undetermined_fields
             joined += 1
             used.add(key)
             continue
@@ -1617,6 +2112,9 @@ def join_annotations(units: list[Unit], literals: list[ToolLiteral]) -> tuple[in
                 u.malformed_fields = tuple(sorted(
                     {m for n in hit for m in by_name[n].malformed_fields}
                 ))
+                # 版が決まらない snake_case も同じく和（D64 / U38）。ツールごとにも持つ（`D_kind_by_tool`）。
+                u.dispatch_undetermined = {n: by_name[n].undetermined_fields for n in hit if by_name[n].undetermined_fields}
+                u.undetermined_fields = tuple(sorted({m for v in u.dispatch_undetermined.values() for m in v}))
                 used |= set(hit)
                 joined += 1
             # §2.9 (d): 同じファイルの、名前が非リテラルのリテラルは join できない。件数を持つ。

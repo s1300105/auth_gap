@@ -22,7 +22,7 @@ from .dparse import (
     parse_d_op,
 )
 from .enforcement import DepPin, EnforcementVerdict, classify_unit, read_dep_pins
-from .entries import find_tool_literals, find_units, join_annotations
+from .entries import find_tool_literals, find_units, join_annotations, mcp_version_class, unresolved_handlers
 from .ir import WALL_CLOCK_CAP
 from .srcindex import SourceIndex
 from .trig import TrigIndex, build_trig_index
@@ -70,6 +70,11 @@ class RunResult:
     #: 木ごとの時間上限で解析しなかったユニット数。**0 でないなら報告する。**
     tree_budget_skipped: int = 0
     elapsed_s: float = 0.0
+    #: dotted 名でない低レベル v2 の handler 式（partial / lambda など）の登録点（D64 / U38、R2-r3-3）。
+    #: ユニットにならないので**件数と位置をここに残す**（規則 4）。判定は変えない。
+    unresolved_handlers: list[dict] = field(default_factory=list)
+    #: snake_case の注釈の読み方を決めた mcp の主版と根拠（D64 / U38、R2-r1-1）。
+    mcp_version: Optional[tuple[str, tuple[str, ...]]] = None
 
 
 def run(cfg: RunConfig) -> RunResult:
@@ -78,9 +83,11 @@ def run(cfg: RunConfig) -> RunResult:
     index.build()
 
     units = find_units(index)
+    handlers_unresolved = unresolved_handlers(index)
+    version = mcp_version_class(index)
     if cfg.prep_budget_exit and cfg.max_tree_seconds and (time.monotonic() - started) > cfg.max_tree_seconds:
         tree = TreeReport(src_root=os.path.abspath(cfg.src_root), population=cfg.population)
-        res = RunResult(tree=tree)
+        res = RunResult(tree=tree, unresolved_handlers=handlers_unresolved, mcp_version=version)
         res.tree_budget_skipped = len(units)
         res.wall_clock_truncations.append(f"TRUNCATED(tree_budget):{len(units)} units")
         tree.parse_failures = sorted(index.parse_failures)
@@ -116,7 +123,7 @@ def run(cfg: RunConfig) -> RunResult:
         n_annotation_joined=joined,
         n_annotation_unjoined=unjoined,
     )
-    res = RunResult(tree=tree, dep_pins=pins)
+    res = RunResult(tree=tree, dep_pins=pins, unresolved_handlers=handlers_unresolved, mcp_version=version)
 
     budget_hit = False
     for unit in units:

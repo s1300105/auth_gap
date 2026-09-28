@@ -285,7 +285,13 @@ def manifest_json(res: RunResult, run_id: str, volatile: bool = True) -> dict:
         "gate_verdict_counts": gate_verdict_counts(tree),
         "d_op": tree.d_op.to_json() if tree.d_op else None,
         "dispatch_sites": [s.to_json() for s in (tree.trig_index.sites if tree.trig_index else [])],
+        # **dotted 名でない低レベル v2 の handler 式**（partial / lambda。D64 / U38、R2-r3-3）。ユニットに
+        # ならない登録を黙って落とさない（規則 4）。判定は変えない。
+        "unresolved_handler": {"count": len(res.unresolved_handlers), "sites": list(res.unresolved_handlers)},
     }
+    if res.mcp_version is not None:
+        # snake_case の注釈の読み方を決めた mcp の主版と根拠（D64 / U38、R2-r1-1）。
+        out["mcp_version"] = {"class": res.mcp_version[0], "evidence": list(res.mcp_version[1])}
     if volatile:
         out["run_meta"] = {
             "run_id": run_id,

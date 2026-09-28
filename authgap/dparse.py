@@ -113,10 +113,16 @@ def parse_d_kind(unit: Unit) -> DKind:
     （§2.9 (c)。効果ごとの帰属は `analyze.py`）。
     """
     if unit.dispatch_annotations and not unit.annotations:
-        dk = meet_d_kind([d_kind_from(a, f) for a, f in unit.dispatch_annotations.values()])
+        dk = meet_d_kind(list(parse_d_kind_by_tool(unit).values()))
     else:
         dk = d_kind_from(unit.annotations, unit.annotation_form)
-    # **snake_case は記録だけ。上界にも `explicit` にも入れない**（仕様書 322 行目、O27）。
+    # **mcp の版が決まらない snake_case は `D_unknown`**（D64 / U38、R2-r1-1）。上界にも `explicit` にも
+    # malformed にも入れない（⊥ とも malformed とも混ぜない）。`unknown` は verdict を動かさない。
+    if unit.undetermined_fields:
+        dk = replace(dk, unknown=True)
+    # **snake_case は記録だけ。上界にも `explicit` にも入れない**（仕様書 322 行目、O27）。mcp<2.0 に
+    # 決まる木だけがここに来る。>=2.0 に決まる木では `entries._read_annotations` が camelCase に写して
+    # 宣言として読む（D64 / U38。仕様書 322 行目の前提「protocol に届かない」は 1.x でだけ真）。
     # `covers` / `contradiction` / `is_bottom` は `malformed` を見ないので verdict は動かない。
     if unit.malformed_fields:
         return replace(dk, malformed=tuple(sorted(set(dk.malformed) | set(unit.malformed_fields))))
@@ -125,7 +131,13 @@ def parse_d_kind(unit: Unit) -> DKind:
 
 def parse_d_kind_by_tool(unit: Unit) -> dict[str, DKind]:
     """低レベルハンドラの、join したツールごとの D_kind（§2.9 (a)）。"""
-    return {name: d_kind_from(a, f) for name, (a, f) in sorted(unit.dispatch_annotations.items())}
+    out: dict[str, DKind] = {}
+    for name, (a, f) in sorted(unit.dispatch_annotations.items()):
+        dk = d_kind_from(a, f)
+        if unit.dispatch_undetermined.get(name):
+            dk = replace(dk, unknown=True)  # 版が決まらない snake_case（D64 / U38）
+        out[name] = dk
+    return out
 
 
 def meet_d_kind(dks: list[DKind]) -> DKind:
