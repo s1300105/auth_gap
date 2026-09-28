@@ -9,7 +9,10 @@
 * `authgap/` 以下の全 `.py` の sha256 と、その結合 sha256（実装の指紋）
 * 凍結時の git commit と日付、Python の版、凍結の根拠にした run と決定
 
-`authgap/` に未コミットの変更があれば書かずに止まる。**タグは人が打つ**（このスクリプトは打たない）。
+`authgap/` に未コミットの変更があれば書かずに止まる。**根拠の run が今の解析器で取ったものでなければ止まる**
+（D64 / U54。以前は照合せず、別の解析器で取った run18 を渡しても記録を書いた）。比べるのは run の summary の
+実装の結合 sha256、それが無い古い run は「run の時点で authgap/ を最後に変えた commit」（HEAD の文字列は docs だけの
+commit でありうるので比べない）。**タグは人が打つ**（このスクリプトは打たない）。
 
 使い方::
 
@@ -32,6 +35,26 @@ from freeze_f0a import _git, implementation_hashes  # noqa: E402
 from authgap.report import canonical_json, fingerprint  # noqa: E402
 
 
+def run_matches(summary: dict, current_combined: str, current_last_commit: str,
+                last_commit_of=None) -> tuple[bool, str]:
+    """run の summary.json が今の解析器の実装で取ったものかを返す（(一致, 理由)）。"""
+    if summary.get("implementation_sha256_combined"):
+        if summary["implementation_sha256_combined"] == current_combined:
+            if summary.get("authgap_dirty"):
+                return False, "run は authgap/ に未コミットの変更がある状態で取られた"
+            return True, "実装の結合 sha256 が一致"
+        return False, (f"実装の結合 sha256 が違う（run {summary['implementation_sha256_combined'][:12]} / "
+                       f"今 {current_combined[:12]}）")
+    run_last = summary.get("authgap_last_commit")
+    if not run_last and summary.get("analyzer_commit") and last_commit_of is not None:
+        run_last = last_commit_of(summary["analyzer_commit"])
+    if not run_last:
+        return False, "run の summary に実装の記録が無く、authgap の最終 commit も分からない"
+    if run_last == current_last_commit:
+        return True, "authgap の最終 commit が一致（古い run なので run 時点の未コミットの変更は検出できない）"
+    return False, f"authgap の最終 commit が違う（run {run_last[:12]} / 今 {current_last_commit[:12]}）"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run", required=True, help="この解析器で取った full scan（例: scan_v2_run18）")
@@ -49,6 +72,19 @@ def main() -> int:
         print(f"**{summary} が無い。**", file=sys.stderr)
         return 2
 
+    import json
+
+    with open(summary, encoding="utf-8") as fh:
+        run_summary = json.load(fh)
+    impl_now = implementation_hashes()
+    combined_now = hashlib.sha256(canonical_json(impl_now).encode("utf-8")).hexdigest()
+    ok, why = run_matches(run_summary, combined_now, _git("log", "-1", "--format=%H", "--", "authgap"),
+                          last_commit_of=lambda c: _git("log", "-1", "--format=%H", c, "--", "authgap"))
+    print(f"根拠の run の照合: {why}")
+    if not ok:
+        print(f"**{args.run} は今の解析器で取った run ではない。凍結しない。**", file=sys.stderr)
+        return 2
+
     fp = fingerprint()
     commit = _git("rev-parse", "HEAD")
     fp["frozen_at"] = args.date
@@ -62,7 +98,8 @@ def main() -> int:
             # authgap/ を最後に変えた commit（HEAD は docs だけの commit でありうる）
             "analyzer_commit": _git("log", "-1", "--format=%H", "--", "authgap"),
             "scan_run": args.run,
-            "python": sys.version.split()[0],
+            # run を取った処理系の版（今の処理系ではない。D64 / U54）
+            "python": run_summary.get("python") or sys.version.split()[0],
             "note": (
                 "母集団 v2 と v3 は開発用のデータ。論文の評価は、学生が v2 / v3 を含まない別の新しいデータで行う（D60）。"
                 "凍結後に解析器を変えるなら docs/preregistration.md に逸脱として書く（D61）。"

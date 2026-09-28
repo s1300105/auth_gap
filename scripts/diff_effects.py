@@ -7,7 +7,9 @@
 `compute_from_docs` の eval と PraisonAI の `_apply_step` の subprocess.run が消えた）。
 
 行の同一性は `unit_id | witness_chain | kind@site relpath:lineno`。slot の中身
-（主体 / 確度）の変化は「変化」として別に出す。
+（主体 / 確度 / 形と定数）と、§7 の判定に効く効果の属性（destructive / fs_mode / sql_head / http_method /
+exec_mode など）の変化は「値の変化」として別に出す（D64 / U53。以前は主体と確度しか比べず、SQL の先頭語や
+open の mode が変わっても「変化 0」と出ていた）。行の鍵と終了コードの規則は変えない。
 
 使い方::
 
@@ -35,6 +37,18 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DUMP = r"""
 import json, sys
 from authgap.runner import RunConfig, run
+
+
+def _shape(v):
+    sh = getattr(v, "shape", None)
+    k = type(sh).__name__ if sh is not None else "?"
+    c = getattr(v, "const", None)
+    return f"{k}" + (f"={c!r}" if c is not None else "")
+
+
+#: 判定（§7）に効く効果の属性（D64 / U53）。古い版の authgap には無い属性があるので getattr の既定値で読む。
+ATTRS = ("destructive", "fs_mode", "sql_head", "http_method", "http_method_model", "exec_mode", "sub_kind", "db_rule")
+
 out = {}
 for tree in sys.argv[1:]:
     res = run(RunConfig(src_root=tree, full=True))
@@ -43,10 +57,11 @@ for tree in sys.argv[1:]:
         for e in u.effects:
             key = f"{u.unit.unit_id} | {'>'.join(e.witness_chain)} | {e.kind}@{e.site} {e.relpath}:{e.lineno}"
             slots = ",".join(
-                f"{s}={v.prin.name}/{v.prov.kind}" for s, v in sorted(e.control_slots().items())
+                f"{s}={v.prin.name}/{v.prov.kind}/{_shape(v)}" for s, v in sorted(e.control_slots().items())
             )
             reasons = "+".join(e.resolution.reasons)
-            val = f"{slots} ; resolution={e.resolution.kind}{('(' + reasons + ')') if reasons else ''}"
+            attrs = " ".join(f"{a}={getattr(e, a, None)}" for a in ATTRS if getattr(e, a, None) not in (None, {}, "", False))
+            val = f"{slots} ; resolution={e.resolution.kind}{('(' + reasons + ')') if reasons else ''} ; {attrs}"
             rows.setdefault(key, set()).add(val)
     out[tree] = {k: sorted(v) for k, v in sorted(rows.items())}
 json.dump(out, sys.stdout)
@@ -112,7 +127,7 @@ def main() -> int:
         changed = sorted(k for k in set(a) & set(b) if a[k] != b[k])
         n_gone_total += len(gone)
         name = os.path.basename(t)
-        print(f"== {name}: 行 {len(b)} → {len(a)}（消えた {len(gone)} / 増えた {len(new)} / slot 変化 {len(changed)}）")
+        print(f"== {name}: 行 {len(b)} → {len(a)}（消えた {len(gone)} / 増えた {len(new)} / 値の変化 {len(changed)}）")
         for k in gone:
             print(f"  - {k}\n      {b[k]}")
         for k in changed:

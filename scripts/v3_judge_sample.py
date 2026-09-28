@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """母集団 v3 の V2（矛の精度）の判定対象を決める（docs/population_v3.md）。
 
-単位は (木, ユニット, site, kind, 宣言)。D1 / D2 の矛は全件、60 件を超えたら seed 20260924 で 60 件を
+単位は (木, ユニット, site, kind, 宣言)。ユニットは relpath と行で区別する（D64 / U50。以前は qualname だけで、
+別モジュールの同名ツールが 1 件に潰れていた。**v3 の対象（2026-09-24 にコミット）はこの修正の前の鍵で選んだ**）。D1 / D2 の矛は全件、60 件を超えたら seed 20260924 で 60 件を
 抜き取る。D3 / D4 の矛は 30 件まで（同じ seed）。**判定の前に出力をコミットする。**
 
     .venv/bin/python scripts/v3_judge_sample.py evidence/scan_v2_v3_run1 --out evidence/population_v3/v2_judge_targets.json
@@ -29,11 +30,12 @@ def main() -> int:
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
     rows = []
-    for (tree, qual, site, kind), decls in sorted(load_reasons(a.run_dir).items()):
+    for (tree, relpath, lineno, qual, site, kind), decls in sorted(load_reasons(a.run_dir).items(), key=lambda kv: str(kv[0])):
         for decl, findings in sorted(decls.items()):
             reasons = sorted(r for s, r in findings if s == "contradiction")
             if reasons:
-                rows.append({"tree": tree, "unit": qual, "site": site, "kind": kind, "decl": decl, "reasons": reasons})
+                rows.append({"tree": tree, "unit": qual, "unit_relpath": relpath, "unit_lineno": lineno,
+                             "site": site, "kind": kind, "decl": decl, "reasons": reasons})
     main_rows = [r for r in rows if r["decl"] in ("D1", "D2")]
     expl_rows = [r for r in rows if r["decl"] in ("D3", "D4")]
     rng = random.Random(SEED)

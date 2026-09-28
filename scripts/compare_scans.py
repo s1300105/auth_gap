@@ -9,7 +9,12 @@ run を取り直したら必ずこれを通す。**
 
 * 木ごと・全体の **ユニット / 効果行 / verdict の件数**の増減。
 * **消えたユニット**（回帰の疑い。増えるより消える方が重い）。
-* **CONTRADICTION の増減**を (ユニット, site, kind) の集合差で出す。
+* **CONTRADICTION の増減**を (木, ユニットの relpath:行, qualname, site, kind, **宣言**) の集合差で出し、宣言ごとに
+  分けて数える（D64 / U50。以前は位置と宣言が鍵に無く、別モジュールの同名ツールの矛が 1 件に潰れ、同じ位置に
+  D3 / D4 の矛が残ると消えた D1 / D2 の矛が見えなかった）。注記の無い CONTRADICTION 行は宣言 `?` で残す。
+* manifest の集合は `summary.json` の ok の木で決める（`scripts/runlib.py`）。2 つの run の Python の版が違えば
+  警告する（unit_id は既定値を `ast.unparse` した文字列を含み、処理系で変わりうる。R5-r3-4）。
+* 効果の件数は、生の行数と一意の行数（バイト同一の複製を 1 本に数えたもの。R4-r1-8 / O18）を併記する。
 * **slot の主体の分布**（`OP` / `MODEL`）と「root はあるのに主体が OP」の件数。
   D44 が直したのはここなので、率の変化を明示する。
 
@@ -26,6 +31,19 @@ import os
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from runlib import load_manifest, print_warnings, row_decls, run_manifests, unit_key  # noqa: E402
+
+
+def python_warning(sa: dict, sb: dict) -> str | None:
+    """2 つの run の summary.json の Python の版（major.minor）が違えば警告の文を返す。記録が無ければ None。"""
+    pa, pb = sa.get("python"), sb.get("python")
+    if not pa or not pb:
+        return None
+    if pa.split(".")[:2] != pb.split(".")[:2]:
+        return (f"Python の版が違う（{pa} / {pb}）。unit_id は処理系で変わりうるので、ユニットの消失・増加は"
+                "処理系の差でありうる（R5-r3-4）")
+    return None
 
 
 def load(evidence_dir: str) -> dict:
@@ -36,12 +54,10 @@ def load(evidence_dir: str) -> dict:
     verdict_rows: collections.Counter = collections.Counter()
     prin: collections.Counter = collections.Counter()
     n_rows = n_effects = n_units_raw = 0
-    for fn in sorted(os.listdir(evidence_dir)):
-        if not fn.endswith(".json") or fn in ("summary.json", "contradictions.json"):
-            continue
-        tree = fn[:-5]
-        with open(os.path.join(evidence_dir, fn), encoding="utf-8") as fh:
-            man = json.load(fh)
+    uniq_effects: set[str] = set()
+    manifests, warnings = run_manifests(evidence_dir)
+    for tree, path in manifests:
+        man = load_manifest(path)
         for u in man.get("units", []):
             # **鍵に qualname と位置を混ぜる。** `unit_id` は木の中で一意ではない
             # （`docs/open_questions.md` O13）ので、`unit_id` だけを鍵にすると
@@ -55,23 +71,31 @@ def load(evidence_dir: str) -> dict:
             n_units_raw += 1
             n_effects += len(u.get("effects", []))
             for e in u.get("effects", []):
+                uniq_effects.add(uid + "|" + json.dumps(e, sort_keys=True, ensure_ascii=False))
                 for v in (e.get("slots") or {}).values():
                     if not isinstance(v, dict):
                         continue
                     prin[(v.get("prin"), bool(v.get("roots")))] += 1
             vs: collections.Counter = collections.Counter()
+            uk = unit_key(tree, un)
             for r in u.get("rows", []):
                 n_rows += 1
                 for v in r.get("verdicts", []):
                     vs[v] += 1
                     verdict_rows[v] += 1
                 if "CONTRADICTION" in r.get("verdicts", []):
-                    contradictions.add((tree, un["qualname"], r["site"], r["kind"]))
+                    for d in row_decls(r):
+                        contradictions.add((uk[0], f"{uk[1]}:{uk[2]}", uk[3], r["site"], r["kind"], d))
             units[uid] = {"tree": tree, "qualname": u["unit"]["qualname"],
                           "n_effects": len(u.get("effects", [])), "verdicts": dict(vs)}
+    summary = {}
+    spath = os.path.join(evidence_dir, "summary.json")
+    if os.path.exists(spath):
+        with open(spath, encoding="utf-8") as fh:
+            summary = json.load(fh)
     return {"units": units, "contradictions": contradictions, "verdict_rows": verdict_rows,
-            "prin": prin, "n_rows": n_rows, "n_effects": n_effects,
-            "n_units_raw": n_units_raw, "collisions": collisions}
+            "prin": prin, "n_rows": n_rows, "n_effects": n_effects, "n_effects_unique": len(uniq_effects),
+            "n_units_raw": n_units_raw, "collisions": collisions, "warnings": warnings, "summary": summary}
 
 
 def to_md(a_dir: str, b_dir: str, a: dict, b: dict) -> str:
@@ -91,7 +115,8 @@ def to_md(a_dir: str, b_dir: str, a: dict, b: dict) -> str:
     o.append("|---|---|---|---|")
     for label, ka, kb in [("ユニット（manifest の生の件数）", a["n_units_raw"], b["n_units_raw"]),
                           ("ユニット（比較の鍵で数えたもの）", len(a["units"]), len(b["units"])),
-                          ("効果", a["n_effects"], b["n_effects"]),
+                          ("効果（生の行数）", a["n_effects"], b["n_effects"]),
+                          ("効果（一意の行数。バイト同一の複製を 1 本に）", a["n_effects_unique"], b["n_effects_unique"]),
                           ("行", a["n_rows"], b["n_rows"])]:
         o.append(f"| {label} | {ka} | {kb} | {kb - ka:+d} |")
     for v in sorted(set(a["verdict_rows"]) | set(b["verdict_rows"])):
@@ -104,28 +129,45 @@ def to_md(a_dir: str, b_dir: str, a: dict, b: dict) -> str:
                  f"この分は比較から落ちている（`docs/open_questions.md` O13）。")
         o.append("")
 
-    o.append("## CONTRADICTION（ユニット × site × kind）")
+    warn = [f"{an}: {w}" for w in a["warnings"]] + [f"{bn}: {w}" for w in b["warnings"]]
+    pw = python_warning(a["summary"], b["summary"])
+    if pw:
+        warn.append(pw)
+    if warn:
+        o.append("**警告**:")
+        o.append("")
+        for w in warn:
+            o.append(f"- {w}")
+        o.append("")
+
+    o.append("## CONTRADICTION（ユニット × site × kind × 宣言。D1〜D4 は 4 つとも主指標、D62）")
     o.append("")
     added = sorted(b["contradictions"] - a["contradictions"])
     removed = sorted(a["contradictions"] - b["contradictions"])
-    o.append("| | 件数 |")
-    o.append("|---|---|")
-    o.append(f"| {an} | {len(a['contradictions'])} |")
-    o.append(f"| {bn} | {len(b['contradictions'])} |")
-    o.append(f"| **増えた** | **{len(added)}** |")
-    o.append(f"| **消えた**（回帰の疑い） | **{len(removed)}** |")
+    decls = sorted({c[-1] for c in a["contradictions"] | b["contradictions"]})
+    o.append(f"| | 計 | {' | '.join(decls)} |")
+    o.append("|---|---|" + "---|" * len(decls))
+
+    def _row(label, xs):
+        c = collections.Counter(x[-1] for x in xs)
+        return f"| {label} | {len(xs)} | " + " | ".join(str(c[d]) for d in decls) + " |"
+
+    o.append(_row(an, a["contradictions"]))
+    o.append(_row(bn, b["contradictions"]))
+    o.append(_row("**増えた**", added))
+    o.append(_row("**消えた**（回帰の疑い）", removed))
     o.append("")
     if removed:
         o.append("### 消えた CONTRADICTION — **1 件ずつ理由を確かめること**")
         o.append("")
-        for t, uid, site, kind in removed:
-            o.append(f"- `{t}` / `{uid}` / `{kind}@{site}`")
+        for t, pos, q, site, kind, d in removed:
+            o.append(f"- `{t}` / `{q}`（{pos}）/ `{kind}@{site}` / {d}")
         o.append("")
     if added:
         o.append("### 増えた CONTRADICTION")
         o.append("")
-        for t, uid, site, kind in added:
-            o.append(f"- `{t}` / `{uid}` / `{kind}@{site}`")
+        for t, pos, q, site, kind, d in added:
+            o.append(f"- `{t}` / `{q}`（{pos}）/ `{kind}@{site}` / {d}")
         o.append("")
 
     o.append("## slot の主体（D44 が直した箇所）")
@@ -184,7 +226,12 @@ def main(argv: list[str] | None = None) -> int:
     for d in (a_dir, b_dir):
         if not os.path.isdir(d):
             raise SystemExit(f"{d} が無い")
-    md = to_md(a_dir, b_dir, load(a_dir), load(b_dir))
+    la, lb = load(a_dir), load(b_dir)
+    for w in la["warnings"]:
+        print_warnings([w], os.path.basename(a_dir))
+    for w in lb["warnings"]:
+        print_warnings([w], os.path.basename(b_dir))
+    md = to_md(a_dir, b_dir, la, lb)
     print(md)
     if args.md:
         p = args.md if os.path.isabs(args.md) else os.path.join(ROOT, args.md)

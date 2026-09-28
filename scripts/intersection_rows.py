@@ -27,6 +27,8 @@ import os
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from runlib import load_manifest, print_warnings, run_manifests  # noqa: E402
 
 #: §3 の閾値。**経験的根拠は無く、事前に固定したことだけが根拠である**（仕様書の明記事項）。
 MIN_ROWS = 3
@@ -54,12 +56,10 @@ def scan(evidence_dir: str) -> dict:
     n_excluded: collections.Counter = collections.Counter()
     rows: dict[str, set] = collections.defaultdict(set)
     n_units = 0
-    for fn in sorted(os.listdir(evidence_dir)):
-        if not fn.endswith(".json") or fn in ("summary.json", "contradictions.json"):
-            continue
-        with open(os.path.join(evidence_dir, fn), encoding="utf-8") as fh:
-            man = json.load(fh)
-        tree = fn[:-5]
+    manifests, warnings = run_manifests(evidence_dir)
+    print_warnings(warnings, os.path.basename(evidence_dir.rstrip("/")))
+    for tree, path in manifests:
+        man = load_manifest(path)
         for u in man.get("units", []):
             n_units += 1
             trig[(u.get("trig") or {}).get("mode")] += 1
@@ -77,7 +77,9 @@ def scan(evidence_dir: str) -> dict:
                 if v <= D_ONLY_VERDICTS:
                     n_excluded["d_only"] += 1
                     continue
-                rows[tree].add((u["unit"]["qualname"], r["site"], r["slot"]))
+                # ユニットは relpath:行 でも区別する（D64 / U50。別モジュールの同名ツールを潰さない）
+                un = u["unit"]
+                rows[tree].add((f'{un.get("relpath")}:{un.get("lineno")}', un["qualname"], r["site"], r["slot"]))
     n_rows = sum(len(v) for v in rows.values())
     traced = trig.get("traced", 0)
     return {
@@ -136,8 +138,8 @@ def to_md(res: dict) -> str:
         out.append("交差行の候補なし。")
     for t, items in res["by_project"].items():
         out.append(f"- `{t}`（{len(items)} 行）")
-        for q, site, slot in items:
-            out.append(f"  - `{q}` / `{site}` / slot `{slot}`")
+        for pos, q, site, slot in items:
+            out.append(f"  - `{q}`（{pos}）/ `{site}` / slot `{slot}`")
     out.append("")
     out.append("## 決定")
     out.append("")

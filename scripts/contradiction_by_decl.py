@@ -8,7 +8,9 @@ manifest の行の注記（`contradiction:<宣言>` / `contradiction_unknown:<�
 
 数え方（CLAUDE.md 規則 3）:
 
-* 単位は `compare_scans.py` と同じ **(木, ユニットの qualname, site, kind)**。宣言ごとに、その組の
+* 単位は `compare_scans.py` と同じ **(木, ユニットの relpath, ユニットの行, qualname, site, kind)**（D64 / U50。
+  以前は位置が無く、別モジュールの同名ツールの矛が 1 件に潰れていた）。manifest の集合は `summary.json` の
+  ok の木で決める（`scripts/runlib.py`）。宣言ごとに、その組の
   どれかの行に `contradiction:<宣言>` があれば「矛」、無くて `contradiction_unknown:<宣言>:…`
   があれば「不」（理由は組の中の理由の集合）。
 * D1〜D4 は 4 つとも主指標で、宣言ごとに報告する（D62。以前は D3 / D4 を探索的としていた — D56 / §6）。
@@ -26,24 +28,25 @@ from __future__ import annotations
 
 import argparse
 import collections
-import json
 import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from runlib import load_manifest, print_warnings, run_manifests, unit_key  # noqa: E402
 
 DECLS = ("D1", "D2", "D3", "D4")
 
 
 def load_reasons(run_dir: str) -> dict:
-    """`{(木, qualname, site, kind): {宣言: {(status, reason)}}}` を行の注記から作る。"""
+    """`{(木, relpath, 行, qualname, site, kind): {宣言: {(status, reason)}}}` を行の注記から作る。"""
     out: dict = collections.defaultdict(lambda: collections.defaultdict(set))
-    for fn in sorted(os.listdir(run_dir)):
-        # 木ごとの manifest（v2- / v3- …）。要約とは別のファイル。
-        if not fn.endswith(".json") or fn in ("summary.json", "contradictions.json") or "-" not in fn:
-            continue
-        t = fn[:-5]
-        for u in json.load(open(os.path.join(run_dir, fn), encoding="utf-8"))["units"]:
-            q = u["unit"]["qualname"]
+    manifests, warnings = run_manifests(run_dir)
+    print_warnings(warnings, os.path.basename(run_dir.rstrip("/")))
+    for t, path in manifests:
+        for u in load_manifest(path)["units"]:
+            uk = unit_key(t, u["unit"])
             for r in u.get("rows", []):
-                key = (t, q, r["site"], r["kind"])
+                key = (*uk, r["site"], r["kind"])
                 for n in r.get("notes", []):
                     if n.startswith("contradiction_reason:"):
                         _, d, reason = n.split(":", 2)
@@ -88,7 +91,8 @@ def to_md(run_dir: str) -> str:
     rs = load_reasons(run_dir)
     o = ["# CONTRADICTION の宣言ごとの件数と、判定原理の感度分析（D56）", "",
          f"再現: `python scripts/contradiction_by_decl.py {os.path.relpath(run_dir)}`", "",
-         "単位は (木, ユニット, site, kind)。**D1〜D4 は 4 つとも主指標（D62）。宣言ごとに読み、合算しない。**", ""]
+         "単位は (木, ユニットの relpath:行, qualname, site, kind)（D64 / U50）。**D1〜D4 は 4 つとも主指標（D62）。"
+         "宣言ごとに読み、合算しない。**「D1+D2 矛」の列は過去の run と比べるためだけに残す（主指標ではない）。", ""]
     o += ["## 採った原理での件数", "", "| 宣言 | 矛 | 不 | 矛の木 |", "|---|---|---|---|"]
     for d in DECLS:
         c = collections.Counter()
@@ -108,7 +112,7 @@ def to_md(run_dir: str) -> str:
     for (d, s, r), n in sorted(rc.items()):
         o.append(f"| {d} | {s} | `{r}` | {n} |")
     o += ["", "## 感度分析（原理を 1 つずつ反対側にする）", "",
-          "| 変えた原理 | D1 矛 | D1 不 | D2 矛 | D2 不 | **D1+D2 矛** | D3 矛 | D3 不 | D4 矛 | D4 不 |",
+          "| 変えた原理 | D1 矛 | D1 不 | D2 矛 | D2 不 | D1+D2 矛（比較用） | D3 矛 | D3 不 | D4 矛 | D4 不 |",
           "|---|---|---|---|---|---|---|---|---|---|"]
     for flip, label in FLIPS:
         cnt = {d: collections.Counter() for d in DECLS}
@@ -120,7 +124,7 @@ def to_md(run_dir: str) -> str:
                 if s == "矛" and d in ("D1", "D2"):
                     main.add(key)
         o.append(f"| {label} | {cnt['D1']['矛']} | {cnt['D1']['不']} | {cnt['D2']['矛']} | {cnt['D2']['不']} | "
-                 f"**{len(main)}** | {cnt['D3']['矛']} | {cnt['D3']['不']} | {cnt['D4']['矛']} | {cnt['D4']['不']} |")
+                 f"{len(main)} | {cnt['D3']['矛']} | {cnt['D3']['不']} | {cnt['D4']['矛']} | {cnt['D4']['不']} |")
     o.append("")
     return "\n".join(o)
 
