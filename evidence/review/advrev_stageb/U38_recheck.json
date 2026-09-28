@@ -1,0 +1,52 @@
+{
+ "closed": [
+  {
+   "id": "U38-ADV-1",
+   "closed": true,
+   "evidence": "Ran the repro trees d64review/U38/tA and tA2 (runner.run -> report.manifest_json) against e9afc10 (old, extracted with git archive to d64recheck/U38/old) and against the worktree at 20e3823. Old: tA has only server.py:handle (the stub), tA2 has only handlers/base.py:handle, and neither has a contradiction. New: tA has handlers_impl.py:handle as a unit and tA2 has handlers/override.py:handle as a unit, each with D.explicit=[readOnlyHint]. os.remove carries contradiction:D1 / contradiction_reason:D1:fs_write (CONTRADICTION)."
+  },
+  {
+   "id": "U38-ADV-2",
+   "closed": true,
+   "evidence": "Tree tD. Old: 0 units, unresolved_handler.count=0. New: server.py:handle_three is a lowlevel_v2 unit and os.remove has contradiction:D1 / D1:fs_write (CONTRADICTION, plus UNKNOWN because sdk=False means v2p=None and no seeding). Extra check tD3 (both candidates are external and unresolvable): unresolved_handler.count=1, reason=no_definition, candidates=[handle_call, CallToolRequestParams]. It is recorded rather than dropped silently."
+  },
+  {
+   "id": "U38-ADV-3",
+   "closed": true,
+   "evidence": "Tree tB. Old: legacy_server/server.py:save_note has D.explicit=[readOnlyHint], and builtins.open has contradiction:D1. New: mcp_version=unknown with subtree:legacy_server=lt2 and subtree:new_server=ge2. save_note has bottom=True and malformed=[read_only_hint], and there is no contradiction. The lt2 vote from fastmcp>=2.10,<3 is also present. The repro closes, but the subtree split opens a new loophole: see U38-RC-1."
+  },
+  {
+   "id": "U38-ADV-4",
+   "closed": true,
+   "evidence": "Tree tF. Old: ge2 (evidence ge2:spec:requirements.txt:mcp>=2 (MCPServer) once we drop fastmcp) plus the D1 contradiction. New: lt2 (evidence lt2:spec:requirements.txt:fastmcp>=2.10,<3 only; the comment casts no vote). save_note is malformed=[read_only_hint] and there is no contradiction."
+  },
+  {
+   "id": "U38-ADV-6",
+   "closed": true,
+   "evidence": "Tree tG (absolute form). Old: only pkg/handlers.py:handle (the stub). New: pkg/impl_v2/tools.py:handle is a unit, and os.remove has contradiction:D1 / fs_write. I also built the relative form tG2 (pkg/app.py with `from . import handlers`). Old: stub only. New: tools.py:handle has the D1 contradiction. The in-package form is closed too. The `import pkg.m as m` branch still has a remaining hole (U38-RC-2, not introduced by this diff)."
+  }
+ ],
+ "new_findings": [
+  {
+   "id": "U38-RC-1",
+   "input": "d64recheck/U38/tI. Root pyproject.toml has [project] dependencies=[\"mcp[cli]>=1.9\"] and [project.optional-dependencies] next=[\"mcp>=2.0\"]. Root server.py has `from mcp.server.fastmcp import FastMCP` / `app = FastMCP(\"notes\")` / `import tools.notes`. tools/requirements.txt contains only `httpx>=0.27`, with no mcp line. tools/notes.py has `from server import app` / `@app.tool(annotations=ToolAnnotations(read_only_hint=True)) def save_note(path, text): open(path, \"w\").write(text)`.",
+   "observed": "Fixed version (20e3823): evidence is subtree:.=unknown, subtree:tools=ge2. tools/notes.py:save_note gets D.explicit=[readOnlyHint], upper=[FS_READ, NET], and builtins.open gets contradiction:D1 / contradiction_reason:D1:fs_write (CONTRADICTION). The result is the same under 3.12 (tomllib). Old version (e9afc10): mcp_version=unknown, save_note is D_unknown, no contradiction. Control tI0 (the same tree without tools/requirements.txt) stays unknown with no contradiction in the new version too.",
+   "expected": "tools/notes.py takes app from the root server.py, so it runs in the root environment. The default install is mcp 1.x: the >=2 comes only from an optional extra, and mcp.server.fastmcp is a 1.x-only API. So the snake_case is malformed, or at least D_unknown, and should produce no contradiction. The root group is already unknown because its evidence conflicts. A subdirectory that shares that environment should not become ge2 just because it has an unrelated dependency file.",
+   "direction": "false_alarm",
+   "introduced_by_fix": true,
+   "plausibility": "Low to medium. It needs a subdirectory with a requirements*.txt / pyproject / setup.py that does not mention mcp (plugins, a tools directory, deployment files), a tool in that subdirectory using snake_case, and ancestor dependency votes that conflict with the ancestor group's shapes (an optional mcp>=2 extra, or a migration in progress). _mcp_versions inherits the ancestor directories' dependency-file votes but not the ancestor group's API-shape evidence (files outside the subtree). So a conflict that makes the parent environment unknown disappears in the child. A dependency directory with no mcp vote of its own also becomes a separate group.",
+   "proposed_fix": "Option 1: do not make a dependency directory whose files cast no mcp or fastmcp vote into a group of its own; merge it into the nearest ancestor group (group_of should consider only dep_dirs that have an mcp vote). Option 2: a child group also inherits the shape evidence from ancestor-group files, so if an ancestor group is unknown because of a conflict, the child is unknown too. Either way, add tI as a counterexample test with expected D_unknown (or malformed) and no contradiction."
+  },
+  {
+   "id": "U38-RC-2",
+   "input": "d64recheck/U38/tG3. pkg/__init__.py has `from . import handlers as _legacy` then `from .impl_v2 import tools as handlers`. pkg/handlers.py is the stub; pkg/impl_v2/tools.py handles rm with os.remove. server.py has `import pkg.handlers as handlers` / `Server(\"t\", on_list_tools=list_tools, on_call_tool=handlers.handle)`, and the Tool has readOnlyHint=True.",
+   "observed": "In mcp 2.2.0 (venv22), running `import server` gives server.handlers.handle.__module__ == 'pkg.impl_v2.tools'. Because __init__.py imports the submodule first, it is already in sys.modules, and the later rebinding in __init__.py leaves the attribute pointing at tools; `import a.b as c` fetches it with getattr. In the analyzer, both old and new versions give only pkg/handlers.py:handle (the stub, v2p=params). tools.py:handle and os.remove's D1 contradiction are missing.",
+   "expected": "The registered handler is pkg.impl_v2.tools.handle, so that unit and the D1 contradiction should be present. If the analyzer cannot narrow it down, it should fall back to bare-name matching.",
+   "direction": "false_clean",
+   "introduced_by_fix": false,
+   "plausibility": "Low. It needs __init__.py to import a submodule and then rebind a different object to the same name. It belongs to the same class as ADV-6, and the fix report's claim that `import pkg.m as m` always gives the submodule does not hold in this case. The pinning dates from U38's earlier commit 9030919 and is unchanged by this diff.",
+   "proposed_fix": "In the `import pkg.m as m` branch too, apply the check of _package_leaves_submodule (whether __init__.py binds m) and fall back to bare-name matching when it does."
+  }
+ ],
+ "summary": "I ran all five repro trees (tA, tA2, tB, tD, tF, tG) against the old version (e9afc10, extracted with git archive) and the fixed version (worktree 20e3823). All five findings are closed. I also checked the relative form of ADV-6 (tG2) and the case where neither ADV-2 candidate resolves (tD3, which gives unresolved_handler=1 with reason=no_definition); both behave correctly.\n\nNew issue introduced by the fix: U38-RC-1 (false alarm). With the per-subtree version rule, a subtree inherits its ancestors' dependency-file votes but not the ancestor group's API-shape evidence. In tI, the root has an optional mcp>=2 extra and imports mcp.server.fastmcp, so the root group is unknown. tools/ has a requirements.txt that does not mention mcp, so it becomes its own group, is judged ge2, and its snake_case read_only_hint produces a new D1 contradiction. The old version gave D_unknown with no contradiction.\n\nExisting hole, not introduced by this diff: U38-RC-2 (false-clean). When `import pkg.m as m` is used and __init__.py imports the submodule and then rebinds the name, the registered handler is really impl_v2.tools. I confirmed this in mcp 2.2.0. The analyzer narrows it to the stub in both the old and new versions, and the D1 contradiction is lost. It belongs to the same class as ADV-6.\n\nTest results:\n- ruff passes.\n- The four U38 monorepo tests (monorepo_2x_lock_last / monorepo_1x_lock_last in is_d_unknown / does_not_pick_a_side) fail on the fixed version. These are frozen counterexample tests that expect whole-tree unknown. The commit message says the tests were left unchanged and passes the decision to the recorder. Under the subtree rule, ge2 is semantically reasonable for these trees, but this needs a decision in the record. It cannot pass as-is.\n- test_val_fixtures::test_precondition_known_unmet_keys_exist fails on e9afc10 too. It depends on the corpus not being fetched and is unrelated to this diff.\n\nAll work files are in /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/d64recheck/U38/ (s.sh, run1.py, old/, tI, tI0, tI3, tG2, tG3, tD2, tD3)."
+}

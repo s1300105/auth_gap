@@ -370,7 +370,9 @@ VOCABULARY_REVISIONS: tuple[tuple[str, str, str], ...] = (
         "D64 / U40、学生の決定（月 6 の凍結後の入口の語彙の追加なので、`docs/preregistration.md` の"
         "逸脱としても記録する）。公式 SDK の `FastMCP.tool` / `MCPServer.tool` は "
         "`def decorator(fn): self.add_tool(fn, ...)` を返すだけで、`add_tool` が SDK の登録の本体である。"
-        "`add_tool` だけで登録するサーバ（rag-toolkit）がユニット 0 で丸ごと消えていた（数え落とし・誤 clear）。",
+        "`add_tool` だけで登録するサーバ（rag-toolkit）がユニット 0 で丸ごと消えていた（数え落とし・誤 clear）。"
+        "ただし rag-toolkit は `for spec in ...: server.add_tool(spec.handler, ...)` とループ変数で登録するので、"
+        "解けない引数は採らない条件（D64 / U40 の条件 (3)）によりこの追加でも回復しない（O42）。",
     ),
     (
         "2026-09-28",

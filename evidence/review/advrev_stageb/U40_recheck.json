@@ -1,0 +1,92 @@
+{
+ "closed": [
+  {
+   "id": "U40-R1",
+   "closed": true,
+   "evidence": "Re-ran the repro trees t/cA, t/cA2 and t/cB (copied to d64recheck/U40/t). The pre-fix version (e9afc10 via git archive into d64recheck/U40/base) gave s.py:Server.handle with ann={readOnlyHint: True}, 0 rows and no contradiction. The fixed version (worktree 6e56bc6) gives no unit on all three trees. Control t/cA0 gives no unit before and after."
+  },
+  {
+   "id": "U40-R2",
+   "closed": true,
+   "evidence": "t/cQ (object.__setattr__) and t/cQ2 (super().__setattr__): pre-fix gave s.py:Server.handle with readOnly and no contradiction; the fixed version gives no unit on both. Class-body locals()['handle']=write_file (n/h1) also gives no unit after the fix; stub run confirms write_file is what gets registered. The `self.__dict__ |= {...}` form is still missed (see N4)."
+  },
+  {
+   "id": "U40-R3",
+   "closed": true,
+   "evidence": "t/cH (module-level locals()['fetch']=dry_fetch): pre-fix gave s.py:fetch with a D1 contradiction; the fixed version gives no unit. The class-body locals() variant (n/h1) is also closed."
+  },
+  {
+   "id": "U40-R4",
+   "closed": true,
+   "evidence": "t/cE (chained `pkg.impl.purge = dry_purge`): pre-fix gave pkg/impl.py:purge with D1; the fixed version gives no unit. Control t/cE2 gives no unit. Variants n/g1 (setattr(pkg.impl,'purge',..)), n/g2 (importlib.import_module('pkg.impl').purge=..), n/g3 (vars(pkg.impl)['purge']=..) and n/g4 (pkg.impl.__dict__.update(purge=..)) all give no unit after the fix."
+  },
+  {
+   "id": "U40-R5",
+   "closed": true,
+   "evidence": "t/cF: pre-fix gave s.py:Tools.fetch with 0 rows and no contradiction; the fixed version gives s.py:fetch with 1 row and contradiction:D1, matching LOAD_NAME. Variant n/f1 (class inside a function, the function has a local fetch, the class-local def comes after the reference): the fixed version gives module-level s.py:fetch, and the stub run prints 'registered fetch s' (the global)."
+  },
+  {
+   "id": "U40-R6",
+   "closed": true,
+   "evidence": "t/cS: pre-fix gave tools.py:cleanup (root) with D1; the fixed version gives no unit (ambiguous). A namespace-package sibling (no __init__.py) is still missed (see N3)."
+  },
+  {
+   "id": "U40-R8",
+   "closed": true,
+   "evidence": "t/cD: the pre-fix version (e9afc10) gave only srv.py:search; the fixed version gives both agent.py:search (tools-list, 1 row) and srv.py:search. No duplicate units: n/d1 (tools-list and add_tool on the same function across modules), n/d2 (a third module imports it into tools=[...]) and n/d3 (same module) each give one unit, before and after."
+  }
+ ],
+ "new_findings": [
+  {
+   "id": "U40-RC1",
+   "input": "n/m1 (d64recheck/U40/n/m1). s.py: class Server: __init__ registers self.mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))(self.handle); def handle(self, path): return 'noop'. mixins.py and pkg/mixins.py: class WriteMixin: def handle(self, path): open(path,'w').write('x'). impl.py: try: from mixins import WriteMixin / except ImportError: from pkg.mixins import WriteMixin; from s import Server; class FileServer(WriteMixin, Server): pass. Pre-existing variant n/m1c: class FileServer(pick(), Server), where pick() returns mixins.WriteMixin; this was also wrong before the fix.",
+   "observed": "Pre-fix (e9afc10): no unit, because the tail name WriteMixin put the mixin in check and it binds handle. Fixed version: s.py:Server.handle, ann={readOnlyHint: True}, 0 rows, no contradiction.",
+   "expected": "A stub run (import impl) prints 'registered WriteMixin.handle mixins': the MRO puts WriteMixin before Server, so the file-writing handle is registered. The unit should not be taken, or it should be a D1 contradiction.",
+   "direction": "false_clean",
+   "introduced_by_fix": true,
+   "plausibility": "Low to medium. _base_ref returns None for a base it cannot resolve (two bindings from try/except, an ambiguous abs_module, a call expression), and _class_graph records it as ('unknown',''). _overridden_below only uses 'unknown' to add the class to subs. When it walks check it follows only ('class', n) bases, so the contents of an unknown mixin in a definite subclass are never looked at. The fix claims to lean toward over-seeing when a base cannot be resolved, but that only holds for the subclass relation, not for the MRO order. try/except fallback imports and multiple same-named mixins.py files are common.",
+   "proposed_fix": "In _overridden_below, if a class in check (a definite subclass or a base reachable from one) has an ('unknown', ...) base, treat that base as possibly binding attr and return True. Or, for an unknown base only, fall back to the pre-fix tail-name match: if a tree class with the same tail name binds attr, return True. Restrict this to classes in check so that trees full of unknown-base classes do not lose all self.m resolution."
+  },
+  {
+   "id": "U40-RC2",
+   "input": "n/e1/proj, scanned with the package directory itself as the root. proj/__init__.py is empty; proj/s.py is the same Server as t/cA (registers self.handle with readOnlyHint); proj/impl.py: from proj.s import Server; class FileServer(Server): def handle(self, path): open(path,'w').write('x').",
+   "observed": "Pre-fix: no unit, because the tail name Server made FileServer a subclass. Fixed version: s.py:Server.handle, ann={readOnlyHint: True}, 0 rows, no contradiction.",
+   "expected": "A stub run (import proj.impl; FileServer()) prints 'registered FileServer.handle proj.impl': the registered handler writes a file. The unit should not be taken.",
+   "direction": "false_clean",
+   "introduced_by_fix": true,
+   "plausibility": "Low to medium. When the scan root is the package itself, as in a repo with __init__.py at its root such as a ComfyUI custom node, abs_module('proj.s') has neither an exact nor a suffix hit and returns 'extern'. _class_graph then records the base as ('extern','proj.s.Server') and treats it as definitely not a tree class. The fix classifies 'extern' as over-resolved: it is neither unknown nor a link. Before the fix, tail-name linking covered this case.",
+   "proposed_fix": "Do not treat an extern base as definitely unrelated when the tail of its dotted name matches the name of a tree class (target, a class in subs, or a class that binds attr). Treat it as 'unknown' in that case, which leans toward over-seeing. Also record the 'scan root is a package imported by its own name' case in open_questions."
+  },
+  {
+   "id": "U40-RC3",
+   "input": "n/m2. tools/cleanup.py (root, no __init__.py): def cleanup(path) opens the file for writing. examples/demo/tools/cleanup.py (no __init__.py): def cleanup(path): return 'would clear'. examples/demo/app.py: from tools.cleanup import cleanup; mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))(cleanup).",
+   "observed": "Both pre-fix and fixed versions give tools/cleanup.py:cleanup (the root one), readOnly, contradiction:D1.",
+   "expected": "When run as `python examples/demo/app.py`, importlib.import_module('tools.cleanup').__file__ is examples/demo/tools/cleanup.py (confirmed by running it), which does not write. The result should be undetermined, as in R6.",
+   "direction": "false_alarm",
+   "introduced_by_fix": false,
+   "plausibility": "Low. _sibling_module only checks for <head>/__init__.py or <head>.py, so it misses a namespace-package sibling. The R6 fix leaves this case open; behaviour is the same as before the fix.",
+   "proposed_fix": "In _sibling_module, also treat a directory <head>/ as a sibling (namespace package) when the remaining dotted path exists as a file under it, and return ambiguous."
+  },
+  {
+   "id": "U40-RC4",
+   "input": "n/m3. class Server: __init__(self, writable): if writable: self.__dict__ |= {'handle': write_file}; then registers self.mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))(self.handle); def handle(self, path): return 'noop'.",
+   "observed": "Both pre-fix and fixed versions give s.py:Server.handle, readOnly, 0 rows, no contradiction.",
+   "expected": "A stub run of Server(True) prints 'registered write_file s': the instance attribute shadows the method, so the registered handler writes a file.",
+   "direction": "false_clean",
+   "introduced_by_fix": false,
+   "plausibility": "Low. The R2 fix covers __setattr__, __dict__[k]= and __dict__.update, but not an AugAssign on __dict__ (`|=`), which it only records as stored_attrs '__dict__'. An R2 variant left open.",
+   "proposed_fix": "When `X.__dict__` is the target of a Store/AugAssign, set any_setattr (or record the constant keys of the right-hand dict as stored_attrs)."
+  },
+  {
+   "id": "U40-RC5",
+   "input": "n/f2 (class body: @swap def fetch(path): return 'noop', then mcp.tool(annotations=readOnly)(fetch); swap returns write_file). n/f3 is the same at module level.",
+   "observed": "Both pre-fix and fixed versions give s.py:Tools.fetch (f2) and s.py:fetch (f3), readOnly, 0 rows, no contradiction.",
+   "expected": "The stub run prints 'registered write_file s': a replacing decorator means the registered function writes a file.",
+   "direction": "false_clean",
+   "introduced_by_fix": false,
+   "plausibility": "Low. A def whose arbitrary decorator can replace the function is still resolved as the def itself. Unrelated to this fix and unchanged by it.",
+   "proposed_fix": "In _from_binding, do not resolve a FunctionDef that has any decorator outside a known set of wrappers that preserve the function (functools.wraps-based ones and the like). Otherwise record it as a limitation."
+  }
+ ],
+ "summary": "I ran each finding's own repro tree against both the fixed worktree (6e56bc6) and the pre-fix version (e9afc10, extracted with git archive into d64recheck/U40/base). R1, R2, R3, R4, R5, R6 and R8 all close. Checks beyond the exact repros:\n- R4: setattr, import_module, vars()[..] and __dict__.update variants all close.\n- R3: the class-body locals() variant closes.\n- R5: a class inside a function now resolves to the global `fetch`, which a stub run confirms is correct.\n- R8: add_tool plus tools=[...] on the same function produces no duplicate unit.\n\nThe R1 fix introduced two false-clean regressions, both confirmed at runtime with a stub `mcp`:\n- RC1 (n/m1): if a definite subclass has a mixin base that cannot be resolved (for example a try/except fallback import), the mixin's contents are never checked. The mixin's file-writing handle is what gets registered, but the fixed version takes Server.handle (readOnly, no contradiction). The pre-fix version caught this by tail-name matching.\n- RC2 (n/e1/proj): when the scan root is itself the package and the subclass imports its base as `from proj.s import Server`, abs_module returns extern. The fixed version then treats the subclass as unrelated and takes Server.handle.\n\nBoth come from treating unknown and extern bases as unrelated when walking the MRO, even though the fix claims to lean toward over-seeing.\n\nThree holes predate this fix (introduced_by_fix=false):\n- RC3: a namespace-package sibling import is still resolved to the root module (an R6 variant).\n- RC4: `self.__dict__ |= {...}` is not seen as a write (an R2 variant).\n- RC5: a def replaced by an arbitrary decorator is resolved as the def itself.\n\nThe entries/registration tests in the worktree pass (82 tests). All probe trees are under /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/d64recheck/U40/n/ and the runner is cmp.sh in the same directory. I did not modify the worktree or the main repo."
+}

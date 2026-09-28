@@ -1154,6 +1154,21 @@ R2-r1-10（`ctx` を OP にする）は検証で落ちた唯一の所見で、�
 | A2 | `host.docker.internal`・`localhost.localdomain` を external にする | 誤警報（D3） | §7.3 の private の範囲の判断（`100.64.0.0/10` は §9.6 の改訂 7' で不になった） |
 | — | §7.5 の表の選択: D2 で `INSERT OR REPLACE`・`ON CONFLICT DO UPDATE` は内で `REPLACE INTO` は矛、PG の `EXPLAIN ANALYZE DELETE` は読み取り、MySQL の `SET PERSIST` は接続単位 | 混在 | 表の選択（D55）で、実装の欠陥ではない |
 
+**段階 B の実装で残した限界**（敵対的レビューで記録に回したものと、実装役の「やり残し」。`evidence/review/advrev_stageb/`）
+
+| 単位 | id | 内容 | 向き | 直さない理由 |
+|---|---|---|---|---|
+| U38 | ADV-5 | `args = params.arguments or {}; args["path"] = 定数` の後の `open(args["path"])` を 3-a の矛にする（局所の dict への添字の書き込みを追わない） | 誤警報 | v1 の `arguments` と同じ既存の限界が v2 に広がっただけ。直すなら値の解析器の側 |
+| U40 | R7 | 同じ関数を別の名前と宣言で 2 度登録すると、1 ユニットに畳んで 2 つ目の宣言を捨てる（`save` と `save_preview`） | 誤 clear | ユニットは関数ごと（デコレータ 2 段重ねと同じ既存の設計） |
+| U40 | RC5 | 任意のデコレータで置き換わる def を def として解く | 誤 clear | 既存のデコレータ形と同じ近似 |
+| U40 | — | `for spec in ...: server.add_tool(spec.handler)` のループ変数の登録は採らない（rag-toolkit は `add_tool` を足してもユニット 0 のまま）。モジュール水準のインスタンスのメソッド、木外のサブクラス・メタクラスによる置き換え、`vars(self)` 経由の書き換え、For / While / match の本体の中の def、`ToolSpec.from_function` も採らない | 数え落とし | 解けない引数は採らない条件（誤警報を作らないため） |
+| U40 | — | `find_units` の時間が増える（gptme 5.5 → 11.8 秒） | — | run21 で `tree_budget_skipped` を見る |
+| U09 | R2 | 多重継承で同名のクラス属性を定義する mixin を、インスタンス経由（`_class_body_defaults`）では後の基底が勝つ順で読む | 誤警報 | 段階 B より前からある。クラス属性の読み（U09）では型を付けないようにした |
+| U09 | — | 関数内 `global` の候補を読み方によらず入れるので、`from db import conn` の import 時の写し（実行時は None のまま）にも DB 行を出す | 誤警報 | import 時の写しの意味をモデル化していない |
+| U09 | — | 木のどこか（テストファイルを含む）でモジュールオブジェクトが値として使われると、そのモジュールの名前はすべて opaque | 精度の損失（不の側） | 流出の検査を安全側に取った |
+| U23 | R3 | モジュール水準の共有 dict の値（別のツールが書き込む）を SELECT の接頭辞につなぐ SQL を 内 にする（OP / opaque の尾を持つ接頭辞を読み取りに分類） | 誤 clear | 段階 B より前からある（D17 の経路）。直すなら §9.4 の表の改訂（OP / opaque の尾を不に） |
+| U23 | — | `ctx` を補助関数に渡して中で `lifespan_context` を読む形には種を置かない（行 0 のまま）。戻り値注釈 `AsyncIterator[X]` への逃げ道と fastmcp の `ctx.lifespan_context` は実装していない。pydantic / dataclass の種は mcp / fastmcp の入口だけ | 数え落とし | 執行表で構築を確かめていない入口には当てない |
+
 ## O19. 先行研究 3 本が主軸と競合する可能性 — **解決（D40: 3 本とも一次資料を読んだ。判断は (a)「測定研究として立て直す」）**
 
 **2026-09-22 追記（D39）**: 学生が PDF を提供し、R2（AgentFlow）と R3（ReactAppScan）を読了。

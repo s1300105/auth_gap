@@ -1,0 +1,52 @@
+{
+ "closed": [
+  {
+   "id": "U09-A1",
+   "closed": true,
+   "evidence": "Reran the review's t1 tree with the fix (c6ca5cc worktree) and with the version before it (e9afc10, extracted to scratch). Before, append_attr and append_from were both FS_WRITE fs_mode=a with no D2 note (内). After, both are fs_mode=None with CONTRADICTION D2:fs_unknown_model_path, so the from-import form is closed too. Extra variant n2 (a function-local `import pkg.config; pkg.config.MODE = v` in the writer): 内 before, D2 矛 after. Variant n1 (namespace package with no __init__.py) is D2 矛 in both versions."
+  },
+  {
+   "id": "U09-A2",
+   "closed": true,
+   "evidence": "t3 (admin does `from pkg import *`, then `config.MODE = v`): before, fs_mode=a / 内; after, D2 矛 (fs_unknown_model_path). There is still an order-dependent hole when two modules star-import each other (new finding U09-R1)."
+  },
+  {
+   "id": "U09-A3",
+   "closed": true,
+   "evidence": "t10 (`from . import config as settings`, then `from pkg import settings; settings.MODE = v`): before, fs_mode=a / 内; after, D2 矛 (fs_unknown_model_path)."
+  },
+  {
+   "id": "U09-A4",
+   "closed": true,
+   "evidence": "t6 append_closure: before, fs_mode=a with no D2 note (FS_WRITE opaque, UNKNOWN); after, fs_mode=None with contradiction_unknown:D2:fs_unknown (不), and the append_plain control is still fs_mode=a / 内. t6b, the from-import variant, is also 不 after (fs_unknown). t9: before, a NET DELETE row with D1 矛 (net_modify); after, no row. Extra variant c1 (nested tool in a factory whose outer function binds client = LocalStore() locally): the D1 row from before is gone after. Instrumented _enclosing_binds over the 14 calibration trees and 57 prev/prev5 corpus trees: it never returned True because a node was missing from the parent map (true_notfound=0; true_bound=344/40/998)."
+  },
+  {
+   "id": "U09-A5",
+   "closed": true,
+   "evidence": "t4 get_item (Backend(LocalMixin, RemoteBase).store.request DELETE): before, a NET row with D1 矛 (net_modify); after, no row. get_item2 (class constant METHOD) is net_method_unknown / 不 in both versions. The same MRO mistake is still in the instance path (Backend().store / self.store), which was already there before this fix and is out of its scope; see U09-R2."
+  }
+ ],
+ "new_findings": [
+  {
+   "id": "U09-R1",
+   "input": "Tree /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/d64recheck/U09/x/n4. pkg/__init__.py is empty. pkg/config.py: `MODE = \"a\"`. pkg/b.py: `from pkg.c import *`. pkg/c.py: `from pkg.b import *` / `from pkg import config`. pkg/aaa.py: `from pkg.c import *` / `X = 1`, which is unrelated to anything else. pkg/admin.py: `from pkg.b import *` / `def set_mode(v): config.MODE = v`. pkg/server.py: `from . import config`, and the tool (destructiveHint=False) calls `open(path, config.MODE)`. In CPython, pkg.config.MODE is 'w' after admin.set_mode('w'). Control n4c is the same tree without aaa.py.",
+   "observed": "Fixed version: n4 gives FS_WRITE fs_mode=a / destructive=False with no D2 note (内). n4c gives D2 矛 (fs_unknown_model_path). A trace of _star_exports shows that in n4, pkg.aaa's star import computes _star_exports('pkg.c') first. The inner _star_exports('pkg.b') then gets {} from the cycle guard `cache[module] = {}` for pkg.c, which is still being computed, and that partial result stays cached as the final value for pkg.b ('pkg.b -> {}'). So admin's `from pkg.b import *` never picks up the alias config, and `config.MODE = v` is missed. The version before the fix gives 内 for both trees.",
+   "expected": "admin's config is the pkg.config module, brought in through pkg.b's star import. MODE should stay opaque and D2 should be 矛, whether or not an unrelated file (aaa.py) is present or where it sorts in file order.",
+   "direction": "false_clean",
+   "introduced_by_fix": true,
+   "plausibility": "Low. It needs two modules that star-import each other, plus a star import of the cycle that sorts earlier in file order. But the verdict flips just from adding an unrelated file, so the result depends on which files are in the tree.",
+   "proposed_fix": "Do not cache results that were computed while the cycle guard was active. Alternatively, have _star_exports collect every module reachable through star imports with a visited set local to the call, then add up the names over all of them, and cache only that complete result. If a cycle is found, treat the star import as bringing in every in-tree module name (take too many)."
+  },
+  {
+   "id": "U09-R2",
+   "input": "Tree /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/d64recheck/U09/x/m1. Same classes as t4: LocalMixin.store = LocalStore(), RemoteBase.store = httpx.Client(...), class Backend(LocalMixin, RemoteBase). The tools read the attribute through an instance: `b = Backend(); b.store.request(\"DELETE\", ...)`, and `Svc(LocalMixin, RemoteBase).go` calls `self.store.request(\"DELETE\", ...)`.",
+   "observed": "Both before and after the fix: a NET row with resolution=resolved and DELETE, and D1 矛 (net_modify).",
+   "expected": "Under the Python MRO, store is LocalStore, so there should be no NET row.",
+   "direction": "false_alarm",
+   "introduced_by_fix": false,
+   "plausibility": "Low to medium. It is the same mixin form as A5. _class_body_defaults (via _construct_in_tree / Obj.fields) still lets the later base win, and the A5 guard is only in _class_attr_value.",
+   "proposed_fix": "Put the same guard as A5 (multiple inheritance with two or more classes that define the attribute: do not read it) inside _class_body_defaults, or compute the MRO with C3."
+  }
+ ],
+ "summary": "All five findings closed. I ran the review's own repro trees (t1, t3, t4, t6, t6b, t9, t10) with the fix (the c6ca5cc worktree) and with the version before it (e9afc10, extracted to scratch). A1 to A3 go from 内 to D2 矛; A4 (a) goes from 内 to D2 不; A4 (b) and A5 no longer produce the false D1 row. The U09 test files (test_d64_u09_advrev.py and test_d64_u09_module_values.py) all pass.\n\nTo look for new errors, I compared effect and row output between the two versions on the 14 calibration trees (A1–A18) and 57 real corpus trees (prev / prev5 with 3–120 .py files). No unit, effect or row changed. The new check _enclosing_binds never returned True just because a node was missing from its parent map (0 times).\n\nI found one new error the fix introduced (U09-R1, false_clean, low plausibility). When two modules star-import each other, the loop guard in the new _star_exports saves a half-finished result for good. Adding one unrelated file that star-imports the cycle then turns the tree's D2 verdict from 矛 into 内. Confirmed on tree n4 against control n4c, with a trace of _star_exports and a CPython check that MODE really becomes 'w'.\n\nOther variants I tried did not break: the dotted-chain write through a function-local import (n2) and a namespace package (n1). Separately, U09-R2 records that the mixin-order mistake behind A5 is still present when the attribute is read through an instance (`Backend().store` / `self.store`). It was already there before this fix (introduced_by_fix=false).\n\nThe implementer disclosed that some effect rows now disappear (A4 (b), A5). A third path does the same: in `_ev_Name`, a nested function now gets no type when an outer function rebinds the name with an import, def or class. When the outer function binds it with a parameter, the result is the same as before (checked in r1).\n\nI did not change any files. Work trees and scripts are in /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/d64recheck/U09/: run.sh, dump.py, cmp.py and probe_star.py, the test trees under x/, and the before/after outputs P_*.json and A_*.json."
+}

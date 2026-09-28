@@ -1,0 +1,67 @@
+{
+ "closed": [
+  {
+   "id": "U23-A1",
+   "closed": true,
+   "evidence": "I ran the reviewer's trees against fixed f720a4b and against e9afc10 (git archive into d64recheck/U23/before). t_ls2: read_table and read_table_moddb go from sql OP/opaque (内) to MODEL/opaque roots ctx[\"table\"], D1 不 db_sql_model_opaque. t_ls3: log_tag goes from 内 to D2 不 db_sql_model_opaque. touch_tag stays D2 矛 db_modify. I also checked the low-level form: in n7, server.request_context.lifespan_context[\"table\"] now reads as MODEL/opaque and gives D1 不. Receiver rows are kept: in n1, ro_store is D1 矛 db_modify and ro_out is D1 矛 fs_write."
+  },
+  {
+   "id": "U23-A2",
+   "closed": true,
+   "evidence": "t_ls4: run_saved and run_saved_moddb go from OP/resolved 'SELECT 1' (内) to MODEL/opaque, D1 不. call_saved goes from GET resolved (内) to D1 不 net_method_unknown. t_ls5: module STATE at depth 3 goes from OP/resolved to OP/opaque, D1 不 db_sql_unreadable. In n2, dataclass nesting AppCtx.cfg.saved.sql/method, list-in-list and module tuple-in-dict were all resolved (内) on e9afc10. On f720a4b they are all 不."
+  },
+  {
+   "id": "U23-P1",
+   "closed": true,
+   "evidence": "t_pyd1: write_post_assign and write_dc_post_assign go from D2 矛 to 不 fs_writeout_model_path_opaque. t_pyd6: write_under_v and write_cv_v also go from D2 矛 to 不."
+  },
+  {
+   "id": "U23-P2",
+   "closed": true,
+   "evidence": "t_pyd1 write_final (pydantic Final with a default) goes from D2 矛 fs_writeout_model_path to 不 fs_writeout_model_path_opaque. The advrev control test for dataclass Final (still 矛) passes."
+  },
+  {
+   "id": "U23-P3",
+   "closed": true,
+   "evidence": "t_pyd3 write_desc (dataclass default = CONF = Confine()) goes from D2 矛 to 不. In n5, a plain Field(..., description='file', examples=[...]) still gives 矛, so the literal controls survive."
+  },
+  {
+   "id": "U23-S1",
+   "closed": true,
+   "evidence": "t_pyd5: register.write_local goes from D2 矛 to 不. register.put_local no longer has the two pathlib FS_WRITE D1 矛 rows; only the NET 不 rows remain. t_pyd7: write_global (global Req rebinding) goes from D2 矛 to 不. Controls: in n3, register.put_nested, Srv.__init__.put_in_init, module-level put_top and put_ext (defined in another module and registered with add_tool) all still give pathlib D1 矛."
+  }
+ ],
+ "new_findings": [
+  {
+   "id": "U23-R1",
+   "input": "d64recheck/U23/n4/server.py: module level has `from pathlib import Path`. Inside `def register(m):` there is a local `from pathlib import Path` (same target) plus `from mcp.server.fastmcp import Context`, then `@m.tool(annotations={\"readOnlyHint\": True}) def put_localimp(path: Path): path.write_text(\"x\")`.",
+   "observed": "On e9afc10, put_localimp has 2 pathlib.Path.write_text FS_WRITE rows, D1 矛 fs_write. On f720a4b it has no FS_WRITE row, so D1 is 内. _shadowed_annotation sees `Path` bound in the enclosing register() by the local import and drops the seed, even though that import resolves to the same pathlib.Path. The pre-U23 base 9030919 also had no row.",
+   "expected": "D1 矛 fs_write, as on e9afc10. At runtime the annotation is evaluated in register's scope as pathlib.Path, FastMCP builds a Path, and write_text writes the file under readOnlyHint.",
+   "direction": "false_clean",
+   "introduced_by_fix": true,
+   "plausibility": "Low to medium. Local imports inside register(mcp)-style functions are a known pattern (CLAUDE.md lists nested definitions and conditional imports as pitfalls). The implementer disclosed the check as conservative, but it also drops seeds when the enclosing binding resolves to the same external target, and the whole U23 gain (pathlib rows, lifespan Context seed) is lost there. `_bound_names` also walks nested bodies, including other methods' locals in a class scope, which Python does not use for annotation evaluation.",
+   "proposed_fix": "In _shadowed_annotation, when the only binding of a name across the enclosing scopes is a single level-0 Import/ImportFrom directly in that scope's body, resolve it to its ext dotted name and let _typed_seed / the Context check use that. Or treat the name as not shadowed when the dotted name equals the module-level resolution. Keep treating every other binding (def/class/assignment/param/global, or two or more bindings) as shadowed. When walking a ClassDef, count only direct class-body bindings, not bindings inside methods."
+  },
+  {
+   "id": "U23-R2",
+   "input": "d64recheck/U23/n5/server.py: `ROOT = \"/srv\"`; `class ReqF(BaseModel): path: str = Field(description=f\"file under {ROOT}\")`; `class ReqE(BaseModel): path: str; mode: Mode = Mode.A` (Mode is an in-tree str Enum). Tools with destructiveHint=False call `open(req.path, \"w\")`.",
+   "observed": "On e9afc10, wf and we are D2 矛 fs_writeout_model_path. On f720a4b both are D2 不 fs_writeout_model_path_opaque. _static_class_value rejects the f-string description and the Enum-attribute default, so the whole class counts as hooked and req.path becomes MODEL/opaque. The control ReqD, whose Field uses only literal kwargs, stays 矛.",
+   "expected": "矛. description/title/examples/json_schema_extra do not change validated values. A BaseModel field default that is an Enum member (no __set__, not a validator) does not replace a value the model supplies.",
+   "direction": "count_loss",
+   "introduced_by_fix": true,
+   "plausibility": "Medium for f-string or constant-expression descriptions and Enum defaults in MCP pydantic models. The error is on the fail-closed side (矛 becomes 不, the same as base 9030919). The implementer disclosed the Enum and nested-Call cases; the doc-only Field kwargs are an extra case of the same over-rejection.",
+   "proposed_fix": "In the Field/PrivateAttr/field branch, require a static value only for `default` (and default_factory), and skip the check for documentation-only kwargs (description, title, examples, json_schema_extra, alias, serialization_alias). If needed, accept an Enum member of an in-tree Enum class that has no __set__/__get__ as a static default for the pydantic family only. Keep the current strict rule for dataclass defaults (descriptor risk)."
+  },
+  {
+   "id": "U23-R3",
+   "input": "t_ls2 read_table_module_state: module-level shared dict `STATE[\"table\"]` written by another tool, read as `DB.execute(\"SELECT body FROM \" + STATE[\"table\"])` in a readOnly tool.",
+   "observed": "sql is OP/opaque with a SELECT prefix, so the result is 内 on base, e9afc10 and f720a4b alike. A1 fixed only the lifespan path. On the D17 module-state path, _opaque_deep keeps principal OP, and dparse reads an OP/opaque tail on a prefix as READ.",
+   "expected": "不 (the table name can be a model-written value; psycopg allows multiple statements).",
+   "direction": "false_clean",
+   "introduced_by_fix": false,
+   "plausibility": "Medium. The reviewer already listed it as an existing limit. Recording it again here so it goes to open_questions rather than being taken as closed by A1.",
+   "proposed_fix": "Record as an existing limit in docs/open_questions.md. A candidate fix: in dparse._db, when complete=False, treat a prefix whose tail is OP/opaque (not a constant) as 不 db_sql_unreadable instead of classifying by the prefix."
+  }
+ ],
+ "summary": "All six findings (A1, A2, P1, P2, P3, S1) are closed. I ran each reviewer tree against the fixed commit f720a4b and against e9afc10 (git archive into scratch), using runner.run and then manifest_json, and checked the 矛/不/内 status of each unit. I also ran extra trees n1 through n8, with the pre-U23 base 9030919 added as a third column.\n\nOn the part the fix touched, I found no new 矛 anywhere and no increase in resolution: every change moved values to opaque or MODEL/opaque, which dparse can only turn into influenced, so 不. I checked the parts of dparse and effects that could give 矛: _choice, _host_class, _http_method, the D1/D2/D3 NET/SPAWN/EXEC checks and the shell/mode reads. All of them require resolved values. Receiver rows are kept, including DB, pathlib and NET rows through in-tree classes, dataclass nesting and the low-level server.\n\nThe fix did introduce two problems, both on the fail-closed side:\n- R1: the S1 scope check drops the seed when the enclosing register() function locally imports the same Path. The D1 矛 fs_write row disappears and the result is 内, which is also what base gave.\n- R2: the static-value rule rejects f-string descriptions and Enum defaults, so the whole class loses its seed and 矛 becomes 不.\n\nR3 is an existing hole, not caused by the fix: the prefix connection for module-level shared state is still 内.\n\nBeyond the findings:\n1. Test suite:\n   - `tests/test_d64_u23_entry_seeding.py::test_fix_ls_rebound_unreadable_const` fails on f720a4b. The status is still 不, but the reason is now db_sql_model_opaque instead of the expected db_sql_unreadable, because A1 made the leaf MODEL. The test expectation was not updated.\n   - `tests/test_f0a_defects.py::test_known_deep_module_dict_url_is_not_op_resolved` (@KNOWN, strict xfail) now passes because of A2, so the suite marks it as a failure. The mark should be removed.\n   - `test_val_fixtures::test_precondition_known_unmet_keys_exist` already fails on d76f693, so it is unrelated.\n2. Speed: `_bound_names` is not cached and walks the whole enclosing function for every parameter. A tree with 300 tools nested in register() (n8) went from 0.9s to 27.6s; the profile puts about 97% of the time in `_bound_names`. It is not a correctness problem and nothing drops in the scan scripts, since they have no per-tree timeout.\n\nAll work files are in /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/d64recheck/U23/ (base, before, full_d76, n1 through n8, cmp3.sh). I did not modify the worktree or the main repo."
+}
