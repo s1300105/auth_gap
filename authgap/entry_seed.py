@@ -34,7 +34,7 @@ import ast
 from typing import Optional
 
 from .ir import RESOLVED, Argv, Atom, Map, Obj, Path, Prin, Seq, Unknown, Value, opaque, prin_join, prov_merge
-from .srcindex import FuncDef, SourceIndex, dotted_of
+from .srcindex import FuncDef, SourceIndex, dotted_of, idents_of
 
 #: `pathlib` の具象パス型（注釈がこれに厳密に解けるときだけ Path 形にする）。
 PATHLIB_TYPES = frozenset({"pathlib.Path", "pathlib.PosixPath", "pathlib.WindowsPath"})
@@ -1223,6 +1223,8 @@ def _assign_value(b: ast.AST, module: str) -> Optional[tuple[str, ast.AST]]:
 
 def _lifespan_touched(tree: ast.AST, recv: str) -> bool:
     """`recv.<...lifespan...> = ...` のように、構築後に lifespan を差し替えうる書き込みがあるか。"""
+    if not any("lifespan" in i for i in idents_of(tree)):
+        return False  # 属性の名前に lifespan を含まないファイルには、その書き込みは無い（全ノードを歩かない）
     for n in ast.walk(tree):
         if isinstance(n, ast.Attribute) and isinstance(n.ctx, (ast.Store, ast.Del)):
             d = dotted_of(n)
@@ -1240,6 +1242,9 @@ def _mounted_names(index: SourceIndex) -> frozenset[str]:
             tree = index.parse(path)
             if tree is None:
                 continue
+            ids = idents_of(tree)
+            if "mount" not in ids and "import_server" not in ids:
+                continue  # その属性の呼び出しが無いファイルは全ノードを歩かない（結果は同じ）
             for n in ast.walk(tree):
                 if (
                     isinstance(n, ast.Call)

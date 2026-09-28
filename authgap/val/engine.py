@@ -2139,7 +2139,7 @@ class ValEngine:
             if mod is not None and self._is_tree_module(mod):
                 out.setdefault(name, set()).add(mod)
 
-        for node, _parent, _depth in _iter_nodes(tree):
+        for node in _import_stmts(tree):  # import は文なので文の列だけをたどる（全ノードを歩かない。結果は同じ）
             if isinstance(node, ast.Import):
                 for a in node.names:
                     bound = a.asname or a.name.split(".")[0]
@@ -3344,6 +3344,26 @@ def _class_attr_stores_in(tree: ast.AST) -> set[str]:
             elif fid == "vars" and not is_self(node.args[0]):
                 out.add("*")
     return out
+
+
+def _import_stmts(tree: ast.AST) -> tuple[ast.AST, ...]:
+    """ファイルの import 文（関数・クラス・制御構文の中を含む）。import は文なので式の中には現れず、文の列
+    （`body` / `orelse` / `finalbody` / `handlers` / `cases`）だけをたどれば全部集まる。木の AST に覚えておく。"""
+    cached = tree.__dict__.get("_authgap_import_stmts")
+    if cached is None:
+        out: list[ast.AST] = []
+        stack: list[ast.AST] = [tree]
+        while stack:
+            node = stack.pop()
+            if isinstance(node, (ast.Import, ast.ImportFrom)):
+                out.append(node)
+                continue
+            for field_name in ("body", "orelse", "finalbody", "handlers", "cases"):
+                sub = getattr(node, field_name, None)
+                if isinstance(sub, list):
+                    stack.extend(sub)
+        cached = tree.__dict__["_authgap_import_stmts"] = tuple(out)
+    return cached
 
 
 def _import_stmts_binding(tree: ast.AST, name: str) -> list[ast.AST]:
