@@ -1,0 +1,1 @@
+CASES = ["INSERT OR REPLACE INTO kv (k, v) VALUES (?, ?)", "INSERT INTO kv (k, v) VALUES (%s, %s) ON CONFLICT (k) DO UPDATE SET v = EXCLUDED.v", "REPLACE INTO kv VALUES (?, ?)"]

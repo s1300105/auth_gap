@@ -1,0 +1,116 @@
+=== old (3.10)
+"SELECT 1" | D1 内 | D2 内 | D4 内
+"-- note\nSELECT 1" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"/* c */ DELETE FROM t" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"/*!50000 DROP TABLE t */ SELECT 1" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"/* old /* x */ SELECT */ DELETE FROM t" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"/* disabled /* inner */ SELECT 1; */ DELETE FROM t" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"/*M!100100 INSERT INTO t */ SELECT * FROM u" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"/*M! DELETE FROM t WHERE id IN */ (SELECT id FROM u)" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"/*+ BKA(t) */ SELECT * FROM t" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"# note\nDELETE FROM t" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"-- c\rDELETE FROM t;\nSELECT 1" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"-- c\rDELETE FROM t\nSELECT 1" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"--x\nSELECT 1" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"-- only" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"/* only */" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"/* unclosed SELECT 1" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"-- it's\nSELECT 1" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"/* it's */ SELECT 1; DELETE FROM t" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+" DELETE FROM t" | D1 矛:db_modify | D2 矛:db_modify | D4 内
+"　SELECT 1" | D1 内 | D2 内 | D4 内
+"SELECT 'a\\'b'; DELETE FROM t; -- '" | D1 内 | D2 内 | D4 内
+"SELECT 'it\\'s'; DELETE FROM t" | D1 内 | D2 内 | D4 内
+"SELECT E'a\\'b'; DELETE FROM t; -- '" | D1 内 | D2 内 | D4 内
+"SELECT 1 # don't\n; DELETE FROM t; -- '" | D1 内 | D2 内 | D4 内
+"SELECT 1 AS x$$; DELETE FROM t; SELECT 1 AS y$$" | D1 内 | D2 内 | D4 内
+"DO $$ BEGIN DELETE FROM x; END $$; SELECT 1" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"SELECT $$a;b$$; DELETE FROM t" | D1 内 | D2 内 | D4 内
+"SELECT $tag$ ; $tag$; DELETE FROM t" | D1 内 | D2 内 | D4 内
+"SELECT $1; DELETE FROM t WHERE id = $2" | D1 内 | D2 内 | D4 内
+"CREATE TRIGGER tr AFTER INSERT ON a BEGIN DELETE FROM b; END; SELECT 1" | D1 矛:db_modify | D2 内 | D4 内
+"CREATE TRIGGER tr AFTER INSERT ON a FOR EACH ROW EXECUTE FUNCTION f(); DROP TABLE b;" | D1 矛:db_modify | D2 内 | D4 内
+"CREATE TRIGGER tr BEFORE INSERT ON a FOR EACH ROW SET NEW.x = 1; DELETE FROM b;" | D1 矛:db_modify | D2 内 | D4 内
+"CREATE TRIGGER tr BEFORE INSERT ON a FOR EACH ROW SET NEW.x = 1; INSERT INTO log VALUES (1);" | D1 矛:db_modify | D2 内 | D4 内
+"CREATE FUNCTION f() RETURNS int LANGUAGE sql BEGIN ATOMIC SELECT 1; END; DROP TABLE b" | D1 矛:db_modify | D2 内 | D4 内
+"SELECT [a;b] FROM t; DELETE FROM t" | D1 内 | D2 内 | D4 内
+"SELECT [a FROM t; DELETE FROM t" | D1 内 | D2 内 | D4 内
+"SELECT 1; DELETE FROM t" | D1 内 | D2 内 | D4 内
+"SELECT 1;;" | D1 内 | D2 内 | D4 内
+"SELECT 1; -- done" | D1 内 | D2 内 | D4 内
+";DELETE FROM t" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"/* c */;DELETE FROM t" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"BEGIN; DELETE FROM t; COMMIT;" | D1 内 | D2 内 | D4 内
+"SET x = 1; UPDATE t SET a = 1" | D1 内 | D2 内 | D4 内
+"WITH x AS (SELECT 1) DELETE FROM t" | D1 内 | D2 内 | D4 内
+"PRAGMA journal_mode(WAL)" | D1 内 | D2 内 | D4 内
+"PRAGMA main.user_version(5)" | D1 内 | D2 内 | D4 内
+"PRAGMA table_info(t)" | D1 内 | D2 内 | D4 内
+"PRAGMA writable_schema(1)" | D1 内 | D2 内 | D4 内
+"PRAGMA writable_schema = 1" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"PRAGMA foreign_keys(0)" | D1 内 | D2 内 | D4 内
+"/* x */ PRAGMA user_version = 3" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"PRAGMA  /* c */ user_version = 3" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"PRAGMA user_version /* c */ = 3" | D1 内 | D2 内 | D4 内
+"%s FROM t" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"{op} FROM t" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"{CALL delete_all()}" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"DELETE%s FROM t" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+=== new (3.10)
+"SELECT 1" | D1 内 | D2 内 | D4 内
+"-- note\nSELECT 1" | D1 内 | D2 内 | D4 内
+"/* c */ DELETE FROM t" | D1 矛:db_modify | D2 矛:db_modify | D4 内
+"/*!50000 DROP TABLE t */ SELECT 1" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 不:db_unknown_statement
+"/* old /* x */ SELECT */ DELETE FROM t" | D1 内 | D2 内 | D4 内
+"/* disabled /* inner */ SELECT 1; */ DELETE FROM t" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 不:db_unknown_statement
+"/*M!100100 INSERT INTO t */ SELECT * FROM u" | D1 内 | D2 内 | D4 内
+"/*M! DELETE FROM t WHERE id IN */ (SELECT id FROM u)" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 不:db_unknown_statement
+"/*+ BKA(t) */ SELECT * FROM t" | D1 内 | D2 内 | D4 内
+"# note\nDELETE FROM t" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 不:db_unknown_statement
+"-- c\rDELETE FROM t;\nSELECT 1" | D1 内 | D2 内 | D4 内
+"-- c\rDELETE FROM t\nSELECT 1" | D1 内 | D2 内 | D4 内
+"--x\nSELECT 1" | D1 内 | D2 内 | D4 内
+"-- only" | D1 不:db_sql_unreadable | D2 不:db_sql_unreadable | D4 不:db_sql_unreadable
+"/* only */" | D1 不:db_sql_unreadable | D2 不:db_sql_unreadable | D4 不:db_sql_unreadable
+"/* unclosed SELECT 1" | D1 不:db_sql_unreadable | D2 不:db_sql_unreadable | D4 不:db_sql_unreadable
+"-- it's\nSELECT 1" | D1 内 | D2 内 | D4 内
+"/* it's */ SELECT 1; DELETE FROM t" | D1 矛:db_multi_statement | D2 矛:db_multi_statement | D4 内
+" DELETE FROM t" | D1 矛:db_modify | D2 矛:db_modify | D4 内
+"　SELECT 1" | D1 内 | D2 内 | D4 内
+"SELECT 'a\\'b'; DELETE FROM t; -- '" | D1 内 | D2 内 | D4 内
+"SELECT 'it\\'s'; DELETE FROM t" | D1 不:db_sql_unsplittable | D2 不:db_sql_unsplittable | D4 不:db_sql_unsplittable
+"SELECT E'a\\'b'; DELETE FROM t; -- '" | D1 内 | D2 内 | D4 内
+"SELECT 1 # don't\n; DELETE FROM t; -- '" | D1 内 | D2 内 | D4 内
+"SELECT 1 AS x$$; DELETE FROM t; SELECT 1 AS y$$" | D1 内 | D2 内 | D4 内
+"DO $$ BEGIN DELETE FROM x; END $$; SELECT 1" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 不:db_unknown_statement
+"SELECT $$a;b$$; DELETE FROM t" | D1 矛:db_multi_statement | D2 矛:db_multi_statement | D4 内
+"SELECT $tag$ ; $tag$; DELETE FROM t" | D1 矛:db_multi_statement | D2 矛:db_multi_statement | D4 内
+"SELECT $1; DELETE FROM t WHERE id = $2" | D1 矛:db_multi_statement | D2 矛:db_multi_statement | D4 内
+"CREATE TRIGGER tr AFTER INSERT ON a BEGIN DELETE FROM b; END; SELECT 1" | D1 矛:db_multi_statement | D2 内 | D4 内
+"CREATE TRIGGER tr AFTER INSERT ON a FOR EACH ROW EXECUTE FUNCTION f(); DROP TABLE b;" | D1 矛:db_modify | D2 内 | D4 内
+"CREATE TRIGGER tr BEFORE INSERT ON a FOR EACH ROW SET NEW.x = 1; DELETE FROM b;" | D1 矛:db_modify | D2 内 | D4 内
+"CREATE TRIGGER tr BEFORE INSERT ON a FOR EACH ROW SET NEW.x = 1; INSERT INTO log VALUES (1);" | D1 矛:db_modify | D2 内 | D4 内
+"CREATE FUNCTION f() RETURNS int LANGUAGE sql BEGIN ATOMIC SELECT 1; END; DROP TABLE b" | D1 矛:db_multi_statement | D2 矛:db_multi_statement | D4 内
+"SELECT [a;b] FROM t; DELETE FROM t" | D1 矛:db_multi_statement | D2 矛:db_multi_statement | D4 内
+"SELECT [a FROM t; DELETE FROM t" | D1 内 | D2 内 | D4 内
+"SELECT 1; DELETE FROM t" | D1 矛:db_multi_statement | D2 矛:db_multi_statement | D4 内
+"SELECT 1;;" | D1 内 | D2 内 | D4 内
+"SELECT 1; -- done" | D1 内 | D2 内 | D4 内
+";DELETE FROM t" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"/* c */;DELETE FROM t" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 内
+"BEGIN; DELETE FROM t; COMMIT;" | D1 矛:db_multi_statement | D2 矛:db_multi_statement | D4 内
+"SET x = 1; UPDATE t SET a = 1" | D1 矛:db_multi_statement | D2 矛:db_multi_statement | D4 不:db_nonidempotent_statement
+"WITH x AS (SELECT 1) DELETE FROM t" | D1 内 | D2 内 | D4 内
+"PRAGMA journal_mode(WAL)" | D1 矛:db_persistent | D2 不:db_persistent | D4 内
+"PRAGMA main.user_version(5)" | D1 矛:db_persistent | D2 不:db_persistent | D4 内
+"PRAGMA table_info(t)" | D1 内 | D2 内 | D4 内
+"PRAGMA writable_schema(1)" | D1 内 | D2 内 | D4 内
+"PRAGMA writable_schema = 1" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 不:db_unknown_statement
+"PRAGMA foreign_keys(0)" | D1 内 | D2 内 | D4 内
+"/* x */ PRAGMA user_version = 3" | D1 矛:db_persistent | D2 不:db_persistent | D4 内
+"PRAGMA  /* c */ user_version = 3" | D1 不:db_unknown_statement | D2 不:db_unknown_statement | D4 不:db_unknown_statement
+"PRAGMA user_version /* c */ = 3" | D1 内 | D2 内 | D4 内
+"%s FROM t" | D1 不:db_sql_unreadable | D2 不:db_sql_unreadable | D4 不:db_sql_unreadable
+"{op} FROM t" | D1 不:db_sql_unreadable | D2 不:db_sql_unreadable | D4 不:db_sql_unreadable
+"{CALL delete_all()}" | D1 不:db_sql_unreadable | D2 不:db_sql_unreadable | D4 不:db_sql_unreadable
+"DELETE%s FROM t" | D1 不:db_sql_unreadable | D2 不:db_sql_unreadable | D4 不:db_sql_unreadable

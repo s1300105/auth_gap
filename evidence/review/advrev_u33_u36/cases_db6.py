@@ -1,0 +1,1 @@
+CASES = ["SET NOCOUNT ON\nDELETE FROM t WHERE id = ?", "SET NOCOUNT ON; DELETE FROM t WHERE id = ?", "SELECT 1\nDELETE FROM t", "/* outer /* inner */ still outer */ DELETE FROM t", "SELECT 1 /* outer /* inner */ still outer */ AS n; DELETE FROM t", "/*!50000 SELECT 1 */"]
