@@ -325,13 +325,21 @@ class SourceIndex:
         return Scope(self.module_name(path), self.relpath(path), imports)
 
     def function_scope(self, path: str, fn: ast.AST) -> Scope:
-        """関数水準のスコープ。**関数ローカルの import はここにだけ入る。**"""
+        """関数水準のスコープ。**関数ローカルの import はここにだけ入る。**
+
+        関数の AST ごとに覚える（降りるたびに関数本体を歩き直していた。`Scope` は作った後に書き換えない）。
+        """
+        hit = fn.__dict__.get("_authgap_function_scope")
+        if hit is not None and hit[0] == path and hit[1] is self:
+            return hit[2]
         base = self.module_scope(path)
         local: dict[str, str] = {}
         body = getattr(fn, "body", [])
         _collect_imports(body, local, recurse=True)
         bindings = _local_bindings(fn)
-        return Scope(base.module, base.relpath, base.module_imports, local, bindings)
+        out = Scope(base.module, base.relpath, base.module_imports, local, bindings)
+        fn.__dict__["_authgap_function_scope"] = (path, self, out)
+        return out
 
 
 _SKIP_DIRS = frozenset(
