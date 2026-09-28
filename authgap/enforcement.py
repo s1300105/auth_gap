@@ -227,7 +227,8 @@ def dep_files(src_root: str) -> list[str]:
 
     隠しディレクトリと `srcindex._SKIP_DIRS`（`venv` / `node_modules` など。`.py` の索引も見ない所）は
     見ない（D64 / U38 の ADV-3: 依存記載のあるディレクトリをサブプロジェクトの境界に使うので、索引の外の
-    記載で境界を作らない）。
+    記載で境界を作らない）。境界になるのは、この中で :func:`mcp_major_votes_by_file` の票を持つ記載の
+    ディレクトリだけ（D64 / U38 の 3 巡目 RC-1。票の無い記載は境界にしない）。
     """
     from .srcindex import _SKIP_DIRS
 

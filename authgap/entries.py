@@ -2072,6 +2072,11 @@ def _pin_v2_handler(index: SourceIndex, reg: V2Registration, name: str) -> Optio
         if alias.asname is None and alias.name != head:
             return None  # `import pkg.m` は `pkg` を束縛する（2 段の名前は扱わない）
         target = _unique_module(index, alias.name)
+        # `import pkg.m as m` も、pkg を import した後に属性 m を getattr で採る（無いときだけ sys.modules の
+        # pkg.m。Python 3.7 以降の IMPORT_FROM）。`__init__.py` が m を束縛していればサブモジュールと決めない
+        # （D64 / U38 の 3 巡目 RC-2。ADV-6 と同じ判定。絞るとスタブだけが残り本物のハンドラが消える誤 clear）。
+        if target is not None and not _package_leaves_submodule(index, target, ignore=b):
+            return None
     elif isinstance(b, ast.ImportFrom):
         alias = next(a for a in b.names if (a.asname or a.name) == head)
         if b.level == 0:
@@ -2232,17 +2237,18 @@ def _dir_is_within(d: str, anc: str) -> bool:
 class _McpVersions:
     """:func:`_mcp_versions` の結果（索引ごとに記憶化）。"""
 
-    #: 依存の記載のあるディレクトリ（木の根は ``""``）。
+    #: mcp / fastmcp の版の**票を持つ**依存記載のディレクトリ（木の根は ``""``）。票の無い依存記載
+    #: （`httpx` だけの requirements.txt など）のディレクトリは含めない（D64 / U38 の 3 巡目 RC-1）。
     dep_dirs: tuple[str, ...]
-    #: サブツリー（依存の記載のあるディレクトリ。記載が 1 つも無い木は ``""``）→ `(版, 根拠)`。
+    #: サブツリー（票を持つ依存記載のディレクトリ。そういう記載が 1 つも無い木は ``""``）→ `(版, 根拠)`。
     groups: dict[str, tuple[str, tuple[str, ...]]]
     #: 木全体で集めた根拠（manifest の `mcp_version.evidence`）。
     evidence: tuple[str, ...]
 
     def group_of(self, relpath: str) -> Optional[str]:
-        """ファイルのサブツリー: **いちばん近い**祖先の依存記載のディレクトリ。
+        """ファイルのサブツリー: **いちばん近い**、票を持つ祖先の依存記載のディレクトリ。
 
-        記載が無い木・記載のディレクトリが 1 つだけの木は、木全体を 1 つのサブプロジェクトとみなす。
+        票を持つ記載が無い木・そのディレクトリが 1 つだけの木は、木全体を 1 つのサブプロジェクトとみなす。
         記載が複数のディレクトリに分かれていて、どれの下にも無いファイルは None（どれで動くか決まらない）。
         """
         d = os.path.dirname(relpath)
@@ -2268,14 +2274,22 @@ def _mcp_versions(index: SourceIndex) -> _McpVersions:  # noqa: C901
     * 版の記載: :func:`enforcement.mcp_major_votes_by_file`（lock・`==`・`>=2`・`<2`・fastmcp の版。**ファイルごと**）。
 
     **版は木全体で 1 つに決めない**（ADV-3）。monorepo では、サブプロジェクトごとに別の環境（別の依存記載）で
-    動く。ファイルのサブツリーは :meth:`_McpVersions.group_of`（いちばん近い依存記載のディレクトリ）。
-    サブツリーの証拠は、そのサブツリーに属するファイルの API の形と、そのディレクトリ**と祖先**の依存記載の票
-    （uv の workspace のように、根の lock がメンバーの環境を決める形を落とさない。祖先の票が食い違えば決めない）。
+    動く。ファイルのサブツリーは :meth:`_McpVersions.group_of`（いちばん近い、mcp / fastmcp の票を持つ
+    依存記載のディレクトリ）。サブツリーの証拠は、そのサブツリーに属するファイルの API の形と、そのディレクトリ
+    **と祖先**の依存記載の票（uv の workspace のように、根の lock がメンバーの環境を決める形を落とさない。
+    祖先の票が食い違えば決めない）。
+
+    **票の無い依存記載のディレクトリはサブツリーにしない**（D64 / U38 の 3 巡目 RC-1）。`httpx` だけの
+    `tools/requirements.txt` は、mcp の環境が祖先と別であることを何も言わない。サブツリーにすると、祖先の票だけを
+    受け継いで祖先のファイルの API の形を受け継がないので、祖先で食い違って決まらない版が子では決まってしまう
+    （根の app にツールを登録する tools/ の snake_case が宣言になり、誤警報の矛が出た）。
+    **祖先のサブツリーが食い違いで決まらなければ、子のサブツリーも決めない**（同 RC-1。子が自分の票を持つとき。
+    子は祖先の票を受け継ぐが祖先の API の形を受け継がないので、祖先の食い違いを子で消さない）。
 
     **両方の向きの証拠があれば決めない**（移行用の shim・形と lock の食い違い。fix_outline 条件 (1)）。
     どちらの証拠も無ければ決めない。**既定でどちらにも仮定しない**（版規則 (4)）。
     """
-    from .enforcement import dep_files, mcp_major_votes_by_file
+    from .enforcement import mcp_major_votes_by_file
 
     cache = index.__dict__.setdefault("_authgap_mcp_version", {})
     if "v" in cache:
@@ -2308,18 +2322,30 @@ def _mcp_versions(index: SourceIndex) -> _McpVersions:  # noqa: C901
             if call is not None and name.split(".")[-1] == "call_tool":
                 shapes.append((fd.relpath, "lt2", f"shape:{fd.relpath}:{fd.qualname}:call_tool"))
     votes = mcp_major_votes_by_file(index.src_root)
-    dep_dirs = tuple(sorted({os.path.dirname(p) for p in dep_files(index.src_root)}))
+    # 票を持つ依存記載のディレクトリだけをサブツリーの境界にする（RC-1）。
+    dep_dirs = tuple(sorted({os.path.dirname(rel) for rel, _label, _vote in votes}))
     mv = _McpVersions(dep_dirs=dep_dirs, groups={}, evidence=())
     group_names = {mv.group_of(index.relpath(p)) for p in index.py_files()}
     group_names |= set(dep_dirs) if dep_dirs else {""}
-    for g in sorted(x for x in group_names if x is not None):
+    #: 食い違いで決まらないサブツリー（自分の証拠の食い違い、または祖先から受け継いだもの）。
+    conflicted: set[str] = set()
+    # 浅いサブツリーから決める（祖先の食い違いを先に知る）。
+    for g in sorted((x for x in group_names if x is not None), key=lambda x: (x.count(os.sep) if x else -1, x)):
         ge2 = [lbl for rel, vote, lbl in shapes if vote == "ge2" and mv.group_of(rel) == g]
         lt2 = [lbl for rel, vote, lbl in shapes if vote == "lt2" and mv.group_of(rel) == g]
         for rel, label, vote in votes:
             if _dir_is_within(g, os.path.dirname(rel)):
                 (ge2 if vote == "ge2" else lt2).append(label)
-        ev = tuple(sorted(set(f"ge2:{x}" for x in ge2) | set(f"lt2:{x}" for x in lt2)))
-        mv.groups[g] = (_version_class(ge2, lt2), ev)
+        ev = set(f"ge2:{x}" for x in ge2) | set(f"lt2:{x}" for x in lt2)
+        cls = _version_class(ge2, lt2)
+        if ge2 and lt2:
+            conflicted.add(g)
+        anc = sorted(a for a in conflicted if a != g and _dir_is_within(g, a))
+        if anc:
+            cls = "unknown"
+            conflicted.add(g)
+            ev |= {f"conflict_inherited_from:{a or '.'}" for a in anc}
+        mv.groups[g] = (cls, tuple(sorted(ev)))
     pooled = {f"{vote}:{lbl}" for _rel, vote, lbl in shapes} | {f"{vote}:{label}" for _rel, label, vote in votes}
     if len(mv.groups) > 1 or None in group_names:
         pooled |= {f"subtree:{g or '.'}={cls}" for g, (cls, _ev) in mv.groups.items()}
