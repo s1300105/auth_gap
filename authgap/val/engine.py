@@ -2221,30 +2221,50 @@ class ValEngine:
 
         `__all__` は見ない（多めに取る）。名前は `module` の直下の束縛と、`module` がパッケージなら直下の
         サブモジュール（どこかで import されればパッケージの属性になり、`__all__` の無い star import で入る）。
+
+        **star import でたどれるモジュールを、この呼び出しだけの訪問済み集合で全部集めてから**名前を足す
+        （U09-R1）。以前は再帰の循環の守りに `cache[module] = {}` を置き、計算途中の空の結果を循環の相手の
+        最終値として cache に残していた。互いに star import する 2 モジュールがあると、どちらを先に計算するか
+        （= 無関係なファイルがあるか・ファイル名の並び順）で結果が変わり、持ち込まれる `config` を落として
+        誤 clear になっていた。今は再帰せず、cache に入れるのは集め終えた完全な結果だけ。
+        名前の指すモジュールは、到達したどのモジュールで解いたものも合流する（多めに取るほど安全側）。
         """
         cache = self.index.__dict__.setdefault("_authgap_star_exports", {})
         if module in cache:
             return cache[module]
-        cache[module] = {}
-        names: set[str] = set()
-        path = self.index.resolve_module_path(module)
-        tree = self.index.parse(path) if path is not None and self._is_tree_module(module) else None
-        if tree is not None:
-            names |= set(self._binding_map(module, tree))
+        tree_modules = self._tree_module_names()
+        reach: list[str] = []
+        seen: set[str] = {module}
+        todo = [module]
+        while todo:
+            cur = todo.pop()
+            reach.append(cur)
+            path = self.index.resolve_module_path(cur)
+            tree = self.index.parse(path) if path is not None and self._is_tree_module(cur) else None
+            if tree is None or path is None:
+                continue
             for st in _iter_module_stmts(tree.body):
-                if isinstance(st, ast.ImportFrom) and any(a.name == "*" for a in st.names) and path is not None:
-                    src = self._import_from_base(module, path, st)
-                    if src is not None and src != module:
-                        names |= set(self._star_exports(src))
-        for m in self._tree_module_names():
-            parent, _, leaf = m.rpartition(".")
-            if parent == module:
-                names.add(leaf)
-        out = {}
-        for n in sorted(names):
-            mods = self._member_modules(module, n)
-            if mods:
-                out[n] = mods
+                if isinstance(st, ast.ImportFrom) and any(a.name == "*" for a in st.names):
+                    src = self._import_from_base(cur, path, st)
+                    if src is not None and src not in seen:
+                        seen.add(src)
+                        todo.append(src)
+        found: dict[str, set[str]] = {}
+        for cur in sorted(reach):
+            names: set[str] = set()
+            path = self.index.resolve_module_path(cur)
+            tree = self.index.parse(path) if path is not None and self._is_tree_module(cur) else None
+            if tree is not None:
+                names |= set(self._binding_map(cur, tree))
+            for m in tree_modules:
+                parent, _, leaf = m.rpartition(".")
+                if parent == cur:
+                    names.add(leaf)
+            for n in sorted(names):
+                mods = self._member_modules(cur, n)
+                if mods:
+                    found.setdefault(n, set()).update(mods)
+        out = {n: frozenset(found[n]) for n in sorted(found)}
         cache[module] = out
         return out
 
