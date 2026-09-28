@@ -217,60 +217,494 @@ FASTMCP_MCP2_MAJOR = 4
 _SPEC_CLAUSE = re.compile(r"(===|==|~=|>=|<=|!=|>|<)\s*([0-9][0-9A-Za-z.*+!_-]*)")
 
 
+def is_dep_file(fn: str) -> bool:
+    """依存の記載のファイル名か（:data:`DEP_FILES` と `requirements*.txt`）。"""
+    return fn in DEP_FILES or (fn.startswith("requirements") and fn.endswith(".txt"))
+
+
+def dep_files(src_root: str) -> list[str]:
+    """木の中の依存の記載のファイル（`src_root` からの相対パス、決定論的な順序）。
+
+    隠しディレクトリと `srcindex._SKIP_DIRS`（`venv` / `node_modules` など。`.py` の索引も見ない所）は
+    見ない（D64 / U38 の ADV-3: 依存記載のあるディレクトリをサブプロジェクトの境界に使うので、索引の外の
+    記載で境界を作らない）。
+    """
+    from .srcindex import _SKIP_DIRS
+
+    out: list[str] = []
+    for dirpath, dirs, files in os.walk(src_root):
+        dirs[:] = sorted(d for d in dirs if not d.startswith(".") and d not in _SKIP_DIRS)
+        for fn in sorted(files):
+            if is_dep_file(fn):
+                out.append(os.path.relpath(os.path.join(dirpath, fn), src_root))
+    return out
+
+
 def mcp_major_votes(src_root: str) -> list[tuple[str, str]]:
     """木の中の依存の記載**ファイルごと**に、mcp の主版が 2 以上（``ge2``）か 2 未満（``lt2``）かの票。
 
+    `(出所の説明, 票)` の列。:func:`mcp_major_votes_by_file` から記載のファイルの列を落としたもの。
+    """
+    return [(label, vote) for _rel, label, vote in mcp_major_votes_by_file(src_root)]
+
+
+def mcp_major_votes_by_file(src_root: str) -> list[tuple[str, str, str]]:
+    """依存の記載ファイルごとの mcp の主版の票 `(記載の相対パス, 出所の説明, "ge2" | "lt2")`（決定論的な順序）。
+
     **1 つの lock を選ばない**（D64 / U38、fix_outline 条件 (2)）。:func:`read_dep_pins` は
     `os.walk` の順でどれか 1 つの lock を採るので、lock が食い違う monorepo でも版が「確定」して見える。
-    ここではすべての記載を票として返し、食い違いは呼び出し側が「決まらない」にする。
+    ここではすべての記載を票として返し、どの票をどのユニットに効かせるか（サブツリー）と食い違いの扱いは
+    呼び出し側（:func:`entries.mcp_version_class`）が決める。
 
     票になるもの（どれも記載そのものから決まるものだけ。推定で埋めない）:
 
     * lock ファイルの `mcp` の解決済み版 → 主版で ``ge2`` / ``lt2``
-    * 記載の指定 `mcp==X` / `mcp~=X` → X の主版。`mcp>=X` / `mcp>X`（X の主版が 2 以上）→ ``ge2``
+    * 指定 `mcp==X` / `mcp~=X` → X の主版。`mcp>=X` / `mcp>X`（X の主版が 2 以上）→ ``ge2``
       （`>=2.0` は正確な版を決めないが主版 2 以上は決める）。`mcp<X`（X <= 2.0）/ `mcp<=X`（X < 2.0）→ ``lt2``
     * `fastmcp` の lock の版・`==` / `~=` / `>=` の下限が 4 以上 → ``ge2``（:data:`FASTMCP_MCP2_MAJOR`）
+    * **`fastmcp` の lock の版が 4 未満、または指定の上限が 4 未満 → ``lt2``**（D64 / U38 の敵対的レビュー ADV-3。
+      PyPI の requires_dist で fastmcp 2.3.0 は `mcp<2.0.0,>=1.8.0`、2.12.4 は `mcp<2.0.0,>=1.12.4`、
+      3.0.0 / 3.2.0 は `mcp<2.0,>=1.24.0`（レビュー役が確認。この修正では確かめていない）。ge2 の側だけ数えると、
+      隣のサブプロジェクトの ge2 の票で木全体が ge2 に倒れ、fastmcp 2 のサーバーの snake_case が宣言になった）
+
+    **依存の指定として書かれた文字列だけを読む**（ADV-4。コメントや description の中の `mcp>=2` を票にしない）:
+
+    * `requirements*.txt`: `#` 以降を落とし、1 行 1 要求として名前を先頭で取る（`-r` などのオプション行は読まない）
+    * `pyproject.toml`: `[project]` の `dependencies` と `optional-dependencies` の文字列要素だけ
+      （:func:`_pyproject_requirements`）
+    * `setup.cfg`: `[options]` の `install_requires` と `[options.extras_require]` の値だけ
+    * `setup.py`: `setup(install_requires=..., extras_require=...)` のリテラル（とモジュール直下の名前の束縛）だけ
 
     1 つの指定の中で ``ge2`` と ``lt2`` の両方が出る（満たせない指定）ときは票にしない。
-    :returns: `(出所の説明, "ge2" | "lt2")` の列（決定論的な順序）
     """
-    votes: list[tuple[str, str]] = []
-    for dirpath, dirs, files in os.walk(src_root):
-        dirs[:] = sorted(d for d in dirs if not d.startswith("."))
-        for fn in sorted(files):
-            if not (fn in DEP_FILES or (fn.startswith("requirements") and fn.endswith(".txt"))):
+    votes: list[tuple[str, str, str]] = []
+    for rel in dep_files(src_root):
+        fn = os.path.basename(rel)
+        text = _read(os.path.join(src_root, rel))
+        if fn in LOCK_FILES:
+            v = _lock_version(text, "mcp", fn)
+            if v:
+                votes.append((rel, f"lock:{rel}:mcp=={v}", "ge2" if _major(v) >= 2 else "lt2"))
+            fv = _lock_version(text, "fastmcp", fn)
+            if fv:
+                votes.append((rel, f"lock:{rel}:fastmcp=={fv}", "ge2" if _major(fv) >= FASTMCP_MCP2_MAJOR else "lt2"))
+            continue
+        for req in _requirement_strings(fn, text):
+            parsed = _parse_requirement(req)
+            if parsed is None:
                 continue
-            path = os.path.join(dirpath, fn)
-            rel = os.path.relpath(path, src_root)
-            text = _read(path)
-            if fn in LOCK_FILES:
-                v = _lock_version(text, "mcp", fn)
-                if v:
-                    votes.append((f"lock:{rel}:mcp=={v}", "ge2" if _major(v) >= 2 else "lt2"))
-                fv = _lock_version(text, "fastmcp", fn)
-                if fv and _major(fv) >= FASTMCP_MCP2_MAJOR:
-                    votes.append((f"lock:{rel}:fastmcp=={fv}", "ge2"))
-                continue
-            for spec in _requirement_specs(text, "mcp"):
+            name, spec = parsed
+            if name == "mcp":
                 vote = _spec_major_vote(spec)
                 if vote is not None:
-                    votes.append((f"spec:{rel}:mcp{spec}", vote))
-            for fspec in _requirement_specs(text, "fastmcp"):
-                if _spec_lower_major(fspec) >= FASTMCP_MCP2_MAJOR:
-                    votes.append((f"spec:{rel}:fastmcp{fspec}", "ge2"))
+                    votes.append((rel, f"spec:{rel}:mcp{spec}", vote))
+            elif name == "fastmcp":
+                fvote = _fastmcp_vote(spec)
+                if fvote is not None:
+                    votes.append((rel, f"spec:{rel}:fastmcp{spec}", fvote))
     return votes
 
 
-def _requirement_specs(text: str, name: str) -> list[str]:
-    """記載の中の `name` の版指定（PEP 508 の extras `mcp[cli]>=2` を含む。`,` で続く句も含める）。
+# -- 依存の記載の読み取り（D64 / U38 の ADV-4）--------------------------------
 
-    :func:`_spec_for` は `mcp[cli]` を読まず、`fastapi-mcp==0.3` の末尾を `mcp==0.3` と読む。票は宣言の読み方を
-    変えるので、名前の前後が名前の文字（英数字・`-`・`_`・`.`）でないものだけを採る。
+#: PEP 508 の要求の先頭（名前と extras）。名前は PEP 503 で正規化して比べる。
+_REQ_HEAD = re.compile(r"^\s*([A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?)\s*(\[[^\]]*\])?\s*(.*)$", re.S)
+
+
+def _parse_requirement(req: str) -> Optional[tuple[str, str]]:
+    """PEP 508 の要求 1 つを `(正規化した名前, 版指定)` にする。URL 指定は版指定を空にする。
+
+    名前の後に版指定・URL・marker でない語が続くもの（自由文）は None。
     """
-    pat = re.compile(
-        rf"(?<![\w.-]){re.escape(name)}(?![\w.-])(?:\[[^\]]*\])?\s*((?:===|==|~=|>=|<=|!=|>|<)\s*[0-9][^'\"\n;#\]]*)"
-    )
-    return [m.group(1).strip() for m in pat.finditer(text)]
+    m = _REQ_HEAD.match(req)
+    if not m:
+        return None
+    name = re.sub(r"[-_.]+", "-", m.group(1)).lower()
+    rest = m.group(3).split(";", 1)[0].strip()
+    if rest.startswith("@"):
+        return name, ""
+    if rest.startswith("(") and rest.endswith(")"):
+        rest = rest[1:-1].strip()
+    if rest and rest[0] not in "<>=!~":
+        return None
+    return name, rest
+
+
+def _requirement_strings(fn: str, text: str) -> list[str]:
+    """依存の記載ファイルから、**依存の指定として書かれた**要求の文字列だけを取り出す（lock は除く）。"""
+    if fn == "pyproject.toml":
+        return _pyproject_requirements(text)
+    if fn == "setup.cfg":
+        return _setup_cfg_requirements(text)
+    if fn == "setup.py":
+        return _setup_py_requirements(text)
+    out: list[str] = []
+    for line in text.splitlines():
+        line = line.split("#", 1)[0].strip()
+        if not line or line.startswith("-"):
+            continue
+        out.append(line)
+    return out
+
+
+def _pyproject_requirements(text: str) -> list[str]:
+    """`[project]` の `dependencies` と `optional-dependencies`（鍵の名前順）の文字列要素。読めない TOML は空。"""
+    data = _toml_loads(text)
+    if not isinstance(data, dict):
+        return []
+    proj = data.get("project")
+    if not isinstance(proj, dict):
+        return []
+    out: list[str] = []
+    deps = proj.get("dependencies")
+    if isinstance(deps, list):
+        out += [d for d in deps if type(d) is str]
+    opt = proj.get("optional-dependencies")
+    if isinstance(opt, dict):
+        for key in sorted(k for k in opt if isinstance(k, str)):
+            if isinstance(opt[key], list):
+                out += [d for d in opt[key] if type(d) is str]
+    return out
+
+
+def _setup_cfg_requirements(text: str) -> list[str]:
+    """`setup.cfg` の `[options] install_requires` と `[options.extras_require]` の値（1 行 1 要求）。"""
+    import configparser
+
+    cp = configparser.ConfigParser(interpolation=None, strict=False)
+    try:
+        cp.read_string(text)
+    except (configparser.Error, ValueError):
+        return []
+    values: list[str] = []
+    if cp.has_option("options", "install_requires"):
+        values.append(cp.get("options", "install_requires"))
+    if cp.has_section("options.extras_require"):
+        values += [cp.get("options.extras_require", k) for k in sorted(cp.options("options.extras_require"))]
+    out: list[str] = []
+    for v in values:
+        for line in v.splitlines():
+            line = line.split("#", 1)[0].strip()
+            if line:
+                out.append(line)
+    return out
+
+
+def _setup_py_requirements(text: str) -> list[str]:
+    """`setup(install_requires=[...], extras_require={...: [...]})` の文字列リテラル。名前はモジュール直下の
+    ちょうど 1 つの `NAME = [...]` に解けるときだけ読む。"""
+    import ast
+
+    try:
+        tree = ast.parse(text.encode("utf-8"))
+    except (SyntaxError, ValueError, RecursionError):
+        return []
+    assigns: dict[str, list[ast.AST]] = {}
+    for st in tree.body:
+        if isinstance(st, ast.Assign):
+            for t in st.targets:
+                if isinstance(t, ast.Name):
+                    assigns.setdefault(t.id, []).append(st.value)
+
+    def resolve(node: ast.AST) -> ast.AST:
+        if isinstance(node, ast.Name) and len(assigns.get(node.id, [])) == 1:
+            return assigns[node.id][0]
+        return node
+
+    def strs(node: ast.AST) -> list[str]:
+        node = resolve(node)
+        if isinstance(node, (ast.List, ast.Tuple)):
+            return [e.value for e in node.elts if isinstance(e, ast.Constant) and isinstance(e.value, str)]
+        return []
+
+    out: list[str] = []
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        f = node.func
+        fname = f.id if isinstance(f, ast.Name) else (f.attr if isinstance(f, ast.Attribute) else "")
+        if fname != "setup":
+            continue
+        for kw in node.keywords:
+            if kw.arg == "install_requires":
+                out += strs(kw.value)
+            elif kw.arg == "extras_require":
+                v = resolve(kw.value)
+                if isinstance(v, ast.Dict):
+                    for ev in v.values:
+                        out += strs(ev)
+    return out
+
+
+# -- TOML（Python 3.10 に tomllib は無い。解析器は標準ライブラリだけを使う §5.0）-----------
+
+try:  # pragma: no cover - 処理系の版による
+    import tomllib as _tomllib  # type: ignore[import-not-found]
+except ImportError:  # pragma: no cover
+    _tomllib = None
+
+
+def _toml_loads(text: str) -> Optional[dict]:
+    """TOML を読む。tomllib（3.11 以上）が無ければ :func:`_toml_subset_loads`。読めなければ None（票にしない）。"""
+    if _tomllib is not None:
+        try:
+            return _tomllib.loads(text)
+        except (ValueError, TypeError):
+            return None
+    try:
+        return _toml_subset_loads(text)
+    except (ValueError, IndexError, RecursionError):
+        return None
+
+
+class _TomlBare(str):
+    """引用符の無い値（数・真偽・日時）。文字列の要素と区別する（tomllib では str にならない）。"""
+
+
+_TOML_BARE = re.compile(r"[A-Za-z0-9_\-+.:]+")
+_TOML_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+_TOML_TIME = re.compile(r"^\d{2}:\d{2}")
+_TOML_ESCAPES = {"b": "\b", "t": "\t", "n": "\n", "f": "\f", "r": "\r", '"': '"', "\\": "\\"}
+
+
+def _toml_unescape(s: str, multiline: bool = False) -> str:
+    out: list[str] = []
+    i = 0
+    while i < len(s):
+        c = s[i]
+        if c != "\\":
+            out.append(c)
+            i += 1
+            continue
+        nxt = s[i + 1] if i + 1 < len(s) else ""
+        if nxt in _TOML_ESCAPES and nxt:
+            out.append(_TOML_ESCAPES[nxt])
+            i += 2
+        elif nxt in ("u", "U") and nxt:
+            width = 4 if nxt == "u" else 8
+            out.append(chr(int(s[i + 2 : i + 2 + width], 16)))
+            i += 2 + width
+        elif multiline and s[i + 1 :].lstrip(" \t").startswith(("\n", "\r\n")):
+            i += 1
+            while i < len(s) and s[i] in " \t\r\n":
+                i += 1
+        else:
+            raise ValueError("bad escape")
+    return "".join(out)
+
+
+def _toml_tokens(text: str) -> list[tuple[str, Optional[str]]]:
+    out: list[tuple[str, Optional[str]]] = []
+    i, n = 0, len(text)
+    while i < n:
+        c = text[i]
+        if c in " \t\r":
+            i += 1
+        elif c == "\n":
+            out.append(("NL", None))
+            i += 1
+        elif c == "#":
+            j = text.find("\n", i)
+            i = n if j < 0 else j
+        elif text.startswith('"""', i) or text.startswith("'''", i):
+            q = text[i : i + 3]
+            j = text.find(q, i + 3)
+            if j < 0:
+                raise ValueError("unterminated multi-line string")
+            extra = 0
+            while extra < 2 and j + 3 < n and text[j + 3] == q[0]:
+                j += 1  # 閉じの直前の引用符 1〜2 個は中身
+                extra += 1
+            body = text[i + 3 : j]
+            if body.startswith("\r\n"):
+                body = body[2:]
+            elif body.startswith("\n"):
+                body = body[1:]
+            out.append(("STR", _toml_unescape(body, multiline=True) if q == '"""' else body))
+            i = j + 3
+        elif c == '"':
+            j = i + 1
+            while j < n and text[j] != '"':
+                if text[j] == "\n":
+                    raise ValueError("newline in string")
+                j += 2 if text[j] == "\\" else 1
+            if j >= n:
+                raise ValueError("unterminated string")
+            out.append(("STR", _toml_unescape(text[i + 1 : j])))
+            i = j + 1
+        elif c == "'":
+            j = text.find("'", i + 1)
+            if j < 0 or "\n" in text[i + 1 : j]:
+                raise ValueError("unterminated literal string")
+            out.append(("STR", text[i + 1 : j]))
+            i = j + 1
+        elif c in "[]{}=,":
+            out.append((c, None))
+            i += 1
+        else:
+            m = _TOML_BARE.match(text, i)
+            if not m:
+                raise ValueError(f"unexpected character {c!r}")
+            out.append(("BARE", m.group(0)))
+            i = m.end()
+    out.append(("NL", None))
+    return out
+
+
+def _toml_subset_loads(text: str) -> dict:  # noqa: C901
+    """依存の配列を読むのに足りる TOML の部分集合（表・配列の表・点つきの鍵・文字列・配列・インラインの表）。
+
+    tomllib の無い処理系（3.10）で使う**保守的な**読み手。読めない形は ValueError（呼び出し側で票にしない）。
+    コメントは読まず、文字列（複数行を含む）の中身は値の文字列としてしか現れないので、自由文の `mcp>=2` を
+    依存の指定として読むことはない（ADV-4）。
+    """
+    toks = _toml_tokens(text)
+    root: dict = {}
+    defined: set[tuple[str, ...]] = set()
+    pos = 0
+
+    def key_path(end: str) -> list[str]:
+        nonlocal pos
+        path: list[str] = []
+        while toks[pos][0] != end:
+            kind, val = toks[pos]
+            if kind == "BARE":
+                path += [p for p in (val or "").split(".") if p]
+            elif kind == "STR":
+                path.append(val or "")
+            else:
+                raise ValueError("bad key")
+            pos += 1
+        if not path:
+            raise ValueError("empty key")
+        return path
+
+    def descend(base: dict, path: list[str]) -> dict:
+        cur = base
+        for p in path:
+            nxt = cur.setdefault(p, {})
+            if isinstance(nxt, list) and nxt and isinstance(nxt[-1], dict):
+                nxt = nxt[-1]
+            if not isinstance(nxt, dict):
+                raise ValueError("key is not a table")
+            cur = nxt
+        return cur
+
+    def skip_nl() -> None:
+        nonlocal pos
+        while toks[pos][0] == "NL":
+            pos += 1
+
+    def value():
+        nonlocal pos
+        kind, val = toks[pos]
+        pos += 1
+        if kind == "STR":
+            return val
+        if kind == "BARE":
+            return _TomlBare(val)
+        if kind == "[":
+            arr: list = []
+            skip_nl()
+            while toks[pos][0] != "]":
+                arr.append(value())
+                skip_nl()
+                if toks[pos][0] == ",":
+                    pos += 1
+                    skip_nl()
+                elif toks[pos][0] != "]":
+                    raise ValueError("bad array")
+            pos += 1
+            return arr
+        if kind == "{":
+            tbl: dict = {}
+            while toks[pos][0] != "}":
+                path = key_path("=")
+                pos += 1
+                tgt = descend(tbl, path[:-1])
+                if path[-1] in tgt:
+                    raise ValueError("duplicate key")
+                tgt[path[-1]] = value()
+                if toks[pos][0] == ",":
+                    pos += 1
+                elif toks[pos][0] != "}":
+                    raise ValueError("bad inline table")
+            pos += 1
+            return tbl
+        raise ValueError("bad value")
+
+    cur = root
+    while pos < len(toks):
+        kind = toks[pos][0]
+        if kind == "NL":
+            pos += 1
+            continue
+        if kind == "[":
+            is_array = toks[pos + 1][0] == "["
+            pos += 2 if is_array else 1
+            path = key_path("]")
+            pos += 1
+            if is_array:
+                if toks[pos][0] != "]":
+                    raise ValueError("bad array-of-tables header")
+                pos += 1
+                parent = descend(root, path[:-1])
+                lst = parent.setdefault(path[-1], [])
+                if not isinstance(lst, list):
+                    raise ValueError("not an array of tables")
+                cur = {}
+                lst.append(cur)
+            else:
+                if tuple(path) in defined:
+                    raise ValueError("duplicate table")
+                defined.add(tuple(path))
+                cur = descend(root, path)
+            if toks[pos][0] != "NL":
+                raise ValueError("junk after header")
+            continue
+        path = key_path("=")
+        pos += 1
+        tgt = descend(cur, path[:-1])
+        if path[-1] in tgt:
+            raise ValueError("duplicate key")
+        val = tgt[path[-1]] = value()
+        if (
+            toks[pos][0] == "BARE"
+            and isinstance(val, _TomlBare)
+            and _TOML_DATE.match(val)
+            and _TOML_TIME.match(toks[pos][1] or "")
+        ):
+            pos += 1  # 空白で区切った日時 `1979-05-27 07:32:00Z`
+        if toks[pos][0] != "NL":
+            raise ValueError("junk after value")  # tomllib と同じく読めない（票にしない）
+    return root
+
+
+def _fastmcp_vote(spec: str) -> Optional[str]:
+    """`fastmcp` の指定から mcp の主版の票。下限が 4 以上 → ``ge2``、上限が 4 未満 → ``lt2``（ADV-3）。"""
+    ge = _spec_lower_major(spec) >= FASTMCP_MCP2_MAJOR
+    lt = _spec_upper_below(spec, str(FASTMCP_MCP2_MAJOR))
+    if ge == lt:
+        return None
+    return "ge2" if ge else "lt2"
+
+
+def _spec_upper_below(spec: str, bound: str) -> bool:
+    """指定が許す版がすべて `bound` 未満か（`<3` / `<=3.9` / `==2.*` / `==3.2.0` / `~=3.0`）。"""
+    for op, ver in _SPEC_CLAUSE.findall(spec):
+        v = ver.rstrip(".*")
+        if not v:
+            continue
+        if op in ("==", "===", "~="):
+            if _major(v) < _major(bound):
+                return True
+        elif op == "<":
+            if not _ver_gt(v, bound):
+                return True
+        elif op == "<=":
+            if _ver_lt(v, bound):
+                return True
+    return False
 
 
 def _major(v: str) -> int:

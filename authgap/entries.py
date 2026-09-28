@@ -401,8 +401,6 @@ def _class_bases(index: SourceIndex, classname: str, module: Optional[str]) -> f
 def find_units(index: SourceIndex) -> list[Unit]:
     """木全体から R2 のユニットを取り出す（決定論的な順序）。"""
     units: list[Unit] = []
-    #: snake_case の注釈の読み方を決める mcp の主版（D64 / U38、R2-r1-1）。
-    snake = mcp_version_class(index)[0]
     for fd in index.functions():
         path = index.resolve_module_path(fd.module)
         if path is None:
@@ -417,7 +415,9 @@ def find_units(index: SourceIndex) -> list[Unit]:
                 # **末尾名が同じ別のデコレータと取り違えない。**
                 # `@click.command()` は位置引数も `names=` / `parameters=` も取らないので落ちる。
                 continue
-            units.append(_decorator_unit(fd, rule, call, snake=snake))
+            # snake_case の注釈の読み方を決める mcp の主版は、ユニットのファイルのサブツリーで決める
+            # （D64 / U38、R2-r1-1 と敵対的レビュー ADV-3）。
+            units.append(_decorator_unit(fd, rule, call, snake=mcp_version_for(index, fd.relpath)))
             matched = True
             break
         if matched:
@@ -1774,6 +1774,14 @@ class V2Registration:
     sdk: bool
     #: 登録を囲む定義（外側から。関数・クラス・lambda）。
     enclosing: tuple[ast.AST, ...] = ()
+    #: 登録の呼び出しの列（同じ行の別の登録と区別する。1 つの登録点が handler の候補を複数持つとき、
+    #: それらは `(relpath, lineno, col, form)` が同じ）。
+    col: int = 0
+    #: 同じ登録点の handler の候補の式（自前の 3 引数形の `args[1]` と `args[-1]`。ADV-2）。1 つなら自分だけ。
+    alternatives: tuple[ast.AST, ...] = ()
+
+    def site(self) -> tuple[str, int, int, str]:
+        return (self.relpath, self.lineno, self.col, self.form)
 
     def unresolved_json(self) -> dict:
         h = self.handler
@@ -1786,6 +1794,10 @@ class V2Registration:
         }
         if callee:
             d["callee"] = callee
+        # dotted 名でない式（partial / lambda）か、dotted 名だが木の中の関数の定義に 1 つも当たらないか
+        d["reason"] = "not_dotted" if self.handler_name is None else "no_definition"
+        if len(self.alternatives) > 1:
+            d["candidates"] = [dotted_of(a) or type(a).__name__ for a in self.alternatives]
         return d
 
 
@@ -1812,9 +1824,17 @@ def lowlevel_v2_registrations(index: SourceIndex) -> list[V2Registration]:
 
     * `Server(...)`: 被呼び出し名の末尾が `Server`、**または import 表で mcp の `Server` に解ける**
       （別名 import。R2-r4-1）。どの形でも `on_call_tool=` キーワードを要求する（`uvicorn.Server` を拾わない）。
-    * `add_request_handler(...)`: method は `args[0]` か `method=` で `"tools/call"`。handler は `handler=`、
-      無ければ**最後の位置引数**（R2-r3-2。SDK は `(method, params_type, handler)` の 3 引数で、`args[1]` は
-      `params_type`。`args[2]` だけにすると自前の JSON-RPC の 2 引数形 `(method, handler)` が消える）。
+    * `add_request_handler(...)`: method は `args[0]` か `method=` で `"tools/call"`。handler は `handler=`。
+      無ければ位置引数から取る（R2-r3-2。SDK は `(method, params_type, handler)` の 3 引数で、`args[1]` は
+      `params_type`。`args[2]` だけにすると自前の JSON-RPC の 2 引数形 `(method, handler)` が消える）:
+
+      - 2 引数: `args[1]`。
+      - 3 引数以上で **`args[1]` が mcp の `CallToolRequestParams` に解ける**（SDK の形と裏付けられる）: `args[-1]`。
+      - それ以外の 3 引数以上: **`args[1]` と `args[-1]` の両方を候補**にする（D64 / U38 の敵対的レビュー ADV-2。
+        自前の `(method, handler, params_model)` で `args[-1]` の型を handler と取り違えると、本物のハンドラの
+        ユニットが消え、型名は関数に当たらないので記録にも残らなかった）。同じ登録点の候補は 1 つずつ
+        登録として返し、`alternatives` に候補の式の列を持つ。どれも関数に解けなければ
+        :func:`unresolved_handlers` に数える。
     """
     cache = index.__dict__.setdefault("_authgap_v2_registrations", {})
     if "all" in cache:
@@ -1830,22 +1850,29 @@ def lowlevel_v2_registrations(index: SourceIndex) -> list[V2Registration]:
         for node, encl in _calls_with_enclosing(tree):
             fname = dotted_of(node.func) or ""
             last = fname.split(".")[-1]
-            handler: Optional[ast.AST] = None
+            handlers: list[ast.AST] = []
             sdk = False
             form = ""
             if last == "add_request_handler":
                 method = node.args[0] if node.args else _kw(node, "method")
                 if not (isinstance(method, ast.Constant) and method.value == LOWLEVEL_V2_REQUEST):
                     continue
-                handler = _kw(node, "handler")
-                if handler is None and len(node.args) >= 2:
-                    handler = node.args[-1]
+                scope = _scope_at(index, path, mscope, encl)
+                hkw = _kw(node, "handler")
                 ptype = _kw(node, "params_type")
-                if ptype is None and len(node.args) >= 3:
-                    ptype = node.args[1]
-                elif ptype is None and len(node.args) == 2 and _kw(node, "handler") is not None:
-                    ptype = node.args[1]
-                sdk = ptype is not None and _is_sdk_call_tool_params(index, ptype, _scope_at(index, path, mscope, encl))
+                if hkw is not None:
+                    handlers = [hkw]
+                    if ptype is None and len(node.args) >= 2:
+                        ptype = node.args[1]
+                elif len(node.args) >= 3:
+                    if _is_sdk_call_tool_params(index, node.args[1], scope):
+                        handlers = [node.args[-1]]  # SDK の (method, params_type, handler)
+                        ptype = ptype if ptype is not None else node.args[1]
+                    else:
+                        handlers = [node.args[1], node.args[-1]]  # 自前の形。どちらが handler か決めない（ADV-2）
+                elif len(node.args) == 2:
+                    handlers = [node.args[1]]
+                sdk = ptype is not None and _is_sdk_call_tool_params(index, ptype, scope)
                 form = "add_request_handler"
             else:
                 handler = None
@@ -1859,32 +1886,49 @@ def lowlevel_v2_registrations(index: SourceIndex) -> list[V2Registration]:
                 if last != "Server" and not sdk:
                     continue
                 form = "on_call_tool"
-            if handler is None:
-                continue
-            out.append(
-                V2Registration(
-                    relpath=rel,
-                    module=mod,
-                    lineno=getattr(node, "lineno", 0),
-                    form=form,
-                    handler=handler,
-                    handler_name=dotted_of(handler),
-                    sdk=sdk,
-                    enclosing=encl,
+                handlers = [handler]
+            for h in handlers:
+                out.append(
+                    V2Registration(
+                        relpath=rel,
+                        module=mod,
+                        lineno=getattr(node, "lineno", 0),
+                        form=form,
+                        handler=h,
+                        handler_name=dotted_of(h),
+                        sdk=sdk,
+                        enclosing=encl,
+                        col=getattr(node, "col_offset", 0),
+                        alternatives=tuple(handlers),
+                    )
                 )
-            )
-    out.sort(key=lambda r: (r.relpath, r.lineno, r.form))
+    out.sort(key=lambda r: (r.relpath, r.lineno, r.col, r.form))
     cache["all"] = out
     return out
 
 
 def unresolved_handlers(index: SourceIndex) -> list[dict]:
-    """dotted 名でない handler 式（`functools.partial(...)` / `lambda` など）の登録点（R2-r3-3、規則 4）。
+    """handler が木の中の関数に解けない登録点（R2-r3-3、規則 4）。
 
-    ユニットにはならない（どの定義が呼ばれるかを名前で決められない）。**黙って落とさず**件数と位置を
-    manifest の `unresolved_handler` に残す。判定は変えない。
+    * dotted 名でない handler 式（`functools.partial(...)` / `lambda` など）。どの定義が呼ばれるかを名前で
+      決められない。
+    * dotted 名だが、import 表でも裸名一致でも関数の定義に 1 つも当たらないもの（D64 / U38 の敵対的レビュー
+      ADV-2。自前の 3 引数形で候補の `args[1]` と `args[-1]` のどちらも当たらないときなど）。
+
+    登録点ごとに、候補の**どれか 1 つでも**関数に解ければ数えない。ユニットにはならないので、**黙って落とさず**
+    件数と位置を manifest の `unresolved_handler` に残す。判定は変えない。
     """
-    return [r.unresolved_json() for r in lowlevel_v2_registrations(index) if r.handler_name is None]
+    order: list[tuple[str, int, int, str]] = []
+    first: dict[tuple[str, int, int, str], V2Registration] = {}
+    resolved: set[tuple[str, int, int, str]] = set()
+    for r in lowlevel_v2_registrations(index):
+        key = r.site()
+        if key not in first:
+            first[key] = r
+            order.append(key)
+        if r.handler_name is not None and _resolve_v2_handler(index, r)[0]:
+            resolved.add(key)
+    return [first[k].unresolved_json() for k in order if k not in resolved]
 
 
 def _scope_at(index: SourceIndex, path: str, mscope: Scope, encl: tuple[ast.AST, ...]) -> Scope:
@@ -1999,6 +2043,8 @@ def _pin_v2_handler(index: SourceIndex, reg: V2Registration, name: str) -> Optio
     tree = index.parse(path) if path is not None else None
     if tree is None or index.module_name(path) != reg.module:
         return None
+    if _has_star_import(tree):
+        return None  # star import はどの名前も上書きしうる（敵対的レビュー ADV-1）
     binds = _module_bindings(tree, head)
     writes = _scan_module_writes(tree)
     if len(binds) != 1 or head in writes or "*" in writes:
@@ -2034,9 +2080,55 @@ def _pin_v2_handler(index: SourceIndex, reg: V2Registration, name: str) -> Optio
             cand = f"{base}.{alias.name}"
             cpath = index.resolve_module_path(cand)
             target = cand if cpath is not None and index.module_name(cpath) == cand else None
+        if target is not None and not _package_leaves_submodule(index, target, ignore=b):
+            return None
     if target is None:
         return None
     return _pin_in_module(index, target, parts[1])
+
+
+def _has_star_import(tree: ast.AST) -> bool:
+    """モジュールのどこか（`if` / `try` の中を含む）に `from ... import *` があるか。
+
+    star import は、それより前の def や import で束縛された名前を黙って上書きする（`def handle` の後の
+    `try: from impl import *`、`__init__.py` の `from .base import h` の後の `from .override import *`）。
+    `_module_bindings` は star を束縛として数えないので、star のあるモジュールでは名前を一意に絞らない
+    （D64 / U38 の敵対的レビュー ADV-1。絞ると本物のハンドラのユニットが消える誤 clear になる）。順序を見て
+    「def より前の star だけ」と判定するより、解かずに裸名一致に落とす方が安全。
+    """
+    return any(
+        isinstance(n, ast.ImportFrom) and any(a.name == "*" for a in n.names) for n in ast.walk(tree)
+    )
+
+
+def _package_leaves_submodule(index: SourceIndex, submodule: str, ignore: Optional[ast.AST] = None) -> bool:
+    """`from pkg import m` の `m` がサブモジュール `pkg.m` だと言えるか（D64 / U38 の敵対的レビュー ADV-6）。
+
+    `from pkg import m` は、pkg の `__init__.py` を実行した後に**属性 m があればそれを採り**、無いときだけ
+    サブモジュール pkg.m を import する（`importlib._bootstrap._handle_fromlist`。mcp 2.2.0 の環境で
+    `from pkg import handlers; handlers.__name__ == "pkg.impl_v2.tools"` をレビュー役が確認）。
+    したがって `__init__.py` が m を束縛する・star import がある・動的な名前空間操作（`globals()` など）がある・
+    `__getattr__`（PEP 562）を持つときは、サブモジュールと決めない（呼び出し側は裸名一致に落とす）。
+    `__init__.py` の無い名前空間パッケージはサブモジュール。`ignore` はその import 文自身（登録文が
+    パッケージの `__init__.py` の中の `from . import m` のとき。その時点で属性 m はまだ無いのでサブモジュール）。
+    """
+    from .val.engine import _module_bindings, _scan_module_writes
+
+    parent, _, name = submodule.rpartition(".")
+    if not parent:
+        return True
+    ppath = index.resolve_module_path(parent)
+    if ppath is None:
+        return True
+    if index.module_name(ppath) != parent or os.path.basename(ppath) != "__init__.py":
+        return False  # 別のモジュールに当たった / パッケージでない（決めない）
+    ptree = index.parse(ppath)
+    if ptree is None or _has_star_import(ptree):
+        return False
+    if "*" in _scan_module_writes(ptree):
+        return False
+    binds = [x for x in _module_bindings(ptree, name) if x is not ignore]
+    return not (binds or _module_bindings(ptree, "__getattr__"))
 
 
 def _import_from_base(
@@ -2087,6 +2179,8 @@ def _pin_in_module(index: SourceIndex, module: str, name: str, hops: int = 3) ->
         tree = index.parse(path) if path is not None else None
         if tree is None or index.module_name(path) != module:
             return None
+        if _has_star_import(tree):
+            return None  # 再公開の連鎖の中の star import も上書きしうる（ADV-1）
         binds = _module_bindings(tree, name)
         writes = _scan_module_writes(tree)
         if len(binds) != 1 or name in writes or "*" in writes:
@@ -2119,26 +2213,72 @@ def _import_hits(dotted: str, prefixes: tuple[str, ...]) -> bool:
     return any(dotted == p or dotted.startswith(p + ".") for p in prefixes)
 
 
-def mcp_version_class(index: SourceIndex) -> tuple[str, tuple[str, ...]]:
-    """木の mcp の主版: ``"ge2"`` / ``"lt2"`` / ``"unknown"`` と、その根拠（索引ごとに記憶化）。
+def _version_class(ge2: list[str], lt2: list[str]) -> str:
+    """両方の向きの証拠があれば、またはどちらも無ければ ``unknown``（既定でどちらにも仮定しない。版規則 (4)）。"""
+    if (ge2 and lt2) or not (ge2 or lt2):
+        return "unknown"
+    return "ge2" if ge2 else "lt2"
 
-    Def 6 の執行表と同じ **(1) API の形 → (2) 版の記載** の順の証拠を集める（fix_outline）:
+
+def _dir_is_within(d: str, anc: str) -> bool:
+    """ディレクトリ `d`（木の根からの相対。根は ``""``）が `anc` と同じか、その下か。"""
+    return anc == "" or d == anc or d.startswith(anc + os.sep)
+
+
+@dataclass
+class _McpVersions:
+    """:func:`_mcp_versions` の結果（索引ごとに記憶化）。"""
+
+    #: 依存の記載のあるディレクトリ（木の根は ``""``）。
+    dep_dirs: tuple[str, ...]
+    #: サブツリー（依存の記載のあるディレクトリ。記載が 1 つも無い木は ``""``）→ `(版, 根拠)`。
+    groups: dict[str, tuple[str, tuple[str, ...]]]
+    #: 木全体で集めた根拠（manifest の `mcp_version.evidence`）。
+    evidence: tuple[str, ...]
+
+    def group_of(self, relpath: str) -> Optional[str]:
+        """ファイルのサブツリー: **いちばん近い**祖先の依存記載のディレクトリ。
+
+        記載が無い木・記載のディレクトリが 1 つだけの木は、木全体を 1 つのサブプロジェクトとみなす。
+        記載が複数のディレクトリに分かれていて、どれの下にも無いファイルは None（どれで動くか決まらない）。
+        """
+        d = os.path.dirname(relpath)
+        best: Optional[str] = None
+        for dd in self.dep_dirs:
+            if _dir_is_within(d, dd) and (best is None or len(dd) > len(best)):
+                best = dd
+        if best is not None:
+            return best
+        if len(self.dep_dirs) <= 1:
+            return self.dep_dirs[0] if self.dep_dirs else ""
+        return None
+
+
+def _mcp_versions(index: SourceIndex) -> _McpVersions:  # noqa: C901
+    """mcp の主版の証拠を集め、**依存の記載のサブツリーごと**に版を決める（D64 / U38、R2-r1-1 と ADV-3）。
+
+    Def 6 の執行表と同じ **(1) API の形 → (2) 版の記載** の順の証拠（fix_outline）:
 
     * API の形で >=2.0: `mcp.server.mcpserver` の import、mcp SDK に解ける `Server(on_call_tool=)`、
       SDK の 3 引数形の `add_request_handler`。
     * API の形で <2.0: `mcp.server.fastmcp` の import、`@<x>.call_tool()`（低レベル v1。2.x に無い）。
-    * 版の記載: :func:`enforcement.mcp_major_votes`（lock・`==`・`>=2`・`<2`・fastmcp>=4。**ファイルごと**）。
+    * 版の記載: :func:`enforcement.mcp_major_votes_by_file`（lock・`==`・`>=2`・`<2`・fastmcp の版。**ファイルごと**）。
 
-    **両方の向きの証拠があれば決めない**（移行用の shim・形と lock の食い違い・lock が食い違う monorepo。
-    fix_outline 条件 (1)(2)）。どちらの証拠も無ければ決めない。**既定でどちらにも仮定しない**（版規則 (4)）。
+    **版は木全体で 1 つに決めない**（ADV-3）。monorepo では、サブプロジェクトごとに別の環境（別の依存記載）で
+    動く。ファイルのサブツリーは :meth:`_McpVersions.group_of`（いちばん近い依存記載のディレクトリ）。
+    サブツリーの証拠は、そのサブツリーに属するファイルの API の形と、そのディレクトリ**と祖先**の依存記載の票
+    （uv の workspace のように、根の lock がメンバーの環境を決める形を落とさない。祖先の票が食い違えば決めない）。
+
+    **両方の向きの証拠があれば決めない**（移行用の shim・形と lock の食い違い。fix_outline 条件 (1)）。
+    どちらの証拠も無ければ決めない。**既定でどちらにも仮定しない**（版規則 (4)）。
     """
-    from .enforcement import mcp_major_votes
+    from .enforcement import dep_files, mcp_major_votes_by_file
 
     cache = index.__dict__.setdefault("_authgap_mcp_version", {})
     if "v" in cache:
         return cache["v"]
-    ge2: list[str] = []
-    lt2: list[str] = []
+    #: `(ファイルの相対パス, 向き, 根拠)`
+    shapes: list[tuple[str, str, str]] = []
     for path in index.py_files():
         tree = index.parse(path)
         if tree is None:
@@ -2153,23 +2293,65 @@ def mcp_version_class(index: SourceIndex) -> tuple[str, tuple[str, ...]]:
             for n in names:
                 for pfx in MCP_GE2_IMPORTS:
                     if _import_hits(n, (pfx,)):
-                        ge2.append(f"import:{rel}:{pfx}")
+                        shapes.append((rel, "ge2", f"import:{rel}:{pfx}"))
                 for pfx in MCP_LT2_IMPORTS:
                     if _import_hits(n, (pfx,)):
-                        lt2.append(f"import:{rel}:{pfx}")
+                        shapes.append((rel, "lt2", f"import:{rel}:{pfx}"))
     for reg in lowlevel_v2_registrations(index):
         if reg.sdk:
-            ge2.append(f"shape:{reg.relpath}:{reg.lineno}:{reg.form}")
+            shapes.append((reg.relpath, "ge2", f"shape:{reg.relpath}:{reg.lineno}:{reg.form}"))
     for fd in index.functions():
         for name, call, _node in _decorator_calls(fd.node):
             if call is not None and name.split(".")[-1] == "call_tool":
-                lt2.append(f"shape:{fd.relpath}:{fd.qualname}:call_tool")
-    for label, vote in mcp_major_votes(index.src_root):
-        (ge2 if vote == "ge2" else lt2).append(label)
-    ev = tuple(sorted(set(f"ge2:{x}" for x in ge2) | set(f"lt2:{x}" for x in lt2)))
-    cls = "unknown" if (ge2 and lt2) or not (ge2 or lt2) else ("ge2" if ge2 else "lt2")
-    cache["v"] = (cls, ev)
-    return cache["v"]
+                shapes.append((fd.relpath, "lt2", f"shape:{fd.relpath}:{fd.qualname}:call_tool"))
+    votes = mcp_major_votes_by_file(index.src_root)
+    dep_dirs = tuple(sorted({os.path.dirname(p) for p in dep_files(index.src_root)}))
+    mv = _McpVersions(dep_dirs=dep_dirs, groups={}, evidence=())
+    group_names = {mv.group_of(index.relpath(p)) for p in index.py_files()}
+    group_names |= set(dep_dirs) if dep_dirs else {""}
+    for g in sorted(x for x in group_names if x is not None):
+        ge2 = [lbl for rel, vote, lbl in shapes if vote == "ge2" and mv.group_of(rel) == g]
+        lt2 = [lbl for rel, vote, lbl in shapes if vote == "lt2" and mv.group_of(rel) == g]
+        for rel, label, vote in votes:
+            if _dir_is_within(g, os.path.dirname(rel)):
+                (ge2 if vote == "ge2" else lt2).append(label)
+        ev = tuple(sorted(set(f"ge2:{x}" for x in ge2) | set(f"lt2:{x}" for x in lt2)))
+        mv.groups[g] = (_version_class(ge2, lt2), ev)
+    pooled = {f"{vote}:{lbl}" for _rel, vote, lbl in shapes} | {f"{vote}:{label}" for _rel, label, vote in votes}
+    if len(mv.groups) > 1 or None in group_names:
+        pooled |= {f"subtree:{g or '.'}={cls}" for g, (cls, _ev) in mv.groups.items()}
+        if None in group_names:
+            pooled.add("subtree:<outside every subproject>=unknown")
+    mv.evidence = tuple(sorted(pooled))
+    cache["v"] = mv
+    return mv
+
+
+def mcp_version_for(index: SourceIndex, relpath: str) -> str:
+    """ファイル `relpath` の mcp の主版（``"ge2"`` / ``"lt2"`` / ``"unknown"``）。サブツリーごと（ADV-3）。"""
+    mv = _mcp_versions(index)
+    g = mv.group_of(relpath)
+    if g is None or g not in mv.groups:
+        return "unknown"
+    return mv.groups[g][0]
+
+
+def mcp_version_class(index: SourceIndex) -> tuple[str, tuple[str, ...]]:
+    """木全体の mcp の主版と根拠（manifest の `mcp_version`、ファイルの分からない呼び出し側）。
+
+    木の `.py` ファイルのサブツリーの版が**すべて同じ**ときだけその版、そうでなければ ``"unknown"``
+    （どのサブツリーにも属さないファイルがあれば ``"unknown"``）。ユニットの宣言の読み方は、ファイルごとの
+    :func:`mcp_version_for` を使う。
+    """
+    mv = _mcp_versions(index)
+    classes = set()
+    for p in index.py_files():
+        g = mv.group_of(index.relpath(p))
+        classes.add("unknown" if g is None else mv.groups.get(g, ("unknown", ()))[0])
+    if not classes:
+        classes = {cls for cls, _ev in mv.groups.values()}
+    cls = classes.pop() if len(classes) == 1 else "unknown"
+    return cls, mv.evidence
 
 
 def enum_string_members(index: SourceIndex) -> dict[str, str]:
@@ -2276,12 +2458,12 @@ def find_tool_literals(index: SourceIndex) -> list[ToolLiteral]:
     64.6% が後 2 形だった）。**読めない形は `D_unknown` とし `⊥` と混ぜない。**
     """
     out: list[ToolLiteral] = []
-    snake = mcp_version_class(index)[0]
     for path in index.py_files():
         tree = index.parse(path)
         if tree is None:
             continue
         rel = index.relpath(path)
+        snake = mcp_version_for(index, rel)  # リテラルのファイルのサブツリーの版（D64 / U38 の ADV-3）
         for node in ast.walk(tree):
             if not isinstance(node, ast.Call):
                 continue
@@ -2304,8 +2486,8 @@ def _read_annotations(
 ) -> tuple[Optional[dict], str, tuple[str, ...], tuple[str, ...]]:
     """注釈の式を `(値, 形, malformed, undetermined)` に読む。
 
-    **snake_case のキー（`read_only_hint` ほか）の読み方は木の mcp の主版で決める**（D64 / U38、R2-r1-1。
-    :func:`mcp_version_class`）:
+    **snake_case のキー（`read_only_hint` ほか）の読み方は mcp の主版で決める**（D64 / U38、R2-r1-1。
+    呼び出し側が注釈のファイルのサブツリーの版を :func:`mcp_version_for` で渡す。敵対的レビュー ADV-3）:
 
     * ``"ge2"``（mcp>=2.0）: `ToolAnnotations` の属性名そのもの（alias_generator=to_camel、validate_by_name）で、
       protocol には camelCase で届く（mcp 2.2.0 で `ToolAnnotations(read_only_hint=True).model_dump(by_alias=True)
