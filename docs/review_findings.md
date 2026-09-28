@@ -1,14 +1,14 @@
 # 添削の所見の表（3 観点の突き合わせ。`scripts/review_table.py` で再生成）
 
-所見 143 件。3 観点そろった 143 件のうち **生き残り 142 / 落ちた 1**（未完 0）。生き残り = 2 観点以上を生き延びたもの（review_plan.md §4.2）。
+所見 151 件。3 観点そろった 147 件のうち **生き残り 146 / 落ちた 1**（未完 4）。生き残り = 2 観点以上を生き延びたもの（review_plan.md §4.2）。
 
 | 生き残りの重大度（代表値） | D1 / D2 に効く | 評価の道具 |
 |---|---|---|
 | 高 | 14 | 0 |
 | 中 | 50 | 6 |
-| 低 | 51 | 21 |
+| 低 | 55 | 21 |
 
-向き（生き残り）: 誤 clear 74、数え落とし 36、誤警報 25、規則との食い違い 6、非決定 1
+向き（生き残り）: 誤 clear 76、数え落とし 36、誤警報 26、規則との食い違い 7、非決定 1
 
 ## 生き残った所見（重大度順）
 
@@ -104,6 +104,9 @@
 | R1-r4-7 | **低**（低 / 低 / 低） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | 辞書表示の `**` 展開 `{**base, "target": target}` を `_ev_Dict` が `"<dynamic>"` キーの 1 項目（base の Map 全体）として置き、base の項目を平らにしないので、`d["exe"]`（base 側の定数キ |
 | R1-r4-8 | **低**（低 / 低 / 低） | 誤警報 | D1+D2 | ○ | ✗ | ○ | ○ | G4 / D50 の注釈型付け（`_seed_params`）がリテラルの `None`（`conn: Optional[sqlite3.Connection] = None` の既定値、または明示の `None` 実引数）を `Obj(sqlite3.Connection)`  |
 | R1-r5-5† | **低**（低 / 低 / 低） | 数え落とし | D1+D2 | ○ | ○ | ○ | ○ | G4 / D50 の注釈型付けが `Optional` の包みを import 表で解かず字面 `"Optional"` / `"typing.Optional"` でしか外さない（`_annotation_receiver_type` :2365、`_annotation_he |
+| R1d-r6-5† | **低**（低 / 低 / 低） | 規則との食い違い | D4 | ○ | ○ | ○ | ○ | §7.4 の「DB: それ以外の先頭語 → 内」が §7.5「それ以外（ATTACH / NOTIFY / 分類に無い PRAGMA など）→ 不」と原理 2-a に反し、`_d4` は表どおり `NOTIFY` / `CALL proc()` / `COPY t FROM …` |
+| R1d-r6-6† | **低**（低 / 低 / 低） | 誤 clear | D3 | ○ | ○ | ○ | ○ | `urljoin(BASE, ref)` の TRANSFER が「実引数が全部リテラルなら結果 = 受け手（BASE）の定数」とするため、`ref` が絶対 URL や `//host/x` の定数（`urljoin("http://localhost:8000/api/",  |
+| R1d-r6-7† | **低**（低 / 低 / 低） | 誤 clear | D3 | ○ | ○ | ○ | ○ | `_host_class` が `url.host` の `Value.const`（Atom）しか読まないため、`crawl4ai.AsyncWebCrawler.arun_many([...])` の `urls`（`A(0, kw="urls")` の Seq）は要素が全部 |
 | R2-r1-11 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | pydantic の lax 変換で True になる値（readOnlyHint=1 / "true"、destructiveHint=0）を『真偽値でない = 上界を動かさない』として ⊥ にする（誤 clear。まれ） |
 | R2-r1-13 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | デコレータの第 1 位置引数で与えたツール名（@mcp.tool("delete_file")）を読まず関数名を tool_name にするので、同名の Tool リテラル / D_op の名前と join できない（まれ） |
 | R2-r1-5 | **低**（低 / 低 / 低） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | Tool(...) リテラルをツール名だけで木全体から join し、リテラルがどのサーバ / モジュール（テストを含む）に属するかを見ない: 別サーバ・テストの宣言が付く（誤警報）、同名の別サーバのリテラルに先勝ちで負けて自分の宣言を失う（誤 clear） |
@@ -125,6 +128,7 @@
 | R3-r4-1 | **低**（中 / 低 / 低） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | 低レベル MCP ハンドラで name 判定が入れ子（外側 `name in ("peek", "rm", "mk")` の中に内側 `if name == "rm"` / `elif name == "mk"`）のとき、`_attribute_effects_to_tools` |
 | R3-r4-2 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | `_first_element` が `Str`（連結した文字列）に対して `parts[0]` を返すので、shell=False で**文字列**（列ではない）を args に渡す `subprocess.run("/usr/bin/" + tool)` / `subproc |
 | R3-r4-3 | **低**（低 / 低 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | `%` / `str.format` の書式テンプレートの先頭がプレースホルダで実引数に非リテラルが混ざる形（`"%s FROM t WHERE id = %s" % ("DELETE", os.environ["ID"])` / `"{} FROM t WHERE id = { |
+| R3d-r6-3† | **低**（低 / 低 / 低） | 誤警報 | D3 | ○ | ○ | ○ | ○ | D3 の「private」の判定が名前について `localhost` / `*.localhost` / `*.local` の 3 形だけで、標準で私用と定まる名前（`*.internal`（ICANN 2024 予約、`host.docker.internal` を含む）・ |
 | R4-r1-11 | **低**（低 / 中 / 低） | 誤 clear | D1+D2 | ○ | ○ | ○ | ○ | 語彙にある sink の再公開別名（asyncio.subprocess.create_subprocess_exec / from asyncio.subprocess import …、sympy.parse_expr）が _suffix_match の完全一致・末尾 2 要 |
 | R4-r3-2 | **低**（低 / 低 / 低） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | `_suffix_match` の末尾 2 要素一致が、木の中のモジュールがライブラリと同名（`app/requests.py` / `app/subprocess.py` / `pkg/os.py`、相対 import `from . import os` を含む）のとき、その |
 | R4-r3-3 | **低**（中 / 低 / 低） | 誤警報 | D1+D2 | ○ | ○ | ○ | ○ | スライスで複製した定数の列（`cmd = base[:]` / `base[1:]`）に MODEL を append / insert / extend / 添字代入すると、`_ev_Subscript` が Slice を要素の join（Atom）に潰し `_append_ |
@@ -162,5 +166,12 @@
 | id | 実行 | 設計 | 一般性 | 所見 |
 |---|---|---|---|---|
 | R2-r1-10 | ○ | ✗ | ✗ | FastMCP が実行時にスキーマから除く `ctx: Context` 仮引数を MODEL として種付けし、ctx 由来の path / argv が主体 MODEL になる（D1 / D2 の理由が *_model_opaque に付き、SELECT 座標では誤警報） |
+
+## 未完（観点が欠けている）
+
+- R1d-r6-2: exec=○, design=—, generality=—
+- R1d-r6-3: exec=○, design=—, generality=—
+- R3d-r6-1: exec=○, design=○, generality=—
+- R3d-r6-2: exec=○, design=—, generality=—
 
 記号: ○ = その観点を生き延びた、✗ = 反証された、— = 未実施。判定の全文は `evidence/review/verify_*.json`、再現は `evidence/review/exec_lens_*.json`、所見の本文は `evidence/review/explore_*.json`。† = 第 5 回（事前登録の上限 4 回の外。review_plan.md §7.3）。

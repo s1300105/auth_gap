@@ -1,0 +1,260 @@
+{
+ "verdicts": [
+  {
+   "id": "R3d-r6-1",
+   "severity": "medium",
+   "affects": "D3",
+   "design": {
+    "id": "R3d-r6-1",
+    "refuted": false,
+    "confidence": 0.9,
+    "reason": "3 観点とも生き延びた。【実行】repro_scan を再実行し、`openWorldHint: False` のツール 6 件（`http://[::1]:8080/x` / `http://[fe80::1]:80/x` / `http://user:pass@localhost:8080/x` / `http://user:pass@localhost/x` / `http://admin@127.0.0.1/x` / `http://localhost./x`）がすべて `contradiction:D3` / `D3:net_external_host`、パス無しの対照 2 件と `127.0.0.1:8080/x` は 内、と所見どおりに再現した。`_host_class` の中間値も所見どおり（`'[::1]:8080'`→`'::1]:8080'`、`'user:pass@localhost'`→`'user'`、`'admin@127.0.0.1'` はそのまま）。【設計】`_host_class` は D56（c3a8c0c）で §7.3 の 1〜2 行目を実装したもので、`c.split(\"/\")[0].rsplit(\":\",1)[0] if c.count(\":\") <= 1 else c` という手書きの分解に根拠の記録は無い。O23 の #4（外部ホストの定義）は private / localhost / 環境変数由来だけを論じ、D56 の手検証（`net_external_host` 37 件「規則どおり」）は kakao / feishu 等の本物の FQDN で、権威部の書き方は点検していない。O1〜O41・K1〜K7・逸脱 #19〜#24・review_plan §5 のどこにも userinfo / 角括弧 IPv6 + ポート / 末尾ドットの記録は無い。仕様書 539 行目の「`@` を含めば MODEL」は主体（OP/MODEL）の反証条件で、宛先の類の話ではない。§7.3「宛先が定数で localhost / private / loopback → 内」を RFC 3986 §3.2（authority = [userinfo \"@\"] host [\":\" port]、IP-literal は角括弧）で読めば、6 件の宛先ホストは `::1` / `fe80::1` / `localhost` / `127.0.0.1` / `localhost.` で、所見の期待値（内）は規則から正しく導かれている。語彙（sink / 入口 / weak 理由）の追加ではなく、定数 `url.host` の分類の誤り（review_plan §1 (b) 規則と実装の食い違い）。D62 / §7.5 で D3 は主指標なので対象内。【一般性】urlparse ベースの候補（`ipaddress.ip_address(c.strip(\"[]\"))` を先に試し、だめなら `urlparse(c if \"://\" in c else \"//\"+c).hostname`、ValueError は unknown、末尾ドットは rstrip）を monkeypatch して tests/test_contradiction_principles.py の 68 件の期待表を再評価したところ不一致 0、他宣言の沈黙も 0 違反、repro 木は 6 件が 矛→内 で対照 3 件は不変。`user:pass@api.example.com` / `user@evil.example:80` / `kapi.kakao.com` は external のまま。壊れる正しいケースは作れなかった。ただし所見の fix_sketch を字義どおり `urlparse(\"//\"+c).hostname` だけで実装すると、角括弧無しの裸 IPv6（`fe80::1`→`'fe80'`→external、`::1`→None→unknown）が退行する（URL の権威部としては不正で HTTP sink には現れにくいが、候補のように IP リテラルを先に判定すれば回避できる）。また現行コードは `http://[::1/x` のような不正な角括弧で `urlparse` の ValueError を捕まえずに例外を投げる（別の頑健性の問題。直すときは同時に捕まえる）。",
+    "citations": [
+     "docs/contradiction_principles.md §7.3（202-212 行: 宛先が定数で localhost / private / loopback → 内、定数の外部ホスト → 矛）",
+     "docs/decisions.md D56（3005-3036 行: _host_class の導入。net_external_host 37 件は kakao/feishu/pushover/dartmouth の本物の FQDN で「規則どおり」。権威部の書き方は未点検）",
+     "docs/decisions.md D62（3511-3540 行: D3 を主指標に）",
+     "docs/open_questions.md O23 #4（497 行・526 行: 外部ホストの定義は private range / localhost / 環境変数由来だけを論じ (a) を採用）",
+     "docs/review_plan.md §1 (b)・§2・§4.2・§5・§7.5",
+     "docs/preregistration.md 逸脱 #19〜#24（557-562 行。権威部の記録なし）",
+     "AUTHGAP_BRIEF_v3.md:539（§2.6 URL 分割規則。`@` の反証条件は主体 OP/MODEL の話）",
+     "authgap/dparse.py:260-282 _host_class（270 行の手書き分解）、391-401 _d3",
+     "authgap/effects.py:486-509 _split_url（after[:cut] = 権威部を scheme 無しで url.host に置く）",
+     "git c3a8c0c（2026-09-24、_host_class を導入した D56 のコミット。手書き分解の根拠の記述なし）",
+     "tests/test_contradiction_principles.py:230-247, 377-381（D3 の定数ホストは localhost:8080 / 10.0.0.5 / api.example.com の 3 形しか無い）",
+     "evidence/scan_v2_run20/*.json（NET 効果 4,298、url.host 定数 644、D3 net_external_host 49 件。userinfo / 角括弧 IPv6 / 末尾ドットの定数は 0）",
+     "RFC 3986 §3.2 / §3.2.2（authority = [userinfo \"@\"] host [\":\" port]、IP-literal = \"[\" IPv6address \"]\"）、RFC 6761 §6.3（localhost.）",
+     "/tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/d3d4/generality_r3d_r6_1.py（一般性の確認スクリプトと出力）"
+    ],
+    "expected_is_correct": true,
+    "corrected_expected": "所見の期待値（6 件とも 内、D3 の注記なし）はそのままでよい。補足 2 点: (1) `[fe80::1]:80`（link-local）は §7.3 の文言（localhost / private / loopback）に字義では無いが、実装自体が `is_link_local` を local に含めており、O23 (a) の「定数の外部ホストだけ矛」からも 内 が導かれる。(2) `localhost.` は権威部の分解の誤りではなく末尾ドットの正規化の欠落で、パス無しの `http://localhost.` でも external になる（所見の「パスの有無で変わる」不整合には当たらないが、期待値 内 は同じ）。",
+    "severity_opinion": "medium",
+    "direction_opinion": "false_alarm",
+    "fix_is_general": true,
+    "counterexample_code": "/tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/d3d4/generality_r3d_r6_1.py — authgap.dparse._host_class を候補（ip_address(c.strip(\"[]\")) を先に試す → urlparse(c if \"://\" in c else \"//\"+c).hostname、ValueError は unknown、rstrip(\".\")）に差し替え、tests/test_contradiction_principles.py の SRC と repro 木を run() で再評価。",
+    "counterexample_output": "== test table: 68 cases; mismatches after candidate: 0\n== other-declarations-silent violations after candidate: 0\n== repro tree: ctl_ipv4_port 内->内 / ctl_ipv6_no_path 内->内 / ctl_userinfo_no_path 内->内 / ipv6_linklocal_port 矛->内 / ipv6_loopback_port 矛->内 / trailing_dot 矛->内 / userinfo_ipv4 矛->内 / userinfo_localhost 矛->内 / userinfo_localhost_port 矛->内\nconst -> current / candidate（差分のみ）: '[::1]:8080' external/local, '[fe80::1]:80' external/local, 'user:pass@localhost:8080' external/local, 'user:pass@localhost' external/local, 'admin@127.0.0.1' external/local, 'localhost.' external/local, 'http://[::1/x' RAISES ValueError/unknown, '@localhost' external/local, 'user:pass@' external/unknown。不変: 'user:pass@api.example.com' external, 'user@evil.example:80' external, 'kapi.kakao.com' external, '::1' local, 'fe80::1' local, '127.0.0.1:8080' local。\n所見の sketch を字義どおり urlparse(\"//\"+c).hostname だけにした場合: '::1' -> None(unknown), 'fe80::1' -> 'fe80'(external) に退行（stdlib で確認）。",
+    "notes": "重大度は「中」の下端。系統的（同じ書き方の URL は常に 内→矛 の向きに外れる）で D62 後の主指標 D3 に効き、規則と実装の食い違い（§1 (b)）だが、v2 run20 の url.host 定数 644 件に該当 0、D3 net_external_host 49 件はすべて本物の FQDN で、corpus のリテラル 190 行の大半は w-*/v3 木のテスト・vendored コード。最終評価データで出るとすれば `http://user:pass@localhost:port`（basic 認証つきローカルサービス）や `http://[::1]:port` の形。直すなら規則→テスト→実装の順で、テスト表に userinfo / 角括弧 IPv6 + ポート / 末尾ドット / 裸 IPv6 の行を足し、`_split_url` は変えない（SSRF の座標は権威部全体でよい。§2.6 と整合）。同時に `urlparse` の ValueError（不正な角括弧）も捕まえること。repro は 6 件を 1 つの所見にまとめているが、根本原因は 2 つ（権威部の手書き分解 5 件 / 末尾ドットの正規化欠落 1 件）で、fix_sketch は両方を覆う。"
+   },
+   "generality": null
+  },
+  {
+   "id": "R3d-r6-2",
+   "severity": "medium",
+   "affects": "D3",
+   "design": null,
+   "generality": null
+  },
+  {
+   "id": "R3d-r6-3",
+   "severity": "low",
+   "affects": "D3",
+   "design": {
+    "id": "R3d-r6-3",
+    "refuted": false,
+    "confidence": 0.72,
+    "reason": "The finding survives on execution and on design. Execution: I reran repro_scan.py on d3_names. The results match the finding exactly. host.docker.internal:11434, api.internal:8080, nas.home.arpa and ollama:11434 each get D3 contradiction with reason net_external_host. svc.default.svc.cluster.local is 内 and api.example.com is 矛. Design: §7.3 names the local class only as \"localhost / private / loopback\", and it defines \"private\" only for IP addresses (through ipaddress.is_private). Nothing defines it for host names. I found no D number, O item, D19 K1-K7 entry or preregistration text that settles this. D56 (c3a8c0c) introduced _host_class, and taking in `.local`, which is not in the rule text, was an unrecorded implementation choice. Open question O23 #4 did list \"the definition of an external host (private range / localhost / env-derived hosts)\" as a decision point, but the resolution chose (a) without defining names. evidence/review/explore_r3plus.json records host.docker.internal → external 矛 as \"a gap in the rule, D3 only\". That note was only a record under the old §2 scope (\"D3/D4-only errors are recorded, not fixed\"). D62 and review_plan §7.5 withdrew that scope, so the note is not an intended design decision. The finding also does not ask to add frozen vocabulary (sink / entry / weak reason), because the host classification is not one of those vocabularies. Re-deriving the expected output: RFC 6761 `.localhost`, RFC 6762 `.local`, RFC 8375 `home.arpa` and the ICANN 2024 reservation of `.internal` are all standards-defined names that do not resolve on the public internet. Treating them as \"private\" for the same reason `.local` is treated that way is consistent. So 内 is the right result for `.internal`, `home.arpa` and host.docker.internal. For single-label names, \"always local\" does not follow because of ccTLD apex records, so 不 under principle 2-a is the consistent result. The finding itself allows this. Uncertainty: because the rule never defines \"private\" for names, this is closer to a gap in the rule than a clear implementation defect. The fix must come from the student defining the term in §7.3 first, not from looking at the counts. Impact estimate: in v2 run13 all 37 D3 net_external_host cases were public hosts (kakao/feishu/pushover/dartmouth; decisions.md:3035), so the v2 count probably does not change. The corpus-wide string counts (375 etc.) include tests and vendored code, so they are only an upper bound. Severity stays low.",
+    "citations": [
+     "/home/user/auth_gap/authgap/dparse.py:261-280 (_host_class; names treated as local are only localhost/.localhost/.local, everything else becomes external when ip_address fails)",
+     "/home/user/auth_gap/docs/contradiction_principles.md:202-212 (§7.3: NET destination constant and localhost / private / loopback → 内; 'private' is undefined for names)",
+     "/home/user/auth_gap/docs/decisions.md:3511-3545 (D62: D3 made a primary metric; the §7.3 table itself unchanged)",
+     "/home/user/auth_gap/docs/review_plan.md:165-172 (§7.5: withdraws the §2 rule that D3/D4-only errors are not fixed; _host_class is in scope)",
+     "/home/user/auth_gap/docs/open_questions.md:497,526 (O23 #4: the definition of an external host was listed as a decision point, and the resolution (a) does not define names)",
+     "/home/user/auth_gap/evidence/review/explore_r3plus.json:3168 (host.docker.internal → external 矛 was recorded only as 'a gap in the rule, D3 only' under the old scope)",
+     "/home/user/auth_gap/docs/decisions.md:3035 (run13 D3 net_external_host 37 cases are all public hosts)"
+    ],
+    "expected_is_correct": true,
+    "corrected_expected": "host.docker.internal / api.internal / nas.home.arpa → 内 (once §7.3 defines private-use standard names as 'private'). ollama:11434 (single label) → 不 (principle 2-a; always-local cannot be asserted because of ccTLD apex records). svc.default.svc.cluster.local → 内, api.example.com → 矛 (both unchanged).",
+    "severity_opinion": "low",
+    "direction_opinion": "false_alarm",
+    "fix_is_general": true,
+    "notes": "The fix is general only if the order is kept: the student first defines 'private host names' in §7.3 and commits that, then the implementation follows. That definition belongs to the student (CLAUDE.md rule 6 / review_plan §4.3). The earlier explore_r3plus note is not a duplicate that refutes this finding, because it was a record-only note from before the D62 scope change. Verification: I reran the repro in the existing scratchpad; I changed no repository files."
+   },
+   "generality": {
+    "id": "R3d-r6-3",
+    "refuted": false,
+    "confidence": 0.8,
+    "reason": "The finding reproduces exactly. host.docker.internal, api.internal, nas.home.arpa and ollama:11434 all give contradiction:D3 net_external_host. The controls behave as the finding says: svc.default.svc.cluster.local is 内 and api.example.com is 矛. My own extra case, metadata.google.internal (it resolves to 169.254.169.254), is also 矛 net_external_host. That is inconsistent with the IP rule: the literal 169.254.169.254 is classified local through is_link_local, so the same destination gets opposite verdicts depending on whether it is written as a name or an IP. The claim does not depend on anything specific to v2 or v3. It follows from §7.3's words \"localhost / private / loopback\" and from the standards: RFC 6761 .localhost, RFC 6762 .local, RFC 8375 home.arpa, and ICANN reserving .internal in 2024. The implementation accepts only .local and rejects the others with the same standing, which is an asymmetric choice. On the design lens: §7.3 does not define private for names, O23 #4 and D56 say nothing about this, and review_plan §5 does not list it as a known design decision. So this is not a restatement of a decision. On generality: a general fix exists (see notes). The most natural naive fix, treating a host with no '.' as 不 before the IP parse, would break bare IPv6 loopback http://[::1]/x, which is currently correctly 内 (I checked with repro_scan). The finding's fix_sketch already avoids this by limiting the rule to names that are not IPs. Suffix false matches do not happen: x.internal.example.com stays 矛 because endswith('.internal') is false. Concatenation and f-string hosts never become a truncated dotless constant: 'https://api' + p is MODEL, and BASE + '.example.com' is net_host_unknown. So the dotless → 不 rule does not turn a correct 矛 into a mistake. Doubts: (1) Whether .internal and home.arpa count as private is a choice about how to define the rule, and the student makes it. The finding's wording \"定義が無い\" is accurate, and it is fair to call this \"the implementation made a narrow choice before the rule was written\", not a mistake in the rule. (2) Impact on v2: in run20 the D3 net_external_host rows are in only 4 trees (teamplay-talk, nan-fe, quantcontext, asquared), and those are mostly public services like kakao and feishu. I found no evidence that any of these names are among them, so the effect on current counts is probably small. Since D62 made D3 a primary metric, it counts as a precision issue on D3.",
+    "citations": [
+     "/home/user/auth_gap/authgap/dparse.py:274-280 (_host_class: names are local only for localhost/.localhost/.local; any other name that fails ip_address is external; IPs are local via is_private/is_loopback/is_link_local)",
+     "/home/user/auth_gap/docs/contradiction_principles.md §7.3 (NET: constant destination that is localhost / private / loopback → 内; constant external host → 矛; private is not defined for names)",
+     "/home/user/auth_gap/docs/contradiction_principles.md §6 principle 2-a (a property that cannot be decided statically → 不)",
+     "/home/user/auth_gap/docs/decisions.md D62 (D3 made a primary metric)",
+     "/home/user/auth_gap/docs/review_plan.md §5 (not among the known design decisions), §7.5",
+     "/home/user/auth_gap/docs/open_questions.md O23 #4 (settles only the definition of external host at the level of constant external → 矛; does not decide how to treat names)",
+     "repro: /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/review/R3d/d3_names (4 cases 矛 net_external_host; cluster.local 内; example.com 矛)",
+     "counterexample trees: /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/d3d4/r6_3 (concat/f-string hosts are MODEL or net_host_unknown, never a truncated dotless constant), /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/d3d4/r6_3b (http://[::1]/x is currently 内; metadata.google.internal is 矛 while 169.254.169.254 is 内; x.internal.example.com is 矛)"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_alarm",
+    "fix_is_general": true,
+    "notes": "General fix: first write down in §7.3 how private is defined for names, and commit that before changing the implementation. (a) Local names, taken from the standards: localhost / *.localhost (RFC 6761), *.local (RFC 6762), *.home.arpa (RFC 8375), *.internal (reserved by ICANN in 2024; this covers host.docker.internal and metadata.google.internal). Match by suffix with the leading dot, compared in lowercase. (b) Parse as an IP address first. Only a host that is not an IP and contains no '.' becomes 不 under principle 2-a, with a new reason net_host_dotless. Doing the dotless check before the IP parse would turn bare IPv6 loopback http://[::1]/x, which is currently correctly 内, into 不. (c) Every other name stays external. A separate problem turned up while verifying and is outside this finding: '[::1]:8080' (IPv6 with a port) is misclassified as 矛 net_external_host, because the host is only split out when the string has at most one colon, so the whole '[::1]:8080' is kept as the host and does not parse as an IP. This is a false alarm in the same function and worth reporting as its own finding. The corpus counts in the finding ('http://gw:' 375 and so on) are raw string-literal counts that include tests and vendored code, and I have not verified them. Whether and how to define private for names is the student's decision, and it should not be made by looking at the counts."
+   }
+  },
+  {
+   "id": "R1d-r6-2",
+   "severity": "high",
+   "affects": "D3",
+   "design": null,
+   "generality": null
+  },
+  {
+   "id": "R1d-r6-3",
+   "severity": "medium",
+   "affects": "D3",
+   "design": null,
+   "generality": null
+  },
+  {
+   "id": "R1d-r6-5",
+   "severity": "low",
+   "affects": "D4",
+   "design": {
+    "id": "R1d-r6-5",
+    "refuted": false,
+    "confidence": 0.8,
+    "reason": "Not refuted. I re-ran the repro and it reproduces. D4 gives no note (内) for NOTIFY, CALL, COPY, UPSERT and ATTACH. For the same kind of statement, D1 and D2 give 不 `db_unknown_statement`. `_d4` (dparse.py:419-430) does what the §7.4 row says: \"DB: それ以外の先頭語 / 読み取り / 接続単位 → 内\". But the finding does not misread the rule. It points out that the table disagrees with itself.\n\n(1) §7 says it applies the §6 principles to §5 mechanically. §5 has no D4 row for heads outside the classification. §6 principle 2-a says a property that cannot be decided statically is 不. §7.5 says in general that \"それ以外（ATTACH、NOTIFY、分類に無い PRAGMA など）→ 不\". §7.1 and §7.2 both have the row \"先頭語が分類に無い → 不\". Only §7.4 lumps every other head into 内.\n\n(2) The FS_WRITE row of §7.4 gives a reason for 内 (\"2 回目は失敗する\"). The DB row gives no reason why a head outside the classification would be idempotent. That reasoning plausibly covers the classified DELETE/DROP/CREATE/TRUNCATE/ALTER, but not unclassified heads. NOTIFY and COPY FROM add an effect on every call, so they cannot be derived as 内.\n\n(3) Nothing records this as intended. I grepped decisions.md (D56, D57, D62), open_questions.md, review_plan.md §5/§7.5 and the D4 CASES in tests/test_contradiction_principles.py. None of them explains unclassified heads → 内 for D4. The D4 tests only check INSERT (不) and DELETE (内).\n\n(4) The finding does not ask to add a sink, entry or weak reason. The fix only changes the DB row of §7.4 and uses the existing `sql_class` in `_d4`, so it is not a vocabulary addition. Under D62 and review_plan.md §7.5, D4 is now a primary metric, so this is no longer out of scope just because it only affects D4.\n\nI derived the expected output from §6 2-a and §7.5 and got the same answer as the finding: `contradiction_unknown:D4:db_unknown_statement` for all 5 statements. The fix edits the §7.4 row first and then the implementation, the same order as §9 (D57), so it follows procedure.\n\nSeverity: low. These statements are rare in MCP tools. Direction: rule_mismatch. The effect is a 不 → 内 undercount, a false-clean lean.\n\nSide note: in the repro, d4_attach calls sqlite's `db()` but resolves to the `psycopg.Cursor.execute` site. That is a separate issue and does not affect this verdict.",
+    "citations": [
+     "/home/user/auth_gap/docs/contradiction_principles.md:223 (§7.4 DB: それ以外の先頭語 / 読み取り / 接続単位 → 内)",
+     "/home/user/auth_gap/docs/contradiction_principles.md:245 (§7.5 それ以外（ATTACH、NOTIFY、分類に無い PRAGMA など）→ 不)",
+     "/home/user/auth_gap/docs/contradiction_principles.md:171,193 (§7.1/§7.2 先頭語が分類に無い → 不)",
+     "/home/user/auth_gap/docs/contradiction_principles.md:60-70,140 (§2 / §6 原理 2-a)",
+     "/home/user/auth_gap/docs/contradiction_principles.md:103-121 (§5 has no D4 row for unclassified heads)",
+     "/home/user/auth_gap/authgap/dparse.py:419-430 (_d4 DB branch)",
+     "/home/user/auth_gap/authgap/dparse.py:384 (_db returns db_unknown_statement)",
+     "/home/user/auth_gap/authgap/catalog/statements.py:6-8 (ここに無いものは「不明」になる（原理 2-a）)",
+     "/home/user/auth_gap/tests/test_contradiction_principles.py:385-395 (D4 CASES have no unclassified head)",
+     "/home/user/auth_gap/docs/decisions.md:3511-3540 (D62: D4 is now a primary metric)",
+     "/home/user/auth_gap/docs/review_plan.md:164-172 (§7.5 scope change)"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "rule_mismatch",
+    "fix_is_general": true,
+    "notes": "The implementation does exactly what the §7.4 row says; the defect is in the rules document itself. So the fix edits the DB row of §7.4 first (rule before implementation, like §9 / D57), then `_d4`. Unclassified heads → 不 `db_unknown_statement`; the classified modify heads (DELETE/DROP/CREATE/TRUNCATE/ALTER), reads and connection-level statements stay 内. In the repro, d4_attach resolves to `psycopg.Cursor.execute` although it calls sqlite's `db()`. That is a separate receiver-resolution issue and does not affect this verdict."
+   },
+   "generality": {
+    "id": "R1d-r6-5",
+    "refuted": false,
+    "confidence": 0.8,
+    "reason": "This finding survives. The repro gives the claimed output: d4_notify, d4_call, d4_copy, d4_upsert and d4_attach come out as 内 with no note. The same statements under D1 / D2 (d1_notify, d2_call) come out as 不 `db_unknown_statement`. d4_executemany_insert is 不 `db_nonidempotent_statement`.\n\nDesign axis: the §7.4 row \"DB: それ以外の先頭語 / 読み取り / 接続単位 → 内\" is not a design decision. It is a derivation slip, and it contradicts three things written in the same §7:\n- §7.5 closes with \"それ以外（ATTACH、NOTIFY、分類に無い PRAGMA など）→ 不\".\n- Principle 2-a (§6) says a property that cannot be decided statically is 不.\n- The docstring of `authgap/catalog/statements.py` says \"ここに無いものは「不明」になる（原理 2-a）\".\n\nIn §5, the only D4 × DB cell listed is #5 × INSERT → 2. Unclassified heads were never derived for D4. review_plan §5 does not list this as known, and D62 does not treat it as intended either. D62 only changed the standing of §7.3 / §7.4, and its §7.5 puts D3 / D4 errors in scope for fixing.\n\nGenerality axis: the natural fix is `sql_class(text, complete) == SQL_CLASS_UNKNOWN → 不` inside `_d4`. It comes from the language rule plus principle 2-a, not from tuning to v2 / v3. Controls run under verify/d3d4/r6_5 are currently 内 correctly and stay 内 after that fix, because their `sql_class` is not UNKNOWN: DELETE, CREATE TABLE IF NOT EXISTS, VACUUM, `PRAGMA foreign_keys = ON` and SELECT. The only cases that change are unclassified PRAGMA assignments (e.g. `PRAGMA wal_autocheckpoint = 1000`) and GRANT. Both are in fact idempotent and currently correct as 内, and the fix would turn them into 不. That is a move toward unknown, not a flip to 矛. It matches §7.5's \"分類に無い PRAGMA → 不\" and how D2 treats the same statement. So no counterexample breaks a correct case in the wrong direction.\n\nSeverity is low: CALL, COPY and NOTIFY are rare in MCP tools. The finding is still worth keeping because D4 is now a primary metric: its 不 count is short, and for NOTIFY / COPY a case that is really non-idempotent (矛-like) is reported as 内, an erroneous clear.",
+    "citations": [
+     "docs/contradiction_principles.md:223",
+     "docs/contradiction_principles.md:245",
+     "docs/contradiction_principles.md:171",
+     "docs/contradiction_principles.md:193",
+     "authgap/dparse.py:419-430",
+     "authgap/dparse.py:379-384",
+     "authgap/catalog/statements.py:1-10",
+     "authgap/catalog/statements.py:58-95",
+     "docs/decisions.md:3511",
+     "docs/review_plan.md §5, §7.5",
+     "/tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/d3d4/r6_5/server.py"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "rule_mismatch",
+    "fix_is_general": true,
+    "notes": "How to fix:\n1. Commit the §7.4 change first, then change the code. The new row is \"DB: 先頭語が分類に無い（§7.5 のそれ以外）→ 不 `db_unknown_statement`\". The row for DELETE / DROP / CREATE / ALTER / TRUNCATE / persistent / connection-scoped / read stays 内. Record the §7 change as a deviation, because §7 is fixed before implementation.\n2. In `_d4`, right after the `SQL_NONIDEMPOTENT_HEADS` check, add `if sql_class(text, complete) == SQL_CLASS_UNKNOWN: return CONTRA_UNKNOWN, \"db_unknown_statement\"`. This makes `_d4` use the same classifier as `_db` (dparse.py:379).\n\nSide effect: PRAGMA assignments not in the classification (e.g. wal_autocheckpoint = 1000) move from 内 to 不 in D4. These are truly idempotent, so this adds 不 cases, but it matches the §7.5 wording and how D2 treats them. It never produces a wrong 矛.\n\nA narrower alternative: derive a D4 rule that \"a PRAGMA assignment is idempotent (assigning the same value again)\" and keep PRAGMA at 内. Only non-PRAGMA unclassified heads (NOTIFY / CALL / COPY / ATTACH / UPSERT / GRANT …) would then become 不. If you take this route, write the reason into §7.4.\n\nTests: add 不 expectations for the 5 d4heads cases, plus 内 for the controls DELETE / CREATE / VACUUM / PRAGMA foreign_keys / SELECT."
+   }
+  },
+  {
+   "id": "R1d-r6-6",
+   "severity": "low",
+   "affects": "D3",
+   "design": {
+    "id": "R1d-r6-6",
+    "refuted": false,
+    "confidence": 0.88,
+    "reason": "This is not an intended design decision, and I found no record of it as a known limitation. It stands as a false-clean on D3.\n\n(1) Design records: grepping decisions.md (the TRANSFER-arguments row of D17 revision 3 at L1701, K1–K7), open_questions.md, contradiction_principles.md §9.2 and preregistration turned up nothing about a constant absolute or network-path ref passed to urljoin. D17 revision 3 only covers the case where the non-subject arguments are non-literal (\"drop the shape\"). The all-literal branch (`Str((subject,))`, engine.py:918-919) keeps only the subject (BASE), and no decision says that is right for urljoin. §9.2 even states the reason for not producing false-clears on `//` with urljoin-style clients, so the design intent is on the finding's side.\n\n(2) Re-deriving the expected output from §7.3: the destination of `urljoin(\"http://localhost:8000/api/\", \"https://api.example.com/x\")` is `https://api.example.com/x`, a constant external host, so it should be 矛 `net_external_host`. The implementation says url.host='localhost:8000', `_host_class`=local, 内 (no row). The finding reads the rule correctly and the implementation does not follow it.\n\n(3) This is not a request to add frozen vocabulary. It fixes how an existing TRANSFER row (urljoin) is evaluated.\n\n(4) Re-run: the repro reproduces as described. I also confirmed that the network-path reference `urljoin(\"http://localhost:8000/api/\", \"//evil.example/x\")` becomes url.host='localhost:8000', 内 (false-clean) (scratchpad verify/d3d4/r1d_r6_6). When BASE is a constant concatenation (a Str whose const is None), the result is `net_host_unknown`, 不 (no false-clean, only a count loss). When BASE contains the model's value, the result is `net_model_host`, 矛 (the verdict is correct).\n\nSeverity: code that passes a constant absolute URL to urljoin is rare, so I agree with low. Direction: false_clean, and it only affects D3. Since D62 made D3 a primary metric, this is in scope under §7.5.\n\nThe fix sketch (compute `urllib.parse.urljoin` when both the subject const and args[1] are literal str) also covers the network-path case. A somewhat more general alternative: when the literal ref has a scheme or starts with `//`, take the host from the ref regardless of whether BASE is constant.",
+    "citations": [
+     "/home/user/auth_gap/authgap/val/engine.py:914-919 (all-literal branch shape = Str((subject,)); the other arguments' contents are ignored)",
+     "/home/user/auth_gap/authgap/catalog/transfers.py:64 (urljoin TRANSFER row: shape str, joined)",
+     "/home/user/auth_gap/authgap/dparse.py:260-280,388-395 (_host_class / _d3: const host localhost -> local -> 内)",
+     "/home/user/auth_gap/docs/contradiction_principles.md:202-211 (§7.3: constant external host -> 矛)",
+     "/home/user/auth_gap/docs/contradiction_principles.md:283-294 (§9.2: do not produce false-clears on // with urljoin-style clients)",
+     "/home/user/auth_gap/docs/decisions.md:1701 (D17 revision 3: only covers the non-literal-argument case; nothing on all literals)",
+     "/home/user/auth_gap/docs/review_plan.md:164-171 (§7.5: D62 makes D3 errors in scope)",
+     "/tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/d3d4/r1d_r6_6/server.py (network-path // variant also 内)"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "notes": "Also reproduced with the network-path reference `urljoin(const_base, \"//evil.example/x\")` as a false-clean 内. With a constant concatenation as BASE (`\"http://\" + HOST + \"/api/\"`) the result is 不 (count loss, not a false-clean), so the sketch's \"leave as is when subject is not const\" does not create a false-clean. The all-literal branch also drops the ref's path from url.path, though that does not affect D3 verdicts. Test candidates: the existing tests/test_f0a_defects.py:705-736 (urljoin_second_arg) only covers the MODEL case; add constant absolute-URL and // cases next to it."
+   },
+   "generality": {
+    "id": "R1d-r6-6",
+    "refuted": false,
+    "confidence": 0.85,
+    "reason": "3 つの観点すべてで残る。実行: repro_scan.py で主張どおりに再現した。urljoin_abs_const の url.host は OP/resolved 'localhost:8000' で、D3 の行が出ない（内）。対照の urljoin_rel_const は 内、urljoin_model は 矛(net_model_host) で、どちらも正しい。追加で試した形でも同じ誤りが出た。urljoin(BASE, \"//evil.example/x\") は host が 'localhost:8000' で 内（正しくは http://evil.example/x、外部ホストなので 矛）。urljoin(BASE, LOGIN) で LOGIN が名前つきの定数 \"https://auth.example.com/token\" のときも 内。設計: §7.3 は「宛先が定数の外部ホスト → 矛」と定める。D17 改訂 3 が決めたのは「非リテラルの実引数が混ざったら形を捨てる」ことだけで、「全部リテラルなら結果 = subject」は近似にすぎず、意図した決定として書かれていない。review_plan §5（O35/O38/O39/O41 など）にも open_questions にも urljoin / replace の記録は無い。D62 で D3 は主指標になったので、§2 の「D3/D4 だけなら記録止まり」も当たらない。一般性: 主張は RFC 3986 §5.2.2 と urllib.parse.urljoin の仕様から導ける。v2/v3 への合わせ込みではない。しかも根は urljoin に限らない。engine.py:918-919 は shape \"str\" の変換で、他の実引数が全部リテラルなら中身を見ずに Str((subject,)) を返す。内容を変える変換ではこれが誤る。実例として、\"http://localhost/x\".replace(\"localhost\", \"api.example.com\") も host が 'localhost' の 内 になった（正しくは 矛。同じ機構の誤 clear）。upper は host が大文字小文字を区別しないので無害。format_const はプレースホルダの検出で 不 になっていて安全側。",
+    "citations": [
+     "/home/user/auth_gap/authgap/val/engine.py:914-919",
+     "/home/user/auth_gap/authgap/catalog/transfers.py:64",
+     "/home/user/auth_gap/docs/contradiction_principles.md:202-213 (§7.3)",
+     "/home/user/auth_gap/docs/decisions.md:1701 (D17 改訂 3 の TRANSFER 実引数の行)",
+     "/home/user/auth_gap/docs/decisions.md:3511 (D62)",
+     "/home/user/auth_gap/docs/review_plan.md:79-90 (§5)",
+     "/tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/d3d4/r6_6/server.py"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "notes": "一般的な直し方（避けるべき方）: 全部リテラルのとき形を捨てて Atom() にする。こうすると、今は正しい urljoin_rel_const（urljoin(BASE, \"items\") → 内）が 不 に落ちる。urljoin_abs_base_ext（urljoin(\"https://api.example.com/v1/\", \"items\") → 矛 net_external_host。今は正しい）も 不 に落ちる。どちらも repro で今の挙動が正しいことを確かめた。一般的な直し方（推奨）: fix_sketch を一般化する。(1) 純関数の文字列変換（urljoin / str.replace / format / join / strip / lower / upper など）で、subject と他の実引数が全部定数なら、実際に計算した値を Atom(const=…) として返す（定数畳み込み。値が一意なので壊れる正しいケースは無い）。(2) 畳み込めない場合の扱いは変換ごとに分ける。内容を変える変換（replace、ref が絶対 URL か「//」で始まる、または種別の分からない urljoin）は Atom() にして 不 に落とす。urljoin の ref がリテラルで scheme も netloc も無い（urlsplit(ref).scheme == \"\" かつ .netloc == \"\"）なら、RFC どおり subject の host を保つ。strip / lower / upper などは今のまま Str((subject,)) でよい。所見のスコープ: 根は urljoin 固有ではなく、engine.py:918-919 の「全部リテラル → Str((subject,))」にある。str.replace でも同じ誤 clear を確かめた（replace_const: host='localhost'、行なし）。直すときは urljoin だけでなく replace も含めること。確度をあげる変更ではない（OP→OP で host の値が変わるだけ）。ただし 内 → 矛 と 内 → 不 が増える向きなので、compare_scans で差分を確かめる。",
+    "counterexample_code": "from urllib.parse import urljoin\nimport httpx\nfrom mcp.server.fastmcp import FastMCP\nmcp = FastMCP(\"t\")\nBASE = \"http://localhost:8000/api/\"\nLOGIN = \"https://auth.example.com/token\"\n@mcp.tool(annotations={\"openWorldHint\": False})\nasync def urljoin_netpath(p: str) -> str:\n    httpx.get(urljoin(BASE, \"//evil.example/x\")); return \"x\"\n@mcp.tool(annotations={\"openWorldHint\": False})\nasync def urljoin_named_const(p: str) -> str:\n    httpx.get(urljoin(BASE, LOGIN)); return \"x\"\n@mcp.tool(annotations={\"openWorldHint\": False})\nasync def urljoin_abs_base_ext(p: str) -> str:\n    httpx.get(urljoin(\"https://api.example.com/v1/\", \"items\")); return \"x\"\n@mcp.tool(annotations={\"openWorldHint\": False})\nasync def replace_const(p: str) -> str:\n    httpx.get(\"http://localhost/x\".replace(\"localhost\", \"api.example.com\")); return \"x\"",
+    "counterexample_output": "urljoin_netpath: .url.host OP/resolved Atom='localhost:8000'、D3 の行なし（誤 clear。正しくは evil.example で 矛）\nurljoin_named_const: .url.host OP/resolved Atom='localhost:8000'、D3 の行なし（誤 clear）\nurljoin_abs_base_ext: .url.host OP/resolved Atom='api.example.com' → contradiction:D3 net_external_host（正しい。「形を捨てる」直し方だとここが 不 に落ちる）\nreplace_const: .url.host OP/resolved Atom='localhost'、D3 の行なし（同じ機構の誤 clear。正しくは api.example.com で 矛）",
+    "corrected_expected": "urljoin_abs_const は 矛（net_external_host。host = api.example.com）。付記すると、同じ機構で urljoin(BASE, \"//evil.example/x\") と \"http://localhost/x\".replace(\"localhost\", \"api.example.com\") も 矛 になるべき。"
+   }
+  },
+  {
+   "id": "R1d-r6-7",
+   "severity": "low",
+   "affects": "D3",
+   "design": {
+    "id": "R1d-r6-7",
+    "refuted": false,
+    "confidence": 0.8,
+    "reason": "実行: 再現した。many_const は `.url.host OP/resolved Seq` → 不 `net_host_unknown`、many_model は 矛 `net_model_host`。所見の出力どおり。\n\n設計: 意図された挙動ではない。§7.3 の行は「宛先が定数の外部ホスト → 矛」。`arun_many` では列の要素 1 つ 1 つが宛先で、この再現では 2 要素とも定数の `https://api.example.com/...` なので、規則から導くと 矛 `net_external_host` になる。decisions.md（D17 改訂 2・4、D57/O32、K1〜K7）、open_questions.md（O32〜O41）、review_plan.md §5 を grep したが、`url.host` に Seq が入る場合や `arun_many` の宛先を「読めない」扱いにする決定・限界の記録は無い。decisions.md:327 は F8（MODEL の urls）が当たることの記録で、定数の列の扱いには触れていない。語彙の追加を求める所見でもない（`arun_many` の行は既に語彙にある）。D62 で D3 は主指標になり、review_plan §7.5 で §2 の「D3 だけに効く誤りは直さない」は取り下げられているので、採否の対象になる。\n\n向きの付け直し: 矛 → 不 の移動であり、誤 clear ではない。contradiction_principles.md:310 が「誤 clear ではなく『不明』への移動」と明記している。そのうえで原理 2（不明を矛盾に倒さない）により、主指標の矛の件数だけが減るので count_loss とする。\n\n重大度: low で同意する。語彙で `url.host` に列全体を束縛する行は `arun_many` だけで、定数の URL を並べた列を直接渡す形も稀。\n\n直し方の一般性: 要素ごとに分類し、external か model が 1 つでもあればその類にする向きは正しい。定数の外部宛先が 1 つ確定すれば §7.3 で 矛 が決まる。一方で「全要素が local なら local（= 内）」の枝には注意が要る。列が後から `append` / `extend` / `+=` で変えられ、解析器の Seq の要素がそれを追っていない場合、MODEL や外部の要素を見落として 内 を出す誤 clear になりうる。この枝は Seq の要素が閉じている（resolved で tail が無い）ときに限るか、local の枝は入れずに不のままにするのが安全である。反例は完全な否定ではなく修正方針の制約なので、fix_is_general は true としたが、この条件つきとする。",
+    "citations": [
+     "/home/user/auth_gap/docs/contradiction_principles.md:202-212 (§7.3 定数の外部ホスト → 矛)",
+     "/home/user/auth_gap/docs/contradiction_principles.md:310 (不明への移動は誤 clear ではない)",
+     "/home/user/auth_gap/authgap/dparse.py:260-282 (_host_class は v.const の文字列だけを読む)",
+     "/home/user/auth_gap/authgap/catalog/sinks.py:600-606 (arun_many の url.host = A(0, kw=urls))",
+     "/home/user/auth_gap/authgap/effects.py:460-479 (_split_url は Str 以外を分割しない)",
+     "/home/user/auth_gap/docs/decisions.md:3511-3540 (D62 D3 を主指標に)",
+     "/home/user/auth_gap/docs/review_plan.md:162-171 (§7.5 D3/D4 の誤りも採否対象)",
+     "/home/user/auth_gap/docs/decisions.md:327 (F8 は MODEL の urls のみ記録)"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "count_loss",
+    "fix_is_general": true,
+    "notes": "「全要素が local → 内」の枝は、Seq の要素が後から変更されうる場合（append / extend / +=）に誤 clear を生みうる。要素が閉じているときに限るか、この枝を入れずに不のままにすること。external / model の枝は安全。"
+   },
+   "generality": {
+    "id": "R1d-r6-7",
+    "refuted": false,
+    "confidence": 0.8,
+    "reason": "The finding reproduces. many_const produces url.host = OP/resolved Seq with two constant 'https://api.example.com/...' elements. The result is 不 net_host_unknown, although §7.3 says a constant external host gives 矛. The claim follows from the library's meaning (arun_many(urls) contacts each element) and from the written rule in §7.3. It is not fitted to a v2/v3 shape, and it is not a §5 design decision re-labelled as an error. D62 makes D3 a primary metric, so this is in scope. However, the finder says the fix breaks no correct case, and that is wrong for the natural element-wise fix. The analyzer does not track list mutation through an alias (`other = urls; other.append(u)`), a callee (`fill(urls, u)`), an unmodelled library (`some_unknown_lib.add(urls, u)`) or a container (`cfg['urls'].append(u)`). In each of these cases the Seq stays OP/resolved and holds only the literal 'http://localhost/a'. The value at runtime includes a MODEL-supplied URL. Today these cases are 不 net_host_unknown, which is correct under principle 2-a. The sketch's 'all elements local -> local' branch would turn them into 内, a new false-clean. This matches the known limitation in decisions.md: aliases through containers, arguments or return values are not tracked. Direct mutations (append/extend/insert/setitem/`+`) are already folded into the Seq and come out 矛 today, and they stay correct under any element-wise fix. A general fix still exists, so I do not refute the finding. The fix should upgrade only in the positive direction and never derive 内 from a Seq. Severity stays low: arun_many is the only vocabulary row that puts a sequence into url.host.",
+    "citations": [
+     "/home/user/auth_gap/authgap/dparse.py:261-282 (_host_class reads only v.const, which is Atom+resolved; Seq falls through to _choice -> unknown)",
+     "/home/user/auth_gap/authgap/ir.py:364-374 (Value.const returns only for Atom with resolved prov)",
+     "/home/user/auth_gap/authgap/effects.py:460-479 (_split_url: non-Str value -> whole value in url.host)",
+     "/home/user/auth_gap/authgap/catalog/sinks.py:600-606 (arun_many proxy row binds A(0, kw='urls') to url.host)",
+     "/home/user/auth_gap/docs/contradiction_principles.md:202-212 (§7.3: constant external host -> 矛, unreadable -> 不)",
+     "/home/user/auth_gap/docs/decisions.md:312-313 (known limitation: aliases via container/argument/return value are not tracked)",
+     "/tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/d3d4/r6_7b/server.py (counterexamples alias_append / callee_append / opaque_mutate / dict_holder: Seq OP/resolved holding only 'http://localhost/a', currently 不; the naive 'all local -> 内' would make them false-clean)",
+     "/tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/verify/d3d4/r6_7/server.py (append/extend/insert/setitem/plus/comprehension forms: MODEL folded into the Seq, currently 矛; local_only literal list currently 不)"
+    ],
+    "expected_is_correct": true,
+    "severity_opinion": "low",
+    "direction_opinion": "false_clean",
+    "fix_is_general": true,
+    "notes": "General fix, restricted to the positive direction. In _host_class, when url.host has Seq/Argv shape, look at every element and the tail. Run each element through _split_url and classify its host with the existing Atom rule. If any element is a constant external host, return 'external' (矛 net_external_host). Otherwise, if any element is MODEL-chosen, or the Seq-level _choice is chosen, return 'model'; if influenced, return 'model_opaque'. Otherwise return 'unknown'. Do NOT return 'local' for a Seq, even when every visible element is a constant local host. Reason: Seq does not record list vs tuple, and list mutations through an alias, a callee, an unmodelled library or a container do not show up in the Seq. Those cases are now correctly 不 and would become false-clean 内 (counterexamples in scratchpad/verify/d3d4/r6_7b, verified with repro_scan.py). The finder's fix_sketch claim 'nothing correct breaks' is therefore wrong for its 'all local -> local' branch. The same aliasing gap also allows a rare false alarm in the external branch (e.g. a callee clears the list and refills it with localhost). That is the same trust the analyzer already gives to resolved Seq/Argv elements for argv0, so it is acceptable. A regression test should pin the 4 alias/callee/opaque/container forms as 不. On direction: 矛 -> 不 is a missed contradiction rather than a 内 clear. I kept false_clean to match how the finder labelled it; rule_mismatch would also be defensible.",
+    "counterexample_code": "from crawl4ai import AsyncWebCrawler\nfrom mcp.server.fastmcp import FastMCP\nimport some_unknown_lib\nmcp = FastMCP(\"t\")\n\ndef fill(lst, x):\n    lst.append(x)\n\n@mcp.tool(annotations={\"openWorldHint\": False})\nasync def alias_append(u: str) -> str:\n    urls = [\"http://localhost/a\"]\n    other = urls\n    other.append(u)\n    async with AsyncWebCrawler() as c:\n        await c.arun_many(urls)\n    return \"x\"\n\n@mcp.tool(annotations={\"openWorldHint\": False})\nasync def callee_append(u: str) -> str:\n    urls = [\"http://localhost/a\"]\n    fill(urls, u)\n    async with AsyncWebCrawler() as c:\n        await c.arun_many(urls)\n    return \"x\"\n\n@mcp.tool(annotations={\"openWorldHint\": False})\nasync def opaque_mutate(u: str) -> str:\n    urls = [\"http://localhost/a\"]\n    some_unknown_lib.add(urls, u)\n    async with AsyncWebCrawler() as c:\n        await c.arun_many(urls)\n    return \"x\"",
+    "counterexample_output": "alias_append / callee_append / opaque_mutate (and dict_holder with cfg['urls'].append(u)):\n  E NET crawl4ai.AsyncWebCrawler.arun_many proxy resolved\n      .url.host OP/resolved Seq   (elements: only Atom OP/resolved 'http://localhost/a'; the MODEL-supplied u is missing)\n  R notes: contradiction_unknown:D3:net_host_unknown   <- correct today (不)\nThe fix_sketch's 'all elements local -> local' branch would make these 内 (false-clean).\nDirect mutations (append/extend/insert/urls[0]=u/['..']+u/comprehension) already give url.host MODEL/resolved Seq -> 矛 net_model_host, and stay correct under any element-wise fix.",
+    "corrected_expected": "many_const: 矛 net_external_host (as the finder says). A Seq whose visible elements are all constant local hosts should stay 不 net_host_unknown, not 内, because list mutation through an alias, a callee or a container is not tracked."
+   }
+  }
+ ]
+}
