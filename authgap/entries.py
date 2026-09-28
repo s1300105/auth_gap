@@ -457,8 +457,12 @@ def find_units(index: SourceIndex) -> list[Unit]:
     # **呼び出し形の登録と spec_object は tools_list より前に置き、registered で二重登録を防ぐ**（D64 / U40）。
     # デコレータ形・メソッド形・低レベル形ですでにユニットになった関数は 2 つ目のユニットにしない。
     registered = {(u.module, u.qualname) for u in units}
+    # tools_list の `already`（名前の集合）には、呼び出し形・spec_object のユニットの qualname を入れない
+    # （D64 / U40-R8）。入れると、別モジュールの無関係な同名関数の tools-list ユニットが名前だけで消える
+    # （数え落とし）。同じ関数の二重登録は `(module, qualname)` の registered で防ぐ。
+    already = {u.qualname for u in units}
     units += find_registration_units(index, registered)
-    units += find_tools_list_units(index, {u.qualname for u in units}, {(u.module, u.qualname) for u in units})
+    units += find_tools_list_units(index, already, {(u.module, u.qualname) for u in units})
     units.sort(key=lambda u: (u.relpath, u.qualname, u.framework))
     return units
 
@@ -565,13 +569,22 @@ class _ModInfo:
     #: モジュールの名前空間を名前で書き換えうる（`globals()` / 引数なしの `vars()` を読む以外に使う、
     #: 既定の名前空間の `exec` / `eval`、`sys.modules[...]` への `setattr`）。モジュール水準の名前をどれも確定しない。
     dynamic: bool = False
-    #: `alias.NAME = ...` / `del alias.NAME` / `setattr(alias, "NAME", v)` の `(alias, NAME)`（名前が定数でなければ `"*"`）。
-    attr_pairs: set[tuple[str, str]] = field(default_factory=set)
+    #: `R.NAME = ...` / `del R.NAME` / `setattr(R, "NAME", v)` / `R.__setattr__("NAME", v)` /
+    #: `R.__dict__["NAME"] = v` / `vars(R)["NAME"] = v` の `(受け手の式 R, R を評価するスコープの列, NAME)`
+    #: （名前が定数でなければ `"*"`）。**受け手は Name に限らない**（`import pkg.impl; pkg.impl.f = x` を
+    #: 落とすと、書き換えられたモジュール属性を解いてしまう。D64 / U40-R4）。
+    attr_pairs: list[tuple[ast.AST, tuple[ast.AST, ...], str]] = field(default_factory=list)
     #: import で束縛される名前 → import 文（モジュール直下でも関数の中でも）。
     imports: dict[str, list[ast.AST]] = field(default_factory=dict)
     #: 受け手を問わず書き換えられる属性名と、名前が定数でない `setattr` / `delattr` があるか。
     stored_attrs: set[str] = field(default_factory=set)
     any_setattr: bool = False
+    #: このファイルのクラス定義と、それを評価するスコープの列（外 → 内。基底はこの列で解く）。
+    classes: list[tuple[ast.ClassDef, tuple[ast.AST, ...]]] = field(default_factory=list)
+    #: 単一の Name への代入 `X = <式>` の、代入先の Name ノード → 右辺（基底の別名をたどるのに使う）。
+    alias_values: dict[ast.AST, ast.AST] = field(default_factory=dict)
+    #: 本体で `locals()` / 引数なしの `vars()` を読む以外に使うクラス（クラスの名前空間を名前で書き換えうる）。
+    ns_classes: list[ast.ClassDef] = field(default_factory=list)
 
 
 #: `globals()` / `vars()` の結果を読むだけの属性（名前空間を書き換えない）。
@@ -579,11 +592,43 @@ _READ_ONLY_NS_ATTRS = frozenset({"get", "items", "keys", "values", "copy", "__co
 
 
 def _is_namespace_call(node: ast.AST) -> bool:
-    return (
+    """`globals()` / 引数なしの `vars()` / `locals()`（呼び出し位置の名前空間の辞書を返す）。
+
+    `locals()` はモジュール直下では `globals()` と同じ辞書、クラス本体ではクラスの名前空間そのもので、
+    書き込みがそのまま名前を束縛し直す（D64 / U40-R3）。関数の中の `locals()` は写しなので書き込んでも
+    名前は変わらない（呼び出し側の `_note_facts` がスコープで分ける）。
+    """
+    if not (isinstance(node, ast.Call) and isinstance(node.func, ast.Name)):
+        return False
+    fid = node.func.id
+    return fid == "globals" or (fid in ("vars", "locals") and not node.args and not node.keywords)
+
+
+#: 辞書を書き換える（読むだけでない）メソッド。`X.__dict__.update(...)` / `vars(X).setdefault(...)` など。
+_DICT_WRITERS = frozenset({"update", "setdefault", "pop", "popitem", "clear", "__setitem__", "__delitem__"})
+
+
+def _ns_dict_receiver(node: ast.AST) -> Optional[ast.AST]:
+    """`R.__dict__` / `vars(R)` なら属性の名前空間の持ち主 `R`。"""
+    if isinstance(node, ast.Attribute) and node.attr == "__dict__":
+        return node.value
+    if (
         isinstance(node, ast.Call)
         and isinstance(node.func, ast.Name)
-        and (node.func.id == "globals" or (node.func.id == "vars" and not node.args and not node.keywords))
-    )
+        and node.func.id == "vars"
+        and len(node.args) == 1
+        and not node.keywords
+    ):
+        return node.args[0]
+    return None
+
+
+def _str_const(node: Optional[ast.AST]) -> Optional[str]:
+    return node.value if isinstance(node, ast.Constant) and isinstance(node.value, str) else None
+
+
+def _mentions_sys_modules(node: ast.AST) -> bool:
+    return any(isinstance(m, ast.Attribute) and m.attr == "modules" for m in ast.walk(node))
 
 
 def _namespace_read_only(parent: ast.AST, call: ast.AST) -> bool:
@@ -598,36 +643,84 @@ def _namespace_read_only(parent: ast.AST, call: ast.AST) -> bool:
     return False
 
 
-def _note_facts(node: ast.AST, parent: ast.AST, info: _ModInfo) -> None:
-    """走査中のノード 1 つ（親は `parent`）から `_ModInfo` の事実を足す（`_scan_module_writes` / `_attr_stores`
-    と同じ趣旨）。"""
+def _note_facts(node: ast.AST, parent: ast.AST, info: _ModInfo, chain: tuple[ast.AST, ...] = ()) -> None:
+    """走査中のノード 1 つ（親は `parent`、評価するスコープの列は `chain`）から `_ModInfo` の事実を足す
+    （`_scan_module_writes` / `_attr_stores` と同じ趣旨）。"""
     if isinstance(node, (ast.Global, ast.Nonlocal)):
         info.declared.update(node.names)
     elif isinstance(node, (ast.Import, ast.ImportFrom)):
         for al in node.names:
             if al.name != "*":
                 info.imports.setdefault(al.asname or al.name.split(".")[0], []).append(node)
+    elif isinstance(node, ast.ClassDef):
+        info.classes.append((node, chain))
+    elif isinstance(node, ast.Assign):
+        if len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
+            info.alias_values[node.targets[0]] = node.value
     elif isinstance(node, ast.Attribute) and isinstance(node.ctx, (ast.Store, ast.Del)):
         info.stored_attrs.add(node.attr)
-        if isinstance(node.value, ast.Name):
-            info.attr_pairs.add((node.value.id, node.attr))
+        info.attr_pairs.append((node.value, chain, node.attr))
+    elif isinstance(node, ast.Subscript) and isinstance(node.ctx, (ast.Store, ast.Del)):
+        # `R.__dict__["NAME"] = v` / `vars(R)["NAME"] = v` は属性 NAME の書き換え（D64 / U40-R2）。
+        owner = _ns_dict_receiver(node.value)
+        if owner is not None:
+            _note_attr_write(info, owner, chain, _str_const(node.slice))
     elif isinstance(node, ast.Call):
-        fid = node.func.id if isinstance(node.func, ast.Name) else None
-        if _is_namespace_call(node) and not _namespace_read_only(parent, node):
+        _note_call_facts(node, parent, info, chain)
+
+
+def _note_attr_write(
+    info: _ModInfo, owner: Optional[ast.AST], chain: tuple[ast.AST, ...], name: Optional[str]
+) -> None:
+    """受け手 `owner`（`super()` のように式として持てないなら None）の属性 `name`（定数でなければ None）の
+    書き換えを記録する。"""
+    if name is not None:
+        info.stored_attrs.add(name)
+    else:
+        info.any_setattr = True
+    if owner is None:
+        return
+    info.attr_pairs.append((owner, chain, name or "*"))
+    if _mentions_sys_modules(owner):
+        info.dynamic = True  # `setattr(sys.modules[__name__], name, fn)` / `sys.modules[__name__].__dict__[k] = v`
+
+
+def _note_call_facts(node: ast.Call, parent: ast.AST, info: _ModInfo, chain: tuple[ast.AST, ...]) -> None:
+    fid = node.func.id if isinstance(node.func, ast.Name) else None
+    if _is_namespace_call(node) and not _namespace_read_only(parent, node):
+        # 名前空間の持ち主は、内包を除いた最も内側のスコープ（D64 / U40-R3）。
+        owner = next((c for c in reversed(chain) if not isinstance(c, _COMP_NODES)), None)
+        if fid != "locals" or owner is None or isinstance(owner, ast.Module):
+            # globals() と引数なしの vars() は従来どおりどこにあっても。locals() はモジュール直下だけ
+            # （globals() と同じ辞書）。関数の中の locals() は写しで、書き込んでも名前は変わらない。
             info.dynamic = True
-        if fid in ("exec", "eval") and len(node.args) + len(node.keywords) < 2:
-            info.dynamic = True  # 既定の名前空間（呼び出し位置のグローバル）で実行する
-        if _last_name(node) in _SETATTR and len(node.args) >= 2:
-            a = node.args[1]
-            const = a.value if isinstance(a, ast.Constant) and isinstance(a.value, str) else None
-            if const is not None:
-                info.stored_attrs.add(const)
-            else:
-                info.any_setattr = True
-            if isinstance(node.args[0], ast.Name):
-                info.attr_pairs.add((node.args[0].id, const or "*"))
-            elif any(isinstance(m, ast.Attribute) and m.attr == "modules" for m in ast.walk(node.args[0])):
-                info.dynamic = True  # `setattr(sys.modules[__name__], name, fn)`
+        if isinstance(owner, ast.ClassDef) and fid in ("vars", "locals"):
+            info.ns_classes.append(owner)  # クラス本体の locals() / vars() はクラスの名前空間そのもの
+    if fid in ("exec", "eval") and len(node.args) + len(node.keywords) < 2:
+        info.dynamic = True  # 既定の名前空間（呼び出し位置のグローバル）で実行する
+    if _last_name(node) in _SETATTR and len(node.args) >= 2:
+        _note_attr_write(info, node.args[0], chain, _str_const(node.args[1]))
+    f = node.func
+    if isinstance(f, ast.Attribute) and f.attr in ("__setattr__", "__delattr__"):
+        # D64 / U40-R2。`object.__setattr__(self, "NAME", v)` / `type.__setattr__(C, "NAME", v)` は非束縛形
+        # （名前は args[1]）、`self.__setattr__("NAME", v)` / `super().__setattr__("NAME", v)` は束縛形
+        # （名前は args[0]）。`super()` の受け手は式として持てない（インスタンスなのでモジュールではない）。
+        unbound = isinstance(f.value, ast.Name) and f.value.id in ("object", "type")
+        bound_owner = None if unbound or isinstance(f.value, ast.Call) else f.value
+        if unbound and len(node.args) >= 2:
+            _note_attr_write(info, node.args[0], chain, _str_const(node.args[1]))
+        elif not unbound and node.args and _str_const(node.args[0]) is not None:
+            _note_attr_write(info, bound_owner, chain, _str_const(node.args[0]))
+        else:
+            # 形を決められない（`Base.__setattr__(self, name, v)` / `self.__setattr__(name, v)`）。見過ぎる側に
+            # 倒し、名前が定数でない書き換えとして、ありうる受け手の両方に記録する。
+            _note_attr_write(info, bound_owner, chain, None)
+            if node.args and _str_const(node.args[0]) is None:
+                _note_attr_write(info, node.args[0], chain, None)
+    elif isinstance(f, ast.Attribute) and f.attr in _DICT_WRITERS:
+        owner = _ns_dict_receiver(f.value)
+        if owner is not None:
+            _note_attr_write(info, owner, chain, None)  # `R.__dict__.update(...)` / `vars(R).setdefault(...)`
 
 
 def _arg_nodes(args: ast.arguments) -> list[ast.arg]:
@@ -722,6 +815,24 @@ def _last_name(node: ast.AST) -> Optional[str]:
     return d.split(".")[-1] if d else None
 
 
+def _stmt_index(body: list, node: ast.AST) -> Optional[int]:
+    """`body`（文の列）のうち `node` を含む文の位置（デコレータも文に含める）。見つからなければ None。"""
+    for k, stmt in enumerate(body):
+        if stmt is node:
+            return k
+    if not hasattr(node, "lineno"):
+        return None
+    at = (node.lineno, node.col_offset)
+    end = (getattr(node, "end_lineno", None) or node.lineno, getattr(node, "end_col_offset", None) or node.col_offset)
+    for k, stmt in enumerate(body):
+        starts = [(stmt.lineno, stmt.col_offset)]
+        starts += [(d.lineno, d.col_offset) for d in getattr(stmt, "decorator_list", [])]
+        s_end = (stmt.end_lineno or stmt.lineno, stmt.end_col_offset or 0)
+        if min(starts) <= at and end <= s_end:
+            return k
+    return None
+
+
 class _Resolver:
     """登録文のスコープから、関数・クラス・モジュールへの参照を厳密に解く（D64 / U40）。"""
 
@@ -734,6 +845,10 @@ class _Resolver:
         self._attr_writes: Optional[frozenset[tuple[str, str]]] = None
         self._mbinds: dict[tuple[str, str], tuple[list[ast.AST], bool]] = {}
         self._stored_attrs: Optional[tuple[frozenset[str], bool]] = None
+        self._graph: Optional[list[tuple[str, ast.ClassDef, tuple[tuple[str, str], ...]]]] = None
+        self._ns_classes: Optional[list[ast.ClassDef]] = None
+        #: `attr_writes` / `_class_graph` を作っている途中か（その間の `_overridden_below` は見過ぎる側で真）。
+        self._building = False
 
     def add_file(self, path: str, tree: ast.Module) -> _ModInfo:
         info = _ModInfo(path, tree, os.path.basename(path) == "__init__.py")
@@ -750,8 +865,8 @@ class _Resolver:
         return self._mbinds[key]
 
     def stored_attrs(self) -> tuple[frozenset[str], bool]:
-        """木のどこかで `x.NAME = ...` / `del x.NAME` / `setattr(x, "NAME", v)` と書き換えられる属性名と、
-        名前が定数でない `setattr` / `delattr` があるか。"""
+        """木のどこかで `x.NAME = ...` / `del x.NAME` / `setattr(x, "NAME", v)` / `x.__setattr__("NAME", v)` /
+        `x.__dict__["NAME"] = v` と書き換えられる属性名と、名前が定数でない書き換えがあるか。"""
         if self._stored_attrs is None:
             names: set[str] = set()
             any_name = False
@@ -761,27 +876,58 @@ class _Resolver:
             self._stored_attrs = (frozenset(names), any_name)
         return self._stored_attrs
 
+    def ns_class(self, cls: ast.ClassDef) -> bool:
+        """クラス本体が `locals()` / `vars()` でクラスの名前空間を書き換えうるか（D64 / U40-R3）。"""
+        if self._ns_classes is None:
+            self._ns_classes = [c for info in self._by_path.values() for c in info.ns_classes]
+        return any(c is cls for c in self._ns_classes)
+
     def modules(self) -> frozenset[str]:
         if self._modules is None:
             self._modules = frozenset(self.index.module_name(p) for p in self.index.py_files())
         return self._modules
 
-    def abs_module(self, dotted: Optional[str]) -> tuple[str, Optional[str]]:
+    def abs_module(self, dotted: Optional[str], importer: Optional[str] = None) -> tuple[str, Optional[str]]:
         """絶対 import の dotted 名を木内モジュールへ。`("tree", 名)` / `("extern", None)` / `("ambiguous", None)`。
 
         完全一致を先に採り、なければ `.<dotted>` で終わる木内モジュールが**ちょうど 1 つ**のときだけ採る
         （src レイアウト）。2 つ以上なら決めない（`resolve_module_path` の setdefault のように最初の 1 つを
         採ると、別のパッケージの同名モジュールに解く）。
+
+        **import する側（`importer`）と同じディレクトリに `<先頭>.py` / `<先頭>/__init__.py` があり、それが
+        選んだ木内モジュールと違うなら決めない**（D64 / U40-R6）。スクリプトとして動かすと `sys.path[0]` は
+        スクリプトのディレクトリなので兄弟が先に当たり、パッケージとして動かすと根の方が当たる。どちらで
+        動かすかは木からは決まらない。
         """
         if not dotted:
             return "ambiguous", None
         mods = self.modules()
+        chosen: Optional[str]
         if dotted in mods:
-            return "tree", dotted
-        hits = [m for m in mods if m.endswith("." + dotted)]
-        if len(hits) == 1:
-            return "tree", hits[0]
-        return ("ambiguous", None) if hits else ("extern", None)
+            chosen = dotted
+        else:
+            hits = [m for m in mods if m.endswith("." + dotted)]
+            if not hits:
+                return "extern", None
+            chosen = hits[0] if len(hits) == 1 else None
+        sibling = self._sibling_module(importer, dotted)
+        if chosen is None or (sibling is not None and sibling != chosen):
+            return "ambiguous", None
+        return "tree", chosen
+
+    def _sibling_module(self, importer: Optional[str], dotted: str) -> Optional[str]:
+        """`importer` のファイルと同じディレクトリにある `<先頭>.py` / `<先頭>/__init__.py` から見た `dotted` の
+        木内モジュール名（兄弟が無ければ None）。"""
+        info = self.info(importer) if importer else None
+        if info is None:
+            return None
+        head, _, rest = dotted.partition(".")
+        d = os.path.dirname(os.path.abspath(info.path))
+        for cand in (os.path.join(d, head, "__init__.py"), os.path.join(d, head + ".py")):
+            if os.path.isfile(cand):
+                base = self.index.module_name(cand)
+                return f"{base}.{rest}" if rest else base
+        return None
 
     def info(self, module: str) -> Optional[_ModInfo]:
         if module in self._info:
@@ -795,28 +941,46 @@ class _Resolver:
         return out
 
     def attr_writes(self) -> frozenset[tuple[str, str]]:
-        """木のどこかで**モジュール属性として**書き換えられる `(module, NAME)`（`NAME` が `"*"` なら全部）。
+        """木のどこかで**モジュール属性として**書き換えられうる `(module, NAME)`（`NAME` が `"*"` なら全部）。
 
-        `mod.NAME = ...` / `del mod.NAME` / `setattr(mod, "NAME", v)`。`mod` はそのファイルの import
-        （モジュール直下でも関数の中でも）で木内モジュールに解けるもの。
+        `R.NAME = ...` / `del R.NAME` / `setattr(R, "NAME", v)` など。受け手 `R` は、そのファイルのそのスコープで
+        `expr` によって解く（`import pkg.impl; pkg.impl.f = x` の連鎖形も。D64 / U40-R4）。
+
+        * 木内モジュールに解ければ `(そのモジュール, NAME)`。
+        * **解けない受け手**（`sys.modules["m"]`、`import_module("m")`、ローカル変数）は、どのモジュールでも
+          ありうるので `("*", NAME)`（見過ぎる側。`self.m` で `stored_attrs` を使うのと同じ方針）。ただし
+          名前が定数でないものは全部の名前になるので記録しない（限界。`setattr(obj, k, v)` の汎用の書き方で
+          木の全部の解決を止めないため）。
+        * メソッドの第 1 仮引数（インスタンス / クラス）と、関数・クラス・木外に解ける受け手はモジュールでは
+          ないので数えない。
         """
         if self._attr_writes is None:
             # 集める間は書き換えの確認を外して import をたどる（再帰を止める）。集めた後の解決では確認する。
             self._attr_writes = frozenset()
             out: set[tuple[str, str]] = set()
-            for path in sorted(self._by_path):
-                info = self._by_path[path]
-                mod = self.index.module_name(path)
-                for alias, attr in sorted(info.attr_pairs):
-                    for imp in info.imports.get(alias, ()):
-                        ref = self._from_import(mod, imp, alias, _IMPORT_HOPS)
+            building, self._building = self._building, True
+            try:
+                for path in sorted(self._by_path):
+                    info = self._by_path[path]
+                    mod = self.index.module_name(path)
+                    for recv, chain, attr in info.attr_pairs:
+                        if isinstance(recv, ast.Name) and self._instance_param(mod, chain, recv):
+                            continue
+                        ref = self.expr(mod, chain, recv)
                         if ref is not None and ref.kind == "module":
                             out.add((ref.name, attr))
+                        elif ref is None and attr != "*":
+                            out.add(("*", attr))
+            finally:
+                self._building = building
             self._attr_writes = frozenset(out)
         return self._attr_writes
 
-    def in_module(self, module: str, name: str, hops: int = _IMPORT_HOPS) -> Optional[_Ref]:
-        """モジュール水準の `name`。束縛が**ちょうど 1 つ**で、動的に書き換えられないときだけ解く。"""
+    def _written(self, module: str, name: str) -> bool:
+        return bool({(module, name), (module, "*"), ("*", name)} & self.attr_writes())
+
+    def _stable_module_binding(self, module: str, name: str, hops: int = _IMPORT_HOPS) -> Optional[ast.AST]:
+        """モジュール水準の `name` の唯一の束縛（動的に書き換えられうるなら None）。"""
         info = self.info(module)
         if info is None or hops < 0:
             return None
@@ -825,10 +989,17 @@ class _Resolver:
         binds, dynamic = self.module_bindings(module, name)
         if dynamic or len(binds) != 1:
             return None
-        writes = self.attr_writes()
-        if (module, name) in writes or (module, "*") in writes:
+        if self._written(module, name):
             return None
-        return self._from_binding(module, binds[0], name, (info.tree,), hops)
+        return binds[0]
+
+    def in_module(self, module: str, name: str, hops: int = _IMPORT_HOPS) -> Optional[_Ref]:
+        """モジュール水準の `name`。束縛が**ちょうど 1 つ**で、動的に書き換えられないときだけ解く。"""
+        b = self._stable_module_binding(module, name, hops)
+        info = self.info(module)
+        if b is None or info is None:
+            return None
+        return self._from_binding(module, b, name, (info.tree,), hops)
 
     def _from_binding(
         self, module: str, b: ast.AST, name: str, chain: tuple[ast.AST, ...], hops: int
@@ -855,7 +1026,7 @@ class _Resolver:
         alias = aliases[0]
         if isinstance(node, ast.Import):
             dotted = alias.name if alias.asname else alias.name.split(".")[0]
-            status, mod = self.abs_module(dotted)
+            status, mod = self.abs_module(dotted, module)
             if status == "tree":
                 return _Ref("module", mod)
             return _Ref("extern", dotted) if status == "extern" else None
@@ -875,7 +1046,7 @@ class _Resolver:
             if node.module and target not in self.modules():
                 return None  # 相対 import が木の中で解けない（木外ではありえない）
         else:
-            status, target = self.abs_module(node.module)
+            status, target = self.abs_module(node.module, module)
             if status == "extern":
                 return _Ref("extern", f"{node.module}.{alias.name}")
             if status != "tree" or target is None:
@@ -903,20 +1074,28 @@ class _Resolver:
     # -- 登録文のスコープ ----------------------------------------------------
 
     def _binding_scope(
-        self, module: str, chain: tuple[ast.AST, ...], name: str
+        self, module: str, chain: tuple[ast.AST, ...], name: str, ref: Optional[ast.AST] = None
     ) -> tuple[str, Optional[int], list[ast.AST]]:
-        """`name` を束縛する最も内側のスコープ。
+        """`name`（参照のノードは `ref`）を束縛する最も内側のスコープ。
 
         :returns: `("local", chain の位置, 束縛)` / `("module", None, [])` / `("dynamic", None, [])`。
             クラス本体は、参照がその本体に直接あるときだけ見える（Python のスコープ規則）。
+            クラス本体の扱いは :meth:`_class_body_binding`（D64 / U40-R5）。
         """
         info = self.info(module)
         if info is None or name in info.declared:
             return "dynamic", None, []
         for i in range(len(chain) - 1, 0, -1):
             scope = chain[i]
-            if isinstance(scope, ast.ClassDef) and i != len(chain) - 1:
-                continue
+            if isinstance(scope, ast.ClassDef):
+                if i != len(chain) - 1:
+                    continue
+                got = self._class_body_binding(scope, name, ref)
+                if got is None:
+                    continue
+                if isinstance(got, str):
+                    return got, None, []
+                return "local", i, [got]
             binds, dynamic = _scope_bindings(scope, name)
             if dynamic:
                 return "dynamic", None, []
@@ -924,8 +1103,41 @@ class _Resolver:
                 return "local", i, binds
         return "module", None, []
 
-    def name(self, module: str, chain: tuple[ast.AST, ...], name: str) -> Optional[_Ref]:
-        where, i, binds = self._binding_scope(module, chain, name)
+    def _class_body_binding(self, cls: ast.ClassDef, name: str, ref: Optional[ast.AST]):
+        """クラス本体に直接ある参照 `ref` から見た `name`（D64 / U40-R5）。
+
+        **クラス本体の名前は LOAD_NAME で引かれる。** クラスのローカルな束縛が参照を含む文より後にしか
+        無ければ、参照の時点ではまだ束縛されておらず、グローバルに落ちる（囲む関数のスコープは飛ばす）。
+        束縛が参照より前にあるときは、それがクラス本体に直接ある文（`if` / `try` の中でない）で、ほかに
+        束縛が無いときだけ採る。それ以外（条件つきの束縛、参照と同じ文の中、`locals()` による書き換え）は
+        決めない。
+
+        :returns: None（束縛なし。外のスコープへ）/ ``"module"``（グローバルへ）/ ``"dynamic"``（決めない）/
+            束縛のノード。
+        """
+        if self.ns_class(cls):
+            return "dynamic"
+        binds, dynamic = _scope_bindings(cls, name)
+        if dynamic:
+            return "dynamic"
+        if not binds:
+            return None
+        pos = _stmt_index(cls.body, ref) if ref is not None else None
+        if pos is None:
+            return "dynamic"
+        idx = [_stmt_index(cls.body, b) for b in binds]
+        if any(k is None or k == pos for k in idx):
+            return "dynamic"
+        if all(k is not None and k > pos for k in idx):
+            return "module"
+        if len(binds) != 1 or not any(s is binds[0] for s in cls.body):
+            return "dynamic"
+        return binds[0]
+
+    def name(
+        self, module: str, chain: tuple[ast.AST, ...], name: str, ref: Optional[ast.AST] = None
+    ) -> Optional[_Ref]:
+        where, i, binds = self._binding_scope(module, chain, name, ref)
         if where == "dynamic":
             return None
         if where == "module":
@@ -937,11 +1149,11 @@ class _Resolver:
     def expr(self, module: str, chain: tuple[ast.AST, ...], node: ast.AST) -> Optional[_Ref]:
         """式 `node`（Name / Attribute の連鎖 / `self.<m>`）が指すもの。それ以外の式は解かない。"""
         if isinstance(node, ast.Name):
-            return self.name(module, chain, node.id)
+            return self.name(module, chain, node.id, node)
         if not isinstance(node, ast.Attribute):
             return None
         if isinstance(node.value, ast.Name):
-            handled, ref = self._self_method(module, chain, node.value.id, node.attr)
+            handled, ref = self._self_method(module, chain, node.value, node.attr)
             if handled:
                 return ref
         base = self.expr(module, chain, node.value)
@@ -953,8 +1165,35 @@ class _Resolver:
             return _Ref("extern", f"{base.name}.{node.attr}")
         return None
 
+    def _method_of_param(
+        self, module: str, chain: tuple[ast.AST, ...], head: ast.Name
+    ) -> Optional[tuple[int, ast.AST, list[ast.AST]]]:
+        """`head` を束縛する最も内側のスコープが、クラス本体に直接あるメソッドで、`head` がその第 1 仮引数の名前なら
+        `(chain の位置, メソッド, そのメソッドの中の束縛)`。"""
+        where, i, binds = self._binding_scope(module, chain, head.id, head)
+        if where != "local" or i is None:
+            return None
+        meth = chain[i]
+        if not isinstance(meth, _FUNC_NODES) or i < 1 or not isinstance(chain[i - 1], ast.ClassDef):
+            return None
+        positional = list(meth.args.posonlyargs) + list(meth.args.args)
+        if not positional or positional[0].arg != head.id:
+            return None
+        return i, meth, binds
+
+    def _instance_param(self, module: str, chain: tuple[ast.AST, ...], head: ast.Name) -> bool:
+        """`head` がメソッドの第 1 仮引数（インスタンスかクラス。staticmethod でない）のままか。"""
+        hit = self._method_of_param(module, chain, head)
+        if hit is None:
+            return False
+        _i, meth, binds = hit
+        positional = list(meth.args.posonlyargs) + list(meth.args.args)
+        if len(binds) != 1 or binds[0] is not positional[0]:
+            return False
+        return not any(_last_name(d) == "staticmethod" for d in meth.decorator_list)
+
     def _self_method(
-        self, module: str, chain: tuple[ast.AST, ...], head: str, attr: str
+        self, module: str, chain: tuple[ast.AST, ...], head: ast.Name, attr: str
     ) -> tuple[bool, Optional[_Ref]]:
         """`self.<attr>` を**囲むクラスの中だけ**で解く（D64 / U40 条件 (2)）。
 
@@ -965,68 +1204,148 @@ class _Resolver:
 
         :returns: `(self 形として扱ったか, 参照)`。扱わないなら一般の解決に回す。
         """
-        where, i, binds = self._binding_scope(module, chain, head)
-        if where != "local" or i is None:
+        hit = self._method_of_param(module, chain, head)
+        if hit is None:
             return False, None
-        meth = chain[i]
-        if not isinstance(meth, _FUNC_NODES) or i < 1 or not isinstance(chain[i - 1], ast.ClassDef):
-            return False, None
+        i, meth, binds = hit
         positional = list(meth.args.posonlyargs) + list(meth.args.args)
-        if not positional or positional[0].arg != head:
-            return False, None
         if len(binds) != 1 or binds[0] is not positional[0]:
             return True, None  # self を束縛し直している
         if any(_last_name(d) in ("staticmethod", "classmethod") for d in meth.decorator_list):
             return True, None
         cls = chain[i - 1]
+        assert isinstance(cls, ast.ClassDef)
+        if self.ns_class(cls):
+            return True, None  # クラス本体の locals() / vars() で名前空間を書き換えうる（U40-R3）
         cbinds, cdyn = _scope_bindings(cls, attr)
         if cdyn or len(cbinds) != 1 or not isinstance(cbinds[0], _FUNC_NODES):
             return True, None
         target = cbinds[0]
         if any(_last_name(d) in _NON_FUNCTION_DECORATORS for d in target.decorator_list):
             return True, None
-        # インスタンス属性・クラス属性としての書き換え（`self.m = ...` / `C.m = ...` / `setattr(x, "m", v)`）。
-        # 受け手の型は見ず、木のどこかで同じ名前の属性が書き換えられるなら採らない。
+        # インスタンス属性・クラス属性としての書き換え（`self.m = ...` / `C.m = ...` / `setattr(x, "m", v)` /
+        # `object.__setattr__(self, "m", v)` / `self.__dict__["m"] = v`。U40-R2）。受け手の型は見ず、木のどこかで
+        # 同じ名前の属性が書き換えられるなら採らない。
         stored, any_setattr = self.stored_attrs()
         if attr in stored or any_setattr:
             return True, None
         # 木内のサブクラス（何段下でも）か、その MRO で `cls` より前に来うるミックスインが同名で上書きする
         # （`self.m` は動的に束縛される）。
-        if self._overridden_below(cls.name, attr):
+        if self._overridden_below(module, chain[: i - 1], cls, attr):
             return True, None
         ref = self._from_binding(module, target, attr, chain[:i], _IMPORT_HOPS)
         return True, ref
 
-    def _overridden_below(self, cls_name: str, attr: str) -> bool:
-        """`cls_name` の木内のサブクラス（推移的）と、それらから `cls_name` を通らずにたどれる基底のどれかが
-        `attr` を束縛するか。クラスは基底の末尾名で結ぶ（同名のクラスが複数あれば全部を見る。見過ぎる側）。"""
-        classes = list(self.index.classes())
+    # -- クラスの継承 --------------------------------------------------------
 
-        def bases_of(cd) -> set[str]:
-            return {b.split(".")[-1] for b in cd.bases}
+    def _base_ref(
+        self, module: str, chain: tuple[ast.AST, ...], node: Optional[ast.AST], depth: int = _IMPORT_HOPS
+    ) -> Optional[_Ref]:
+        """クラスの基底の式 `node` が指すもの（D64 / U40-R1）。
 
+        Subscript（`Server[str]`、`Generic[T]`）は value を見る。import の別名は `expr` がたどる。単一の Name
+        への代入 `Base = s.Server` は右辺をたどる（モジュール水準は書き換えられないときだけ）。どこにも
+        束縛されない名前は組込み（`object` / `Exception`）。それ以外（呼び出し式、解けない名前）は None。
+        """
+        while isinstance(node, ast.Subscript):
+            node = node.value
+        if not isinstance(node, (ast.Name, ast.Attribute)) or depth < 0:
+            return None
+        ref = self.expr(module, chain, node)
+        if ref is not None:
+            return ref
+        info = self.info(module)
+        if info is None:
+            return None
+        if isinstance(node, ast.Name):
+            where, i, binds = self._binding_scope(module, chain, node.id, node)
+            if where == "module":
+                if info.dynamic or node.id in info.declared:
+                    return None
+                mbinds, dyn = self.module_bindings(module, node.id)
+                if dyn:
+                    return None
+                if not mbinds:
+                    return _Ref("extern", "builtins." + node.id)
+                b = self._stable_module_binding(module, node.id)
+                val = info.alias_values.get(b) if b is not None else None
+                return self._base_ref(module, (info.tree,), val, depth - 1)
+            if where == "local" and i is not None and len(binds) == 1:
+                return self._base_ref(module, chain[: i + 1], info.alias_values.get(binds[0]), depth - 1)
+            return None
+        base = self.expr(module, chain, node.value)
+        if base is None or base.kind != "module" or f"{base.name}.{node.attr}" in self.modules():
+            return None
+        tinfo = self.info(base.name)
+        if tinfo is None:
+            return None
+        return self._base_ref(base.name, (tinfo.tree,), ast.Name(id=node.attr, ctx=ast.Load()), depth - 1)
+
+    def _class_graph(self) -> list[tuple[str, ast.ClassDef, tuple[tuple[str, str], ...]]]:
+        """木内の全クラス `(識別名, 定義, 基底)`。基底は `("class", 識別名)` / `("extern", dotted)` /
+        `("unknown", "")`（解けない）。識別名は `_from_binding` のクラス参照と同じ形。"""
+        if self._graph is None:
+            self.attr_writes()  # 基底の名前も、書き換えの確認を済ませてから解く
+            graph = []
+            building, self._building = self._building, True
+            try:
+                for path in sorted(self._by_path):
+                    info = self._by_path[path]
+                    mod = self.index.module_name(path)
+                    for node, chain in info.classes:
+                        bases: list[tuple[str, str]] = []
+                        for b in node.bases:
+                            ref = self._base_ref(mod, chain, b)
+                            if ref is not None and ref.kind in ("class", "extern"):
+                                bases.append((ref.kind, ref.name))
+                            else:
+                                bases.append(("unknown", ""))
+                        graph.append((f"{mod}.{_qual_prefix(chain)}{node.name}", node, tuple(bases)))
+            finally:
+                self._building = building
+            self._graph = graph
+        return self._graph
+
+    def _overridden_below(self, module: str, outer: tuple[ast.AST, ...], cls: ast.ClassDef, attr: str) -> bool:
+        """`cls` の木内のサブクラス（推移的）と、それらから `cls` を通らずにたどれる基底のどれかが
+        `attr` を束縛するか（D64 / U40-R1）。
+
+        **基底は末尾名で結ばず `_base_ref` で解く**（別名の import、`Base = s.Server`、`Server[str]` を
+        落とさない）。**解けない基底を持つクラスは、どのクラスのサブクラスでもありうる**ものとして扱う
+        （見過ぎる側）: それ自身かその下のクラスが `attr` を束縛すれば採らない。
+        """
+        if self._building:
+            return True  # 書き換え・継承の表を作っている途中（受け手の `self.x.y` など）は決めない側に倒す
+        target = f"{module}.{_qual_prefix(outer)}{cls.name}"
+        graph = self._class_graph()
         subs: set[str] = set()
-        frontier = [cls_name]
-        while frontier:
-            cur = frontier.pop()
-            for cd in classes:
-                if cur in bases_of(cd) and cd.name != cls_name and cd.name not in subs:
-                    subs.add(cd.name)
-                    frontier.append(cd.name)
+        changed = True
+        while changed:
+            changed = False
+            for ident, node, bases in graph:
+                if node is cls or ident in subs:
+                    continue
+                if any(k == "unknown" or (k == "class" and (n == target or n in subs)) for k, n in bases):
+                    subs.add(ident)
+                    changed = True
         if not subs:
             return False
+        # サブクラスと、そこから `cls` を通らずにたどれる基底（MRO で `cls` より前に来うるミックスイン）。
         check = set(subs)
         frontier = list(subs)
         while frontier:
             cur = frontier.pop()
-            for cd in classes:
-                if cd.name != cur:
+            for ident, _node, bases in graph:
+                if ident != cur:
                     continue
-                for b in bases_of(cd):
-                    if b != cls_name and b not in check:
-                        check.add(b)
-                        frontier.append(b)
-        return any(cd.name in check and _scope_bindings(cd.node, attr)[0] for cd in classes)
+                for k, n in bases:
+                    if k == "class" and n != target and n not in check:
+                        check.add(n)
+                        frontier.append(n)
+        return any(
+            ident in check and node is not cls and (bool(_scope_bindings(node, attr)[0]) or self.ns_class(node))
+            for ident, node, _b in graph
+        )
 
 
 def _walk_scoped(tree: ast.Module):
@@ -1123,7 +1442,7 @@ def find_registration_units(
         info = resolver.add_file(path, tree)
         cands: list[tuple[ast.Call, tuple[ast.AST, ...]]] = []
         for node, parent, chain in _walk_scoped(tree):
-            _note_facts(node, parent, info)
+            _note_facts(node, parent, info, chain)
             if isinstance(node, ast.Call) and (
                 _registration_of(node) is not None or any(k.arg in spec_kwargs for k in node.keywords)
             ):
