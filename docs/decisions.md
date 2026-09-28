@@ -3555,3 +3555,52 @@ v3 の精度が上がったことを結果として報告しない — v3 は開
    未解決（opaque / 不）は「未検証」のまま（仕様書 382 行目）。
 
 **実装を変えないので逸脱ではない**（事前登録・凍結に触れない）。
+
+## D64（2026-09-28）添削の採否: 段階 A 12 単位と段階 B の 4 単位を直す — **規則（実装より先にコミット）**
+
+**学生の決定**（`docs/review_triage.md` を見て）: 段階 A（最終評価の数字を直接狂わせるもの）を直す。段階 B は (b)（新しい
+データで特に出そうなもの）の U38 / U40 / U09 / U23 に絞る。個別の判断: U40 の `mcp.add_tool` は**直す**（入口の語彙の
+追加。逸脱として記録）、U09 のクラス属性は**規則 B**（型だけ付け、確度は opaque）、U23 は pydantic・Path・lifespan の 3 つとも直す。
+それ以外の単位（段階 C の 32 単位と、下の「記録」）は直さず、限界として `docs/open_questions.md` の O42 以降に書く。
+
+**直し方は `evidence/review/triage.json` の各単位の fix_outline に従う。** とくに検証役が見つけた「素朴な直し方で壊れる反例」と
+「避ける条件」は必ず守り、反例をテストに入れる。以下は範囲と、条件の要点。
+
+### 段階 A（評価の道具・非決定・痕跡・§7 との食い違い）
+
+| 単位 | 直す所見 | 記録に回す所見 | 条件の要点 |
+|---|---|---|---|
+| U25 `_self_fields` の cache | R5-r1-1, R5-r1-9 | — | cache は index ごとに持つ（src_root 鍵は不可）。RecursionError は失敗の印を cache に入れ、`self.<attr>` を opaque(unresolved) にしてユニットに `TRUNCATED(recursion:self_fields)` を付ける（pop して再計算は不可） |
+| U49 打ち切りの痕跡 | R5-r2-2, R5-r3-2, R5-r1-6 | — | 印・記録を足すだけで rows / verdict / effects は変えない。VAL_OPAQUE_REASONS は動かさない |
+| U50 評価の鍵 | R5-r1-3, R5-r3-3, R5-r3-4（(a) 版の記録と警告のみ） | R5-r2-1（付録の two_sided） | scripts/ だけ。鍵に relpath・lineno・宣言を足す。unit_id の定義は変えない |
+| U51 候補表の位置と destructive | R5-r3-1, R5-r1-8 | — | (relpath, lineno) を対で、効果は (relpath, lineno, site, kind) で照合 |
+| U52 run の manifest の集合 | R5-r1-4, R5-r2-7, R5-r2-6 | — | 読む側は summary.json の ok の木を使う。書く側は errors="backslashreplace" と一時ファイル + os.replace。既存 dir に manifest があれば --resume なしでは止める |
+| U53 diff_effects の比較の値 | R5-r2-3 | — | 行の鍵と終了コードは変えず、値に §7 の属性を足す。古い版では getattr の既定値 |
+| U54 run と実装の指紋 | R5-r2-4 | — | summary に実装 sha256・dirty・Python の版。比べるのは HEAD の文字列ではなく実装 hash |
+| U32 効果行の重複 | R4-r1-8（scripts/ で一意の件数を併記するだけ） | 解析器側で畳むこと | 完全一致の正規化 JSON で数える。解析器は変えない |
+| U55 two_sided の片側だけのサイト | — | R5-r4-1 | 付録の道具で最終評価の経路に無い |
+| U33 SQL の先頭語 | R3-r1-2, R3-r1-1, R3-r1-3, R3-r4-3 (a) | R3-r4-3 (b)（engine の `%` 置換） | §7.5 を先に改訂。`/*!` は剥がさない。複文は sqlite3.complete_statement・ドル引用・分割できなければ不。複文の矛には理由 `db_multi_statement` |
+| U34 DB の写像 | R1d-r6-5, R3-r1-7 | — | §7.4 / §9.4 を先に改訂。`sql_class` が UNKNOWN なら D4 は不 |
+| U36 URL の分解 | R3d-r6-1 | R3d-r6-2, R1d-r6-7 | `_host_class` だけを直す。IP リテラルを先に試す、ValueError と `\` は unknown、末尾ドットは名前の比較だけ |
+
+### 段階 B（選んだ 4 単位）
+
+| 単位 | 直す所見 | 記録に回す所見 | 条件の要点 |
+|---|---|---|---|
+| U38 mcp 2.x | R2-r1-1, R2-r3-1, R2-r3-2, R2-r3-3, R2-r4-1（別名 import の半分） | R2-r4-1（サブクラスの半分） | snake_case は版で条件づけ（>=2.0 → 宣言、<2.0 → malformed、決まらない → D_unknown）。v2 params は第 2 位置に `CallToolRequestParams` の Obj。handler は `handler=` か args[-1]。名前の解決は import 表で一意なときだけ絞り、解けなければ裸名一致に落としてテスト候補を外す |
+| U40 呼び出し形の登録 | R2-r1-2（`x.tool(...)(fn)` と `add_tool`）、R2-r5-3（gptme spec_object） | — | 位置引数 0 は登録文のモジュールのスコープで厳密に解く（末尾名の索引で引かない）。`add_tool` は ENTRY_RULES の names に足す（逸脱）。ToolSpec は import 元で照合 |
+| U09 モジュール・クラス水準の値 | R1-r4-1, R4-r2-7, R1-r4-11, R1-r4-13, R1-r3-9（規則 B） | — | 別名の属性は条件 (i)〜(v)（束縛がちょうど 1 つ、親パッケージの同名、setattr / vars で "*"）。global 候補は関数のスコープで評価し、型を保つ join。クラス属性は型だけ付けて確度 opaque |
+| U23 入口の仮引数の種付け | R4-r4-2, R4-r1-6, R4-r4-1 | R2-r1-10（反証済み） | pydantic / dataclass は構築時フックがあれば今どおり。Path は `from pathlib import Path` に厳密に解けるときだけ。lifespan の yield 値は `_opaque_deep`（確度 opaque）で、構築式が厳密に解けるときだけ |
+
+### 手順（review_plan.md §4.4）
+
+1. この規則をコミットする（今）。§7.4 / §7.5 / §9.4 の改訂は、実装より先に `docs/contradiction_principles.md` に書いてコミットする。
+2. 反例テストを実装より先にコミットする（単位ごと）。
+3. 段階 A の scripts/ だけの修正（U50 / U51 / U52 / U53 / U54 / U32）を先に入れる。run21 の突き合わせにこの道具を使うため。
+4. 解析器の修正を単位ごとに入れ、単位ごとに `diff_effects.py`（較正対）で消えた行を確かめる。
+5. `scan_v2_run21` を取り、`compare_scans.py` で run20 と突き合わせる。消えたユニット・消えた矛は 1 件ずつ理由を確かめる。
+6. 解決率を上げる変更（U09 / U23 / U38 / U40 / U33 / U36）は敵対的レビューを通す。
+7. `docs/preregistration.md` に逸脱 #25 を書き、`docs/fingerprint.json` を作り直す。その後で学生が `analyzer-freeze-2` を打つ。
+
+**逸脱になるもの**: U40 の `add_tool`（入口の語彙の追加）、U38 の snake_case（仕様書 322 行目の「常に malformed」と食い違う）、
+U23（仕様書 §2.6:517 の「その他 → Atom」からの逸脱、構築子 / 属性遷移の追加）、§7.4 / §7.5 / §9.4 の改訂。
