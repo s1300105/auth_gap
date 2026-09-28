@@ -29,7 +29,16 @@ from .catalog.entries import (
     EntryRule,
     find_entry_rule,
 )
-from .srcindex import FuncDef, Scope, SourceIndex, _local_bindings, dotted_of, is_test_path, resolve_call_name
+from .srcindex import (
+    FuncDef,
+    Scope,
+    SourceIndex,
+    _local_bindings,
+    dotted_of,
+    idents_of,
+    is_test_path,
+    resolve_call_name,
+)
 
 #: `match` 文は Python 3.10 以降にしか無い。
 _MATCH_CASE = getattr(ast, "match_case", None)
@@ -766,6 +775,98 @@ def _scope_bindings(scope: ast.AST, name: str) -> tuple[list[ast.AST], bool]:
     デコレータ・既定値・基底は見る）。内包の中の `:=` は外側を束縛するので数える。**取りこぼすと
     外側のスコープの別の定義に解いてしまう**（偽のユニット）ので、疑わしいものは束縛として数える。
 
+    **スコープごとに 1 回だけ歩いて全部の名前の表を作る**（:func:`_scope_binding_table`）。以前は（スコープ, 名前）の
+    組ごとに歩き直し、run21 で xagent の `find_units` が 12.7 → 61.9 秒になって木の時間上限でユニットが落ちた。
+    名前ごとの束縛の列（順を含む）と動的かどうかは、名前ごとに歩いていたとき（:func:`_scope_bindings_uncached`、
+    テストの突き合わせ用に残す）と同じ。
+
+    :returns: `(束縛するノードの列, global / nonlocal / import * で動的に決まるか)`
+    """
+    table, star, declared, comp = _scope_binding_table(scope)
+    binds = list(table.get(name, ()))
+    if comp:
+        return binds, False
+    return binds, star or name in declared
+
+
+def _scope_binding_table(scope: ast.AST) -> tuple[dict[str, list[ast.AST]], bool, frozenset[str], bool]:
+    """`(名前 → 束縛するノードの列, import * があるか, global / nonlocal の名前, 内包のスコープか)`。スコープの AST に置く。"""
+    cached = scope.__dict__.get("_authgap_scope_table")
+    if cached is not None:
+        return cached
+    table: dict[str, list[ast.AST]] = {}
+
+    def add(n: str, node: ast.AST) -> None:
+        table.setdefault(n, []).append(node)
+
+    if isinstance(scope, _COMP_NODES):
+        for gen in scope.generators:
+            for n in _target_names(gen.target):
+                add(n.id, n)
+        out = (table, False, frozenset(), True)
+        scope.__dict__["_authgap_scope_table"] = out
+        return out
+    star = False
+    declared: set[str] = set()
+    stack: list[ast.AST] = []
+    if isinstance(scope, (*_FUNC_NODES, ast.Lambda)):
+        for a in _arg_nodes(scope.args):
+            add(a.arg, a)
+        body = scope.body if isinstance(scope.body, list) else [scope.body]
+        stack += list(body)
+    else:
+        stack += list(getattr(scope, "body", []))
+    while stack:
+        node = stack.pop()
+        if isinstance(node, (*_FUNC_NODES, ast.ClassDef)):
+            add(node.name, node)
+            stack += list(node.decorator_list)
+            if isinstance(node, ast.ClassDef):
+                stack += list(node.bases) + [k.value for k in node.keywords]
+            else:
+                stack += [d for d in node.args.defaults] + [d for d in node.args.kw_defaults if d is not None]
+            continue
+        if isinstance(node, ast.Lambda):
+            stack += [d for d in node.args.defaults] + [d for d in node.args.kw_defaults if d is not None]
+            continue
+        if isinstance(node, _COMP_NODES):
+            for n in ast.walk(node):
+                if isinstance(n, ast.NamedExpr) and isinstance(n.target, ast.Name):
+                    add(n.target.id, n)
+            continue
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            for a in node.names:
+                if a.name == "*":
+                    star = True
+                else:
+                    add(a.asname or a.name.split(".")[0], node)
+            continue
+        if isinstance(node, (ast.Global, ast.Nonlocal)):
+            declared.update(node.names)
+            continue
+        if isinstance(node, ast.Name) and isinstance(node.ctx, (ast.Store, ast.Del)):
+            add(node.id, node)
+        elif isinstance(node, ast.ExceptHandler) and node.name:
+            add(node.name, node)
+        elif isinstance(node, ast.alias):
+            continue
+        elif type(node).__name__ in ("MatchAs", "MatchStar") and getattr(node, "name", None):
+            add(node.name, node)  # type: ignore[attr-defined]
+        elif type(node).__name__ == "MatchMapping" and getattr(node, "rest", None):
+            add(node.rest, node)  # type: ignore[attr-defined]
+        stack += list(ast.iter_child_nodes(node))
+    out = (table, star, frozenset(declared), False)
+    scope.__dict__["_authgap_scope_table"] = out
+    return out
+
+
+def _scope_bindings_uncached(scope: ast.AST, name: str) -> tuple[list[ast.AST], bool]:
+    """`scope`（モジュール / クラス本体 / 関数 / lambda / 内包）の中で `name` を束縛するもの。
+
+    入れ子の関数・クラス・lambda の本体は別のスコープなので見ない（その名前と、外側で評価される
+    デコレータ・既定値・基底は見る）。内包の中の `:=` は外側を束縛するので数える。**取りこぼすと
+    外側のスコープの別の定義に解いてしまう**（偽のユニット）ので、疑わしいものは束縛として数える。
+
     :returns: `(束縛するノードの列, global / nonlocal / import * で動的に決まるか)`
     """
     binds: list[ast.AST] = []
@@ -929,7 +1030,11 @@ class _Resolver:
         if dotted in mods:
             chosen = dotted
         else:
-            hits = [m for m in mods if m.endswith("." + dotted)]
+            # 末尾一致の候補は dotted ごとに覚える（木の全モジュールを毎回なめていた。結果は同じ）
+            memo = self.__dict__.setdefault("_abs_hits", {})
+            hits = memo.get(dotted)
+            if hits is None:
+                hits = memo[dotted] = [m for m in mods if m.endswith("." + dotted)]
             if not hits:
                 return "extern", None
             chosen = hits[0] if len(hits) == 1 else None
@@ -1912,6 +2017,11 @@ def lowlevel_v2_registrations(index: SourceIndex) -> list[V2Registration]:
         tree = index.parse(path)
         if tree is None:
             continue
+        ids = idents_of(tree)
+        if "add_request_handler" not in ids and not any(k in ids for k in LOWLEVEL_V2_KWARGS):
+            # 登録点は、名前の末尾が `add_request_handler` の呼び出しか `on_call_tool=` を持つ呼び出しだけ。
+            # どちらの識別子も無いファイルは全ノードを歩かない（run21 の速度の退行。結果は同じ）
+            continue
         rel = index.relpath(path)
         mod = index.module_name(path)
         mscope = index.module_scope(path)
@@ -2366,7 +2476,7 @@ def _mcp_versions(index: SourceIndex) -> _McpVersions:  # noqa: C901
         if tree is None:
             continue
         rel = index.relpath(path)
-        for node in ast.walk(tree):
+        for node in _import_nodes(tree):
             names: list[str] = []
             if isinstance(node, ast.Import):
                 names = [a.name for a in node.names]
@@ -2419,6 +2529,30 @@ def _mcp_versions(index: SourceIndex) -> _McpVersions:  # noqa: C901
     mv.evidence = tuple(sorted(pooled))
     cache["v"] = mv
     return mv
+
+
+def _import_nodes(tree: ast.AST) -> tuple[ast.AST, ...]:
+    """ファイルの import 文（関数・クラス・制御構文の中を含む）。**import は文なので式の中には現れない**ので、
+    文の列（`body` / `orelse` / `finalbody` / `handlers` / `cases`）だけをたどる。木の AST に覚えておく。
+
+    `_mcp_versions` は以前 `ast.walk` で全ノードを歩いていた（式のノードが大半。run21 の速度の退行）。集める
+    import 文は同じ（順は違うが、呼び出し側は集合として使う）。
+    """
+    cached = tree.__dict__.get("_authgap_import_nodes")
+    if cached is None:
+        out: list[ast.AST] = []
+        stack: list[ast.AST] = [tree]
+        while stack:
+            node = stack.pop()
+            if isinstance(node, (ast.Import, ast.ImportFrom)):
+                out.append(node)
+                continue
+            for field_name in ("body", "orelse", "finalbody", "handlers", "cases"):
+                sub = getattr(node, field_name, None)
+                if isinstance(sub, list):
+                    stack.extend(sub)
+        cached = tree.__dict__["_authgap_import_nodes"] = tuple(out)
+    return cached
 
 
 def mcp_version_for(index: SourceIndex, relpath: str) -> str:

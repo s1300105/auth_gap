@@ -3347,14 +3347,25 @@ def _class_attr_stores_in(tree: ast.AST) -> set[str]:
 
 
 def _import_stmts_binding(tree: ast.AST, name: str) -> list[ast.AST]:
-    """ファイルの中（関数の中を含む）で `name` を束縛する import 文。"""
-    out: list[ast.AST] = []
-    for node, _p, _d in _iter_nodes(tree):
-        if isinstance(node, (ast.Import, ast.ImportFrom)) and any(
-            (a.asname or a.name.split(".")[0]) == name for a in node.names if a.name != "*"
-        ):
-            out.append(node)
-    return out
+    """ファイルの中（関数の中を含む）で `name` を束縛する import 文（ファイルの中の順）。
+
+    **名前 → import 文の表はファイルごとに 1 回だけ作る**（木の AST に覚えておく）。以前は呼び出しごとに
+    ファイルの全ノードを歩き直し、run21 で解析が 2〜10 倍遅くなって木の時間上限でユニットが落ちた
+    （xagent 352 → 1、mcparmory 646 → 449）。返す列は歩き直していたときと同じ。
+    """
+    table = tree.__dict__.get("_authgap_import_binders")
+    if table is None:
+        table = {}
+        for node, _p, _d in _iter_nodes(tree):
+            if isinstance(node, (ast.Import, ast.ImportFrom)):
+                for a in node.names:
+                    if a.name == "*":
+                        continue
+                    bucket = table.setdefault(a.asname or a.name.split(".")[0], [])
+                    if not bucket or bucket[-1] is not node:
+                        bucket.append(node)
+        tree.__dict__["_authgap_import_binders"] = table
+    return list(table.get(name, ()))
 
 
 def _iter_module_stmts(body: list):

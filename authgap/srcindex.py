@@ -132,7 +132,20 @@ class SourceIndex:
             if rel not in self.parse_failures:
                 self.parse_failures.append(rel)
         if tree is not None:
-            n = sum(1 for _ in ast.walk(tree))
+            # 数える走査で、ファイルに現れる識別子（名前・属性・キーワード引数の名前）も集めて木に置く
+            # （:func:`idents_of`。関係する識別子を含まないファイルを、全ノードを歩く前に飛ばすため）
+            n = 0
+            idents: set[str] = set()
+            for node in ast.walk(tree):
+                n += 1
+                t = type(node)
+                if t is ast.Name:
+                    idents.add(node.id)  # type: ignore[attr-defined]
+                elif t is ast.Attribute:
+                    idents.add(node.attr)  # type: ignore[attr-defined]
+                elif t is ast.keyword and node.arg:  # type: ignore[attr-defined]
+                    idents.add(node.arg)  # type: ignore[attr-defined]
+            tree.__dict__["_authgap_idents"] = frozenset(idents)
             self._node_counts[rel] = n
             if n > AST_NODE_CAP:
                 self.cap_hits.append((rel, "ast_node_cap", n))
@@ -410,6 +423,26 @@ def _local_bindings(fn: ast.AST) -> frozenset[str]:
 # --------------------------------------------------------------------------
 # dotted 名の正規化
 # --------------------------------------------------------------------------
+
+
+def idents_of(tree: ast.AST) -> frozenset[str]:
+    """ファイルに現れる識別子（`Name.id`・`Attribute.attr`・キーワード引数の名前）の集合。
+
+    :meth:`SourceIndex.parse` が数える走査で集めて木に置いたもの。無ければ（別の経路で parse した木）ここで集める。
+    **呼び出しの名前の末尾・キーワード引数の名前がこの集合に無いファイルには、その呼び出しは無い**（飛ばしてよい）。
+    """
+    cached = tree.__dict__.get("_authgap_idents")
+    if cached is None:
+        out: set[str] = set()
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Name):
+                out.add(node.id)
+            elif isinstance(node, ast.Attribute):
+                out.add(node.attr)
+            elif isinstance(node, ast.keyword) and node.arg:
+                out.add(node.arg)
+        cached = tree.__dict__["_authgap_idents"] = frozenset(out)
+    return cached
 
 
 def dotted_of(node: ast.AST) -> Optional[str]:
