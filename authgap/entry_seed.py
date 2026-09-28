@@ -18,7 +18,14 @@ level 0 の import で木の外のモジュールを指す）を通す。
    確度は opaque）で `ctx.request_context.lifespan_context` / `server.request_context.lifespan_context` に置く。
    lifespan_context は呼び出しをまたいで共有される可変オブジェクト（別のツールが書き込める）なので、起動時の
    定数を resolved で読まない（D17 改訂 4 / 5 と同じ規則。反例 ce_lifespan_rebound）。lifespan 本体の起動時の
-   効果はツールに付けない（効果を集めない別のエンジンで評価する）。
+   効果はツールに付けない（効果を集めない別のエンジンで評価する）。**型は受け手オブジェクトにだけ付け、葉の主体は
+   直す前と同じく ctx 根の MODEL/opaque にする**（:func:`shared_state_view`。敵対的レビュー U23-A1: 別のツールが
+   モデルの値を書き込める共有状態の葉を OP にすると、SELECT / INSERT の接頭辞の連結が 内 になった）。
+
+敵対的レビュー（U23-P1 / P2 / P3 / S1）で足した守り: クラス体の代入で結ぶフック（`model_post_init = f`）と、読めない
+クラス体の値（`_check: Any = field_validator(...)(f)`、名前で参照される記述子の既定値）はフック扱い。pydantic の
+既定値つき `Final` はフィールドにしない。注釈の名前が入口を囲む関数 / クラスで束縛されうるとき、またはモジュールの
+どこかで `global` 宣言されるときは解かない。
 """
 
 from __future__ import annotations
@@ -26,7 +33,7 @@ from __future__ import annotations
 import ast
 from typing import Optional
 
-from .ir import RESOLVED, Atom, Obj, Path, Prin, Unknown, Value, opaque
+from .ir import RESOLVED, Argv, Atom, Map, Obj, Path, Prin, Seq, Unknown, Value, opaque, prin_join, prov_merge
 from .srcindex import FuncDef, SourceIndex, dotted_of
 
 #: `pathlib` の具象パス型（注釈がこれに厳密に解けるときだけ Path 形にする）。
@@ -48,6 +55,8 @@ _LITERAL = frozenset({"typing.Literal", "typing_extensions.Literal"})
 _NON_FIELD_ANNOTATIONS = frozenset(
     {"typing.ClassVar", "typing_extensions.ClassVar", "dataclasses.InitVar", "dataclasses.KW_ONLY"}
 )
+#: `Final`（pydantic の家族では既定値つきならクラス変数）。
+_FINAL = frozenset({"typing.Final", "typing_extensions.Final"})
 #: 引数を構築時に注釈どおりに検証・構築する入口（執行表の確認済み）。
 _CONSTRUCTING_FRAMEWORKS = frozenset({"mcp", "fastmcp"})
 #: 組込みの型名（モジュール直下で束縛されていなければ、そのまま型として読む）。
@@ -174,9 +183,24 @@ def resolve_name(index: SourceIndex, module: str, name: str, hops: int = 0) -> O
     return out
 
 
+def _global_names(index: SourceIndex, module: str, tree: ast.AST) -> frozenset[str]:
+    """モジュールのどこか（関数・クラスの本体の中を含む）で `global` 宣言される名前。"""
+    cache = index.__dict__.setdefault("_authgap_entry_seed_globals", {})
+    if module not in cache:
+        cache[module] = frozenset(
+            n for node in ast.walk(tree) if isinstance(node, ast.Global) for n in node.names
+        )
+    return cache[module]
+
+
 def _resolve_name_uncached(index: SourceIndex, module: str, name: str, hops: int) -> Optional[tuple[str, object]]:
     tree = _module_tree(index, module)
     if tree is None:
+        return None
+    if name in _global_names(index, module, tree):
+        # **関数の `global <名前>` はモジュールの束縛を差し替える**（U23-S1。D17 改訂 2 が名指しした穴）。
+        # 以前はモジュール直下の束縛だけを数え、`def _harden(): global Req; class Req(...)` の差し替えを
+        # 見落として、検証子つきのクラスのフィールドを resolved にしていた（誤警報）。
         return None
     b = _binding(tree, name)
     if b is None:
@@ -482,7 +506,6 @@ def _own_hooks(index: SourceIndex, module: str, cd: ast.ClassDef, depth: int, se
         # `@dataclass(init=False)` / pydantic dataclass の `config=`（文字列の変換を含みうる）
         if isinstance(d, ast.Call) and any(kw.arg in ("init", "config") or kw.arg is None for kw in d.keywords):
             return True
-    dataclass_like = bool(cd.decorator_list)
     for st in cd.body:
         if isinstance(st, ast.Pass) or (
             isinstance(st, ast.Expr) and isinstance(st.value, ast.Constant) and isinstance(st.value.value, str)
@@ -503,33 +526,90 @@ def _own_hooks(index: SourceIndex, module: str, cd: ast.ClassDef, depth: int, se
                 return True
         elif isinstance(st, (ast.Assign, ast.AnnAssign)):
             targets = st.targets if isinstance(st, ast.Assign) else [st.target]
-            names = [t.id for t in targets if isinstance(t, ast.Name)]
+            names = [n.id for t in targets for n in ast.walk(t) if isinstance(n, ast.Name)]
+            # **フックの名前に代入で結ぶ形**（`model_post_init = _post` / `__post_init__ = _post`。U23-P1）。
+            # pydantic / dataclasses は名前で引くので、def で定義したときと同じく登録される。以前は
+            # FunctionDef の名前しか見ず、フィールドを resolved にしていた（誤警報）
+            if any(n in _HOOK_METHODS or n.startswith("__get_pydantic") for n in names):
+                return True
             if "model_config" in names:
                 value = st.value
                 if value is None or not isinstance(value, (ast.Call, ast.Dict)) or _config_transforms(value):
                     return True
                 continue
+            # **クラス体の値は、読める静的な値でなければフック扱い**（U23-P1 / P3）。`_check: Any =
+            # field_validator("path")(f)` のように `_` 始まりや ClassVar の注釈つき代入に置いた検証子も
+            # pydantic は登録する（以前は除外フィールドの検査を先にして見落とした）。名前で参照される既定値
+            # （`path: str = CONF`）は記述子かもしれない（dataclass は `__set__` を構築時に呼ぶ）。
+            # 除外フィールドかどうかの判定より**前に**見る
+            if st.value is not None and not _static_class_value(index, module, st.value):
+                return True
             if isinstance(st, ast.Assign):
-                # `_normalize = field_validator("path")(normalize)`（検証子の再利用形）など、クラス体の
-                # 呼び出しは何を登録するか読めない: フック扱い
-                if any(isinstance(n, ast.Call) for n in ast.walk(st.value)):
-                    return True
                 continue
             if names and not _excluded_field(index, module, st):
                 if _annotation_hooked(index, module, st.annotation, depth + 1, seen):
-                    return True
-                # dataclass の既定値が記述子（`__set__` が構築時に値を変える）かもしれない呼び出し
-                if (
-                    dataclass_like
-                    and isinstance(st.value, ast.Call)
-                    and _ext(resolve_expr(index, module, st.value.func)) not in _FIELD_FACTORIES
-                ):
                     return True
     return False
 
 
 #: フィールドの既定値として読んでよい構築子（値を変えない）。
-_FIELD_FACTORIES = frozenset({"dataclasses.field", "pydantic.Field", "pydantic.fields.Field"})
+_FIELD_FACTORIES = frozenset(
+    {
+        "dataclasses.field",
+        "pydantic.Field",
+        "pydantic.fields.Field",
+        "pydantic.PrivateAttr",
+        "pydantic.fields.PrivateAttr",
+    }
+)
+
+
+def _literal(node: ast.AST) -> bool:
+    """リテラル（定数・定数の単項演算・リテラルだけのタプル / リスト / 集合 / 辞書）か。"""
+    if isinstance(node, ast.Constant):
+        return True
+    if isinstance(node, ast.UnaryOp) and isinstance(node.op, (ast.USub, ast.UAdd)):
+        return isinstance(node.operand, ast.Constant)
+    if isinstance(node, (ast.Tuple, ast.List, ast.Set)):
+        return all(_literal(e) for e in node.elts)
+    if isinstance(node, ast.Dict):
+        return all(k is not None and _literal(k) for k in node.keys) and all(_literal(v) for v in node.values)
+    return False
+
+
+def _static_class_value(index: SourceIndex, module: str, node: ast.AST, hops: int = 0) -> bool:
+    """クラス体の代入の値が、構築時に値を変えるもの（記述子・検証子の登録）ではないと**読める**か。
+
+    読めるのは、リテラル、モジュール直下でちょうど 1 回リテラルに束縛される名前、`Field(...)` /
+    `PrivateAttr(...)` / `dataclasses.field(...)` で引数が同じく読めるもの（`default_factory=` は呼び出し可能な
+    値の参照なのでクラス属性の記述子にはならない）。それ以外（呼び出し・名前で参照されるオブジェクト・
+    属性・解けない名前）は偽（フック扱い = 今日どおり）。
+    """
+    if hops > _MAX_HOPS:
+        return False
+    if _literal(node):
+        return True
+    if isinstance(node, (ast.Name, ast.Attribute)):
+        r = resolve_expr(index, module, node)
+        if r is not None and r[0] == "assign":
+            amod, value = r[1]  # type: ignore[misc]
+            return _static_class_value(index, amod, value, hops + 1) and not isinstance(value, ast.Call)
+        return False
+    if isinstance(node, ast.Call) and _ext(resolve_expr(index, module, node.func)) in _FIELD_FACTORIES:
+        for a in node.args:
+            if isinstance(a, ast.Starred) or not _static_class_value(index, module, a, hops + 1):
+                return False
+        for kw in node.keywords:
+            if kw.arg is None:
+                return False
+            if kw.arg == "default_factory":
+                if isinstance(kw.value, (ast.Name, ast.Attribute, ast.Lambda)):
+                    continue
+                return False
+            if not _static_class_value(index, module, kw.value, hops + 1):
+                return False
+        return True
+    return False
 #: 構築時に値を変えないメソッドの装飾子。**これ以外の装飾子はフック扱い**（別名 import の `field_validator`・
 #: 木内の包み関数も含めて読めないものは今日どおりにする）。
 _SAFE_METHOD_DECORATORS = frozenset(
@@ -609,8 +689,9 @@ def _patched_class_names(index: SourceIndex) -> frozenset[str]:
     return cache["_authgap_patched_classes"]
 
 
-def _excluded_field(index: SourceIndex, module: str, st: ast.AnnAssign) -> bool:
-    """モデルが埋めるフィールドではないもの（`_` 始まり・`ClassVar` / `InitVar`・`PrivateAttr`・`init=False`）。"""
+def _excluded_field(index: SourceIndex, module: str, st: ast.AnnAssign, kind: Optional[str] = None) -> bool:
+    """モデルが埋めるフィールドではないもの（`_` 始まり・`ClassVar` / `InitVar`・`PrivateAttr`・`init=False`、
+    pydantic の家族では既定値つきの `Final`）。`kind` は家族の種類（分からなければ None）。"""
     if not isinstance(st.target, ast.Name) or st.target.id.startswith("_"):
         return True
     ann = _parse_str(st.annotation)
@@ -619,6 +700,16 @@ def _excluded_field(index: SourceIndex, module: str, st: ast.AnnAssign) -> bool:
         _ext(resolve_expr(index, module, head)) in _NON_FIELD_ANNOTATIONS
         or _tail(head) in ("ClassVar", "InitVar", "KW_ONLY")
     ):
+        return True
+    if (
+        kind == "pydantic"
+        and st.value is not None
+        and head is not None
+        and (_ext(resolve_expr(index, module, head)) in _FINAL or _tail(head) == "Final")
+    ):
+        # **pydantic は既定値つきの `Final` をクラス変数として扱う**（model_fields に入らない。U23-P2）。
+        # 以前はフィールドとして MODEL/resolved にし、OP の定数 FIXED を開く書き込みを矛にしていた（誤警報）。
+        # dataclass / NamedTuple では既定値つきの Final も init の引数（フィールド）のまま
         return True
     v = st.value
     if isinstance(v, ast.Call):
@@ -630,7 +721,9 @@ def _excluded_field(index: SourceIndex, module: str, st: ast.AnnAssign) -> bool:
     return False
 
 
-def _family_fields(index: SourceIndex, chain: list[tuple[str, ast.ClassDef]]) -> list[tuple[str, str, ast.AST]]:
+def _family_fields(
+    index: SourceIndex, chain: list[tuple[str, ast.ClassDef]], kind: Optional[str] = None
+) -> list[tuple[str, str, ast.AST]]:
     """家族のフィールド `(名前, 定義したモジュール, 注釈)`。基底が先、同名は後の定義が勝つ。
     同じ名前が家族のどこかで `def` / 注釈なしの代入としても束縛されるフィールドは外す（property など）。"""
     fields: dict[str, tuple[str, ast.AST]] = {}
@@ -638,7 +731,7 @@ def _family_fields(index: SourceIndex, chain: list[tuple[str, ast.ClassDef]]) ->
     for mod, cd in chain:
         for st in cd.body:
             if isinstance(st, ast.AnnAssign):
-                if _excluded_field(index, mod, st):
+                if _excluded_field(index, mod, st, kind):
                     if isinstance(st.target, ast.Name):
                         other.add(st.target.id)
                     continue
@@ -685,7 +778,7 @@ def _typed_seed(
     if fam is None or class_hooked(index, cmod, cnode):
         return None
     fields: list[tuple[str, Value]] = []
-    for fname, fmod, fann in _family_fields(index, fam[1]):
+    for fname, fmod, fann in _family_fields(index, fam[1], fam[0]):
         froot = f"{root}.{fname}"
         v = _typed_seed(index, fmod, fann, froot, depth + 1, models_ok)
         if v is None:
@@ -732,6 +825,93 @@ def _arg_nodes(fn: ast.AST) -> dict[str, ast.arg]:
     return {a.arg: a for a in list(args.posonlyargs) + list(args.args) + list(args.kwonlyargs)}
 
 
+def _parent_map(index: SourceIndex, module: str, tree: ast.AST) -> dict[int, ast.AST]:
+    cache = index.__dict__.setdefault("_authgap_entry_seed_parents", {})
+    if module not in cache:
+        pm: dict[int, ast.AST] = {}
+        for node in ast.walk(tree):
+            for child in ast.iter_child_nodes(node):
+                pm[id(child)] = node
+        cache[module] = pm
+    return cache[module]
+
+
+def _enclosing_scopes(index: SourceIndex, unit) -> Optional[list[ast.AST]]:
+    """入口の定義を囲む関数 / クラス（内側が先）。モジュールの木の中に見つからなければ None。"""
+    tree = _module_tree(index, unit.module)
+    if tree is None:
+        return None
+    pm = _parent_map(index, unit.module, tree)
+    out: list[ast.AST] = []
+    cur = unit.node
+    while True:
+        par = pm.get(id(cur))
+        if par is None:
+            return None
+        if par is tree:
+            return out
+        if isinstance(par, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Lambda)):
+            out.append(par)
+        cur = par
+
+
+def _bound_names(scope: ast.AST) -> frozenset[str]:
+    """スコープ（関数 / クラス）の中で束縛されうる名前。**入れ子の本体も含めて保守的に**数える
+    （仮引数・代入先・def / class・import・`global` / `nonlocal`・except / match の名前）。"""
+    out: set[str] = set()
+    for n in ast.walk(scope):
+        if isinstance(n, ast.arg):
+            out.add(n.arg)
+        elif isinstance(n, ast.Name) and isinstance(n.ctx, (ast.Store, ast.Del)):
+            out.add(n.id)
+        elif isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) and n is not scope:
+            out.add(n.name)
+        elif isinstance(n, ast.Import):
+            out.update(a.asname or a.name.split(".")[0] for a in n.names)
+        elif isinstance(n, ast.ImportFrom):
+            out.update(a.asname or a.name for a in n.names)
+        elif isinstance(n, (ast.Global, ast.Nonlocal)):
+            out.update(n.names)
+        elif isinstance(n, ast.ExceptHandler) and n.name:
+            out.add(n.name)
+        elif isinstance(n, (ast.MatchAs, ast.MatchStar)) and n.name:
+            out.add(n.name)
+        elif isinstance(n, ast.MatchMapping) and n.rest:
+            out.add(n.rest)
+    return frozenset(out)
+
+
+def _annotation_names(ann: ast.AST) -> set[str]:
+    """注釈に現れる名前（文字列注釈の中も）。"""
+    out: set[str] = set()
+    stack = [ann]
+    while stack:
+        node = stack.pop()
+        for n in ast.walk(node):
+            if isinstance(n, ast.Name):
+                out.add(n.id)
+            elif isinstance(n, ast.Constant) and isinstance(n.value, str):
+                sub = _parse_str(n)
+                if sub is not None and sub is not n:
+                    stack.append(sub)
+    return out
+
+
+def _shadowed_annotation(index: SourceIndex, unit, ann: ast.AST) -> bool:
+    """注釈の名前が、入口を囲む関数 / クラスのスコープで束縛されうるか（U23-S1）。
+
+    仮引数の注釈は定義の時点で囲むスコープで評価される。`def register(mcp): class Req(...)` / 局所の
+    `from store import Path` のように囲むスコープで束縛される名前をモジュール直下の束縛で解くと、別の
+    クラス / 型の種を置く（誤警報）。囲むスコープが見つからないときも真（種を置かない = 今日どおり）。"""
+    scopes = _enclosing_scopes(index, unit)
+    if scopes is None:
+        return True
+    if not scopes:
+        return False
+    names = _annotation_names(ann)
+    return any(_bound_names(sc) & names for sc in scopes)
+
+
 def annotated_param_seeds(index: SourceIndex, unit) -> dict[str, Value]:
     """入口の仮引数のうち、注釈から形を与えられるものの種（R4-r4-2 / R4-r1-6）。"""
     out: dict[str, Value] = {}
@@ -742,6 +922,8 @@ def annotated_param_seeds(index: SourceIndex, unit) -> dict[str, Value]:
             continue
         a = args.get(p.name)
         if a is None or a.annotation is None:
+            continue
+        if _shadowed_annotation(index, unit, a.annotation):
             continue
         v = _typed_seed(index, unit.module, a.annotation, p.name, 0, models_ok)
         if v is not None:
@@ -957,17 +1139,78 @@ def lifespan_seeds(index: SourceIndex, unit) -> dict[str, Value]:
             continue
         if attr == "call_tool":
             if not _rebinds(unit.node, recv) and recv not in _arg_nodes(unit.node):
-                out[f"{recv}.request_context.lifespan_context"] = value
+                key = f"{recv}.request_context.lifespan_context"
+                out[key] = shared_state_view(value, key)
             continue
         for name, a in _arg_nodes(unit.node).items():
             if a.annotation is None or _rebinds(unit.node, name):
                 continue
+            if _shadowed_annotation(index, unit, a.annotation):
+                continue  # 囲むスコープで束縛される `Context`（U23-S1）
             node, _clean = unwrap_annotation(index, unit.module, a.annotation)
             if isinstance(node, ast.Subscript):  # `Context[ServerSession, AppContext]`
                 node = node.value
             if node is None or _ext(resolve_expr(index, unit.module, node)) not in CONTEXT_TYPES:
                 continue
-            out[f"{name}.request_context.lifespan_context"] = value
+            # root は ctx（直す前に ctx の属性・添字から読んだときと同じ部分パス `ctx["table"]` になる）
+            view = shared_state_view(value, name)
+            out[f"{name}.request_context.lifespan_context"] = view
             if ctor is not None and ctor.startswith("fastmcp."):
-                out[f"{name}.lifespan_context"] = value
+                out[f"{name}.lifespan_context"] = view
     return out
+
+
+def shared_state_view(v: Value, root: str) -> Value:
+    """lifespan_context（呼び出しをまたいで共有される可変の状態）の種の見え方（U23-A1）。
+
+    **型は受け手オブジェクトにだけ付け、受け手型の要らない葉（Atom / Str / 形不明 / 定数）は、直す前と同じく
+    ctx 根の MODEL（確度 opaque(unresolved)、root は ctx の部分パス）にする。** 別のツールが
+    `lifespan_context["table"] = table` とモデルの値を書き込めるので、葉はモデルの値かもしれない。以前は
+    yield 値の主体（OP）をそのまま置き、`"SELECT … " + st["table"]` / `"INSERT … '" + st["tag"]` を
+    OP/opaque の接頭辞として READ / INSERT(additive) → 内 にしていた（誤 clear。fix_outline (4)「D1 / D2 の類は
+    不 → 不で変わらない」に反した）。
+
+    * 容器（Map / Seq / Argv）と受け手オブジェクト（Obj / Path）は形を保ち（受け手型と、キー / 属性で葉まで
+      たどるため）、主体に MODEL を合流し、確度を opaque にする。読めていない要素（Map / 列の tail、Obj の
+      知らない属性は容器の主体に倒れる）も MODEL/opaque。
+    * Map のキーで降りると root を `root["key"]` にする（エンジンの定数キーの添字と同じ精緻化）。属性・列の
+      要素・パスの部分は root を変えない（直す前に ctx の属性から読んだときと同じ）。
+    * 形の再帰は打ち切らない。循環（あり得ないはずのもの）と処理系の再帰の上限は葉として扱う（fail closed）。
+    """
+
+    def leaf(r: str) -> Value:
+        return Value(Prin.MODEL, opaque("unresolved"), Unknown(), frozenset(), frozenset({r}))
+
+    active: set[int] = set()
+
+    def go(x: Value, r: str) -> Value:
+        s = x.shape
+        if not isinstance(s, (Map, Seq, Argv, Obj, Path)) or id(x) in active:
+            return leaf(r)
+        active.add(id(x))
+        try:
+            if isinstance(s, Map):
+                ns: object = Map(
+                    tuple((k, go(e, f'{r}["{k}"]')) for k, e in s.entries),
+                    go(s.tail, r) if s.tail is not None else leaf(r),
+                )
+            elif isinstance(s, (Seq, Argv)):
+                ns = type(s)(tuple(go(e, r) for e in s.elems), go(s.tail, r) if s.tail is not None else leaf(r))
+            elif isinstance(s, Obj):
+                ns = Obj(s.classes, tuple((k, go(e, r)) for k, e in s.fields))
+            else:
+                ns = Path(
+                    go(s.base, r) if s.base is not None else None,
+                    tuple(go(e, r) for e in s.segs),
+                    go(s.tail, r) if s.tail is not None else None,
+                )
+        finally:
+            active.discard(id(x))
+        return Value(
+            prin_join(x.prin, Prin.MODEL), prov_merge(x.prov, opaque("unresolved")), ns, x.attrs, frozenset({r})
+        )
+
+    try:
+        return go(v, root)
+    except RecursionError:
+        return leaf(root)

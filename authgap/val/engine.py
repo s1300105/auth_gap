@@ -2920,31 +2920,65 @@ def _is_immutable_value(v: Value) -> bool:
     return isinstance(v.shape, (Atom, Str, Path))
 
 
-def _opaque_deep(v: Value, depth: int = 2) -> Value:
+def _opaque_deep(v: Value, depth: Optional[int] = None) -> Value:
     """値とその要素 / フィールドの確度に `opaque(unresolved)` を合流する。**形と主体は保つ**
     （受け手の型が残るので proxy sink の効果行は落ちない）。列と辞書には「まだ見ていない要素」を
-    表す opaque の tail を足す（別の場所で追加されたキーを読む形のため）。"""
+    表す opaque の tail を足す（別の場所で追加されたキーを読む形のため）。
+
+    **形の再帰を深さで打ち切らない**（D64 / U23 の敵対的レビュー U23-A2）。以前は `depth=2` で止め、
+    3 段目より深い要素（`STATE["cfg"]["saved"]["sql"]`、lifespan の `cfg.saved.method`）の確度が
+    resolved のまま残り、別のツールが書き換える共有状態の起動時の定数を READ / HTTP_SAFE と読んで
+    内 にしていた（誤 clear）。`Path` の base / segs / tail も同じく降りる（以前は降りなかった）。
+    値は凍結したデータ構造なので形の再帰は有限だが、循環（あり得ないはずのもの）と処理系の再帰の
+    上限に当たったときは、そこを opaque の Unknown に置き換えて止める（fail closed）。
+    `depth` は呼び出し側との互換のために残した引数で、使わない。
+    """
+    del depth
     unknown = Value(Prin.OP, opaque("unresolved"), Unknown())
-    s = v.shape
-    if depth > 0:
-        if isinstance(s, (Seq, Argv)):
-            tail = _opaque_deep(s.tail, depth - 1) if s.tail is not None else unknown
-            s = type(s)(tuple(_opaque_deep(e, depth - 1) for e in s.elems), tail)
-        elif isinstance(s, Map):
-            tail = _opaque_deep(s.tail, depth - 1) if s.tail is not None else unknown
-            s = Map(tuple((k, _opaque_deep(e, depth - 1)) for k, e in s.entries), tail)
-        elif isinstance(s, Obj):
-            s = Obj(s.classes, tuple((k, _opaque_deep(e, depth - 1)) for k, e in s.fields))
-    if isinstance(s, Str):
-        # **Str の part にも合流する**（D17 改訂 5）。`_make_str` は連結のたびに part を平らに展開する
-        # ので、外側の確度だけ落としても `BASE = HOST + VERSION` の part が resolved のまま URL 分割に
-        # 届き、再束縛される BASE から host = OP / resolved を切り出していた（4 回目のレビューの再現中に発見）。
-        # part は Str にならない（平らにしてある）ので深さは消費しない。
-        s = Str(
-            tuple(_opaque_deep(p, 0) for p in s.parts),
-            _opaque_deep(s.tail, 0) if s.tail is not None else None,
-        )
-    return Value(v.prin, prov_merge(v.prov, opaque("unresolved")), s, v.attrs, v.roots)
+    memo: dict[int, Value] = {}
+    active: set[int] = set()
+
+    def go(x: Value) -> Value:
+        key = id(x)
+        hit = memo.get(key)
+        if hit is not None:
+            return hit
+        if key in active:
+            # 循環: 止めたところは形の分からない opaque の値（主体は保つ）
+            return Value(x.prin, prov_merge(x.prov, opaque("unresolved")), Unknown(), frozenset(), x.roots)
+        active.add(key)
+        try:
+            s = x.shape
+            if isinstance(s, (Seq, Argv)):
+                tail = go(s.tail) if s.tail is not None else unknown
+                s = type(s)(tuple(go(e) for e in s.elems), tail)
+            elif isinstance(s, Map):
+                tail = go(s.tail) if s.tail is not None else unknown
+                s = Map(tuple((k, go(e)) for k, e in s.entries), tail)
+            elif isinstance(s, Obj):
+                s = Obj(s.classes, tuple((k, go(e)) for k, e in s.fields))
+            elif isinstance(s, Path):
+                s = Path(
+                    go(s.base) if s.base is not None else None,
+                    tuple(go(e) for e in s.segs),
+                    go(s.tail) if s.tail is not None else None,
+                )
+            elif isinstance(s, Str):
+                # **Str の part にも合流する**（D17 改訂 5）。`_make_str` は連結のたびに part を平らに展開する
+                # ので、外側の確度だけ落としても `BASE = HOST + VERSION` の part が resolved のまま URL 分割に
+                # 届き、再束縛される BASE から host = OP / resolved を切り出していた（4 回目のレビューの再現中に発見）。
+                s = Str(tuple(go(p) for p in s.parts), go(s.tail) if s.tail is not None else None)
+            out = Value(x.prin, prov_merge(x.prov, opaque("unresolved")), s, x.attrs, x.roots)
+        finally:
+            active.discard(key)
+        memo[key] = out
+        return out
+
+    try:
+        return go(v)
+    except RecursionError:
+        # 処理系の再帰の上限（深さで打ち切るのではなく、降りきれないときの fail closed）
+        return Value(v.prin, prov_merge(v.prov, opaque("unresolved")), Unknown(), frozenset(), v.roots)
 
 
 def _module_bindings(tree: ast.AST, name: str) -> list[ast.AST]:
