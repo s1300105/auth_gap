@@ -59,6 +59,7 @@ from ..ir import (
     Unknown,
     Value,
     opaque,
+    prin_join,
     prov_merge,
     value_join,
 )
@@ -258,6 +259,8 @@ class ValEngine:
         #: 呼び出し側は候補ごとに受け手をその 1 型に絞って降り、行を witness で分ける（F7）。
         self._split_receiver = False
         self._class_defaults_active: set[tuple[str, str]] = set()
+        #: クラス体の既定値の記憶化 `(module, class) -> {name: Value}`（クラス属性 `Cls.ATTR` の読み。D64 / U09）。
+        self._class_values: dict[tuple[str, str], dict[str, Value]] = {}
         #: いま実行中のメソッドの `(クラス名, モジュール)`。`super().m()` の解決に使う（D35 改訂）。
         self._class_stack: list[tuple[Optional[str], Optional[str]]] = []
         #: 直前の `_resolve_in_tree` が末尾名だけで決めたか（見える同名の定義が決まらないときも立つ）。
@@ -522,6 +525,15 @@ class ValEngine:
             v = env.get(path)
             if v is not None:
                 return v
+        # **モジュール別名の属性 `config.X` とクラス属性 `Cls.X`**（D64 / U09、R1-r4-1 / R1-r3-9）。
+        # 先頭の名前はモジュール / クラスであって値ではないので、下の汎用の経路では opaque(unresolved) の
+        # Unknown になり、定数の SQL / mode が読めず、モジュール / クラスに置いたクライアント / 接続の受け手の
+        # 型が消えて NET / DB の行ごと落ちていた（誤 clear）。**from-import の形と同じ束縛を同じ検査で読む。**
+        mv = self._module_attr_value(node, env, scope, res)
+        if mv is None:
+            mv = self._class_attr_value(node, env, scope, res)
+        if mv is not None:
+            return mv
         base = self._eval(node.value, env, scope, res, depth, chain)
         if isinstance(base.shape, Path) and node.attr in PATH_ANCESTOR_ATTRS:
             # **`p.parent` / `p.parents[n]` は Path を返す。**形を落とすと
@@ -1215,9 +1227,9 @@ class ValEngine:
     def _module_value(self, scope: Scope, name: str, res: ValResult) -> Optional[Value]:
         """モジュール水準の束縛を読む（Def 4 / §2.3、D17）。
 
-        * 同じモジュールの直下（`if` / `try` / `with` の中を含む）にある代入の **join**
-          （flow-insensitive。どの代入が効くかを決めない）
-        * `from m import NAME` は m の同名束縛を 1 段だけ追う
+        * 同じモジュールの直下（`if` / `try` / `with` / ループの中を含む）の束縛の **join**
+          （flow-insensitive。どの代入が効くかを決めない）。値は :meth:`_module_binding_value`
+        * `from m import NAME` は m の同名束縛を追う（m が `__init__.py` の再公開なら、その元まで。D64 / U09）
         * 関数内で束縛される名前（`scope.local_bindings`）は読まない
         * **評価中の呼び出し事象は効果にしない**（モジュール初期化はユニットから到達しない）
 
@@ -1236,18 +1248,39 @@ class ValEngine:
             if strict is None:
                 return None  # 外部パッケージを末尾成分一致で木内モジュールと取り違えない
             # 読む側のモジュールで import した名前が再束縛されるなら、値は読むが確度を opaque に落とす。
-            reader_rebinds = name in self._module_writes(scope.module)
+            reader_rebinds = self._reader_rebinds(scope.module, name)
             module, attr = strict, last
+        return self._module_binding_value(module, attr, res, reader_rebinds)
+
+    def _module_binding_value(
+        self, module: str, attr: str, res: ValResult, reader_rebinds: bool = False
+    ) -> Optional[Value]:
+        """モジュール `module` の直下の名前 `attr` の値（D17。読み方によらない共通の部分。D64 / U09）。
+
+        `from m import NAME`・`m.NAME`（モジュール別名の属性）・`pkg/__init__.py` の再公開・同じモジュールの
+        素の名前は、**どれもここで同じ候補と同じ検査で読む**。候補は :meth:`_binding_candidates`
+        （直下の代入、同じ長さのタプル代入の位置、関数内の `global` 束縛の右辺、唯一の束縛である
+        from-import の再公開元）。検査は D17 改訂 2〜5 のまま: 木内のどこかで再束縛される名前・変更されうる
+        コンテナ / オブジェクトは、**型と主体を保って確度だけ opaque に落とす**（`_opaque_deep`）。
+        """
         # **木内のどこかで再束縛される名前は定数として読まない**（D17 改訂 2 / 3）:
         # 関数内の `global` 再束縛、関数の局所変数（入れ子関数が掴む同名の外側変数を含む）、
         # 他モジュールからの `m.NAME = ...`、`globals()` / `vars()` / `exec` を使うモジュール（"*"）。
+        # **モジュール別名の属性は遅延束縛**なので、モジュールオブジェクトが値として出ていく
+        # （`setattr(config, key, v)` / `vars(config)` / `config.__dict__` / `c = config` / `f(config)`）
+        # なら、そのモジュールの名前はどれも書き換えられうる（D64 / U09 条件 (iv)。from-import の形にも掛ける）。
         # **コンテナ / オブジェクトの変更はここで弾かない**（型が消えて効果行ごと落ちる）。
         # 代わりに下で確度を opaque に落とす。
         writes = self._module_writes(module)
         # **読まないのではなく、型と主体を保ったまま確度を opaque に落とす**（D17 改訂 4）。
         # None を返すと受け手の型が消え、`exec` / `globals()` を含むモジュールのオブジェクトを受け手に
         # する効果行が丸ごと消えた（3 回目のレビュー）。opaque は clean ではない（§2.6）。
-        rebound = attr in writes or "*" in writes or (module, attr) in self._tree_attr_writes()
+        rebound = (
+            attr in writes
+            or "*" in writes
+            or (module, attr) in self._tree_attr_writes()
+            or self._module_escaped(module)
+        )
         key = (module, attr)
         if key in self._module_values:
             return _reader_view(self._module_values[key], reader_rebinds)
@@ -1256,28 +1289,430 @@ class ValEngine:
             return Value(Prin.OP, opaque("recursion"), Unknown())
         path = self.index.resolve_module_path(module)
         tree = self.index.parse(path) if path is not None else None
-        rhs = _module_assignments(tree.body, attr) if tree is not None else []
-        if not rhs or path is None:
+        if tree is None or path is None:
             self._module_values[key] = None
             return None
         self._module_active.add(key)
         saved = self.on_call
         self.on_call = None
-        out: Optional[Value] = None
         try:
-            mscope = self.index.module_scope(path)
-            for expr in rhs:
-                v = self._eval(expr, Env(), mscope, res, 0, (f"<module:{module}>",))
-                out = v if out is None else value_join(out, v)
+            cands, incomplete = self._binding_candidates(module, path, tree, attr, res)
         finally:
             self.on_call = saved
             self._module_active.discard(key)
-        if out is not None and (rebound or not _is_immutable_value(out)):
+        if not cands:
+            self._module_values[key] = None
+            return None
+        # **型を保つ join**（D64 / U09、R4-r2-7 (b)）。素の value_join は `Obj ⊔ Unknown` を Unknown に倒し、
+        # `X = connect(); if c: X = external()` / `global X; X = external()` の受け手の型を捨てて行ごと消した。
+        out = _typed_join(cands)
+        if incomplete:
+            # 評価できない束縛（タプルの Starred、`+=`、for / with の束縛、import など）がある。
+            # 候補が揃っていないので確度を opaque に落とす（形は残す: 警報の向きの判定は形の定数を読む）。
+            out = Value(out.prin, prov_merge(out.prov, opaque("unresolved")), out.shape, out.attrs, out.roots)
+        if rebound or not _is_immutable_value(out):
             # コンテナ / オブジェクトは別名・補助関数・他モジュールから構文で追えない形で変更されうる。
             # **型と主体は保ち、確度だけ opaque に落とす**（効果行を落とさず、resolved の定数にもしない）。
             out = _opaque_deep(out)
         self._module_values[key] = out
         return _reader_view(out, reader_rebinds)
+
+    def _binding_candidates(
+        self, module: str, path: str, tree: ast.Module, attr: str, res: ValResult
+    ) -> tuple[list[Value], bool]:
+        """`module` の名前 `attr` がとりうる値の候補と、評価できない束縛があるか（D64 / U09）。
+
+        * 直下の `attr = e` / `attr: T = e`（`if` / `try` / `with` / ループの中を含む）。モジュールのスコープで評価
+        * **タプル代入**（R1-r4-13）: 対象と右辺が同じ長さの Tuple / List で、どちらにも Starred が無いときだけ
+          位置で対応を取る（入れ子は再帰）。それ以外（`A, B = f()`、Starred）は評価できない束縛
+        * **関数内の `global attr` の下の代入**（R4-r2-7 (a)）。右辺は**その関数のスコープ**で評価する
+          （モジュールのスコープで評価すると、仮引数名が同名のモジュール水準の名前に化ける）。局所の名前は
+          env に無いので opaque(unresolved) になる
+        * **`pkg/__init__.py` の再公開**（R1-r4-11）: その名前の束縛がちょうど 1 つで、それがモジュール直下の
+          `from ... import` で、関数の中で書き換えられないとき（D61 の改訂 G3 の条件 1）だけ、`level` で解いた
+          元のモジュールの同名束縛を読む（条件 2）。それ以外の import の束縛は評価できない束縛
+        * それ以外の束縛（`+=`、for / with / except の束縛、`:=`、def / class）は評価できない束縛
+        """
+        mscope = self.index.module_scope(path)
+        writes = self._module_writes(module)
+        binds = self._binding_map(module, tree).get(attr, [])
+        where = (f"<module:{module}>",)
+        cands: list[Value] = []
+        # **`from X import *` はどの名前も束縛しうる**（Django の `from .local_settings import *` のように、上の
+        # 定数を後から上書きする形）。字面の束縛だけで候補が揃ったとみなさない（D64 / U09）。
+        incomplete = self._has_star_import(module, tree)
+        for b in binds:
+            if isinstance(b, ast.Assign):
+                for t in b.targets:
+                    for expr in _target_sources(t, b.value, attr):
+                        if expr is None:
+                            incomplete = True
+                        else:
+                            cands.append(self._eval(expr, Env(), mscope, res, 0, where))
+            elif isinstance(b, ast.AnnAssign):
+                if b.value is not None and isinstance(b.target, ast.Name):
+                    cands.append(self._eval(b.value, Env(), mscope, res, 0, where))
+                # 値の無い注釈 `X: T` は束縛しない
+            elif (
+                isinstance(b, ast.ImportFrom)
+                and len(binds) == 1
+                and b in tree.body
+                and attr not in writes
+                and "*" not in writes
+            ):
+                v = self._reexported_value(module, path, b, attr, res)
+                if v is None:
+                    incomplete = True
+                else:
+                    cands.append(v)
+            else:
+                incomplete = True
+        for fn, expr in self._global_sources(module, tree).get(attr, []):
+            if expr is None:
+                incomplete = True
+                continue
+            fscope = self.index.function_scope(path, fn)
+            cands.append(self._eval(expr, Env(), fscope, res, 0, where))
+        return cands, incomplete
+
+    def _reexported_value(
+        self, module: str, path: str, imp: ast.ImportFrom, attr: str, res: ValResult
+    ) -> Optional[Value]:
+        """`module` の `from X import name [as attr]` が指す値（D61 の改訂 G3 の値の版、D64 / U09 の R1-r4-11）。
+
+        `X` は `ImportFrom.level` で解く（import 表は相対の点を捨てるので使わない）。`from . import m`
+        （X が空）はモジュールの import なので値ではない。木の外なら None。
+        """
+        if not imp.module:
+            return None
+        alias = next((a for a in imp.names if (a.asname or a.name) == attr), None)
+        if alias is None:
+            return None
+        origin = self._import_from_base(module, path, imp)
+        if origin is None:
+            return None
+        return self._module_binding_value(origin, alias.name, res)
+
+    def _import_from_base(self, module: str, path: str, imp: ast.ImportFrom) -> Optional[str]:
+        """`module` の中の `from X import ...` の X を、`level` で厳密に解いた木内のモジュール名（D61 の改訂 G3 の 2）。
+
+        `level > 0` は相対（`__init__.py` の基準はパッケージ自身、ほかは親パッケージ）。`level == 0` は絶対
+        import として厳密に解く。`from . import m`（X が空）は基準のパッケージそのもの。木の外なら None。
+        """
+        if imp.level > 0:
+            base = module if os.path.basename(path) == "__init__.py" else module.rpartition(".")[0]
+            for _lvl in range(imp.level - 1):
+                base = base.rpartition(".")[0]
+            if not base:
+                return None
+            nxt = f"{base}.{imp.module}" if imp.module else base
+            return nxt if self._is_tree_module(nxt) else None
+        return self.index.resolve_module_strict(imp.module) if imp.module else None
+
+    def _is_tree_module(self, dotted: str) -> bool:
+        """`dotted` が木の中のモジュール（パッケージの `__init__.py` を含む）の名前そのものか。"""
+        p = self.index.resolve_module_path(dotted)
+        return p is not None and self.index.module_name(p) == dotted
+
+    def _has_star_import(self, module: str, tree: ast.Module) -> bool:
+        """モジュール直下（`if` / `try` などの中を含む）に `from X import *` があるか（索引ごとに記憶化）。"""
+        cache = self.index.__dict__.setdefault("_authgap_star_import", {})
+        if module not in cache:
+            cache[module] = any(
+                isinstance(st, ast.ImportFrom) and any(a.name == "*" for a in st.names)
+                for st in _iter_module_stmts(tree.body)
+            )
+        return cache[module]
+
+    def _binding_map(self, module: str, tree: ast.Module) -> dict[str, list[ast.AST]]:
+        """モジュールの名前ごとの直下の束縛（:func:`_module_binding_map`。索引ごとに記憶化）。"""
+        cache = self.index.__dict__.setdefault("_authgap_binding_map", {})
+        if module not in cache:
+            cache[module] = _module_binding_map(tree)
+        return cache[module]
+
+    def _global_sources(self, module: str, tree: ast.Module) -> dict[str, list[tuple[ast.AST, Optional[ast.AST]]]]:
+        """モジュールの名前ごとの、`global` 宣言の下の束縛（:func:`_global_binding_map`。索引ごとに記憶化）。"""
+        cache = self.index.__dict__.setdefault("_authgap_global_sources", {})
+        if module not in cache:
+            cache[module] = _global_binding_map(tree)
+        return cache[module]
+
+    def _module_attr_value(self, node: ast.Attribute, env: Env, scope: Scope, res: ValResult) -> Optional[Value]:
+        """モジュール別名の属性 `config.X` / `cfg.X` / `pkg.config.X` の値（D64 / U09、R1-r4-1）。
+
+        `config.X` は Python の import の意味で `from .config import X` と同じモジュールの束縛 `X` を読む。
+        ただし属性の読みは**遅延束縛**（後からのモジュール属性の書き換えを見る）で、別名そのものの束縛も
+        曖昧になりうるので、次の条件をすべて満たすときだけ読む（検証役の反例 f1_shadow / f1_dynattr /
+        f1_condimport / f1_local を避ける条件）。満たさなければ None（呼び出し側が今までどおり opaque にする）。
+
+        (i) 別名の先頭の名前が env に無く、`scope.local_bindings`（関数の局所）にも無い。
+        (ii) 読む側のモジュールで、その名前の束縛が**ちょうど 1 つで import** である（D61 の改訂 G3 の条件 3 と同じ
+             判定）。関数の中の import なら、この関数でその import を実行していて（env の値が import の印）、
+             ファイルの中でその名前を束縛する import がどれも同じモジュールを指す。
+        (iii) 別名が木内のモジュールに解け（`level` で厳密に。絶対 import は同じパッケージの候補と厳密な解決が
+             食い違えば読まない）、途中の各パッケージの `__init__.py` がその葉の名前を別の値で束縛していない。
+        (iv) モジュールオブジェクトが値として出ていく形（`setattr(config, key, v)` など）は
+             :meth:`_module_binding_value` が全束縛を再束縛ありとみなす（from-import の形と共通）。
+        (v) `config` そのもの（モジュール）は値ではない（`_module_value` は None のまま）。
+        """
+        chain = dotted_of(node.value)
+        if chain is None:
+            return None
+        head, _, rest = chain.partition(".")
+        if head in scope.local_bindings:
+            return None  # (i) 局所の同名（反例 f1_local）
+        rpath = self.index.resolve_module_path(scope.module)
+        rtree = self.index.parse(rpath) if rpath is not None else None
+        if rtree is None or rpath is None:
+            return None
+        ev = env.get(head)
+        if head in scope.local_imports:
+            if ev is None or not _is_import_placeholder(ev, head):
+                return None
+            mods = {
+                self._alias_module(scope.module, rpath, st, head)
+                for st in _import_stmts_binding(rtree, head)
+            }
+            if len(mods) != 1:
+                return None
+            base = next(iter(mods))
+        else:
+            if ev is not None:
+                return None
+            binds = self._binding_map(scope.module, rtree).get(head, [])
+            if len(binds) != 1 or not isinstance(binds[0], (ast.Import, ast.ImportFrom)):
+                return None  # (ii) 予備の束縛・import の後の代入（反例 f1_condimport）
+            base = self._alias_module(scope.module, rpath, binds[0], head)
+        if base is None:
+            return None
+        module = base
+        for part in rest.split(".") if rest else ():
+            sub = f"{module}.{part}"
+            if not self._is_tree_module(sub):
+                return None  # `config.obj.X`（モジュールの中の値の属性）はここでは読まない
+            module = sub
+        if not self._submodule_attr_clean(module):
+            return None  # (iii) 親パッケージが同じ葉の名前を値として束縛する（反例 f1_shadow）
+        reader_rebinds = self._reader_rebinds(scope.module, head)
+        return self._module_binding_value(module, node.attr, res, reader_rebinds)
+
+    def _reader_rebinds(self, reader: str, name: str) -> bool:
+        """読む側のモジュールで import した名前 `name` が書き換えられうるか（D17 改訂 2〜4 の検査を読む側の束縛にも
+        掛ける。D64 / U09）: 関数の中の束縛・`global`、`globals()` / `vars()` / `exec`（"*"）、他モジュールからの
+        `reader.name = v`、読む側のモジュールオブジェクトの流出。書き換えられうるなら値は読むが確度を opaque に落とす。"""
+        writes = self._module_writes(reader)
+        return (
+            name in writes
+            or "*" in writes
+            or (reader, name) in self._tree_attr_writes()
+            or self._module_escaped(reader)
+        )
+
+    def _alias_module(self, reader: str, rpath: str, st: ast.AST, head: str) -> Optional[str]:
+        """import 文 `st` が名前 `head` に束縛する**木内のモジュール**。値（モジュールでないもの）や木の外なら None。"""
+        if isinstance(st, ast.Import):
+            for a in st.names:
+                if (a.asname or a.name.split(".")[0]) == head:
+                    return self._resolve_abs_module(reader, a.name if a.asname else head)
+            return None
+        if isinstance(st, ast.ImportFrom):
+            for a in st.names:
+                if (a.asname or a.name) == head:
+                    if st.level > 0:
+                        base = self._import_from_base(reader, rpath, st)
+                    else:
+                        base = self._resolve_abs_module(reader, st.module) if st.module else None
+                    if base is None:
+                        return None
+                    mod = f"{base}.{a.name}"
+                    return mod if self._is_tree_module(mod) else None
+        return None
+
+    def _resolve_abs_module(self, reader: str, dotted: str) -> Optional[str]:
+        """絶対 import の `dotted` を木内のモジュールに解く。同じパッケージの候補（import 表の解き方。D17 改訂 3）と
+        厳密な絶対解決（D17 改訂 2）が**両方あって食い違うときは解かない**（どちらが効くかは実行のしかたで変わる）。"""
+        pkg = reader.rpartition(".")[0]
+        sibling = f"{pkg}.{dotted}" if pkg else None
+        sib = sibling if sibling is not None and self._is_tree_module(sibling) else None
+        strict = self.index.resolve_module_strict(dotted)
+        if sib is not None and strict is not None and sib != strict:
+            return None
+        return sib or strict
+
+    def _submodule_attr_clean(self, module: str) -> bool:
+        """`module` の途中の各パッケージが、次の段の名前をサブモジュール以外に束縛しないか（D64 / U09 条件 (iii)）。
+
+        `from pkg import config` / `import pkg.config as cfg` は、`pkg/__init__.py` が `config` を別の値で束縛して
+        いればその値を返しうる（反例 f1_shadow）。束縛が「そのサブモジュール自身の import」だけで、関数の中・
+        他モジュールから（`pkg.config = v`）・`from X import *` で書き換えられないときだけ真。
+        """
+        parts = module.split(".")
+        for i in range(1, len(parts)):
+            parent, leaf = ".".join(parts[:i]), parts[i]
+            if not self._is_tree_module(parent):
+                continue  # `__init__.py` の無いパッケージ（名前空間パッケージ）は名前を束縛しない
+            ppath = self.index.resolve_module_path(parent)
+            ptree = self.index.parse(ppath) if ppath is not None else None
+            if ptree is None or ppath is None:
+                return False
+            pwrites = self._module_writes(parent)
+            if leaf in pwrites or "*" in pwrites or (parent, leaf) in self._tree_attr_writes():
+                return False
+            if self._has_star_import(parent, ptree):
+                return False
+            for b in self._binding_map(parent, ptree).get(leaf, []):
+                if not (
+                    isinstance(b, ast.ImportFrom)
+                    and self._alias_module(parent, ppath, b, leaf) == f"{parent}.{leaf}"
+                ):
+                    return False
+        return True
+
+    def _class_attr_value(self, node: ast.Attribute, env: Env, scope: Scope, res: ValResult) -> Optional[Value]:
+        """クラス属性 `Cls.ATTR` の値。**規則 B**（D64 / U09、R1-r3-9。学生の決定）: 型と主体は付けるが、
+        **確度は常に opaque**（定数でも resolved にしない）。受け手の型が付くので、クラスに置いたクライアント /
+        接続の NET / DB 行が消える問題は直る。定数を resolved にしない分は記録する限界。
+
+        読むのは次のときだけ（それ以外は None で、今までどおり opaque(unresolved)）:
+        * `Cls` が env・`scope.local_bindings`・関数の中の import に無く（局所の同名 `Cmd = json.loads(spec)` を
+          クラスと取り違えない）、読む側のモジュールでちょうど 1 回、ClassDef か from-import で束縛され、書き換えられない
+        * 木内のクラスに `get_class(strict=True)` で解け、クラスのモジュールでもクラス名がちょうど 1 回の ClassDef で、
+          関数の中・他モジュールから（`m.Cls = v`）・モジュールの流出で書き換えられない
+        * クラスとその基底（3 段まで）がどれも木内で解け、メタクラスの指定が無く、デコレータは
+          `dataclasses.dataclass` だけ（Enum・pydantic BaseSettings・Django のモデルのように、外部の基底・
+          メタクラス・デコレータは属性の意味を変えうる）
+        * 属性がクラス体（基底を含む）の単純な代入 / 注釈つき代入で束縛されている
+
+        `self` 以外の受け手への同名の書き込み（`cls.ATTR = v` / `type(self).ATTR = v` / 別名 / setattr。反例
+        ce9a_cls_store）があれば候補が揃わないとみなす（規則 B では確度はもともと opaque なので、形と型は保つ）。
+        """
+        if not isinstance(node.value, ast.Name):
+            return None
+        cname = node.value.id
+        if cname in scope.local_bindings or cname in scope.local_imports or env.get(cname) is not None:
+            return None
+        rpath = self.index.resolve_module_path(scope.module)
+        rtree = self.index.parse(rpath) if rpath is not None else None
+        if rtree is None or rpath is None:
+            return None
+        if self._reader_rebinds(scope.module, cname):
+            return None
+        binds = self._binding_map(scope.module, rtree).get(cname, [])
+        if len(binds) != 1:
+            return None
+        b = binds[0]
+        if isinstance(b, ast.ClassDef):
+            cmod, cls_name = scope.module, cname
+        elif isinstance(b, ast.ImportFrom):
+            alias = next((a for a in b.names if (a.asname or a.name) == cname), None)
+            if alias is None:
+                return None
+            if b.level > 0:
+                cmod = self._import_from_base(scope.module, rpath, b)
+            else:
+                cmod = self._resolve_abs_module(scope.module, b.module) if b.module else None
+            if cmod is None:
+                return None
+            cls_name = alias.name
+        else:
+            return None
+        cd = self.index.get_class(cls_name, cmod, strict=True)
+        if cd is None:
+            return None
+        cpath = self.index.resolve_module_path(cmod)
+        ctree = self.index.parse(cpath) if cpath is not None else None
+        if ctree is None:
+            return None
+        cbinds = self._binding_map(cmod, ctree).get(cls_name, [])
+        if len(cbinds) != 1 or cbinds[0] is not cd.node:
+            return None
+        cwrites = self._module_writes(cmod)
+        if (
+            cls_name in cwrites
+            or "*" in cwrites
+            or (cmod, cls_name) in self._tree_attr_writes()
+            or self._module_escaped(cmod)
+        ):
+            return None
+        chain_cls = self._plain_class_chain(cd)
+        if chain_cls is None:
+            return None
+        defaults = self._class_defaults_cached(cd, res)
+        if node.attr not in defaults:
+            return None
+        v = defaults[node.attr]
+        stores = self._tree_class_attr_stores()
+        incomplete = node.attr in stores or "*" in stores or any(
+            not (_simple_name_binding(bd, node.attr) and bd in c.node.body)
+            for c in chain_cls
+            for bd in _module_binding_map(c.node).get(node.attr, [])
+        )
+        if incomplete:
+            v = Value(v.prin, prov_merge(v.prov, opaque("unresolved")), v.shape, v.attrs, v.roots)
+        # 規則 B: 定数でも resolved にしない（型と主体は保つ）
+        return _opaque_deep(v)
+
+    def _plain_class_chain(self, cd) -> Optional[list]:
+        """クラスと基底（`_class_body_defaults` と同じ 3 段）。どれかの基底が木の外（`object` を除く）・クラスの
+        キーワード（メタクラス）・`dataclasses.dataclass` 以外のデコレータ・4 段目の基底があれば None
+        （クラス属性の意味が木の中の字面から決まらない）。"""
+        out = []
+        frontier = [cd]
+        seen = {(cd.module, cd.name)}
+        for level in range(4):
+            nxt = []
+            for c in frontier:
+                if c.node.keywords or not all(self._is_plain_dataclass(d, c) for d in c.node.decorator_list):
+                    return None
+                bases = [b for b in c.node.bases if dotted_of(b) not in ("object", "builtins.object")]
+                if not bases:
+                    out.append(c)
+                    continue
+                if level == 3:
+                    return None
+                resolved = self._base_classes(c)
+                if len(resolved) != len(bases):
+                    return None
+                out.append(c)
+                for r in resolved:
+                    if (r.module, r.name) not in seen:
+                        seen.add((r.module, r.name))
+                        nxt.append(r)
+            frontier = nxt
+            if not frontier:
+                break
+        return out
+
+    def _is_plain_dataclass(self, dec: ast.AST, cd) -> bool:
+        """デコレータが `dataclasses.dataclass`（`slots=True` なし）か。これはクラスを置き換えず、既定値を
+        クラス属性に残す（`field(...)` の既定値は未解決の呼び出しとして opaque になる）。`slots=True` は
+        新しいクラスを作り、クラス属性をスロットの記述子に置き換えるので除く。ほかのデコレータはクラスを
+        置き換えうるので読まない。"""
+        path = self.index.resolve_module_path(cd.module)
+        if path is None:
+            return False
+        func = dec.func if isinstance(dec, ast.Call) else dec
+        if resolve_call_name(func, self.index.module_scope(path)) != "dataclasses.dataclass":
+            return False
+        if isinstance(dec, ast.Call):
+            if dec.args:
+                return False
+            for kw in dec.keywords:
+                if kw.arg is None or (kw.arg == "slots" and not (isinstance(kw.value, ast.Constant) and kw.value.value is False)):
+                    return False
+        return True
+
+    def _class_defaults_cached(self, cd, res: ValResult) -> dict[str, Value]:
+        """`_class_body_defaults` をクラスごとに記憶化する（クラス体は import 時に 1 回だけ実行される。深さ 0 で評価）。"""
+        key = (cd.module, cd.name)
+        if key in self._class_values:
+            return self._class_values[key]
+        if key in self._class_defaults_active:
+            return {}
+        out = self._class_body_defaults(cd, res, 0, (f"<class:{cd.module}.{cd.name}>",))
+        self._class_values[key] = out
+        return out
 
     def _construct_in_tree(self, node, dotted, args, kwargs, scope, res, depth, chain) -> Optional[Value]:
         """木内クラスの構築 `C(...)` を `Obj((C,), fields)` にする（§2.6 の Obj.fields、D17）。
@@ -1600,13 +2035,103 @@ class ValEngine:
                 if tree is None:
                     continue
                 mscope = self.index.module_scope(path)
+                aliases = self._file_module_aliases(path, tree)
                 for alias, attr in _attr_stores(tree):
                     target = mscope.lookup(alias)
                     strict = self.index.resolve_import_module(self.index.module_name(path), target) if target else None
                     if strict is not None:
                         out.add((strict, attr))
+                    # **関数の中の import の別名も見る**（D64 / U09。`def f(v): from pkg import config;
+                    # config.MODE = v` を見落とすと、`config.MODE` / `from pkg.config import MODE` が定数のまま残る）
+                    for mod in aliases.get(alias, ()):
+                        out.add((mod, attr))
             cache["_authgap_tree_attr_writes"] = frozenset(out)
         return cache["_authgap_tree_attr_writes"]
+
+    def _file_module_aliases(self, path: str, tree: ast.Module) -> dict[str, frozenset[str]]:
+        """ファイルの中（関数の中の import を含む）で、名前が束縛しうる**木内のモジュール**（D64 / U09）。
+
+        `import a.b as x` → x: a.b、`import a.b` → a: a、`from p import m`（m がサブモジュール）→ m: p.m。
+        解き方は `level` で解いたものと import 表の解き方（`resolve_import_module`）の**両方**を入れる
+        （書き込み・流出の検出に使うので、多めに取るほど安全側）。
+        """
+        cache = self.index.__dict__.setdefault("_authgap_file_module_aliases", {})
+        if path in cache:
+            return cache[path]
+        me = self.index.module_name(path)
+        out: dict[str, set[str]] = {}
+
+        def add(name: str, mod: Optional[str]) -> None:
+            if mod is not None and self._is_tree_module(mod):
+                out.setdefault(name, set()).add(mod)
+
+        for node, _parent, _depth in _iter_nodes(tree):
+            if isinstance(node, ast.Import):
+                for a in node.names:
+                    bound = a.asname or a.name.split(".")[0]
+                    full = a.name if a.asname else a.name.split(".")[0]
+                    add(bound, self.index.resolve_import_module(me, full))
+                    add(bound, self.index.resolve_module_strict(full))
+            elif isinstance(node, ast.ImportFrom):
+                base = self._import_from_base(me, path, node)
+                for a in node.names:
+                    if a.name == "*":
+                        continue
+                    bound = a.asname or a.name
+                    if base is not None:
+                        add(bound, f"{base}.{a.name}")
+                    dotted = f"{node.module}.{a.name}" if node.module else a.name
+                    add(bound, self.index.resolve_import_module(me, dotted))
+        frozen = {k: frozenset(v) for k, v in out.items()}
+        cache[path] = frozen
+        return frozen
+
+    def _module_escaped(self, module: str) -> bool:
+        """モジュール（またはそれを含むパッケージ）のオブジェクトが、木のどこかで**値として**使われるか（D64 / U09 条件 (iv)）。
+
+        モジュール属性の読み `config.X` は遅延束縛で、`setattr(config, key, v)` / `vars(config)[k] = v` /
+        `config.__dict__[k] = v` / `c = config; c.X = v` / `f(config)` のように**モジュールオブジェクトが出ていく**と、
+        どの名前も構文で追えない形で書き換えられうる（検証役の反例 f1_dynattr）。出ていくモジュールの名前は
+        全部「再束縛されうる」とみなす（型と主体は保って確度を opaque。D17 改訂 4）。
+        """
+        cache = self.index.__dict__.setdefault("_authgap_module_escaped", {})
+        if module not in cache:
+            esc = self._tree_module_escapes()
+            cache[module] = module in esc or any(module.startswith(e + ".") for e in esc)
+        return cache[module]
+
+    def _tree_module_escapes(self) -> frozenset[str]:
+        """木全体で、値として使われる木内モジュール（:meth:`_module_escaped`）。索引ごとに記憶化。"""
+        cache = self.index.__dict__
+        if "_authgap_module_escapes" not in cache:
+            out: set[str] = set()
+            for path in self.index.py_files():
+                tree = self.index.parse(path)
+                if tree is None:
+                    continue
+                aliases = self._file_module_aliases(path, tree)
+                if aliases:
+                    out |= _module_escapes_in(tree, aliases, self._is_tree_module)
+            cache["_authgap_module_escapes"] = frozenset(out)
+        return cache["_authgap_module_escapes"]
+
+    def _tree_class_attr_stores(self) -> frozenset[str]:
+        """木全体で、`self` 以外の受け手に書き込まれる属性名（D64 / U09、R1-r3-9 の反例 ce9a_cls_store）。
+
+        `Cls.ATTR = v` / `del Cls.ATTR` / `cls.ATTR = v` / `type(self).ATTR = v` / `self.__class__.ATTR = v` /
+        別名 `C = Cfg; C.ATTR = v` / `setattr(<self 以外>, "ATTR", v)`。`setattr(<self 以外>, <非定数>, v)` /
+        `vars(<self 以外>)` / `<self 以外>.__dict__` があれば `"*"`（どの属性も書き換えられうる）。
+        受け手の型は見ない（名前だけで数える。多めに取るほど安全側）。
+        """
+        cache = self.index.__dict__
+        if "_authgap_class_attr_stores" not in cache:
+            out: set[str] = set()
+            for path in self.index.py_files():
+                tree = self.index.parse(path)
+                if tree is not None:
+                    out |= _class_attr_stores_in(tree)
+            cache["_authgap_class_attr_stores"] = frozenset(out)
+        return cache["_authgap_class_attr_stores"]
 
     def _environ_written_in_tree(self) -> bool:
         """木内のどこかで `os.environ` に**非定数**を書き込むか（書き込むなら環境変数を config とみなさない）。"""
@@ -1755,21 +2280,12 @@ class ValEngine:
             if not isinstance(imp, ast.ImportFrom) or imp not in tree.body:
                 return None
             alias = next(a for a in imp.names if (a.asname or a.name) == name)
-            if imp.level > 0:
-                # 相対 import の基準: `__init__.py` はパッケージ自身、ほかは親パッケージ
-                base = module if os.path.basename(path) == "__init__.py" else module.rpartition(".")[0]
-                for _lvl in range(imp.level - 1):
-                    base = base.rpartition(".")[0]
-                if not base or not imp.module:
-                    return None  # `from . import mod`（モジュールの import）はたどらない
-                nxt = f"{base}.{imp.module}"
-                npath = self.index.resolve_module_path(nxt)
-                if npath is None or self.index.module_name(npath) != nxt:
-                    return None
-            else:
-                nxt = self.index.resolve_module_strict(imp.module) if imp.module else None
-                if nxt is None:
-                    return None  # 絶対 import が木の外を指す
+            if not imp.module:
+                return None  # `from . import mod`（モジュールの import）はたどらない
+            # 相対 import の基準は `__init__.py` ならパッケージ自身、ほかは親パッケージ。絶対 import は厳密に解く
+            nxt = self._import_from_base(module, path, imp)
+            if nxt is None:
+                return None  # 木の外を指す
             module, name = nxt, alias.name
             if self._visible_defs(module, name, None):
                 return module, name
@@ -2288,12 +2804,17 @@ def _module_bindings(tree: ast.AST, name: str) -> list[ast.AST]:
 
 
 def _module_assignments(body: list, name: str) -> list[ast.AST]:
-    """モジュール直下の `name = ...` / `name: T = ...` の右辺（`if` / `try` / `with` の中も見る）。"""
+    """モジュール直下の `name = ...` / `name: T = ...` の右辺（`if` / `try` / `with` の中も見る）。
+
+    **タプル代入 `name, other = ...` も束縛として数える**（D64 / U09、R1-r4-13）。位置で対応が取れれば
+    その要素、取れなければ右辺全体（呼び出し側は「代入でも束縛される」かを見るだけ）。
+    """
     out: list[ast.AST] = []
     for st in body:
         if isinstance(st, ast.Assign):
-            if any(isinstance(t, ast.Name) and t.id == name for t in st.targets):
-                out.append(st.value)
+            for t in st.targets:
+                for src in _target_sources(t, st.value, name):
+                    out.append(src if src is not None else st.value)
         elif isinstance(st, ast.AnnAssign):
             if isinstance(st.target, ast.Name) and st.target.id == name and st.value is not None:
                 out.append(st.value)
@@ -2307,6 +2828,307 @@ def _module_assignments(body: list, name: str) -> list[ast.AST]:
                 inner += list(h.body)
             out += _module_assignments(inner, name)
     return out
+
+
+def _typed_join(vals: list[Value]) -> Value:
+    """モジュール水準の束縛の候補の**型を保つ join**（D64 / U09、R4-r2-7 (b)）。
+
+    候補に型つきの `Obj` があれば、`Obj` 同士と None リテラルは `value_join`（D35 (a) / (d)）、それ以外
+    （Unknown・別の形）は**型を捨てずに確度へ opaque を合流する**。素の `value_join` は `Obj ⊔ Unknown` を
+    Unknown に倒し、`X = connect(); if c: X = external()` の受け手の型を捨てて DB / NET 行ごと消した（誤 clear）。
+    型の無い候補の効果は分からないが、それは opaque が表す（clean にはしない）。`_shape_join` 全体は変えない。
+    """
+    typed = [v for v in vals if isinstance(v.shape, Obj) and v.shape.classes]
+    if not typed:
+        out = vals[0]
+        for v in vals[1:]:
+            out = value_join(out, v)
+        return out
+    out = typed[0]
+    for v in vals:
+        if v is typed[0]:
+            continue
+        if (isinstance(v.shape, Obj) and v.shape.classes) or (isinstance(v.shape, Atom) and v.shape.none):
+            out = value_join(out, v)
+        else:
+            out = Value(
+                prin_join(out.prin, v.prin),
+                prov_merge(out.prov, v.prov, opaque("unresolved")),
+                out.shape,
+                out.attrs & v.attrs,
+                out.roots | v.roots,
+            )
+    return out
+
+
+def _bound_names(t: ast.AST) -> list[str]:
+    """代入の対象が束縛する名前（Tuple / List / Starred の中を含む）。属性・添字は名前を束縛しない。"""
+    if isinstance(t, ast.Name):
+        return [t.id]
+    if isinstance(t, (ast.Tuple, ast.List)):
+        return [n for e in t.elts for n in _bound_names(e)]
+    if isinstance(t, ast.Starred):
+        return _bound_names(t.value)
+    return []
+
+
+def _target_sources(t: ast.AST, value: ast.AST, name: str) -> list[Optional[ast.AST]]:
+    """代入 `t = value` が `name` に入れる右辺の式（D64 / U09、R1-r4-13）。位置で対応が取れなければ `None`。
+
+    対象と右辺が**同じ長さの Tuple / List で、どちらにも Starred が無い**ときだけ位置で対応を取る（入れ子は
+    再帰）。`A, B = f()`・`*R, A = ...`・`A, B = *H, x` は右辺のどの値が入るか字面で決まらない（Starred を
+    除いて位置を詰めると `SQL_S1` が "SELECT 1" に化ける）。
+    """
+    if isinstance(t, ast.Name):
+        return [value] if t.id == name else []
+    if isinstance(t, ast.Starred):
+        return [None] if name in _bound_names(t) else []
+    if isinstance(t, (ast.Tuple, ast.List)):
+        if name not in _bound_names(t):
+            return []
+        if (
+            isinstance(value, (ast.Tuple, ast.List))
+            and len(value.elts) == len(t.elts)
+            and not any(isinstance(e, ast.Starred) for e in t.elts)
+            and not any(isinstance(e, ast.Starred) for e in value.elts)
+        ):
+            out: list[Optional[ast.AST]] = []
+            for te, ve in zip(t.elts, value.elts, strict=True):
+                out += _target_sources(te, ve, name)
+            return out
+        return [None]
+    return []
+
+
+def _module_binding_map(tree: ast.AST) -> dict[str, list[ast.AST]]:
+    """:func:`_module_bindings` を全部の名前について 1 回の走査で作る（同じ文・同じ `:=` は名前ごとに 1 回）。
+
+    import / from-import の別名、代入・注釈つき代入・拡張代入の対象、for / with / except の束縛、`:=`、def / class の
+    名前。`if` / `try` / `with` / ループ / match の中も見る。関数・クラスの本体の中は別のスコープなので見ない。
+    """
+    out: dict[str, list[ast.AST]] = {}
+    seen: set[tuple[str, int]] = set()
+
+    def add(name: str, node: ast.AST) -> None:
+        if (name, id(node)) not in seen:
+            seen.add((name, id(node)))
+            out.setdefault(name, []).append(node)
+
+    def visit(stmts) -> None:
+        for st in stmts:
+            if isinstance(st, (ast.Import, ast.ImportFrom)):
+                for a in st.names:
+                    if a.name != "*":
+                        add(a.asname or a.name.split(".")[0], st)
+            elif isinstance(st, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                add(st.name, st)
+                continue  # 本体の中は別のスコープ
+            elif isinstance(st, ast.Assign):
+                for t in st.targets:
+                    for n in _bound_names(t):
+                        add(n, st)
+            elif isinstance(st, (ast.AnnAssign, ast.AugAssign)):
+                for n in _bound_names(st.target):
+                    add(n, st)
+            elif isinstance(st, (ast.For, ast.AsyncFor)):
+                for n in _bound_names(st.target):
+                    add(n, st)
+            elif isinstance(st, (ast.With, ast.AsyncWith)):
+                for i in st.items:
+                    if i.optional_vars is not None:
+                        for n in _bound_names(i.optional_vars):
+                            add(n, st)
+            for n in _own_scope_nodes(st):
+                if isinstance(n, ast.NamedExpr) and isinstance(n.target, ast.Name):
+                    add(n.target.id, n)
+            for field_name in ("body", "orelse", "finalbody"):
+                sub = getattr(st, field_name, None)
+                if isinstance(sub, list) and sub and isinstance(sub[0], ast.stmt):
+                    visit(sub)
+            for h in getattr(st, "handlers", []) or []:
+                if h.name:
+                    add(h.name, h)
+                visit(h.body)
+            for case in getattr(st, "cases", []) or []:
+                visit(case.body)
+
+    visit(getattr(tree, "body", []))
+    return out
+
+
+def _own_scope_nodes(root: ast.AST):
+    """`root` と同じスコープの節（入れ子の関数・lambda・クラスの本体には入らない）。再帰しない。
+
+    `root` が関数・クラスならその本体から始める。入れ子の def / class の名前・デコレータ・既定値・基底は外側の
+    スコープで評価されるので含める。内包表記の中の `:=` は外側のスコープを束縛するので中に入る。
+    """
+    if isinstance(root, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+        stack: list[ast.AST] = list(reversed(root.body))
+    else:
+        stack = [root]
+    while stack:
+        n = stack.pop()
+        yield n
+        if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            stack.extend(n.decorator_list)
+            stack.extend(n.args.defaults)
+            stack.extend(d for d in n.args.kw_defaults if d is not None)
+            continue
+        if isinstance(n, ast.ClassDef):
+            stack.extend(n.decorator_list)
+            stack.extend(n.bases)
+            stack.extend(k.value for k in n.keywords)
+            continue
+        if isinstance(n, ast.Lambda):
+            stack.extend(n.args.defaults)
+            stack.extend(d for d in n.args.kw_defaults if d is not None)
+            continue
+        stack.extend(reversed(list(ast.iter_child_nodes(n))))
+
+
+def _global_binding_map(tree: ast.AST) -> dict[str, list[tuple[ast.AST, Optional[ast.AST]]]]:
+    """関数（入れ子・メソッドを含む）の中で `global NAME` の下にある NAME の束縛（D64 / U09、R4-r2-7 (a)）。
+
+    名前ごとに `(関数, 右辺の式)`。右辺は**その関数のスコープで**評価する（呼び出し側が行う）。位置で対応が
+    取れないタプル代入・`+=`・for / with / except / `:=` / import / def の束縛、クラス本体の `global` は式が
+    `None`（評価できない束縛）。`global` 宣言は関数の本体のどこに書いても関数全体に効く。
+    """
+    out: dict[str, list[tuple[ast.AST, Optional[ast.AST]]]] = {}
+    for fn, _p, _d in _iter_nodes(tree):
+        if not isinstance(fn, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            continue
+        own = list(_own_scope_nodes(fn))
+        declared = {n for x in own if isinstance(x, ast.Global) for n in x.names}
+        if not declared:
+            continue
+        in_class = isinstance(fn, ast.ClassDef)
+
+        def put(names, expr: Optional[ast.AST], fn=fn, declared=declared) -> None:
+            for name in sorted(set(names) & declared):
+                out.setdefault(name, []).append((fn, expr))
+
+        for x in own:
+            if isinstance(x, ast.Assign):
+                for t in x.targets:
+                    for name in sorted(set(_bound_names(t)) & declared):
+                        for e in _target_sources(t, x.value, name):
+                            out.setdefault(name, []).append((fn, None if in_class else e))
+            elif isinstance(x, (ast.AugAssign, ast.AnnAssign)):
+                put(_bound_names(x.target), None)
+            elif isinstance(x, (ast.For, ast.AsyncFor)):
+                put(_bound_names(x.target), None)
+            elif isinstance(x, (ast.With, ast.AsyncWith)):
+                put([n for i in x.items if i.optional_vars is not None for n in _bound_names(i.optional_vars)], None)
+            elif isinstance(x, ast.NamedExpr) and isinstance(x.target, ast.Name):
+                put([x.target.id], None)
+            elif isinstance(x, (ast.Import, ast.ImportFrom)):
+                put([a.asname or a.name.split(".")[0] for a in x.names if a.name != "*"], None)
+            elif isinstance(x, ast.ExceptHandler) and x.name:
+                put([x.name], None)
+            elif isinstance(x, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                put([x.name], None)
+    return out
+
+
+def _module_escapes_in(tree: ast.AST, aliases: dict[str, frozenset[str]], is_module) -> set[str]:
+    """ファイルの中で、import の別名が指す木内モジュールが**値として**使われるもの（D64 / U09 条件 (iv)）。
+
+    `alias.NAME`（読み・書き・del）はモジュールの属性の参照なので流出ではない（書き込みは `_attr_stores` が見る）。
+    `alias.sub.NAME` の `alias.sub` がサブモジュールなら同じく属性の参照。`alias.__dict__`・`setattr(alias, ...)`・
+    `vars(alias)`・`c = alias`・`f(alias)`・`reload(alias)` はモジュールオブジェクトが出ていく。同名の局所変数も
+    区別しない（多めに取るほど安全側）。
+    """
+    parent: dict[int, ast.AST] = {}
+    loads: list[ast.Name] = []
+    for node, par, _d in _iter_nodes(tree):
+        if par is not None:
+            parent[id(node)] = par
+        if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load) and node.id in aliases:
+            loads.append(node)
+    out: set[str] = set()
+    for n in loads:
+        for base in sorted(aliases[n.id]):
+            cur: ast.AST = n
+            mod = base
+            while True:
+                par = parent.get(id(cur))
+                if isinstance(par, ast.Attribute) and par.value is cur:
+                    sub = f"{mod}.{par.attr}"
+                    if isinstance(par.ctx, ast.Load) and is_module(sub):
+                        cur, mod = par, sub
+                        continue
+                    if par.attr == "__dict__":
+                        out.add(mod)
+                    break
+                out.add(mod)
+                break
+    return out
+
+
+def _class_attr_stores_in(tree: ast.AST) -> set[str]:
+    """`self` 以外の受け手への属性の書き込みの属性名（:meth:`ValEngine._tree_class_attr_stores`）。再帰しない。"""
+
+    def is_self(e: ast.AST) -> bool:
+        return isinstance(e, ast.Name) and e.id == "self"
+
+    out: set[str] = set()
+    for node, _p, _d in _iter_nodes(tree):
+        if isinstance(node, ast.Attribute):
+            if isinstance(node.ctx, (ast.Store, ast.Del)) and not is_self(node.value):
+                out.add(node.attr)
+            elif node.attr == "__dict__" and not is_self(node.value):
+                out.add("*")
+        elif isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.args:
+            fid = node.func.id
+            if fid in ("setattr", "delattr") and len(node.args) >= 2 and not is_self(node.args[0]):
+                key = node.args[1]
+                if isinstance(key, ast.Constant) and isinstance(key.value, str):
+                    out.add(key.value)
+                else:
+                    out.add("*")
+            elif fid == "vars" and not is_self(node.args[0]):
+                out.add("*")
+    return out
+
+
+def _import_stmts_binding(tree: ast.AST, name: str) -> list[ast.AST]:
+    """ファイルの中（関数の中を含む）で `name` を束縛する import 文。"""
+    out: list[ast.AST] = []
+    for node, _p, _d in _iter_nodes(tree):
+        if isinstance(node, (ast.Import, ast.ImportFrom)) and any(
+            (a.asname or a.name.split(".")[0]) == name for a in node.names if a.name != "*"
+        ):
+            out.append(node)
+    return out
+
+
+def _iter_module_stmts(body: list):
+    """モジュール直下の文（`if` / `try` / `with` / ループ / match の中を含み、関数・クラスの本体には入らない）。"""
+    stack = list(reversed(body))
+    while stack:
+        st = stack.pop()
+        yield st
+        if isinstance(st, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            continue
+        subs: list = []
+        for field_name in ("body", "orelse", "finalbody"):
+            sub = getattr(st, field_name, None)
+            if isinstance(sub, list) and sub and isinstance(sub[0], ast.stmt):
+                subs += sub
+        for h in getattr(st, "handlers", []) or []:
+            subs += h.body
+        for case in getattr(st, "cases", []) or []:
+            subs += case.body
+        stack.extend(reversed(subs))
+
+
+def _simple_name_binding(st: ast.AST, name: str) -> bool:
+    """`name = e` / `name: T = e`（対象が名前 1 つで値がある）か。`_class_body_defaults` が読む形。"""
+    if isinstance(st, ast.Assign):
+        return len(st.targets) == 1 and isinstance(st.targets[0], ast.Name) and st.targets[0].id == name
+    if isinstance(st, ast.AnnAssign):
+        return isinstance(st.target, ast.Name) and st.target.id == name and st.value is not None
+    return False
 
 
 def _items_of(v: Value) -> list[Value]:
