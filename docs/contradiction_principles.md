@@ -220,7 +220,7 @@ MODEL。「定数」= 確度が resolved の定数（`Value.const`）。
 | FS_WRITE: `open` 系で mode が定数の `'a'`（追記） | 矛（2 回呼べば 2 回追記される） |
 | FS_WRITE: それ以外（上書き・作成・削除・移動・mode 不明を含む） | 内（同じ引数で繰り返しても状態は同じか、2 回目は失敗する）。mode 不明だけは不 |
 | DB: `INSERT` / `UPDATE` / `REPLACE` / `MERGE` | 不（一意制約や `x = x + 1` かどうかで決まる） |
-| DB: それ以外の先頭語 / 読み取り / 接続単位 | 内 |
+| DB: それ以外の先頭語 / 読み取り / 接続単位 | 内（**§9.6 の 4 で改訂**: 先頭語が §7.5 の分類に無いものは不） |
 | DB: SQL が読めない | 不 |
 | NET: `POST` / `PATCH` | 不（HTTP の意味論で冪等とは限らない） |
 | NET: `GET` / `HEAD` / `OPTIONS` / `PUT` / `DELETE` | 内（HTTP の意味論で冪等） |
@@ -228,7 +228,7 @@ MODEL。「定数」= 確度が resolved の定数（`Value.const`）。
 | EXEC / SPAWN | 不 |
 | FS_READ / DISPATCH | 内 |
 
-### 7.5 SQL の分類（先頭語、大文字）
+### 7.5 SQL の分類（先頭語、大文字）（**§9.6 の 1〜3 で先頭語の取り方と複文を改訂**）
 
 * `SQL_MODIFY_HEADS`（D55）: `INSERT UPDATE DELETE REPLACE MERGE TRUNCATE DROP CREATE ALTER`
 * `SQL_CONNECTION`（接続・トランザクション単位。接続が閉じれば残らない）:
@@ -241,7 +241,7 @@ MODEL。「定数」= 確度が resolved の定数（`Value.const`）。
   `PRAGMA <名前> = …` で名前が `journal_mode user_version application_id auto_vacuum page_size
   encoding schema_version`、値を取らなくても書き込む `PRAGMA wal_checkpoint / optimize /
   incremental_vacuum`
-* 読み取り: `SELECT SHOW EXPLAIN DESCRIBE WITH`、および `=` の無い `PRAGMA`（上の 3 つを除く）
+* 読み取り: `SELECT SHOW EXPLAIN DESCRIBE WITH`、および `=` の無い `PRAGMA`（上の 3 つを除く）（**§9.6 の 3 で改訂**: 括弧で値を渡す `PRAGMA <名前>(…)` は `=` と同じに扱う）
 * それ以外（`ATTACH`（無ければファイルを作る）、`NOTIFY`、分類に無い `PRAGMA` など）→ 不
 
 ### 7.6 HTTP メソッドの読み方
@@ -324,7 +324,8 @@ sink（`requests.request` / `httpx.request` / `httpx.AsyncClient.request` など
 1. **全体が定数** → 先頭語と §7.5 の類で判定（今までどおり）。
 2. **主体が MODEL（どこかにモデルの値が入る）**:
    * 確度 resolved（モデルが選べる）→ **矛**（`db_model_sql`。注入で任意の文を書けるので、接頭辞に
-     関係なく能力に変更が含まれる）。D4 では原理 3 を当てないので**不**。
+     関係なく能力に変更が含まれる）。D4 では原理 3 を当てないので**不**。**§9.6 の 5 で改訂**: 接頭辞の
+     先頭語がその宣言の変更の文なら理由は `db_modify`（注入の有無によらず変更する）。
    * 確度 opaque（流れ込むだけかもしれない）→ 接頭辞の先頭語が変更の文なら**矛**（`db_modify`。
      注入の有無によらず変更する）、そうでなければ**不**（`db_sql_model_opaque`）。
 3. **主体が MODEL でない**（OP の設定値などが連結されている）→ 接頭辞で先頭語と類が決まればそれで
@@ -347,3 +348,39 @@ resolved なら矛、MODEL で opaque なら不）だけを使う。
 受け手型で裏付けられないので by_name とする（降りるが、効果の確度に `opaque(unresolved)` を合流する。
 D17 改訂と同じ扱い）。import 表で結んだモジュールの関数（`code_ladder.get(...)` で `code_ladder` が
 import されている）は `_pinned_candidates` が先に解決するので変わらない。
+
+### 9.6 D64（添削の段階 A）で直した判定表の抜け（**実装より先にコミットする**）
+
+添削（`docs/review_plan.md`、`docs/review_triage.md` の U33 / U34 / U36）で、§7 の表が自分の前提を一部の形に
+当てていない抜けが見つかった。**原理の選択（§6）は変えない。** 表の導出の漏れを直す。
+
+1. **先頭のコメントを剥がしてから先頭語を取る**（R3-r1-2）。先頭の空白・`--` 行コメント・`/* */` ブロック
+   コメントを剥がす。ただし **`/*!` で始まる MySQL の実行されるコメントは剥がさない**（中身が実行されるので、
+   剥がすと `/*!50000 DROP TABLE t */ SELECT 1` が読み取りになる誤 clear。検証役の反例）。剥がした後が空なら
+   今と同じく読めない（不）。閉じないコメントは剥がし切れず読めないまま。
+2. **定数の複文は文ごとに分類し、最も厳しい結果を採る**（R3-r1-1）。全体が定数のとき（§9.4 の 1）だけ、
+   引用符・コメントの外の `;` で文に分け、各文を §7.5 で分類して 矛 > 不 > 内 の順で最も厳しいものを採る
+   （D4 は、どれかの文が冪等とは限らない類なら不）。複文から出た矛の理由は `db_multi_statement`
+   （手判定で見分けるため。sqlite3 の `execute` は複文を実行時に拒むが、解析器は site を区別しない）。
+   **分割できない形は矛にせず不にする**（規則 4）: SQLite の `CREATE TRIGGER … BEGIN … END` の本体
+   （本体の `;` は文の終端ではない。`sqlite3.complete_statement` で判定する）、PostgreSQL の
+   `$tag$ … $tag$`（ドル引用。中身は文字列）、閉じない引用・コメント。接頭辞（§9.4 の 2・3）は今までどおり。
+3. **PRAGMA の括弧形** `PRAGMA <名前>(<値>)` は `PRAGMA <名前> = <値>` と同じに扱う（R3-r1-3。§7.1 は
+   読み取りを「値を設定しない PRAGMA」と定義しており、§7.5 の「`=` の無い PRAGMA = 読み取り」はその
+   書き落とし）。`table_info(users)` など §7.5 の名前の一覧に無いものは今までどおり。
+4. **§7.4（D4）の DB の行**: 先頭語が §7.5 の分類（読み取り / 接続単位 / `SQL_MODIFY_HEADS` /
+   `SQL_PERSISTENT`）に無いもの（`NOTIFY` / `CALL` / `COPY` / `ATTACH` など）は**不**（`db_unknown_statement`）
+   （R1d-r6-5。§7.4 の「それ以外の先頭語 → 内」は §7.5 の「それ以外 → 不」と原理 2-a に反していた）。
+   分類に無い `PRAGMA` の代入と `GRANT` も不に移る（不明の側への移動で、誤った矛は生まない）。
+5. **§9.4 の 2 の理由コード**: 確度 resolved の MODEL の SQL でも、接頭辞の先頭語がその宣言の変更の文
+   （D1 は `SQL_MODIFY_HEADS`、D2 は `SQL_DESTRUCTIVE_HEADS`）なら理由を `db_modify` にする（R3-r1-7。判定は
+   矛のまま。感度分析 3-b は理由に `model` を含む矛を不に倒すので、定数の DELETE だけで矛と決まる形まで
+   不に数えていた）。
+6. **書式の穴を先頭語と読まない**（R3-r4-3 の (a)）。接頭辞の最初の語が `%` / `{` / `}` を含むとき
+   （URL の `_has_placeholder` と同じ判定）は先頭語を決めない（読めない）。`%` の実際の置換（(b)）は
+   値の表現を変えるので直さず限界として記録する。
+7. **D3 の宛先のホストは RFC 3986 の authority の文法で取り出す**（R3d-r6-1。§7.3 の規則は変えない）。
+   IP リテラル（角括弧を外したもの）を先に試し、次に `urlparse('//' + 権威部).hostname` を取る。
+   userinfo（`user:pass@`）・ポート・角括弧を正しく外す。末尾ドットは名前の比較だけで落とす。
+   **分解に失敗した（ValueError）ものと、権威部に `\` があるもの（クライアントで読みが割れる）は読めない（不）**。
+
