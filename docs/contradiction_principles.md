@@ -419,8 +419,13 @@ import されている）は `_pinned_candidates` が先に解決するので変
    不（unknown）**（`100.64.0.0/10`・文書用・予約などは local とも external とも言えない）。IP リテラルを先に試す段は、
    権威部に `@` があるときは使わない（`::1%x@evil.example` を scope ID つきの `::1` と読まない）。
 
-**直さず記録するもの**（差分の外の既存の穴。O42 に追記）: `_split_url` が `://` をクエリの中でも scheme の区切りと
-読む（N9）、PRAGMA の名前と `=` の間のコメント・修飾名（N10）、`;` の無い T-SQL のバッチ（N11）、数字だけの IPv4 の
+7''. **URL の `://` は、その前が RFC 3986 の scheme の文法（`[A-Za-z][A-Za-z0-9+.-]*`）のときだけ scheme の区切りと読む**
+   （N9。学生の決定で凍結の前に直す、2026-09-28）。`client.get("oauth/authorize?redirect_uri=http://localhost:8080/cb")` の
+   クエリの中の `://` を区切りにして宛先を `localhost` と読み、D3 を 内 にしていた（**false-clean**）。scheme の文法に合わない
+   文字列は絶対 URL ではない（相対参照）。`/` で始まらない相対参照の宛先は今までどおり読まない（R3d-r6-2 は記録のまま）ので、
+   不の側に倒れる。
+
+**直さず記録するもの**（差分の外の既存の穴。O42 に追記）: （N9 は上の 7'' で直した）PRAGMA の名前と `=` の間のコメント・修飾名（N10）、`;` の無い T-SQL のバッチ（N11）、数字だけの IPv4 の
 書き方（A1）、`host.docker.internal` などの名前（A2）、§7.5 の表の選択（`INSERT OR REPLACE`・`EXPLAIN ANALYZE`・
 `SET PERSIST`）。
 

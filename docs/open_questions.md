@@ -1147,7 +1147,7 @@ R2-r1-10（`ctx` を OP にする）は検証で落ちた唯一の所見で、�
 
 | id | 内容 | 向き | 直さない理由 |
 |---|---|---|---|
-| N9 | `_split_url` が、クエリの中の `://`（`?redirect_uri=http://localhost:8080/cb`）でも scheme の区切りと読み、D3 の host を `localhost` にする | 誤 clear（D3） | 差分の外で、D64 の U36 は `_host_class` だけを直すと決めた。直し方は一般にある（`://` の前が RFC 3986 の scheme の文法のときだけ区切りと認める）。学生の判断で直せる |
+| N9（**直した**。§9.6 の改訂 7''、2026-09-28 の学生の決定） | `_split_url` が、クエリの中の `://`（`?redirect_uri=http://localhost:8080/cb`）でも scheme の区切りと読み、D3 の host を `localhost` にする | 誤 clear（D3） | 差分の外で、D64 の U36 は `_host_class` だけを直すと決めた。直し方は一般にある（`://` の前が RFC 3986 の scheme の文法のときだけ区切りと認める）。学生の判断で直せる |
 | N10 | `PRAGMA user_version /* c */ = 3`・`PRAGMA main . user_version = 3` を読み取りにする | 誤 clear（D1） | まれ。名前の後に `;` か終端しか無いときだけ読み取りにすれば直る |
 | N11 | `;` の無い T-SQL のバッチ（`SET NOCOUNT ON\nDELETE …`）を 1 文として読む | 誤 clear | 方言の決定が要る（§9.6-2 は `;` でしか切らない） |
 | A1 | 数字だけの IPv4（`2130706433`・`127.1`・`0x7f.1`）を external にする | 誤警報（D3） | まれ。`inet_aton` の規則で読むか不にすれば直る |
