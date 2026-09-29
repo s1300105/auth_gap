@@ -1,6 +1,6 @@
 # CONTRADICTION の宣言ごとの件数と、判定原理の感度分析（D56）
 
-再現: `python scripts/contradiction_by_decl.py evidence/scan_v2_run23`
+再現: `python scripts/contradiction_by_decl.py evidence/scan_v2_run24`
 
 単位は (木, ユニットの relpath:行, qualname, site, kind)（D64 / U50）。**D1〜D4 は 4 つとも主指標（D62）。宣言ごとに読み、合算しない。**「D1+D2 矛」の列は過去の run と比べるためだけに残す（主指標ではない）。
 

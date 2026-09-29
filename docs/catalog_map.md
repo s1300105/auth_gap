@@ -1,6 +1,6 @@
 # 事前定義の地図（何を先に決めているか、なぜ、どれが自分で考えた部分か）
 
-再現: `python scripts/catalog_map.py evidence/scan_v2_run23 --md docs/catalog_map.md`
+再現: `python scripts/catalog_map.py evidence/scan_v2_run24 --md docs/catalog_map.md`
 
 **役割と出所の分類は判断であって測定ではない**（根拠は `docs/decisions.md` D37）。
 行数と、下の「実際に使われた行」は測定値。
@@ -29,7 +29,7 @@
 
 ## 核の主張が実際に使っている行
 
-`evidence/scan_v2_run23` の CONTRADICTION から逆に数えた。
+`evidence/scan_v2_run24` の CONTRADICTION から逆に数えた。
 
 - 関係した API: **14 種類**（`DIRECT_SINKS` 67 行のうち）
 - 効果の形: {'direct': 852, 'proxy': 681}
