@@ -1,0 +1,830 @@
+{
+ "_note": "docs/population_v3.md V2 の判定対象。判定の前にコミットする。",
+ "seed": 20260924,
+ "n_main": 478,
+ "n_main_judged": 60,
+ "main_sampled": true,
+ "n_exploratory": 3,
+ "n_exploratory_judged": 3,
+ "targets": [
+  {
+   "tree": "v4-criscode2022__task-manager-cloud",
+   "unit": "logout",
+   "unit_relpath": "mcp-server/server.py",
+   "unit_lineno": 393,
+   "site": "psycopg.Connection.execute",
+   "kind": "DB",
+   "decl": "D2",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M00"
+  },
+  {
+   "tree": "v4-double16__shyhurricane",
+   "unit": "find_urls",
+   "unit_relpath": "shyhurricane/mcp_server/tools/find_indexed_metadata.py",
+   "unit_lineno": 194,
+   "site": "os.makedirs",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M01"
+  },
+  {
+   "tree": "v4-double16__shyhurricane",
+   "unit": "find_urls",
+   "unit_relpath": "shyhurricane/mcp_server/tools/find_indexed_metadata.py",
+   "unit_lineno": 194,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M02"
+  },
+  {
+   "tree": "v4-double16__shyhurricane",
+   "unit": "find_wordlists",
+   "unit_relpath": "shyhurricane/mcp_server/tools/find_wordlists.py",
+   "unit_lineno": 85,
+   "site": "os.makedirs",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M03"
+  },
+  {
+   "tree": "v4-ei-nakamura__rails-lens",
+   "unit": "register.dependency_graph",
+   "unit_relpath": "src/rails_lens/tools/dependency_graph.py",
+   "unit_lineno": 183,
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M04"
+  },
+  {
+   "tree": "v4-ei-nakamura__rails-lens",
+   "unit": "register.migration_context",
+   "unit_relpath": "src/rails_lens/tools/migration_context.py",
+   "unit_lineno": 260,
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M05"
+  },
+  {
+   "tree": "v4-manavgup__wikimind",
+   "unit": "wiki_ask",
+   "unit_relpath": "src/wikimind/mcp/server.py",
+   "unit_lineno": 234,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M06"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "ace_get_playbook",
+   "unit_relpath": "ccr/mcp/ace_tools.py",
+   "unit_lineno": 60,
+   "site": "os.remove",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M07"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_facts",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 131,
+   "site": "os.remove",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M08"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_links",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 367,
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M09"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_patterns",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 449,
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M10"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_discuss",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 594,
+   "site": "os.remove",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M11"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_discuss",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 594,
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M12"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_recall",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 71,
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M13"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_recall",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 71,
+   "site": "os.makedirs",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M14"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_commit",
+   "unit_relpath": "ccr/mcp/gcc_tools.py",
+   "unit_lineno": 104,
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M15"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_context",
+   "unit_relpath": "ccr/mcp/gcc_tools.py",
+   "unit_lineno": 355,
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M16"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_consolidate",
+   "unit_relpath": "ccr/mcp/gcc_tools.py",
+   "unit_lineno": 649,
+   "site": "os.remove",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M17"
+  },
+  {
+   "tree": "v4-ryxmarcus__mcp-aws",
+   "unit": "generate_cost_report_wrapper",
+   "unit_relpath": "src/aws-pricing-mcp-server/awslabs/aws_pricing_mcp_server/server.py",
+   "unit_lineno": 703,
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M18"
+  },
+  {
+   "tree": "v4-ryxmarcus__mcp-aws",
+   "unit": "generate_cost_report_wrapper",
+   "unit_relpath": "src/aws-pricing-mcp-server/awslabs/aws_pricing_mcp_server/server.py",
+   "unit_lineno": 703,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M19"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_takes",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1058,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M20"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_active_take",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1072,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M21"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "set_send_volume",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1184,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M22"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_track_num_sends",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1196,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M23"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "set_send_source_channels",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1222,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M24"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "play",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1398,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M25"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_play_state",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1410,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M26"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_cursor_position",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1421,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M27"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_tempo",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1464,
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M28"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "add_parallel_compression",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1508,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M29"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_selected_midi_notes",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1911,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M30"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_selected_midi_notes",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1911,
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M31"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "ramp_midi_note_velocities",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 2021,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M32"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "humanize_midi_notes",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 2382,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M33"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_item_info",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 2544,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M34"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "set_time_signature",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 2675,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M35"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_markers",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 2815,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M36"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_envelope_points",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 2926,
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M37"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_undo_state",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3094,
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M38"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_selected_tracks",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3137,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M39"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_track_peak",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3337,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M40"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_track_master_send",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3379,
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M41"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_fx_presets",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3457,
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M42"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "set_eq_band_enabled",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3631,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M43"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_track_fx_chunk",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3661,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M44"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_project_length",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3675,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M45"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "toggle_repeat",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3747,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M46"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_repeat_state",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3758,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M47"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_master_track",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 599,
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M48"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "insert_track",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 605,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M49"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "set_track_name",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 645,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M50"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "track_fx_add_by_name",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 727,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M51"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "track_fx_get_name",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 774,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M52"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "track_fx_get_name",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 774,
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M53"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "track_fx_get_enabled",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 783,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M54"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "take_fx_get_list",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 864,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M55"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "take_fx_get_name",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 915,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M56"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "take_fx_get_param_name",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 989,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M57"
+  },
+  {
+   "tree": "v4-vladimir-human__ru-marketplace-mcp",
+   "unit": "ozon_reviews",
+   "unit_relpath": "packages/ozon-connector/src/ozon_connector/server.py",
+   "unit_lineno": 799,
+   "site": "os.remove",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M58"
+  },
+  {
+   "tree": "v4-vladimir-human__ru-marketplace-mcp",
+   "unit": "ozon_reviews",
+   "unit_relpath": "packages/ozon-connector/src/ozon_connector/server.py",
+   "unit_lineno": 799,
+   "site": "pipe:write",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M59"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_todo_update",
+   "unit_relpath": "ccr/mcp/gcc_todo_tools.py",
+   "unit_lineno": 109,
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D4",
+   "reasons": [
+    "fs_append"
+   ],
+   "id": "E00"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_todo_done",
+   "unit_relpath": "ccr/mcp/gcc_todo_tools.py",
+   "unit_lineno": 156,
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D4",
+   "reasons": [
+    "fs_append"
+   ],
+   "id": "E01"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_todo_delete",
+   "unit_relpath": "ccr/mcp/gcc_todo_tools.py",
+   "unit_lineno": 181,
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D4",
+   "reasons": [
+    "fs_append"
+   ],
+   "id": "E02"
+  }
+ ]
+}

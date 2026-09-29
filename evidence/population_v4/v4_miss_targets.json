@@ -1,0 +1,280 @@
+{
+ "_note": "docs/population_v3.md V3 の対象。判定の前にコミットする。",
+ "seed": 20260924,
+ "n_pool": 632,
+ "n_pool_D1": 467,
+ "n_pool_D2": 165,
+ "n_judged": 30,
+ "targets": [
+  {
+   "tree": "v4-andrewbolster__mcp.bolster.online",
+   "unit": "check_availability",
+   "decl": "D1",
+   "relpath": "app.py",
+   "lineno": 293,
+   "n_effects": 0,
+   "id": "R00"
+  },
+  {
+   "tree": "v4-appachhi__bugasura-mcp-server",
+   "unit": "update_project",
+   "decl": "D2",
+   "relpath": "tools/projects.py",
+   "lineno": 350,
+   "n_effects": 5,
+   "id": "R01"
+  },
+  {
+   "tree": "v4-appachhi__bugasura-mcp-server",
+   "unit": "get_team",
+   "decl": "D1",
+   "relpath": "tools/teams.py",
+   "lineno": 108,
+   "n_effects": 2,
+   "id": "R02"
+  },
+  {
+   "tree": "v4-appachhi__bugasura-mcp-server",
+   "unit": "list_team_members",
+   "decl": "D1",
+   "relpath": "tools/teams.py",
+   "lineno": 544,
+   "n_effects": 2,
+   "id": "R03"
+  },
+  {
+   "tree": "v4-benjaminmridler__mcp-atlassian",
+   "unit": "get_page",
+   "decl": "D1",
+   "relpath": "src/mcp_atlassian/servers/confluence.py",
+   "lineno": 120,
+   "n_effects": 0,
+   "id": "R04"
+  },
+  {
+   "tree": "v4-benjaminmridler__mcp-atlassian",
+   "unit": "get_issue_history",
+   "decl": "D1",
+   "relpath": "src/mcp_atlassian/servers/jira.py",
+   "lineno": 2550,
+   "n_effects": 0,
+   "id": "R05"
+  },
+  {
+   "tree": "v4-cryptolabinc__envector-mcp-server",
+   "unit": "MCPServerApp.__init__.tool_get_index_list",
+   "decl": "D1",
+   "relpath": "srcs/server.py",
+   "lineno": 208,
+   "n_effects": 0,
+   "id": "R06"
+  },
+  {
+   "tree": "v4-ei-nakamura__rails-lens",
+   "unit": "register.gem_introspect",
+   "decl": "D1",
+   "relpath": "src/rails_lens/tools/gem_introspect.py",
+   "lineno": 113,
+   "n_effects": 7,
+   "id": "R07"
+  },
+  {
+   "tree": "v4-itzfaisal__vision-mcp",
+   "unit": "handle_call_tool",
+   "decl": "D1",
+   "relpath": "src/vision_mcp/server.py",
+   "lineno": 89,
+   "n_effects": 5,
+   "id": "R08"
+  },
+  {
+   "tree": "v4-jahrik__mcp-servers",
+   "unit": "gh_issue_list",
+   "decl": "D1",
+   "relpath": "src/mcp_servers/github/tools/issues.py",
+   "lineno": 18,
+   "n_effects": 2,
+   "id": "R09"
+  },
+  {
+   "tree": "v4-jahrik__mcp-servers",
+   "unit": "gh_repo_get",
+   "decl": "D1",
+   "relpath": "src/mcp_servers/github/tools/repos.py",
+   "lineno": 53,
+   "n_effects": 2,
+   "id": "R10"
+  },
+  {
+   "tree": "v4-jahrik__mcp-servers",
+   "unit": "lsp_document_highlight",
+   "decl": "D1",
+   "relpath": "src/mcp_servers/lsp/tools/symbols.py",
+   "lineno": 132,
+   "n_effects": 1,
+   "id": "R11"
+  },
+  {
+   "tree": "v4-jahrik__mcp-servers",
+   "unit": "ts_scope_at_position",
+   "decl": "D1",
+   "relpath": "src/mcp_servers/lsp/tools/treesitter.py",
+   "lineno": 127,
+   "n_effects": 0,
+   "id": "R12"
+  },
+  {
+   "tree": "v4-knuckles-team__audio-transcriber",
+   "unit": "register_audio_processing_tools.transcribe_audio",
+   "decl": "D2",
+   "relpath": "audio_transcriber/mcp_server.py",
+   "lineno": 73,
+   "n_effects": 9,
+   "id": "R13"
+  },
+  {
+   "tree": "v4-makfuncky__zozi",
+   "unit": "zozi_get_current_user",
+   "decl": "D1",
+   "relpath": "backend/providers/ai/zozi_mcp.py",
+   "lineno": 398,
+   "n_effects": 0,
+   "id": "R14"
+  },
+  {
+   "tree": "v4-manavgup__wikimind",
+   "unit": "_tool_wiki_get_source_status",
+   "decl": "D1",
+   "relpath": "src/wikimind/mcp/server.py",
+   "lineno": 382,
+   "n_effects": 0,
+   "id": "R15"
+  },
+  {
+   "tree": "v4-mgwalkerjr95__texas-grocery-mcp",
+   "unit": "coupon_clipped",
+   "decl": "D1",
+   "relpath": "src/texas_grocery_mcp/tools/coupon.py",
+   "lineno": 331,
+   "n_effects": 4,
+   "id": "R16"
+  },
+  {
+   "tree": "v4-neo4j-field__neo4j-mcp-workspace-template",
+   "unit": "create_mcp_server.list_documents_tool",
+   "decl": "D1",
+   "relpath": "mcp-neo4j-lexical-graph/src/mcp_neo4j_lexical_graph/server.py",
+   "lineno": 562,
+   "n_effects": 0,
+   "id": "R17"
+  },
+  {
+   "tree": "v4-opastorello__correios-reverso",
+   "unit": "create_mcp_server.buscar_postagem_por_codigo",
+   "decl": "D1",
+   "relpath": "src/correios_reverso/mcp/server.py",
+   "lineno": 94,
+   "n_effects": 0,
+   "id": "R18"
+  },
+  {
+   "tree": "v4-ryxmarcus__mcp-aws",
+   "unit": "get_execution_plan",
+   "decl": "D1",
+   "relpath": "src/aws-api-mcp-server/awslabs/aws_api_mcp_server/server.py",
+   "lineno": 403,
+   "n_effects": 0,
+   "id": "R19"
+  },
+  {
+   "tree": "v4-ryxmarcus__mcp-aws",
+   "unit": "get_pricing",
+   "decl": "D1",
+   "relpath": "src/aws-pricing-mcp-server/awslabs/aws_pricing_mcp_server/server.py",
+   "lineno": 387,
+   "n_effects": 0,
+   "id": "R20"
+  },
+  {
+   "tree": "v4-ryxmarcus__mcp-aws",
+   "unit": "get_pricing_attribute_values",
+   "decl": "D1",
+   "relpath": "src/aws-pricing-mcp-server/awslabs/aws_pricing_mcp_server/server.py",
+   "lineno": 1224,
+   "n_effects": 0,
+   "id": "R21"
+  },
+  {
+   "tree": "v4-tallyfy__mcp-public",
+   "unit": "register_comment_management_tools.get_task_comments",
+   "decl": "D1",
+   "relpath": "server/tools/comment_management.py",
+   "lineno": 359,
+   "n_effects": 2,
+   "id": "R22"
+  },
+  {
+   "tree": "v4-tallyfy__mcp-public",
+   "unit": "register_folder_management_tools.get_process_folders",
+   "decl": "D1",
+   "relpath": "server/tools/folder_management.py",
+   "lineno": 122,
+   "n_effects": 2,
+   "id": "R23"
+  },
+  {
+   "tree": "v4-tallyfy__mcp-public",
+   "unit": "register_user_management_tools.get_user",
+   "decl": "D1",
+   "relpath": "server/tools/user_management.py",
+   "lineno": 381,
+   "n_effects": 2,
+   "id": "R24"
+  },
+  {
+   "tree": "v4-thomasgreissler__pronote-mcp",
+   "unit": "register_tools.pronote_get_homework",
+   "decl": "D1",
+   "relpath": "src/pronote_mcp/tools.py",
+   "lineno": 126,
+   "n_effects": 0,
+   "id": "R25"
+  },
+  {
+   "tree": "v4-tsekennykl1__mytradingagentsbackend",
+   "unit": "get_earnings",
+   "decl": "D1",
+   "relpath": "app/mcp_server.py",
+   "lineno": 486,
+   "n_effects": 1,
+   "id": "R26"
+  },
+  {
+   "tree": "v4-tushar3006__macp-aws-lambda",
+   "unit": "register_create_channel_namespace_tool.create_channel_namespace",
+   "decl": "D2",
+   "relpath": "src/aws-appsync-mcp-server/awslabs/aws_appsync_mcp_server/tools/create_channel_namespace.py",
+   "lineno": 45,
+   "n_effects": 0,
+   "id": "R27"
+  },
+  {
+   "tree": "v4-utahnlp__infinite-science-gym",
+   "unit": "read_text_file",
+   "decl": "D1",
+   "relpath": "eval/mcp_servers/scientific_data_repository/mcp.py",
+   "lineno": 45,
+   "n_effects": 0,
+   "id": "R28"
+  },
+  {
+   "tree": "v4-vladimir-human__ru-marketplace-mcp",
+   "unit": "lamoda_card",
+   "decl": "D1",
+   "relpath": "packages/lamoda-connector/src/lamoda_connector/server.py",
+   "lineno": 455,
+   "n_effects": 1,
+   "id": "R29"
+  }
+ ]
+}
