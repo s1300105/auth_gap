@@ -695,6 +695,8 @@ CLAUDE.md 規則 6 に従って残す。**
 
 ## O27. snake_case の注釈が `D_malformed` として記録されない — **実装は解決（D48）。`r_malformed` の分母だけ学生の判断待ち**
 
+> **注記（2026-09-29、D64 / U38）**: snake_case の読み方は **mcp の版（サブツリーごと）で条件づけた**（>=2.0 → 宣言、<2.0 → `D_malformed`、決まらない → `D_unknown`。逸脱 #25）。**下の「130 / 2,231」は run20 以前の値**で、run24（`analyzer-freeze-3`）では `malformed` を持つユニットは **0 / 2,289**、`D_unknown`（版が決まらない snake_case）は **6**。run20 で malformed だった 130 は、宣言 124（上界あり 94・上界なし 30。どれも版 >=2.0 の木で、canvas-mcp が 108）と `D_unknown` 6 に移った。`r_malformed` を報告するなら、この版の定義で数え直す。
+
 - **状況**（D47 の点検で発見）: 仕様書 322 行目は
   「snake_case 表記（`read_only_hint` 等）は `ToolAnnotations` に deserialize されず
   protocol に届かないので **`D_malformed` として別行で報告する**」と定めている。
@@ -1253,7 +1255,8 @@ R2-r1-10（`ctx` を OP にする）は検証で落ちた唯一の所見で、�
   **833 件**が黙って落ちている（`NET` のメソッドが実行時引数 832 件 =
   `httpx.AsyncClient.request(method, …)` ほか、SQL が読めない 1 件）。
   `docs/contradiction_matrix.md` §7 の手順 3。**矛盾を増やすことより先に効く。**
-- **カタログ外のツールの形**（D17「直さない 3」）: llama-index
+- **カタログ外のツールの形**（D17「直さない 3」。**D64 / U40 で、カタログにある名前の呼び出し形 `x.tool(...)(fn)` と `add_tool` は入口にした**。
+  下の claude_agent_sdk の `tool(...)(fn)` も今の版ではユニットになる）: llama-index
   `FunctionTool.from_defaults` / `QueryEngineTool`、SuperAGI `_execute`、OpenManus
   `BaseTool.execute`、OpenHands `ToolDefinition`、claude_agent_sdk `tool(...)` など。
   広げるなら月 10 の指紋凍結前に、**F0a 標本の外の根拠**（公式文書）で行う。

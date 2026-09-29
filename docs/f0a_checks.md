@@ -1175,6 +1175,12 @@ url.query: params={"$format": "json", "$top": str(max_results)}、search があ�
 
 ## ユニット 0 件（と極端に少ない）木
 
+> **注記（2026-09-29、D64 / U40）**: この節と下の「annotation の読み取り」の判定は、当時の版に対するもの。**`analyzer-freeze-3` の版では、
+> カタログにある名前のデコレータの呼び出し形 `x.tool(...)(fn)` / `tool(...)(fn)` と `x.add_tool(fn, ...)` も入口になる**
+> （D17「直さない 3」の分類を改めた）。たとえば CrewAI の `tool("study_assistant")(fn)` と claude_agent_sdk の `tool(name, desc, schema)(fn)` は、
+> 小さな木で確かめると今の版ではユニットになる（framework は、デコレータ形の `@tool(...)` と同じく末尾名の照合で `mcp` と記録される）。
+> `ToolManager.add_tool(fn, ...)` も同じ。判定の列は書き換えない。
+
 | 木 | 母集団 | 分類 | 見つかったツール形（カタログ内か） | 説明 |
 |---|---|---|---|---|
 | `w-jomoll__onco-agent` | tool_package | **tools_in_uncataloged_form** | llama-index BaseTool 派生クラスの __call__（metadata プロパティで name を宣言し、エージェントが tool(**arguments) で呼ぶ）@src/agent_tools.py（ReportsRAGTool, FullContextTool, LabQueryTool, ISSScoreTool, RISSScoreTool, R2ISSScoreTool, IPSSRScoreTool, HCTCITool）（外）; 同形（テスト用の偽ツール）@tests/test_agents_base.py（WordCountTool, SummationTool, EchoTool, 入れ子の FailingTool）（外） | LLM が呼ぶツールは木の中にある。DSPy エージェントがモデル出力の tool_name と arguments で llama-index BaseTool（import できないときは src/toolkit.py のフォールバック）の派生インスタンスを選び、tool(**arguments) で __call__ を呼んでいる。カタログの method 規則は基底 BaseTool を見るが、メソッド名は _run/_arun だけを許す。しかも find_units は名前が __ で始まるメソッドを飛ばすので、__call__ はどちらの条件でも拾われない。load_default_tools は名前が _tools で終わるので tools_list の return 形の走査には入る。ただし要素 reports_tool などは変数で、関数定義に解決できない。したがってカタログに無い形であり、0 件は解析器の実装欠陥ではない。ただしカタログの被覆が不足しているため、実質は false_clean 方向の取りこぼしになる（llama-index BaseTool.__call__ 形）。parse 失敗は 0。 |

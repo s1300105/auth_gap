@@ -78,6 +78,9 @@
   モジュール水準の束縛・`os.environ`・URL 分割は、`global` 再束縛、同じ関数での
   書き込みの読み戻し、書式テンプレートのプレースホルダを見落として false-clean を
   作っていた（D17 改訂 2）。
+- **`authgap/` を変える前に `git fetch --tags && git tag -l` で凍結のタグを確かめる。** タグの後に解析器を変えると
+  凍結の約束に反する（`analyzer-freeze-2` の後に N9 を直して `analyzer-freeze-3` を打ち直した。逸脱 #26）。今の凍結は
+  `analyzer-freeze-3`。凍結後に見つけた誤りは直さず `docs/open_questions.md` に限界として書く。
 - **コミットメッセージは `git commit -F - <<'EOF'`（引用符つき heredoc）で渡す。**
   `-m "..."` の中のバッククォートはシェルにコマンドとして展開され、本文が欠ける。
 - **`.gitignore` で親ディレクトリごと除外すると `!` の例外が効かない。**

@@ -3706,3 +3706,10 @@ N9 を直した（凍結後の変更。逸脱 #26）。学生の決定で **`ana
 これが最終評価に使う凍結の版である。`analyzer-freeze-2` は履歴として残す。9dc3bc3 の `docs/fingerprint.json` は
 `freeze.tag = "analyzer-freeze-2"` と書いているが、タグの付いたコミットのファイルなので書き換えない（実装の結合 sha256
 35606ba9… は freeze-3 の版と一致する）。**今後、解析器を変える前には `git tag -l` で凍結のタグを確かめる。**
+
+**文書の食い違いの点検（2026-09-29）**: D62・D64・凍結と食い違う記述を docs/ で探して注記した（経緯の記録と手判定の列は書き換えない）。
+見落としていた数値の動き: **snake_case の `D_malformed` を持つユニットが run20 の 130 から run24 で 0 になった**（U38 の版の条件。
+宣言 124 = 上界あり 94・上界なし 30、`D_unknown` 6。130 のうち 108 は canvas-mcp）。O27 の `r_malformed` の数値は run20 以前の値なので、
+報告するならこの版で数え直す（O27 に注記、逸脱 #25 に追記）。呼び出し形の登録を「カタログ外」とした `docs/f0a_checks.md` の手判定、
+O21 の一覧、`contradiction_matrix.md` に、今の版では入口になることを注記した（CrewAI の `tool("x")(fn)` と claude_agent_sdk の
+`tool(...)(fn)` は小さな木で確かめた）。`contradiction_principles.md` §6 の原理 4 の行に D62 の改訂を注記した。
