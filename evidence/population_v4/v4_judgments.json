@@ -1,0 +1,1561 @@
+{
+ "_note": "v4 の判定（D66、analyzer-freeze-3）。原ソースの確認は木ごとに agent に分け、本記録者が誤と見落とし・不明の根拠を見直した（ccr の起動時初期化と rails-lens の組み込み set() は原ソースで確認）。解析器は変えていない。",
+ "v2": [
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_todo_update",
+   "unit_relpath": "ccr/mcp/gcc_todo_tools.py",
+   "unit_lineno": 109,
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D4",
+   "reasons": [
+    "fs_append"
+   ],
+   "id": "E00",
+   "verdict": "誤",
+   "error_class": "到達しない（_ensure_memory→_init→ensure_structure の連鎖。_init は起動時に main() が済ませる）。そのうえ宣言にも反しない: 追記は『.ccr が無いとき』だけなので、繰り返しても 2 回目は追記しない（冪等）",
+   "severity": "該当なし",
+   "evidence": "gcc_todo_tools.py:137-138 は _srv._ensure_memory() だけ。server.py:549-554 と server.py:678。memory_file_io.py:79-84 の _add_to_gitignore は `if '.ccr/' not in content and '.ccr' not in content:` のときだけ open(gitignore_path, 'a') で '.ccr/' を書くので、1 回目の後は条件が偽になる",
+   "note": "表 7.4 の『定数 a の open は矛』を当てたものだが、書く前に内容を確かめる追記は同じ引数で繰り返しても状態が変わらない"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_todo_done",
+   "unit_relpath": "ccr/mcp/gcc_todo_tools.py",
+   "unit_lineno": 156,
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D4",
+   "reasons": [
+    "fs_append"
+   ],
+   "id": "E01",
+   "verdict": "誤",
+   "error_class": "到達しない（_ensure_memory→_init の連鎖。起動時に main() が済ませる）。そのうえ宣言にも反しない: 追記は内容を確かめたうえでの 1 回きり",
+   "severity": "該当なし",
+   "evidence": "gcc_todo_tools.py:162-163 は _srv._ensure_memory() だけ。server.py:549-554 と server.py:678。memory_file_io.py:79-84 の _add_to_gitignore は '.ccr' が既にあれば追記しない",
+   "note": "E00 と同形"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_todo_delete",
+   "unit_relpath": "ccr/mcp/gcc_todo_tools.py",
+   "unit_lineno": 181,
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D4",
+   "reasons": [
+    "fs_append"
+   ],
+   "id": "E02",
+   "verdict": "誤",
+   "error_class": "到達しない（_ensure_memory→_init の連鎖。起動時に main() が済ませる）。そのうえ宣言にも反しない: 追記は内容を確かめたうえでの 1 回きり",
+   "severity": "該当なし",
+   "evidence": "gcc_todo_tools.py:187-188 は _srv._ensure_memory() だけ。server.py:549-554 と server.py:678。memory_file_io.py:79-84 の _add_to_gitignore は '.ccr' が既にあれば追記しない",
+   "note": "E00 と同形"
+  },
+  {
+   "tree": "v4-criscode2022__task-manager-cloud",
+   "unit": "logout",
+   "unit_relpath": "mcp-server/server.py",
+   "unit_lineno": 393,
+   "site": "psycopg.Connection.execute",
+   "kind": "DB",
+   "decl": "D2",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M00",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "本来の動作",
+   "evidence": "corpus/v4-criscode2022__task-manager-cloud/mcp-server/server.py:384-414 logout (destructiveHint: False) calls get_db().revoke_session(...) when the identity is JWT and has a session_id (L407-413). database.py:188-199 revoke_session runs the constant SQL 'UPDATE public.sessions SET revoked_at = NOW() WHERE id = %s AND user_id = %s ...' through conn.execute, where conn comes from the psycopg_pool pool, and then commits.",
+   "note": "Per §7.2, UPDATE is in SQL_DESTRUCTIVE_HEADS, so this is 矛. It runs only when the caller authenticated with JWT (PIN / API-key callers return early at L408-412), and that is the tool's normal case. Revoking a session is the tool's purpose, so the severity is 本来の動作. Semantically the UPDATE only sets a revoked_at timestamp on an existing row, but the table decides by the head word."
+  },
+  {
+   "tree": "v4-double16__shyhurricane",
+   "unit": "find_urls",
+   "unit_relpath": "shyhurricane/mcp_server/tools/find_indexed_metadata.py",
+   "unit_lineno": 194,
+   "site": "os.makedirs",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M01",
+   "verdict": "誤",
+   "error_class": "到達しない: 起動時にだけ走る遅延初期化を、ツール呼び出しの経路として数えた（シングルトンの global キャッシュ）",
+   "severity": "該当なし",
+   "evidence": "shyhurricane/mcp_server/server_context.py:90-114: get_server_context() returns the global _server_context at L92-93 when it is already set, and only otherwise reaches os.makedirs(cache_path, exist_ok=True) at L114. mcp_service.py:104 calls await get_server_context() at startup, before the server starts serving, and app_lifespan (mcp_server/__init__.py:73) calls it again before any tool call. So when find_urls (find_indexed_metadata.py:194-240) calls it at L207, it returns the cached object.",
+   "note": "The effect's witness_chain is ['get_server_context'] (server_context.py:114). mcp_service.py is the only entry point in the repository that starts a server. If startup initialisation fails, the service exits instead of serving (sys.exit / exception), so this cannot be reached through a tool call. If it were reachable, it would be the 裏側・補助 kind: creating a cache directory on first initialisation."
+  },
+  {
+   "tree": "v4-double16__shyhurricane",
+   "unit": "find_urls",
+   "unit_relpath": "shyhurricane/mcp_server/tools/find_indexed_metadata.py",
+   "unit_lineno": 194,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M02",
+   "verdict": "誤",
+   "error_class": "到達しない: 起動時にだけ走る遅延初期化（get_server_context のシングルトン）の中の mkdir を、ツール呼び出しの経路として数えた",
+   "severity": "該当なし",
+   "evidence": "Every witness_chain for db.py:103 storage.mkdir(parents=True, exist_ok=True) in _start_qdrant_docker starts from get_server_context: [get_server_context, create_qdrant_document_store/create_qdrant_client, qdrant_host_port, _start_qdrant_docker]. get_server_context (server_context.py:90-93) returns the cache once it has been initialised at startup (mcp_service.py:104, mcp_server/__init__.py:73 app_lifespan). The find_urls body (find_indexed_metadata.py:206-240) calls nothing else that reaches db.py:103.",
+   "note": "Same cause as M01. If it were reachable, this is the 裏側・補助 kind: the directory for Qdrant's Docker storage."
+  },
+  {
+   "tree": "v4-double16__shyhurricane",
+   "unit": "find_wordlists",
+   "unit_relpath": "shyhurricane/mcp_server/tools/find_wordlists.py",
+   "unit_lineno": 85,
+   "site": "os.makedirs",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M03",
+   "verdict": "誤",
+   "error_class": "到達しない: 起動時にだけ走る遅延初期化（get_server_context のシングルトン）を、ツール呼び出しの経路として数えた",
+   "severity": "該当なし",
+   "evidence": "find_wordlists.py:85-110 calls _run_unix_command(ctx, command, None) at L103, and mcp_server/run_unix_command.py:61 does await get_server_context(). The witness_chain is ['_run_unix_command','get_server_context'], reaching server_context.py:114 os.makedirs. get_server_context was already initialised at startup (mcp_service.py:104 / app_lifespan __init__.py:73), so it returns the cache at L92-93.",
+   "note": "Same cause as M01. There is a separate pipe:write CONTRADICTION in the same tool (run_unix_command.py:129); it is not one of the items to judge here and was not judged."
+  },
+  {
+   "tree": "v4-ei-nakamura__rails-lens",
+   "unit": "register.dependency_graph",
+   "unit_relpath": "src/rails_lens/tools/dependency_graph.py",
+   "unit_lineno": 183,
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M04",
+   "verdict": "誤",
+   "error_class": "解析器の読み違い: 組み込みの set() を末尾名で CacheManager.set に解決した（受け手の型で裏付けられない解決）",
+   "severity": "該当なし",
+   "evidence": "src/rails_lens/tools/dependency_graph.py:183-248: the dependency_graph body does not call cache.set anywhere; cache is unpacked at L186 and never used. The only 'set' at the depth-1 position of the witness chain ['CacheManager.set'] is visited: set[str] = set() at L192. The same goes for the ['_fallback_dependency_graph','CacheManager.set'] chain, which comes from visited: set[str] = set() at L80 / L118. The write at cache/manager.py:90 open(path,'w') is only reached through a real CacheManager.set call. The repository calls cache.set only from get_routes / trace_callback_chain / get_schema / introspect_model.",
+   "note": "RailsBridge.execute (bridge/runner.py) does not use the cache either. What the spawned Ruby script does is outside the scope of this item (builtins.open FS_WRITE). The same misreading shows up as FS_READ elsewhere: result.get(...) in _parse_output is resolved to CacheManager.get."
+  },
+  {
+   "tree": "v4-ei-nakamura__rails-lens",
+   "unit": "register.migration_context",
+   "unit_relpath": "src/rails_lens/tools/migration_context.py",
+   "unit_lineno": 260,
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M05",
+   "verdict": "誤",
+   "error_class": "解析器の読み違い: 組み込みの set() を末尾名で CacheManager.set に解決した",
+   "severity": "該当なし",
+   "evidence": "src/rails_lens/tools/migration_context.py:260-380: the migration_context body does not call cache.set; cache is unpacked at L263 and never used. The call that the witness_chain ['CacheManager.set'] points at is seen: set[str] = set() at L332. The write it leads to, cache/manager.py:90 open(path,'w'), is not reachable from this tool. grep.search, bridge.execute, _parse_schema_for_table and _parse_migration_file contain no writes either (the only other writes are in analyzers/reverse_index_builder.py, which only screen_map uses).",
+   "note": "Same cause as M04."
+  },
+  {
+   "tree": "v4-manavgup__wikimind",
+   "unit": "wiki_ask",
+   "unit_relpath": "src/wikimind/mcp/server.py",
+   "unit_lineno": 234,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M06",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "src/wikimind/mcp/server.py:234-257（wiki_ask → QueryService.ask）→ services/query.py:257 → engine/qa_agent.py:588（answer → _persist_query）→ qa_agent.py:531 append_log_entry → services/activity_log.py:63 resolved_dir.mkdir(parents=True, exist_ok=True)（続く :77 で log.md に 'a' で追記）。質問が空でなく LLM 呼び出しが例外にならなければ毎回到達する。readOnlyHint: true に対し FS_WRITE（§7.1 FS_WRITE すべて → 矛）。",
+   "note": "同じ組に入るもう 1 つの site、database.py:115 の mkdir（get_engine）は lru_cache の get_async_engine 経由で、_lifespan（server.py:62-67）の init_db が起動時に先に呼ぶので、ツール呼び出しの中では実際にはほぼ到達しない（lifespan が走らない構成のときだけ初回に到達）。組の正は activity_log.py:63 の経路で成り立つ。書き込みは活動ログ（log.md）のためのディレクトリ作成で補助的。なおツールは qa_agent.py:470-529 で Query 行を DB に add/commit しており（ORM、解析器の効果には出ていない）、ツール本来の動作としても read-only ではない。"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "ace_get_playbook",
+   "unit_relpath": "ccr/mcp/ace_tools.py",
+   "unit_lineno": 60,
+   "site": "os.remove",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M07",
+   "verdict": "誤",
+   "error_class": "到達しない: 効果は server._init の中の起動時処理だけにある。_ensure_global_playbook / _ensure_playbook は大域変数が None のときだけ _init() を呼ぶが、唯一の起動口 main() が mcp.run の前に _init(args.project) を済ませるので、ツール呼び出しの時点では None にならない",
+   "severity": "該当なし",
+   "evidence": "ccr/mcp/server.py:210-215 の os.remove(session_marker) は _init の中（138 行〜）にしかない。ace_tools.py:84-85 は _srv._ensure_global_playbook() / _ensure_playbook() を呼び、server.py:541-583 は `if _global_playbook is None: _init()` の形。main()（server.py:659-700）が 678 行で _init(args.project) を呼んでから 700 行で mcp.run。サーバの起動口は pyproject.toml:68 / ccr/mcp_server.py の main だけ（mcp.run は他に無い）",
+   "note": "witness_chain は 2 本とも _init 経由（_ensure_global_playbook→_init、_ensure_playbook→_init）で、ツール時点の別経路は無い。仮に遅延初期化が走っても初回の初期化（.session_active マーカーの削除）"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_facts",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 131,
+   "site": "os.remove",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M08",
+   "verdict": "誤",
+   "error_class": "到達しない: server._init 内の起動時処理。_get_project_memory(None)→_ensure_memory は _memory が None のときだけ _init を呼ぶが、main() が起動時に _init を済ませる",
+   "severity": "該当なし",
+   "evidence": "唯一の証人連鎖は _get_project_memory→_ensure_memory→_init→server.py:212（os.remove(session_marker)）。_ensure_memory は server.py:549-554 で `if _memory is None: _init()`。main() は server.py:678 で _init を呼んでから 700 行で mcp.run。_memory は _init の 153 行目付近で先に代入される",
+   "note": "同じ理由で M07 / M11 / M17 と同形"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_links",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 367,
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M09",
+   "verdict": "誤",
+   "error_class": "到達しない: 4 つの効果はすべて _ensure_memory→_init→SqliteStorageBackend.__init__ の連鎖で、_init は起動時に main() が済ませる。加えて受け手の型の読み違い（sqlite3.Connection を psycopg.Cursor とした）",
+   "severity": "該当なし",
+   "evidence": "gcc_search_tools.py:399-400 は _srv._ensure_memory() だけ。server.py:549-554 の _ensure_memory は _memory が None のときだけ _init を呼び、main()（server.py:678）が起動時に _init 済み。さらに _init 内でも SqliteStorageBackend(ccr_root) は storage_backend == 'sqlite' かつ needs_migration のときだけ（server.py:156-162）。効果の位置 _sqlite_fts5.py:219（INSERT ... 'rebuild'）、_sqlite_vec.py:61（CREATE）、95 / 118（INSERT OR REPLACE）の conn は `sqlite3.Connection` と注釈されている（_sqlite_vec.py:53, 67）",
+   "note": "仮に到達しても一回きりの移行・バックフィル（初回の初期化）。site 名 psycopg.Cursor.execute は受け手の型の読み違いだが kind=DB 自体は合っている"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_patterns",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 449,
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D1",
+   "reasons": [
+    "db_modify"
+   ],
+   "id": "M10",
+   "verdict": "誤",
+   "error_class": "到達しない: M09 と同じ連鎖（_ensure_memory→_init→SqliteStorageBackend.__init__）。_init は起動時に main() が済ませる。受け手の型の読み違い（sqlite3 を psycopg とした）もある",
+   "severity": "該当なし",
+   "evidence": "gcc_search_tools.py:473-474 は _srv._ensure_memory() だけ。server.py:549-554、main() の server.py:678 は M09 と同じ。効果の位置は _sqlite_fts5.py:219、_sqlite_vec.py:61/95/118（sqlite3.Connection の conn）",
+   "note": "M09 と同じ形"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_discuss",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 594,
+   "site": "os.remove",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M11",
+   "verdict": "誤",
+   "error_class": "到達しない: server._init 内の os.remove(session_marker)。_ensure_memory は _memory が None のときだけ _init を呼び、main() が起動時に _init を済ませる",
+   "severity": "該当なし",
+   "evidence": "唯一の証人連鎖は _ensure_memory→_init→server.py:212。gcc_discuss の入口は gcc_search_tools.py:636 で _srv._ensure_memory() を呼ぶ。server.py:549-554 と server.py:678（main の _init）",
+   "note": "M12 は同じツールの別 site（ロックファイルの unlink）"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_discuss",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 594,
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M12",
+   "verdict": "誤",
+   "error_class": "宣言に反しない: ツール自身が同じ呼び出しで作ったロックファイル（path + '.lock'）の後始末の unlink。既にあったデータを消す・変える動作ではない（v3 の誤『同じ呼び出しで作った一時ファイルの削除を破壊的とみなす』と同じ類）",
+   "severity": "該当なし",
+   "evidence": "ccr/core/memory_pkg/memory_file_io.py:88-113 の _file_lock: 102 行で open(lock_path, 'w') で作り、flock を外したあと 111 行で os.unlink(lock_path)。連鎖は add_discussion→get_active_branch→_read_file→_file_lock で、読み取りのためのロックでも毎回作って消す",
+   "note": "経路自体は到達する（gcc_discuss の本来の処理でロックを取る）が、動作は destructiveHint:false に反しない"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_recall",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 71,
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M13",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "gcc_search_tools.py:94-110: gcc_recall は毎回 RecallEngine(mem).recall(...) の後に append_audit(mem.ccr_root, 'memory_read', ...) を呼ぶ。governance.py:206 で <project>/.ccr/governance_audit.jsonl を 'a' で開いて追記（ccr_root は memory_init.py:49 で <root>/.ccr なので basename の検査を通る）。recall.py:186 は毎回 RecallTraceStore.append_trace を呼び、replay.py:103 で recall_traces.jsonl に追記",
+   "note": "readOnlyHint:true のツールが呼ぶたびに監査ログと recall トレースを追記する（ログ類の書き込み）。同じ項目の他の証人のうち observability.py:35 は CCR_TRACE_LOCAL が真のときだけ、memory_file_io.py:83 / memory_init.py:194 は project 引数 + CCR_AUTO_INIT のときだけ（条件つき）、cli.py:1004 は _init 経由で到達しない"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_recall",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 71,
+   "site": "os.makedirs",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M14",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "governance.py:186 の os.makedirs(ccr_root, exist_ok=True) は append_audit の中で毎回実行される（gcc_search_tools.py:101 から毎回呼ばれる）。replay.py:102 の os.makedirs(self.ccr_root) は recall.py:186 の append_trace から毎回実行",
+   "note": "ディレクトリが既にあれば変化は無いが、無ければ .ccr/ を作る。表 7.1 で FS_WRITE は新規作成を含めて矛。本体は監査・トレースの付随処理。memory_init.py:106/108/139/168 は project 引数 + CCR_AUTO_INIT のときだけ（条件つき）、server.py:222 と cli.py:974 は _init 経由で到達しない。session_store.py:148 は recall.py:403 で sessions.db が既にあるときだけ（親ディレクトリは既にある）"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_commit",
+   "unit_relpath": "ccr/mcp/gcc_tools.py",
+   "unit_lineno": 104,
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M15",
+   "verdict": "誤",
+   "error_class": "宣言に反しない: os.unlink の 4 つの位置はすべて、ツールが同じ呼び出しで作ったロックファイル（path.lock）か一時ファイル（path.tmp）の後始末",
+   "severity": "該当なし",
+   "evidence": "memory_file_io.py:111 は _file_lock がロック取得のために 102 行で作った lock_path の削除。memory_file_io.py:143 は _write_file_unlocked の except 節で、132 行で作った tmp_path を消すだけ。server.py:374 は _atomic_write の except 節で、368 行の tmp_path を消す。playbook_mutations.py:250 は save_failure_lessons の except 節で、242 行の tmp_path を消す",
+   "note": "gcc_commit は別の site（os.replace での上書きなど）で既存ファイルを書き換えるが、この項目は site=os.unlink に限った判定"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_context",
+   "unit_relpath": "ccr/mcp/gcc_tools.py",
+   "unit_lineno": 355,
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M16",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "gcc_tools.py:463-467: level >= 2（既定値は 2）で scratchpad にエントリがあれば scratchpad.format_for_context() を呼ぶ。scratchpad.py:229-234→list_entries（140-162）は期限切れのエントリを消し、_save() で .ccr/scratchpad.json を tmp に書いてから os.replace で上書き（scratchpad.py:84）",
+   "note": "readOnlyHint:true のツールが、TTL が切れたエントリがあるときに作業メモリのファイルを書き換える（条件つき。期限切れの掃除）。_scratchpad は起動時の _init で設定済みなので、この経路はツールの呼び出し時に到達する"
+  },
+  {
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_consolidate",
+   "unit_relpath": "ccr/mcp/gcc_tools.py",
+   "unit_lineno": 649,
+   "site": "os.remove",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M17",
+   "verdict": "誤",
+   "error_class": "到達しない: server._init 内の os.remove(session_marker)。_ensure_memory は _memory が None のときだけ _init を呼び、main() が起動時に _init を済ませる",
+   "severity": "該当なし",
+   "evidence": "唯一の証人連鎖は _ensure_memory→_init→server.py:212。gcc_consolidate の入口は gcc_tools.py:678 で _ensure_memory を呼ぶ。server.py:549-554 と main の server.py:678",
+   "note": "M07 / M08 / M11 と同形"
+  },
+  {
+   "tree": "v4-ryxmarcus__mcp-aws",
+   "unit": "generate_cost_report_wrapper",
+   "unit_relpath": "src/aws-pricing-mcp-server/awslabs/aws_pricing_mcp_server/server.py",
+   "unit_lineno": 703,
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M18",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "本来の動作",
+   "evidence": "src/aws-pricing-mcp-server/awslabs/aws_pricing_mcp_server/server.py:703-826（generate_cost_report_wrapper、引数 output_file をそのまま generate_cost_report に渡す）→ report_generator.py:1164-1186（format で _generate_csv_report / _generate_custom_data_report / _generate_pricing_data_report に分岐）→ report_generator.py:778 / 927 / 1074 `with open(output_file, 'w')`。output_file はモデルが決める引数。",
+   "note": "output_file を与えたときだけ到達する条件つきだが、引数の説明が 'Path to save the report file' で、ファイルへの保存はツールの文書化された機能なので本来の動作とした。モデルが選んだ任意のパスを 'w' で上書きしうる。readOnlyHint: true に対し FS_WRITE で矛（§7.1）。"
+  },
+  {
+   "tree": "v4-ryxmarcus__mcp-aws",
+   "unit": "generate_cost_report_wrapper",
+   "unit_relpath": "src/aws-pricing-mcp-server/awslabs/aws_pricing_mcp_server/server.py",
+   "unit_lineno": 703,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M19",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "本来の動作",
+   "evidence": "report_generator.py:777 / 926 / 1073 `output_path.parent.mkdir(parents=True, exist_ok=True)`（output_path = Path(output_file)、output_file はモデル由来）。経路は M18 と同じ（server.py:815-826 → report_generator.py:1164-1186）。",
+   "note": "M18 の書き出しの前段で、モデルが選んだパスの親ディレクトリを作る。output_file を与えたときだけ到達する。§7.1 で FS_WRITE（新規作成を含む）は矛。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_takes",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1058,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M20",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:1057-1068 get_takes (readOnlyHint=True) -> reaper_call(:535-549) -> ensure_bridge_current(:494)/dispatch(:437) -> reaper_call_file(:268). 340 と 368 行の response_file.unlink(missing_ok=True) は、前の中断した呼び出しが残した response_N.json を消す。416-417 行は成功時に自分の request と bridge が書いた response を消す（解析器は 416/417/429 を効果行として出していないが、site の判定は変わらない）。",
+   "note": "毎回の呼び出しで到達する。readOnly × FS_WRITE（削除）は §7.1 どおり矛。消すのは REAPER と話すためのファイル mailbox（BRIDGE_DIR）の IPC ファイルで、ツール本来の動作（take の一覧取得）ではない。368 行は呼び出しを越えて残る孤児ファイルを消すので、一時ファイルの掃除としても環境の変更（1-i-b）に当たる。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_active_take",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1072,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M21",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:1071-1082 get_active_take (readOnlyHint=True) -> reaper_call(:535) -> reaper_call_file(:268)。unlink は 340 行（fallback 経路）/ 368 行（O_EXCL の slot 取得時）/ 416-417 行（成功時）/ 429 行（timeout 時）。",
+   "note": "M20 と同じ。mailbox の IPC ファイルの削除で、毎回到達する。§7.1 の readOnly × FS_WRITE で矛。重大度は裏側・補助（一時ファイル）。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "set_send_volume",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1184,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M22",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:1183-1192 set_send_volume (destructiveHint=False) -> reaper_call(\"SetTrackSendUIVol\") -> reaper_call_file。368 行（または 340 行）の response_file.unlink は、前の中断した呼び出しが残した response_N.json（既にあるファイル）を消す。416-417 行は bridge（REAPER 側）が書いた response ファイルを消す。",
+   "note": "destructive=false × unlink は §7.2 の決定済みの矛。消すのはこの呼び出しが作ったものではない既存ファイル（孤児の response、bridge が書いた response）なので「追記だけ」に反する。ただし IPC mailbox の掃除であって、ツール本来の動作（send 音量の設定）ではない。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_track_num_sends",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1196,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M23",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:1195-1202 get_track_num_sends (readOnlyHint=True) -> reaper_call(\"GetTrackNumSends\") -> reaper_call_file。unlink は 340 / 368 / 416-417 / 429 行。",
+   "note": "M20 と同じ。readOnly × 削除で矛。消すのは IPC の一時ファイルなので裏側・補助。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "set_send_source_channels",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1222,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M24",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:1221-1230 set_send_source_channels (destructiveHint=False) -> reaper_call(\"SetTrackSendInfo_Value\") -> reaper_call_file。unlink は 340/368 行（既にある孤児の response を消す）と 416-417 行（bridge の response を消す）。",
+   "note": "M22 と同じ。destructive=false × unlink で矛（決定済み）。重大度は裏側・補助（mailbox の掃除）。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "play",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1398,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M25",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:1397-1400 play (destructiveHint=False) -> reaper_call(\"OnPlayButton\") -> ensure_bridge_current / dispatch -> reaper_call_file:340,368,416-417 の Path.unlink。",
+   "note": "M22 と同じ。毎回到達し、既存の response ファイルを消すので destructive=false に反する（§7.2）。裏側・補助。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_play_state",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1410,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M26",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:1409-1417 get_play_state (readOnlyHint=True) -> reaper_call -> reaper_call_file:283 BRIDGE_DIR.mkdir(parents=True, exist_ok=True)。毎回実行される（BRIDGE_DIR_PROBLEM があれば 279-280 行で先に戻るが、main():4005-4007 はその場合起動しない）。",
+   "note": "新規作成を含めて readOnly × FS_WRITE は §7.1 で矛。実際にディレクトリができるのは BRIDGE_DIR がまだ無いときだけ（普通は bridge の Lua script が作る）なので、重大度は裏側・補助（初回の初期化で条件つき）。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_cursor_position",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1421,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M27",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:1420-1428 get_cursor_position (readOnlyHint=True) -> reaper_call -> reaper_call_file:283 BRIDGE_DIR.mkdir(parents=True, exist_ok=True)。",
+   "note": "M26 と同じ。mailbox ディレクトリの作成は、無いときだけ起きる初回の初期化。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_tempo",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1464,
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M28",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:1463-1466 get_tempo (readOnlyHint=True) -> reaper_call:545 ensure_bridge_current -> :494 dispatch(\"GetBridgeVersion\") -> reaper_call_file:333-343。_bridge_check[\"claims_ok\"] の初期値は False（:447）なので、最初の probe で fallback 経路の request_file.write_bytes(payload)（343 行）に到達する。",
+   "note": "条件つきで到達する: プロセスの最初の呼び出しの probe、および probe が通らない間（timeout など）。probe が通ると claims_ok=True（MIN 1.7.6 ≥ 1.6.6）になり、以後は 350-372 行の os.open(O_CREAT|O_EXCL)+os.write で書く（site は違うが、やはり FS_WRITE）。readOnly × FS_WRITE で矛。IPC の request ファイルなので裏側・補助（初回・条件つき・一時ファイル）。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "add_parallel_compression",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1508,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M29",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:1507-1540 add_parallel_compression (destructiveHint=False) -> reaper_call(\"CountTracks\") / _next_send_index / reaper_batch(:564-568) -> reaper_call_file。unlink は 340/368 行（孤児の response を消す）と 416-417 行（bridge の response を消す）。",
+   "note": "M22 と同じ。destructive=false × unlink で矛。mailbox の掃除なので裏側・補助。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_selected_midi_notes",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1911,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M30",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:1910-1927 get_selected_midi_notes (readOnlyHint=True。docstring にも \"Read-only\") -> reaper_call(\"GetSelectedMIDINotes\") -> reaper_call_file:340,368,416-417 の Path.unlink。",
+   "note": "M20 と同じ。readOnly × 削除で矛。IPC の一時ファイルなので裏側・補助。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_selected_midi_notes",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 1911,
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M31",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:1910-1927 get_selected_midi_notes -> reaper_call -> ensure_bridge_current -> dispatch -> reaper_call_file:343 request_file.write_bytes（claims_ok が False の fallback 経路）。",
+   "note": "M28 と同じ。最初の probe で到達する（条件つき）。steady state では 350-372 行の os.open/os.write で書く。readOnly × FS_WRITE で矛。重大度は裏側・補助。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "ramp_midi_note_velocities",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 2021,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M32",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:2020-… ramp_midi_note_velocities (destructiveHint=False) -> reaper_call(\"RampMIDINoteVelocities\") -> reaper_call_file:340,368,416-417 の Path.unlink。",
+   "note": "M22 と同じ。既存の response ファイルを消すので destructive=false に反する（§7.2）。mailbox の掃除なので裏側・補助。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "humanize_midi_notes",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 2382,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M33",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:2381-… humanize_midi_notes (destructiveHint=False) -> reaper_call(\"GetMIDINotes\") / reaper_call(\"HumanizeMIDINotes\") -> reaper_call_file:340,368,416-417 の Path.unlink。",
+   "note": "M22 と同じ。矛。裏側・補助。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_item_info",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 2544,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M34",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:2543-2551 get_item_info (readOnlyHint=True) -> reaper_call(\"GetItemInfo\") -> reaper_call_file:283 BRIDGE_DIR.mkdir(parents=True, exist_ok=True)。",
+   "note": "M26 と同じ。mkdir は毎回実行されるが、実際に作るのは無いときだけ。readOnly × FS_WRITE（新規作成を含む）で矛。初回の初期化なので裏側・補助。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "set_time_signature",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 2675,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M35",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:2674-2684 set_time_signature (destructiveHint=False) -> reaper_call(\"SetTimeSignature\") -> reaper_call_file:340,368,416-417 の Path.unlink。",
+   "note": "M22 と同じ。矛。裏側・補助。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_markers",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 2815,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M36",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:2814-2822 get_markers (readOnlyHint=True) -> reaper_call(\"GetProjectMarkers\") -> reaper_call_file:283 BRIDGE_DIR.mkdir(parents=True, exist_ok=True)。",
+   "note": "M26 と同じ。初回の初期化で条件つき。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_envelope_points",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 2926,
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M37",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:2925-2935 get_envelope_points (readOnlyHint=True) -> reaper_call -> ensure_bridge_current -> dispatch -> reaper_call_file:343 request_file.write_bytes（claims_ok が False の fallback 経路）。",
+   "note": "M28 と同じ。最初の probe、または probe が通らない間に到達する。readOnly × FS_WRITE で矛。裏側・補助。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_undo_state",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3094,
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M38",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:3093-3101 get_undo_state (readOnlyHint=True) -> reaper_call(\"GetUndoState\") -> reaper_call_file:343 request_file.write_bytes（fallback 経路。_bridge_check の初期値は claims_ok=False, :447）。",
+   "note": "M28 と同じ。矛。条件つきの IPC 書き込みなので裏側・補助。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_selected_tracks",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3137,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M39",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:3136-3145 get_selected_tracks は ToolAnnotations(readOnlyHint=True)。本体は reaper_call を await するだけ。経路は reaper_call(:539-554) -> ensure_bridge_current(:492-507。初回は dispatch('GetBridgeVersion')) / dispatch(:460-462) -> reaper_call_file(:268-)。reaper_call_file は呼ぶたびに、BRIDGE_DIR 内で自分が使うメールボックス slot の response_N.json を unlink する（:340 fallback 経路 / :368 claim 経路、missing_ok=True）。応答を受け取ったとき（:416-417）と時間切れのとき（:429）にも request/response を unlink する。BRIDGE_DIR_PROBLEM があるとサーバは起動時に SystemExit するので（:4007-4009）、ツールが呼ばれた時点では必ず到達する。",
+   "note": "§7.1 D1 では FS_WRITE はすべて矛。消すのは REAPER の Scripts/mcp_bridge_data にあるブリッジ通信用の一時ファイル（request_N/response_N.json）。ツール本来の動作（REAPER の照会）ではなく、転送層の裏側の書き込み。:340 は他プロセスの応答を消すことがある（:311-313 のコメント）。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_track_peak",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3337,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M40",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:3336-3348 get_track_peak は ToolAnnotations(readOnlyHint=True)。本体は reaper_call を await するだけ。経路は reaper_call(:539-554) -> ensure_bridge_current(:492-507) / dispatch(:460-462) -> reaper_call_file(:268-)。reaper_call_file の :283 が呼ぶたびに BRIDGE_DIR.mkdir(parents=True, exist_ok=True) を実行する。BRIDGE_DIR_PROBLEM があれば起動時に SystemExit するので（:4007-4009）、呼び出し時は必ず実行される。実際にディレクトリを作るのは、まだ無いときだけ。",
+   "note": "§7.1 D1 では FS_WRITE は新規作成も含めて矛。ブリッジ用ディレクトリを初回に作るだけで、ツール本来の動作ではない（初回の初期化）。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_track_master_send",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3379,
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M41",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:3378-3387 get_track_master_send は ToolAnnotations(readOnlyHint=True)。本体は reaper_call を await するだけ。reaper_call_file の :329-343 は _bridge_check['claims_ok'] が False のとき request_N.json を write_bytes する。claims_ok の初期値は False（:475）。ensure_bridge_current の版照会（:507 dispatch('GetBridgeVersion')）が成功し、1.6.6 以上と分かるまで False のまま。したがって各プロセスの最初のツール呼び出し（版照会そのもの）と、版照会が時間切れになったときの本呼び出しで到達する。claim 経路（:350 os.open O_CREAT|O_EXCL + os.write）でも request ファイルは書かれる。",
+   "note": "§7.1 D1 では FS_WRITE はすべて矛。path は BRIDGE_DIR/request_N.json で MODEL 由来ではないが、D1 は path によらず矛。書くのはブリッジ通信用の一時ファイルで、到達は条件つき（プロセス初回の版照会 / ブリッジが応答しないとき）。witness_chain の ensure_bridge_current>dispatch は、この初回照会の経路にあたる。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_fx_presets",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3457,
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M42",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:3456-3465 get_fx_presets は ToolAnnotations(readOnlyHint=True)。本体は reaper_call を await するだけ。reaper_call_file の :329-343 は claims_ok が False のとき request_N.json を write_bytes する（初期値は False :475。版照会 :507 が成功するまで False のまま）。各プロセスの初回呼び出しと、ブリッジが応答しないときに到達する。",
+   "note": "§7.1 D1 では FS_WRITE はすべて矛。書くのはブリッジ通信用の一時ファイルで、到達は条件つき。path は MODEL 由来ではない。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "set_eq_band_enabled",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3631,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M43",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:3630-3643 set_eq_band_enabled は ToolAnnotations(destructiveHint=False) で、readOnlyHint は無い。本体は reaper_call を await するだけ（undo の包み :3893-3919 は経路を変えない）。reaper_call_file は :340 / :368 で自分の slot の response_N.json を、:416-417 / :429 で request/response を unlink する。どれも呼び出しのたびに到達する。",
+   "note": "§7.2 D2 では unlink（既存のものを消す）は矛。消すのは、自分の slot に残った孤児応答と、自分の request/response のブリッジ通信用一時ファイル。ツール本来の編集（REAPER 側の変更）ではなく、転送層での削除。追記型ではないので、字義どおり読むと destructiveHint:false に反する。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_track_fx_chunk",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3661,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M44",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:3660-3672 get_track_fx_chunk は ToolAnnotations(readOnlyHint=True)。本体は reaper_call を await するだけ。reaper_call_file の :340 / :368 / :416-417 / :429 がブリッジ用メールボックスのファイルを unlink する。呼び出しのたびに到達する（BRIDGE_DIR_PROBLEM があれば起動時に SystemExit :4007-4009）。",
+   "note": "§7.1 D1 では FS_WRITE はすべて矛。消すのはブリッジ通信用の一時ファイルで、転送層の裏側の書き込み。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_project_length",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3675,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M45",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:3674-3683 get_project_length は ToolAnnotations(readOnlyHint=True)。本体は reaper_call('GetProjectLength', 0) だけ。reaper_call_file の :340 / :368 / :416-417 / :429 が unlink し、呼び出しのたびに到達する。",
+   "note": "§7.1 D1 では FS_WRITE はすべて矛。消すのはブリッジ通信用の一時ファイル。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "toggle_repeat",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3747,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M46",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:3746-3755 toggle_repeat は ToolAnnotations(destructiveHint=False) で、readOnlyHint は無い。本体は reaper_call('Main_OnCommand', 1068, 0) だけ（UNDO_EXEMPT_TOOLS :3876 なので包まれないが、経路は同じ）。reaper_call_file の :340 / :368 / :416-417 / :429 が unlink し、呼び出しのたびに到達する。",
+   "note": "§7.2 D2 では unlink は矛。消すのはブリッジ通信用の一時ファイル（孤児応答と、自分の request/response）で、ツール本来の動作ではない。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_repeat_state",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 3758,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M47",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:3757-3766 get_repeat_state は ToolAnnotations(readOnlyHint=True)。本体は reaper_call('GetSetRepeat', -1) だけ。reaper_call_file の :340 / :368 / :416-417 / :429 が unlink し、呼び出しのたびに到達する。",
+   "note": "§7.1 D1 では FS_WRITE はすべて矛。消すのはブリッジ通信用の一時ファイル。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_master_track",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 599,
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M48",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:598-602 get_master_track は ToolAnnotations(readOnlyHint=True)。本体は reaper_call('GetTrackInfo', -1) だけ。reaper_call_file の :329-343 は claims_ok が False（初期値 :475）のとき request_N.json を write_bytes する。版照会（:507）が成功するまでは、各プロセスの初回呼び出しと、ブリッジが応答しないときに到達する。",
+   "note": "§7.1 D1 では FS_WRITE はすべて矛。書くのはブリッジ通信用の一時ファイルで、到達は条件つき。path は MODEL 由来ではない。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "insert_track",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 605,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M49",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:604-628 insert_track は ToolAnnotations(destructiveHint=False) で、readOnlyHint は無い。本体は reaper_call（index が None のとき）と reaper_batch(:557-569) を呼ぶ。reaper_batch -> ensure_bridge_current -> dispatch -> reaper_call_file、または reaper_batch -> reaper_call_file の経路で、:340 / :368 / :416-417 / :429 の unlink に毎回到達する。",
+   "note": "§7.2 D2 では unlink は矛。消すのはブリッジ通信用の一時ファイルで、転送層の削除。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "set_track_name",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 645,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M50",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:644-653 set_track_name は ToolAnnotations(destructiveHint=False) で、readOnlyHint は無い。本体は reaper_call を await するだけ。reaper_call_file の :340 / :368 / :416-417 / :429 が unlink し、呼び出しのたびに到達する。",
+   "note": "§7.2 D2 では unlink は矛。消すのはブリッジ通信用の一時ファイルで、ツール本来の動作ではない。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "track_fx_add_by_name",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 727,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "id": "M51",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:726-744 track_fx_add_by_name は ToolAnnotations(destructiveHint=False) で、readOnlyHint は無い。本体は reaper_call('TrackFX_AddByName', ...) だけ。reaper_call_file の :340 / :368 / :416-417 / :429 が unlink し、呼び出しのたびに到達する。",
+   "note": "§7.2 D2 では unlink は矛。消すのはブリッジ通信用の一時ファイル。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "track_fx_get_name",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 774,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M52",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:773-780 track_fx_get_name は ToolAnnotations(readOnlyHint=True)。本体は reaper_call('TrackFX_GetFXName', ...) だけ。reaper_call_file の :340 / :368 / :416-417 / :429 が unlink し、呼び出しのたびに到達する。",
+   "note": "§7.1 D1 では FS_WRITE はすべて矛。消すのはブリッジ通信用の一時ファイル。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "track_fx_get_name",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 774,
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M53",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:773-780 track_fx_get_name は ToolAnnotations(readOnlyHint=True)。reaper_call_file の :329-343 は claims_ok が False（初期値 :475）のとき request_N.json を write_bytes する。版照会（:507）が成功するまでは、各プロセスの初回呼び出しと、ブリッジが応答しないときに到達する。",
+   "note": "§7.1 D1 では FS_WRITE はすべて矛。書くのはブリッジ通信用の一時ファイルで、到達は条件つき。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "track_fx_get_enabled",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 783,
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M54",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:782-791 track_fx_get_enabled は ToolAnnotations(readOnlyHint=True)。本体は reaper_call だけ。reaper_call_file の :283 が呼ぶたびに BRIDGE_DIR.mkdir(parents=True, exist_ok=True) を実行する。呼び出し時は必ず実行されるが、実際に作るのはディレクトリが無いときだけ。",
+   "note": "§7.1 D1 では FS_WRITE は新規作成も含めて矛。ブリッジ用ディレクトリの初回作成（初回の初期化）。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "take_fx_get_list",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 864,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M55",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:863-874 take_fx_get_list は ToolAnnotations(readOnlyHint=True)。_validate_indices（:42-52）が負の添字で早く返す場合を除き、reaper_call に進む。reaper_call_file の :340 / :368 / :416-417 / :429 が unlink する。",
+   "note": "§7.1 D1 では FS_WRITE はすべて矛。消すのはブリッジ通信用の一時ファイル。正当な引数なら必ず到達する。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "take_fx_get_name",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 915,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M56",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:914-929 take_fx_get_name は ToolAnnotations(readOnlyHint=True)。_validate_indices が通れば reaper_call に進み、reaper_call_file の :340 / :368 / :416-417 / :429 が unlink する。",
+   "note": "§7.1 D1 では FS_WRITE はすべて矛。消すのはブリッジ通信用の一時ファイル。"
+  },
+  {
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "take_fx_get_param_name",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 989,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M57",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "reaper_mcp_server.py:988-1006 take_fx_get_param_name は ToolAnnotations(readOnlyHint=True)。_validate_indices が通れば reaper_call に進み、reaper_call_file の :340 / :368 / :416-417 / :429 が unlink する。",
+   "note": "§7.1 D1 では FS_WRITE はすべて矛。消すのはブリッジ通信用の一時ファイル。19 件すべて同じ転送層（reaper_call_file）の書き込みを共有していて、ツールごとの独立した事例ではない。"
+  },
+  {
+   "tree": "v4-vladimir-human__ru-marketplace-mcp",
+   "unit": "ozon_reviews",
+   "unit_relpath": "packages/ozon-connector/src/ozon_connector/server.py",
+   "unit_lineno": 799,
+   "site": "os.remove",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M58",
+   "verdict": "正",
+   "error_class": "",
+   "severity": "裏側・補助",
+   "evidence": "packages/ozon-connector/src/ozon_connector/server.py:799-866（ozon_reviews → _ozon_reviews_impl）→ :944 _fetch_composer → :520 _run_sync_bounded(_sync_curl_get, ...) → :250-253 asyncio.to_thread(_sync_call_in_process, ...) → :203-204 tempfile.mkstemp で一時ファイルを作り、:231-235 の finally で os.remove(out_path)。キャッシュ（:512-515）に当たらない呼び出しで毎回到達する。",
+   "note": "消すのはツール自身が同じ呼び出しで mkstemp した一時ファイル（子プロセスの結果受け渡し用）。一時ファイルの作成・書き込み・削除はファイルシステムへの書き込みで、§7.1 の FS_WRITE すべて → 矛に当たるが、利用者のデータは変えない一時ファイルの後始末なので裏側・補助。一時ファイルを「環境を変える」に含めるかは本記録者の見直しで確認してほしい（v4 の重大度の定義では一時ファイルを正の裏側・補助に入れている）。"
+  },
+  {
+   "tree": "v4-vladimir-human__ru-marketplace-mcp",
+   "unit": "ozon_reviews",
+   "unit_relpath": "packages/ozon-connector/src/ozon_connector/server.py",
+   "unit_lineno": 799,
+   "site": "pipe:write",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "id": "M59",
+   "verdict": "誤",
+   "error_class": "宣言に反しない（解析器の読み違い）: pipe:write は自分が起こした子プロセスの stdin への書き込み（プロセス間通信）で、ファイルや永続する状態を変えない。_pipe は argv0 が解釈器だと判定できないと FS_WRITE(content) の情報行を出す（authgap/effects.py:803-851）。ここでは argv0 = sys.executable が opaque のまま FS_WRITE 側に落ち、D1 の FS_WRITE → 矛に当たった。",
+   "severity": "該当なし",
+   "evidence": "packages/ozon-connector/src/ozon_connector/server.py:205-218: subprocess.Popen([sys.executable, '-c', _SYNC_WORKER_CODE, out_path], stdin=PIPE, ...) の後、proc.stdin.write(payload)。payload は pickle.dumps((func.__module__, func.__qualname__, args))（:202）で、子（:154-192）は pickle.loads(sys.stdin.buffer.read()) で読む。到達経路は M58 と同じ（:944 → :520 → :250 → :196）。",
+   "note": "この経路でファイルシステムを実際に変えるのは、一時ファイル（:203 の mkstemp、子プロセスが :191-192 で out_path に書く、:233 の os.remove）で、それは M58 で数えている。stdin に流すのはコードではなくデータ（pickle）なので EXEC にも当たらない。"
+  }
+ ],
+ "v3": [
+  {
+   "tree": "v4-andrewbolster__mcp.bolster.online",
+   "unit": "check_availability",
+   "decl": "D1",
+   "relpath": "app.py",
+   "lineno": 293,
+   "n_effects": 0,
+   "id": "R00",
+   "outcome": "反する動作は無い",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "app.py:292-326 check_availability calls get_access_token, ctx.info / ctx.warning (logs sent to the client) and availability.get_availability. availability.py:38-76 decodes an environment variable and calls the external library bolster.utils.calendars.get_merged_availability through to_thread. The tree contains no writes and no non-GET requests.",
+   "note": "The only external call is the one inside the bolster library (the docstring says it is requests-based and fetches ICS feeds). That library is outside the tree and was not read."
+  },
+  {
+   "tree": "v4-appachhi__bugasura-mcp-server",
+   "unit": "update_project",
+   "decl": "D2",
+   "relpath": "tools/projects.py",
+   "lineno": 350,
+   "n_effects": 5,
+   "id": "R01",
+   "outcome": "解析器が不として出している",
+   "cause": "",
+   "severity": "本来の動作",
+   "evidence": "tools/projects.py:350-489 update_project (destructiveHint False) calls make_api_request('POST','/v1/projects/update', ...) at L482. client.py:348-482 sends it with client.request(method, ...). In the analyzer's rows, client.py:482 carries contradiction_unknown:D2:net_post.",
+   "note": "The call updates an existing project (name, prefix, public flag) in place. Under §7.2, NET POST is 不. The other calls on the path (validate_api_key, find_project_by_name → _fetch_user_context, list_teams) are all GET."
+  },
+  {
+   "tree": "v4-appachhi__bugasura-mcp-server",
+   "unit": "get_team",
+   "decl": "D1",
+   "relpath": "tools/teams.py",
+   "lineno": 108,
+   "n_effects": 2,
+   "id": "R02",
+   "outcome": "反する動作は無い",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "tools/teams.py:106-190 get_team: validate_api_key (auth.py:68, GET /v1/teams/get), _resolve_team_identifier (helpers.py:168 → find_team_by_name → _fetch_user_context, auth.py:124 GET), make_api_request('GET','/v1/teams/get') at teams.py:188. Everything is GET. The user-context cache is in memory only.",
+   "note": "make_api_request (client.py:348-482) does not write to files."
+  },
+  {
+   "tree": "v4-appachhi__bugasura-mcp-server",
+   "unit": "list_team_members",
+   "decl": "D1",
+   "relpath": "tools/teams.py",
+   "lineno": 544,
+   "n_effects": 2,
+   "id": "R03",
+   "outcome": "反する動作は無い",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "tools/teams.py:542-600 list_team_members: validate_api_key (GET) and _fetch_team_members (helpers.py:271-290, make_api_request('GET','/v1/teamUsers/get')). Both are GET.",
+   "note": ""
+  },
+  {
+   "tree": "v4-benjaminmridler__mcp-atlassian",
+   "unit": "get_page",
+   "decl": "D1",
+   "relpath": "src/mcp_atlassian/servers/confluence.py",
+   "lineno": 120,
+   "n_effects": 0,
+   "id": "R04",
+   "outcome": "見落とし",
+   "cause": "深さ",
+   "severity": "裏側・補助",
+   "evidence": "servers/confluence.py:120-230 get_page → get_confluence_fetcher (servers/dependencies.py:263-384; the global fallback at L380 builds a fresh ConfluenceFetcher(config=global config) on every call) → ConfluenceClient.__init__ (confluence/client.py:22-45, when auth_type == 'oauth') → configure_oauth_session (utils/oauth.py:498-540) → ensure_valid_token (L229) → refresh_access_token when the token has expired (L191-224: requests.post then _save_tokens) → _save_tokens (L275-304: keyring.set_password) → _save_tokens_to_file (L306-333: Path.home()/'.mcp-atlassian'.mkdir and open(token_path,'w')).",
+   "note": "The write happens at depth 7, beyond the depth-4 reading limit of the procedure. Counted strictly by the procedure, this would be '反する動作は無い（深さ 4 まで）'; it is reported so it is not silently folded to the safe side. The write is conditional: global OAuth config with a refresh_token, and an expired token. It persists the token to the home directory and keyring. Under D1, FS_WRITE is 矛. The analyzer found 0 effects for this unit (cap_hits: depth). The page fetch itself is a GET (pages.py:32-70, v2_adapter.get_page)."
+  },
+  {
+   "tree": "v4-benjaminmridler__mcp-atlassian",
+   "unit": "get_issue_history",
+   "decl": "D1",
+   "relpath": "src/mcp_atlassian/servers/jira.py",
+   "lineno": 2550,
+   "n_effects": 0,
+   "id": "R05",
+   "outcome": "見落とし",
+   "cause": "深さ",
+   "severity": "裏側・補助",
+   "evidence": "servers/jira.py:2550-2600 get_issue_history → get_jira_fetcher (servers/dependencies.py:157-262; global fallback JiraFetcher(config=...) at L256) → JiraClient.__init__ (jira/client.py:49-60, oauth) → configure_oauth_session → ensure_valid_token → refresh_access_token → _save_tokens → _save_tokens_to_file (utils/oauth.py:306-333 open(token_path,'w')).",
+   "note": "Same structure as R04 (depth 7, beyond the procedure's depth 4; conditional token refresh and save). jira.get_issue (jira/issues.py:39-) is read-only. The analyzer found 0 effects (cap_hits: depth)."
+  },
+  {
+   "tree": "v4-cryptolabinc__envector-mcp-server",
+   "unit": "MCPServerApp.__init__.tool_get_index_list",
+   "decl": "D1",
+   "relpath": "srcs/server.py",
+   "lineno": 208,
+   "n_effects": 0,
+   "id": "R06",
+   "outcome": "反する動作は無い",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "srcs/server.py:203-216 tool_get_index_list → self.envector.call_get_index_list (adapter/envector_sdk.py:89-110) → ev.get_index_list() from the external pyenvector SDK, then _to_json_available (L305-330, a pure conversion). No writes in the tree.",
+   "note": "The inside of the pyenvector SDK is outside the tree and was not read."
+  },
+  {
+   "tree": "v4-ei-nakamura__rails-lens",
+   "unit": "register.gem_introspect",
+   "decl": "D1",
+   "relpath": "src/rails_lens/tools/gem_introspect.py",
+   "lineno": 113,
+   "n_effects": 7,
+   "id": "R07",
+   "outcome": "解析器が不として出している",
+   "cause": "",
+   "severity": "本来の動作",
+   "evidence": "src/rails_lens/tools/gem_introspect.py:113-133 → bridge.execute('gem_introspect.rb', ...) (bridge/runner.py:26-58, asyncio.create_subprocess_exec running [bundle exec rails runner, script, *args]). The analyzer's rows carry contradiction_unknown:D1:spawn_model_opaque. The fallback _fallback_gem_introspect (L16-60) only reads Gemfile / Gemfile.lock.",
+   "note": "argv0 comes from config.ruby_command, a setting and not MODEL-derived, so §7.1 gives SPAWN → 不. The Ruby scripts (the ruby/ directory) are not in the corpus checkout, so whether the spawned side writes anything could not be checked."
+  },
+  {
+   "tree": "v4-itzfaisal__vision-mcp",
+   "unit": "handle_call_tool",
+   "decl": "D1",
+   "relpath": "src/vision_mcp/server.py",
+   "lineno": 89,
+   "n_effects": 5,
+   "id": "R08",
+   "outcome": "解析器が不として出している",
+   "cause": "",
+   "severity": "本来の動作",
+   "evidence": "src/vision_mcp/server.py:89- handle_call_tool (low-level v2; dispatch names vision_analyze_image / vision_compare_images, both readOnlyHint True) → _analyze_image / _compare_images → image_utils.encode_image (L52 open(...,'rb')) and client.call_vision_api (client.py:34 httpx.AsyncClient.post .../chat/completions). The rows carry contradiction_unknown:D1:net_post.",
+   "note": "The call is a POST to a chat-completions API, which is a query. Under §7.1, POST is 不. The tree contains no file writes."
+  },
+  {
+   "tree": "v4-jahrik__mcp-servers",
+   "unit": "gh_issue_list",
+   "decl": "D1",
+   "relpath": "src/mcp_servers/github/tools/issues.py",
+   "lineno": 18,
+   "n_effects": 2,
+   "id": "R09",
+   "outcome": "解析器が不として出している",
+   "cause": "",
+   "severity": "裏側・補助",
+   "evidence": "github/tools/issues.py:18-55 gh_issue_list → gh_request('GET', ...) (github/client.py:58-110) → get_installation_token (client.py:19-46). On a cache miss it POSTs to /app/installations/{id}/access_tokens (L35). The rows carry contradiction_unknown:D1:net_post (client.py:35).",
+   "note": "The main request is a GET. The POST issues a GitHub App installation token, conditionally: the in-memory _TOKEN_CACHE holds it for 50 minutes. _audit_log is not applied to this tool."
+  },
+  {
+   "tree": "v4-jahrik__mcp-servers",
+   "unit": "gh_repo_get",
+   "decl": "D1",
+   "relpath": "src/mcp_servers/github/tools/repos.py",
+   "lineno": 53,
+   "n_effects": 2,
+   "id": "R10",
+   "outcome": "解析器が不として出している",
+   "cause": "",
+   "severity": "裏側・補助",
+   "evidence": "github/tools/repos.py:52-75 gh_repo_get (with @_ttl_cache, an in-memory cache in github/utils.py:16-39) → gh_request('GET', f'repos/{repo}') → get_installation_token POST (client.py:35). The rows carry contradiction_unknown:D1:net_post.",
+   "note": "Same as R09."
+  },
+  {
+   "tree": "v4-jahrik__mcp-servers",
+   "unit": "lsp_document_highlight",
+   "decl": "D1",
+   "relpath": "src/mcp_servers/lsp/tools/symbols.py",
+   "lineno": 132,
+   "n_effects": 1,
+   "id": "R11",
+   "outcome": "不明",
+   "cause": "",
+   "severity": "裏側・補助",
+   "evidence": "lsp/tools/symbols.py:132-160 lsp_document_highlight → utils._sync_file_with_lsp (utils.py:101-124) → lsp_client.sync_file (client.py:215) / utils.lsp_client.send_request (client.py:229) → _get_or_create_sessions (client.py:76-120) → LSPSession.start (session.py:43-52 asyncio.create_subprocess_exec). This lazily spawns a language server, at depth 3-4, when none is running or after a crash. It then writes JSON-RPC to the child's stdin (session.py:241 self._process.stdin.write).",
+   "note": "The analyzer did not see this SPAWN or the stdin write at all, in any unit of the tree: method calls through the module-level instance utils.lsp_client = LSPClient(...) (utils.py:13) are not resolved, and opaque_reasons includes 'receiver'. The fixed commands ty / ruff / gopls and similar are constants, not MODEL-derived, so §7.1 gives SPAWN → 不. The analyzer should have reported 不, and it is missing (the cause would be 受け手の型). Whether the language server actually changes anything cannot be decided statically, so there is no confirmed violating behaviour and this is recorded as 不明."
+  },
+  {
+   "tree": "v4-jahrik__mcp-servers",
+   "unit": "ts_scope_at_position",
+   "decl": "D1",
+   "relpath": "src/mcp_servers/lsp/tools/treesitter.py",
+   "lineno": 127,
+   "n_effects": 0,
+   "id": "R12",
+   "outcome": "反する動作は無い",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "lsp/tools/treesitter.py:127-155 ts_scope_at_position → utils._prepare_file (utils.py:55-99, resolve / exists checks only) → treesitter.parse_file (treesitter.py:67-79, filepath.read_bytes) → get_parser / _load_language (in-memory caches only) → get_scope_at_position. Only reads.",
+   "note": "The analyzer found 0 effects, including the FS_READ. The table puts FS_READ in 内, so the verdict does not change."
+  },
+  {
+   "tree": "v4-knuckles-team__audio-transcriber",
+   "unit": "register_audio_processing_tools.transcribe_audio",
+   "decl": "D2",
+   "relpath": "audio_transcriber/mcp_server.py",
+   "lineno": 73,
+   "n_effects": 9,
+   "id": "R13",
+   "outcome": "解析器が不として出している",
+   "cause": "",
+   "severity": "本来の動作",
+   "evidence": "audio_transcriber/mcp_server.py:73-212 transcribe_audio (destructiveHint False) → transcriber.export(result, formats) (audio_transcriber.py:429-456). This does open(export_path,'w') at L442/445/448/451, with export_path = self.directory/f'{self.title}.{fmt}', derived from the MODEL arguments directory or audio_file. The rows carry contradiction_unknown:D2:fs_writeout_model_path_opaque. The recording branch also writes: transcriber.save_stream() (L352-362) calls wave.open(str(self.file_path),'wb'), overwriting output.wav under the MODEL-chosen directory.",
+   "note": "The analyzer has not detected wave.open at all, because it is not in the sink vocabulary (語彙). The path is MODEL-derived, so §7.2 would give 矛 for both the export and wave.open. The analyzer marks the export as 不 because the resolution is opaque. The unit already carries 不, so it is classified as 解析器が不として出している; the wave.open miss is a separate vocabulary gap. KG ingestion (_maybe_ingest_kg → kg_media.ingest_audio_file, store.store_media) appends, which D2 counts as 内."
+  },
+  {
+   "tree": "v4-makfuncky__zozi",
+   "unit": "zozi_get_current_user",
+   "decl": "D1",
+   "relpath": "backend/providers/ai/zozi_mcp.py",
+   "lineno": 398,
+   "n_effects": 0,
+   "id": "R14",
+   "outcome": "反する動作は無い",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "backend/providers/ai/zozi_mcp.py:388-406 zozi_get_current_user → _request('GET','users/me') (L129-148, the module-level _client.request(method, ...)). _headers (L122-126) only reads the token. No writes.",
+   "note": "The analyzer found 0 effects, because the module-level _client receiver was not resolved. The only effect is a GET, which the table puts in 内, so this does not count as a miss."
+  },
+  {
+   "tree": "v4-manavgup__wikimind",
+   "unit": "_tool_wiki_get_source_status",
+   "decl": "D1",
+   "relpath": "src/wikimind/mcp/server.py",
+   "lineno": 382,
+   "n_effects": 0,
+   "id": "R15",
+   "outcome": "反する動作は無い",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "src/wikimind/mcp/server.py:382-392 → mcp/tools_write.py:210-256 wiki_get_source_status: services/factories.py:129 IngestService() を作り（ingest/service.py:35-39 はアダプタを作るだけ）、tools_write.py:44-48 のセッションで services/ingest.py:222 session.get(Source, id) と tools_write.py:264-279 の SELECT を行うだけ。server.py:89-110 の _get_mcp_user_id → database.py:220-226 get_dev_user_id は文字列を返すだけ。",
+   "note": "唯一の書き込みの候補は get_session_factory → get_async_engine → get_engine の database.py:115 mkdir だが、lru_cache のため最初の 1 回しか走らず、server.py:62-67 の _lifespan → init_db（database.py:315）が起動時に先に呼ぶ。ツール呼び出しの中で到達するのは lifespan が走らない構成の初回だけ。"
+  },
+  {
+   "tree": "v4-mgwalkerjr95__texas-grocery-mcp",
+   "unit": "coupon_clipped",
+   "decl": "D1",
+   "relpath": "src/texas_grocery_mcp/tools/coupon.py",
+   "lineno": 331,
+   "n_effects": 4,
+   "id": "R16",
+   "outcome": "見落とし",
+   "cause": "その他",
+   "severity": "裏側・補助",
+   "evidence": "src/texas_grocery_mcp/tools/coupon.py:330 @ensure_session → auth/session.py:741-765 wrapper → :760 auto_refresh_session_if_needed（:633-735）→ :703 refresh_session_with_browser（auth/browser_refresh.py:259）→ :314 _cleanup_old_screenshots（:206-226 で /tmp/heb-login-*.png を os.remove）、:377 auth_path.parent.mkdir、:378 context.storage_state(path=auth_path)（認証状態ファイルの上書き）、:382 ensure_secure_permissions（utils/secure_file.py:89- で chmod）。",
+   "note": "条件つき: auto_refresh が有効、認証ファイルがある、期限切れか期限が近い、前回の試行から間隔が空いている、Playwright が入っている。デコレータの wrapper が本体より先に走る経路で、解析器の出力にはこの木のどこにも auto_refresh の経路が出ていない（本体から降りた効果だけが出ている）。原因の分類は「その他」（デコレータの wrapper を呼び出しとしてたどっていない）。深さは wrapper から 2〜3 段で、深さ 4 の中に収まる。本体の get_clipped_coupons の経路は読み取りと GET だけ。"
+  },
+  {
+   "tree": "v4-neo4j-field__neo4j-mcp-workspace-template",
+   "unit": "create_mcp_server.list_documents_tool",
+   "decl": "D1",
+   "relpath": "mcp-neo4j-lexical-graph/src/mcp_neo4j_lexical_graph/server.py",
+   "lineno": 562,
+   "n_effects": 0,
+   "id": "R17",
+   "outcome": "反する動作は無い",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "mcp-neo4j-lexical-graph/src/mcp_neo4j_lexical_graph/server.py:562-603 list_documents_tool → graph_reader.py:27-67 list_all_documents: MATCH / OPTIONAL MATCH / RETURN だけの Cypher を session.run で実行。",
+   "note": "書き込みの Cypher（CREATE/MERGE/SET/DELETE）は無い。"
+  },
+  {
+   "tree": "v4-opastorello__correios-reverso",
+   "unit": "create_mcp_server.buscar_postagem_por_codigo",
+   "decl": "D1",
+   "relpath": "src/correios_reverso/mcp/server.py",
+   "lineno": 94,
+   "n_effects": 0,
+   "id": "R18",
+   "outcome": "反する動作は無い",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "src/correios_reverso/mcp/server.py:93-99 → modules/postagem.py:63-65 buscar_por_codigo_objeto → :17-32 listar_registrados → http_client.py get_json → get → _request_with_retry('GET', ...) → self.session.request('GET', ...)。",
+   "note": "GET だけ（§7.1 で内）。解析器の効果は 0 件（GET も出ていない）だが、宣言に反する動作は無いので見落としにはならない。"
+  },
+  {
+   "tree": "v4-ryxmarcus__mcp-aws",
+   "unit": "get_execution_plan",
+   "decl": "D1",
+   "relpath": "src/aws-api-mcp-server/awslabs/aws_api_mcp_server/server.py",
+   "lineno": 403,
+   "n_effects": 0,
+   "id": "R19",
+   "outcome": "見落とし",
+   "cause": "語彙",
+   "severity": "裏側・補助",
+   "evidence": "src/aws-api-mcp-server/awslabs/aws_api_mcp_server/server.py:66-72: モジュール水準で loguru に logger.add(~/.aws/aws-api-mcp/aws-api-mcp-server.log, rotation='10 MB', retention='7 days') を付けている。ツール get_execution_plan（:403-421）は成功時に :415 logger.info(...)、見つからないとき :412 logger.error(...) を呼び、毎回そのログファイルに追記する（回転時には古いログを消す）。本体のそれ以外は core/agent_scripts/manager.py:71-73 の辞書の参照だけ。",
+   "note": "反する動作はログファイルへの追記だけ。§7.1 の「FS_WRITE すべて → 矛」と v4 の重大度の定義（ログは正の裏側・補助）に従い見落としとしたが、ログ出力の枠組みの書き込みを宣言違反に数えるかは原理で明示されていない。本記録者が数えないと決めたら「反する動作は無い」になる。V3 の抜き取りでファイルへのログの出力先がある木はこれだけ（他の木は stderr）。"
+  },
+  {
+   "tree": "v4-ryxmarcus__mcp-aws",
+   "unit": "get_pricing",
+   "decl": "D1",
+   "relpath": "src/aws-pricing-mcp-server/awslabs/aws_pricing_mcp_server/server.py",
+   "lineno": 387,
+   "n_effects": 0,
+   "id": "R20",
+   "outcome": "反する動作は無い",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "src/aws-pricing-mcp-server/awslabs/aws_pricing_mcp_server/server.py:387-560 get_pricing: create_pricing_client() → :464 pricing_client.get_products(...)（AWS Price List の読み取り API）→ transform_pricing_data で整形するだけ。ロガーは :59-60 で stderr だけ。",
+   "note": "パッケージ内にファイル書き込みは report_generator.py にしか無く、このツールからは呼ばれない。"
+  },
+  {
+   "tree": "v4-ryxmarcus__mcp-aws",
+   "unit": "get_pricing_attribute_values",
+   "decl": "D1",
+   "relpath": "src/aws-pricing-mcp-server/awslabs/aws_pricing_mcp_server/server.py",
+   "lineno": 1224,
+   "n_effects": 0,
+   "id": "R21",
+   "outcome": "反する動作は無い",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "server.py:1224-1330 get_pricing_attribute_values: create_pricing_client() → _get_single_attribute_values（get_attribute_values の読み取り）→ 正規表現の絞り込みだけ。",
+   "note": "書き込み・変更系の API 呼び出しは無い。"
+  },
+  {
+   "tree": "v4-tallyfy__mcp-public",
+   "unit": "register_comment_management_tools.get_task_comments",
+   "decl": "D1",
+   "relpath": "server/tools/comment_management.py",
+   "lineno": 359,
+   "n_effects": 2,
+   "id": "R22",
+   "outcome": "解析器が不として出している",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "server/tools/comment_management.py:357-395 → :373 get_authenticated_credentials（utils/auth_context.py:217-356）→ :354 get_downstream_token → utils/downstream_token.py:315-353 のトークン交換 POST。rows の notes に contradiction_unknown:D1:net_post。本体の読み取りは :309-329 の外部 SDK（tallyfy）の get_* だけ。",
+   "note": "store_org_id_for_user（utils/tallyfy_auth_provider.py:691-712）はメモリの LRU 辞書だけ。デコレータ（metrics.py:328- / utils/fastmcp_errors.py:740-）は計測とエラーの変換でファイル書き込みは無い。トークン交換の POST は MCP_DOWNSTREAM_TOKEN_EXCHANGE が無ければ呼ばれない。"
+  },
+  {
+   "tree": "v4-tallyfy__mcp-public",
+   "unit": "register_folder_management_tools.get_process_folders",
+   "decl": "D1",
+   "relpath": "server/tools/folder_management.py",
+   "lineno": 122,
+   "n_effects": 2,
+   "id": "R23",
+   "outcome": "解析器が不として出している",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "server/tools/folder_management.py:120-138 get_process_folders: get_authenticated_credentials（R22 と同じトークン交換 POST、notes の contradiction_unknown:D1:net_post）→ sdk.folders.get_folders（読み取り）。",
+   "note": "R22 と同じ構成。"
+  },
+  {
+   "tree": "v4-tallyfy__mcp-public",
+   "unit": "register_user_management_tools.get_user",
+   "decl": "D1",
+   "relpath": "server/tools/user_management.py",
+   "lineno": 381,
+   "n_effects": 2,
+   "id": "R24",
+   "outcome": "解析器が不として出している",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "server/tools/user_management.py:379-397 get_user: get_authenticated_credentials（R22 と同じトークン交換 POST、notes の contradiction_unknown:D1:net_post）→ sdk.users.get_user（読み取り）。",
+   "note": "R22 と同じ構成。"
+  },
+  {
+   "tree": "v4-thomasgreissler__pronote-mcp",
+   "unit": "register_tools.pronote_get_homework",
+   "decl": "D1",
+   "relpath": "src/pronote_mcp/tools.py",
+   "lineno": 126,
+   "n_effects": 0,
+   "id": "R25",
+   "outcome": "不明",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "src/pronote_mcp/tools.py:125-160 pronote_get_homework → client.py:65-80 get_client → :38-62 _login → pronotepy.Client(..., ent=monlycee_ent)。ライブラリが木の中の ent.py:29- monlycee_ent を呼び、:67-73 で認証フォームに requests.Session.post。宿題の取得（tools.py:45-49 client.homework）も pronotepy 内部の RPC で、ファイル書き込みは無い（logging_setup.py は stderr だけ）。",
+   "note": "反しうるのはログインと pronotepy の RPC の POST だけで、§7.1 では NET POST は不（相手を変えるかはサーバの意味による）で静的に決まらない。解析器は矛も不も出していない（効果 0 件）: ent.py の POST は pronotepy に渡したコールバックの中で、ライブラリが呼ぶので呼び出しとしてたどれない。表どおりなら不が出るべきだったので、不の件数が 1 つ少ない（呼び出しの解決の限界）。"
+  },
+  {
+   "tree": "v4-tsekennykl1__mytradingagentsbackend",
+   "unit": "get_earnings",
+   "decl": "D1",
+   "relpath": "app/mcp_server.py",
+   "lineno": 486,
+   "n_effects": 1,
+   "id": "R26",
+   "outcome": "反する動作は無い",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "app/mcp_server.py:486-492 get_earnings → app/routes/market.py:157-198 earnings: :47-56 メモリの _cache を見て、:71-91 _fetch の requests.get（Alpha Vantage）、:59-63 _store でメモリの辞書に入れるだけ。_require_tool / _ticker（app/mcp_server.py:147-165）は検査だけ。",
+   "note": "解析器は requests.get を出して内と判定している。"
+  },
+  {
+   "tree": "v4-tushar3006__macp-aws-lambda",
+   "unit": "register_create_channel_namespace_tool.create_channel_namespace",
+   "decl": "D2",
+   "relpath": "src/aws-appsync-mcp-server/awslabs/aws_appsync_mcp_server/tools/create_channel_namespace.py",
+   "lineno": 45,
+   "n_effects": 0,
+   "id": "R27",
+   "outcome": "反する動作は無い",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "src/aws-appsync-mcp-server/awslabs/aws_appsync_mcp_server/tools/create_channel_namespace.py:43-128 → operations/create_channel_namespace.py:21-47: boto3 の appsync client.create_channel_namespace(**params)。decorators.py の write_operation は許可フラグの検査だけ。",
+   "note": "宣言は D2（destructiveHint: false、readOnlyHint: false）。名前空間の新規作成は追加型（§7.2 の INSERT / CREATE と同じ扱いで内）で、既存の資源を消したり変えたりはしない。解析器は boto3 の呼び出しを効果に出していない（0 件）が、D2 に反する動作は無い。"
+  },
+  {
+   "tree": "v4-utahnlp__infinite-science-gym",
+   "unit": "read_text_file",
+   "decl": "D1",
+   "relpath": "eval/mcp_servers/scientific_data_repository/mcp.py",
+   "lineno": 45,
+   "n_effects": 0,
+   "id": "R28",
+   "outcome": "反する動作は無い",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "eval/mcp_servers/scientific_data_repository/mcp.py:41-57 read_text_file → simulator/cache_only_simulator.py:54-92 read_file（:30-51 get_filesystem でキャッシュの JSON を open して読む）→ file.py:30 populate_file（メモリで生成）→ types/file.py の convert_to_extension（to_csv の文字列 / io.BytesIO）。",
+   "note": "simulator/ 全体でファイルへの書き込み・ネットワーク・subprocess は見つからない。"
+  },
+  {
+   "tree": "v4-vladimir-human__ru-marketplace-mcp",
+   "unit": "lamoda_card",
+   "decl": "D1",
+   "relpath": "packages/lamoda-connector/src/lamoda_connector/server.py",
+   "lineno": 455,
+   "n_effects": 1,
+   "id": "R29",
+   "outcome": "解析器が不として出している",
+   "cause": "",
+   "severity": "該当なし",
+   "evidence": "packages/lamoda-connector/src/lamoda_connector/server.py:455-507 lamoda_card → :258-274 _graphql_card で GraphQL の照会を client.post（rows の notes に contradiction_unknown:D1:net_post）。_cache は mcp_core/cache.py:53- のメモリの OrderedDict、log_event（mcp_core/logging.py:28-31）は stderr。",
+   "note": "POST の中身は products の照会（query { products(...) }）で、書き込みの mutation ではない。"
+  }
+ ]
+}
