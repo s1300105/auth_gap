@@ -3713,3 +3713,29 @@ N9 を直した（凍結後の変更。逸脱 #26）。学生の決定で **`ana
 報告するならこの版で数え直す（O27 に注記、逸脱 #25 に追記）。呼び出し形の登録を「カタログ外」とした `docs/f0a_checks.md` の手判定、
 O21 の一覧、`contradiction_matrix.md` に、今の版では入口になることを注記した（CrewAI の `tool("x")(fn)` と claude_agent_sdk の
 `tool(...)(fn)` は小さな木で確かめた）。`contradiction_principles.md` §6 の原理 4 の行に D62 の改訂を注記した。
+
+## D65（2026-09-29）残っていた 2 つの判断: `r_malformed` は最終評価で数える / v3 の見落としを凍結版で確かめ直す
+
+**1. `r_malformed`（O27）**: 学生の決定で、**最終評価のデータで数えて報告する**。分母は本記録者の推奨どおり「注釈を書いたユニット」
+（`unit.annotation_form` が `ToolAnnotations` / `dict` / `unreadable`）を主、全ユニットを併記。版が決まらない snake_case（D_unknown）の
+件数も併記する。定義は `docs/preregistration.md` §2.11 に、集計は `scripts/r_malformed.py` に、**最終評価のデータを見る前に**コミットした。
+開発用の v2 run24 の値は 0 / 1,678（D48 の「130 / 1,602」は run6 の版で、版を見ずに数えた値）。
+
+**2. v3 の見落とし 7 件（と不明 2 件）を `analyzer-freeze-3` で確かめ直した**（学生の決定。解析器は変えず、見るだけ）。
+`evidence/population_v3/v3_miss_recheck_freeze3.json`。解析器が freeze-3 と同じ（`git diff analyzer-freeze-3 -- authgap/` が 0 行）ことを
+確かめてから走らせた。**結果は run20 の版での記述と同じ**:
+
+| id | ツール | 宣言 | freeze-3 | v3 での原因 |
+|---|---|---|---|---|
+| R11 | synapse-s2 `list_spiking_goals` | D1 | 内（効果 0） | 呼び出しの解決 |
+| R13 | validationtpmcp `jira_get_issue_sla` | D1 | 内（効果 0） | 深さ 7 |
+| R17 | inkscape `inkscape_fleet` | D2 | **不**（fs_writeout_model_path_opaque・net_post） | 呼び出しの解決（D61 G3 で効果は見える） |
+| R18 | inkscape `inkscape_sim_art` | D2 | **不**（同上） | 同上 |
+| R22 | mindstate `get_recent_project_state_tool` | D1 | 内（効果 0） | 深さ 5〜6 |
+| R25 | rovo `transition_issue` | D2 | **不**（net_post） | 受け手の型（D61 G4 で効果は見える） |
+| R29 | zvec `upsert_documents` | D2 | 内（効果 0） | sink 表に無いライブラリ |
+| R07（不明） | overleaf `set_main_bibliography_document` | D2 | 内（効果 0） | lifespan の受け手。**U23 の種付けは当たらない**: ツールは `mount` される別のサーバ（`config_mcp`）にあり、`ctx` を補助関数に渡して読む（U23 の条件 (2) と O42 の U23 の限界） |
+| R28（不明） | abraflexi `product_create` | D2 | 内（効果 0） | 木に無い外部ライブラリ |
+
+段階 B（U09 / U23 / U38 / U40）は、この 9 件のどれの判定も変えなかった。v3 を見た後の確認なので、改善としても悪化としても報告しない
+（第 31 章 / D61 の約束のまま）。

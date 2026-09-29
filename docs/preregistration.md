@@ -480,6 +480,19 @@ TypeScript 側の hint 語は Python の 2〜3 倍で、宣言の慣行は TypeS
 - 変えてはいけないこと: `NET` を `DANGEROUS_KINDS` から外さない（verdict の問題で
   はなく分母の問題として扱う）。値を見てから主分母を替えない。
 
+### 2.11 `r_malformed` の測定手続きと分母（2026-09-29。**最終評価のデータを見る前に書く**。O27 / D65）
+
+学生の決定（2026-09-29）: `r_malformed`（snake_case で書かれ、mcp < 2.0 では protocol に届かない宣言の率）は、**最終評価のデータで
+数えて報告する**。開発用の v2（run24）では 0 だった（D64 / U38 の版の条件の後。run20 の 130 は版を見ない数え方の値）。
+
+- **分子**: `D_kind.malformed` が空でないユニット（mcp の版が < 2.0 と決まったサブツリーで snake_case の注釈を書いたもの）。
+- **分母（主）**: 注釈を書いたユニット = `unit.annotation_form` が `ToolAnnotations` / `dict` / `unreadable` のもの。
+- **併記**: 全ユニットを分母にした率、分子のある木の数、版が決まらない snake_case のユニット（`unit.undetermined_fields` が空でない。
+  D_unknown）の件数と木の数。
+- **手続き**: `analyzer-freeze-3` の full scan の run ディレクトリに `scripts/r_malformed.py <run>` を当てる（スクリプトもこの節と同時に
+  コミットした）。v2 run24 の値: 分子 0 / 分母 1,678（全 2,289）、版が決まらない 6 ユニット / 2 木。
+- 開発用の v2 / v3 の値は報告しない（評価データではない。D60）。
+
 ## 3. 併記規則
 
 1. **§2.2 の 3 分母 × §2.3 の 2 分母 = 6 通りをすべて計算し、すべて報告する。**

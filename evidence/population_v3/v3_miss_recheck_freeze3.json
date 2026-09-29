@@ -1,0 +1,183 @@
+[
+ {
+  "id": "R07",
+  "tree": "v3-firefox2100__overleaf-mcp",
+  "unit": "set_main_bibliography_document",
+  "decl": "D2",
+  "v3_outcome": "不明",
+  "v3_cause": null,
+  "unit_found": true,
+  "D_explicit": [
+   "destructiveHint",
+   "openWorldHint"
+  ],
+  "n_effects": 0,
+  "effect_kinds": [],
+  "contra": [],
+  "unknown": [],
+  "status": "内"
+ },
+ {
+  "id": "R11",
+  "tree": "v3-kolonelpanik__synapse-s2",
+  "unit": "list_spiking_goals",
+  "decl": "D1",
+  "v3_outcome": "missed",
+  "v3_cause": "call_resolution",
+  "unit_found": true,
+  "D_explicit": [
+   "readOnlyHint"
+  ],
+  "n_effects": 0,
+  "effect_kinds": [],
+  "contra": [],
+  "unknown": [],
+  "status": "内"
+ },
+ {
+  "id": "R13",
+  "tree": "v3-lazyseaseal__validationtpmcp",
+  "unit": "jira_get_issue_sla",
+  "decl": "D1",
+  "v3_outcome": "missed",
+  "v3_cause": "depth",
+  "unit_found": true,
+  "D_explicit": [
+   "readOnlyHint"
+  ],
+  "n_effects": 0,
+  "effect_kinds": [],
+  "contra": [],
+  "unknown": [],
+  "status": "内"
+ },
+ {
+  "id": "R17",
+  "tree": "v3-sandraschi__inkscape-mcp",
+  "unit": "InkscapeMCPServer._register_portmanteau_tools.inkscape_fleet",
+  "decl": "D2",
+  "v3_outcome": "missed",
+  "v3_cause": "call_resolution",
+  "unit_found": true,
+  "D_explicit": [
+   "destructiveHint",
+   "openWorldHint"
+  ],
+  "n_effects": 29,
+  "effect_kinds": [
+   "FS_READ@pathlib.Path.read_text",
+   "FS_READ@pathlib.Path.rglob",
+   "FS_WRITE@pathlib.Path.mkdir",
+   "FS_WRITE@shutil.copy2",
+   "NET@httpx.AsyncClient.get",
+   "NET@httpx.AsyncClient.post"
+  ],
+  "contra": [],
+  "unknown": [
+   "contradiction_unknown:D2:fs_writeout_model_path_opaque",
+   "contradiction_unknown:D2:net_post"
+  ],
+  "status": "不"
+ },
+ {
+  "id": "R18",
+  "tree": "v3-sandraschi__inkscape-mcp",
+  "unit": "InkscapeMCPServer._register_portmanteau_tools.inkscape_sim_art",
+  "decl": "D2",
+  "v3_outcome": "missed",
+  "v3_cause": "call_resolution",
+  "unit_found": true,
+  "D_explicit": [
+   "destructiveHint",
+   "openWorldHint"
+  ],
+  "n_effects": 21,
+  "effect_kinds": [
+   "FS_READ@pathlib.Path.glob",
+   "FS_WRITE@pathlib.Path.mkdir",
+   "FS_WRITE@shutil.copy2",
+   "NET@httpx.AsyncClient.get",
+   "NET@httpx.AsyncClient.post"
+  ],
+  "contra": [],
+  "unknown": [
+   "contradiction_unknown:D2:fs_writeout_model_path_opaque",
+   "contradiction_unknown:D2:net_post"
+  ],
+  "status": "不"
+ },
+ {
+  "id": "R22",
+  "tree": "v3-soyrochus__mindstate",
+  "unit": "MCPServer.get_recent_project_state_tool",
+  "decl": "D1",
+  "v3_outcome": "missed",
+  "v3_cause": "depth",
+  "unit_found": true,
+  "D_explicit": [
+   "readOnlyHint"
+  ],
+  "n_effects": 0,
+  "effect_kinds": [],
+  "contra": [],
+  "unknown": [],
+  "status": "内"
+ },
+ {
+  "id": "R25",
+  "tree": "v3-tuanbc__rovo-mcp-re",
+  "unit": "transition_issue",
+  "decl": "D2",
+  "v3_outcome": "missed",
+  "v3_cause": "receiver_type",
+  "unit_found": true,
+  "D_explicit": [
+   "destructiveHint",
+   "openWorldHint"
+  ],
+  "n_effects": 1,
+  "effect_kinds": [
+   "NET@httpx.AsyncClient.post"
+  ],
+  "contra": [],
+  "unknown": [
+   "contradiction_unknown:D2:net_post"
+  ],
+  "status": "不"
+ },
+ {
+  "id": "R28",
+  "tree": "v3-vitexsoftware__mcp-server-abraflexi",
+  "unit": "product_create",
+  "decl": "D2",
+  "v3_outcome": "不明",
+  "v3_cause": null,
+  "unit_found": true,
+  "D_explicit": [
+   "destructiveHint",
+   "openWorldHint"
+  ],
+  "n_effects": 0,
+  "effect_kinds": [],
+  "contra": [],
+  "unknown": [],
+  "status": "内"
+ },
+ {
+  "id": "R29",
+  "tree": "v3-zvec-ai__zvec-mcp-server",
+  "unit": "upsert_documents",
+  "decl": "D2",
+  "v3_outcome": "missed",
+  "v3_cause": "sink_not_in_catalog",
+  "unit_found": true,
+  "D_explicit": [
+   "destructiveHint"
+  ],
+  "n_effects": 0,
+  "effect_kinds": [],
+  "contra": [],
+  "unknown": [],
+  "status": "内"
+ }
+]
