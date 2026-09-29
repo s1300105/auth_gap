@@ -339,3 +339,8 @@ zero-day の認定は 3 条件で、(ii) 手検索で CVE や既存データセ�
 - CodeQL / Semgrep / Pysa との位置づけ（`scripts/codeql_fair.py` の比較はあるが未整理）。
 - AgentFlow が比較対象にした AGENT-WIZ / AGENTIC RADAR。
 - AgentFlow の引用にある MCP 関連（MCPTox ほか）、AgentArmor / Agentproof / Agent Audit。
+- **MCP の宣言と実装の不一致を測る論文**（検索で見つけたが本文未読。`docs/incidental_writes_practice.md` §5）。とくに
+  "Description-Code Inconsistency in Real-world MCP Servers"（分類に "Undeclared Side Effects" があると要約される）は、
+  主軸と最も近い可能性がある。数値は未検証なので引用しない。
+- 付随的な書き込みの扱いの先例（RFC 9110 の safe method、Checker Framework `@SideEffectFree`、observational purity）は
+  `docs/incidental_writes_practice.md` §3。
