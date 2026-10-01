@@ -342,5 +342,7 @@ zero-day の認定は 3 条件で、(ii) 手検索で CVE や既存データセ�
 - **MCP の宣言と実装の不一致を測る論文**（検索で見つけたが本文未読。`docs/incidental_writes_practice.md` §5）。とくに
   "Description-Code Inconsistency in Real-world MCP Servers"（分類に "Undeclared Side Effects" があると要約される）は、
   主軸と最も近い可能性がある。数値は未検証なので引用しない。
+- **VIPER-MCP**（arXiv 2605.21392、CodeQL + MCP 専用の QL）と **MCP-BiFlow**（arXiv 2605.07836）の本文。どちらも
+  AuthGap に最も近い MCP の手法論文で、本文は未読（プロキシで遮断）。類似研究の実装の土台は `docs/implementation_base_survey.md`。
 - 付随的な書き込みの扱いの先例（RFC 9110 の safe method、Checker Framework `@SideEffectFree`、observational purity）は
   `docs/incidental_writes_practice.md` §3。
