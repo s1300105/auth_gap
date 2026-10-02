@@ -311,7 +311,7 @@ v4 の判定も本記録者（AI）のもので、正解ではありません。
 - `E8` の E: 誤の原因の分類の記号です。E8 は「宣言に反しない（E2 以外）」。
 - 手引きの 17 節は「記号の E1〜E9 は誤の原因の分類で、v4 の判定記録の id（`E00` など）とは関係ない」と書いています。
 
-（出典: `evidence/population_v4/v4_judgments.json`、`docs/population_v4.md:87,106`、`docs/drafts/final_judging_guide_draft.md:424-425`）
+（出典: `evidence/population_v4/v4_judgments.json`、`docs/population_v4.md:87,106`、`docs/drafts/final_judging_guide_draft.md:430-431`）
 
 ### 確認問題 54-2 の答え
 
@@ -320,7 +320,7 @@ v4 の判定も本記録者（AI）のもので、正解ではありません。
 - 残るのは**冪等**の理由です。追記は `.gitignore` に `.ccr` がまだ無いときだけで、同じ引数の 2 回目は状態を変えません。手引き 15.4 節は、この形を名指しで「反しない（v4 の E00）」と書いています。
 - だから、最終評価では「到達する・反しない → 誤、原因は **E8** だけ」です（手引き 17 節の E8、20.2 節の E00 の行）。
 
-（出典: `docs/decisions.md:3773-3778`（D67 の 2）、`docs/drafts/final_judging_guide_draft.md:277-281`（14.4 節）、`:369`（15.4 節）、`:436`（E8）、`:643`（20.2 節）、`evidence/population_v4/v4_judgments.json:4-21`（E00））
+（出典: `docs/decisions.md:3773-3778`（D67 の 2）、`docs/drafts/final_judging_guide_draft.md:283-287`（14.4 節）、`:375`（15.4 節）、`:442`（E8）、`:658`（20.2 節）、`evidence/population_v4/v4_judgments.json:4-21`（E00））
 
 ### 確認問題 54-3 の答え
 
@@ -334,7 +334,7 @@ v4 の判定も本記録者（AI）のもので、正解ではありません。
 ただし (b) でも、**前の呼び出しが残したファイル**を消すなら、呼び出しの前からあったものなので D2 に反します（正）。
 v4 の M58（ru-marketplace）が (a) の実例で、手引き 20.2 節は「D1 では反する。D2 なら E2 で誤になる形」と書いています。
 
-（出典: `docs/drafts/final_judging_guide_draft.md:309`、`:342-344`、`:392`、`:430`、`:641`）
+（出典: `docs/drafts/final_judging_guide_draft.md:315`、`:348-350`、`:398`、`:436`、`:656`）
 
 ### 確認問題 54-4 の答え
 
@@ -346,7 +346,7 @@ v4 の M58（ru-marketplace）が (a) の実例で、手引き 20.2 節は「D1 
   - 「反する動作は無い」にすると、知っている違反を安全側に倒すことになる（CLAUDE.md 規則 4: 解決できなかったものを黙って安全側に倒さない）。
 - 深さ 4 より奥を**探しに行く必要はありません**（読む範囲は深さ 4 まで）。偶然見つけたときの扱いです。
 
-（出典: `docs/decisions.md:3805-3808`（D68 の 2）、`docs/drafts/final_judging_guide_draft.md:474-477`（18.3 節）、[第 41 章](ch41.md)）
+（出典: `docs/decisions.md:3805-3808`（D68 の 2）、`docs/drafts/final_judging_guide_draft.md:486-489`（18.3 節）、[第 41 章](ch41.md)）
 
 
 ---

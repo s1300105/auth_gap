@@ -61,7 +61,7 @@ D53 では、深さを上げて消えたものが 0 だったことを確かめ�
 （出典: `authgap/runner.py:88-96, 128-133`、`authgap/report.py:279-284`）
 
 **(3)** 取り直しません。
-手順書は、時間上限で打ち切られた木について「取り直さない。件数と所要時間を記録する。遅いマシンなら、走らせる前に速いマシンを選ぶ（走らせた後に選び直さない）」と決めています（`docs/final_evaluation_procedure.md:1439`）。
+手順書は、時間上限で打ち切られた木について「取り直さない。件数と所要時間を記録する。遅いマシンなら、走らせる前に速いマシンを選ぶ（走らせた後に選び直さない）」と決めています（`docs/final_evaluation_procedure.md:1451`）。
 走査は 1 回で、取り直すのは道具の故障で止まったときだけです（事前登録の下書き、`docs/drafts/prereg_2_12_draft.md:39`）。
 v2 でも、180 秒で 716 ユニットを飛ばした後、900 秒の再走を**感度分析として併記するだけ**にし、主の結果は事前登録の手続き（180 秒）のままにしました（D34、逸脱 #8）。
 結果を見てから上限を変えて主の結果を差し替えると、「都合のよい値を選んだ」ことになるからです。
@@ -76,7 +76,7 @@ v2 でも、180 秒で 716 ユニットを飛ばした後、900 秒の再走を*
 **(2)** 「**見込み（測っていない値）**。v4 の 88 木の 1 木平均 9 秒を当てて計算した。取得の時間は含まない。計算機の速さで変わる」といった言葉を添えます。
 `CLAUDE.md` の規則 1（未検証の統計を引用しない）と同じ考え方で、測った値と見込みを区別して書きます。
 
-**(3)** 11 時間を**測った値**として記録し、走らせた計算機（CPU・メモリ・同時に走らせた本数）と日時も書きます（`docs/final_evaluation_procedure.md:644`）。
+**(3)** 11 時間を**測った値**として記録し、走らせた計算機（CPU・メモリ・同時に走らせた本数）と日時も書きます（`docs/final_evaluation_procedure.md:655`）。
 見込みとの差は、そのまま並べて書けば十分です。走査の結果の正しさには関係しません。
 あわせて、`budget_skipped` が 0 でない木が無いかを確かめます。計算機が遅いと、時間上限に当たる木が増えるからです（v2 の run23 と run24 で、同じ木の時間がおよそ 2 倍違った例）。
 時間がかかったことを理由に、走査をやり直したり、計算機を替えて取り直したりはしません。
@@ -277,7 +277,7 @@ D56 は「不明が主指標と同じ規模（D1 + D2 で 181）あることは�
 (b) では、`cmd` が木の外のライブラリの関数 `normalize_command` を通るので、解析器はその中を読めず、確度が `opaque` になります。だから不です。
 本書の執筆時に、(a)・(b) を `readOnlyHint: True` のツールにして走らせ、注記が `contradiction:D1` と `contradiction_reason:D1:spawn_model`、`contradiction_unknown:D1:spawn_model_opaque` になることを確かめました。
 
-**(2)** 手引きの 18A 節は、`…_opaque` の不について「モデルの値が書き先・宛先を選べるところまで届くかを、値の流れをたどって確かめる」と書いています（`docs/drafts/final_judging_guide_draft.md:510`）。
+**(2)** 手引きの 18A 節は、`…_opaque` の不について「モデルの値が書き先・宛先を選べるところまで届くかを、値の流れをたどって確かめる」と書いています（`docs/drafts/final_judging_guide_draft.md:524`）。
 (b) なら、`normalize_command` の中身（ライブラリのコードや文書）を調べ、
 
 - モデルの値をそのまま（あるいは形を整えるだけで）返すなら、モデルは起動するプログラムを**選べる**。原理 3 a で取りうる値の全体を考え、読むだけの宣言に反するかを決める（どんなプログラムでも起動できるなら、反する）。
@@ -338,7 +338,7 @@ D56 は「不明が主指標と同じ規模（D1 + D2 で 181）あることは�
 判定では、次のことを確かめます（手引きの 18A 節）。
 
 1. **到達するか**: ツールが呼ばれたとき、その書き出しが起きる実行の道が 1 つでもあるか（[第 49 章](ch49.md)）。
-2. **モデルが書き先を選べるか**: 書き先の値が、ツールの引数（モデルの値）から、どんな関数を通って届いているかをたどり、モデルが書き先を**実際に選べる**ところまで届くかを確かめる（`…_opaque` の調べ方。`docs/drafts/final_judging_guide_draft.md:510`）。途中で決まったディレクトリの下に限られる、名前を整えるだけ、などの形を見分ける。
+2. **モデルが書き先を選べるか**: 書き先の値が、ツールの引数（モデルの値）から、どんな関数を通って届いているかをたどり、モデルが書き先を**実際に選べる**ところまで届くかを確かめる（`…_opaque` の調べ方。`docs/drafts/final_judging_guide_draft.md:524`）。途中で決まったディレクトリの下に限られる、名前を整えるだけ、などの形を見分ける。
 3. **宣言に反するか**: モデルが既存のファイルを書き先に選べるなら、上書きできるので、壊さないという宣言に反する（原理 3 a）。モデルが選べず、書き先が呼び出しの前から存在しうるか（上書きか新規作成か）も分からないなら、書き先にファイルが前からありうるかを調べる（手引きの 15.2 節、`fs_writeout` の調べ方）。
 
 到達し、かつ宣言に反するなら「**違反**」、到達しないか宣言に反しないなら「**違反でない**」、20〜30 分調べても決められなければ「**不明**」です。
@@ -600,7 +600,7 @@ CLAUDE.md 規則 5（凍結した項目を結果を見て変えない）に反�
 ### 確認問題 31-4
 
 最終評価の論文の**限界の節**に、解析器の既知の制限として書きます。
-手順書の「24.2 限界として書くもの」（`docs/final_evaluation_procedure.md:1398-1406`）が、項目の 1 つとして「A2 の 7/8 と O35」（1403 行）を挙げています。
+手順書の「24.2 限界として書くもの」（`docs/final_evaluation_procedure.md:1410-1418`）が、項目の 1 つとして「A2 の 7/8 と O35」（1403 行）を挙げています。
 書くときは、何の数か（較正対 8 件の両側比較の事前登録照合）、何が落ちたか（A2 の `git_diff`）、なぜか（厳格版 O34 と `context_lines`）、それまでの 8/8 が誤 clear に支えられていたこと、例外を足さなかった理由、O35 の中身、両側比較が道具の妥当性の確認であること（D36）を入れます（第 42・55 章）。
 
 
@@ -681,7 +681,7 @@ O36 の記録が「向きと件数は未測定」と書くのは、このよう�
 
 (a) と (b) は見た目が似ていますが、見分け方は「メソッドの名前が sink 表にあるか」です。
 無ければ語彙、あるのに結び付かなければ受け手の型（または呼び出しの解決）です。
-（出典: `docs/drafts/final_judging_guide_draft.md:465-479`（18.2 の 6 と 18.3）、`docs/decisions.md:3805-3808`（D68 の 2）、`docs/population_v3.md:91-92`（v3 の見落としの原因）、`docs/open_questions.md:1194`（O43 のデコレータの行））
+（出典: `docs/drafts/final_judging_guide_draft.md:473-491`（18.2 の 6 と 18.3）、`docs/decisions.md:3805-3808`（D68 の 2）、`docs/population_v3.md:91-92`（v3 の見落としの原因）、`docs/open_questions.md:1194`（O43 のデコレータの行））
 
 ### 演習 32-4（記録を書く）
 
@@ -708,7 +708,7 @@ O36 の記録が「向きと件数は未測定」と書くのは、このよう�
 判定の途中で解析器の誤りを見つけても直さず、`docs/open_questions.md` に限界として書きます（手引きの下書き 22 節の 4）。
 loguru を足すのは、最終評価のデータを見た後に語彙を変えることで、[第 22 章](ch22.md)の「的を後から描く」にあたります。
 見落としを原因ごとに数えて報告すれば、「語彙の限界でこれだけ見落とした」と正直に書けます。それが、この研究のやり方です。
-（出典: `docs/final_evaluation_procedure.md:13`（最終評価のどの段階でも `authgap/` を変えない）、`docs/decisions.md:3900`（D71）、`docs/drafts/final_judging_guide_draft.md:672`（22 節の 4））
+（出典: `docs/final_evaluation_procedure.md:13`（最終評価のどの段階でも `authgap/` を変えない）、`docs/decisions.md:3944`（D71）、`docs/drafts/final_judging_guide_draft.md:709`（22 節の 4））
 
 ### 確認問題 32-1
 
@@ -782,7 +782,7 @@ CLAUDE.md は、取り直したら「消えたユニットと消えた CONTRADIC
 触れるのは、本記録者と同じ文脈を持つ AI にコードを見せることです。
 (b) は、学生が自分で直す場合でも、後半を破ります。
 誰が直すかではなく、評価データで見つけたことを開発に使うかどうかが問題だからです。
-（出典: `docs/decisions.md:3397-3400`（D60 の約束）、`:3752`（D66 の 3）、`:3849-3856`（D70 の 3）、`docs/open_questions.md:1259-1266`（O45 の 3・4）、`docs/final_evaluation_procedure.md:13`、`:529`（6.8 判定の練習）、`docs/drafts/final_judging_guide_draft.md:672`）
+（出典: `docs/decisions.md:3397-3400`（D60 の約束）、`:3752`（D66 の 3）、`:3849-3899`（D70 の 3）、`docs/open_questions.md:1264-1271`（O45 の 3・4）、`docs/final_evaluation_procedure.md:13`、`:540`（6.8 判定の練習）、`docs/drafts/final_judging_guide_draft.md:709`）
 
 ### 演習 33-3（時刻の順番）
 
@@ -849,7 +849,7 @@ O45 の 3 つの案は、次のように違います。
 
 D70 の 3 は案 (a) にあたり、D70 の本文は「最終評価で本記録者（Claude）が評価データを見ることはなく、D60 の 2・D66 の 3 の約束とぶつからない」と書いています（ここでの「D60 の 2」は、本書の言う「D60 の約束」のことです）。
 D70 の 3 は、もう 1 つの理由（判定に LLM を混ぜた先行研究は決められないものを消すか倒している。不明を数える芯と決定性を守る）にも支えられています。
-（出典: `docs/decisions.md:3849-3856`、`docs/open_questions.md:1246-1266`）
+（出典: `docs/decisions.md:3849-3899`、`docs/open_questions.md:1246-1271`）
 
 
 ---
@@ -1155,7 +1155,7 @@ D65 の 2 で、凍結版で v3 の見落とし 7 件と不明 2 件を確かめ
 
 最後に、時間上限で解析しなかったユニットは manifest の `units` に入らないので、見落としの抜き取りの元の一覧にも出てこないことを覚えておきます（[第 27 章](ch27.md) 27.5 節）。
 
-（出典: `evidence/scan_v2_run21/summary.json`・`evidence/scan_v2_v4_run1/summary.json` の `trees`、`docs/final_evaluation_procedure.md:644`（9.2）、`:646-660`（9.3）、`:1439`（26 節））
+（出典: `evidence/scan_v2_run21/summary.json`・`evidence/scan_v2_v4_run1/summary.json` の `trees`、`docs/final_evaluation_procedure.md:655`（9.2）、`:657-671`（9.3）、`:1451`（26 節））
 
 ### 演習 36-2（所見の受け付け）
 
@@ -1192,7 +1192,7 @@ D65 の 2 で、凍結版で v3 の見落とし 7 件と不明 2 件を確かめ
 | (c) タグの一覧に freeze-3 が出ない | **まだ進まない** | `git fetch --tags` で共有の場所のタグを取り込み、`git tag -l` を打ち直す。freeze-3 が出て、ほかの 2 つの確認も通れば進む |
 | (d) status が ` M authgap/report.py` を出した | **進まない** | `authgap/report.py` に、コミットしていない変更がある。`git diff -- authgap/report.py` で中身を確かめて記録し、手元の変更を取り除いて（最終評価では `authgap/` を変えない）、3 つの確認をやり直す。このまま `--require-fingerprint` で走らせても、`authgap_dirty` が真なので「止める」と出て走査は始まらない |
 
-（出典: `docs/final_evaluation_procedure.md:621-630`（9.1）、`:13`（どの段階でも `authgap/` を変えない）、`scripts/scan_v2.py:192-199`（`--require-fingerprint` の確認）、`docs/preregistration.md:577`（逸脱 #26））
+（出典: `docs/final_evaluation_procedure.md:632-641`（9.1）、`:13`（どの段階でも `authgap/` を変えない）、`scripts/scan_v2.py:192-199`（`--require-fingerprint` の確認）、`docs/preregistration.md:577`（逸脱 #26））
 
 ### 確認問題 36-1
 
@@ -1354,7 +1354,7 @@ lifespan の中に初期化がありますが、**条件つき**です（環境�
 - もし `_get_db()` を呼ぶツールが無ければ、そもそもその効果はツールの道筋ではありません（手順 D で確かめる）。
 - `_db = None` に戻す箇所が無いかも grep で確かめます。
 
-（出典: `docs/open_questions.md:1199-1216`、`docs/drafts/final_judging_guide_draft.md:241-259`（14.3）、`:261-294`（14.4）、`:643`（20.2 の E00）、`corpus/v4-qbit-glitch__ccr/ccr/mcp/server.py`、`corpus/v4-double16__shyhurricane/shyhurricane/mcp_server/__init__.py`・`server_context.py`）
+（出典: `docs/open_questions.md:1199-1216`、`docs/drafts/final_judging_guide_draft.md:247-265`（14.3）、`:267-300`（14.4）、`:658`（20.2 の E00）、`corpus/v4-qbit-glitch__ccr/ccr/mcp/server.py`、`corpus/v4-double16__shyhurricane/shyhurricane/mcp_server/__init__.py`・`server_context.py`）
 
 ### 演習 37-4（判定の記録を読む）
 
@@ -1370,7 +1370,7 @@ lifespan の中に初期化がありますが、**条件つき**です（環境�
 - `severity`（本来の動作 / 裏側・補助 / 該当なし）は D67 の前の定義で、最終評価では使いません。M00 の「本来の動作」を、そのまま書き込み先の種類に読み替えることはできません。
 - R19 は v4 では「ログの追記を違反に数えるかは原理で明示されていない」（O43）と注記された件です。最終評価の手引きの下書き（15.1 節）は、出力先がファイルのログを「反する」と書いています。
 
-（出典: `evidence/population_v4/v4_judgments.json` の M00・E00・R19、`docs/final_evaluation_procedure.md:1098`、`docs/drafts/final_judging_guide_draft.md:301-326`（15.1）、`:377-396`（16.1）、`:422-439`（17）、`:630-649`（20.2）、`docs/open_questions.md:1193`）
+（出典: `evidence/population_v4/v4_judgments.json` の M00・E00・R19、`docs/final_evaluation_procedure.md:1109`、`docs/drafts/final_judging_guide_draft.md:307-332`（15.1）、`:383-402`（16.1）、`:428-445`（17）、`:645-664`（20.2）、`docs/open_questions.md:1193`）
 
 ### 確認問題 37-1
 
