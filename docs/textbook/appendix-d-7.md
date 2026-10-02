@@ -4,6 +4,7 @@
 
 # 付録 D 演習と確認問題の答え — 第 7 部（第 38〜44 章）
 
+<a id="ad-7-1"></a>
 ## 第 38 章 数字の読み方の基礎 — 精度・再現率・信頼区間 の答え
 
 この章の演習は、repo の記録（`docs/population_v3.md`、`docs/population_v4.md`、`evidence/population_v3/v2_judgments.json`、`evidence/population_v4/v4_judgments.json`、`docs/final_evaluation_procedure.md` の 23 節、`docs/decisions.md` の D62・D63・D66・D67・D69・D70、`docs/drafts/prereg_2_12_draft.md`、`docs/drafts/final_judging_guide_draft.md` の 21 節）と、説明のための**作例**を使っています。
@@ -180,6 +181,7 @@ D67 の 4 は、κ に依存する主張はしないと決めています。
 
 ---
 
+<a id="ad-7-2"></a>
 ## 第 39 章 統計を手で計算する — Wilson 区間・木の bootstrap・分母 (a)(b)(c)・下限 の答え
 
 この章の演習は、repo の記録（`docs/population_v4.md`、`evidence/population_v4/v4_judgments.json`、`docs/final_evaluation_procedure.md` の 23 節、`docs/decisions.md` の D67〜D70、`docs/drafts/prereg_2_12_draft.md`、`docs/drafts/final_judging_guide_draft.md` の 14.3 節）と、説明のための**架空**の数字（作例）を使っています。
@@ -421,6 +423,7 @@ N ≤ 200 なら n = N なので、差は出ません（`docs/decisions.md:3864-
 
 ---
 
+<a id="ad-7-3"></a>
 ## 第 40 章 数字の一覧 — v2・v3・v4 の答え
 
 この章の答えは、`docs/population_v3.md`・`docs/population_v4.md`・`docs/contradiction_by_decl.md`・`docs/preregistration.md`（§2.11 と逸脱 #20〜#26）・`docs/decisions.md`（D60・D62・D65・D66・D67・D70）と、`evidence/` の各 run のファイルにもとづいています。
@@ -541,6 +544,7 @@ run21 から、数え方の鍵に「ユニットのファイルと行」と「�
 
 ---
 
+<a id="ad-7-4"></a>
 ## 第 41 章 見落としの中身 の答え
 
 この章の答えは、`docs/population_v3.md`・`docs/population_v4.md`・`evidence/population_v3/v3_miss_judgments.json`・`evidence/population_v3/v3_miss_recheck_freeze3.json`・`evidence/population_v4/v4_judgments.json`・`docs/decisions.md`（D61・D65・D67・D68・D69・D70）・`docs/open_questions.md`（O43）・`docs/drafts/final_judging_guide_draft.md`（16・18 節。下書き・未承認）にもとづいています。
@@ -686,6 +690,7 @@ D65 の 2 の記録も、「v3 を見た後の確認なので、改善として�
 
 ---
 
+<a id="ad-7-5"></a>
 ## 第 42 章 限界の一覧 の答え
 
 この章の演習と確認問題は、repo の記録（`docs/open_questions.md` の O35・O38・O39・O41〜O43、`docs/decisions.md` の D66〜D70、`docs/final_evaluation_procedure.md` の 0-6・0-10・24.2 節、`docs/drafts/final_judging_guide_draft.md` の第 14〜17・21・22 節）と、説明のための**作例**のコードを使っています。
@@ -773,6 +778,7 @@ O39 によると、仕様書の sink の語彙の HTTP の行は `.get`・`.post
 
 ---
 
+<a id="ad-7-6"></a>
 ## 第 43 章 裏方の書き込みは違反か — 実世界の扱いと、重みを付けない決定 の答え
 
 この章の演習と確認問題は、`docs/incidental_writes_practice.md`（調査の記録で、決定ではない）、`docs/decisions.md` の D67・D68、`docs/open_questions.md` の O43・O44、`docs/drafts/final_judging_guide_draft.md`（下書き・未承認）の第 11・15・16 節、`docs/final_evaluation_procedure.md` の 24.3 節に基づきます。
@@ -852,6 +858,7 @@ D2（`destructiveHint: false`）の問いは「**呼び出しの前からあっ�
 
 ---
 
+<a id="ad-7-7"></a>
 ## 第 44 章 良い結果になりそうか — 正直な見通し の答え
 
 この章の答えは、`docs/population_v3.md`・`docs/population_v4.md`・`evidence/population_v3/v2_judgments.json`・`evidence/population_v3/v3_miss_targets.json`・`evidence/population_v4/v4_judgments.json`・`evidence/scan_v2_v3_run1/`・`evidence/scan_v2_v4_run1/`・`docs/decisions.md`（D63・D66・D67・D68・D70）・`docs/final_evaluation_procedure.md`・`docs/drafts/final_judging_guide_draft.md`（下書き・未承認）・`docs/drafts/prereg_2_12_draft.md`（下書き・未承認）にもとづいています。

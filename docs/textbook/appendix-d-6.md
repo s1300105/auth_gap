@@ -4,6 +4,7 @@
 
 # 付録 D 演習と確認問題の答え — 第 6 部（第 27〜37 章）
 
+<a id="ad-6-1"></a>
 ## 第 27 章 深さを 3 から 4 へ の答え
 
 この章の演習は、repo の記録（`docs/decisions.md` の D34・D49〜D54・D64 の追記・D69・D70、`docs/open_questions.md` の O29、`docs/depth_sensitivity.md`、`docs/preregistration.md` の逸脱 #8・#17・#25、`docs/final_evaluation_procedure.md` の 0-1・第 26・27 節、`evidence/scan_v2_v4_run1/summary.json`。本書の執筆時に確かめたもの）と、説明のための作り話の数字を使っています。
@@ -113,6 +114,7 @@ v4 で**測った**「1 木平均 9 秒」（88 木の `elapsed_s` の平均 8.9
 
 ---
 
+<a id="ad-6-2"></a>
 ## 第 28 章 食い違いの原理を選ぶ の答え
 
 この章の演習は、repo の記録（`docs/decisions.md` の D32・D41・D55・D56・D60・D62・D67・D70、`docs/open_questions.md` の O23、`docs/contradiction_principles.md` の §0〜§7、`docs/drafts/final_judging_guide_draft.md` の 11.3 節と第 16 節、`git log`。本書の執筆時に確かめたもの）と、説明のための作り話のツールを使っています。
@@ -221,6 +223,7 @@ D56 は「不明が主指標と同じ規模（D1 + D2 で 181）あることは�
 
 ---
 
+<a id="ad-6-3"></a>
 ## 第 29 章 小さな誤りを 3 つ直す（O30・O32・O33） の答え
 
 この章の演習は、repo の記録（`docs/decisions.md` の D56・D57、`docs/open_questions.md` の O30・O32・O33、`docs/contradiction_principles.md` の §9、`docs/drafts/final_judging_guide_draft.md` の 13.1 節と 18A 節、`authgap/srcindex.py`・`authgap/effects.py`・`authgap/dparse.py`。本書の執筆時に確かめたもの）と、説明のための作り話のツールを使っています。
@@ -344,6 +347,7 @@ D56 は「不明が主指標と同じ規模（D1 + D2 で 181）あることは�
 
 ---
 
+<a id="ad-6-4"></a>
 ## 第 30 章 到達しない枝（O31） の答え
 
 この章の演習は、repo の記録（`docs/decisions.md` の D53・D54・D58・D59・D68、`docs/open_questions.md` の O31・O36・O38、`docs/drafts/final_judging_guide_draft.md` の 11〜19・22 節、`scripts/diff_effects.py`、`evidence/scan_v2_run14/`〜`scan_v2_run16/` の manifest、`corpus/v2-berkay2002__yt-scribe/`。本書の執筆時に確かめたもの）と、説明のための作り話のサーバ・数を使っています。
@@ -472,6 +476,7 @@ D58 の「経路の単位で確認」は、まさにこれを確かめたもの�
 
 ---
 
+<a id="ad-6-5"></a>
 ## 第 31 章 検証の穴（O34）と A2 の 7/8 の答え
 
 この章の演習は、repo の記録（`docs/decisions.md` の D36・D58・D59・D61・D64、`docs/open_questions.md` の O34・O35、`docs/preregistration.md` の逸脱 #1・#5・#21〜#25、`docs/expected_tuples.json`、`docs/corpus_spec.json`、`scripts/two_sided.py`、`tests/test_two_sided_calibration.py`・`tests/test_two_sided_preregistered.py`、`docs/final_evaluation_procedure.md` の 24.2・24.3・25 節、`docs/drafts/final_judging_guide_draft.md` の 11.3・15.3・17・22 節。本書の執筆時に確かめたもの）と、説明のための作り話のサーバを使っています。
@@ -601,6 +606,7 @@ CLAUDE.md 規則 5（凍結した項目を結果を見て変えない）に反�
 
 ---
 
+<a id="ad-6-6"></a>
 ## 第 32 章 値の欠陥と HTTP の読み方（O36・O37） の答え
 
 この章の演習は、repo の記録（`docs/decisions.md` の D59 と追記、`docs/open_questions.md` の O36・O37・O39・O43、`docs/o39_count.json`、`docs/drafts/final_judging_guide_draft.md` の 15〜18 節。本書の執筆時に確かめたもの）と、説明のための作り話のツールを使っています。
@@ -742,6 +748,7 @@ CLAUDE.md は、取り直したら「消えたユニットと消えた CONTRADIC
 
 ---
 
+<a id="ad-6-7"></a>
 ## 第 33 章 最初の凍結と方針の変更 の答え
 
 この章の演習は、repo の記録（`docs/decisions.md` の D59・D60・D66・D70、`docs/open_questions.md` の O45、`docs/fingerprint.json` とコミット `1bcace3` の版、`authgap/report.py` の `fingerprint()`、`scripts/freeze_analyzer.py`、`git log`。本書の執筆時に確かめたもの）を使っています。
@@ -847,6 +854,7 @@ D70 の 3 は、もう 1 つの理由（判定に LLM を混ぜた先行研究�
 
 ---
 
+<a id="ad-6-8"></a>
 ## 第 34 章 新しいデータで確かめる（v3） の答え
 
 この章の演習は、repo の記録（`docs/population_v3.md`、`docs/corpus_sample_v3.json`、`evidence/population_v3/` の `post_fetch_check.json`・`v2_judge_targets.json`・`v2_judgments.json`・`v3_miss_targets.json`・`v3_miss_judgments.json`・`contradiction_by_decl_v3_run1.md`、`evidence/scan_v2_v3_run1/summary.json`、`docs/decisions.md` の D60・D62・D66・D70、`docs/final_evaluation_procedure.md` の 0-7・13 手順 C・17 節、`docs/drafts/final_judging_guide_draft.md` の 11・14・15・20.2 節）と、説明のための作り話のサーバを使っています。
@@ -1000,6 +1008,7 @@ D60（2026-09-24）で、論文の評価は学生が別の新しいデータで�
 
 ---
 
+<a id="ad-6-9"></a>
 ## 第 35 章 一般に正しい修正だけを入れる（D61） の答え
 
 この章の演習は、repo の記録（`docs/decisions.md` の D61（規則・改訂・改訂の追記・結果）と D65 の 2、`docs/open_questions.md` の O41、`docs/preregistration.md` §5 の逸脱 #23、`tests/test_fix_d61.py`、`evidence/population_v3/scan_v3_run2_diff.md`・`v3_miss_recheck_freeze3.json`、`docs/drafts/final_judging_guide_draft.md` の 14〜19・21・22 節）と、説明のための作り話のサーバを使っています。
@@ -1111,6 +1120,7 @@ D65 の 2 で、凍結版で v3 の見落とし 7 件と不明 2 件を確かめ
 
 ---
 
+<a id="ad-6-10"></a>
 ## 第 36 章 最終凍結 — 凍結前の添削（D62〜D64）とタグの手違い の答え
 
 この章の演習と確認問題は、repo の記録（`docs/decisions.md` の D61〜D66・D71、`docs/review_plan.md`、`docs/review_triage.md`、`docs/open_questions.md` の O42、`docs/preregistration.md` の逸脱 #24〜#26、`docs/final_evaluation_procedure.md` の 9.1〜9.3、`evidence/scan_v2_run20`〜`run24` と `evidence/scan_v2_v4_run1` の `summary.json`、`git log`）を使っています。
@@ -1248,6 +1258,7 @@ run22 では、消えた 131 ユニットが manifest の `tree_budget` の件�
 
 ---
 
+<a id="ad-6-11"></a>
 ## 第 37 章 凍結版を新しいデータで確かめる — v4 の中間検証（D65・D66） の答え
 
 この章の演習と確認問題は、repo の記録（`docs/decisions.md` の D65〜D70、`docs/population_v4.md`、`docs/open_questions.md` の O43・O44、`evidence/population_v4/v4_judgments.json`、`evidence/scan_v2_v4_run1/summary.json`、`docs/drafts/final_judging_guide_draft.md` の 14〜17・20.2 節、`git log`）を使っています。

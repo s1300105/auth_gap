@@ -4,6 +4,7 @@
 
 # 付録 D 演習と確認問題の答え — 第 8 部（第 45〜52 章）
 
+<a id="ad-8-1"></a>
 ## 第 45 章 最終評価の全体像 — 4 つの問いと段階 0〜9 の答え
 
 この章の演習と確認問題は、`docs/final_evaluation_procedure.md`（手順書。地図であって規則ではない）、`docs/drafts/prereg_2_12_draft.md` と `docs/drafts/final_judging_guide_draft.md`（どちらも下書き・未承認）、`docs/decisions.md` の D65〜D70、第 3 版の教科書 `docs/textbook_v3.md:2429-2492` に基づきます。
@@ -94,6 +95,7 @@ D70 の 8 について、段階 6 のコミットの前にしておくこと:
 
 ---
 
+<a id="ad-8-2"></a>
 ## 第 46 章 データを見る前に決めたこと（D67〜D70）と、まだ決まっていないこと の答え
 
 この章の演習と確認問題は、`docs/decisions.md` の D65〜D71、`docs/final_evaluation_procedure.md`（手順書。地図であって規則ではない）、`docs/drafts/prereg_2_12_draft.md` と `docs/drafts/final_judging_guide_draft.md`（どちらも下書き・未承認）、`docs/open_questions.md`、`authgap/dparse.py` に基づきます。
@@ -202,6 +204,7 @@ D70 の 4 は、(c) の分母を「その宣言を明示的に書いた（`D_kin
 
 ---
 
+<a id="ad-8-3"></a>
 ## 第 47 章 対象を決め、走査し、抜き取る — 段階 1〜6 の答え
 
 この章の答えは、`docs/final_evaluation_procedure.md`（5〜10 節・26・27 節）・`docs/drafts/prereg_2_12_draft.md`（下書き・未承認）・`docs/drafts/final_judging_guide_draft.md`（下書き・未承認）・`docs/decisions.md`（D64 の追記・D66〜D70）・`docs/population_v4.md`・`evidence/population_v4/`・`evidence/scan_v2_v4_run1/`・`scripts/sample_population_v2.py`・`scripts/fetch_corpus.py`・`scripts/check_population_v2.py`・`scripts/scan_v2.py`・`scripts/runlib.py`・`scripts/contradiction_by_decl.py` にもとづいています。
@@ -355,6 +358,7 @@ x は `progress.jsonl` に `missing` として記録されています。`--resu
 
 ---
 
+<a id="ad-8-4"></a>
 ## 第 48 章 矛の 1 件を判定する — 2 つの問いと手順 A〜H の答え
 
 この章の演習と確認問題は、判定の手引きの下書き（`docs/drafts/final_judging_guide_draft.md`。**下書き・未承認**）の 11〜13 節、`docs/decisions.md` の D67〜D70、`docs/contradiction_principles.md` の §6・§7 に基づきます。
@@ -501,6 +505,7 @@ note: 位置 2 つ（10・21）。21 行（引数）で正。10 行も正（18 �
 
 ---
 
+<a id="ad-8-5"></a>
 ## 第 49 章 到達するかの決め方 — 条件つきの到達と起動時の初期化 の答え
 
 この章の答えは、`docs/drafts/final_judging_guide_draft.md`（下書き・未承認。とくに 13 節の手順 G・H、14 節、19 節、22 節）・`docs/decisions.md`（D67 の 2、D68 の 1）・`docs/open_questions.md`（O43）・`docs/final_evaluation_procedure.md`（0-11、23.5）にもとづいています。
@@ -642,6 +647,7 @@ E6 にまとめると、この類の件数を論文の限界の節に出せな�
 
 ---
 
+<a id="ad-8-6"></a>
 ## 第 50 章 宣言に反するかの決め方 — D1〜D4 の問いと迷いやすい形 の答え
 
 演習のコードはすべて本書の作例です。
@@ -731,6 +737,7 @@ D3 と D4 について人が判定するのは、**矛の判定**の場面だけ
 
 ---
 
+<a id="ad-8-7"></a>
 ## 第 51 章 結果に付ける印 — 書き込み先・通信先のラベルと誤の原因 E1〜E9 の答え
 
 ### 演習 51-1（ラベルを付ける）
@@ -808,6 +815,7 @@ SQLite のキャッシュ DB への書き込みは、2 番の「DB の行・ス�
 
 ---
 
+<a id="ad-8-8"></a>
 ## 第 52 章 見落とし・不の中身・「不明」と、判定をぶれさせない工夫 の答え
 
 ### 演習 52-1（見落としの判定。深さ 3 と深さ 6）

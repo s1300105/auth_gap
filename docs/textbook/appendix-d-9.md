@@ -4,6 +4,7 @@
 
 # 付録 D 演習と確認問題の答え — 第 9 部（第 53〜56 章）
 
+<a id="ad-9-1"></a>
 ## 第 53 章 判定の実地演習 1 — 練習用のサーバで矛・見落とし・不の中身を一通り の答え
 
 この章の演習と確認問題は、判定の手引きの下書き（`docs/drafts/final_judging_guide_draft.md`。**下書き・未承認**）の 11〜22 節、`docs/final_evaluation_procedure.md`（手順書。地図であって規則ではない）、`docs/contradiction_principles.md` の §6・§7、`docs/decisions.md` の D66〜D70 に基づきます。
@@ -200,6 +201,7 @@ note: 書き込み先の種類は、最後に一覧を出した時刻の印の�
 
 ---
 
+<a id="ad-9-2"></a>
 ## 第 54 章 判定の実地演習 2 — v4 の実例と引っかけの変種 の答え
 
 この章の答えは、どれも**本記録者の考え方の例**です。
@@ -349,6 +351,7 @@ v4 の M58（ru-marketplace）が (a) の実例で、手引き 20.2 節は「D1 
 
 ---
 
+<a id="ad-9-3"></a>
 ## 第 55 章 集計と論文 — 段階 8・9 の答え
 
 この章の演習と確認問題は、事前登録の下書き（`docs/drafts/prereg_2_12_draft.md`。**下書き・未承認**）の (f)(g)、手順書（`docs/final_evaluation_procedure.md`）の 23〜28 節、`docs/decisions.md` の D62・D66〜D70 に基づきます。
@@ -457,6 +460,7 @@ n < N なので、判定していない 12 木にも同じ割合（5/8）で本�
 
 ---
 
+<a id="ad-9-4"></a>
 ## 第 56 章 よくある疑問 の答え
 
 この章の演習と確認問題は、`docs/decisions.md` の D62・D66〜D71、`docs/open_questions.md` の O2・O43〜O45、判定の手引きの下書き（`docs/drafts/final_judging_guide_draft.md`。**下書き・未承認**）の 14.4・16 節、`docs/incidental_writes_practice.md`、`docs/llm_judgment_survey.md` に基づきます。
