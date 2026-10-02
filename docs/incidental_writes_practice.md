@@ -42,7 +42,7 @@
 | 資料 | 付随的な書き込みへの言及 | 引用 |
 |---|---|---|
 | schema（2025-03-26 / draft / 2026-07-28） | 無し | "If true, the tool does not modify its environment." "Default: false"。注記 "all properties in ToolAnnotations are **hints**. They are not guaranteed to provide a faithful description of tool behavior" **[確認: draft]** |
-| 仕様本文 server/tools.mdx | 無し | "clients MUST consider tool annotations to be untrusted unless they come from trusted servers." **[agent]** |
+| 仕様本文 server/tools.mdx | 無し | "clients MUST consider tool annotations to be untrusted unless they come from trusted servers." **[確認]**（2026-10-02 に本記録者が原文で照合: 仕様の repo（modelcontextprotocol/modelcontextprotocol、main 3098fe9）の `docs/specification/<版>/server/tools.mdx`。2025-03-26（188-189 行）・2025-06-18（193-194 行）・2025-11-25（213-214 行）・2026-07-28（305-306 行）・draft（305-306 行）のすべてにある。原文は "For trust & safety and security, clients **MUST** consider tool annotations to be untrusted unless they come from trusted servers."（引用はその後半）。前は [agent]） |
 | 公式ブログ "Tool Annotations as Risk Vocabulary"（2026-03-16） | 無し（logging / cache / temp / side effect の語は 0 回 **[確認]**） | 表 "`readOnlyHint: true` \| Skip the confirmation dialog" **[確認]**。"GitHub's read-only mode is the closest production analog, enabled by about 17% of users." **[確認]**（17% はブログの記載で、本記録者は検証していない） |
 | PR #185（ToolAnnotations を入れた PR、2025-03） | 途中の案では観測できるかを基準にしていた | 中間案: "does not perform writes or updates, or otherwise change server-side state in ways that would be visible in subsequent tool calls." 最終文言は "does not modify its environment" に変わったが、変えた理由は見つからなかった **[agent。理由は不明]** |
 | SEP-2793 "Tool Risk Metadata"（draft） | 「主作用の外の副作用」を宣言する欄を提案 | "Side effects the tool may produce beyond its primary action"。例にログ・キャッシュは無い **[agent]** |
