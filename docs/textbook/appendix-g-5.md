@@ -683,7 +683,7 @@ fn requires_mcp_tool_approval(annotations: Option<&ToolAnnotations>) -> bool {
 - **条件**: approval mode が auto（既定、36）のとき。次の場合はこの判定式を通らない：(a) strict auto-review が有効なときは annotation に関係なく毎回承認（レビュー）に回る（同ファイル 1512〜1527 行：if !strict_auto_review && !requires_mcp_tool_approval_for_mode(...)、tool で exact）。(b) approval mode が approve、または approval_policy=never かつ権限プロファイルが無効・外部・ディスク全体書き込み可のときは annotation を見ずに自動承認（37）。(c) 同じセッションで承認を記憶していれば確認なし（1536〜1541 行、目視）。prompt は常に承認、writes は readOnlyHint だけ（35）。app（コネクタ）と任意の MCP サーバーの両方に適用（approval_mode は app ならアプリ設定、それ以外は MCP サーバー設定から取る：同ファイル 215〜224 行、目視）。
 - **扱う宣言**: destructiveHint・readOnlyHint・openWorldHint ／ **使い方の分類**: 確認を省く（自動で許可）・確認を求める・宣言が無いときの扱い
 - **確かさ**: [確認] 再照合 exact・1 か所、2463-2480 行（取得 2026-10-02T22:11:37Z、sha256 ab767be40cb8…）
-- **補足**: readOnlyHint:true と嘘の宣言をした書き込みツールは、auto モードでは確認なしで実行される（宣言が唯一の根拠）。ただしキャッシュされたカタログ由来のツールでは readOnlyHint が消される（43）。 conditions に strict auto-review（annotation で承認を省かない）と、セッション内の承認記憶の経路を足した（finder は approve / never の例外だけ）。1525 行を tool で exact 確認。
+- **補足**: readOnlyHint:true と嘘の宣言をした書き込みツールは、auto モードでは確認なしで実行される（宣言が唯一の根拠）。ただしキャッシュされたカタログ由来のツールでは readOnlyHint が消される（43）。 conditions に strict auto-review（annotation で承認を省かない）と、セッション内の承認記憶の経路を足した（finder は approve / never の例外だけ）。1525 行を tool で exact 確認。 【本記録者の点検（2026-10-02）】補足の「キャッシュされたカタログ由来のツールでは readOnlyHint が消される（43）」は、43 の点検で直したとおり承認の判定には効かない（呼び出しの時に今のカタログから annotations を取り直す）。この補足は古い。
 
 <a id="g-c05-openai-35"></a>
 #### C05-35 OpenAI — Codex（CLI / IDE / app。ChatGPT の apps＝コネクタと任意の MCP サーバー）

@@ -962,7 +962,7 @@
 - **URL**: https://console.groq.com/docs/tool-use/remote-mcp
 - **照らし合わせた中身の URL**: https://console.groq.com/docs/tool-use/remote-mcp.md
 - **版**: 2026-10-02 取得（.md 版）
-- **書いてある場所**: 871 行目（### [Approvals Flow](#approvals-flow)）
+- **書いてある場所**: 871 行目（### Approvals Flow）
 - **原文**:
 
 > You can also set `require_approval` to "never", which will cause the model to execute the tool call without human approval. This is the default behavior if `require_approval` is not set.
@@ -971,7 +971,7 @@
 - **どう使っているか**: Groq の remote MCP は、require_approval を指定しなければ承認なしでツールを実行する（このページの記述）。承認の要否は注釈ではなく API 呼び出し側の require_approval で決まる。同ページは「OpenAI の remote MCP 仕様と完全互換」と書くが、OpenAI の文書（C05）の既定は承認あり側なので、既定値は互換でない（OpenAI 側の既定は C05 の記録による）。
 - **条件**: require_approval 未指定のとき。
 - **扱う宣言**:  ／ **使い方の分類**: 宣言が無いときの扱い
-- **確かさ**: [確認] 再照合 exact・1 か所、871 行（### [Approvals Flow](#approvals-flow)）（取得 2026-10-02T22:12:44Z、sha256 880e7a84cea5…）
+- **確かさ**: [確認] 再照合 exact・1 か所、871 行（### Approvals Flow）（取得 2026-10-02T22:12:44Z、sha256 880e7a84cea5…）
 - **補足**: ページに readOnlyHint / destructiveHint / annotation は無い（checked_no_mention）。公式 URL は https://console.groq.com/docs/tool-use/remote-mcp（.md で照合）。 「OpenAI の既定と逆」はこのページの記述ではなく C05 の OpenAI 文書との比較なので、出典を書き分けた。
 
 <a id="g-g3-consumer-apps-model-apis-10"></a>
@@ -981,7 +981,7 @@
 - **URL**: https://console.groq.com/docs/tool-use/remote-mcp
 - **照らし合わせた中身の URL**: https://console.groq.com/docs/tool-use/remote-mcp.md
 - **版**: 2026-10-02 取得（.md 版）
-- **書いてある場所**: 843 行目（### [Approvals Flow](#approvals-flow)）
+- **書いてある場所**: 843 行目（### Approvals Flow）
 - **原文**:
 
 > If `require_approval` is set to "always", the Groq API will wait for human approval before executing the tool call.
@@ -990,7 +990,7 @@
 - **どう使っているか**: 承認は "always" / "never" の指定（例として挙がっているのはこの 2 値）で、ツールごとの性質（readOnlyHint など）で切り替える仕組みは書かれていない。
 - **条件**: require_approval:"always" のとき mcp_approval_request を返し、mcp_approval_response で承認・拒否する。
 - **扱う宣言**:  ／ **使い方の分類**: 確認を求める
-- **確かさ**: [確認] 再照合 exact・1 か所、843 行（### [Approvals Flow](#approvals-flow)）（取得 2026-10-02T22:12:44Z、sha256 880e7a84cea5…）
+- **確かさ**: [確認] 再照合 exact・1 か所、843 行（### Approvals Flow）（取得 2026-10-02T22:12:44Z、sha256 880e7a84cea5…）
 - **補足**: 同ページの表：「require_approval: Whether human approval is required for the tool call (e.g. "never", "always")」。OpenAI の filter 形式（ツール名の always/never）に対応するかはこのページに書かれていない（不明）。MCP Connectors のページは「Google Workspace (read-only) connectors」と書き、例はすべて require_approval:"never"。ただし Google Calendar の必要 scope は calendar.events（読み書きの scope）で、Gmail / Drive だけが .readonly。 notes の「読み取り専用スコープの connector だけ」を訂正：Calendar の scope は calendar.events（readonly ではない）。
 
 ### Google — google-genai（Python SDK, python-genai）の MCP ツール変換

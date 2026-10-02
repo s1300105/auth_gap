@@ -1,4 +1,4 @@
-[← 付録 E 判定の早見表](appendix-e.md) ｜ [目次](README.md)
+[← 付録 E 判定の早見表](appendix-e.md) ｜ [目次](README.md) ｜ [付録 G 宣言の使われ方の資料集 →](appendix-g.md)
 
 ---
 
@@ -187,4 +187,4 @@ v3・v4 の判定の記録は、最終評価の規則（D67〜D70）より前に
 
 ---
 
-[← 付録 E 判定の早見表](appendix-e.md) ｜ [目次](README.md)
+[← 付録 E 判定の早見表](appendix-e.md) ｜ [目次](README.md) ｜ [付録 G 宣言の使われ方の資料集 →](appendix-g.md)

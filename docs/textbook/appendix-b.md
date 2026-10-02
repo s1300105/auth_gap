@@ -195,6 +195,10 @@ repo（`/home/user/auth_gap`）の中の、この研究で読むファイルの�
 | `docs/related_work.md` | 先行研究（HintLint・AgentFlow・ReactAppScan など）を読んだ結果。「まだ書いていないもの」に比較の作業が残る | 第 6・26 章 |
 | `docs/contradiction_matrix.md` | 矛盾関係の表（D41。原理の文書の前身） | [第 28 章](ch28.md) |
 | `docs/catalog_map.md` | 事前定義の地図（核と付録。D37） | [第 8 章](ch08.md) |
+| `docs/annotations_official_survey.md` | 宣言（ToolAnnotations）の公式の位置づけと、ほかの種類の宣言の調査（2026-10-02） | [付録 G](appendix-g.md) |
+| `evidence/annotations_usage/` | 宣言の使われ方の調査の元データ（`sources.json`: 資料 820 件・記載が無かったページ・届かなかったページ、`recheck.json`: 2026-10-02 の照らし合わせ直し） | [付録 G](appendix-g.md) |
+| `scripts/verify_quote.py` | 引用が URL の原文に本当にあるかを文字列で照らし合わせ、場所（見出し・行・ページ）を返す | [付録 G](appendix-g.md) |
+| `scripts/build_annotations_appendix.py` | 調査の元データから付録 G-1〜G-13 のカードと表紙の集計を作る（手で直さない） | [付録 G](appendix-g.md) |
 
 ---
 

@@ -71,7 +71,7 @@
 | [G3SH-04](#g-g3-saas-hosts-04) | Slack (Salesforce) — Slackbot MCP client（MCP Apps / rich responses） | クライアントの文書 | 作者への書き方の案内 | [確認] |
 | [G3SH-05](#g-g3-saas-hosts-05) | Slack (Salesforce) — slack-samples/bolt-python-examples（Slackbot MCP client 向けサンプル） | サーバのソースコード | 作者への書き方の案内 | [確認] |
 | [G3SH-06](#g-g3-saas-hosts-06) | Notion Labs — Notion Custom Agents（MCP connections） | クライアントの文書 | 表示（印・名前）・信頼するなという注意 | [確認] |
-| [G3SH-07](#g-g3-saas-hosts-07) | Notion Labs — Notion Custom Agents（MCP connections） | クライアントの文書 | 確認を求める・確認を省く（自動で許可） | [確認] |
+| [G3SH-07](#g-g3-saas-hosts-07) | Notion Labs — Notion Custom Agents（MCP connections） | クライアントの文書 | 確認を求める | [確認] |
 | [G3SH-08](#g-g3-saas-hosts-08) | Notion Labs — Notion Custom Agents（MCP connections） | クライアントの文書 | 確認を求める・その他 | [確認] |
 | [G3SH-09](#g-g3-saas-hosts-09) | Notion Labs — Notion Custom Agents（MCP connections） | クライアントの文書 | 確認を求める・確認を省く（自動で許可）・その他 | [確認] |
 | [G3SH-10](#g-g3-saas-hosts-10) | Salesforce — Salesforce Hosted MCP Servers（Salesforce が運営する MCP サーバー） | サーバの文書 | 作者への書き方の案内・その他 | [未確認] |
@@ -1574,9 +1574,9 @@ shouldFilter = shouldFilter || toolInstance.type !== ToolType.READ;
 
 - **日本語**: Notion は既定で、read-only でないすべてのツールの呼び出しに人の確認を求める。できるだけこの設定を使い、人を介在させること。
 - **どう使っているか**: read-only でないツールは既定で人の確認が要る。裏返して『read-only のツールは既定で確認なし』と読める（auto_approve はこの含意による。read ツールの既定が Run automatically であるとは 08/09 のページにも明記が無い）。
-- **扱う宣言**: readOnlyHint ／ **使い方の分類**: 確認を求める・確認を省く（自動で許可）
+- **扱う宣言**: readOnlyHint ／ **使い方の分類**: 確認を求める
 - **確かさ**: [確認] 再照合 exact・1 か所、見出し「Security best practices for Agent connections > Managing the risk of connections」（取得 2026-10-02T22:11:40Z、sha256 9014b8b0b79f…）
-- **補足**: 何をもって『read-only』とするか（readOnlyHint か、名前か、Notion 側の分類か）はこの文では書いていない。06 の『注釈を表示する』と合わせると readOnlyHint によると読めるが推論。注釈の無いツールの扱い（仕様の既定では readOnlyHint=false → 確認あり）も明記なし（不明）。MCP connections のページ（08, 09）にも annotation / readOnlyHint の語は本文に無い（script_only のみ。checked_no_mention 参照）。 auto_approve が原文の直接の記述ではなく含意である旨を usage_ja に明記。08/09 のページは Run automatically を『read ツールに向く』と書くだけで、read ツールの既定値は書いていない。
+- **補足**: 何をもって『read-only』とするか（readOnlyHint か、名前か、Notion 側の分類か）はこの文では書いていない。06 の『注釈を表示する』と合わせると readOnlyHint によると読めるが推論。注釈の無いツールの扱い（仕様の既定では readOnlyHint=false → 確認あり）も明記なし（不明）。MCP connections のページ（08, 09）にも annotation / readOnlyHint の語は本文に無い（script_only のみ。checked_no_mention 参照）。 auto_approve が原文の直接の記述ではなく含意である旨を usage_ja に明記。08/09 のページは Run automatically を『read ツールに向く』と書くだけで、read ツールの既定値は書いていない。 【本記録者の点検（2026-10-02）】原文が言うのは「read-only でないツールは既定で確認」まで。read-only なら確認なしで走るとは書いていないので、使い方の分類から「確認を省く」を外した。
 
 <a id="g-g3-saas-hosts-08"></a>
 #### G3SH-08 Notion Labs — Notion Custom Agents（MCP connections）

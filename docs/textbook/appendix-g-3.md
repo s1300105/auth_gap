@@ -44,7 +44,7 @@
 | [C03-31](#g-c03-microsoft-github-31) | Microsoft — Microsoft 365 Copilot（declarative agents の MCP plugin） — MCP Apps | クライアントの文書 | 使わない・読まない・その他 | [確認] |
 | [C03-32](#g-c03-microsoft-github-32) | Microsoft — Microsoft 365 Copilot federated connectors（MCP ベース、Partner Center 経由の提出） | 規約・審査の指針 | 宣言を書くことを求める | [確認] |
 | [C03-33](#g-c03-microsoft-github-33) | Microsoft — Microsoft 365 Copilot federated connectors（MCP ベース、Partner Center 経由の提出） | 規約・審査の指針 | 宣言を書くことを求める | [確認] |
-| [C03-34](#g-c03-microsoft-github-34) | Microsoft — Microsoft 365 Copilot federated connectors（書き込み系ツール、2026-10 から段階提供） | クライアントの文書 | 確認を省く（自動で許可）・確認を求める | [確認] |
+| [C03-34](#g-c03-microsoft-github-34) | Microsoft — Microsoft 365 Copilot federated connectors（書き込み系ツール、2026-10 から段階提供） | クライアントの文書 | 確認を求める・その他 | [確認] |
 | [C03-35](#g-c03-microsoft-github-35) | Microsoft — Microsoft Work IQ plugin marketplace（GitHub Copilot 向け、Public Preview）の microsoft-365-agents-toolkit plugin — declarative-agent-developer skill | SDK の文書 | そのまま渡す・見せる・作者への書き方の案内 | [確認] |
 | [C03-36](#g-c03-microsoft-github-36) | Microsoft — Microsoft Foundry Agent Service — MCP tool | クライアントの文書 | 信頼するなという注意 | [確認] |
 | [C03-37](#g-c03-microsoft-github-37) | Microsoft — Microsoft Agent Framework (Python) — FIDES / SecureMCPToolProxy | SDK のソースコード | 規則（ポリシー）の条件に使う・信頼するなという注意 | [確認] |
@@ -765,9 +765,9 @@ if (typeof toolName !== "string" || !Object.hasOwn(TOOL_ANNOTATIONS, toolName)) 
 - **日本語**: Read ツールは常に許可され、承認を必要としない。
 - **どう使っているか**: connector のツールを Read と Write/Delete に分け、Read は承認なし、Write/Delete は既定で毎回承認（Needs approval）。
 - **条件**: 書き込み・更新・削除の対応は『early October 2026』から段階的に提供（ページの記載）。Researcher agent では書き込み系は使えない。
-- **扱う宣言**:  ／ **使い方の分類**: 確認を省く（自動で許可）・確認を求める
+- **扱う宣言**:  ／ **使い方の分類**: 確認を求める・その他
 - **確かさ**: [確認] 再照合 exact・1 か所、見出し「Federated connectors overview > Write, update, and delete actions (Coming soon) > Manage tool permissions for write, update, and delete」（取得 2026-10-02T22:11:29Z、sha256 52167dee4060…）
-- **補足**: 同じページ（exact で確認、id c_m365b2）: 『If a connector publisher adds a new write-capable tool or changes an existing one, the tool is set to Needs approval by default.』。このページには readOnlyHint・annotation の語が無く、Read / Write の分類の根拠は書かれていない（不明）。提出要件（-32）と確認制御（-30）から readOnlyHint による分類と推測できるが未確認。
+- **補足**: 同じページ（exact で確認、id c_m365b2）: 『If a connector publisher adds a new write-capable tool or changes an existing one, the tool is set to Needs approval by default.』。このページには readOnlyHint・annotation の語が無く、Read / Write の分類の根拠は書かれていない（不明）。提出要件（-32）と確認制御（-30）から readOnlyHint による分類と推測できるが未確認。 【本記録者の点検（2026-10-02）】このページは Read / Write の分け方の根拠を書かない（宣言の語が無い）。宣言で確認を省くとは言えないので、使い方の分類から「確認を省く」を外した。
 
 ### Microsoft — Microsoft Work IQ plugin marketplace（GitHub Copilot 向け、Public Preview）の microsoft-365-agents-toolkit plugin — declarative-agent-developer skill
 

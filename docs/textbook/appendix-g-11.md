@@ -254,7 +254,7 @@
 - **URL**: https://github.com/webmachinelearning/webmcp/blob/d61d0e6d297ddb6bff3510b1330dbb215c6ef43c/security-privacy-questionnaire.md#L63
 - **照らし合わせた中身の URL**: https://raw.githubusercontent.com/webmachinelearning/webmcp/d61d0e6d297ddb6bff3510b1330dbb215c6ef43c/security-privacy-questionnaire.md
 - **版**: commit d61d0e6d297ddb6bff3510b1330dbb215c6ef43c
-- **書いてある場所**: L63 （見出し: # [Self-Review Questionnaire: Security and Privacy](https://w3c.github.io/security-questionnaire/)）
+- **書いてある場所**: L63 （見出し: # Self-Review Questionnaire: Security and Privacy）
 - **原文**:
 
 > Tool annotations](https://webmachinelearning.github.io/webmcp/#dom-modelcontexttoolannotations) can indirectly influence how an agent presents a tool invocation (e.g., a `readOnlyHint` may cause the agent to skip a confirmation step).
@@ -262,7 +262,7 @@
 - **日本語**: ツールの注釈は、エージェントがツール呼び出しをどう見せるかに間接的に影響しうる（例: readOnlyHint によってエージェントが確認の手順を省くことがある）。
 - **どう使っているか**: 仕様の作者側が、readOnlyHint がエージェントの確認省略に使われうること（＝ページがブラウザの UI に影響できること）を自己評価として認めている。
 - **扱う宣言**: readOnlyHint ／ **使い方の分類**: 確認を省く（自動で許可）
-- **確かさ**: [確認] 再照合 exact・1 か所、63 行（# [Self-Review Questionnaire: Security and Privacy](https://w3c.github.io/security-questionnaire/)）（取得 2026-10-02T22:11:41Z、sha256 33907b97fc85…）
+- **確かさ**: [確認] 再照合 exact・1 か所、63 行（# Self-Review Questionnaire: Security and Privacy）（取得 2026-10-02T22:11:41Z、sha256 33907b97fc85…）
 - **補足**: TAG 向けの自己評価票（Q12: origin がネイティブ UI をどこまで制御できるか）。readOnlyHint を、ページが UI を動かせる経路の 1 つとして挙げる。
 
 <a id="g-g2-webmcp-11"></a>
@@ -272,7 +272,7 @@
 - **URL**: https://github.com/webmachinelearning/webmcp/blob/d61d0e6d297ddb6bff3510b1330dbb215c6ef43c/security-privacy-questionnaire.md#L23
 - **照らし合わせた中身の URL**: https://raw.githubusercontent.com/webmachinelearning/webmcp/d61d0e6d297ddb6bff3510b1330dbb215c6ef43c/security-privacy-questionnaire.md
 - **版**: commit d61d0e6d297ddb6bff3510b1330dbb215c6ef43c
-- **書いてある場所**: L23 （見出し: # [Self-Review Questionnaire: Security and Privacy](https://w3c.github.io/security-questionnaire/)）
+- **書いてある場所**: L23 （見出し: # Self-Review Questionnaire: Security and Privacy）
 - **原文**:
 
 > As of now, the spec does not include normative guidance against the misuse of tools that expose sensitive or high-privilege operations.
@@ -280,7 +280,7 @@
 - **日本語**: 今のところ、仕様には、機微な操作や高権限の操作を公開するツールの悪用に対する規範的な指針はない。
 - **どう使っているか**: 高リスク操作についての規範が無いことを明記。次の行（L25）で『consequential な行為のヒントを足す予定（#176）』と書く。
 - **扱う宣言**: 宣言全般 ／ **使い方の分類**: その他
-- **確かさ**: [確認] 再照合 exact・1 か所、23 行（# [Self-Review Questionnaire: Security and Privacy](https://w3c.github.io/security-questionnaire/)）（取得 2026-10-02T22:11:41Z、sha256 33907b97fc85…）
+- **確かさ**: [確認] 再照合 exact・1 か所、23 行（# Self-Review Questionnaire: Security and Privacy）（取得 2026-10-02T22:11:41Z、sha256 33907b97fc85…）
 - **補足**: L25 の『we intend to add a hint for consequential actions (see #176)』は、その後 consequentialHint として 2026-09-03 に index.bs に入った（git log #217）。この質問票は更新されておらず『予定』のまま（版のずれ）。
 
 ### Google Chrome — Chrome for Developers — WebMCP tool security

@@ -237,7 +237,7 @@
 - **条件**: Cowork の Auto（Automatically approve）モードかつコネクタのツール権限が「Always allow」のときだけ。Auto でも「Needs approval」なら読み取り専用か否かに関係なく Claude が判断する。Manual モードでは Always allow なら承認、Needs approval なら確認、Blocked なら拒否で、読み取り専用か否かで分けない。Skip モードは Blocked 以外すべて承認。Team / Enterprise では管理者が Auto を無効にでき、書き込みツールにタスクごとの承認を課す設定（C04_anthropic-08）があると Always allow が効かないことがある（同ページの Note）。new Claude experience では選べるのは Auto と Manual（既定）。
 - **扱う宣言**: readOnlyHint ／ **使い方の分類**: 確認を省く（自動で許可）・危険度を付ける
 - **確かさ**: [確認] 再照合 exact・1 か所、見出し「Get started with Claude Cowork > Choose how Claude checks with you」（取得 2026-10-02T22:11:46Z、sha256 e30f15ed7821…）
-- **補足**: 引用は表のセル（HTML の <br> で 2 文に分かれる）。このページは「読み取り専用」の判定根拠を書かない（annotations の語は none、checked_no_mention 参照）。根拠は C04_anthropic-08（annotation で read-only と宣言されたもの）から推定。 解釈は原文どおり。conditions に「Auto でも Needs approval なら区別しない」「管理者設定で Always allow が効かないことがある」を足した。
+- **補足**: 引用は表のセル（HTML の <br> で 2 文に分かれる）。このページは「読み取り専用」の判定根拠を書かない（annotations の語は none、checked_no_mention 参照）。根拠は C04_anthropic-08（annotation で read-only と宣言されたもの）から推定。 解釈は原文どおり。conditions に「Auto でも Needs approval なら区別しない」「管理者設定で Always allow が効かないことがある」を足した。 【本記録者の点検（2026-10-02）】このページは「読み取り専用」の判定の根拠を書かない。宣言（readOnlyHint）によることは、実装を確かめた G3_consumer_apps_model_apis-18 と、C04_anthropic-08 で裏づける。
 
 ### Anthropic — Claude（claude.ai / Desktop / Mobile）コネクタ
 

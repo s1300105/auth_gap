@@ -3441,7 +3441,7 @@ func requiredPermissionForDirectTool(annotations *config.ToolAnnotations) string
 - **どう使っているか**: 第三者のガイドが『readOnlyHint があるとディレクトリで承認されやすい』と書いている。どのディレクトリの規則かは示していない。
 - **扱う宣言**: readOnlyHint ／ **使い方の分類**: その他
 - **確かさ**: [確認] 再照合 exact・1 か所、見出し「MCP Directory Submission Guide - 2026¶ > What makes a listing stick¶」（取得 2026-10-02T22:11:42Z、sha256 a7176acd24af…）
-- **補足**: 一次資料の裏付けなし。この調査で確かめたディレクトリ（Cline Marketplace・GitHub MCP Registry・Cursor Marketplace・Kiro powers・Gemini CLI 拡張ギャラリー・LobeHub・mcpmarket.com・mcp.directory・Smithery の公開文書）の掲載要件には注釈の要件が無かった（checked_no_mention）。注釈を要件にしているのは既に記録済みの Anthropic Connectors Directory（C04）と OpenAI の Apps 提出（C05）。WebSearch の要約が言う『Cline の掲載に title / readOnlyHint / destructiveHint / openWorldHint が必須』『Smithery と Cursor がバッジ表示』の出どころは linklyhq.com の記事と見られるが、取得できなかった（unreachable）。
+- **補足**: 一次資料の裏付けなし。この調査で確かめたディレクトリ（Cline Marketplace・GitHub MCP Registry・Cursor Marketplace・Kiro powers・Gemini CLI 拡張ギャラリー・LobeHub・mcpmarket.com・mcp.directory・Smithery の公開文書）の掲載要件には注釈の要件が無かった（checked_no_mention）。注釈を要件にしているのは既に記録済みの Anthropic Connectors Directory（C04）と OpenAI の Apps 提出（C05）。WebSearch の要約が言う『Cline の掲載に title / readOnlyHint / destructiveHint / openWorldHint が必須』『Smithery と Cursor がバッジ表示』の出どころは linklyhq.com の記事と見られるが、取得できなかった（unreachable）。 【本記録者の点検（2026-10-02）】[確認] は「第三者のガイドがこう書いている」ことの確認で、ディレクトリが実際にそうしていることの証拠ではない。
 
 ### ModelScope（Alibaba） — LeapFlow（modelscope/leapflow。エージェント枠組み、MCP クライアントを含む）
 

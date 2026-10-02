@@ -85,6 +85,12 @@ def label(eid: str) -> str:
     return f"{head}-{num}"
 
 
+def strip_md_links(s: str) -> str:
+    """場所の欄に写した見出し（元の文書の Markdown）にリンクの書き方が入っていると、教科書の中で先の無い
+    ページ内リンクになるので、リンクの文字だけを残す。"""
+    return re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", s or "")
+
+
 def md_escape_cell(s: str) -> str:
     return (s or "").replace("|", "\\|").replace("\n", " ")
 
@@ -108,7 +114,7 @@ def recheck_line(r: dict | None) -> str:
         if h.get("heading_path"):
             where = f"、見出し「{h['heading_path']}」"
         elif h.get("lines"):
-            where = f"、{h['lines']} 行" + (f"（{h['md_heading']}）" if h.get("md_heading") else "")
+            where = f"、{h['lines']} 行" + (f"（{strip_md_links(h['md_heading'])}）" if h.get("md_heading") else "")
         elif h.get("page"):
             where = f"、{h['page']} ページ"
         cnt = r.get("count")
@@ -140,7 +146,7 @@ def card(e: dict, r: dict | None) -> str:
     elif e.get("fetched_url") and e.get("fetched_url") != e.get("url"):
         out.append(f"- **照らし合わせた中身の URL**: {e['fetched_url']}")
     out.append(f"- **版**: {e.get('version', '')}")
-    out.append(f"- **書いてある場所**: {e.get('location', '')}")
+    out.append(f"- **書いてある場所**: {strip_md_links(e.get('location', ''))}")
     out.append("- **原文**:")
     out.append("")
     out.append(quote_block(e.get("quote", "")))
