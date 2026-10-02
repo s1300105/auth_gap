@@ -1,0 +1,857 @@
+{
+ "key": "T1_tools",
+ "works": [
+  {
+   "id": "T1-HintLint",
+   "title": "HintLint — Verify MCP tool annotations match actual behavior",
+   "authors": "Complira（PDF レポートのメタデータ上の作者 Venkata Pydialli）",
+   "venue_or_kind": "OSS ツール（npm hintlint 0.1.2、GitHub）＋自社の pilot findings report（PDF、査読なし）",
+   "year": 2026,
+   "url": "https://github.com/complira/hintlint",
+   "version_or_commit": "5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37（2026-09-11。2026-10-02 の git ls-remote でも HEAD はこれ。npm 最新 0.1.2 の tarball の該当ソース 6 ファイルは repo と同一であることを cmp で確認）",
+   "status": "確認",
+   "target": "サーバのソースコード（TS/JS/Python）。tools/list の JSON は metadata_only として取り込むだけ",
+   "compares": "宣言 X = ソース上のデコレータ／登録呼び出しの文字列から正規表現で取った readOnlyHint / destructiveHint / openWorldHint（idempotentHint も取るが比較しない）。実際 Y = ハンドラ本体のテキスト（TS/JS は局所コールグラフで到達した関数も）に 10 種の SINK_RULES（正規表現）または Semgrep 規則が当たったかから inferVerifiedBehavior が作る推定 hint",
+   "declarations_covered": "D1（READONLY-001: 宣言 true × 推定 false）、D2（DESTRUCTIVE-001: 推定 destructive で、宣言が false でも欠落でも発火。readOnlyHint:true のときは出さない）、D3（OPEN-WORLD-001: 宣言 false × 推定 true）。D4 は parseBooleanAnnotations で読むが compareAnnotations に比較が無い（未対応）",
+   "method": "正規表現（行単位）。Python 経路は AST を使わず、@tool で始まる行から次の def / @tool の行までをテキストとして切り出す。任意で Semgrep（パターン・taint モード）の結果を取り込むが、ツールへの帰属は『ハンドラのテキスト範囲の行に入るか』で決める。CodeQL / Bandit / ESLint は相互検証用の正規化器",
+   "languages": "TypeScript / JavaScript / Python（Go / Rust / Java / C# は抽出器なしとレポートが明記）",
+   "interprocedural": "Python: 追わない（0 段）。typescript-reachability.js は tool.language が typescript/javascript 以外を continue で除外する。TS/JS: 名前ベースの局所コールグラフを BFS で最大 4 段（maxDepth = 4）。解決できるのは同一ファイルの function 宣言・const アロー関数と、相対 import（named / namespace）の先だけ。クラスメソッド・this.x.y()・外部パッケージは解決しない。CHANGELOG 0.1.0 も『BFS, depth 4』と書く",
+   "unresolved_handling": "ツール単位の語彙はある: handler.confidence = resolved / unknown_handler（TS）/ metadata_only、coverage の extraction_status = supported / unsupported_pattern / unsupported_language / not_mcp_server、証拠の tier L1–L4、behavior.confidence = source-backed / unknown（証拠 0 件なら unknown）。PDF レポートは未解決ハンドラの 139 ツールを『unchecked, not clean』と明記する。しかし解決済みハンドラの内部で呼び出しが解決できない場合（TS の resolveCall が null → continue、Python は呼び出しを一切追わない）や正規表現に当たらない場合は記録が残らず、『証拠なし』と区別されない。Python のハンドラは python.js で confidence: \"resolved\" を固定で付けるので、Python の解決率 99〜100% は定義上ほぼ自明。率として報告されるのは handler_mapping_rate（ツール→ハンドラの対応）だけで、効果・値の未解決率は報告されない",
+   "evaluation": "作者の主張（verified_by_me: none）: 20 リポジトリ（2026-07-30 に GitHub のスター数と MCP レジストリ掲載で選んだ curated pilot。無作為でなく有病率の主張はしないと明記）、1,160 ツール、ハンドラ解決 1,021（88%）、source-backed 26、確認 23、誤検出 5、精度 82%。ラベルは自動の再検証（ファイルを開いて sink 行と宣言を確かめる auto-review.js）＋手のレビュー。数値には内部の不整合がある（23 + 5 = 28 ≠ 26。Python 836 ツールは表上すべて解決なのに 99% と書く）。重要: レポートは『この pilot で確認された「誤った宣言値」は 0 件』と書き、23 件は宣言欠落（20 件は destructiveHint の欠落）と unsafe flow。readOnlyHint 誤りの候補 2 件はどちらも隣のツールへの証拠の誤帰属による誤検出だった、と自己申告している",
+   "preregistration_or_freeze": "no（スキャン日・commit の固定は scan metadata に記録とあるが、事前登録や解析器の凍結の記述は見つからなかった）",
+   "artifact_public": "https://github.com/complira/hintlint（LICENSE ファイルあり。種類は本調査では確認していない＝不明）、npm hintlint 0.1.2",
+   "relation_to_authgap": "競合",
+   "relation_explanation_ja": "同じ問い（ソースを読んで宣言 hint と実装が食い違うかを見る）を同じ対象（MCP サーバのソース、Python を含む）で扱う、最も近い既存ツール。違いは 3 点: (1) Python は行単位の正規表現で本体 0 段しか見ず、入れ子の def でも本体が切れる、(2) 解決済みハンドラの中の未解決呼び出し・値を記録する語彙が無く率を出せない、(3) 主に『宣言の欠落』を数える linter で、作者自身の pilot では『宣言があって反する』確認例が 0 件。AuthGap は宣言ありのツールに限って矛盾を数え、opaque(reason) と打ち切りを率として報告する測定研究である。",
+   "since_R1": "docs/related_work.md R1 が読んだ 5a51f2a4 から HEAD は動いていない（2026-10-02 時点で同一 commit。新しい Python 解析・呼び出し追跡・idempotentHint 規則・論文の引用は追加されていない）。ただし R1 の記述のうち 2 点は補正が要る: (a)『確度の語彙は source-backed / needs-review の 2 語』は証拠レコードについては正しいが、behavior.confidence に unknown、handler.confidence に unknown_handler / metadata_only、coverage に unsupported_pattern 等があり、ツール単位では『未検査』を表す語彙がある（効果・呼び出し単位には無い）。(b)『論文は見つかっていない』は今も正しいが、repo 内に docs/Report_HintLint.pdf（9 頁の pilot findings report、2026-07-31 付、PDF 作成 2026-09-11）がある。R1 は repo 内に paper 系ファイルが無いと書いたが、この PDF は査読論文ではなく自社レポート",
+   "quotes": [
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/src/extractors/python.js",
+     "quote": "return /@(?:\\w+\\.)?tool(?:\\s*\\(|\\s*$)/.test(line.trim());",
+     "quote_ja": "Python のツール検出は、行が @tool / @x.tool で始まるかの正規表現。",
+     "location": "L4 (sha256=7535c06dcd74, fetched 2026-10-02T23:17:24Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/src/extractors/python.js",
+     "quote": "if (/^\\s*@(?:\\w+\\.)?tool(?:\\s*\\(|\\s*$)/.test(line.trim()) || /^\\s*(async\\s+)?def\\s+\\w+\\s*\\(/.test(line)) {",
+     "quote_ja": "本体の切り出しは、次の @tool 行か次の def 行（入れ子の def を含む）で止まる。",
+     "location": "L67 (sha256=7535c06dcd74, fetched 2026-10-02T23:17:24Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/src/extractors/python.js",
+     "quote": "confidence: \"resolved\"",
+     "quote_ja": "Python のハンドラには常に confidence: \"resolved\" を付ける。",
+     "location": "L127 (sha256=7535c06dcd74, fetched 2026-10-02T23:17:24Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/src/evidence/typescript-reachability.js",
+     "quote": "if (tool.handler?.confidence !== \"resolved\" || ![\"typescript\", \"javascript\"].includes(tool.language)) {",
+     "quote_ja": "到達解析は解決済みハンドラかつ言語が typescript / javascript のツールだけに適用する（Python は除外）。",
+     "location": "L346 (sha256=f58e090b1616, fetched 2026-10-02T23:18:07Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/src/evidence/typescript-reachability.js",
+     "quote": "function reachableFunctionsForTool(graph, tool, maxDepth = 4) {",
+     "quote_ja": "到達解析の既定の深さは 4。",
+     "location": "L263 (sha256=f58e090b1616, fetched 2026-10-02T23:18:07Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/src/evidence/typescript-reachability.js",
+     "quote": "const next = resolveCall(graph, item.fn.file, call);",
+     "quote_ja": "呼び出し先の解決。直後で null（未解決）なら continue して何も残さない。",
+     "location": "L296 (sha256=f58e090b1616, fetched 2026-10-02T23:18:07Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/src/evidence/typescript-reachability.js",
+     "quote": "kind: \"typescript-local-callgraph\",",
+     "quote_ja": "到達で昇格した証拠の reachability.kind は typescript-local-callgraph。",
+     "location": "L333 (sha256=f58e090b1616, fetched 2026-10-02T23:18:07Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/CHANGELOG.md",
+     "quote": "TypeScript/JavaScript local helper reachability via call-graph traversal (BFS, depth 4).",
+     "quote_ja": "CHANGELOG: TS/JS の局所ヘルパへの到達は BFS・深さ 4。",
+     "location": "L17 (sha256=be1004c51082, fetched 2026-10-02T23:18:08Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/src/extractors/common.js",
+     "quote": "for (const key of [\"readOnlyHint\", \"destructiveHint\", \"idempotentHint\", \"openWorldHint\"]) {",
+     "quote_ja": "4 つの hint をすべて読む（idempotentHint も宣言としては取り込む）。",
+     "location": "L30 (sha256=5ec5a46b6cee, fetched 2026-10-02T23:18:08Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/src/evidence/static-detector.js",
+     "quote": "if (declared.readOnlyHint === true && behavior.readOnlyHint === false) {",
+     "quote_ja": "D1 の比較: 宣言 readOnlyHint === true かつ推定 readOnlyHint === false。",
+     "location": "L403 (sha256=af5ee95d5623, fetched 2026-10-02T23:18:08Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/src/evidence/static-detector.js",
+     "quote": "if (behavior.destructiveHint === true && declared.readOnlyHint !== true && declared.destructiveHint !== true) {",
+     "quote_ja": "D2 側の比較: 推定 destructive で、readOnlyHint:true でなく、destructiveHint が true でない（false も欠落も）。",
+     "location": "L418 (sha256=af5ee95d5623, fetched 2026-10-02T23:18:08Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/src/evidence/static-detector.js",
+     "quote": "if (behavior.openWorldHint === true && declared.openWorldHint === false) {",
+     "quote_ja": "D3 の比較: 推定 openWorld かつ宣言 openWorldHint === false。",
+     "location": "L432 (sha256=af5ee95d5623, fetched 2026-10-02T23:18:08Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/src/evidence/behavior.js",
+     "quote": "confidence: sinkEvidence.length > 0 ? \"source-backed\" : \"unknown\"",
+     "quote_ja": "推定の確度: 証拠が 1 件以上なら source-backed、0 件なら unknown。",
+     "location": "L42 (sha256=3be8ad211a65, fetched 2026-10-02T23:18:07Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/src/evidence/static-detector.js",
+     "quote": "confidence: \"needs-review\"",
+     "quote_ja": "ツールに帰属しない木全体の当たりは needs-review。",
+     "location": "L633 (sha256=af5ee95d5623, fetched 2026-10-02T23:18:08Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/src/evidence/semgrep-normalizer.js",
+     "quote": "confidence: tool ? \"source-backed\" : \"needs-review\",",
+     "quote_ja": "Semgrep 等の外部結果も、ツールの範囲に入れば source-backed、入らなければ needs-review。",
+     "location": "L81 (sha256=ca51dce08da5, fetched 2026-10-02T23:18:12Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/src/coverage.js",
+     "quote": "status: \"unsupported_pattern\",",
+     "quote_ja": "抽出状況の語彙に unsupported_pattern がある。",
+     "location": "L56 (sha256=08d7ada74202, fetched 2026-10-02T23:18:11Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/CHANGELOG.md",
+     "quote": "20-repo public MCP pilot: 1,160 tools extracted, 1,021 handlers resolved (88%), 26 source-backed findings, 23 confirmed true positives, 5 false positives, 82% precision.",
+     "quote_ja": "作者の主張する pilot の数値（未検証）。",
+     "location": "L35 (sha256=be1004c51082, fetched 2026-10-02T23:18:08Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/docs/Report_HintLint.pdf",
+     "quote": "We selected 20 source-available MCP server repositories from GitHub on 2026-07-30 by star count and MCP registry presence",
+     "quote_ja": "標本の選び方: 2026-07-30 にスター数とレジストリ掲載で 20 リポジトリを選んだ。",
+     "location": "p.1 (sha256=5e14887d65d9, fetched 2026-10-02T23:18:08Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/docs/Report_HintLint.pdf",
+     "quote": "This is not a random sample. It does not support ecosystem-wide prevalence claims",
+     "quote_ja": "無作為標本ではなく、生態系全体の率の主張は支えないと明記。",
+     "location": "p.1 (sha256=5e14887d65d9, fetched 2026-10-02T23:18:08Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/docs/Report_HintLint.pdf",
+     "quote": "those tools are unchecked, not clean.",
+     "quote_ja": "未解決のツールは『未検査であって clean ではない』。",
+     "location": "p.4 (sha256=5e14887d65d9, fetched 2026-10-02T23:18:08Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/docs/Report_HintLint.pdf",
+     "quote": "The two wrong-readOnlyHint candidates it raised were both reviewed as false positives",
+     "quote_ja": "readOnlyHint 誤りの候補 2 件はどちらも誤検出と判定された。",
+     "location": "p.3 (sha256=5e14887d65d9, fetched 2026-10-02T23:18:08Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/docs/Report_HintLint.pdf",
+     "quote": "No confirmed wrong annotation value appears in this validated pilot.",
+     "quote_ja": "検証済み pilot に確認された誤った宣言値は 1 件も無い。",
+     "location": "p.3 (sha256=5e14887d65d9, fetched 2026-10-02T23:18:08Z)",
+     "match": "exact"
+    }
+   ],
+   "notes": "parseBooleanAnnotations は camelCase のキー（readOnlyHint=True / \"readOnlyHint\": True / readOnlyHint: true）だけを正規表現で拾うので、snake_case（read_only_hint=True）や変数経由の annotations=READ_ONLY は宣言なし扱いになる（本調査のコード読解）。正規表現は文字列・docstring も対象（TS 到達解析の callsInText だけ文字列とコメントを消す）。tickets/ 内の competitor-teardown.md が PyPI mcp-security-auditor を『最も近い競合』として分析しており、そこから同ツールを発見した。"
+  },
+  {
+   "id": "T1-mcp-doctor",
+   "title": "mcp-server-lint（コマンド名 mcp-doctor）— Read-only annotation mismatch",
+   "authors": "vishalhabib99（個人）",
+   "venue_or_kind": "OSS ツール（PyPI mcp-server-lint）",
+   "year": 2026,
+   "url": "https://github.com/vishalhabib99/mcp-doctor",
+   "version_or_commit": "d55702d8ba7066e039e2bb1ca15184b3d4aa2e0f（PyPI 0.12.13、2026-10-02 18:08 UTC 公開＝最新）。pip download した sdist と wheel の mcp_doctor/analyzer.py は repo HEAD と同一（diff）",
+   "status": "確認",
+   "target": "サーバの Python ソース（FastMCP のデコレータ形式のみ）",
+   "compares": "宣言 X = @<x>.tool(annotations=ToolAnnotations(read_only_hint=True | readOnlyHint=True)) のリテラル True。実際 Y = ast.unparse(ツール関数) の文字列に 4 種の正規表現（SQL 更新文、open(…,'w'/'a' 等)、os.remove/os.unlink/os.rmdir/shutil.rmtree、(requests|httpx|client|session).(post|put|delete|patch)( ）が当たるか",
+   "declarations_covered": "D1 のみ（値の照合）。ほかに readOnlyHint:true と destructiveHint の同時指定（注釈同士の整合、値は問わない）。D2・D3・D4 と実装の照合は無い",
+   "method": "AST で関数を特定 → ast.unparse で文字列に戻して正規表現。62 版の sdist を全部取得して analyzer.py を比べると、この検査は 0.7.6 で入り、_MUTATION_SIGNALS の 4 正規表現は 0.7.6 から 0.12.13 まで一字も変わっていない（周辺の宣言の読み取り・同時指定の検査は後の版で追加）",
+   "languages": "Python",
+   "interprocedural": "readOnly 照合は追わない（_scan_for_mutation_signal(fn) は関数自身だけ）。同じ analyzer には名前ベースで最大 5 段たどる BFS（_build_error_handling_registry）があるが、これはエラー処理の有無の検査専用で、変異の検出には使われていない",
+   "unresolved_handling": "語彙なし。宣言が dict リテラル・変数経由・括弧なしデコレータ・mcp.add_tool(fn) 形式なら declared_read_only が None になり検査されない（記録も残らない）。出力は warning の 1 種で『worth a human look, not a confirmed bug』と明記",
+   "evaluation": "精度・再現率の評価は見つからなかった。README は実例として codebase-memory-mcp#2118 を挙げる（未検証）",
+   "preregistration_or_freeze": "no",
+   "artifact_public": "https://github.com/vishalhabib99/mcp-doctor、PyPI mcp-server-lint（ライセンスは本調査で未確認）",
+   "relation_to_authgap": "競合",
+   "relation_explanation_ja": "Python の MCP サーバで readOnlyHint:true の宣言とソース上の書き込みを照合する点は AuthGap の D1 と同じ問い。ただし関数自身の本体文字列に 4 つの正規表現を当てるだけで、呼び出し先・受け手の型・値を見ず、D2〜D4 は扱わず、判定できなかったものの語彙も率も無い CI 向けの警告である。",
+   "quotes": [
+    {
+     "url": "https://raw.githubusercontent.com/vishalhabib99/mcp-doctor/d55702d8ba7066e039e2bb1ca15184b3d4aa2e0f/README.md",
+     "quote": "whose own body contains a raw SQL mutation verb, a file opened in write/append mode, a filesystem deletion call, or a mutating call on a recognizable HTTP client",
+     "quote_ja": "README の検査の定義: 自身の本体に SQL 更新文・書き込みモードの open・削除呼び出し・既知 HTTP クライアントの更新呼び出しがあるか。",
+     "location": "L172 (sha256=b1eb94264ecc, fetched 2026-10-02T23:18:13Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/vishalhabib99/mcp-doctor/d55702d8ba7066e039e2bb1ca15184b3d4aa2e0f/mcp_doctor/analyzer.py",
+     "quote": "_kwarg_bool(annotations_call, \"read_only_hint\", \"readOnlyHint\")",
+     "quote_ja": "宣言の読み取りは annotations= の呼び出しの read_only_hint / readOnlyHint の真偽リテラル。",
+     "location": "L1077 (sha256=a1a954e46b2e, fetched 2026-10-02T23:18:13Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/vishalhabib99/mcp-doctor/d55702d8ba7066e039e2bb1ca15184b3d4aa2e0f/mcp_doctor/analyzer.py",
+     "quote": "body_text = ast.unparse(fn)",
+     "quote_ja": "照合対象はツール関数を ast.unparse した文字列。",
+     "location": "L866 (sha256=a1a954e46b2e, fetched 2026-10-02T23:18:13Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/vishalhabib99/mcp-doctor/d55702d8ba7066e039e2bb1ca15184b3d4aa2e0f/mcp_doctor/analyzer.py",
+     "quote": "mutation_signal = _scan_for_mutation_signal(fn)",
+     "quote_ja": "変異の検出はツール関数 fn だけに対して呼ぶ。",
+     "location": "L1026 (sha256=a1a954e46b2e, fetched 2026-10-02T23:18:13Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/vishalhabib99/mcp-doctor/d55702d8ba7066e039e2bb1ca15184b3d4aa2e0f/mcp_doctor/analyzer.py",
+     "quote": "A hit here means \"worth a human look\", not a confirmed bug.",
+     "quote_ja": "当たりは『人が見る価値がある』で、確定したバグではない。",
+     "location": "L855 (sha256=a1a954e46b2e, fetched 2026-10-02T23:18:13Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/vishalhabib99/mcp-doctor/d55702d8ba7066e039e2bb1ca15184b3d4aa2e0f/mcp_doctor/analyzer.py",
+     "quote": "reaches within 5 calls, has its own try/except.",
+     "quote_ja": "5 段までたどる探索はエラー処理（try/except）の検査用。",
+     "location": "L810 (sha256=a1a954e46b2e, fetched 2026-10-02T23:18:13Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/vishalhabib99/mcp-doctor/d55702d8ba7066e039e2bb1ca15184b3d4aa2e0f/README.md",
+     "quote": "an agent discovering tools at runtime has no access to server source, only what the server declares about itself.",
+     "quote_ja": "実行時版（tools/list だけを受ける）はサーバのソースに触れられない。",
+     "location": "L132 (sha256=b1eb94264ecc, fetched 2026-10-02T23:18:13Z)",
+     "match": "exact"
+    }
+   ],
+   "notes": "同じ作者の mcp-fuzz / mcp-reality-check は readOnlyHint:true を検証せず『呼んでよい対象の選別』に信用する（カード G2_verifiers_linters-23/24）。"
+  },
+  {
+   "id": "T1-actlint",
+   "title": "actlint — MCP tool safety-label honesty linter",
+   "authors": "Formael",
+   "venue_or_kind": "OSS ツール（npm actlint）＋開発元ブログ",
+   "year": 2026,
+   "url": "https://github.com/formael/actlint",
+   "version_or_commit": "d7aba1a0fe8ecfd444b808681c1d1aae7b8c46de（2026-08-09。2026-10-02 も HEAD）",
+   "status": "確認",
+   "target": "tools/list の記述子（name / description / inputSchema / annotations）。ソースコードは読まず、ツールも呼ばない",
+   "compares": "宣言 X = annotations（欠落は MCP 仕様の既定値で補った実効値）。実際 Y = name・description・inputSchema だけから導出した ActionRiskProfile（destructiveness / externalReach / reversibility / idempotency / blastRadius）。導出は宣言を読まない（declaration-blind）",
+   "declarations_covered": "D1（write-as-readonly）、D2（irrecoverable と裏づけられた mutation / deleting の場合だけ）、D3（external reach）。D4: idempotency の次元は導出し語彙にも対応を置くが、classify は比べる側面を destructiveness / external reach / reversibility の 3 つとしており照合は無い",
+   "method": "語彙ファイル（action-risk-vocabulary）に基づく名前・説明・スキーマの字句的推定と規則による比較",
+   "languages": "言語非依存（記述子）",
+   "interprocedural": "該当しない（コードを読まない）",
+   "unresolved_handling": "明示の語彙がある: 次元ごとに unknown、確度 high / medium / low / uncertain、unknown を『証拠ありの unknown』と『沈黙（provenance 空）』に分け、沈黙は宣言と矛盾にしない。判定の根拠が何も無いツールは unassessed として coverage に数え、consistent に入れない",
+   "evaluation": "作者の主張（verified_by_me: none）: ラベル付きコーパス 9 サーバ / 96 ツールで 12 TP / 0 FP / 3 FN（精度 100%、再現率 80%）。ラベルはソース読解を根拠とする（カード G2_verifiers_linters-09）。野外 31 サーバ / 541 ツールの監査（記事）は選び方の基準なし、手検証は記述子に対して",
+   "preregistration_or_freeze": "eval/thresholds.json に精度の床を置く（回帰の閾値）。事前登録は no",
+   "artifact_public": "https://github.com/formael/actlint（SPDX: Apache-2.0）",
+   "relation_to_authgap": "相補",
+   "relation_explanation_ja": "『宣言と実際が食い違うか』という問いと、判定できないものを unassessed / unknown として数える姿勢は AuthGap に近い。しかし『実際』をコードではなく記述子の名前・説明・スキーマから推定するので、記述子が嘘でも整合すれば通る。AuthGap は実装の効果を見る別の層であり、actlint の『沈黙は矛盾にしない』は AuthGap の opaque を CONTRADICTION にしない扱いの先例として引ける。",
+   "quotes": [
+    {
+     "url": "https://raw.githubusercontent.com/formael/actlint/d7aba1a0fe8ecfd444b808681c1d1aae7b8c46de/packages/core/src/derive/derive.ts",
+     "quote": "It is declaration-blind: `tool.annotations` is never read here.",
+     "quote_ja": "導出は宣言を見ない: tool.annotations をここでは読まない。",
+     "location": "L9 (sha256=18d70301ac2c, fetched 2026-10-02T23:18:13Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/formael/actlint/d7aba1a0fe8ecfd444b808681c1d1aae7b8c46de/packages/core/src/classify/classify.ts",
+     "quote": "For each comparable aspect (destructiveness, external reach, reversibility) it sets derived risk",
+     "quote_ja": "比べる側面は destructiveness・external reach・reversibility の 3 つ。",
+     "location": "L5 (sha256=3e3bc23129c3, fetched 2026-10-02T23:18:13Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/formael/actlint/d7aba1a0fe8ecfd444b808681c1d1aae7b8c46de/packages/core/src/classify/classify.ts",
+     "quote": "Silence cannot contradict an explicit honest claim (see hasEvidence)",
+     "quote_ja": "沈黙（信号が何も無い）は明示の正直な宣言と矛盾にできない。",
+     "location": "L122 (sha256=3e3bc23129c3, fetched 2026-10-02T23:18:13Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/formael/actlint/d7aba1a0fe8ecfd444b808681c1d1aae7b8c46de/packages/core/src/classify/coverage.ts",
+     "quote": "A tool for which no verdict-bearing signal fired is `unassessed`, not",
+     "quote_ja": "判定の信号が何も出なかったツールは unassessed で、consistent ではない。",
+     "location": "L6 (sha256=fb639e3eec27, fetched 2026-10-02T23:18:13Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/formael/actlint/d7aba1a0fe8ecfd444b808681c1d1aae7b8c46de/packages/core/src/dimensions.ts",
+     "quote": "export const confidenceSchema = z.enum(['high', 'medium', 'low', 'uncertain']);",
+     "quote_ja": "確度は high / medium / low / uncertain の 4 値。",
+     "location": "L18 (sha256=94e9a88f0ae3, fetched 2026-10-02T23:18:14Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/formael/actlint/d7aba1a0fe8ecfd444b808681c1d1aae7b8c46de/packages/core/src/dimensions.ts",
+     "quote": "export const idempotencySchema = z.enum(['idempotent', 'non-idempotent', 'unknown']);",
+     "quote_ja": "idempotency の次元（idempotent / non-idempotent / unknown）は導出する。",
+     "location": "L60 (sha256=94e9a88f0ae3, fetched 2026-10-02T23:18:14Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/formael/actlint/d7aba1a0fe8ecfd444b808681c1d1aae7b8c46de/eval/thresholds.json",
+     "quote": "Current basis (2026-07-15, corpus = 9 servers / 96 tools): 12 TP / 0 FP / 3 FN => precision 100.0%, recall 80.0%, F0.5 95.2%",
+     "quote_ja": "作者自身の評価: 9 サーバ / 96 ツールで精度 100%・再現率 80%（未検証）。",
+     "location": "L4 (sha256=e245ec077ad4, fetched 2026-10-02T23:18:14Z)",
+     "match": "exact"
+    }
+   ],
+   "notes": "カード G2_verifiers_linters-01..09 の内容を commit 固定のソースで再確認した。"
+  },
+  {
+   "id": "T1-Airlock",
+   "title": "Airlock（airlock-mcp）— 宣言と観察の照合・承認プロキシ",
+   "authors": "himanshu748（個人）",
+   "venue_or_kind": "OSS ツール＋dev.to 記事",
+   "year": 2026,
+   "url": "https://github.com/himanshu748/airlock-mcp",
+   "version_or_commit": "8ed02c0aa5405cd155445191dcc03de4847c57c3（2026-08-30。2026-10-02 も HEAD）",
+   "status": "確認",
+   "target": "実行時の観察（ツールを予算内で実際に呼び、センサーでファイル・状態・通信を観察）",
+   "compares": "宣言 X = readOnlyHint: true。実際 Y = 呼び出し中に観察した FILESYSTEM_WRITE / STATE_CHANGE の事象",
+   "declarations_covered": "D1 のみ。外への通信は宣言（openWorldHint）ではなく運用者の許可ホストと比べる。D2・D4 の照合なし",
+   "method": "動的実行（同梱フィクスチャのセンサー。任意の第三者サーバでは transcript_only）",
+   "languages": "言語非依存（実行時）",
+   "interprocedural": "該当しない（動的）",
+   "unresolved_handling": "明示の語彙がある: FindingStatus = finding / no_finding_observed / not_tested / sensor_failed、センサー欄に capability_absent / evidence_missing。任意のリモートサーバではファイル・通信を観測できないので not_tested として記録し clean にしない、と README が明記",
+   "evaluation": "作者の主張（verified_by_me: none）: 自作の不正直フィクスチャで 36 検査中 7 件・仕込んだ 5 挙動すべて、正直なフィクスチャで 0 件（カード G2_verifiers_linters-25）。外部サーバでの評価は無し",
+   "preregistration_or_freeze": "no",
+   "artifact_public": "https://github.com/himanshu748/airlock-mcp（ライセンス未確認）",
+   "relation_to_authgap": "相補",
+   "relation_explanation_ja": "D1 の嘘を『実装の振る舞い』で確かめる点は同じだが、Airlock は実行して観察する動的手法で、観察できるのはセンサーのある同梱フィクスチャに限られる。判定できないものを not_tested として残す語彙は AuthGap の opaque と同じ発想で、静的（AuthGap）と動的（Airlock）で同じ問いを別の層から扱う。",
+   "quotes": [
+    {
+     "url": "https://raw.githubusercontent.com/himanshu748/airlock-mcp/8ed02c0aa5405cd155445191dcc03de4847c57c3/airlock/detectors.py",
+     "quote": "f\"{event.tool} claimed read-only behavior, but Airlock observed \"",
+     "quote_ja": "readOnly を主張したのに書き込み・状態変更を観察した、という所見の文言。",
+     "location": "L122 (sha256=bf26514d223c, fetched 2026-10-02T23:18:14Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/himanshu748/airlock-mcp/8ed02c0aa5405cd155445191dcc03de4847c57c3/airlock/models.py",
+     "quote": "NOT_TESTED = \"not_tested\"",
+     "quote_ja": "状態の語彙に not_tested がある。",
+     "location": "L63 (sha256=0fb3aed37515, fetched 2026-10-02T23:18:14Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/himanshu748/airlock-mcp/8ed02c0aa5405cd155445191dcc03de4847c57c3/airlock/detectors.py",
+     "quote": "sensor = \"capability_absent\"",
+     "quote_ja": "観測手段が無い検査はセンサー欄が capability_absent になる。",
+     "location": "L332 (sha256=bf26514d223c, fetched 2026-10-02T23:18:14Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/himanshu748/airlock-mcp/8ed02c0aa5405cd155445191dcc03de4847c57c3/README.md",
+     "quote": "so `transcript_only` is the honest mode and Airlock records those checks as `not_tested` rather than as clean observations.",
+     "quote_ja": "任意のリモートサーバでは transcript_only が正直なモードで、未観測の検査は clean でなく not_tested と記録する。",
+     "location": "L231-233 (sha256=7826884fff4d, fetched 2026-10-02T23:18:15Z)",
+     "match": "exact"
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "id": "T1-mcp-annotation-enforcement",
+   "title": "mcp-annotation-enforcement — Enforcing MCP tool annotations at runtime: a measurement report",
+   "authors": "Mathis488（個人）",
+   "venue_or_kind": "OSS 試作＋MEASUREMENT-REPORT.md（査読なし）",
+   "year": 2026,
+   "url": "https://github.com/Mathis488/mcp-annotation-enforcement",
+   "version_or_commit": "f3e8044d09b9f076b6a7c6dccaa898fe1ee85296（2026-09-02。2026-10-02 も HEAD）",
+   "status": "確認",
+   "target": "実行時（同じサーバを権限の違う 3 インスタンスで起動するプロキシ）。検証ではなく強制",
+   "compares": "照合はしない。宣言 X = readOnlyHint / openWorldHint に応じて、書き込み禁止・ネットワーク禁止の sandbox に振り分け、嘘ならカーネルで失敗させる",
+   "declarations_covered": "D1（書き込み禁止）、D3（readOnlyHint:true と併せた場合だけネットワーク禁止）。D2・D4 なし",
+   "method": "動的（macOS sandbox-exec）。事前に試した静的検出（語のパターン照合）は破棄",
+   "languages": "言語非依存（実行時、macOS のみ）",
+   "interprocedural": "該当しない",
+   "unresolved_handling": "該当する語彙は見つからなかった。ただし陽性対照を全プローブに置く方針で、自身の誤りを 2 件見つけたと書く",
+   "evaluation": "作者の主張（verified_by_me: none）: 合成の嘘サーバ、無改変の @modelcontextprotocol/server-filesystem（14 ツール中 10 が readOnlyHint:true）、改竄コピーでの持ち出し防止。静的検出の否定的結果: 最初 8 件・次に 4 件の当たりがすべて誤検出、陽性対照（readOnlyHint:false のツール）で書き込みを 0 件しか見つけられず破棄",
+   "preregistration_or_freeze": "no",
+   "artifact_public": "https://github.com/Mathis488/mcp-annotation-enforcement（ライセンス未確認）",
+   "relation_to_authgap": "相補",
+   "relation_explanation_ja": "宣言を信用しないという動機は同じだが、宣言の正しさを測るのではなく実行時に強制する。素朴な静的照合（語のパターン）が陽性対照で 0 件だったという否定的結果は、AuthGap が陽性対照（宣言どおり書くツール）で検出力を確かめる理由の先例として引ける。",
+   "quotes": [
+    {
+     "url": "https://raw.githubusercontent.com/Mathis488/mcp-annotation-enforcement/f3e8044d09b9f076b6a7c6dccaa898fe1ee85296/MEASUREMENT-REPORT.md",
+     "quote": "**Status:** working prototype, macOS only.",
+     "quote_ja": "状態: macOS のみの動く試作。",
+     "location": "L3 (sha256=4a8f4c2a4180, fetched 2026-10-02T23:17:25Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/Mathis488/mcp-annotation-enforcement/f3e8044d09b9f076b6a7c6dccaa898fe1ee85296/MEASUREMENT-REPORT.md",
+     "quote": "I built a proxy that does not verify annotations but *enforces* them",
+     "quote_ja": "注釈を検証せず強制するプロキシを作った。",
+     "location": "L14 (sha256=4a8f4c2a4180, fetched 2026-10-02T23:17:25Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/Mathis488/mcp-annotation-enforcement/f3e8044d09b9f076b6a7c6dccaa898fe1ee85296/MEASUREMENT-REPORT.md",
+     "quote": "| `readOnlyHint: true` + `openWorldHint: false` | strict | filesystem writes **and** network |",
+     "quote_ja": "readOnlyHint:true＋openWorldHint:false は書き込みとネットワークの両方を禁止する strict に振り分ける。",
+     "location": "L105 (sha256=4a8f4c2a4180, fetched 2026-10-02T23:17:25Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/Mathis488/mcp-annotation-enforcement/f3e8044d09b9f076b6a7c6dccaa898fe1ee85296/MEASUREMENT-REPORT.md",
+     "quote": "among tools explicitly marked `readOnlyHint: false` — the known writers — the pattern found **zero** write",
+     "quote_ja": "陽性対照（readOnlyHint:false＝書くと認めたツール）でパターンが書き込みを 0 件しか見つけなかった。",
+     "location": "L89-90 (sha256=4a8f4c2a4180, fetched 2026-10-02T23:17:25Z)",
+     "match": "exact"
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "id": "T1-cisco-mcp-scanner",
+   "title": "Cisco AI Defense mcp-scanner — Behavioral Code Analyzer",
+   "authors": "Cisco AI Defense",
+   "venue_or_kind": "OSS ツール（PyPI cisco-ai-mcp-scanner）",
+   "year": 2026,
+   "url": "https://github.com/cisco-ai-defense/mcp-scanner",
+   "version_or_commit": "f817899d9391b099f395acd5ae7ff435dccf2a47（2026-10-01。2026-10-02 も HEAD）",
+   "status": "確認",
+   "target": "サーバのソースコード（10 言語）",
+   "compares": "宣言 X = docstring / description（自然言語）。実際 Y = 静的解析（CFG・taint・cross-file dataflow）で集めた操作の一覧。照合は LLM。ToolAnnotations の 4 hint は repo 全体（tests 除く）に 0 件で、照合しない",
+   "declarations_covered": "none（D1〜D4 のいずれも扱わない）",
+   "method": "静的データフロー＋LLM 判定",
+   "languages": "Python, TypeScript, JavaScript, Go, Java, Kotlin, C#, Rust, Ruby, PHP（README）",
+   "interprocedural": "する。全ファイルのコールグラフを作り、cross-file の追跡は最大 3 段（docs/behavioral-scanning.md）",
+   "unresolved_handling": "プロンプトが繰り返し『Uncertainty = No Flag』（不確かなら報告しない）を指示する。未解決を記録する語彙・率は見つからなかった",
+   "evaluation": "evals/behavioral-analysis/ に脅威分類ごとのデータがある（数値は本調査で読んでいない＝不明）",
+   "preregistration_or_freeze": "no",
+   "artifact_public": "https://github.com/cisco-ai-defense/mcp-scanner（Apache-2.0 のヘッダ）",
+   "relation_to_authgap": "手法の型",
+   "relation_explanation_ja": "ツールの入口からコールグラフを降りてソースの操作を集め、ツールが『自称するもの』と照合する構図は AuthGap と同じで、段数の上限（3）を明記する点も比べられる。違いは、照合相手が自然言語の説明で ToolAnnotations を見ないこと、判定が LLM で不確かなものを捨てる方針であること。",
+   "quotes": [
+    {
+     "url": "https://raw.githubusercontent.com/cisco-ai-defense/mcp-scanner/f817899d9391b099f395acd5ae7ff435dccf2a47/README.md",
+     "quote": "detect behavioral mismatches between docstring claims and actual implementation. It uses LLM-powered alignment checking combined with cross-file dataflow tracking.",
+     "quote_ja": "docstring の主張と実装の食い違いを、LLM の整合判定と cross-file データフロー追跡で検出する。",
+     "location": "L455 (sha256=00f7bb1065ec, fetched 2026-10-02T23:18:15Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/cisco-ai-defense/mcp-scanner/f817899d9391b099f395acd5ae7ff435dccf2a47/docs/behavioral-scanning.md",
+     "quote": "- Maximum depth of 3 to prevent infinite recursion",
+     "quote_ja": "cross-file 追跡は最大 3 段。",
+     "location": "L182 (sha256=1ada15aca231, fetched 2026-10-02T23:18:15Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/cisco-ai-defense/mcp-scanner/f817899d9391b099f395acd5ae7ff435dccf2a47/mcpscanner/data/prompts/code_alignment_threat_analysis_prompt.md",
+     "quote": "- **Uncertainty = No Flag**: If the docstring provides legitimate guidance without malicious intent, DO NOT flag",
+     "quote_ja": "不確かなら報告しない。",
+     "location": "L119 (sha256=b237a7583905, fetched 2026-10-02T23:18:15Z)",
+     "match": "exact"
+    }
+   ],
+   "notes": "既存の checked_no_mention（Cisco コード整合性プロンプトに readOnlyHint / destructiveHint が 0 件）と整合。repo 全体の grep でも 4 hint 名は 0 件（本調査）。"
+  },
+  {
+   "id": "T1-openai-submission-skill",
+   "title": "OpenAI plugins — chatgpt-app-submission skill（Codex 用）",
+   "authors": "OpenAI",
+   "venue_or_kind": "エージェント用 skill（SKILL.md、LLM への手順書）",
+   "year": 2026,
+   "url": "https://github.com/openai/plugins/blob/5fd93af4cd0c623e020d0cc7e9ce178b4ac1f70f/plugins/openai-developers/skills/chatgpt-app-submission/SKILL.md",
+   "version_or_commit": "5fd93af4cd0c623e020d0cc7e9ce178b4ac1f70f",
+   "status": "確認",
+   "target": "開発者の手元のサーバのソースコード（LLM エージェント Codex が読む）",
+   "compares": "宣言 X = readOnlyHint / openWorldHint / destructiveHint（と名前・説明・CSP）。実際 Y = 実装と呼び出し先のモジュール・API クライアントを LLM が読んで把握した振る舞い",
+   "declarations_covered": "D1・D2・D3（申請で 3 hint の明示を必須とする）。D4 は対象外",
+   "method": "LLM（エージェントによるコード読解）",
+   "languages": "不明（規定なし）",
+   "interprocedural": "指示としてはする（『別モジュールや API クライアントを呼ぶなら、読む・書く・消す・送る等が分かるまでその経路を調べよ』）。深さの規定なし",
+   "unresolved_handling": "見つからなかった（食い違い・欠落は開発者に承認を求めてソースを直す手順）",
+   "evaluation": "なし",
+   "preregistration_or_freeze": "no",
+   "artifact_public": "https://github.com/openai/plugins",
+   "relation_to_authgap": "競合",
+   "relation_explanation_ja": "宣言 hint と実装（呼び出し先まで）を照合するという問いは AuthGap と同じで、プラットフォーム事業者がそれを申請手順に組み込んでいる例。ただし LLM への作業指示であって、規則化された解析でも評価でもなく、決められないものの扱いも定めていない。",
+   "quotes": [
+    {
+     "url": "https://raw.githubusercontent.com/openai/plugins/5fd93af4cd0c623e020d0cc7e9ce178b4ac1f70f/plugins/openai-developers/skills/chatgpt-app-submission/SKILL.md",
+     "quote": "Compare tool annotations, tool names, tool descriptions, and CSP values against actual behavior.",
+     "quote_ja": "注釈・名前・説明・CSP を実際の振る舞いと比べよ。",
+     "location": "L16 (sha256=c9b43ca8fe60, fetched 2026-10-02T23:18:17Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/openai/plugins/5fd93af4cd0c623e020d0cc7e9ce178b4ac1f70f/plugins/openai-developers/skills/chatgpt-app-submission/SKILL.md",
+     "quote": "If a tool calls into another module or API client, inspect enough of that path to know whether it reads, writes, deletes, sends, publishes, or changes external state.",
+     "quote_ja": "呼び出し先の経路も、読む・書く・消す・送る・公開・外部状態の変更のどれかが分かるまで調べよ。",
+     "location": "L21 (sha256=c9b43ca8fe60, fetched 2026-10-02T23:18:17Z)",
+     "match": "exact"
+    }
+   ],
+   "notes": "カード C05_openai-46..48 を再確認した。"
+  },
+  {
+   "id": "T1-mcp-tool-card-linter",
+   "title": "MCP Tool Card Linter（PyPI mcp-tool-card-linter）",
+   "authors": "inostarlin-passion（個人）",
+   "venue_or_kind": "OSS ツール",
+   "year": 2026,
+   "url": "https://github.com/inostarlin-passion/MCP-Tool-Card-Linter",
+   "version_or_commit": "75de0634d6e281bd36c3f083286fd59fbbdca7a7（PyPI 1.0.0。2026-10-02 も HEAD）",
+   "status": "確認",
+   "target": "tools/list の記述子・静的 tools JSON・mcp.json",
+   "compares": "宣言 X = annotations。実際 Y = 名前・説明・メタデータ文字列への正規表現（RISK_PATTERNS）による危険分類。推定自体が readOnlyHint:true の宣言を入力に使い、一部の分類を捨てる",
+   "declarations_covered": "D1（ANNOTATION_CONFLICT_READ_ONLY）、D2（DESTRUCTIVE_HINT_MISSING に false も入る）、D3（ANNOTATION_CONFLICT_OPEN_WORLD）。D4 は型（bool か）だけ",
+   "method": "正規表現（記述子）",
+   "languages": "言語非依存（記述子）",
+   "interprocedural": "該当しない",
+   "unresolved_handling": "見つからなかった",
+   "evaluation": "見つからなかった",
+   "preregistration_or_freeze": "no",
+   "artifact_public": "https://github.com/inostarlin-passion/MCP-Tool-Card-Linter",
+   "relation_to_authgap": "相補",
+   "relation_explanation_ja": "D1〜D3 の矛盾規則を持つが、照合相手は記述子の文字列でコードではない。しかも推定が宣言に依存するので、宣言が嘘なら推定もそれに引きずられる。",
+   "quotes": [
+    {
+     "url": "https://raw.githubusercontent.com/inostarlin-passion/MCP-Tool-Card-Linter/75de0634d6e281bd36c3f083286fd59fbbdca7a7/src/mcp_tool_card_linter/lint.py",
+     "quote": "tool.annotations.get(\"readOnlyHint\") is True",
+     "quote_ja": "readOnlyHint:true の宣言が推定の分岐条件に入っている。",
+     "location": "L2095 (sha256=c418d09c9894, fetched 2026-10-02T23:18:16Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/inostarlin-passion/MCP-Tool-Card-Linter/75de0634d6e281bd36c3f083286fd59fbbdca7a7/src/mcp_tool_card_linter/lint.py",
+     "quote": "message=\"Tool appears to have side effects but is annotated as read-only.\",",
+     "quote_ja": "D1 の所見の文言: 副作用がありそうなのに read-only と注釈されている。",
+     "location": "L1996 (sha256=c418d09c9894, fetched 2026-10-02T23:18:16Z)",
+     "match": "exact"
+    }
+   ],
+   "notes": "カード G2_verifiers_linters-13/14 を再確認。"
+  },
+  {
+   "id": "T1-mcp-glimpse",
+   "title": "mcp-glimpse — shadow writes の検出",
+   "authors": "CrankingAI",
+   "venue_or_kind": "OSS ツール（MIT）＋解説ページ",
+   "year": 2026,
+   "url": "https://github.com/CrankingAI/mcp-glimpse",
+   "version_or_commit": "488d7b37d9f8594e97daf5e834697331678eadde",
+   "status": "確認",
+   "target": "接続した tools/list の記述子",
+   "compares": "宣言 X = readOnlyHint:true。実際 Y = ツール名を語境界で分割した語が書き込み動詞の集合に入るか（コードの analyzer.py は name だけを見る。解説ページは『名前と説明』と書くが、この commit の _name_looks_like_write は tool.name のみ）",
+   "declarations_covered": "D1（名前との照合）と readOnlyHint・destructiveHint の同時 true。D2〜D4 の照合なし",
+   "method": "語の集合照合（名前）",
+   "languages": "言語非依存",
+   "interprocedural": "該当しない",
+   "unresolved_handling": "見つからなかった",
+   "evaluation": "見つからなかった",
+   "preregistration_or_freeze": "no",
+   "artifact_public": "https://github.com/CrankingAI/mcp-glimpse（MIT はカード記載）",
+   "relation_to_authgap": "相補",
+   "relation_explanation_ja": "D1 の嘘を名前の語で疑う軽量な照合で、コードは読まない。AuthGap の対象（実装の効果）とは層が違う。",
+   "quotes": [
+    {
+     "url": "https://raw.githubusercontent.com/CrankingAI/mcp-glimpse/488d7b37d9f8594e97daf5e834697331678eadde/src/mcp_glimpse/analyzer.py",
+     "quote": "f\"{tool.name}: declares readOnlyHint but its name reads like a write\"",
+     "quote_ja": "readOnlyHint を宣言しているのに名前が書き込みに読める、という所見。",
+     "location": "L53 (sha256=469e475a21d0, fetched 2026-10-02T23:18:15Z)",
+     "match": "exact"
+    }
+   ],
+   "notes": "カード C10_research_standards-22（解説ページ）とコードの記述差を記録。"
+  },
+  {
+   "id": "T1-glama-tdqs",
+   "title": "Glama Tool Definition Quality Score（TDQS）",
+   "authors": "Glama",
+   "venue_or_kind": "レジストリの採点方法（OSS の README）",
+   "year": 2026,
+   "url": "https://github.com/glama-ai/tool-definition-quality-score",
+   "version_or_commit": "b9881b0cfec88969e42672c92544487ca191a992",
+   "status": "確認",
+   "target": "ツール定義（説明文と annotations）",
+   "compares": "宣言 X = annotations。実際 Y = 説明文（LLM が矛盾を判定）。コードや振る舞いとは比べない",
+   "declarations_covered": "不明（『annotations と説明の矛盾』としてまとめて扱い、hint 別の規定は README に無い）",
+   "method": "LLM 採点",
+   "languages": "言語非依存",
+   "interprocedural": "該当しない",
+   "unresolved_handling": "見つからなかった",
+   "evaluation": "見つからなかった",
+   "preregistration_or_freeze": "no",
+   "artifact_public": "https://github.com/glama-ai/tool-definition-quality-score",
+   "relation_to_authgap": "相補",
+   "relation_explanation_ja": "宣言と『別の自己申告（説明文）』の整合を見るもので、実装は見ない。README 自身が振る舞いではなく定義を採点すると書く。",
+   "quotes": [
+    {
+     "url": "https://raw.githubusercontent.com/glama-ai/tool-definition-quality-score/b9881b0cfec88969e42672c92544487ca191a992/README.md",
+     "quote": "A description that **contradicts** its annotations scores 1 and raises the `Annotation Contradiction` flag.",
+     "quote_ja": "説明が注釈と矛盾すると 1 点で Annotation Contradiction のフラグ。",
+     "location": "L182 (sha256=3df9d731cb06, fetched 2026-10-02T23:18:17Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/glama-ai/tool-definition-quality-score/b9881b0cfec88969e42672c92544487ca191a992/README.md",
+     "quote": "TDQS scores definitions, not behavior.",
+     "quote_ja": "TDQS は振る舞いではなく定義を採点する。",
+     "location": "L333 (sha256=3df9d731cb06, fetched 2026-10-02T23:18:17Z)",
+     "match": "exact"
+    }
+   ],
+   "notes": "Glama の行動解析（methodology 1.5）が注釈の値と照合するかは不明（カード C09-42）。"
+  },
+  {
+   "id": "T1-stacklok",
+   "title": "Stacklok ブログ: Tool annotations are becoming the risk vocabulary for agentic systems",
+   "authors": "Craig McLuckie（Stacklok）",
+   "venue_or_kind": "ベンダーのブログ（構想）",
+   "year": 2026,
+   "url": "https://stacklok.com/blog/tool-annotations-are-becoming-the-risk-vocabulary-for-agentic-systems-that-matters-more-than-it-might-seem/",
+   "version_or_commit": "2026-04-02 公開（カード記載）",
+   "status": "確認",
+   "target": "レジストリ審査でのソースコード（構想）",
+   "compares": "宣言 X = annotations。実際 Y = ソースコードの振る舞い（方法の記述なし）",
+   "declarations_covered": "D1 を例示（readOnlyHint:true は外部状態に書かないと証明されるべき）。他は不明",
+   "method": "不明（構想）",
+   "languages": "不明",
+   "interprocedural": "不明",
+   "unresolved_handling": "不明（未審査のサーバは悲観的な既定値のまま、とする）",
+   "evaluation": "なし",
+   "preregistration_or_freeze": "no",
+   "artifact_public": "なし（ブログ）",
+   "relation_to_authgap": "相補",
+   "relation_explanation_ja": "レジストリがソースで宣言の正しさを審査し、審査済みの宣言だけを方針の入力にするという構想で、AuthGap の問いを運用側から述べた例。方法・結果は公開されていない。",
+   "quotes": [
+    {
+     "url": "https://stacklok.com/blog/tool-annotations-are-becoming-the-risk-vocabulary-for-agentic-systems-that-matters-more-than-it-might-seem/",
+     "quote": "we can scrutinize the source code to confirm that the declared annotations match the actual behavior of the tools.",
+     "quote_ja": "登録審査でソースを精査し、宣言された注釈が実際の振る舞いと合うかを確かめられる。",
+     "location": "Tool annotations are becoming the risk vocabulary for agentic systems. That matters more than it might seem. (sha256=b2353ddd0cd4, fetched 2026-10-02T23:18:18Z)",
+     "match": "exact"
+    }
+   ],
+   "notes": "カード C10_research_standards-18。"
+  },
+  {
+   "id": "T1-snyk-agent-scan",
+   "title": "Snyk agent-scan（旧 Invariant mcp-scan）",
+   "authors": "Snyk（旧 Invariant Labs）",
+   "venue_or_kind": "OSS ツール",
+   "year": 2026,
+   "url": "https://github.com/snyk/agent-scan",
+   "version_or_commit": "010712387e91fe7628cf356aeb83e78b6c6fc035",
+   "status": "確認",
+   "target": "エージェントの構成要素（MCP サーバの記述子・skills）",
+   "compares": "ToolAnnotations との照合は無い（hint 名の出現は tests/skills の教材 Markdown だけ。本調査の grep）",
+   "declarations_covered": "none",
+   "method": "記述子の走査（プロンプト注入・tool poisoning など）",
+   "languages": "言語非依存",
+   "interprocedural": "該当しない",
+   "unresolved_handling": "該当しない",
+   "evaluation": "本調査の範囲外",
+   "preregistration_or_freeze": "no",
+   "artifact_public": "https://github.com/snyk/agent-scan",
+   "relation_to_authgap": "相補",
+   "relation_explanation_ja": "MCP のセキュリティ走査の代表だが、宣言 hint と実装の照合は対象にしていない。",
+   "quotes": [
+    {
+     "url": "https://raw.githubusercontent.com/snyk/agent-scan/010712387e91fe7628cf356aeb83e78b6c6fc035/README.md",
+     "quote": "Discover and scan agent components on your machine for prompt injections",
+     "quote_ja": "エージェント構成要素のプロンプト注入などを発見・走査する。",
+     "location": "L8 (sha256=1a146f8bed41, fetched 2026-10-02T23:18:17Z)",
+     "match": "exact"
+    }
+   ],
+   "notes": "既存の checked_no_mention（docs/risks.md に注釈の語なし）と整合。"
+  },
+  {
+   "id": "T1-mcp-security-auditor",
+   "title": "mcp-security-auditor（PyPI）",
+   "authors": "不明（PyPI のメタデータ上の repo github.com/mcp-security-auditor/mcp-security-auditor は git ls-remote で認証要求＝到達不可）",
+   "venue_or_kind": "OSS ツール（PyPI 1.0.2、2026-02-02）",
+   "year": 2026,
+   "url": "https://pypi.org/project/mcp-security-auditor/",
+   "version_or_commit": "1.0.2（sdist を pip download して読んだ）",
+   "status": "確認",
+   "target": "サーバのソースコード（ツール抽出は正規表現）",
+   "compares": "宣言 X = デコレータ引数の annotations={...} から正規表現で取った readOnlyHint。実際 Y = ツール名に対する正規表現（WRITE_TOOL_PATTERNS: create|insert|…|delete|…|execute|run|exec 等）。ソース全体への DB 接続・SQL・クラウド操作の検査は別にあるが、ツールの宣言とは結びつけない（sdist の readonly.py の読解）",
+   "declarations_covered": "D1（名前と照合）と readOnlyHint の欠落。D2〜D4 の実装照合なし",
+   "method": "正規表現（名前・ファイル）",
+   "languages": "Python / TypeScript / JavaScript（README）",
+   "interprocedural": "しない（HintLint の teardown もハンドラ→sink の到達エンジンが無いと記録）",
+   "unresolved_handling": "見つからなかった",
+   "evaluation": "見つからなかった",
+   "preregistration_or_freeze": "no",
+   "artifact_public": "PyPI sdist のみ（GitHub は到達不可）",
+   "relation_to_authgap": "相補",
+   "relation_explanation_ja": "README は『readOnlyHint・destructiveHint の注釈を検証する』と謳うが、中身はツール名の語と宣言の照合で、実装の効果とは比べない。",
+   "quotes": [
+    {
+     "url": "https://pypi.org/pypi/mcp-security-auditor/1.0.2/json",
+     "quote": "Verify MCP tool annotations (readOnlyHint, destructiveHint)",
+     "quote_ja": "README（PyPI）: MCP ツールの注釈（readOnlyHint, destructiveHint）を検証する、と謳う。",
+     "location": "L1 (sha256=7f59faf37f9d, fetched 2026-10-02T23:18:34Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://pypi.org/pypi/mcp-security-auditor/1.0.2/json",
+     "quote": "Verify readOnlyHint is properly set on all tools",
+     "quote_ja": "README（PyPI）: readOnlyHint が全ツールに正しく設定されているかを検証する。",
+     "location": "L1 (sha256=7f59faf37f9d, fetched 2026-10-02T23:18:34Z)",
+     "match": "exact"
+    }
+   ],
+   "notes": "実装の詳細（WRITE_TOOL_PATTERNS が tool.name.lower() に当たり、has_readonly_hint が True なら critical）は sdist の mcp_auditor/analyzers/readonly.py 170-215 行を読んだ結果で、raw URL が無いため verify_quote.py では検証できない。HintLint の tickets/.../mcp-security-auditor-teardown.md から発見。"
+  },
+  {
+   "id": "T1-toolfence",
+   "title": "toolfence",
+   "authors": "dhb520cat（個人）",
+   "venue_or_kind": "OSS ツール（GitHub Action / npm 同梱）",
+   "year": 2026,
+   "url": "https://github.com/dhb520cat/toolfence",
+   "version_or_commit": "12a2464bbb81ef11602f4f12c800e404d4158c75（2026-09-13）",
+   "status": "確認",
+   "target": "ソースから抽出したツール定義または tools/list の記述子（コードは実行しない）",
+   "compares": "宣言 X = readOnlyHint:true または destructiveHint:false。実際 Y = ツール名の動詞の分類（irreversible / outward）。impl.py の実装層検査（shell・パス・URL）は宣言と結びつけない",
+   "declarations_covered": "D1・D2（名前との照合、ANNOTATION_MISMATCH）",
+   "method": "字句（正規表現）",
+   "languages": "Python / JS / TS / Go ほか（字句）",
+   "interprocedural": "しない",
+   "unresolved_handling": "見つからなかった",
+   "evaluation": "見つからなかった",
+   "preregistration_or_freeze": "no",
+   "artifact_public": "https://github.com/dhb520cat/toolfence",
+   "relation_to_authgap": "相補",
+   "relation_explanation_ja": "D1・D2 の嘘を名前の語で疑う。ソースからツールを取り出すが、効果の推定には使わない。",
+   "quotes": [
+    {
+     "url": "https://raw.githubusercontent.com/dhb520cat/toolfence/12a2464bbb81ef11602f4f12c800e404d4158c75/README.md",
+     "quote": "Read-only: it never",
+     "quote_ja": "README: 読み取り専用で、走査したコードを実行しない。",
+     "location": "L3 (sha256=d955f7e54cd6, fetched 2026-10-02T23:18:16Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/dhb520cat/toolfence/12a2464bbb81ef11602f4f12c800e404d4158c75/toolfence/scan.py",
+     "quote": "\"ANNOTATION_MISMATCH\", R.HIGH, where,",
+     "quote_ja": "所見 ANNOTATION_MISMATCH（High）。",
+     "location": "L118 (sha256=c8c3e3c29c49, fetched 2026-10-02T23:18:16Z)",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/dhb520cat/toolfence/12a2464bbb81ef11602f4f12c800e404d4158c75/toolfence/scan.py",
+     "quote": "f\"标注 {claim};工具名命中动词 '{verb}'\",",
+     "quote_ja": "根拠は『注釈 {claim}；ツール名が動詞に当たった』。",
+     "location": "L120 (sha256=c8c3e3c29c49, fetched 2026-10-02T23:18:16Z)",
+     "match": "exact"
+    }
+   ],
+   "notes": "WebSearch で発見（2026-10-02）。"
+  },
+  {
+   "id": "T1-mcpaudit-sushant",
+   "title": "mcpaudit（sushant-me）",
+   "authors": "sushant-me（個人）",
+   "venue_or_kind": "OSS ツール",
+   "year": 2026,
+   "url": "https://github.com/sushant-me/mcpaudit",
+   "version_or_commit": "80f4bb69f5626a894254e35c53ab55b6a75f094b（2026-09-24）",
+   "status": "確認",
+   "target": "tools/list の記述子",
+   "compares": "宣言 X = readOnlyHint:true。実際 Y = 記述子から見て状態を変えそうか（名前・説明）",
+   "declarations_covered": "D1（記述子との照合）と hint の欠落",
+   "method": "字句",
+   "languages": "言語非依存",
+   "interprocedural": "該当しない",
+   "unresolved_handling": "見つからなかった",
+   "evaluation": "見つからなかった",
+   "preregistration_or_freeze": "no",
+   "artifact_public": "https://github.com/sushant-me/mcpaudit",
+   "relation_to_authgap": "相補",
+   "relation_explanation_ja": "記述子の上の D1 の自己矛盾を疑うだけで、実装は見ない。",
+   "quotes": [
+    {
+     "url": "https://raw.githubusercontent.com/sushant-me/mcpaudit/80f4bb69f5626a894254e35c53ab55b6a75f094b/src/mcpaudit/checks.py",
+     "quote": "\"tool looks state-changing but declares readOnlyHint: true, so a client \"",
+     "quote_ja": "状態を変えそうなのに readOnlyHint:true を宣言している、という所見。",
+     "location": "L317 (sha256=f90508316253, fetched 2026-10-02T23:18:16Z)",
+     "match": "exact"
+    }
+   ],
+   "notes": "WebSearch で発見。"
+  },
+  {
+   "id": "T1-name-based-linters",
+   "title": "名前・記述子だけを見る linter 群（mcpcheck, mcpconform, mcp-lint×2, mcplint, mcp-surface-lint, mcp-protocol-conformance, MCP-audit, mcp-toolgauge, mcp-probe, mcp-governance-auditor, @apitella/scan）",
+   "authors": "各個人開発者",
+   "venue_or_kind": "OSS ツール群",
+   "year": 2026,
+   "url": "evidence/annotations_usage/sources.json の G2_verifiers_linters-15..22, C09_servers_gateways_security-40",
+   "version_or_commit": "各カードの commit。mcp-probe は 91349dd428e33ffb547e0924a442696d6c195253、mcp-governance-auditor は 4fbe678d711812786a17c8dcd74af88b23583f93（本調査で clone）",
+   "status": "未確認",
+   "target": "tools/list の記述子",
+   "compares": "宣言の有無、または宣言 vs 名前の動詞",
+   "declarations_covered": "D1（名前との照合）を持つものあり。D2〜D4 は主に欠落の検査。mcp-toolgauge の MCP042 は idempotentHint の『欠落』だけ",
+   "method": "正規表現・語の集合",
+   "languages": "言語非依存",
+   "interprocedural": "該当しない",
+   "unresolved_handling": "見つからなかった",
+   "evaluation": "mcp-probe には arXiv 2609.10962 の付随論文がある（宣言の有無の測定。本ワーカーの対象外）",
+   "preregistration_or_freeze": "不明",
+   "artifact_public": "各 repo",
+   "relation_to_authgap": "相補",
+   "relation_explanation_ja": "いずれもコードを読まず、宣言の有無や名前との食い違いだけを見る。AuthGap の問い（宣言があって実装が反する）には届かない。",
+   "quotes": [],
+   "notes": "本ワーカーでは引用を再検証していない（各カードは既に verify_quote.py で検証済み）。mcp-governance-auditor・mcp-probe は clone して grep し、hint は欠落の検査と呼び出し対象の選別にだけ使うことを目視した。"
+  }
+ ],
+ "searched": [
+  "git ls-remote: complira/hintlint, vishalhabib99/mcp-doctor, formael/actlint, himanshu748/airlock-mcp, Mathis488/mcp-annotation-enforcement, inostarlin-passion/MCP-Tool-Card-Linter, cisco-ai-defense/mcp-scanner, snyk/agent-scan, CrankingAI/mcp-glimpse, glama-ai/tool-definition-quality-score, openai/plugins（すべて 2026-10-02 の HEAD を取得、カードの commit と一致）",
+  "git clone --depth 1 → $S/rw/repos/（上記 9 本＋toolfence, sushant-me/mcpaudit, mcp-governance-auditor, mcp-probe, marcoslozina/mcp-audit）と各 repo の 4 hint 名の grep",
+  "PyPI JSON API: mcp-server-lint（62 版の sdist をすべて取得し analyzer.py を比較）, mcp-security-auditor, mcp-security-audit, mcp-tool-card-linter, mcp-toolgauge, airlock-mcp（PyPI に無し）",
+  "pip download: mcp-server-lint==0.12.13（sdist・wheel）, mcp-security-auditor==1.0.2, mcp-security-audit==0.2.0",
+  "npm registry: hintlint（0.1.2 の tarball を repo と比較）; registry search 'readOnlyHint' 'destructiveHint' 'mcp annotations verify' 'mcp annotation lint'",
+  "WebSearch（発見用のみ）: 'MCP readOnlyHint verify against source code static analysis tool github'; '\"idempotentHint\" lint check MCP server mismatch implementation'; '\"annotation drift\" MCP tool annotations scanner'; 'npm MCP annotations linter destructiveHint source code AST'; 'MCP server tool annotations do not match behavior static analyzer CodeQL Semgrep'; '\"mcp-security-auditor\" readOnlyHint github'; 'verify MCP tool readOnlyHint by calling the tool observing filesystem writes sandbox'; 'pypi MCP annotation checker idempotentHint destructiveHint verify code call graph python'",
+  "HintLint repo 内: docs/Report_HintLint.pdf と one_pager（pypdf でテキスト化）、tickets/in-progress/hintlint-mvp-architecture/competitor-teardown.md・mcp-security-auditor-teardown.md、arxiv/doi/paper の grep"
+ ],
+ "not_found": [
+  "idempotentHint（D4）を実装または振る舞いと照合するツールは見つからなかった。HintLint は読むが比較しない、actlint は idempotency 次元を導出するが比較しない、MCP Tool Card Linter は型だけ、mcp-toolgauge MCP042 は欠落だけ、sunpeak の例は readOnlyHint:true から idempotentHint:true を機械的に期待する方針表",
+  "HintLint の論文・preprint は見つからなかった（repo 内の PDF は自社の pilot report。arXiv / DOI / 学会名の grep は 0 件）",
+  "Python の MCP サーバについて、呼び出し先へ降りて宣言 hint（D1〜D4 のいずれか）を実装と照合する静的ツールは見つからなかった（Cisco は降りるが hint を見ない、OpenAI skill は LLM への指示）",
+  "解決済みハンドラ内の未解決呼び出し・値を理由つきで記録し、その率を報告する宣言照合ツールは見つからなかった（ツール単位の unassessed / not_tested / unknown_handler はある）",
+  "mcp-security-auditor の GitHub repo（認証要求で到達不可）",
+  "airlock-mcp は PyPI に無い（GitHub のみ）"
+ ],
+ "summary_ja": "最も近いのは HintLint と mcp-doctor（mcp-server-lint）で、どちらもソースを読んで宣言 hint と実装の食い違いを探す。\n\nHintLint（5a51f2a4。R1 以降 HEAD は動いていない）は D1〜D3 を照合する。Python は行単位の正規表現で本体 0 段しか見ない。呼び出しを追うのは TS/JS だけで、名前ベース BFS の深さ 4。解決できない呼び出しは黙って捨てる。ツール単位の『未検査』の語彙（unknown_handler / unsupported_pattern / unknown）はあるが、効果単位の未解決の語彙は無い。D4 は読むが比べない。決定的な差は作者自身の pilot report にある。『確認された誤った宣言値は 0 件』と書き、23 件はすべて宣言の欠落か unsafe flow だった。\n\nmcp-doctor は D1 だけを扱う。ast.unparse した本体の文字列に 4 つの正規表現を当てる。この正規表現は 0.7.6 で入ってから 0.12.13（最新）まで変わっていない。変異の検査は呼び出しを追わない（同じ解析器にある 5 段の BFS はエラー処理の検査用）。\n\n同じ問いを LLM で扱うのが OpenAI の申請 skill（呼び出し先まで読めと指示）。降りる解析をするが照合相手が説明文なのが Cisco mcp-scanner（3 段、hint は見ない、不確かなら報告しない）。\n\n未解決の語彙を持つのは記述子型の actlint（unassessed / uncertain、沈黙は矛盾にしない）と動的型の Airlock（not_tested / capability_absent）で、どちらもコードの効果は見ない。\n\nD4（idempotentHint）を実装と照合するツールは見つからなかった。"
+}

@@ -1,0 +1,1213 @@
+{
+ "key": "D1_other_domains",
+ "works": [
+  {
+   "id": "stowaway_ccs11",
+   "title": "Android Permissions Demystified",
+   "authors": "Adrienne Porter Felt, Erika Chin, Steve Hanna, Dawn Song, David Wagner",
+   "venue_or_kind": "ACM CCS 2011（本文 PDF 1 ページ目に CCS'11 と記載）",
+   "year": 2011,
+   "url": "https://people.eecs.berkeley.edu/~daw/papers/androidperm-ccs11.pdf",
+   "version_or_commit": "著者サイトの PDF（2026-10-02 取得）",
+   "status": "確認",
+   "target": "コンパイル済み Android アプリ（DEX を逆アセンブルしたもの）と manifest の宣言パーミッション",
+   "compares": "X = manifest で要求（宣言）したパーミッション集合 / Y = コード中の API 呼び出し・Content Provider・Intent から、パーミッション対応表で求めた『必要になりうる最大集合』。X が Y より大きければ overprivilege",
+   "declarations_covered": "none（MCP の D1..D4 ではない。ただし『宣言 vs 実効』の型は同じ。向きは逆で、Stowaway は宣言が実際より広い側を数える）",
+   "method": "静的解析（逆アセンブルした DEX の走査、文字列・Class 等の値追跡による reflection 解決）＋ API ファジングで作ったパーミッション対応表。Intent は ComDroid を利用",
+   "languages": "Java / Dalvik バイトコード（Android 2.2）",
+   "interprocedural": "reflection 解決はフロー感応・手続き内解析に深さ 2 の手続き間解析を足したもの。Intent 側の ComDroid は深さ 1",
+   "unresolved_handling": "解決できない reflection 呼び出しを持つアプリを別集計にした（900 中 105 件 = 12%、警告率 53% を表 3 で他群と並べて報告）。Content Provider の操作は上界で近似。ComDroid が Intent を特定できないときは文字列リテラル探索で補う。偽陰性率は測っていないと明記",
+   "evaluation": "964 アプリ（有料上位 100・無料上位 764・新着無料 100、2010-10 取得）から 24 を道具の調整用に除き 940 を解析。無作為 40 アプリを著者が手作業で照合し、警告 42 件中 3 件が誤り＝偽陽性率 7%（著者の主張、verified_by_me: none）。18 中 10 アプリは改造 Android 上の実行でも確認。全体では 900 中 323（35.8%）が overprivileged と報告",
+   "preregistration_or_freeze": "記載を見つけなかった（不明）",
+   "artifact_public": "android-permissions.org で Stowaway と対応表を公開と本文にある（ライセンス記載は見つからなかった。サイトの現状は未確認）",
+   "relation_to_authgap": "先例（＋手法の型）",
+   "relation_ja": "『開発者が自分で書いた宣言』と『コードから静的に求めた実効』を照合し、野外の母集団で割合を測る、という型は AuthGap と同じ。解決できない reflection を黙って捨てず別群として率を出した点は、AuthGap の opaque を残す方針の直接の先例になる。違いは、宣言がプラットフォームに強制される（足りないと実行時に失敗する）ので矛盾が『宣言が広すぎる』側にしか出ないこと。MCP の注釈は強制されないヒントなので、AuthGap は逆向き（宣言が実際より狭い＝危険側）を数える。",
+   "quotes": [
+    {
+     "url": "https://people.eecs.berkeley.edu/~daw/papers/androidperm-ccs11.pdf",
+     "quote": "We built Stowaway, a tool that detects overprivilege in compiled Android applications.",
+     "quote_ja": "コンパイル済み Android アプリの overprivilege を検出する道具 Stowaway を作った。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://people.eecs.berkeley.edu/~daw/papers/androidperm-ccs11.pdf",
+     "quote": "Stowaway determines the set of API calls that an application uses and then maps those API calls to permissions.",
+     "quote_ja": "Stowaway はアプリが使う API 呼び出しの集合を求め、それをパーミッションに対応づける。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://people.eecs.berkeley.edu/~daw/papers/androidperm-ccs11.pdf",
+     "quote": "We compare that set to the permissions actually requested by the application. If the application requests more permissions, then it is overprivi- leged.",
+     "quote_ja": "その集合をアプリが実際に要求したパーミッションと比べ、要求の方が多ければ overprivileged とする。",
+     "location": "p.8",
+     "match": "exact"
+    },
+    {
+     "url": "https://people.eecs.berkeley.edu/~daw/papers/androidperm-ccs11.pdf",
+     "quote": "It performs ﬂow-sensitive, intra-procedural static analysis, augmented with inter-procedural analysis to a depth of 2 method calls.",
+     "quote_ja": "フロー感応・手続き内の静的解析に、深さ 2 の手続き間解析を足したもの。",
+     "location": "p.7",
+     "match": "exact"
+    },
+    {
+     "url": "https://people.eecs.berkeley.edu/~daw/papers/androidperm-ccs11.pdf",
+     "quote": "In October 2010, we downloaded the 100 most popular paid applications, the 764 most popular free applications, and 100 recently added free applications from the Android Market.",
+     "quote_ja": "2010 年 10 月に有料上位 100、無料上位 764、新着無料 100 を Android Market から取得した。",
+     "location": "p.8",
+     "match": "exact"
+    },
+    {
+     "url": "https://people.eecs.berkeley.edu/~daw/papers/androidperm-ccs11.pdf",
+     "quote": "We randomly selected 40 applications from the set of 940 and ran Stowaway on them.",
+     "quote_ja": "940 から無作為に 40 アプリを選んで Stowaway をかけた。",
+     "location": "p.8",
+     "match": "exact"
+    },
+    {
+     "url": "https://people.eecs.berkeley.edu/~daw/papers/androidperm-ccs11.pdf",
+     "quote": "This represents a 7% false positive rate.",
+     "quote_ja": "これは偽陽性率 7% にあたる。",
+     "location": "p.8",
+     "match": "exact"
+    },
+    {
+     "url": "https://people.eecs.berkeley.edu/~daw/papers/androidperm-ccs11.pdf",
+     "quote": "Stowaway was unable to re- solve some applications’ reﬂective calls, which might lead to a higher false positive rate in those applications.",
+     "quote_ja": "一部アプリの reflection 呼び出しを解決できず、それらでは偽陽性率が高くなりうる。",
+     "location": "p.8",
+     "match": "exact"
+    },
+    {
+     "url": "https://people.eecs.berkeley.edu/~daw/papers/androidperm-ccs11.pdf",
+     "quote": "we discuss applications with unresolved reﬂective calls separately from other applications.",
+     "quote_ja": "解決できない reflection を持つアプリは他と分けて論じる。",
+     "location": "p.8",
+     "match": "exact"
+    },
+    {
+     "url": "https://people.eecs.berkeley.edu/~daw/papers/androidperm-ccs11.pdf",
+     "quote": "This left us with 105 applications with reﬂective calls that Stowaway could not resolve or dismiss, which is 12% of the 900 applications.",
+     "quote_ja": "解決も除外もできない reflection を持つアプリが 105 件残り、900 件の 12% にあたる。",
+     "location": "p.9",
+     "match": "exact"
+    },
+    {
+     "url": "https://people.eecs.berkeley.edu/~daw/papers/androidperm-ccs11.pdf",
+     "quote": "We did not quantify Stowaway's false negative rate",
+     "quote_ja": "Stowaway の偽陰性率は定量化していない。",
+     "location": "p.9",
+     "match": "exact"
+    },
+    {
+     "url": "https://people.eecs.berkeley.edu/~daw/papers/androidperm-ccs11.pdf",
+     "quote": "Stowaway and the permis- sion map data are available at android-permissions.org.",
+     "quote_ja": "Stowaway と対応表のデータは android-permissions.org で公開している。",
+     "location": "p.2",
+     "match": "exact"
+    }
+   ],
+   "notes": "AuthGap の論文では『宣言 vs 実効の照合を測定研究として行った最初期の大規模例』かつ『未解決（reflection）を別群で報告した例』として引ける。偽陰性率を測っていない点は AuthGap が漏れの標本を取る点との違いとして書ける。"
+  },
+  {
+   "id": "pscout_ccs12",
+   "title": "PScout: Analyzing the Android Permission Specification",
+   "authors": "Kathy Wain Yee Au, Yi Fan Zhou, Zhen Huang, David Lie",
+   "venue_or_kind": "ACM CCS 2012（本文 PDF に CCS'12 と記載）",
+   "year": 2012,
+   "url": "https://www.eecg.utoronto.ca/~lie/papers/PScout-CCS2012-web.pdf",
+   "version_or_commit": "著者サイトの web 版 PDF（2026-10-02 取得）",
+   "status": "確認",
+   "target": "Android OS のソースコード（パーミッション検査の仕様抽出）と、1,260 アプリの manifest",
+   "compares": "主目的は OS 側の『API → 必要パーミッション』仕様の抽出。応用として X = 開発者が manifest に宣言したパーミッション / Y = アプリの API 呼び出し（静的抽出＋UI ファジング）から PScout 対応表で求めた必要パーミッション",
+   "declarations_covered": "none（Android パーミッション）",
+   "method": "OS ソースの静的解析（解析アルゴリズムの細部は本調査では読んでいない）＋アプリ側は静的抽出と UI ファザ。整合の確認には、宣言を PScout の出力に差し替えて実行し、パーミッションエラーが出るかを見る",
+   "languages": "Java（Android 2.2〜4.0 の OS コード）",
+   "interprocedural": "OS コード全体を対象にし、IPC をまたぐパーミッション検査を扱うと abstract にある。深さの上限の記載は見つけていない",
+   "unresolved_handling": "正解が存在しないと明言し、超過宣言・不足宣言の数は Stowaway との『相対的な精度』としてのみ解釈せよと書く。reflection で呼ばれる API は取り切れないと明記。誤り対応は上界（292 中 最大 20 = 7%）として出す",
+   "evaluation": "Google Play 由来の 1,260 アプリの宣言パーミッションと Stowaway の対応表を参照に、完全性・健全性を推定。543/1,260 アプリが PScout の出力にない『余分な』パーミッションを宣言（著者の主張、verified_by_me: none）",
+   "preregistration_or_freeze": "記載を見つけなかった（不明）",
+   "artifact_public": "不明（本文中に URL の記載を見つけられなかった）",
+   "relation_to_authgap": "手法の型",
+   "relation_ja": "『効果（API）→ 宣言の語彙（パーミッション）』の対応表を先に作り、それでコードの実効を宣言の語彙に写して比べる構成は、AuthGap の効果 kind / slot の語彙と同じ役割。正解が無いことを認めて相対的な値・上界として報告する書き方は、AuthGap の精度・漏れの書き方の先例になる。違いは対象が OS 側の仕様抽出で、アプリ側の母集団測定は副次的なこと。",
+   "quotes": [
+    {
+     "url": "https://www.eecg.utoronto.ca/~lie/papers/PScout-CCS2012-web.pdf",
+     "quote": "PScout, a tool that extracts the permission speciﬁcation from the Android OS source code using static analysis.",
+     "quote_ja": "Android OS のソースから静的解析でパーミッション仕様を抽出する道具 PScout。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.eecg.utoronto.ca/~lie/papers/PScout-CCS2012-web.pdf",
+     "quote": "no “ground truth” exists for the Android permission speciﬁcation, so we cannot precisely measure the soundness and completeness.",
+     "quote_ja": "Android のパーミッション仕様には『正解』が無いので、健全性と完全性を正確には測れない。",
+     "location": "p.5",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.eecg.utoronto.ca/~lie/papers/PScout-CCS2012-web.pdf",
+     "quote": "we ﬁnd that 543 out of 1,260 applications declare at least one “extra” permission that is not in the list produced by PScout.",
+     "quote_ja": "1,260 アプリ中 543 が、PScout の出力に無い『余分な』パーミッションを少なくとも 1 つ宣言している。",
+     "location": "p.6",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.eecg.utoronto.ca/~lie/papers/PScout-CCS2012-web.pdf",
+     "quote": "If a permission error does occur, this indicates that PScout is missing an API to per- mission mapping.",
+     "quote_ja": "パーミッションエラーが出れば、PScout に API → パーミッションの対応が欠けていることを示す。",
+     "location": "p.6",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.eecg.utoronto.ca/~lie/papers/PScout-CCS2012-web.pdf",
+     "quote": "the overdecla- ration and underdeclaration measurements presented in this section should not be interpreted as absolute measures but only as measures of the relative accuracy of PScout versus Stowaway.",
+     "quote_ja": "この節の超過宣言・不足宣言の値は絶対値ではなく、Stowaway に対する相対的な精度として読むべきだ。",
+     "location": "p.6",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.eecg.utoronto.ca/~lie/papers/PScout-CCS2012-web.pdf",
+     "quote": "an upper bound of 20 (7%) may actually be incorrect mappings.",
+     "quote_ja": "上界として 20 件（7%）が誤った対応である可能性がある。",
+     "location": "p.7",
+     "match": "exact"
+    }
+   ],
+   "notes": "Stowaway と並べて『宣言 vs 実効の照合の初期の系譜』として 1 文で引くのが妥当。"
+  },
+  {
+   "id": "lalaine_usenix23",
+   "title": "Lalaine: Measuring and Characterizing Non-Compliance of Apple Privacy Labels at Scale",
+   "authors": "Yue Xiao, Zhengyi Li, Yue Qin, Xiaolong Bai, Jiale Guan, Xiaojing Liao, Luyi Xing",
+   "venue_or_kind": "USENIX Security 2023 とされる（掲載先は検索結果による。読んだのは arXiv:2206.06274v2 で、PDF 本文には掲載先の記載なし）",
+   "year": 2023,
+   "url": "https://arxiv.org/pdf/2206.06274",
+   "version_or_commit": "arXiv v2（2022-06-19）",
+   "status": "確認",
+   "target": "iOS アプリのバイナリ（動的実行＋静的バイナリ解析）と App Store の privacy label",
+   "compares": "X = 開発者が自己申告する Apple privacy label（データ項目・利用目的） / Y = 実際の data flow（ネットワーク送信まで確認したもの）と推定した利用目的",
+   "declarations_covered": "none（privacy label）",
+   "method": "UI 自動実行による動的解析＋静的・動的バイナリ解析＋NLP、利用目的の推定は学習モデル",
+   "languages": "iOS バイナリ（Objective-C / Swift）",
+   "interprocedural": "不明（呼び出しスタックの記録は使うが、静的な手続き間解析の深さの記載は見つけていない）",
+   "unresolved_handling": "動的実行は 366,685 本全部にはかけられないので関心のあるアプリに絞って 6,332 本を標本にし、そのうちクラッシュ（脱獄環境・Frida・通信監視への耐性）で走らなかった分を除いた 5,102 本を『完全に試験した』分母とする。除外の件数は書いてあるが、未判定の語彙はない。再現率が低い理由を UI 探索の被覆不足として説明",
+   "evaluation": "無作為 100 アプリを学生 4 人が手で操作し（81 本が試験可能）、通信と呼び出しの記録から不整合 122 対の正解を作成。precision 89.33% / recall 60.6%（著者の主張、verified_by_me: none）。5,102 本中 3,423 本で非準拠と報告",
+   "preregistration_or_freeze": "記載を見つけなかった（不明）",
+   "artifact_public": "不明（確認していない）",
+   "relation_to_authgap": "先例",
+   "relation_ja": "『プラットフォームが検証しない自己申告ラベル』と『実際の振る舞い』を大規模に照合して非準拠率を出す点が AuthGap と同じ型で、Apple 自身がラベルを検証していないと述べている点も MCP の注釈と状況が似ている。数える向きも同じで、申告より実際が多い（申告漏れ）を危険側として数える。違いは動的解析が主で、試験できなかったアプリを分母から外し、判定できない（不明の）単位を語彙として残さないこと。",
+   "quotes": [
+    {
+     "url": "https://arxiv.org/pdf/2206.06274",
+     "quote": "Lalaine analyzed the privacy labels and binaries of 5,102 iOS apps",
+     "quote_ja": "Lalaine は 5,102 本の iOS アプリの privacy label とバイナリを解析した。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2206.06274",
+     "quote": "Lalaine checks the consistency between disclosure statements in privacy labels and actual data ﬂows or practices of iOS apps",
+     "quote_ja": "privacy label の開示と、iOS アプリの実際の data flow・実務との整合を調べる。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2206.06274",
+     "quote": "Apple ofﬁcially states that it has not veriﬁed the information on privacy labels provided by app de- velopers.",
+     "quote_ja": "Apple は開発者が出した privacy label の情報を検証していないと公式に述べている。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2206.06274",
+     "quote": "sampled a total of 6,332 apps for full dynamic execution",
+     "quote_ja": "完全な動的実行のために合計 6,332 本を標本にした。",
+     "location": "p.2",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2206.06274",
+     "quote": "Alto- gether, 5,102 iOS apps have been fully tested, while the other apps crash due to their resistance to run in jail-broken envi- ronment, Frida hooking or trafﬁc minoring.",
+     "quote_ja": "5,102 本を完全に試験し、残りは脱獄環境・Frida・通信監視への耐性でクラッシュした。",
+     "location": "p.10",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2206.06274",
+     "quote": "we ran- domly selected 100 apps. Four students (25 apps/per-person) manually interact with those apps",
+     "quote_ja": "無作為に 100 本を選び、学生 4 人（1 人 25 本）が手で操作した。",
+     "location": "p.9",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2206.06274",
+     "quote": "Lalaine shows a precision of 89.33% and a recall of 60.6%.",
+     "quote_ja": "precision 89.33%、recall 60.6%。",
+     "location": "p.9",
+     "match": "exact"
+    }
+   ],
+   "notes": "AuthGap の『分母の定義』の節で、試験不能を除外したうえで件数だけ報告する例として対比に使える。"
+  },
+  {
+   "id": "koch_popets22",
+   "title": "Keeping Privacy Labels Honest",
+   "authors": "Simon Koch, Malte Wessels, Benjamin Altpeter, Madita Olvermann, Martin Johns",
+   "venue_or_kind": "PoPETs 2022(4)（PDF 1 ページ目に記載）",
+   "year": 2022,
+   "url": "https://petsymposium.org/popets/2022/popets-2022-0119.pdf",
+   "version_or_commit": "PoPETs 公式 PDF（DOI 10.56553/popets-2022-0119）",
+   "status": "確認",
+   "target": "iOS アプリの起動時の通信（操作しない no-touch 収集）と privacy label",
+   "compares": "X = privacy label / Y = 起動時通信に現れた honey data（18 種）と既知の広告・追跡ドメインへの送信",
+   "declarations_covered": "none（privacy label）",
+   "method": "動的解析（通信の受動的な収集のみ。アプリは操作しない）",
+   "languages": "iOS アプリ（言語非依存の通信観測）",
+   "interprocedural": "該当しない（コード解析をしない）",
+   "unresolved_handling": "操作しないので多くの通信が起きないと認め、違反数を下限（at least 276）として報告し『氷山の一角』と書く。未判定の語彙はない",
+   "evaluation": "ラベルの統計は 11,074 本。通信収集は 3u が分類した各カテゴリ上位 100（2021-10）から重複を除いた 1,687 本。少なくとも 276 本がラベル違反（著者の主張、verified_by_me: none）。精度の手検証の記載は見つけていない",
+   "preregistration_or_freeze": "記載を見つけなかった（不明）",
+   "artifact_public": "https://github.com/Keeping-Privacy-Labels-Honest/Main（データとプログラム。ライセンスは未確認）",
+   "relation_to_authgap": "先例",
+   "relation_ja": "自己申告ラベルを実際の挙動で検証し、プラットフォームの審査が正しさを確かめていないことを示す動機は AuthGap と同じ。結果を『少なくとも』の下限として出すのも、観測できなかった分を数に入れない正直な書き方として参考になる。違いはコードを読まない動的観測で、何を見ていないか（操作後の通信）を件数ではなく定性的にしか書けないこと。",
+   "quotes": [
+    {
+     "url": "https://petsymposium.org/popets/2022/popets-2022-0119.pdf",
+     "quote": "We analyse the traﬃc against a set of 18 honey-data points and a list of known advertise- ment and tracking domains.",
+     "quote_ja": "18 種の honey data と既知の広告・追跡ドメインの一覧に照らして通信を分析した。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://petsymposium.org/popets/2022/popets-2022-0119.pdf",
+     "quote": "We manually downloaded the top 100 apps of October 2021 in each category curated by 3u.",
+     "quote_ja": "3u が分類した各カテゴリの 2021 年 10 月の上位 100 本を手でダウンロードした。",
+     "location": "p.11",
+     "match": "exact"
+    },
+    {
+     "url": "https://petsymposium.org/popets/2022/popets-2022-0119.pdf",
+     "quote": "At least 276 of these apps violate their privacy label by transmitting data without declaration",
+     "quote_ja": "少なくとも 276 本が、宣言せずにデータを送信してラベルに違反している。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://petsymposium.org/popets/2022/popets-2022-0119.pdf",
+     "quote": "Thus, we likely only observed the ﬁgurative tip of the privacy violation iceberg.",
+     "quote_ja": "我々が見たのはおそらく違反の氷山の一角にすぎない。",
+     "location": "p.16",
+     "match": "exact"
+    },
+    {
+     "url": "https://petsymposium.org/popets/2022/popets-2022-0119.pdf",
+     "quote": "Our data and programs are available at https://github. com/Keeping-Privacy-Labels-Honest/Main.",
+     "quote_ja": "データとプログラムを GitHub で公開している。",
+     "location": "p.16",
+     "match": "exact"
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "id": "arkalakis_usenix24",
+   "title": "Abandon All Hope Ye Who Enter Here: A Dynamic, Longitudinal Investigation of Android's Data Safety Section",
+   "authors": "Ioannis Arkalakis, Michalis Diamantaris, Serafeim Moustakas, Sotiris Ioannidis, Jason Polakis, Panagiotis Ilia",
+   "venue_or_kind": "USENIX Security 2024（PDF 表紙に記載）",
+   "year": 2024,
+   "url": "https://www.usenix.org/system/files/usenixsecurity24-arkalakis.pdf",
+   "version_or_commit": "USENIX open-access PDF",
+   "status": "確認",
+   "target": "Android アプリの実行時挙動（関数呼び出しの監視と通信）と Google Play の Data Safety 欄",
+   "compares": "X = Data Safety 欄で申告した収集・共有 / Y = 動的実行で観測した関数アクセス（手で Data Safety ラベルに対応づけた 295 関数）と送信",
+   "declarations_covered": "none（Data Safety）",
+   "method": "動的解析（アプリの自動操作、同意ダイアログの承諾・拒否など 5 シナリオ、時点の異なる 4 データセット）",
+   "languages": "Android アプリ（言語非依存の実行時監視）",
+   "interprocedural": "該当しない（実行時監視）",
+   "unresolved_handling": "関数 → ラベルの対応表が完全でない可能性を限界として書く。ストアから消えたアプリはその時点の分母から外し件数を示す（Sep22 4,986 → Sep23 3,953）。未判定の語彙は見つけていない",
+   "evaluation": "20 カテゴリの上位最大 250 本、計 4,986 本（4 時点）。81% が Data Safety で収集・共有を誤って表していると報告（著者の主張、verified_by_me: none）。検出結果の精度の手検証の記載は見つけていない",
+   "preregistration_or_freeze": "記載を見つけなかった（不明）",
+   "artifact_public": "https://github.com/GiannisArk/USENIX24_DataSafety（脚注。ライセンス未確認）",
+   "relation_to_authgap": "先例",
+   "relation_ja": "強制されない自己申告欄を実際の挙動で照合し、ストアは開発者の正直さだけに頼るべきでないと結論する点が AuthGap の動機と重なる。効果（関数）を宣言の語彙（Data Safety ラベル）へ写す対応表を手で作る点も AuthGap の効果語彙と同じ役割。違いは動的観測であることと、判定の確度（不明）を単位ごとに残さないこと。",
+   "quotes": [
+    {
+     "url": "https://www.usenix.org/system/files/usenixsecurity24-arkalakis.pdf",
+     "quote": "We build an automated analysis framework that dynamically exercises and analyzes applications so as to uncover discrepancies be- tween the applications’ behavior and the data practices that have been reported in their Data Safety section.",
+     "quote_ja": "アプリを動的に実行・解析し、挙動と Data Safety 欄で申告したデータ実務との食い違いを見つける自動解析の枠組みを作った。",
+     "location": "p.2",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.usenix.org/system/files/usenixsecurity24-arkalakis.pdf",
+     "quote": "81% misrepresent their data collection and sharing practices in the Data Safety section.",
+     "quote_ja": "81% が Data Safety 欄でデータの収集・共有を誤って表している。",
+     "location": "p.2",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.usenix.org/system/files/usenixsecurity24-arkalakis.pdf",
+     "quote": "We selected up to the top 250 apps (or as many as were available) from 20 different categories.",
+     "quote_ja": "20 カテゴリそれぞれから上位最大 250 本を選んだ。",
+     "location": "p.6",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.usenix.org/system/files/usenixsecurity24-arkalakis.pdf",
+     "quote": "Next, we manually assigned Data Safety labels to these 295 functions",
+     "quote_ja": "この 295 関数に手で Data Safety ラベルを割り当てた。",
+     "location": "p.5",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.usenix.org/system/files/usenixsecurity24-arkalakis.pdf",
+     "quote": "Our mapping between Data Safety labels and API methods may not be complete",
+     "quote_ja": "Data Safety ラベルと API メソッドの対応は完全でないかもしれない。",
+     "location": "p.13",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.usenix.org/system/files/usenixsecurity24-arkalakis.pdf",
+     "quote": "Ofﬁcial app markets must not rely solely on the developer’s honesty",
+     "quote_ja": "公式ストアは開発者の正直さだけに頼ってはならない。",
+     "location": "p.13",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.usenix.org/system/files/usenixsecurity24-arkalakis.pdf",
+     "quote": "1https://github.com/GiannisArk/USENIX24_DataSafety",
+     "quote_ja": "GitHub の URL（脚注 1）。",
+     "location": "p.3",
+     "match": "exact"
+    }
+   ],
+   "notes": "同じ年の Khandelwal et al.（USENIX Security 2024, 'Unpacking Privacy Labels'）も Data Safety を扱うが、PDF を取得しただけで照合の詳細は読んでいない（未確認）。"
+  },
+  {
+   "id": "policheck_usenix20",
+   "title": "Actions Speak Louder than Words: Entity-Sensitive Privacy Policy and Data Flow Analysis with PoliCheck",
+   "authors": "Benjamin Andow, Samin Yaseer Mahmud, Justin Whitaker, William Enck, Bradley Reaves, Kapil Singh, Serge Egelman",
+   "venue_or_kind": "USENIX Security 2020（PDF 表紙に記載）",
+   "year": 2020,
+   "url": "https://www.usenix.org/system/files/sec20-andow.pdf",
+   "version_or_commit": "USENIX open-access PDF",
+   "status": "確認",
+   "target": "Android アプリの data flow（AppCensus の動的解析の結果）とプライバシーポリシー本文",
+   "compares": "X = プライバシーポリシーの収集・共有の記述（誰が・どのデータを） / Y = 動的解析で観測した送信（データ型と受け手の主体）",
+   "declarations_covered": "none（プライバシーポリシー）",
+   "method": "NLP（ポリシー文の抽出、オントロジー）＋動的解析の data flow（AppCensus）。整合の判定は形式化した一貫性モデル（clear / vague / omitted / incorrect / ambiguous）",
+   "languages": "Android アプリ（言語非依存の通信観測）／英語のポリシー",
+   "interprocedural": "該当しない（動的観測）",
+   "unresolved_handling": "宣言側の決められなさを ambiguous という独立の類として報告（7.6% のアプリ）。ドメイン名を解決できない flow は捨てる。データ流がないアプリ・ポリシーを取れないアプリ・オントロジーに載らない flow は除外し件数を書く。精度評価では ambiguous を評価から外し、判定者が迷った 27 flow を uncertain として除いた。再現率より精度を優先すると明言",
+   "evaluation": "Google Play 35 カテゴリの無料上位 100＋AppCensus の無作為 42,129 本から除外を経て 13,796 アプリ・45,603 flow。著者 1 名が 153 flow（151 アプリ）を手検証し precision 90.8%（139/153）（著者の主張、verified_by_me: none）",
+   "preregistration_or_freeze": "記載を見つけなかった（不明）",
+   "artifact_public": "不明（確認していない）",
+   "relation_to_authgap": "先例",
+   "relation_ja": "『宣言（ポリシー）と実効（data flow）の一貫性』を形式的なモデルで類に分け、大規模に測る点が AuthGap の判定（矛盾 / 非矛盾 / 不明）に最も近い構造を持つ。とくに宣言側の矛盾・曖昧を ambiguous として別の類で数えたのは、AuthGap が不明を類として残すことの先例。違いは、実効側で決められない flow は捨てる・精度評価から ambiguous と uncertain を外す点で、AuthGap は不明を分母に残して率を出す。",
+   "quotes": [
+    {
+     "url": "https://www.usenix.org/system/files/sec20-andow.pdf",
+     "quote": "we propose POLI CHECK , which formalizes and implements an entity-sensitive ﬂow-to-policy consistency model.",
+     "quote_ja": "主体を区別する flow-to-policy 一貫性モデルを形式化し実装した PoliCheck を提案する。",
+     "location": "p.2",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.usenix.org/system/files/sec20-andow.pdf",
+     "quote": "we scope data ﬂows to network transmission identiﬁed during dynamic analysis.",
+     "quote_ja": "data flow を動的解析で特定したネットワーク送信に絞る。",
+     "location": "p.4",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.usenix.org/system/files/sec20-andow.pdf",
+     "quote": "our goal was to optimize for precision over recall.",
+     "quote_ja": "目標は再現率より精度を優先することだった。",
+     "location": "p.4",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.usenix.org/system/files/sec20-andow.pdf",
+     "quote": "If we could not resolve a domain name, we discard the data ﬂow from the data set.",
+     "quote_ja": "ドメイン名を解決できない場合、その data flow をデータセットから捨てる。",
+     "location": "p.9",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.usenix.org/system/files/sec20-andow.pdf",
+     "quote": "we began by scrap- ing the top 100 free applications",
+     "quote_ja": "まず無料上位 100 本を集めることから始めた。",
+     "location": "p.10",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.usenix.org/system/files/sec20-andow.pdf",
+     "quote": "We excluded applications that did not have any data ﬂows reported by AppCensus (23,488 apps).",
+     "quote_ja": "AppCensus が data flow を報告していないアプリ（23,488 本）は除外した。",
+     "location": "p.10",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.usenix.org/system/files/sec20-andow.pdf",
+     "quote": "7.6% (1,101/ 13,796) of applications.",
+     "quote_ja": "（ambiguous な開示は）13,796 本中 7.6%（1,101 本）のアプリにあった。",
+     "location": "p.13",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.usenix.org/system/files/sec20-andow.pdf",
+     "quote": "Note that we do not evaluate ambiguous disclosures, as attempting to resolve ambiguity injects annotator bias into the evaluation.",
+     "quote_ja": "曖昧さを解こうとすると判定者の偏りが入るので、ambiguous な開示は評価しない。",
+     "location": "p.13",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.usenix.org/system/files/sec20-andow.pdf",
+     "quote": "we mark the ﬂow as “uncertain” to avoid bias. Note that we marked 27 ﬂows as uncertain",
+     "quote_ja": "迷う場合は偏りを避けるため uncertain とし、27 flow を uncertain とした。",
+     "location": "p.13",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.usenix.org/system/files/sec20-andow.pdf",
+     "quote": "POLI CHECK achieves an overall 90.8% precision (139/153)",
+     "quote_ja": "PoliCheck は全体で精度 90.8%（139/153）。",
+     "location": "p.13",
+     "match": "exact"
+    }
+   ],
+   "notes": "題名の 'Actions speak louder than words' は PoliCheck 論文そのもの（依頼文の Slavin et al. ではない）。Slavin et al. ICSE 2016 は本調査では読んでいない（not_found 参照）。"
+  },
+  {
+   "id": "extpriva_sp23",
+   "title": "Detection of Inconsistencies in Privacy Practices of Browser Extensions",
+   "authors": "Duc Bui, Brian Tang, Kang G. Shin",
+   "venue_or_kind": "IEEE S&P 2023 とされる（URL の oakland23 と検索結果による。PDF 本文に掲載先の記載は見つけていない）",
+   "year": 2023,
+   "url": "https://rtcl.eecs.umich.edu/rtclweb/assets/publications/2023/oakland23-bui.pdf",
+   "version_or_commit": "著者研究室サイトの PDF",
+   "status": "確認",
+   "target": "Chrome 拡張の実行時通信（DevTools の initiator で拡張由来の要求を特定）と、Chrome Web Store の Dashboard 開示・プライバシーポリシー",
+   "compares": "X = Dashboard の privacy-practice 開示とポリシーの記述 / Y = 拡張を操作して得た外部への送信データ。加えて X 同士（Dashboard とポリシー）の矛盾",
+   "declarations_covered": "none（拡張のプライバシー開示）",
+   "method": "動的解析（ユーザ操作の模倣、要求の initiator 解析）＋NLP（PurPliance 系の文抽出）",
+   "languages": "JavaScript（ブラウザ拡張）／英語の開示文",
+   "interprocedural": "該当しない（実行時観測。要求を出したスクリプトを initiator で特定）",
+   "unresolved_handling": "動的解析で全挙動は引き出せないとして再現率の評価を将来課題に回す。未判定の語彙・率は見つけていない。手検証では 60 件中 51 件しか再現できなかった",
+   "evaluation": "ストアのサイトマップから全件クロール（2022-02）し、Dashboard 開示がある 47,207 本を対象。820 本・1,290 flow が不整合。無作為 60 件を博士学生 2 名が独立に検証し精度 85%（著者の主張、verified_by_me: none）",
+   "preregistration_or_freeze": "記載を見つけなかった（不明）",
+   "artifact_public": "不明（確認していない）",
+   "relation_to_authgap": "先例",
+   "relation_ja": "ストアの自己申告欄（Dashboard）と実際の送信を照合し、母集団を『申告欄を持つもの』で定義する点は、AuthGap が『宣言を持つ MCP サーバ』を母集団にする設計と同じ。精度は 2 名独立の手検証で出し、再現率は出していない。違いは動的観測であることと、判定できないものの率を出さないこと。",
+   "quotes": [
+    {
+     "url": "https://rtcl.eecs.umich.edu/rtclweb/assets/publications/2023/oakland23-bui.pdf",
+     "quote": "ExtPrivA that automatically detects the inconsistencies between browser extensions' data collection and their privacy disclosures.",
+     "quote_ja": "ブラウザ拡張のデータ収集とプライバシー開示の不整合を自動で検出する ExtPrivA を提案する。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://rtcl.eecs.umich.edu/rtclweb/assets/publications/2023/oakland23-bui.pdf",
+     "quote": "we consider the 47,207 (35.18%) extensions that declared the Dashboard disclosures.",
+     "quote_ja": "Dashboard 開示を宣言している 47,207 本（35.18%）を対象にする。",
+     "location": "p.9",
+     "match": "exact"
+    },
+    {
+     "url": "https://rtcl.eecs.umich.edu/rtclweb/assets/publications/2023/oakland23-bui.pdf",
+     "quote": "In a large-scale study of 47.2k extensions on the Chrome Web Store, we found 820 extensions with 1,290 flows that are inconsistent with their privacy statements.",
+     "quote_ja": "Chrome Web Store の 47.2k 本の大規模調査で、820 本の拡張に 1,290 の不整合な flow を見つけた。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://rtcl.eecs.umich.edu/rtclweb/assets/publications/2023/oakland23-bui.pdf",
+     "quote": "The verification was done manually by two PhD students",
+     "quote_ja": "検証は博士学生 2 名が手で行った。",
+     "location": "p.12",
+     "match": "exact"
+    },
+    {
+     "url": "https://rtcl.eecs.umich.edu/rtclweb/assets/publications/2023/oakland23-bui.pdf",
+     "quote": "We were able to reproduce 51 of the randomly selected 60 detected inconsistencies of 59 extensions.",
+     "quote_ja": "無作為に選んだ 60 件の検出のうち 51 件を再現できた。",
+     "location": "p.13",
+     "match": "exact"
+    },
+    {
+     "url": "https://rtcl.eecs.umich.edu/rtclweb/assets/publications/2023/oakland23-bui.pdf",
+     "quote": "we leave the recall-rate evaluation as future work.",
+     "quote_ja": "再現率の評価は将来課題とする。",
+     "location": "p.12",
+     "match": "exact"
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "id": "picazo_ijis22",
+   "title": "Are chrome extensions compliant with the spirit of least privilege?",
+   "authors": "Pablo Picazo-Sanchez, Lara Ortiz-Martin, Gerardo Schneider, Andrei Sabelfeld",
+   "venue_or_kind": "International Journal of Information Security 2022（PDF 1 ページ目に記載）",
+   "year": 2022,
+   "url": "https://www.cse.chalmers.se/~andrei/ijis22.pdf",
+   "version_or_commit": "著者サイトの PDF（DOI 10.1007/s10207-022-00610-w）",
+   "status": "確認",
+   "target": "Chrome 拡張のソース（JavaScript・HTML）と manifest.json",
+   "compares": "X = manifest の permissions / optional_permissions / Y = AST から取り出した特権 API 呼び出し（API → パーミッション対応表で写したもの）",
+   "declarations_covered": "none（拡張パーミッション）",
+   "method": "AST（Esprima の CallExpression、変数を介した chrome.* の再構成）＋HTML は正規表現。対応表は Chromium ソースから生成した拡張を実際に入れて確認",
+   "languages": "JavaScript / HTML",
+   "interprocedural": "不明（関数をまたぐ追跡の記載は見つけていない。別名の再構成は扱う）",
+   "unresolved_handling": "難読化・外部コード実行・eval 等のコード生成は対象外と明記し、eval を許す CSP を宣言した拡張（約 24%）を『さらに解析が要るものの上限』として数を出す。overprivileged と判定したものは静的解析の偽陰性で誤りうるので、確定には追加解析が要ると書く",
+   "evaluation": "136,018 拡張＋17,566 アプリ。39.8% が least privilege に準拠と報告（著者の主張、verified_by_me: none）。標本数の公式に従い 662 本を手で照合",
+   "preregistration_or_freeze": "記載を見つけなかった（不明）",
+   "artifact_public": "https://github.com/Pica4x6/SoLP（脚注。ライセンス未確認）",
+   "relation_to_authgap": "先例（＋手法の型）",
+   "relation_ja": "宣言（manifest）とソースの AST から取った API 使用を照合し、ストア全体の割合を出す点は AuthGap と同じ型で、扱えない eval 等を『追加解析が要る上限』として件数で出しているのは不明を残す書き方の先例。違いは Stowaway と同じく『宣言が広すぎる』向きを数えること（Chrome も宣言を強制する）と、手続き間の効果推論や値解析をほぼ持たないこと。",
+   "quotes": [
+    {
+     "url": "https://www.cse.chalmers.se/~andrei/ijis22.pdf",
+     "quote": "this paper demonstrates that 39.8% of the analyzed extensions provided by the ofﬁcial Web Store are compliant with the spirit of least privilege.",
+     "quote_ja": "公式 Web Store の解析した拡張のうち least privilege の精神に準拠しているのは 39.8% だと示す。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.cse.chalmers.se/~andrei/ijis22.pdf",
+     "quote": "To analyze the JavaScript ﬁles, we generate the Abstract Syntax Tree (AST) of all the scripts by using Esprima",
+     "quote_ja": "JavaScript ファイルは Esprima で全スクリプトの AST を作って解析する。",
+     "location": "p.6",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.cse.chalmers.se/~andrei/ijis22.pdf",
+     "quote": "our analysis does not con- sider complex forms of obfuscation, external code execution, or extensions that use code generation functions like eval() and setTimeout().",
+     "quote_ja": "複雑な難読化、外部コード実行、eval() や setTimeout() によるコード生成は扱わない。",
+     "location": "p.7",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.cse.chalmers.se/~andrei/ijis22.pdf",
+     "quote": "We got that less than 33k browser extensions deﬁne it (24% of the browser extensions).",
+     "quote_ja": "それ（eval を許す CSP）を定義している拡張は 33k 未満（24%）だった。",
+     "location": "p.11",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.cse.chalmers.se/~andrei/ijis22.pdf",
+     "quote": "Therefore, some of the extensions marked as potentially overprivileged would need further analysis to claim whether they are indeed overprivileged or not.",
+     "quote_ja": "潜在的に overprivileged とした拡張の一部は、本当にそうかを主張するには追加の解析が要る。",
+     "location": "p.11",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.cse.chalmers.se/~andrei/ijis22.pdf",
+     "quote": "we need to manually analyze 662 extensions.",
+     "quote_ja": "662 本を手で解析する必要がある。",
+     "location": "p.11",
+     "match": "exact"
+    },
+    {
+     "url": "https://www.cse.chalmers.se/~andrei/ijis22.pdf",
+     "quote": "4 https://github.com/Pica4x6/SoLP.",
+     "quote_ja": "GitHub の URL（脚注 4）。",
+     "location": "p.10",
+     "match": "exact"
+    }
+   ],
+   "notes": "Chrome 拡張の宣言パーミッションの初期の測定には Felt, Greenwood, Wagner 'The Effectiveness of Application Permissions'（WebApps 2011）もあるが、宣言の分布を測ったもので、コードとの照合は主題ではないため採らなかった（PDF は読んだ）。"
+  },
+  {
+   "id": "salcianu_vmcai05",
+   "title": "Purity and Side Effect Analysis for Java Programs",
+   "authors": "Alexandru D. Sălcianu, Martin C. Rinard",
+   "venue_or_kind": "VMCAI 2005（LNCS 3385）とされる（検索結果による。著者サイトの PDF 本文には掲載先の記載なし）",
+   "year": 2005,
+   "url": "https://people.csail.mit.edu/rinard/paper/vmcai05.purity.pdf",
+   "version_or_commit": "著者サイトの PDF",
+   "status": "確認",
+   "target": "Java プログラム（ソース不要、バイトコードを解析）",
+   "compares": "直接の比較対象の宣言はない。純粋性を推論する手法。応用として Korat の repOk（純粋であることが前提だが Korat は静的に確かめられない）の純粋性を検証",
+   "declarations_covered": "none（類比として D1 readOnlyHint の『外部から見える状態を変えない』に相当）",
+   "method": "pointer / escape 解析を組み合わせたデータフロー解析。純粋 = 呼び出し直前に存在した位置を書き換えない（新しく作った物の書き換えは許す）",
+   "languages": "Java",
+   "interprocedural": "全プログラム解析（閉世界の仮定、呼び出しグラフ全体）",
+   "unresolved_handling": "解析できない・native のコードに渡った物は大域に逃げたものとし、未知のコードを表す特別な節点 nGBL で保守的に扱う。実ライブラリを含む評価では、キャッシュの書き換えは無害と仮定して『健全性を犠牲にした』と明言し、どの位置が書き換えられたかを出力して手で確かめた",
+   "evaluation": "Korat のデータ構造 8 種の repOk がすべて純粋と検証。Java Olden の各プログラムで純粋なメソッドの割合を報告（著者の主張、verified_by_me: none）。人手の正解との精度比較の記載は見つけていない",
+   "preregistration_or_freeze": "記載を見つけなかった（不明）",
+   "artifact_public": "不明",
+   "relation_to_authgap": "手法の型",
+   "relation_ja": "『純粋（外から見える状態を変えない）』の定義と、未知コードを保守的に扱う節点を置く設計は、AuthGap が readOnlyHint を『外部状態を書き換える効果があるか』で判定し、解決できない呼び出しを opaque として合流させる構成の古典的な手法の先例。違いは、宣言を検証する測定研究ではなく推論手法であることと、ヒープの書き換えが対象で、ファイル・SQL・HTTP などの外部効果ではないこと。",
+   "quotes": [
+    {
+     "url": "https://people.csail.mit.edu/rinard/paper/vmcai05.purity.pdf",
+     "quote": "A method is pure if it does not mutate any location that exists in the program state right before the invocation of the method.",
+     "quote_ja": "メソッドが純粋とは、呼び出し直前のプログラム状態に存在した位置を書き換えないこと。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://people.csail.mit.edu/rinard/paper/vmcai05.purity.pdf",
+     "quote": "Our analysis is built on top of a combined pointer and escape analysis",
+     "quote_ja": "解析は pointer 解析と escape 解析を組み合わせたものの上に作った。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://people.csail.mit.edu/rinard/paper/vmcai05.purity.pdf",
+     "quote": "Korat relies on the purity of therepOk predicates but cannot statically check this.",
+     "quote_ja": "Korat は repOk の純粋性に依存するが、それを静的に確かめられない。",
+     "location": "p.11",
+     "match": "exact"
+    },
+    {
+     "url": "https://people.csail.mit.edu/rinard/paper/vmcai05.purity.pdf",
+     "quote": "We use the additional special nodenGBL as a placeholder for other unknown",
+     "quote_ja": "他の未知のものの代わりとして特別な節点 nGBL を使う。",
+     "location": "p.8",
+     "match": "exact"
+    },
+    {
+     "url": "https://people.csail.mit.edu/rinard/paper/vmcai05.purity.pdf",
+     "quote": "an unanalyzable/native method.",
+     "quote_ja": "（未知のコード＝）解析できない / native なメソッド。",
+     "location": "p.8",
+     "match": "exact"
+    },
+    {
+     "url": "https://people.csail.mit.edu/rinard/paper/vmcai05.purity.pdf",
+     "quote": "In order to analyze complex data structures that use the real Java library, we had to sacriﬁce soundness.",
+     "quote_ja": "実際の Java ライブラリを使う複雑なデータ構造を解析するため、健全性を犠牲にした。",
+     "location": "p.13",
+     "match": "exact"
+    },
+    {
+     "url": "https://people.csail.mit.edu/rinard/paper/vmcai05.purity.pdf",
+     "quote": "The analysis was able to verify that allrepOk methods mutate only new objects, and are therefore pure.",
+     "quote_ja": "すべての repOk が新しい物だけを書き換えるので純粋であると検証できた。",
+     "location": "p.12",
+     "match": "exact"
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "id": "jpure_cc11",
+   "title": "JPure: A Modular Purity System for Java",
+   "authors": "David J. Pearce",
+   "venue_or_kind": "Compiler Construction (CC) 2011, LNCS 6601 とされる（検索結果による。読んだのは著者の preprint）",
+   "year": 2011,
+   "url": "https://whileydave.com/publications/Pea11_CC_preprint.pdf",
+   "version_or_commit": "著者サイトの preprint",
+   "status": "確認",
+   "target": "Java ソースと @Pure / @Local / @Fresh 注釈",
+   "compares": "X = メソッドに書かれた @Pure 注釈 / Y = 本体の振る舞い（フィールド代入、呼び出し先の注釈）。checker が注釈の正しさを確かめ、inference が既存コードに注釈を付ける",
+   "declarations_covered": "none（類比として D1 readOnlyHint ＝ @Pure）",
+   "method": "フロー感応・手続き内の解析によるモジュール単位の検査（呼び出し先は静的型の注釈に依存）＋推論はソース変換",
+   "languages": "Java",
+   "interprocedural": "検査は手続き内のみ（呼び出し先の @Pure 注釈を信じる）。推論は注釈を伝播させる",
+   "unresolved_handling": "注釈の無い外部クラスのメソッドは保守的に不純とする。native メソッドは純粋と仮定した（不健全と認めている）",
+   "evaluation": "Java 標準ライブラリのいくつかのパッケージで、少なくとも 40% のメソッドが純粋と報告（著者の主張、verified_by_me: none）。注釈の誤りを野外で数える測定はしていない",
+   "preregistration_or_freeze": "記載を見つけなかった（不明）",
+   "artifact_public": "本文で open source として配布と記載（URL は http://www.ecs.vuw.ac.nz/~djp/jpure。現存は未確認、ライセンス不明）",
+   "relation_to_authgap": "手法の型",
+   "relation_ja": "『純粋である』という開発者の注釈をコードで検査するという点で、readOnlyHint をコードで照合する AuthGap の最も直接的な PL 側の祖先。外部を保守的に『不純』に倒すのは、AuthGap では矛盾ではなく不明に置く判断と対照になる（AuthGap は黙って危険側にも安全側にも倒さない）。違いは、注釈を書く言語機構の中で検査器として働くことで、野外の注釈がどれだけ嘘かを測る研究ではないこと。",
+   "quotes": [
+    {
+     "url": "https://whileydave.com/publications/Pea11_CC_preprint.pdf",
+     "quote": "We present a novel purity system for Java that em- ploys purity annotations which can be checked modularly.",
+     "quote_ja": "モジュール単位で検査できる純粋性注釈を使う、Java の新しい純粋性の体系を示す。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://whileydave.com/publications/Pea11_CC_preprint.pdf",
+     "quote": "This is done using a ﬂow-sensitive, intraprocedural analysis.",
+     "quote_ja": "フロー感応・手続き内の解析で行う。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://whileydave.com/publications/Pea11_CC_preprint.pdf",
+     "quote": "the Java standard library has not been annotated to identify pure methods.",
+     "quote_ja": "Java 標準ライブラリには純粋なメソッドを示す注釈が付いていない。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://whileydave.com/publications/Pea11_CC_preprint.pdf",
+     "quote": "since annotations were not generated for external classes, their methods were conservatively regarded as impure.",
+     "quote_ja": "外部クラスには注釈を生成しなかったので、そのメソッドは保守的に不純とみなした。",
+     "location": "p.16",
+     "match": "exact"
+    },
+    {
+     "url": "https://whileydave.com/publications/Pea11_CC_preprint.pdf",
+     "quote": "One issue is the treatement of native methods, which our inference assumed were pure.",
+     "quote_ja": "問題の 1 つは native メソッドの扱いで、推論では純粋と仮定した。",
+     "location": "p.16",
+     "match": "exact"
+    },
+    {
+     "url": "https://whileydave.com/publications/Pea11_CC_preprint.pdf",
+     "quote": "This is open source and freely available from",
+     "quote_ja": "open source で自由に入手できる。",
+     "location": "p.16",
+     "match": "exact"
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "id": "checker_framework_purity",
+   "title": "The Checker Framework Manual: Purity Checker（purity-checker.tex）",
+   "authors": "Checker Framework developers (typetools)",
+   "venue_or_kind": "ツールの公式マニュアル（ソースの .tex を commit 固定で参照）",
+   "year": 2026,
+   "url": "https://raw.githubusercontent.com/typetools/checker-framework/4b4b053f6683df9563b7153843d3fa4712c138c0/docs/manual/purity-checker.tex",
+   "version_or_commit": "typetools/checker-framework@4b4b053f6683df9563b7153843d3fa4712c138c0（2026-10-02 の HEAD）",
+   "status": "確認",
+   "target": "Java ソースの @SideEffectFree / @Deterministic / @Pure 注釈",
+   "compares": "X = 開発者が書いた純粋性注釈 / Y = メソッド本体（-AcheckPurityAnnotations または Purity Checker を使ったときだけ検査）",
+   "declarations_covered": "none（類比として D1 = @SideEffectFree、D4 に近い性質として @Deterministic）",
+   "method": "型検査器の一部としての注釈検査（詳細なアルゴリズムはこのページには無い）",
+   "languages": "Java",
+   "interprocedural": "不明（このページには記載なし）",
+   "unresolved_handling": "既定では注釈を信用し検査しない。他の検査器では偽陽性率が高いため既定で検査を有効にしていないと明記",
+   "evaluation": "該当しない（マニュアル）",
+   "preregistration_or_freeze": "該当しない",
+   "artifact_public": "https://github.com/typetools/checker-framework（ライセンスはこのページでは未確認）",
+   "relation_to_authgap": "先例",
+   "relation_ja": "主流の静的検査器でも『副作用が無い』という宣言は既定で信用され、利用側の解析結果がそれに依存する、という状況は MCP クライアントが readOnlyHint を信じて確認を省く状況と同じ構造。検査を既定にしない理由が偽陽性の多さであることは、AuthGap が精度（人手で各 CONTRADICTION を判定）を重視する理由づけに使える。違いは測定研究ではなく、注釈の嘘の割合は示していないこと。",
+   "quotes": [
+    {
+     "url": "https://raw.githubusercontent.com/typetools/checker-framework/4b4b053f6683df9563b7153843d3fa4712c138c0/docs/manual/purity-checker.tex",
+     "quote": "indicates that the method has no externally-visible side effects.",
+     "quote_ja": "@SideEffectFree はメソッドに外部から見える副作用が無いことを示す。",
+     "location": "lines 29",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/typetools/checker-framework/4b4b053f6683df9563b7153843d3fa4712c138c0/docs/manual/purity-checker.tex",
+     "quote": "By default, purity annotations are trusted.",
+     "quote_ja": "既定では純粋性注釈は信用される。",
+     "location": "lines 49",
+     "match": "exact"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/typetools/checker-framework/4b4b053f6683df9563b7153843d3fa4712c138c0/docs/manual/purity-checker.tex",
+     "quote": "For checkers other than the Purity Checker, it is not enabled by default because of a high false positive rate.",
+     "quote_ja": "Purity Checker 以外の検査器では、偽陽性率が高いので既定では有効にしていない。",
+     "location": "lines 68-70",
+     "match": "exact"
+    }
+   ],
+   "notes": "Infer にも Purity checker（C/C++/ObjC/Java）があると検索で見たが一次資料は読んでいない（未確認）。"
+  },
+  {
+   "id": "sahin_arcuri_http_semantics",
+   "title": "Validating HTTP Semantics in REST APIs With Constructed Call Sequence Scenarios",
+   "authors": "Omur Sahin, Andrea Arcuri",
+   "venue_or_kind": "arXiv preprint 2608.16239v1（2026-08-17）",
+   "year": 2026,
+   "url": "https://arxiv.org/pdf/2608.16239",
+   "version_or_commit": "arXiv v1",
+   "status": "確認",
+   "target": "稼働中の REST API（OpenAPI スキーマ＋実行）",
+   "compares": "X = HTTP メソッドが RFC 9110 で負う意味（PUT は冪等、失敗した変更は副作用を持たない、等） / Y = 呼び出し列を組み立てて観測した実際の振る舞い",
+   "declarations_covered": "none（開発者の明示宣言ではなくメソッド名による暗黙の宣言。類比として D4 idempotentHint（Non-Idempotent PUT）と D1 readOnlyHint（副作用）に相当）",
+   "method": "ファジング（EvoMaster）で得たテストから、9 つの oracle 用の呼び出し列を決定的に構成して実行（動的）",
+   "languages": "言語非依存（HTTP 経由）。評価対象は WFD コーパスの API",
+   "interprocedural": "該当しない（ブラックボックス／グレーボックス実行）",
+   "unresolved_handling": "前提となる 2xx を返すテストが無ければ oracle を適用できない（成功する要求の生成に依存）。時刻など揺れるフィールドによる偽陽性を減らす工夫を書く。未適用の率の報告は見つけていない",
+   "evaluation": "注入した欠陥を持つ人工 API 9 個で全検出。WFD の 36 API で 166 件の欠陥を見つけ、著者が 166 件すべてを手で確かめた（著者の主張、verified_by_me: none）",
+   "preregistration_or_freeze": "記載を見つけなかった（不明）",
+   "artifact_public": "EvoMaster の GitHub リポジトリに規則のソースがあると本文に記載（https://github.com/WebFuzzing/EvoMaster、ライセンス未確認）",
+   "relation_to_authgap": "相補",
+   "relation_ja": "HTTP メソッド名を『安全・冪等の宣言』とみなし、実際に呼んで違反を探す点で、AuthGap の D1 / D4 と同じ性質（副作用の有無・冪等性）を扱う。静的には確かめられない規則があるとして動的に行う点が AuthGap（静的・実行しない）と相補的。違いは、宣言が開発者の任意の注釈ではなくプロトコルの規約であること、実行環境が要ること、野外の母集団測定ではないこと。",
+   "quotes": [
+    {
+     "url": "https://arxiv.org/pdf/2608.16239",
+     "quote": "We extended the state-of-the-art fuzzerEvoMasterwith 9 new oracles to detect HTTP semantics- level faults.",
+     "quote_ja": "最先端のファザ EvoMaster に、HTTP の意味レベルの欠陥を検出する 9 つの新しい oracle を加えた。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2608.16239",
+     "quote": "Non-Idempotent PUT",
+     "quote_ja": "（oracle の 1 つ）冪等でない PUT。",
+     "location": "p.3, p.8, p.9, p.13, p.15",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2608.16239",
+     "quote": "quite a few rules cannot be verified statically, as they require to make specific sequences of HTTP calls towards the API to analyze how resources are modified.",
+     "quote_ja": "かなりの規則は静的には確かめられず、資源がどう変わるかを見るために特定の HTTP 呼び出し列を送る必要がある。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2608.16239",
+     "quote": "we have experienced cases of APIs wrongly 201 creating resources withGEToperations",
+     "quote_ja": "GET で誤って 201 を返して資源を作る API を経験している。",
+     "location": "p.4",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2608.16239",
+     "quote": "Further experiments on 36 APIs from the WFD corpus show that our novel techniques can automatically find 166 existing faults in these real-world APIs.",
+     "quote_ja": "WFD コーパスの 36 API で、実在の欠陥を 166 件自動で見つけた。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2608.16239",
+     "quote": "We manually verified all these 166 faults",
+     "quote_ja": "166 件すべてを手で確かめた。",
+     "location": "p.13",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2608.16239",
+     "quote": "Source code for all these rules is available in the GitHub repository of EvoMaster",
+     "quote_ja": "規則のソースは EvoMaster の GitHub リポジトリにある。",
+     "location": "p.3",
+     "match": "loose"
+    }
+   ],
+   "notes": "RESTler（ICSE 2019）と Atlidakis et al.『Checking Security Properties of Cloud Service REST APIs』（ICST 2020）の 4 規則（use-after-free 等）はこの論文が拡張元として挙げる。冪等性・GET の安全性そのものの検査ではないので本調査では採らなかった（一次資料は未読）。"
+  },
+  {
+   "id": "respector_icse24",
+   "title": "Generating REST API Specifications through Static Analysis",
+   "authors": "Ruikai Huang, Manish Motwani, Idel Martinez, Alessandro Orso",
+   "venue_or_kind": "ICSE 2024（PDF ヘッダに ICSE '24 と記載）",
+   "year": 2024,
+   "url": "https://par.nsf.gov/servlets/purl/10537946",
+   "version_or_commit": "NSF PAR の公開版 PDF",
+   "status": "確認",
+   "target": "Java の REST API 実装（Spring Boot / Jersey、バイトコード）と開発者が書いた OpenAPI 仕様",
+   "compares": "X = 開発者提供の OpenAPI 仕様 / Y = 実装から静的・記号実行で生成した仕様（endpoint、HTTP メソッド、パラメータ、制約、応答）",
+   "declarations_covered": "none（OpenAPI 仕様。HTTP メソッドの宣言は含むが、安全・冪等の照合はしていない）",
+   "method": "静的解析（Soot）＋記号実行（Z3）",
+   "languages": "Java",
+   "interprocedural": "不明（記号実行の範囲の詳細は読み切れていない）。外部ライブラリのコードは解析しないと明記",
+   "unresolved_handling": "実行時 reflection・動的に呼ばれる lambda で実装された制約は静的に解析できず取りこぼしとして数える（制約の再現率 50.0% の内訳）。未判定の語彙はない",
+   "evaluation": "GitHub 検索（Spring Boot / Jersey、開発者提供の仕様あり、星 5 以上、コンパイル可）の 8 API＋先行研究の 7 API、計 15。複数の著者が独立にコードと仕様を読み突き合わせて正解を作成。endpoint で precision 100% / recall 98.6% 等。開発者仕様に無い endpoint 228 等を見つけ、4 つの不整合な制約が開発者に確認された（著者の主張、verified_by_me: none）",
+   "preregistration_or_freeze": "記載を見つけなかった（不明）",
+   "artifact_public": "Zenodo record 10445691 とされる（検索結果のみ、未確認）",
+   "relation_to_authgap": "手法の型",
+   "relation_ja": "コードから仕様を静的に再構成し、開発者が書いた宣言（OpenAPI）と突き合わせて食い違いを出す点が AuthGap と同じ構造で、正解を複数の著者の独立な読みで作る手順も同じ。違いは、目的が仕様の生成で、食い違いは副産物であること、15 個の選んだ API の評価で母集団の割合を測る研究ではないこと、効果（副作用）の照合をしないこと。",
+   "quotes": [
+    {
+     "url": "https://par.nsf.gov/servlets/purl/10537946",
+     "quote": "the first technique to employ static and symbolic program analysis to generate specifications",
+     "quote_ja": "静的・記号的なプログラム解析で（REST API の）仕様を生成する最初の手法。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://par.nsf.gov/servlets/purl/10537946",
+     "quote": "Multiple authors independently ana- lyzed the API code and specification",
+     "quote_ja": "複数の著者が独立に API のコードと仕様を解析した。",
+     "location": "p.8",
+     "match": "exact"
+    },
+    {
+     "url": "https://par.nsf.gov/servlets/purl/10537946",
+     "quote": "Respector also identified 4 constraints that were inconsistent with the developer- provided specifications and were confirmed by the developers.",
+     "quote_ja": "開発者提供の仕様と食い違う制約を 4 つ特定し、開発者に確認された。",
+     "location": "p.2",
+     "match": "exact"
+    },
+    {
+     "url": "https://par.nsf.gov/servlets/purl/10537946",
+     "quote": "therefore cannot be statically analyzed",
+     "quote_ja": "（reflection や動的な lambda で実装された制約は）静的に解析できない。",
+     "location": "p.9",
+     "match": "exact"
+    },
+    {
+     "url": "https://par.nsf.gov/servlets/purl/10537946",
+     "quote": "Respector inherits the limitations of static analysis",
+     "quote_ja": "Respector は静的解析の限界を受け継ぐ。",
+     "location": "p.10",
+     "match": "exact"
+    },
+    {
+     "url": "https://par.nsf.gov/servlets/purl/10537946",
+     "quote": "does not analyze code in external libraries",
+     "quote_ja": "外部ライブラリのコードは解析しない。",
+     "location": "p.10",
+     "match": "exact"
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "id": "rodriguez_icwe16",
+   "title": "REST APIs: A Large-Scale Analysis of Compliance with Principles and Best Practices",
+   "authors": "Carlos Rodríguez, Marcos Baez, Florian Daniel, Fabio Casati, Juan Carlos Trabucco, Luigi Canali, Gianraffaele Percannella",
+   "venue_or_kind": "ICWE 2016 とされる（検索結果による。リポジトリの PDF 本文に掲載先の記載は見つけていない）",
+   "year": 2016,
+   "url": "https://re.public.polimi.it/bitstream/11311/1010973/2/paper.pdf",
+   "version_or_commit": "Politecnico di Milano のリポジトリ版 PDF",
+   "status": "確認",
+   "target": "移動体通信事業者の 1 日分の HTTP 通信ログ（78GB 超）",
+   "compares": "X = REST の原則・設計指針（GET は取得のみ、GET/POST に操作を通さない等） / Y = 通信ログの URL・メソッドに対する経験則（例: クエリに action 引数を持つ URL の数）",
+   "declarations_covered": "none（規約。類比として D1 = GET の安全性）",
+   "method": "通信ログに対する経験則（URL の形の正規表現的な判定）",
+   "languages": "言語非依存（通信）",
+   "interprocedural": "該当しない",
+   "unresolved_handling": "不明（経験則が判定できない場合の扱いの記載は見つけていない）",
+   "evaluation": "1 日分のログ。手検証による精度の記載は見つけていない",
+   "preregistration_or_freeze": "記載を見つけなかった（不明）",
+   "artifact_public": "不明",
+   "relation_to_authgap": "先例（弱い）",
+   "relation_ja": "GET に状態変更を通す（tunneling）という『メソッドの約束と実際の操作の食い違い』を野外で数えた測定として引ける。ただし通信の URL の形からの推定で、コードの効果を見ていないので、AuthGap とは証拠の強さが違う。",
+   "quotes": [
+    {
+     "url": "https://re.public.polimi.it/bitstream/11311/1010973/2/paper.pdf",
+     "quote": "We analyze more than 78GB",
+     "quote_ja": "78GB を超える（HTTP 通信を）分析する。",
+     "location": "p.1, p.2",
+     "match": "exact"
+    },
+    {
+     "url": "https://re.public.polimi.it/bitstream/11311/1010973/2/paper.pdf",
+     "quote": "Number of URLs using action params (to tunnel operations)",
+     "quote_ja": "（経験則 rActionInQuery の説明）操作を通す（tunnel する）ために action 引数を使う URL の数。",
+     "location": "p.14",
+     "match": "exact"
+    },
+    {
+     "url": "https://re.public.polimi.it/bitstream/11311/1010973/2/paper.pdf",
+     "quote": "REST APIs should thus never tunnel requests through Get or Post",
+     "quote_ja": "したがって REST API は GET や POST に要求を通す（tunnel する）べきではない。",
+     "location": "p.4",
+     "match": "exact"
+    }
+   ],
+   "notes": "冪等性・GET の安全性の野外測定としては弱い。コードを見て GET ハンドラの副作用を数えた測定研究は見つからなかった。"
+  },
+  {
+   "id": "gpt_actions_imc25",
+   "title": "An In-Depth Investigation of Data Collection in LLM App Ecosystems（旧題 Data Exposure from LLM Apps: An In-depth Investigation of OpenAI's GPTs）",
+   "authors": "Yuhao Wu, Evin Jaff, Ke Yang, Ning Zhang, Umar Iqbal",
+   "venue_or_kind": "ACM IMC 2025（arXiv:2408.13247 の PDF に記載）",
+   "year": 2025,
+   "url": "https://arxiv.org/pdf/2408.13247",
+   "version_or_commit": "arXiv 最新版（2026-10-02 取得）",
+   "status": "確認",
+   "target": "GPT Actions の OpenAPI 仕様（自然言語のデータ記述）とプライバシーポリシー",
+   "compares": "X = Action のプライバシーポリシーの開示 / Y = Action 仕様に書かれた収集データ（実行もコードも見ない）",
+   "declarations_covered": "none（x-openai-isConsequential など副作用の宣言は扱っていない。本文に 'consequential' の語は見つけられなかった）",
+   "method": "LLM による分類（データ型の分類、ポリシーとの一貫性判定）",
+   "languages": "該当しない（自然言語の仕様と英語のポリシー）",
+   "interprocedural": "該当しない",
+   "unresolved_handling": "PoliCheck 系の類（clear / vague / omitted / ambiguous / incorrect）を使う。ポリシーを取得できたのは 93.96% の Action で、残りはサーバエラー等で取れず。実行時にだけ起きる収集は見えないと限界に明記",
+   "evaluation": "119,274 GPT・4,592 Action（2024-05）。分類は 3 名の手の判定で 92.83% / 91.53% の正確さ、ポリシー照合は 2 名が 113 Action で precision 86.57% / recall 98.77%（著者の主張、verified_by_me: none）。明確に開示しているのは 5.8%",
+   "preregistration_or_freeze": "記載を見つけなかった（不明）",
+   "artifact_public": "https://github.com/llm-platform-security/gpt-data-exposure（ライセンス未確認）",
+   "relation_to_authgap": "相補",
+   "relation_ja": "MCP 以外の LLM ツール生態系で『宣言（ポリシー）と実際（Action が求めるデータ）』の食い違いを大規模に測った例で、AuthGap と同じ測定研究の型を持つ。ただし『実際』の側も Action 仕様の自然言語であってコードではなく、副作用の宣言（isConsequential）も扱わないので、AuthGap とは問う層が違う。",
+   "quotes": [
+    {
+     "url": "https://arxiv.org/pdf/2408.13247",
+     "quote": "We propose an LLM-based framework to analyze the natural language specifications of GPT Actions (custom tools) and assess their data collection practices.",
+     "quote_ja": "GPT Actions の自然言語仕様を解析しデータ収集を評価する LLM ベースの枠組みを提案する。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2408.13247",
+     "quote": "only 5.8% of Actions clearly disclosing their data collection practices.",
+     "quote_ja": "データ収集を明確に開示している Action は 5.8% にとどまる。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2408.13247",
+     "quote": "Since we do not possess the ground truth to automatically compute classification accuracy, we rely on a manual assessment by 3 human reviewers",
+     "quote_ja": "分類の正確さを自動で計算する正解を持たないので、3 名の人手の評価に頼る。",
+     "location": "p.7",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2408.13247",
+     "quote": "which may miss data collection that only occurs when Actions are executed",
+     "quote_ja": "Action の実行時にだけ起きるデータ収集は見逃しうる。",
+     "location": "p.13",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2408.13247",
+     "quote": "https://github.com/llm-platform-security/gpt-data-exposure",
+     "quote_ja": "GitHub の URL。",
+     "location": "p.2",
+     "match": "exact"
+    }
+   ],
+   "notes": "GPT Actions の x-openai-isConsequential（GET 以外は既定で確認を求める）を宣言として、実装と照合した研究は見つからなかった。"
+  },
+  {
+   "id": "skillscope_2026",
+   "title": "Do Skill Descriptions Tell the Truth? Detecting Undisclosed Security Behaviors in Code-Backed LLM Skills",
+   "authors": "Wenhui He, Yue Li, Bang Fu, Huan Xing, Xing Fan, ZeHua Zhang, Baoning Niu",
+   "venue_or_kind": "arXiv preprint 2605.12875",
+   "year": 2026,
+   "url": "https://arxiv.org/pdf/2605.12875",
+   "version_or_commit": "arXiv 最新版（2026-10-02 取得）",
+   "status": "確認",
+   "target": "LLM エージェントの skill（SKILL.md の説明と、同梱の実装ファイル .py/.js/.ts/.go）",
+   "compares": "X = SKILL.md の自然言語の説明（宣言した範囲） / Y = 実装コードから作った security property graph（資格情報の取得・通信・コマンド実行などの操作と流れ）",
+   "declarations_covered": "none（自然言語の説明。類比として D3 openWorldHint・D2 に近い『通信・破壊的操作を説明に書いているか』）",
+   "method": "Joern の CPG から source-level の security property graph を作り、LLM（GPT-5、temperature 0、1 skill 1 呼び出し）で説明と照合",
+   "languages": "Python / JavaScript / TypeScript / Go",
+   "interprocedural": "CPG（AST・CFG・PDG）上の流れを使う。深さの記載は見つけていない",
+   "unresolved_handling": "コード側の証拠が足りないとき LLM は判定を強制せず uncertain を返す設計。ただし uncertain の件数・率の報告は見つけられなかった。抽出規則が拾わない挙動は判定に届かないので、再現率は SPG の被覆を条件とする上界と明記。対象外言語の skill は除外",
+   "evaluation": "4 つの供給元（Anthropic・OpenAI・SkillsMP・skills.rest、2026-03-05 時点）22,515 項目 → 重複除去 11,049 → 説明と実装の両方を持つ 4,556。二重盲検の人手レビューで precision 84.8% / recall 96.5%、不整合は 9.4%（著者の主張、verified_by_me: none）。分類体系は 920 skill の手作業分析から作成",
+   "preregistration_or_freeze": "記載を見つけなかった（不明）",
+   "artifact_public": "https://anonymous.4open.science/r/SkillScope-4D66/（匿名化された実装。ライセンス不明）",
+   "relation_to_authgap": "先例（隣接領域でほぼ同じ問い）",
+   "relation_ja": "MCP の外（エージェントの skill）で『ツールの宣言が実装の振る舞いを覆っているか』を野外の母集団で測っており、問いの形が AuthGap に最も近い。違いは、宣言が構造化された真偽の注釈（readOnlyHint 等）ではなく自然言語の説明で、照合の最後を LLM が行うこと、不明（uncertain）の枠はあるがその率を報告していないこと、解析器の凍結や事前登録の記載が無いこと。",
+   "quotes": [
+    {
+     "url": "https://arxiv.org/pdf/2605.12875",
+     "quote": "We manually analyze 920 real-world programmatic skills and construct an 11-category security property taxonomy.",
+     "quote_ja": "実在の 920 skill を手で分析し、11 類の security property の分類体系を作った。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2605.12875",
+     "quote": "On 4,556 programmatic skills with double- blind human review, SKILLSCOPEachieves a precision of 84.8% and a recall of 96.5% for identifying inconsistency.",
+     "quote_ja": "4,556 skill で二重盲検の人手レビューにより precision 84.8%、recall 96.5%。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2605.12875",
+     "quote": "Confirmed inconsistency affects 9.4% of skills",
+     "quote_ja": "確認された不整合は skill の 9.4% に及ぶ。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2605.12875",
+     "quote": "If code-side evidence is insufficient, the LLM returns an explicit uncertain status rather than a forced decision.",
+     "quote_ja": "コード側の証拠が足りないとき、LLM は判定を強制せず明示的に uncertain を返す。",
+     "location": "p.6",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2605.12875",
+     "quote": "Reported recall is an upper bound conditional on SPG coverage",
+     "quote_ja": "報告した再現率は SPG の被覆を条件とした上界である。",
+     "location": "p.10",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2605.12875",
+     "quote": "skills in other languages are excluded",
+     "quote_ja": "他の言語の skill は除外する。",
+     "location": "p.10",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2605.12875",
+     "quote": "We provide an anonymized imple- mentation of SKILLSCOPEat https : / / anonymous . 4open . science/r/SkillScope-4D66/",
+     "quote_ja": "SkillScope の匿名化した実装を提供する。",
+     "location": "p.10",
+     "match": "exact"
+    }
+   ],
+   "notes": "AuthGap の関連研究では、HintLint 等の MCP の先行と並べて『MCP 以外の LLM ツール生態系での同型の研究』として必ず引くべき。"
+  },
+  {
+   "id": "skillconsist_2026",
+   "title": "SkillConsist: Detecting Inconsistencies in Agent Skills via Bidirectional Graph Alignment",
+   "authors": "Chaofan Meng, Yuhang Zheng, Yingnan Zhou, Sihan Xu",
+   "venue_or_kind": "arXiv preprint 2608.07639",
+   "year": 2026,
+   "url": "https://arxiv.org/pdf/2608.07639",
+   "version_or_commit": "arXiv 最新版（2026-10-02 取得）",
+   "status": "確認",
+   "target": "エージェント skill のパッケージ（宣言のテキストと実装コード）",
+   "compares": "X = 宣言側の振る舞い記録（LLM で抽出） / Y = 実装側の振る舞い記録（LLM で抽出し静的解析で補う）。両者のグラフを双方向に対応づけ、Conflict / Unimplemented / Undeclared を出す",
+   "declarations_covered": "none（自然言語の宣言）",
+   "method": "LLM（DeepSeek-V4 Pro）による記録抽出＋静的解析の補完＋グラフ整列と差分",
+   "languages": "不明（本文で対象言語の一覧を見つけていない）",
+   "interprocedural": "不明",
+   "unresolved_handling": "対応づけた組を Supported / Contradicted / Unknown（証拠が不完全）の 3 状態で定義し、Complete でなければ Consistent としない形式化を持つ。ただし評価では Unknown は所見を出さない（＝陰性に潰れる）",
+   "evaluation": "ClawHub のダウンロード上位 500 と Skill-Inject の 133 から 633 skill のベンチマーク（不整合 319 / 整合 314、局所化注釈 442）。パッケージ単位で precision 86.85% / recall 89.03%（著者の主張、verified_by_me: none）",
+   "preregistration_or_freeze": "記載を見つけなかった（不明）",
+   "artifact_public": "不明",
+   "relation_to_authgap": "先例（隣接領域、判定の形式）",
+   "relation_ja": "Supported / Contradicted / Unknown の 3 値で照合を定義し、不明があれば『整合』と言わない形式化は、AuthGap の CONTRADICTION / 非矛盾 / 不明と同じ考え方。違いは、評価で Unknown が『所見なし』に潰れて率が出ないこと、母集団の割合ではなく作ったベンチマークでの検出性能を測ること、宣言が自然言語であること。",
+   "quotes": [
+    {
+     "url": "https://arxiv.org/pdf/2608.07639",
+     "quote": "static analysis supplements implementa- tion records",
+     "quote_ja": "LLM が宣言と実装を分け、静的解析が実装側の記録を補う。",
+     "location": "p.1",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2608.07639",
+     "quote": "Supportedwhen all required conditions and effects are compatible,Contradictedwhen at least one conflicts, orUnknownwhen evidence is incom- plete.",
+     "quote_ja": "条件と効果がすべて両立すれば Supported、1 つでも衝突すれば Contradicted、証拠が不完全なら Unknown。",
+     "location": "p.2",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2608.07639",
+     "quote": "Unknownemits no finding.",
+     "quote_ja": "Unknown は所見を出さない。",
+     "location": "p.5",
+     "match": "exact"
+    },
+    {
+     "url": "https://arxiv.org/pdf/2608.07639",
+     "quote": "We con- struct a 633-Skill benchmark from ClawHub’s 500 most- downloaded public Skills and 133 Skill-Inject packages.",
+     "quote_ja": "ClawHub のダウンロード上位 500 の公開 skill と 133 の Skill-Inject パッケージから 633 skill のベンチマークを作った。",
+     "location": "p.1",
+     "match": "exact"
+    }
+   ],
+   "notes": ""
+  }
+ ],
+ "searched": [
+  "WebSearch: \"Android Permissions Demystified\" Felt pdf → people.eecs.berkeley.edu",
+  "WebSearch: Salcianu Rinard purity VMCAI 2005 pdf → people.csail.mit.edu/rinard/paper/vmcai05.purity.pdf",
+  "WebSearch: Google Play Data Safety accuracy dynamic analysis USENIX Security → Arkalakis 2024, Khandelwal 2024",
+  "WebSearch: GPT Actions isConsequential measurement study → Wu et al. IMC 2025 (arXiv 2408.13247)",
+  "WebSearch: Koch et al. Keeping Privacy Labels Honest PoPETs 2022",
+  "WebSearch: Chrome extensions over-privileged permissions static analysis → Picazo-Sanchez IJIS 2022, PerCheck (Springer), Felt WebApps 2011",
+  "WebSearch: browser extensions privacy practices vs behavior → Bui, Tang, Shin (ExtPrivA)",
+  "WebSearch: Respector static analysis REST API spec → ICSE 2024 (NSF PAR PDF)",
+  "WebSearch: REST API idempotency testing GET side effects → Sahin & Arcuri arXiv 2608.16239, RESTler, ICST 2020",
+  "WebSearch: REST APIs large-scale compliance GET misuse → Rodríguez et al. 2016",
+  "WebSearch: LLM agent tools declared vs implementation (skills) → SkillScope arXiv 2605.12875, SkillConsist arXiv 2608.07639, others",
+  "WebSearch: Python purity analysis side effect inference → Safe-DS Library-Analyzer, Infer Purity (discovery only)",
+  "WebSearch: Checker Framework -AcheckPurityAnnotations → manual (purity-checker.tex を commit 固定で取得)",
+  "WebSearch / WebFetch: JPure Pearce preprint → whileydave.com/publications/Pea11_CC_preprint.pdf",
+  "一次資料はすべて curl で取得し pypdf で抽出、引用は scripts/verify_quote.py で照合（PDF の合字 ﬁ/ﬂ と行末ハイフンは抽出文字列どおりに引用）"
+ ],
+ "not_found": [
+  "x-openai-isConsequential（GPT Actions の副作用宣言）を実装・挙動と照合した研究は見つからなかった。Wu et al.（IMC 2025）本文にも 'consequential' の語は見つけられなかった。",
+  "Python の関数の純粋性・副作用を静的に推論し、注釈（宣言）と照合した査読付き研究は見つからなかった（Safe-DS Library-Analyzer の purity 推論は GitHub と検索結果で存在を見ただけで一次資料は未読、未確認）。",
+  "Slavin et al.（ICSE 2016, Android のポリシー違反検出）は一次資料を入手・照合していない（未確認のため works に入れていない）。FlowCog（USENIX Security 2018）も未読。",
+  "GET ハンドラの副作用をコードから数えた野外の測定研究は見つからなかった（通信ログからの推定 Rodríguez et al. と、動的な oracle の Sahin & Arcuri のみ）。",
+  "PerCheck（Chrome 拡張の AST ベース過剰権限検出、Springer）は abstract のみで一次資料未読（未確認）。",
+  "どの先例にも、解析器の凍結や事前登録（期待値を採点器より先に固定する等）の記載は見つけられなかった。",
+  "判定できない単位（undecided）の率を主要な結果として報告している先例は Stowaway（未解決 reflection 12% を別群で報告）と PoliCheck（ambiguous 7.6%）だけで、他は除外・下限・上界の形でしか扱っていなかった。"
+ ],
+ "summary_ja": "AuthGap と同じ『自己申告の宣言 vs コード／挙動の実際』を測定研究として行った先例は、Android パーミッション（Stowaway, PScout）、アプリストアのプライバシー表示（Lalaine, Koch et al., Arkalakis et al., PoliCheck, ExtPrivA）、Chrome 拡張（Picazo-Sanchez et al.）に厚く、LLM ツール生態系ではエージェント skill（SkillScope, SkillConsist, 2026 年の preprint）が問いの形で最も近い。副作用（D1/D4 に相当）を扱う系譜は PL 側の純粋性解析（Sălcianu & Rinard, JPure, Checker Framework は既定で注釈を信用）と、HTTP メソッドの意味（Sahin & Arcuri の動的 oracle、Respector の仕様照合）にあるが、野外の母集団で『副作用の宣言の嘘の率』を測ったものは見つからなかった。決定的な違いは 3 つ: (1) Android / Chrome では宣言が強制されるので矛盾は『宣言が広すぎる』側に出るが、MCP の注釈は強制されず AuthGap は危険側（宣言が狭すぎる）を数える。(2) 先例の多くは動的観測で、試験不能を分母から外すか下限・上界で書き、判定不能の率を単位ごとに残すのは Stowaway（未解決 reflection 12% を別群）と PoliCheck（ambiguous 7.6%）程度。SkillScope / SkillConsist は uncertain / Unknown を設計に持つが、率を報告しないか評価で陰性に潰す。(3) 解析器の凍結・事前登録の記載はどの先例にも見つからなかった。"
+}

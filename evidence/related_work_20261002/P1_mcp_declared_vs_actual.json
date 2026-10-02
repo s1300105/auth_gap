@@ -1,0 +1,1282 @@
+{
+ "key": "P1_mcp_declared_vs_actual",
+ "works": [
+  {
+   "id": "DCIChecker",
+   "title": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications",
+   "authors": "Yutao Shi, Xiaohan Zhang, Xiangjing Zhang, Xihua Shen, Hui Ouyang, Huming Qiu, Mi Zhang, Min Yang (Fudan University)",
+   "venue_or_kind": "arXiv プレプリント（cs.CR、arXiv の Comments は 'Preprint'）",
+   "year": 2026,
+   "url": "https://arxiv.org/abs/2606.04769",
+   "version_or_commit": "v1（2026-06-03。2026-10-02 時点で v1 のみ）",
+   "status": "確認",
+   "target": "Python MCP サーバのソースコード（ツールの登録箇所から取り出した記述と、入口から集めた code-bundle）",
+   "compares": "宣言 X = ツール記述（name + inputSchema + 自然言語 description。docstring 由来を含む）／実際 Y = 入口関数から深さ k=3 までの手続き内ヘルパーと sensitive API 呼び出しを束ねた code-bundle を LLM が読んだ意味。Φ（機能）と Ψ（環境への効果）の 2 軸で比較",
+   "declarations_covered": "none（ToolAnnotations は扱わない。本文 HTML に readOnlyHint / destructiveHint / idempotentHint / openWorldHint / annotation の語は 0 回。D1〜D4 のどれも対象外。ただし 'Undeclared Side Effects' の Eff-SM（状態変更）は意味としては D1/D2 の反対側に近い）",
+   "method": "AST による入口発見（登録パターン 4 種）＋ AST による手続き間の code-bundle 構築 ＋ 修飾名つき sensitive API の照合（引数の定数は保持）＋ LLM 判定（Direct / Reverse の 2 プロンプト、食い違えば Arbitration。claude-sonnet-4-5-20250929-thinking、temperature 0）。実行はしない",
+   "languages": "Python のみ（測定）",
+   "interprocedural": "する。プロジェクト内の呼び出しを深さ k=3 まで再帰的にたどる。json・math などのホワイトリストのライブラリは刈り込み、外部ライブラリの中には入らない（境界で 43.3% が外部ライブラリ、10.0% がホワイトリスト）。受け手型の推論の記述は見つからなかった",
+   "unresolved_handling": "判定の出力空間は consistent / inconsistent（+ 7 subtype）で、『判定できない』という出力は見つからなかった（Direct と Reverse が食い違うと Arbitration が最終ラベルを出す。仲裁率は D_syn 13.39%、D_real 38.25%）。動的な引数は '[Dynamic Expression]' という置き換え語で LLM に渡す。深さ 3 の打ち切りは集計（Table A.1/A.2）だけで、個々のツールに打ち切りの印を付けるかは不明。記述が無い 2,170 ツールは監査の分母から外す（19,200 → 17,030）。ツールが取れなかったリポジトリは手で見て『主に上流の構造のせい』とした。限界節で 'LLM-based analysis is probabilistic' と認める",
+   "evaluation": "D_large: 先行研究 [14]（Guo ほか arXiv:2509.25292）のマーケットプレース集約データから Python 2,214 サーバ・19,200 ツール。D_real: 検出結果から無作為に 400 対（予測 consistent 200 / inconsistent 200）を 2 人の著者が独立にラベル付け、不一致は第 3 の研究者が裁定 → 203/197。DCIChecker は D_real で precision 96.00% / recall 97.46%、D_syn（LLM が作った変異を人が選んだ 560 対）で F1 96.16%。母集団での頻度は 1,907/19,200 = 9.93%（有効対 17,030 に対して 11.20%）、サーバ単位 775/2,214。（数値は著者の主張。verified_by_me: none）注意（我々の読み）: D_real は予測で層別した 400 対なので、そこでの recall は母集団の recall ではない",
+   "preregistration_or_freeze": "見つからなかった（事前登録・解析器の凍結の記述なし。LLM の版と温度を固定したと書くのみ）",
+   "artifact_public": "本文 HTML に公開リポジトリへのリンクは見つからなかった",
+   "relation_to_authgap": {
+    "type": "競合（ただし宣言が違う）",
+    "explanation": "同じ『MCP ツールが宣言していることと、コードが実際にすることの食い違い』を Python サーバで静的に測る点は AuthGap と同じ。違いは宣言の側で、DCIChecker は自然言語の説明文を比べ、AuthGap は readOnlyHint などの機械可読な注釈（D1〜D4）を比べる。判定も DCIChecker は LLM の仲裁で行い、決められない場合の出力が無いのに対し、AuthGap は解析器が決定的に判定して未決（opaque）を残し、その率を報告する。"
+   },
+   "quotes": [
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "Throughout this paper, we collectively refer to the tool name, input schema, and description as the tool description, as they jointly constitute the information visible to the LLM.",
+     "quote_ja": "本論文では、ツール名・入力スキーマ・説明文をまとめて『ツール記述』と呼ぶ。LLM に見える情報だからである。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > II Background > II-A Tool Selection and Invocation in MCP",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "Undeclared Side Effects captures cases where the environmental impacts of executing a tool are not explicitly stated in the description, such as state mutations (e.g., unexpected file writes), resource overconsumption (e.g., excessive CPU, bandwidth or disk usage), and data leakage (e.g., transmitting sensitive data to external endpoints).",
+     "quote_ja": "『宣言されていない副作用』は、ツール実行の環境への影響が説明文に明記されていない場合を指す。状態の変更（予期しないファイル書き込み）、資源の過剰消費、データ漏洩など。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > I Introduction",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "outputs a taxonomy-aligned judgment: consistent or inconsistent, together with the corresponding DCI subtype",
+     "quote_ja": "出力は分類に沿った判定で、一致か不一致か、不一致なら対応する DCI の下位類型。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > IV DCIChecker: Detecting Real-world DCI",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "DCIChecker scans the source code and recognizes four common registration patterns",
+     "quote_ja": "DCIChecker はソースコードを走査し、よくある 4 つの登録パターンを認識する。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > IV DCIChecker: Detecting Real-world DCI > IV-B Stage I: Structure-Aware Tool Semantic Extraction",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "Concretely, we recursively follow intra-project calls up to depth",
+     "quote_ja": "具体的には、プロジェクト内の呼び出しを深さ k まで再帰的にたどる。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > IV DCIChecker: Detecting Real-world DCI > IV-B Stage I: Structure-Aware Tool Semantic Extraction",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "DCIChecker prunes generic library utilities (e.g., json, math) with a whitelist-based filter, while retaining project-local helpers together with their names, depths, and file paths.",
+     "quote_ja": "json や math などの汎用ライブラリはホワイトリストで刈り込み、プロジェクト内のヘルパーは名前・深さ・ファイルパスとともに残す。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > IV DCIChecker: Detecting Real-world DCI > IV-B Stage I: Structure-Aware Tool Semantic Extraction",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "The majority of calls at this boundary target external libraries (43.3%) or whitelisted utilities (10.0%).",
+     "quote_ja": "この境界での呼び出しの大半は外部ライブラリ（43.3%）かホワイトリストの汎用部品（10.0%）に向かう。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > Appendix A Details of Tool Semantic Extraction > A-A Implementation of Tool Code Extraction",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "Constant values (e.g., URLs) are preserved, while dynamic expressions are replaced with placeholders like [Dynamic Expression] to maintain a compact context.",
+     "quote_ja": "定数（URL など）は残し、動的な式は [Dynamic Expression] のような置き換え語にする。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > Appendix A Details of Tool Semantic Extraction > A-B Sensitive API Classification",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "To ensure deterministic and reproducible outputs, we use claude-sonnet-4-5-20250929-thinking with temperature set to",
+     "quote_ja": "決定的で再現可能な出力にするため、claude-sonnet-4-5-20250929-thinking を温度 0 で使う。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > IV DCIChecker: Detecting Real-world DCI > IV-D Implementation Details",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "In the above cases, 13.39% and 38.25% cases need the arbitration",
+     "quote_ja": "上の場合、13.39% と 38.25% のケースで仲裁が要った。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > V Real-world Measurement > V-B RQ1. DCIChecker Performance",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "We focus on Python MCP servers because Python is the most widely used implementation language and accounts for nearly 40% of functional MCP servers in the wild.",
+     "quote_ja": "Python が最も広く使われる実装言語で、稼働する MCP サーバの約 40% を占めるので、Python に絞る。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > V Real-world Measurement > V-A Dataset",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "We use the dataset collected by previous work [14], which aggregates MCP servers from multiple major MCP marketplaces.",
+     "quote_ja": "先行研究 [14] が集めた、主要な MCP マーケットプレースのサーバを集約したデータを使う。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > V Real-world Measurement > V-A Dataset",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "including 200 pairs predicted by DCIChecker as consistent and 200 predicted as inconsistent.",
+     "quote_ja": "DCIChecker が一致と予測した 200 対と、不一致と予測した 200 対を含む。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > V Real-world Measurement > V-A Dataset",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "All selected pairs were then independently validated by two authors, with disagreements resolved by a third senior researcher.",
+     "quote_ja": "選んだ対はすべて 2 人の著者が独立に確認し、意見が割れたら第 3 の上級研究者が決めた。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > V Real-world Measurement > V-A Dataset",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "This process identified 8 false positives and 5 false negatives",
+     "quote_ja": "この作業で偽陽性 8 件と偽陰性 5 件が見つかった。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > V Real-world Measurement > V-A Dataset",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "it reaches 96.00% precision and 97.46% recall, yielding the best F1 (96.73%) and accuracy (96.75%).",
+     "quote_ja": "精度 96.00%、再現率 97.46%、F1 96.73%、正解率 96.75%。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > V Real-world Measurement > V-B RQ1. DCIChecker Performance",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "Using DCIChecker, we identify 1,907 inconsistent tools, accounting for 11.20% of the audited valid pairs and 9.93% of all extracted tools.",
+     "quote_ja": "DCIChecker で 1,907 の不一致ツールを見つけた。監査した有効対の 11.20%、抽出した全ツールの 9.93%。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > V Real-world Measurement > V-C RQ2. Real-world Landscape of DCI",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "It is also worth noting that 2,170 tools, or 11.30% of all extracted tools, provide no descriptions at all.",
+     "quote_ja": "全ツールの 11.30% にあたる 2,170 ツールには説明文がまったく無い。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > V Real-world Measurement > V-C RQ2. Real-world Landscape of DCI",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "For repositories from which no tools were extracted, manual inspection showed that most exposed only resource or prompt primitives",
+     "quote_ja": "ツールが取れなかったリポジトリを手で見ると、多くはリソースやプロンプトしか出していなかった。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > Appendix A Details of Tool Semantic Extraction > A-A Implementation of Tool Code Extraction",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "automated semantic checking is inevitably imperfect: descriptions can be ambiguous, implementations can depend on runtime context, and LLM-based analysis is probabilistic.",
+     "quote_ja": "自動の意味検査は完全ではありえない。説明文は曖昧で、実装は実行時の文脈に依存し、LLM による解析は確率的である。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > VII Discussion",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "Standards can reduce ambiguity by promoting structured side-effect metadata and minimum description-quality requirements.",
+     "quote_ja": "標準は、構造化された副作用のメタデータと最低限の説明文の品質要件を広めることで曖昧さを減らせる。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > VI Mitigations > VI-A Best Practices",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "we did not execute third-party MCP tools against live systems",
+     "quote_ja": "第三者の MCP ツールを稼働中のシステムに対して実行はしていない。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > Ethical Considerations",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.04769v1",
+     "quote": "MCPDiFF denotes our re-implementation based on the methodology described by the original paper, as no public runnable artifact aligned with our setting is available.",
+     "quote_ja": "MCPDiFF は元論文の方法に基づく我々の再実装である。我々の設定に合う、公開された実行可能な成果物が無いため。",
+     "location": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications > V Real-world Measurement > V-A Dataset",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:50Z",
+     "sha256_prefix": "ac01fd874ed1"
+    },
+    {
+     "url": "https://arxiv.org/abs/2606.04769",
+     "quote": "Preprint",
+     "quote_ja": "（arXiv の Comments 欄）Preprint",
+     "location": "Title:Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:18:01Z",
+     "sha256_prefix": "b7381362bd5a"
+    }
+   ],
+   "notes": "本文 HTML（715,280 bytes）で readOnlyHint / destructiveHint / idempotentHint / openWorldHint / annotation は 0 回（このページについてだけの不在の証拠。付録 B-B のプロンプトは HTML のテキストに出ていない）。仕様書 §1.5.1 の ◎' 行の内容（k=3、Claude Sonnet 4.5、温度 0、実行しない、注釈の語なし）は本文で裏づけられた。MCPDiFF を再実装して基準線に使っている（Table III）。Table V の数（19,200 → 17,030 有効、記述なし 2,170）は、記述が無いツールを分母から落とす扱いを示す。"
+  },
+  {
+   "id": "MCPDiFF",
+   "title": "Don't believe everything you read: Understanding and Measuring MCP Behavior under Misleading Tool Descriptions",
+   "authors": "Zhihao Li, Boyang Ma, Xuelong Dai, Minghui Xu, Yue Zhang, Biwei Yan, Kun Li (Shandong University)",
+   "venue_or_kind": "arXiv プレプリント（cs.CR）。本文に 'Anonymous CogSci submission' とある",
+   "year": 2026,
+   "url": "https://arxiv.org/abs/2602.03580",
+   "version_or_commit": "v1（2026-02-03。v1 のみ）",
+   "status": "確認",
+   "target": "MCP サーバのリポジトリ（多言語ソースコード ＋ README / manifest などの説明ファイル）。単位はサーバ",
+   "compares": "宣言 X = リポジトリの説明ファイル（README、manifest）から LLM が取り出した機能の記述／実際 Y = 呼び出し連鎖のコードから LLM が取り出した機能の特徴。両者を埋め込みベクトルの類似度で突き合わせ、『記述に現れない機能』の割合（被覆率）で 4 段階（Full / Mostly / Partial / Rare）に分ける",
+   "declarations_covered": "none（注釈の語は本文に 0 回。動機の図で 'a tool described as read-only' を例に出すが、それは自然言語の説明であって readOnlyHint ではない）",
+   "method": "Tree-sitter による AST 解析と呼び出しグラフ（入次数 0 の関数を入口とみなし DFS で連鎖を作る）＋ LLM による意味の抽出 ＋ 埋め込みの類似度",
+   "languages": "多言語（Tree-sitter。具体的な言語の一覧は本文に見つからなかった）",
+   "interprocedural": "する（リポジトリ全体の呼び出しグラフを入口から DFS）。深さの上限・外部ライブラリへの降下は不明。入口が MCP のツール登録ではなく『入次数 0 の関数』である点に注意",
+   "unresolved_handling": "記述が無い・解析できない場合の扱いは見つからなかった。『記述にあってコードに無い』（過大主張）は脅威モデル上無視する、と明記",
+   "evaluation": "MCP Market・Smithery・MCP World などのマーケットプレースから集めた 10,240 アプリ。Partial + Rare が約 13%。（数値は著者の主張。verified_by_me: none）人手のラベルによる精度・再現率の評価は見つからなかった（事例 3 件の手での確認のみ）",
+   "preregistration_or_freeze": "見つからなかった",
+   "artifact_public": "本文に見つからなかった。DCIChecker の著者は『我々の設定に合う公開された実行可能な成果物が無い』と書いている",
+   "relation_to_authgap": {
+    "type": "相補（同じ問いの粗い先行）",
+    "explanation": "『説明とコードの食い違い』という問いの立て方は同じで、静的解析で大規模に測る点も同じ。ただし比べる宣言は README などの説明文で、単位はサーバ、判定は LLM と埋め込みの類似度であり、ToolAnnotations（D1〜D4）もツール単位の矛盾も扱わない。人手のラベルによる精度の評価も無いので、AuthGap の CONTRADICTION の精度と並べられる数は無い。"
+   },
+   "quotes": [
+    {
+     "url": "https://arxiv.org/html/2602.03580v1",
+     "quote": "We statically analyze multi-language source code with the Tree-Sitter library to parse abstract syntax trees and extract function signatures, function bodies, and call relationships.",
+     "quote_ja": "Tree-Sitter で多言語のソースを静的に解析し、AST から関数シグネチャ・本体・呼び出し関係を取り出す。",
+     "location": "Don't believe everything you read: Understanding and Measuring MCP Behavior under Misleading Tool Descriptions > Design of MCPDiFF",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "31c694d4a2b6"
+    },
+    {
+     "url": "https://arxiv.org/html/2602.03580v1",
+     "quote": "Starting from all entry functions, we perform depth-first traversal on the call graph to generate complete function call chains.",
+     "quote_ja": "すべての入口関数から呼び出しグラフを深さ優先でたどり、呼び出し連鎖を作る。",
+     "location": "Don't believe everything you read: Understanding and Measuring MCP Behavior under Misleading Tool Descriptions > Design of MCPDiFF",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "31c694d4a2b6"
+    },
+    {
+     "url": "https://arxiv.org/html/2602.03580v1",
+     "quote": "We also read repository descriptive files (such as README, manifest) and use large models to extract and analyze the functional information expressed in the repository descriptions.",
+     "quote_ja": "リポジトリの説明ファイル（README、manifest など）も読み、大規模モデルで記述に書かれた機能の情報を取り出す。",
+     "location": "Don't believe everything you read: Understanding and Measuring MCP Behavior under Misleading Tool Descriptions > Design of MCPDiFF",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "31c694d4a2b6"
+    },
+    {
+     "url": "https://arxiv.org/html/2602.03580v1",
+     "quote": "embed the texts into vectors, and compare vector similarity.",
+     "quote_ja": "テキストを埋め込みベクトルにし、その類似度を比べる。",
+     "location": "Don't believe everything you read: Understanding and Measuring MCP Behavior under Misleading Tool Descriptions > Design of MCPDiFF",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "31c694d4a2b6"
+    },
+    {
+     "url": "https://arxiv.org/html/2602.03580v1",
+     "quote": "when a described feature is not present among the function features (i.e., the author claims a feature that the code does not implement), we treat this case as ignorable under our threat model.",
+     "quote_ja": "記述にある機能がコードの機能に無い（作者が実装していない機能を主張する）場合は、脅威モデル上無視してよいとする。",
+     "location": "Don't believe everything you read: Understanding and Measuring MCP Behavior under Misleading Tool Descriptions > Design of MCPDiFF",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "31c694d4a2b6"
+    },
+    {
+     "url": "https://arxiv.org/html/2602.03580v1",
+     "quote": "a tool described as read-only may silently perform destructive operations, remaining invisible to both users and models.",
+     "quote_ja": "読み取り専用と説明されたツールが、黙って破壊的な操作をすることがある。",
+     "location": "Don't believe everything you read: Understanding and Measuring MCP Behavior under Misleading Tool Descriptions > Motivation and Research Question > Motivation",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "31c694d4a2b6"
+    },
+    {
+     "url": "https://arxiv.org/html/2602.03580v1",
+     "quote": "we collected 10240 MCP applications from major MCP marketplaces",
+     "quote_ja": "主要な MCP マーケットプレースから 10240 の MCP アプリを集めた。",
+     "location": "Don't believe everything you read: Understanding and Measuring MCP Behavior under Misleading Tool Descriptions > Evaluation > Experiment Setup",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "31c694d4a2b6"
+    },
+    {
+     "url": "https://arxiv.org/html/2602.03580v1",
+     "quote": "together these two categories account for about 13% of the sample",
+     "quote_ja": "この 2 つの区分（Partial と Rare）を合わせると標本の約 13%。",
+     "location": "Don't believe everything you read: Understanding and Measuring MCP Behavior under Misleading Tool Descriptions > Evaluation > Experiment Results",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "31c694d4a2b6"
+    },
+    {
+     "url": "https://arxiv.org/html/2602.03580v1",
+     "quote": "Anonymous CogSci submission",
+     "quote_ja": "CogSci への匿名投稿。",
+     "location": "Don't believe everything you read: Understanding and Measuring MCP Behavior under Misleading Tool Descriptions > Abstract",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "31c694d4a2b6"
+    }
+   ],
+   "notes": "仕様書 §9 の『2602.03580 の 13%』の出所。サーバ単位の記述（README）との比較なので、ツール単位の説明文・注釈とは比べている物が違う。"
+  },
+  {
+   "id": "DescSmells",
+   "title": "From Docs to Descriptions: Smell-Aware Evaluation of MCP Server Descriptions",
+   "authors": "Peiran Wang, Ying Li, Yuqiang Sun, Chengwei Liu, Yang Liu, Yuan Tian ほか（UCLA / NTU）",
+   "venue_or_kind": "arXiv プレプリント（cs.SE。ACM テンプレートの placeholder 'Woodstock ’18' のまま）",
+   "year": 2026,
+   "url": "https://arxiv.org/abs/2602.18914",
+   "version_or_commit": "v1（2026-02-21）",
+   "status": "確認",
+   "target": "MCP サーバのソースから取り出した『説明文とコードの対』（10,831 サーバ）",
+   "compares": "宣言 X = ツールの自然言語の説明文（とパラメータの説明）／実際 Y = 対応する関数の実装。LLM が両者を比べて問題を列挙し、カードソートで分類（accuracy 次元に 'Undeclared behavior'、information completeness に 'Missing side effects' がある）",
+   "declarations_covered": "none（注釈の語は本文に 0 回）",
+   "method": "登録パターンの照合で AST から説明文とコードの対を作る ＋ LLM（gpt-4o-mini）が対ごとに不一致・欠落を挙げ、意味の類似度で類に割り当てる",
+   "languages": "Python・TypeScript/JavaScript・Java・C#・Kotlin（登録パターンの表）",
+   "interprocedural": "不明（『対応する関数またはコード実装』と書くのみ。呼び出しをたどる記述は見つからなかった）",
+   "unresolved_handling": "見つからなかった。限界節で、実行しない静的な評価なので動的な問題（後で古くなる説明など）は捉えないと書く",
+   "evaluation": "10,831 サーバ（MCP.so・Pulse・Glama・Smithery などから収集）。smell の検出そのものの精度を人手で測った記述は見つからなかった（変異実験と選択確率の実験はある）",
+   "preregistration_or_freeze": "見つからなかった",
+   "artifact_public": "本文に見つからなかった",
+   "relation_to_authgap": {
+    "type": "相補",
+    "explanation": "説明文とコードを対にしてずれを数える点は似ているが、目的は説明文の品質（smell）の分類で、判定は LLM。宣言として注釈を見ず、矛盾の精度も人手で測っていない。AuthGap にとっては『説明文の側のずれは別系統の研究がある』ことを示す参照先。"
+   },
+   "quotes": [
+    {
+     "url": "https://arxiv.org/html/2602.18914v1",
+     "quote": "we applied a pattern-matching process based on found registration patterns against the generated ASTs to identify and register every MCP server tool.",
+     "quote_ja": "見つけた登録パターンを生成した AST に照合して、各ツールを特定する。",
+     "location": "From Docs to Descriptions: Smell-Aware Evaluation of MCP Server Descriptions > 3. Constructing the Taxonomy of MCP Description Smell Standard from the Wild > 3.3. Extracting MCP Metadata",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:06Z",
+     "sha256_prefix": "e2796ca158b6"
+    },
+    {
+     "url": "https://arxiv.org/html/2602.18914v1",
+     "quote": "Each pair links a tool’s natural language description (the metadata crucial for the LLM’s selection process) with its corresponding function or code implementation.",
+     "quote_ja": "各対は、ツールの自然言語の説明文（LLM の選択に効くメタデータ）と、対応する関数・コード実装を結ぶ。",
+     "location": "From Docs to Descriptions: Smell-Aware Evaluation of MCP Server Descriptions > 3. Constructing the Taxonomy of MCP Description Smell Standard from the Wild > 3.3. Extracting MCP Metadata",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:06Z",
+     "sha256_prefix": "e2796ca158b6"
+    },
+    {
+     "url": "https://arxiv.org/html/2602.18914v1",
+     "quote": "The detailed LLM-driven procedure is formalized in Algorithm 1, using the model gpt-4o-mini.",
+     "quote_ja": "LLM による手続きは Algorithm 1 に形式化し、モデルは gpt-4o-mini を使う。",
+     "location": "From Docs to Descriptions: Smell-Aware Evaluation of MCP Server Descriptions > 3. Constructing the Taxonomy of MCP Description Smell Standard from the Wild > 3.4. Deriving Description Standards from the Analysis of Servers",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:06Z",
+     "sha256_prefix": "e2796ca158b6"
+    },
+    {
+     "url": "https://arxiv.org/html/2602.18914v1",
+     "quote": "This dimension ensures the semantic alignment between the natural language description and the underlying code implementation.",
+     "quote_ja": "（accuracy 次元は）自然言語の説明と実装コードの意味的な整合を確かめる。",
+     "location": "From Docs to Descriptions: Smell-Aware Evaluation of MCP Server Descriptions > 4. Empirical Study on Description Smells in the Wild > 4.1. RQ1: The Taxonomy of MCP Description Smells & Standards",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:06Z",
+     "sha256_prefix": "e2796ca158b6"
+    },
+    {
+     "url": "https://arxiv.org/html/2602.18914v1",
+     "quote": "we applied the standards-based assessment criteria derived in RQ1 to the collected corpus of 10,831 MCP servers.",
+     "quote_ja": "RQ1 で導いた基準を、集めた 10,831 の MCP サーバに当てた。",
+     "location": "From Docs to Descriptions: Smell-Aware Evaluation of MCP Server Descriptions > 4. Empirical Study on Description Smells in the Wild > 4.2. RQ2: The State of Practice: Prevalence of Smells",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:06Z",
+     "sha256_prefix": "e2796ca158b6"
+    },
+    {
+     "url": "https://arxiv.org/html/2602.18914v1",
+     "quote": "Furthermore, our measurement (RQ2) assesses description quality through static analysis of code-description pairs, without executing the tools at runtime.",
+     "quote_ja": "RQ2 の測定は説明文とコードの対の静的解析で品質を評価し、ツールを実行しない。",
+     "location": "From Docs to Descriptions: Smell-Aware Evaluation of MCP Server Descriptions > 7. Discussion > 7.2. Limitations",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:06Z",
+     "sha256_prefix": "e2796ca158b6"
+    }
+   ],
+   "notes": "仕様書・related_work.md にはまだ載っていない。Table 3 の件数（Undeclared behavior、Missing side effects など）は表のセルが分かれているため引用照合はしておらず、本 JSON では使わない。"
+  },
+  {
+   "id": "RandomDraw_2609.10962",
+   "title": "What a Random Draw from the MCP Registry Contains, and What Tool-Use Benchmarks Contain Instead",
+   "authors": "Haseeb Mohammed Afsar（個人研究者）",
+   "venue_or_kind": "arXiv プレプリント",
+   "year": 2026,
+   "url": "https://arxiv.org/abs/2609.10962",
+   "version_or_commit": "v1（2026-09-10）",
+   "status": "確認",
+   "target": "公式 MCP レジストリの npm / stdio / active サーバを起動し、ワイヤ上の tools/list を読む（実行時のメタデータ）",
+   "compares": "比較はしない。注釈（4 つのヒント）が付いているかどうかの有無を数えるだけ。コードとは照合しない",
+   "declarations_covered": "D1〜D4 の『有無』のみ（値の真偽とコードとの整合は見ない）",
+   "method": "動的な探針（npx で起動、initialize、tools/list、JSON Schema 検査）。ツールは呼ばない。シード付きの無作為抽出",
+   "languages": "npm パッケージ（主に JS/TS）。言語は問わない",
+   "interprocedural": "該当なし（コードを読まない）",
+   "unresolved_handling": "400 件すべてに結果を記録（含む 195 / 握手失敗 150 / 認証が要る 53 / 取得不可 2）し、黙って落とさない。部分注釈のサーバ 0/194 は『無い』と言わず片側 95% 上限 1.53% として報告",
+   "evaluation": "7,258 件のフレームから 400 件を無作為抽出。動いた 194 サーバの 2,766 ツールのうち 1,626（58.8%）が注釈なし、サーバ単位では 72 が全部付け 122 が全く付けない。（数値は著者の主張。verified_by_me: none）",
+   "preregistration_or_freeze": "事前登録の記述は見つからなかった。ただし標本は公開シード 20260819 とフレームの SHA-256 で固定し、全図を再生成できると書く",
+   "artifact_public": "https://github.com/itguruhaseeb/mcp-probe ＋ Zenodo doi:10.5281/zenodo.21347997",
+   "relation_to_authgap": {
+    "type": "相補（宣言の普及率の測定）",
+    "explanation": "注釈がどれだけ付いているかを無作為標本で測るので、AuthGap の母集団（宣言ありのサーバ）がどれだけ珍しいかの文脈になる。注釈が正しいか、コードと矛盾するかは一切見ていない。黙って落とさない記録の仕方は AuthGap の方針と同じ型。"
+   },
+   "quotes": [
+    {
+     "url": "https://arxiv.org/html/2609.10962v1",
+     "quote": "The frame is the npm-published, stdio-declared, active servers the census emits, 7,258 candidates at the 2026-08-22 snapshot.",
+     "quote_ja": "フレームは国勢調査が出す npm 公開・stdio 宣言・active のサーバで、2026-08-22 時点で 7,258 件。",
+     "location": "What a Random Draw from the MCP Registry Contains, and What Tool-Use Benchmarks Contain Instead > 3 Method > 3.2 Sampling",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "1102be6fa84f"
+    },
+    {
+     "url": "https://arxiv.org/html/2609.10962v1",
+     "quote": "No credentials are ever supplied, no side-effecting tool is invoked, no server is repaired or retried, and every draw is recorded with an outcome.",
+     "quote_ja": "認証情報は渡さず、副作用のあるツールは呼ばず、修理も再試行もせず、すべての抽出に結果を記録する。",
+     "location": "What a Random Draw from the MCP Registry Contains, and What Tool-Use Benchmarks Contain Instead > 3 Method > 3.3 Probing",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "1102be6fa84f"
+    },
+    {
+     "url": "https://arxiv.org/html/2609.10962v1",
+     "quote": "No server was dropped silently.",
+     "quote_ja": "黙って落としたサーバは無い。",
+     "location": "What a Random Draw from the MCP Registry Contains, and What Tool-Use Benchmarks Contain Instead > 4 RQ1: what an unrepaired random draw contains",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "1102be6fa84f"
+    },
+    {
+     "url": "https://arxiv.org/html/2609.10962v1",
+     "quote": "Of the 194 included servers advertising at least one tool, 72 annotate every tool and 122 annotate none. 1,626 of 2,766 tools (58.8%) carry no annotations.",
+     "quote_ja": "ツールを 1 つ以上出す 194 サーバのうち、72 は全ツールに注釈を付け、122 は全く付けない。2,766 ツールのうち 1,626（58.8%）は注釈なし。",
+     "location": "What a Random Draw from the MCP Registry Contains, and What Tool-Use Benchmarks Contain Instead > 5 RQ2: what the servers that do run look like > 5.2 Safety annotations",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "1102be6fa84f"
+    },
+    {
+     "url": "https://arxiv.org/html/2609.10962v1",
+     "quote": "Every figure in this paper regenerates from a committed script plus the published seed 20260819 and the frame hash recorded in the draw manifest.",
+     "quote_ja": "すべての図は、コミット済みのスクリプトと公開シード 20260819、抽出記録にあるフレームのハッシュから再生成できる。",
+     "location": "What a Random Draw from the MCP Registry Contains, and What Tool-Use Benchmarks Contain Instead > 9 Data and code availability",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "1102be6fa84f"
+    },
+    {
+     "url": "https://arxiv.org/html/2609.10962v1",
+     "quote": "https://github.com/itguruhaseeb/mcp-probe",
+     "quote_ja": "（成果物の URL）",
+     "location": "What a Random Draw from the MCP Registry Contains, and What Tool-Use Benchmarks Contain Instead > 9 Data and code availability",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "1102be6fa84f"
+    }
+   ],
+   "notes": "既存カード C10-01 と同じ論文。"
+  },
+  {
+   "id": "Anomalies_2609.15397",
+   "title": "When Tool Calls Succeed but Workflows Fail: Anomalies at the Agent-Tool Boundary",
+   "authors": "Artem Trofimov, Boris Novikov ほか",
+   "venue_or_kind": "arXiv プレプリント（11 ページ）",
+   "year": 2026,
+   "url": "https://arxiv.org/abs/2609.15397",
+   "version_or_commit": "v1（2026-09-14）",
+   "status": "確認",
+   "target": "公式レジストリのリモート窓口に tools/list を匿名で問い合わせた 98,291 ツールの注釈",
+   "compares": "比較はしない。4 つのヒントの出現・値（明示の false と省略を区別）を数え、論文が定義する境界能力（A1〜A8）が注釈で表せるかを読む。実装との差は『実装レベルの解析が要る』と範囲外に置く",
+   "declarations_covered": "D1〜D4 の出現と値（コードとの整合は見ない）",
+   "method": "ワイヤ上の注釈の全数調査（ツールは呼ばない）＋ 概念モデル（effect history、8 つの異常）",
+   "languages": "言語を問わない（リモート窓口のみ）",
+   "interprocedural": "該当なし",
+   "unresolved_handling": "接続失敗 4,318・タイムアウト 74・ツールなし 4 を明記。stdio / パッケージのみのサーバ 9,454 は範囲外と明記。値が SDK の既定値や雛形由来かもしれないと注意",
+   "evaluation": "2026-07-27 スナップショット。74.0% が 1 つ以上、61.7% が 4 つすべてを直列化。（数値は著者の主張。verified_by_me: none）",
+   "preregistration_or_freeze": "見つからなかった",
+   "artifact_public": "https://github.com/flame-stream/mcp-annotation-census",
+   "relation_to_authgap": {
+    "type": "相補（宣言の値の分布）",
+    "explanation": "注釈の値を大規模に数える点で AuthGap の宣言側の分布の文脈になる。論文自身が『宣言どおりの境界を読むもので実装の振る舞いではない』と書き、宣言と実装の差は実装レベルの解析が要るとして範囲外に置く。そこが AuthGap の測る部分。"
+   },
+   "quotes": [
+    {
+     "url": "https://arxiv.org/html/2609.15397v1",
+     "quote": "recording the four annotations the specification defines (readOnlyHint, destructiveHint, idempotentHint, openWorldHint) and keeping an explicit false distinct from an omitted field.",
+     "quote_ja": "仕様が定める 4 つの注釈を記録し、明示の false と省略を区別する。",
+     "location": "When Tool Calls Succeed but Workflows Fail: Anomalies at the Agent-Tool Boundary > 5 What the Boundary Declares Today",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "a57906aa9b60"
+    },
+    {
+     "url": "https://arxiv.org/html/2609.15397v1",
+     "quote": "We anonymously queried tools/list on all 9,234 remote targets",
+     "quote_ja": "9,234 のリモート対象すべてに匿名で tools/list を問い合わせた。",
+     "location": "When Tool Calls Succeed but Workflows Fail: Anomalies at the Agent-Tool Boundary > 5 What the Boundary Declares Today > Sampling and methodology.",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "a57906aa9b60"
+    },
+    {
+     "url": "https://arxiv.org/html/2609.15397v1",
+     "quote": "No tool was called.",
+     "quote_ja": "ツールは 1 つも呼んでいない。",
+     "location": "When Tool Calls Succeed but Workflows Fail: Anomalies at the Agent-Tool Boundary > 5 What the Boundary Declares Today > Sampling and methodology.",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "a57906aa9b60"
+    },
+    {
+     "url": "https://arxiv.org/html/2609.15397v1",
+     "quote": "At the wire level, 74.0% of tools serialize at least one field and 61.7% serialize all four.",
+     "quote_ja": "ワイヤ上では、74.0% のツールが少なくとも 1 項目を、61.7% が 4 項目すべてを出す。",
+     "location": "When Tool Calls Succeed but Workflows Fail: Anomalies at the Agent-Tool Boundary > 5 What the Boundary Declares Today > Annotation fields are widely emitted.",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "a57906aa9b60"
+    },
+    {
+     "url": "https://arxiv.org/html/2609.15397v1",
+     "quote": "many values may originate in SDK defaults or server templates rather than deliberate declaration",
+     "quote_ja": "多くの値は意図的な宣言ではなく SDK の既定値やサーバの雛形から来ているかもしれない。",
+     "location": "When Tool Calls Succeed but Workflows Fail: Anomalies at the Agent-Tool Boundary > 5 What the Boundary Declares Today > Annotation fields are widely emitted.",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "a57906aa9b60"
+    },
+    {
+     "url": "https://arxiv.org/html/2609.15397v1",
+     "quote": "The census reads the boundary as declared, not as implementations behave.",
+     "quote_ja": "この調査は宣言どおりの境界を読むもので、実装がどう振る舞うかではない。",
+     "location": "When Tool Calls Succeed but Workflows Fail: Anomalies at the Agent-Tool Boundary > 5 What the Boundary Declares Today > What the hints do not resolve.",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "a57906aa9b60"
+    },
+    {
+     "url": "https://arxiv.org/html/2609.15397v1",
+     "quote": "https://github.com/flame-stream/mcp-annotation-census",
+     "quote_ja": "（成果物の URL）",
+     "location": "When Tool Calls Succeed but Workflows Fail: Anomalies at the Agent-Tool Boundary > 5 What the Boundary Declares Today > Sampling and methodology.",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "a57906aa9b60"
+    }
+   ],
+   "notes": "既存カード C10-03 / C10-04。[23] は Toeppe ほか arXiv:2607.10123（GitHub の MCP 実装のデータセット）で、その要旨には注釈とコードの照合は見当たらない（要旨のみ確認、本文未読）。"
+  },
+  {
+   "id": "SpellSmith_2607.07461",
+   "title": "Mitigating Taint-Style Vulnerabilities in MCP Servers via Security-Aware Tool Descriptions",
+   "authors": "Yang Shi, Jiaheng Fu, Yihe Huang, Ruixiang Wu, Chengyao Sun, Kaifeng Huang",
+   "venue_or_kind": "arXiv プレプリント",
+   "year": 2026,
+   "url": "https://arxiv.org/abs/2607.07461",
+   "version_or_commit": "v1（2026-07-08）",
+   "status": "確認",
+   "target": "100 プロジェクトのツールメタデータ（公式 Python SDK のクライアントで登録時に取得）と NVD / GitHub の脆弱性 53 件",
+   "compares": "注釈についての比較はしない。tools/list のフィールドの使用数（annotations を使うのは 1,856 中 325）を数えるだけ。SpellSmith 本体は名前・説明・スキーマだけからリスクを推定し、実装は見ない",
+   "declarations_covered": "注釈フィールドの有無のみ（D1〜D4 の値は見ない）",
+   "method": "実測は登録時メタデータの集計＋手作業の脆弱性分類。防御（SpellSmith）は LLM による説明文の書き換えと自己反省",
+   "languages": "言語を問わない（メタデータ）",
+   "interprocedural": "該当なし（実装を解析しない）",
+   "unresolved_handling": "SpellSmith は『実装が悪用可能だとは主張しない』保守的な警告とする。分類での未決の扱いは見つからなかった",
+   "evaluation": "GitHub をスター順に並べ手で選別した 100 プロジェクト（無作為ではない）、1,856 ツール。攻撃 792 プロンプトで ASR 0.13%。（数値は著者の主張。verified_by_me: none）",
+   "preregistration_or_freeze": "見つからなかった",
+   "artifact_public": "本文での公開先は確認していない（不明）",
+   "relation_to_authgap": {
+    "type": "相補（周辺）",
+    "explanation": "注釈の使用率を 1 つ数えているだけで、注釈とコードの照合はしない。説明文を書き換えて LLM の振る舞いを変える防御なので、宣言を検査する AuthGap とは層が違う。"
+   },
+   "quotes": [
+    {
+     "url": "https://arxiv.org/html/2607.07461v1",
+     "quote": "We search repositories using the keywords “MCP” and “Model Context Protocol”, rank the results by GitHub stars, and manually screen the retrieved projects.",
+     "quote_ja": "キーワードで検索し、スター数で並べ、取得したプロジェクトを手で選別した。",
+     "location": "Mitigating Taint-Style Vulnerabilities in MCP Servers via Security-Aware Tool Descriptions > 3 MCP Vulnerabilities in Wild > 3.1 Dataset Collection",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "0e9d94688432"
+    },
+    {
+     "url": "https://arxiv.org/html/2607.07461v1",
+     "quote": "In total, we collect metadata for 1,856 MCP tools.",
+     "quote_ja": "合計 1,856 の MCP ツールのメタデータを集めた。",
+     "location": "Mitigating Taint-Style Vulnerabilities in MCP Servers via Security-Aware Tool Descriptions > 3 MCP Vulnerabilities in Wild > 3.1 Dataset Collection",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "0e9d94688432"
+    },
+    {
+     "url": "https://arxiv.org/html/2607.07461v1",
+     "quote": "Only 160 tools use title, 234 use outputSchema, 325 use annotations, and 322 use execution; no tool uses icons.",
+     "quote_ja": "title を使うのは 160、outputSchema は 234、annotations は 325、execution は 322 ツールだけで、icons は 0。",
+     "location": "Mitigating Taint-Style Vulnerabilities in MCP Servers via Security-Aware Tool Descriptions > 3 MCP Vulnerabilities in Wild > 3.2 Metadata Characteristics (RQ1) > 3.2.2 Tool Schema Pattern",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "0e9d94688432"
+    },
+    {
+     "url": "https://arxiv.org/html/2607.07461v1",
+     "quote": "This step uses the tool name, description, and input schema to answer three simple questions.",
+     "quote_ja": "この段はツール名・説明文・入力スキーマを使って 3 つの問いに答える。",
+     "location": "Mitigating Taint-Style Vulnerabilities in MCP Servers via Security-Aware Tool Descriptions > 4 SpellSmith > 4.2 Risk Identification and Taint-style Vulnerability Estimation",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "0e9d94688432"
+    },
+    {
+     "url": "https://arxiv.org/html/2607.07461v1",
+     "quote": "SpellSmith does not claim that the implementation is exploitable; it only estimates whether the metadata suggests a plausible user-input-to-sensitive-operation pattern.",
+     "quote_ja": "SpellSmith は実装が悪用可能だとは主張せず、メタデータがもっともらしい入力→危険操作の型を示すかを見積もるだけ。",
+     "location": "Mitigating Taint-Style Vulnerabilities in MCP Servers via Security-Aware Tool Descriptions > 4 SpellSmith > 4.2 Risk Identification and Taint-style Vulnerability Estimation",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:51Z",
+     "sha256_prefix": "0e9d94688432"
+    }
+   ],
+   "notes": "既存カード C10-12。appendix-g の『17.5%』は 325/1,856 からのカード記録者の計算。"
+  },
+  {
+   "id": "VerifiablySafe_2601.08012",
+   "title": "Towards Verifiably Safe Tool Use for LLM Agents",
+   "authors": "Aarya Doshi, Yining Hong, Congying Xu, Eunsuk Kang, Alexandros Kapravelos, Christian Kästner（CMU ほか）",
+   "venue_or_kind": "ICSE NIER 2026（arXiv の Comments: accepted to ICSE NIER 2026）。4 ページのビジョン論文",
+   "year": 2026,
+   "url": "https://arxiv.org/abs/2601.08012",
+   "version_or_commit": "v1（2026-01-12）",
+   "status": "確認",
+   "target": "エージェントのワークフロー（STPA による危険の同定と、IFC / 時相制約の仕様）。Alloy の形式モデル",
+   "compares": "比較はしない。MCP の任意のヒントを必須の key-value タグ（capabilities: read-only / write-only / read-write / execute、機密度、信頼度）に置き換える提案。メタデータを実装に照らして検証することは『いずれ可能かもしれない』と将来に置く",
+   "declarations_covered": "none（readOnlyHint などの個々の語は扱わず、『最小限の任意の注釈』として言及）",
+   "method": "STPA ＋ 情報フロー制御 ＋ Alloy による有界の形式検証（設計の提案）",
+   "languages": "該当なし",
+   "interprocedural": "該当なし",
+   "unresolved_handling": "タグに 'unsure' の値を許し、確認を求める段（Confirmation）に回す設計",
+   "evaluation": "Alloy モデルでの予備結果のみ。実データの測定なし",
+   "preregistration_or_freeze": "該当なし",
+   "artifact_public": "見つからなかった",
+   "relation_to_authgap": {
+    "type": "相補（宣言を強める側）",
+    "explanation": "宣言を必須の構造化タグにすれば強制できる、という方向で、宣言が今の実装と合っているかは測らない。論文自身がメタデータを実装に照らして検証することを将来の課題として挙げており、AuthGap はその検証の一部（注釈とコード）を行う側にあたる。"
+   },
+   "quotes": [
+    {
+     "url": "https://arxiv.org/html/2601.08012v1",
+     "quote": "MCP defines the boundary where tools are declared and invoked, but it offers only minimal, optional annotations and advises treating tools as untrusted.",
+     "quote_ja": "MCP はツールが宣言・呼び出される境界を定めるが、最小限の任意の注釈しか持たず、ツールを信頼しないよう勧めている。",
+     "location": "Towards Verifiably Safe Tool Use for LLM Agents > 4. Vision: Task-Specific Agents with Guarantees > 4.3. Acquiring Structured Information Labels",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:52Z",
+     "sha256_prefix": "67eaaabe8a90"
+    },
+    {
+     "url": "https://arxiv.org/html/2601.08012v1",
+     "quote": "We propose extending MCP declarations to require key-value tags instead of optional hints.",
+     "quote_ja": "MCP の宣言を、任意のヒントではなく必須の key-value タグにすることを提案する。",
+     "location": "Towards Verifiably Safe Tool Use for LLM Agents > 4. Vision: Task-Specific Agents with Guarantees > 4.3. Acquiring Structured Information Labels",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:52Z",
+     "sha256_prefix": "67eaaabe8a90"
+    },
+    {
+     "url": "https://arxiv.org/html/2601.08012v1",
+     "quote": "Eventually it may even be possible to verify some metadata against the tool implementation.",
+     "quote_ja": "いずれは一部のメタデータをツールの実装に照らして検証できるかもしれない。",
+     "location": "Towards Verifiably Safe Tool Use for LLM Agents > 4. Vision: Task-Specific Agents with Guarantees > 4.3. Acquiring Structured Information Labels",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:52Z",
+     "sha256_prefix": "67eaaabe8a90"
+    },
+    {
+     "url": "https://arxiv.org/html/2601.08012v1",
+     "quote": "we developed and analyzed a formal model of the augmented MCP framework in Alloy",
+     "quote_ja": "拡張した MCP の枠組みの形式モデルを Alloy で作り解析した。",
+     "location": "Towards Verifiably Safe Tool Use for LLM Agents > 5. Preliminary Results and Discussion",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:52Z",
+     "sha256_prefix": "67eaaabe8a90"
+    },
+    {
+     "url": "https://arxiv.org/abs/2601.08012",
+     "quote": "accepted to ICSE NIER 2026",
+     "quote_ja": "（arXiv の Comments 欄）ICSE NIER 2026 に採択。",
+     "location": "Title:Towards Verifiably Safe Tool Use for LLM Agents",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:18:01Z",
+     "sha256_prefix": "5d11814f1bd0"
+    }
+   ],
+   "notes": "既存カード C10-09。ACM DL は 403 で、採択は arXiv の Comments で確認。"
+  },
+  {
+   "id": "WebMCP_2606.06387",
+   "title": "WebMCP Tool Surface Poisoning: Runtime Manipulation Attacks on LLM Agents",
+   "authors": "Lin-Fa Lee, Yi-Yu Chang, Chia-Mu Yu, Kuo-Hui Yeh",
+   "venue_or_kind": "arXiv プレプリント",
+   "year": 2026,
+   "url": "https://arxiv.org/abs/2606.06387",
+   "version_or_commit": "v1（2026-06-04）",
+   "status": "確認",
+   "target": "WebMCP（ブラウザのページがツールを公開する仕組み、polyfill）上の LLM エージェントの振る舞い",
+   "compares": "比較はしない。readOnlyHint=true を嘘として付けた悪性ツールが選ばれる率（ASR）を測る攻撃実験。宣言と実装の照合は将来の設計提案（データフロー管理）にとどまる",
+   "declarations_covered": "D1（readOnlyHint=true を攻撃の道具として操作）",
+   "method": "制御実験（4 シナリオ、3 モデル、条件 C0〜C10 と項目の切り分け AB0〜AB5）。ツールは JavaScript",
+   "languages": "JavaScript（実験用ツール）",
+   "interprocedural": "該当なし",
+   "unresolved_handling": "該当なし",
+   "evaluation": "readOnlyHint=true だけ（AB2）で 3 モデル平均約 87%。ただし C9（readOnlyHint のみ、別の名前・説明の組）は 15% 未満。（数値は著者の主張。verified_by_me: none）名前の効果と分けられていない点は既存カード C10-08 の注記どおり",
+   "preregistration_or_freeze": "見つからなかった",
+   "artifact_public": "見つからなかった",
+   "relation_to_authgap": {
+    "type": "相補（動機づけ）",
+    "explanation": "嘘の readOnlyHint がエージェントの選択を動かすことを実験で示すので、宣言の正しさを測る AuthGap の動機になる。ただし実在のサーバのコードと宣言の食い違いは測っておらず、照合は将来の提案として書かれるだけ。"
+   },
+   "quotes": [
+    {
+     "url": "https://arxiv.org/html/2606.06387v1",
+     "quote": "readOnlyHint only: set annotations.readOnlyHint=true to signal the tool as safe/read only",
+     "quote_ja": "readOnlyHint のみ: annotations.readOnlyHint=true を付けて安全・読み取り専用と見せる。",
+     "location": "WebMCP Tool Surface Poisoning: Runtime Manipulation Attacks on LLM Agents > 4 Experimental Setup > 4.1 Evaluation Scenarios and Attack Configurations",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:52Z",
+     "sha256_prefix": "e6d2d73f41e4"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.06387v1",
+     "quote": "With only readOnlyHint=true, the average success rate across the three models is about 87%.",
+     "quote_ja": "readOnlyHint=true だけで、3 モデル平均の成功率は約 87%。",
+     "location": "WebMCP Tool Surface Poisoning: Runtime Manipulation Attacks on LLM Agents > 5 Results > 5.3 Field Level Effects and Composite Attacks",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:52Z",
+     "sha256_prefix": "e6d2d73f41e4"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.06387v1",
+     "quote": "C9 and C10 correspond to the readOnlyHint annotation and a weaker framing strategy based on prerequisites, respectively, with both of their ASRs falling below 15%.",
+     "quote_ja": "C9（readOnlyHint）と C10 の ASR はどちらも 15% 未満。",
+     "location": "WebMCP Tool Surface Poisoning: Runtime Manipulation Attacks on LLM Agents > 5 Results > 5.4 Exploration of Attack Variants",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:52Z",
+     "sha256_prefix": "e6d2d73f41e4"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.06387v1",
+     "quote": "We use GPT-5.4, Claude Opus 4.6, and Gemini 2.5-flash as the LLM agent, and all tools are implemented in JavaScript.",
+     "quote_ja": "エージェントは GPT-5.4・Claude Opus 4.6・Gemini 2.5-flash、ツールはすべて JavaScript で実装。",
+     "location": "WebMCP Tool Surface Poisoning: Runtime Manipulation Attacks on LLM Agents > 4 Experimental Setup",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:52Z",
+     "sha256_prefix": "e6d2d73f41e4"
+    },
+    {
+     "url": "https://arxiv.org/html/2606.06387v1",
+     "quote": "they should incorporate data-flow management mechanisms to verify whether the data actually processed and exfiltrated by a tool conforms to its declared purpose and authorization scope.",
+     "quote_ja": "ツールが実際に処理し持ち出すデータが、宣言した目的と認可の範囲に合っているかを確かめるデータフロー管理を組み込むべきだ。",
+     "location": "WebMCP Tool Surface Poisoning: Runtime Manipulation Attacks on LLM Agents > 8 Conclusion",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:10:52Z",
+     "sha256_prefix": "e6d2d73f41e4"
+    }
+   ],
+   "notes": "既存カード C10-08。"
+  },
+  {
+   "id": "AgentBound_2510.21236",
+   "title": "AgentBound: Securing Execution Boundaries of AI Agents",
+   "authors": "Christoph Bühler, Matteo Biagiola, Luca Di Grazia, Guido Salvaneschi（University of St. Gallen / USI）",
+   "venue_or_kind": "FSE 2026（PACMSE、DOI 10.1145/3808103。arXiv v3 の表記による）",
+   "year": 2026,
+   "url": "https://arxiv.org/abs/2510.21236",
+   "version_or_commit": "v3（2026-04-24）",
+   "status": "確認",
+   "target": "MCP サーバのリポジトリ（コードと文書）→ 権限マニフェスト（Android の permission に倣う能力の語彙）。実行時はコンテナのサンドボックスで強制",
+   "compares": "既存の宣言と実装を比べるのではなく、LLM エージェント（AgentManifestGen）がコードと文書から権限マニフェストを『生成』し、その生成物を人手のマニフェスト（48 サーバ）と開発者の回答（96 件の issue）に照らして評価する。宣言 X = 生成された capability 集合、実際 Y = 人が書いた capability 集合",
+   "declarations_covered": "none（ToolAnnotations は扱わない。readOnlyHint などの語は本文に 0 回。権限は filesystem.read / write、network.client などのサーバ単位）",
+   "method": "LLM エージェント（gpt-5-mini で 5 つの中間マニフェスト → gpt-5 が集約）がリポジトリにファイル単位でアクセスして生成。強制はコンテナ（mount、iptables、環境変数の許可リスト）",
+   "languages": "言語を問わない（LLM がリポジトリを読む）",
+   "interprocedural": "不明（LLM がファイルを読む。解析の深さの記述は見つからなかった）",
+   "unresolved_handling": "生成物は有限の語彙から外れると棄却し、理由（rationale）の無い能力も棄却する。過大な近似は開発者のレビューで削る前提。決められない能力を表す語は見つからなかった。環境変数は実行時に利用者に尋ねる",
+   "evaluation": "GitHub スター上位 296 サーバ（300 から取得失敗 4）。上位 96 に issue を立て 74% は無回答、回答の中で 80.9% が正確。2 人の著者が 24 サーバずつ手でマニフェストを書き、816 能力中 787 一致（precision 0.94 / recall 0.96）。（数値は著者の主張。verified_by_me: none）",
+   "preregistration_or_freeze": "見つからなかった",
+   "artifact_public": "replication package を公開と記載（本文の参照先 'Bühler et al., 2026'。URL は HTML のテキストからは確認できず）",
+   "relation_to_authgap": {
+    "type": "先例（宣言をコードから導く型）",
+    "explanation": "コードから権限の宣言を作り、それで実行を縛るという『宣言と実装を結びつける』方向は AuthGap と近い。しかし AuthGap は開発者が書いた既存の注釈とコードの矛盾を測るのに対し、AgentBound は宣言を LLM で新しく作って強制するので、既存の宣言の正しさは測らない。単位もツールではなくサーバで、判定は LLM。"
+   },
+   "quotes": [
+    {
+     "url": "https://arxiv.org/html/2510.21236v3",
+     "quote": "we propose an automated approach we call AgentManifestGen that generates the AgentManifest for a given MCP server by analyzing its source code and documentation.",
+     "quote_ja": "MCP サーバのソースコードと文書を解析して AgentManifest を生成する自動の方法 AgentManifestGen を提案する。",
+     "location": "AgentBound: Securing Execution Boundaries of AI Agents > 3. The AgentBound AI Agent Security Framework > 3.1. Access Control Policy > Automated Manifest Generation",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:05Z",
+     "sha256_prefix": "f2cf09ed4a0a"
+    },
+    {
+     "url": "https://arxiv.org/html/2510.21236v3",
+     "quote": "gpt-5-mini generates 5 intermediate manifests, and a gpt-5 model with reasoning enabled aggregates them into a single final manifest.",
+     "quote_ja": "gpt-5-mini が中間マニフェストを 5 つ作り、推論を有効にした gpt-5 がそれを 1 つの最終マニフェストにまとめる。",
+     "location": "AgentBound: Securing Execution Boundaries of AI Agents > 4. Empirical Evaluation > 4.1. Completeness (RQ1) > 4.1.1. Experimental setup",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:05Z",
+     "sha256_prefix": "f2cf09ed4a0a"
+    },
+    {
+     "url": "https://arxiv.org/html/2510.21236v3",
+     "quote": "This guarantees that a server can only access resources explicitly granted by both its manifest and the user.",
+     "quote_ja": "これにより、サーバはマニフェストと利用者の両方が明示的に許した資源にしかアクセスできない。",
+     "location": "AgentBound: Securing Execution Boundaries of AI Agents > 3. The AgentBound AI Agent Security Framework > 3.2. Policy Enforcement Engine",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:05Z",
+     "sha256_prefix": "f2cf09ed4a0a"
+    },
+    {
+     "url": "https://arxiv.org/html/2510.21236v3",
+     "quote": "A threat to external validity involves the representativeness of selecting the top 296 MCP servers via GitHub stars",
+     "quote_ja": "GitHub スターで上位 296 の MCP サーバを選んだことの代表性は外的妥当性の脅威。",
+     "location": "AgentBound: Securing Execution Boundaries of AI Agents > 5. Discussion and Threats to Validity > Threats to validity",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:05Z",
+     "sha256_prefix": "f2cf09ed4a0a"
+    },
+    {
+     "url": "https://arxiv.org/html/2510.21236v3",
+     "quote": "74% did not receive a response",
+     "quote_ja": "（96 件の issue のうち）74% は回答が無かった。",
+     "location": "AgentBound: Securing Execution Boundaries of AI Agents > 4. Empirical Evaluation > 4.1. Completeness (RQ1) > 4.1.3. Developer Evaluation of Automatically-generated Manifests",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:05Z",
+     "sha256_prefix": "f2cf09ed4a0a"
+    },
+    {
+     "url": "https://arxiv.org/html/2510.21236v3",
+     "quote": "Overall, automatically generated manifests are 80.9% accurate and precise, while recall is 100%, as developers did not underscore any missing dependency.",
+     "quote_ja": "自動生成のマニフェストは 80.9% が正確で、開発者が欠けている依存を指摘しなかったので再現率は 100%。",
+     "location": "AgentBound: Securing Execution Boundaries of AI Agents > 4. Empirical Evaluation > 4.1. Completeness (RQ1) > 4.1.3. Developer Evaluation of Automatically-generated Manifests",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:05Z",
+     "sha256_prefix": "f2cf09ed4a0a"
+    },
+    {
+     "url": "https://arxiv.org/html/2510.21236v3",
+     "quote": "two authors of the paper randomly self-assigned 24 non-overlapping servers, and manually wrote a manifest file for each.",
+     "quote_ja": "論文の著者 2 人が重ならない 24 サーバずつを無作為に受け持ち、マニフェストを手で書いた。",
+     "location": "AgentBound: Securing Execution Boundaries of AI Agents > 4. Empirical Evaluation > 4.1. Completeness (RQ1) > 4.1.1. Experimental setup",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:05Z",
+     "sha256_prefix": "f2cf09ed4a0a"
+    },
+    {
+     "url": "https://arxiv.org/html/2510.21236v3",
+     "quote": "Only 29 capabilities (3.6%) showed a discrepancy, meaning AgentManifestGen missed capabilities that the human had or vice-versa, with a precision of 0.94 and a recall of 0.96.",
+     "quote_ja": "食い違いは 29 能力（3.6%）だけで、精度 0.94、再現率 0.96。",
+     "location": "AgentBound: Securing Execution Boundaries of AI Agents > 4. Empirical Evaluation > 4.1. Completeness (RQ1) > 4.1.4. Manual Evaluation of Automatically-generated Manifests",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:05Z",
+     "sha256_prefix": "f2cf09ed4a0a"
+    },
+    {
+     "url": "https://arxiv.org/html/2510.21236v3",
+     "quote": "Our replication package is publicly available",
+     "quote_ja": "複製用の資料は公開している。",
+     "location": "AgentBound: Securing Execution Boundaries of AI Agents > 8. Data Availability",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:05Z",
+     "sha256_prefix": "f2cf09ed4a0a"
+    },
+    {
+     "url": "https://arxiv.org/html/2510.21236v3",
+     "quote": "Journal: PACMSE",
+     "quote_ja": "（書誌）PACMSE 誌。",
+     "location": "AgentBound: Securing Execution Boundaries of AI Agents",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:05Z",
+     "sha256_prefix": "f2cf09ed4a0a"
+    }
+   ],
+   "notes": "2606.30970『Behavioral Governance for Autonomous AI Agents: The AgentBound Framework』は同名だが別物（実行時のガバナンス、要旨のみ確認）。"
+  },
+  {
+   "id": "ToolGuardian_2607.21835",
+   "title": "ToolGuardian: Declarative Security for AI Agent-Tool Interactions",
+   "authors": "Arun Ravindran (UNC Charlotte), Saurabh Deochake (SentinelOne)",
+   "venue_or_kind": "arXiv プレプリント（cs.CR）",
+   "year": 2026,
+   "url": "https://arxiv.org/abs/2607.21835",
+   "version_or_commit": "v1（2026-07-23）",
+   "status": "確認",
+   "target": "MCP 風のツール 16 個（善良 8、実在の OSS から作った悪性の変種 8）と実行時シナリオ 20",
+   "compares": "宣言 X = L0 の説明文・パッケージのメタデータ・README（『宣言された意図』）／実際 Y = L2 のモック実行で観測した効果（外部通信、機密データへのアクセス、状態変更）。差は『宣言と観測の食い違い』という事実として ASP のポリシー層に渡す",
+   "declarations_covered": "none（ToolAnnotations の語は本文に見つからなかった）",
+   "method": "段階的な特徴づけ（L0 説明文、L1 システムコール、L2 モック実行、L3 AST の静的解析）＋ Answer Set Programming によるポリシー判定（LLM・ヒューリスティックと比較）",
+   "languages": "不明（MCP 風のツール。L3 は AST とあるのみ）",
+   "interprocedural": "不明（L3 の AST 解析の深さは見つからなかった）。照合は主に L0 と L2（動的）",
+   "unresolved_handling": "動的観測は網羅できない（未実行の分岐は見えない）と明記。L3 は到達しないコードも拾う過大近似と明記。判定は allow / restricted_admit / warning / deny の段階で、食い違いを特徴づけ段では解決せずポリシーに委ねる",
+   "evaluation": "16 ツール（悪性 8 は説明文を変えずに悪性の振る舞いを埋め込んだ合成の変種）。正解ラベルはベンチマークの定義（善良=allow、悪性=deny）。審査で deny 類の F1 0.86、正解率 88%。（数値は著者の主張。verified_by_me: none）",
+   "preregistration_or_freeze": "見つからなかった",
+   "artifact_public": "見つからなかった",
+   "relation_to_authgap": {
+    "type": "手法の型（宣言と観測の突き合わせを事実にする）",
+    "explanation": "説明文（宣言）と観測した効果の食い違いを独立の事実として扱い、判定規則を宣言的に書く点は、AuthGap の『宣言と実効の照合』と同じ型。ただし宣言は注釈ではなく説明文、実効は主に動的なモック実行で、評価は 16 の合成ツールなので、実在サーバの母集団の測定ではない。"
+   },
+   "quotes": [
+    {
+     "url": "https://arxiv.org/html/2607.21835v1",
+     "quote": "Beyond identifying individual capabilities, ToolGuardian compares declared intent with observed behavior. In particular, it contrasts L0 descriptions with L2 execution effects to detect mismatches such as undeclared network communication, unexpected sensitive-data access, silent state mutation, or behavior inconsistent with the advertised task.",
+     "quote_ja": "ToolGuardian は宣言された意図と観測した振る舞いを比べる。L0 の説明文と L2 の実行効果を対照し、宣言されていない通信、予期しない機密データへのアクセス、黙った状態変更などの食い違いを見つける。",
+     "location": "ToolGuardian: Declarative Security for AI Agent-Tool Interactions > V Tool Characterization > V-B Effect Conformance",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:05Z",
+     "sha256_prefix": "f1750038c092"
+    },
+    {
+     "url": "https://arxiv.org/html/2607.21835v1",
+     "quote": "These declared-versus-observed discrepancies are represented as policy facts rather than resolved inside the characterization pipeline.",
+     "quote_ja": "宣言と観測の食い違いは、特徴づけの中で解決せず、ポリシーの事実として表す。",
+     "location": "ToolGuardian: Declarative Security for AI Agent-Tool Interactions > V Tool Characterization > V-B Effect Conformance",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:05Z",
+     "sha256_prefix": "f1750038c092"
+    },
+    {
+     "url": "https://arxiv.org/html/2607.21835v1",
+     "quote": "When source code is available, ToolGuardian analyzes the tool implementation using abstract syntax tree (AST) analysis to identify potential behavior not exercised dynamically.",
+     "quote_ja": "ソースがあれば AST 解析で、動的に実行されなかった振る舞いを特定する。",
+     "location": "ToolGuardian: Declarative Security for AI Agent-Tool Interactions > V Tool Characterization > V-A Progressive Evidence Sources > L3: Static source analysis.",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:05Z",
+     "sha256_prefix": "f1750038c092"
+    },
+    {
+     "url": "https://arxiv.org/html/2607.21835v1",
+     "quote": "but they remain coverage-limited: untested branches may not be observed.",
+     "quote_ja": "ただし網羅は限られ、試していない分岐は観測されない。",
+     "location": "ToolGuardian: Declarative Security for AI Agent-Tool Interactions > V Tool Characterization > V-A Progressive Evidence Sources > L2: Mock execution and observed effects.",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:05Z",
+     "sha256_prefix": "f1750038c092"
+    },
+    {
+     "url": "https://arxiv.org/html/2607.21835v1",
+     "quote": "Malicious variants preserve the external functionality and unchanged user-facing descriptions of the original benign tool while embedding behaviors targeting confidentiality, integrity, or availability.",
+     "quote_ja": "悪性の変種は元の善良なツールの外部機能と利用者向けの説明文を変えずに、機密性・完全性・可用性を狙う振る舞いを埋め込む。",
+     "location": "ToolGuardian: Declarative Security for AI Agent-Tool Interactions > VII Evaluation Setup > VII-B Benchmark Corpus",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:05Z",
+     "sha256_prefix": "f1750038c092"
+    },
+    {
+     "url": "https://arxiv.org/html/2607.21835v1",
+     "quote": "Ground-truth labels are benchmark-defined reference outcomes derived from the intended policy behavior.",
+     "quote_ja": "正解ラベルは、意図したポリシーの振る舞いから導いたベンチマーク定義の参照結果。",
+     "location": "ToolGuardian: Declarative Security for AI Agent-Tool Interactions > VIII Evaluation Results",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:05Z",
+     "sha256_prefix": "f1750038c092"
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "id": "PrivMgmt_2507.06250",
+   "title": "We Urgently Need Privilege Management in MCP: A Measurement of API Usage in MCP Ecosystems",
+   "authors": "Zhihao Li, Kun Li, Boyang Ma, Minghui Xu, Yue Zhang, Xiuzhen Cheng",
+   "venue_or_kind": "arXiv プレプリント（cs.CR）",
+   "year": 2025,
+   "url": "https://arxiv.org/abs/2507.06250",
+   "version_or_commit": "v1（2025-07-05）",
+   "status": "確認",
+   "target": "MCP Market から取得した 2,562 アプリのソースコード",
+   "compares": "比較はしない。危険な API の使用（file / memory / network / system）を数えるだけで、宣言（説明文・注釈・権限）とは照らさない。MCP に権限の宣言が無いことが動機",
+   "declarations_covered": "none",
+   "method": "多言語の構文解析と脅威シグネチャのデータベースによる API 呼び出しの検出（静的）",
+   "languages": "多言語（一覧は見つからなかった）",
+   "interprocedural": "不明",
+   "unresolved_handling": "見つからなかった",
+   "evaluation": "2,562 アプリ・23 カテゴリ。人手のラベルによる精度は見つからなかった。（数値は著者の主張。verified_by_me: none）",
+   "preregistration_or_freeze": "見つからなかった",
+   "artifact_public": "見つからなかった",
+   "relation_to_authgap": {
+    "type": "相補（効果側だけの測定）",
+    "explanation": "コードから効果（危険な API）を数える点は AuthGap の効果側と同じ層だが、宣言と照らさないので矛盾は出ない。MCPDiFF と同じ山東大学のグループで、後の MCPDiFF が説明文との比較を足した形。"
+   },
+   "quotes": [
+    {
+     "url": "https://arxiv.org/html/2507.06250v1",
+     "quote": "We develop an automated static analysis framework and systematically examine 2,562 real-world MCP applications spanning 23 functional categories.",
+     "quote_ja": "自動の静的解析の枠組みを作り、23 カテゴリの 2,562 の実在 MCP アプリを系統的に調べた。",
+     "location": "We Urgently Need Privilege Management in MCP: A Measurement of API Usage in MCP Ecosystems > Abstract",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:06Z",
+     "sha256_prefix": "77df99776a8a"
+    },
+    {
+     "url": "https://arxiv.org/html/2507.06250v1",
+     "quote": "leveraging multi-language parsing techniques and threat signature databases",
+     "quote_ja": "多言語の構文解析技術と脅威シグネチャのデータベースを使う。",
+     "location": "We Urgently Need Privilege Management in MCP: A Measurement of API Usage in MCP Ecosystems > V Design and Implementation > V-A Design",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:06Z",
+     "sha256_prefix": "77df99776a8a"
+    },
+    {
+     "url": "https://arxiv.org/html/2507.06250v1",
+     "quote": "Traditional permission systems rely on static declarations, but our findings show that MCP applications exhibit dynamic behavior based on AI agent requests.",
+     "quote_ja": "従来の権限システムは静的な宣言に頼るが、MCP アプリはエージェントの要求に応じた動的な振る舞いを示す。",
+     "location": "We Urgently Need Privilege Management in MCP: A Measurement of API Usage in MCP Ecosystems > VIII Open Questions and Future Directions",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:14:06Z",
+     "sha256_prefix": "77df99776a8a"
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "id": "mcp-sec-audit_2603.21641",
+   "title": "Auditing MCP Servers for Over-Privileged Tool Capabilities",
+   "authors": "Huang, Huang, Milani Fard（NYIT Vancouver）",
+   "venue_or_kind": "arXiv プレプリント（5 ページ）",
+   "year": 2026,
+   "url": "https://arxiv.org/abs/2603.21641",
+   "version_or_commit": "PDF（2026-10-02 取得、sha256 ce3c28db34f1…）。repo HEAD 457057a7dfda6b81622a12ee68b74f76f3fbde85",
+   "status": "確認",
+   "target": "Python の MCP サーバのソース（静的）と Docker / eBPF での動的 fuzzing",
+   "compares": "宣言とは比較しない（仕様書 §1.5.1 の ◎ 行の読みどおり、能力を列挙して最小権限の配備を勧める）。今回の照合は要旨の 1 文のみ",
+   "declarations_covered": "none",
+   "method": "設定可能な規則（TOML）によるパターン照合（静的）＋ サンドボックスでの fuzzing と監視（動的）",
+   "languages": "Python（静的）",
+   "interprocedural": "見つからなかった（パターン照合）",
+   "unresolved_handling": "見つからなかった",
+   "evaluation": "仕様書には論文 74.7% と README 94.7% の食い違いの注記がある（今回は再照合していない）",
+   "preregistration_or_freeze": "見つからなかった",
+   "artifact_public": "https://github.com/nyit-vancouver/mcp-sec-audit",
+   "relation_to_authgap": {
+    "type": "相補（over-privilege の列挙）",
+    "explanation": "題名は『過剰な権限』だが、宣言との差を取らず能力を列挙するだけ。AuthGap の効果側の安い基準線にはなるが、矛盾の判定はしない。"
+   },
+   "quotes": [
+    {
+     "url": "https://arxiv.org/pdf/2603.21641",
+     "quote": "static pattern matching for Python-based MCP servers",
+     "quote_ja": "Python ベースの MCP サーバに対して静的なパターン照合を行う。",
+     "location": "PDF p.1",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:17:23Z",
+     "sha256_prefix": "ce3c28db34f1"
+    }
+   ],
+   "notes": "詳細は仕様書 §1.5.1 と related_work.md 側の検証に任せる。本キーでは『宣言と比べない』ことの確認だけ。"
+  },
+  {
+   "id": "NoBox_MCPSEC_2609.10854",
+   "title": "No-Box Vulnerability Analysis: Description-only Detection of Indirect Prompt Injection Vulnerabilities in MCP Servers",
+   "authors": "不明（要旨ページのみ確認、著者は記録していない）",
+   "venue_or_kind": "arXiv プレプリント",
+   "year": 2026,
+   "url": "https://arxiv.org/abs/2609.10854",
+   "version_or_commit": "v2",
+   "status": "確認",
+   "target": "登録時のツールメタデータだけ（コードもランタイムも見ない）",
+   "compares": "宣言（メタデータ）から、どんな実装にも成り立つ脆弱性の仮説を立てる。コードとは比べない",
+   "declarations_covered": "不明（要旨は 'side effects' を含むメタデータと書くが、注釈の扱いは未読）",
+   "method": "メタデータのみからの推論（LLM との比較あり。詳細未読）",
+   "languages": "該当なし",
+   "interprocedural": "該当なし",
+   "unresolved_handling": "不明",
+   "evaluation": "20 サーバ・177 ツール、人が確認した脆弱 95 のうち 94 を予測（要旨）。（数値は著者の主張。verified_by_me: none）",
+   "preregistration_or_freeze": "不明",
+   "artifact_public": "不明",
+   "relation_to_authgap": {
+    "type": "相補（逆向き）",
+    "explanation": "コードを見ずに宣言だけから推論する方向で、AuthGap とは正反対。宣言が嘘なら推論も崩れる、という点で AuthGap の測定が前提の信頼性を補う関係。"
+   },
+   "quotes": [
+    {
+     "url": "https://arxiv.org/html/2609.10854v2",
+     "quote": "using only the tool metadata exposed at server registration time",
+     "quote_ja": "サーバ登録時に公開されるツールメタデータだけを使う。",
+     "location": "No-Box Vulnerability Analysis: Description-only Detection of Indirect Prompt Injection Vulnerabilities in MCP Servers > Abstract",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:17:24Z",
+     "sha256_prefix": "e62f52b0adb3"
+    }
+   ],
+   "notes": "本文は精読していない（要旨と照合した 1 句のみ）。"
+  },
+  {
+   "id": "HintLint",
+   "title": "HintLint — Verify MCP tool annotations match actual behavior",
+   "authors": "complira",
+   "venue_or_kind": "OSS ツール（GitHub）。論文は見つからなかった",
+   "year": 2026,
+   "url": "https://github.com/complira/hintlint",
+   "version_or_commit": "5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37（2026-10-02 の HEAD と一致）",
+   "status": "確認",
+   "target": "MCP サーバのソースコード（TypeScript / JavaScript / Python）",
+   "compares": "宣言 X = ToolAnnotations（readOnlyHint・destructiveHint・openWorldHint）／実際 Y = ハンドラ本体のテキストに当てた sink 規則（10 種）",
+   "declarations_covered": "D1, D2, D3（idempotentHint は README の説明に出ない）。宣言が無いツールに destructiveHint の欠落を報告する規則もある",
+   "method": "Python は行単位の正規表現（デコレータの検出も正規表現）＋ sink の正規表現。TS/JS には到達解析のモジュールがある",
+   "languages": "TypeScript / JavaScript / Python",
+   "interprocedural": "Python ではしない（ツール関数の本体だけ。related_work.md R1 で src を読んだ結果）",
+   "unresolved_handling": "確度は 'source-backed' / 'needs-review' の 2 語。メタデータだけの推測は CI を落とさない。解決できなかったものを表す語は無い（R1）",
+   "evaluation": "20 リポジトリの試験で 1,160 ツール、23 件の問題を精度 82% で確認（README の主張）。（数値は著者の主張。verified_by_me: none）母集団 v2 の 87 木での AuthGap との並走は related_work.md R1",
+   "preregistration_or_freeze": "見つからなかった",
+   "artifact_public": "https://github.com/complira/hintlint（ライセンスは今回確認していない）",
+   "relation_to_authgap": {
+    "type": "競合（同じ問い、最も近い）",
+    "explanation": "注釈とコードの照合という問いは AuthGap と同じで、宣言も D1〜D3 と重なる。違いは深さと未決の扱いで、HintLint の Python 経路は関数本体の行を正規表現で見るだけで呼び出しをたどらず、未決の語彙も無い。AuthGap は手続き間で効果を推論し、未決（opaque）を残して率を出す測定研究である。"
+   },
+   "quotes": [
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/README.md",
+     "quote": "HintLint checks whether those hints match the code behind each tool.",
+     "quote_ja": "HintLint は、それらのヒントが各ツールの裏のコードと合っているかを確かめる。",
+     "location": "lines 15",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:17:24Z",
+     "sha256_prefix": "b55ff701f13f"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/README.md",
+     "quote": "HintLint analyzed 1,160 tools and confirmed **23 annotation issues at 82% precision**",
+     "quote_ja": "HintLint は 1,160 ツールを解析し、23 件の注釈の問題を精度 82% で確認した。",
+     "location": "lines 19",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:17:24Z",
+     "sha256_prefix": "b55ff701f13f"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/README.md",
+     "quote": "Only findings with handler-scoped source evidence can fail your build. Metadata-only guesses never block CI.",
+     "quote_ja": "ハンドラの範囲のソース証拠がある発見だけがビルドを落とせる。メタデータだけの推測は CI を止めない。",
+     "location": "lines 103 (## How It Works)",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:17:24Z",
+     "sha256_prefix": "b55ff701f13f"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/complira/hintlint/5a51f2a43a4875c5297f29b4f2ac4ee26c6e8c37/src/extractors/python.js",
+     "quote": "return /@(?:\\w+\\.)?tool(?:\\s*\\(|\\s*$)/.test(line.trim());",
+     "quote_ja": "（Python のデコレータ検出は正規表現）",
+     "location": "lines 4",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:17:24Z",
+     "sha256_prefix": "7535c06dcd74"
+    }
+   ],
+   "notes": "既存の related_work.md R1 と付録 G のカード C09-36〜39 と同じ対象。論文ではないので比較の表では『ツール』と明記すること。"
+  },
+  {
+   "id": "mcp-annotation-enforcement",
+   "title": "Enforcing MCP tool annotations at runtime: a measurement report（mcp-annotation-enforcement）",
+   "authors": "Mathis488（個人の研究プロトタイプ）",
+   "venue_or_kind": "GitHub のプロトタイプと測定報告（論文ではない）",
+   "year": 2026,
+   "url": "https://github.com/Mathis488/mcp-annotation-enforcement",
+   "version_or_commit": "f3e8044d09b9f076b6a7c6dccaa898fe1ee85296（2026-10-02 の HEAD と一致）",
+   "status": "確認",
+   "target": "MCP サーバ（実行時はプロキシ、静的な試みはソース）",
+   "compares": "静的: readOnlyHint: true のツール本体に書き込み操作があるかを語のパターンで探した（失敗として破棄）。動的: 宣言（readOnlyHint / openWorldHint）に応じた権限のサンドボックスに呼び出しを振り分け、嘘の宣言をカーネルで失敗させる",
+   "declarations_covered": "D1, D3（readOnlyHint、openWorldHint）",
+   "method": "静的: 語のパターン照合（文字列とコメントを消してから）。動的: macOS sandbox-exec による強制",
+   "languages": "不明（静的の試みの対象言語は書かれていない）",
+   "interprocedural": "しない（語のパターン）",
+   "unresolved_handling": "陽性対照（readOnlyHint: false のツール）で書き込みを 0 件しか見つけられなかったので、静的の結果を全部捨てた、と明記",
+   "evaluation": "静的: 8 件 → すべて偽陽性、書き直し後 4 件も偽陽性、陽性対照 0 件（報告の主張、規模は不明）。（数値は著者の主張。verified_by_me: none）",
+   "preregistration_or_freeze": "見つからなかった",
+   "artifact_public": "https://github.com/Mathis488/mcp-annotation-enforcement",
+   "relation_to_authgap": {
+    "type": "競合（否定的結果の先例）",
+    "explanation": "注釈とソースの静的照合を試みた点で問いは同じだが、語のパターンでは陽性対照すら当たらず破棄した、という否定的結果。AuthGap が陽性対照（較正対）と手続き間の効果推論を置く理由の実例として引ける。"
+   },
+   "quotes": [
+    {
+     "url": "https://raw.githubusercontent.com/Mathis488/mcp-annotation-enforcement/f3e8044d09b9f076b6a7c6dccaa898fe1ee85296/MEASUREMENT-REPORT.md",
+     "quote": "I tried to detect dishonest annotations by parsing server source and looking for write operations inside tools marked",
+     "quote_ja": "プロキシを作る前に、ソースを解析し readOnlyHint: true のツールの中の書き込み操作を探して、不誠実な注釈を見つけようとした。",
+     "location": "lines 79-80 (## A negative result worth reporting: static analysis cannot answer this)",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:17:25Z",
+     "sha256_prefix": "4a8f4c2a4180"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/Mathis488/mcp-annotation-enforcement/f3e8044d09b9f076b6a7c6dccaa898fe1ee85296/MEASUREMENT-REPORT.md",
+     "quote": "among tools explicitly marked `readOnlyHint: false` — the known writers — the pattern found **zero** write calls.",
+     "quote_ja": "readOnlyHint: false と明示された（書くと認めた）ツールで、パターンは書き込み呼び出しを 0 件しか見つけなかった。",
+     "location": "lines 89-91 (## A negative result worth reporting: static analysis cannot answer this)",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:17:25Z",
+     "sha256_prefix": "4a8f4c2a4180"
+    },
+    {
+     "url": "https://raw.githubusercontent.com/Mathis488/mcp-annotation-enforcement/f3e8044d09b9f076b6a7c6dccaa898fe1ee85296/MEASUREMENT-REPORT.md",
+     "quote": "I built a proxy that does not verify annotations but *enforces* them",
+     "quote_ja": "注釈を検証するのではなく強制するプロキシを作った。",
+     "location": "lines 14 (## Summary)",
+     "match": "exact",
+     "fetched_at": "2026-10-02T23:17:25Z",
+     "sha256_prefix": "4a8f4c2a4180"
+    }
+   ],
+   "notes": "既存カード C10-20 / C10-21。"
+  }
+ ],
+ "searched": [
+  "export.arxiv.org/api/query: all:\"tool annotations\" / all:readOnlyHint / all:destructiveHint（題・要旨の索引のみ。本文全文検索ではない）",
+  "export.arxiv.org/api/query: abs:MCP AND abs:\"side effect\" / abs:MCP AND abs:inconsistency / abs:MCP AND abs:annotations / abs:MCP AND abs:permission AND abs:static / abs:MCP AND abs:\"over-privilege\"",
+  "export.arxiv.org/api/query: abs:AgentBound / abs:MCP AND abs:manifest / abs:MCP AND abs:\"tool description\" AND abs:code / abs:MCP AND abs:declared AND abs:behavior / abs:\"Model Context Protocol\" AND abs:\"static analysis\"",
+  "WebSearch（発見のみ）: 'MCP tool annotations readOnlyHint destructiveHint mismatch implementation static analysis arXiv 2026' / '\"readOnlyHint\" MCP servers measurement paper annotations misleading code' / 'arXiv 2026 MCP server permission manifest generated from source code over-privilege' / 'arXiv 2026 \"tool annotations\" MCP verify against implementation \"side effects\" undeclared'",
+  "既存の repo 資料: docs/related_work.md R1、AUTHGAP_BRIEF_v3.md §1.5、docs/textbook/appendix-g-12.md（C10-01〜C10-22）、appendix-g-13.md（論文の注釈語の不在の記録）",
+  "要旨のみ見て除外（宣言とコードを照合しない、または MCP の宣言ではない）: 2607.11086 MCPZoo / scanner reliability, 2512.15144 MCPZoo dataset, 2606.21338 MCPPrivacyDetector（CodeQL の taint、宣言なし）, 2604.21477 MCP Pitfall Lab（合成 6 変種、説明文に書かれた方針と検証の欠如を static fields で検出 F1=0.727。参考）, 2609.23498 RAC, 2609.18217 implicit trust, 2610.00182 post-wire semantic changes, 2606.30970 AgentBound Framework（別物）, 2607.10123 MCP 実装データセット, 2607.25297 MTGuard（要旨のみ）, 2605.07836 MCP-BiFlow / 2605.21392 VIPER-MCP（taint。別キーの範囲と判断）"
+ ],
+ "not_found": [
+  "ToolAnnotations（readOnlyHint / destructiveHint / idempotentHint / openWorldHint）の値を実装コードと照合し、矛盾の率を人手の精度つきで報告する査読つき論文・arXiv 論文は、今回の検索範囲では見つからなかった（照合しているのは OSS ツールの HintLint と、否定的結果に終わった mcp-annotation-enforcement の静的な試みのみ）。arXiv API の検索は題・要旨の索引なので、本文だけで注釈を扱う論文は漏れうる",
+  "DCIChecker の公開成果物（コード・データ）へのリンクは本文 HTML に見つからなかった",
+  "MCPDiFF の公開成果物は見つからなかった（DCIChecker も再実装している）",
+  "DCIChecker で、深さ k=3 の打ち切りや解決できない呼び出しをツール単位で記録・報告するかの記述は見つからなかった（集計の表のみ）",
+  "どの論文にも事前登録・解析器の凍結の記述は見つからなかった（2609.10962 は標本のシードとハッシュの固定のみ）",
+  "idempotentHint（D4）を実装と照らす研究は見つからなかった。2609.15397 は idempotentHint の表現力の不足を論じるが実装は見ない"
+ ],
+ "summary_ja": "注釈（D1〜D4）とコードを照らして矛盾を測る論文は見つからなかった。最も近い論文は DCIChecker（説明文とコード、LLM 判定、Python 2,214 サーバ）と MCPDiFF（README とコード、サーバ単位）で、どちらも ToolAnnotations を扱わない。注釈の測定論文（2609.10962、2609.15397、2607.07461）は有無と値を数えるだけで、2609.15397 は実装との差を範囲外と明記する。2601.08012 は将来の検証を、2606.06387 は嘘の readOnlyHint の効き目を示すだけ。AgentBound は権限マニフェストをコードから LLM で生成するもので、既存の宣言の正しさは測らない。注釈とコードの照合をするのは OSS の HintLint（本体だけの正規表現）と、陽性対照で失敗して破棄された mcp-annotation-enforcement の静的な試みだけ。"
+}
