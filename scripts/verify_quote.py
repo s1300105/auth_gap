@@ -140,6 +140,33 @@ def _norm_chars(s: str) -> str:
     return s
 
 
+_HSPACE = set(" \t\r\f\v")
+
+
+def _norm_map(s: str, collapse_hspace: bool = False) -> tuple[str, list[int]]:
+    """_norm_chars と同じ置き換えをし、置き換えた後の各文字が元の何文字目かの表も返す。
+
+    置き換えで長さが変わる文字（… → ...、ゼロ幅の文字の削除）があっても、一致した位置を元の文字列の
+    位置に戻せる。見出しや行番号は元の位置で引く（前は置き換えた後の位置で引いていたので、前に
+    長さの変わる文字があると、見出しが前の節に、行番号が後ろの行にずれた）。
+    """
+    out: list[str] = []
+    idx: list[int] = []
+    prev_space = False
+    for i, ch in enumerate(s):
+        rep = _QUOTES.get(ch, ch)
+        if collapse_hspace and rep in _HSPACE:
+            if prev_space:
+                continue
+            rep = " "
+        prev_space = collapse_hspace and rep == " "
+        for c in rep:
+            out.append(c)
+            idx.append(i)
+    idx.append(len(s))
+    return "".join(out), idx
+
+
 def _pattern(quote: str, loose: bool) -> re.Pattern:
     q = _norm_chars(html.unescape(quote)).strip()
     if loose:
@@ -153,8 +180,8 @@ def _pattern(quote: str, loose: bool) -> re.Pattern:
     return re.compile(body, re.I if loose else 0)
 
 
-def _search(text: str, quote: str):
-    t = _norm_chars(text)
+def _search(text: str, quote: str, normalized: bool = False):
+    t = text if normalized else _norm_chars(text)
     for mode, loose in (("exact", False), ("loose", True)):
         p = _pattern(quote, loose)
         ms = list(p.finditer(t))
@@ -204,42 +231,41 @@ def locate(url: str, quote: str) -> dict:
     if is_html:
         p = _Text()
         p.feed(text)
-        page = "".join(p.out)
-        page = re.sub(r"[ \t\r\f\v]+", " ", page)
-        mode, ms = _search(page, quote)
+        raw = "".join(p.out)
+        page, idx = _norm_map(raw, collapse_hspace=True)
+        mode, ms = _search(page, quote, normalized=True)
         if not ms:
             m2, ms2 = _search(html.unescape("\n".join(p.script)).replace("\\n", "\n").replace('\\"', '"'), quote)
             res.update(match="script_only" if ms2 else "none", count=len(ms2), kind="html")
             return res
-        # 見出しの位置は、空白を詰める前の長さで控えたので、詰めた後の位置に合わせ直す
-        raw = "".join(p.out)
-        heads = []
-        for o, lvl, txt, hid in p.heads:
-            heads.append((len(re.sub(r"[ \t\r\f\v]+", " ", raw[:o])), lvl, txt, hid))
+        # 見出しの位置（p.heads）は元の文字列 raw の位置なので、一致した位置も raw の位置に戻して比べる
+        heads = p.heads
         hits = []
         for m in ms[:5]:
-            path = _heading_path(heads, m.start())
+            path = _heading_path(heads, idx[m.start()])
             last_id = next((h[2] for h in reversed(path) if h[2]), "")
             base = meta.get("final_url") or url
             hits.append({"heading_path": " > ".join(h[1] for h in path),
                          "heading_id": last_id,
                          "anchored_url": (base.split("#")[0] + "#" + last_id) if last_id else "",
-                         "context": _ctx(_norm_chars(page), m)})
+                         "context": _ctx(page, m)})
         res.update(match=mode, count=len(ms), hits=hits, kind="html")
         return res
     lines = text.split("\n")
-    mode, ms = _search(text, quote)
+    norm, idx = _norm_map(text)
+    mode, ms = _search(norm, quote, normalized=True)
     hits = []
     for m in ms[:5]:
-        l0 = text.count("\n", 0, m.start()) + 1
-        l1 = text.count("\n", 0, m.end()) + 1
+        a, b = idx[m.start()], idx[max(m.start(), m.end() - 1)] + 1
+        l0 = text.count("\n", 0, a) + 1
+        l1 = text.count("\n", 0, b) + 1
         head = ""
         for i in range(l0 - 1, -1, -1):
             if re.match(r"#{1,6}\s", lines[i]):
                 head = lines[i].strip()
                 break
         hits.append({"lines": f"{l0}-{l1}" if l1 != l0 else str(l0), "md_heading": head,
-                     "context": _ctx(_norm_chars(text), m)})
+                     "context": _ctx(norm, m)})
     res.update(match=mode, count=len(ms), hits=hits, kind="text")
     return res
 
