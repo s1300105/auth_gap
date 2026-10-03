@@ -63,7 +63,7 @@ repo（`/home/user/auth_gap`）の中の、この研究で読むファイルの�
 
 | ファイル | 中身 | いつ開くか | 本文 |
 |---|---|---|---|
-| `docs/drafts/prereg_2_12_draft.md` | 事前登録 §2.12（最終評価）の下書き（152 行、下書き・未承認）。D67〜D73 を写したもの。前の版の【確認】2 点と【保留】は D73（2026-10-03）で決まり、印が外れた。残る印は段階 3 で確定する件数の【N】 | 封の前に承認する。承認後は `docs/preregistration.md` の §2.12 に写す | 第 22・46・47 章 |
+| `docs/drafts/prereg_2_12_draft.md` | 事前登録 §2.12（最終評価）の下書き（156 行、下書き・未承認）。D67〜D73 を写したもの。(c) に D75 の 2〜4（全部の深さで解析できた木で比べる、メモリ超過の扱い）を足した。前の版の【確認】2 点と【保留】は D73（2026-10-03）で決まり、印が外れた。残る印は段階 3 で確定する件数の【N】 | 封の前に承認する。承認後は `docs/preregistration.md` の §2.12 に写す | 第 22・46・47 章 |
 | `docs/drafts/final_judging_guide_draft.md` | 判定の手引きの下書き（733 行、下書き・未承認）。手順書の第 11〜22 節を写し、D67〜D73 と合わない 6 点（21 の 6、AI の欄と見落としの規則、21 の 1・5、15.3 の local の範囲、16・17 の「下書き」の印、18A）を直したもの | 封の前に承認する。承認後は `docs/final_judging_guide.md` に移す | 第 48〜52 章、[付録 E](appendix-e.md) |
 | `docs/contradiction_principles.md` | 矛盾の判定の原理（§1〜§5 の選択肢、§6 学生の選択、§7 判定表、§9 直し方の規則） | 判定の最中に §7 を開いておく（手引き 12.1） | 第 17・28 章 |
 | `docs/preregistration.md` | 事前登録（667 行）。§2 分母、§2.11 `r_malformed`、§5 逸脱の記録（#1〜#26） | 封のときに §2.12 を足す。手引きで決まらない事例は §5 に書く | [第 22 章](ch22.md) |
@@ -79,9 +79,9 @@ repo（`/home/user/auth_gap`）の中の、この研究で読むファイルの�
 
 | ファイル | 中身 | いつ開くか | 本文 |
 |---|---|---|---|
-| `docs/decisions.md` | 決定の記録 D1〜D73（4,030 行）。D71 の訂正と、D70 の 3 の改訂（2026-10-02）、D72・D73（2026-10-03）を含む。並びは番号順ではない（D39〜D20、D1〜D16、D19〜D17、D40〜D73 の順） | 規則の理由を確かめるとき | [第 46 章](ch46.md)、[付録 C](appendix-c.md) |
+| `docs/decisions.md` | 決定の記録 D1〜D75（4,103 行）。D71 の訂正と、D70 の 3 の改訂（2026-10-02）、D72〜D75（2026-10-03）を含む。並びは番号順ではない（D39〜D20、D1〜D16、D19〜D17、D40〜D75 の順） | 規則の理由を確かめるとき | [第 46 章](ch46.md)、[付録 C](appendix-c.md) |
 | `docs/open_questions.md` | 未決事項と既知の限界 O1〜O46（1,370 行）。O2 解決（D73 の 1。前は保留）、O41〜O43 既知の限界、O44 解決、O45 の 4 が残る、O46 記録 | 解析器の誤りを見つけたとき（限界として書く） | 第 42・46 章 |
-| `docs/final_evaluation_procedure.md` | 最終評価の手順書（1,511 行）。段階 0〜9 の地図。第 11〜22 節が手引きの元、第 23〜28 節が集計・論文・チェックリスト | 段階ごとに、何をするかを確かめるとき | 第 45〜47・55 章 |
+| `docs/final_evaluation_procedure.md` | 最終評価の手順書（1,533 行）。段階 0〜9 の地図。第 11〜22 節が手引きの元、第 23〜28 節が集計・論文・チェックリスト。6.8 に予備調査の候補での練習、9.2 にメモリ超過の扱い（D75） | 段階ごとに、何をするかを確かめるとき | 第 45〜47・55 章 |
 | `docs/verification_guide.md` | 手検証の入口 | 走査の結果を手で確かめるとき | [第 23 章](ch23.md) |
 | `docs/review_plan.md` | 最終凍結前の添削の計画（先にコミット）と進行の記録 | 添削の経緯を確かめるとき | [第 36 章](ch36.md) |
 | `docs/review_triage.md` | 添削の所見 151 件を 55 単位にまとめた採否の表 | 同上 | 第 36・42 章 |
@@ -103,6 +103,7 @@ repo（`/home/user/auth_gap`）の中の、この研究で読むファイルの�
 | `evidence/population_v2/` | v2 の列挙・取得・取得後の条件の記録（`enumeration.json`、`fetch_result.json`、`post_fetch_check.json`、`sample_v2_mcp.json` など） | — | [第 25 章](ch25.md) |
 | `evidence/population_v3/` | v3 の判定の記録（`v2_judgments.json`、`v3_miss_judgments.json`、`v3_miss_recheck_freeze3.json` など） | — | 第 34・41 章 |
 | `evidence/population_v4/` | v4 の判定の記録（`v4_judgments.json`、`v4_judge_targets.json`、`v4_miss_targets.json`、`contradiction_by_decl_v4_run1.md` など） | 判定の練習（v4 の判定を見ずに判定してから比べる） | 第 37・53・54 章 |
+| `evidence/v4pilot_depth/` | 深さの予備調査（D74）の記録。`depth_table.md`（深さ 3〜8 の比べ合わせ、87 木）、`memory_probe.md`（メモリと時間の上限）、`sample_v4_minus_oom.json`（メモリ超過の木を除いた標本）、判定の候補 `contradiction_sheet.csv`（矛 75 組）・`miss_sheet.csv`（見落とし 10 件）。走査の結果は `evidence/scan_v2_v4pilot_d3/`〜`d8/` | 判定の練習（D75 の 5。答えは無い）。メモリ超過で木を除くやり方を確かめるとき | 第 46・47 章 |
 | `docs/corpus_spec.json` | 較正対の取り出す版の指定 | 両側比較のとき | [第 31 章](ch31.md) |
 | `docs/expected_tuples.json` | 較正対の事前登録の期待（採点器より先にコミット） | — | [第 31 章](ch31.md) |
 
