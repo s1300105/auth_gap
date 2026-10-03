@@ -40,29 +40,40 @@ N_MISS = 10
 MISS_RUN_DEPTH = 4
 
 
-def contradiction_pairs(run_dir: str) -> set[tuple]:
-    """{(木, relpath, 行, qualname, site, kind, 宣言)}: その宣言への矛が出た組。"""
+def ok_trees(run_dir: str) -> set[str]:
+    s = json.load(open(os.path.join(run_dir, "summary.json"), encoding="utf-8"))
+    return {t["tree"] for t in s["trees"] if t.get("status") == "ok"}
+
+
+def contradiction_pairs(run_dir: str, trees: set[str]) -> set[tuple]:
+    """{(木, relpath, 行, qualname, site, kind, 宣言)}: その宣言への矛が出た組（`trees` の木だけ）。"""
     out = set()
     for key, decls in load_reasons(run_dir).items():
+        if key[0] not in trees:
+            continue
         for decl, findings in decls.items():
             if any(s == "contradiction" for s, _ in findings):
                 out.add((*key, decl))
     return out
 
 
-def run_stats(run_dir: str) -> dict:
+def run_stats(run_dir: str, common: set[str]) -> dict:
     s = json.load(open(os.path.join(run_dir, "summary.json"), encoding="utf-8"))
-    trees = s["trees"]
+    trees = [t for t in s["trees"] if t["tree"] in common]
     cap_units = 0
+    n_units = 0
     manifests, warnings = run_manifests(run_dir)
     print_warnings(warnings, os.path.basename(run_dir.rstrip("/")))
-    for _, path in manifests:
+    for tree, path in manifests:
+        if tree not in common:
+            continue
         for u in load_manifest(path)["units"]:
+            n_units += 1
             if "depth" in (u.get("opaque_reasons") or {}):
                 cap_units += 1
     return {
-        "max_depth": s["max_depth"], "n_trees": s["n_trees"], "n_units": s["n_units"],
-        "n_effects": s["n_effects"], "n_effects_unique": s["n_effects_unique"],
+        "max_depth": s["max_depth"], "n_trees": len(trees), "n_units": n_units,
+        "n_effects": sum(t.get("n_effects") or 0 for t in trees),
         "elapsed_s": round(sum(t.get("elapsed_s") or 0 for t in trees), 1),
         "max_tree_elapsed_s": max((t.get("elapsed_s") or 0) for t in trees),
         "budget_skipped": sum(t.get("budget_skipped") or 0 for t in trees),
@@ -98,10 +109,16 @@ def main() -> int:
     a = ap.parse_args()
     os.makedirs(a.out_dir, exist_ok=True)
 
+    # 比べるのは、全部の深さで解析できた木だけ（D74 の予備調査で、1 木が深さ 5 以上でメモリ超過になった）
+    oks = [ok_trees(r) for r in a.runs]
+    common = set.intersection(*oks)
+    allt = set.union(*oks)
+    sample = json.load(open(os.path.join(ROOT, "evidence", "population_v4", "sample_v4_mcp.json"), encoding="utf-8"))
+    missing = sorted({t["name"] for t in sample["targets"]} - common)
     stats, pairs = [], []
     for r in a.runs:
-        stats.append({"run": os.path.basename(r.rstrip("/")), **run_stats(r)})
-        pairs.append(contradiction_pairs(r))
+        stats.append({"run": os.path.basename(r.rstrip("/")), **run_stats(r, common)})
+        pairs.append(contradiction_pairs(r, common))
     fps = {s["fingerprint"] for s in stats}
     if len(fps) != 1:
         raise SystemExit(f"run の実装の指紋が揃っていない: {fps}")
@@ -112,8 +129,16 @@ def main() -> int:
         rows.append({**s, "contradiction_pairs": len(pairs[i]), "new_vs_prev": len(new), "lost_vs_prev": len(lost),
                      "contradiction_trees": len({p[0] for p in pairs[i]}),
                      "by_decl": {d: sum(1 for p in pairs[i] if p[-1] == d) for d in ("D1", "D2", "D3", "D4")}})
-    json.dump(rows, open(os.path.join(a.out_dir, "depth_table.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    json.dump({"common_trees": len(common), "trees_in_any_run": len(allt),
+               "excluded_trees": {t: [stats[i]["max_depth"] for i, o in enumerate(oks) if t not in o] for t in missing},
+               "rows": rows},
+              open(os.path.join(a.out_dir, "depth_table.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     with open(os.path.join(a.out_dir, "depth_table.md"), "w", encoding="utf-8") as fh:
+        fh.write(f"比べた木: 全部の深さで解析できた {len(common)} 木（v4 の {len(sample['targets'])} 木のうち）。\n")
+        for t in missing:
+            fh.write(f"- 除いた木: `{t}`（解析できなかった深さ: "
+                     f"{', '.join(str(stats[i]['max_depth']) for i, o in enumerate(oks) if t not in o)}）\n")
+        fh.write("\n")
         fh.write("| 深さ | 矛の組 | 新しく出た | 消えた | 矛の出た木 | D1/D2/D3/D4 | 上限に当たったユニット | 走査の時間（木の合計） | 一番長い木 | 打ち切り |\n")
         fh.write("|---|---|---|---|---|---|---|---|---|---|\n")
         for r in rows:
@@ -152,6 +177,8 @@ def main() -> int:
     pool: dict[str, list] = {}
     manifests, _ = run_manifests(a.runs[k])
     for tree, path in manifests:
+        if tree not in common:
+            continue
         for u in load_manifest(path)["units"]:
             ex = set((u.get("D_kind") or {}).get("explicit") or [])
             decl = "D1" if "readOnlyHint" in ex else ("D2" if "destructiveHint" in ex else None)
