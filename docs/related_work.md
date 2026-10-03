@@ -177,6 +177,43 @@ GPT Actions の測定（IMC 2025。仕様とポリシーの照合で、`x-openai
 | mcp-sec-audit・名前や説明だけを見る道具（actlint・Tool Card Linter・toolfence など） | 追わない／コードを読まない | 読む（名前・説明と比べる）ものがある |
 | SkillConsist | 本文に呼び出しをたどる記述は見つからなかった（不明） | 読まない |
 
+#### 追う研究は、追った先で何をしているか（2026-10-03、本記録者が本文を読んだ）
+
+「呼び出し先を追う」は同じでも、**追う目的が AuthGap と違う**。読んだ本文から（どれも arXiv の HTML / PDF の本文、
+Cisco はソースの `docs/behavioral-scanning.md` と `mcpscanner/data/prompts/code_alignment_threat_analysis_prompt.md`、
+f817899）:
+
+| 仕事 | 追う目的 | 追った先で見るもの | 結論を出すのは |
+|---|---|---|---|
+| DCIChecker | 説明文と比べる材料を集める | 入口の関数・深さ 3 までの補助関数のコードと、危ない API の呼び出し（引数を解決できれば値も）を 1 つの束にまとめる | LLM（説明文と束を読み、分類の 7 つの下位類型で判定） |
+| MCPDiFF | README と比べる材料を集める | 呼ばれない関数を入口とみなし、呼び出しの鎖ごとに LLM が機能を要約する | 埋め込みの類似度（README の機能をコードの機能がどれだけ覆うか） |
+| VIPER-MCP | **攻撃者の入力が危ない操作に届くか**（taint） | ツールの引数（攻撃者が操れる値）が、コマンド実行・外向きの要求・ファイルのパスに、無害化されずに届く道 | CodeQL の警告を、LLM が作った攻撃の文と実行時のフックで実証 |
+| MCP-BiFlow | **2 つの向きの危ない流れ**（taint） | ① 引数 → 危ない操作（コマンド・ファイル・DB・評価・外向き通信）、② 外から取った内容 → ツールの戻り値（モデルに返る） | 規則による解析。攻撃者が操れるか・防ぎが効くかが字面で決まらないときだけ LLM |
+| Cisco mcp-scanner | 悪意のある挙動（サプライチェーン攻撃など）を見つける | ツールの引数の流れと、呼び出し先（ファイルをまたいで 3 段）の操作の全部を LLM に渡す（「No predefined "dangerous" operations - reports everything to LLM」） | LLM（docstring と挙動の食い違い・悪意の有無） |
+| SkillScope | skill の説明（SKILL.md）に無い危ない挙動 | skill の全ファイルから危ない操作の節点を拾い、データ・制御の流れでつなぐ（入口から追うのではなく、skill のコード全体） | LLM（説明が覆わない操作・流れがあれば不整合） |
+| MICRYSCOPE | 暗号の API の誤用 | 手続きをまたぐ Def–Use グラフで、鍵・乱数などの値の出どころ | 誤用の規則 |
+
+**AuthGap との違いが出る点**（本記録者の読み。どの道具にも実際にはかけていない）:
+
+1. **taint の解析（VIPER-MCP・MCP-BiFlow）は「誰の値が届くか」を見る。AuthGap は「その操作が起きうるか」を見る。**
+   `readOnlyHint: true` のツールが、決まった場所（例 `~/.cache/history.json`）に検索の履歴を書くとき、パスは攻撃者が
+   操れないので taint の解析は脆弱性として出さない。AuthGap にとっては、書き込みが起きうること自体が D1 の矛盾である
+   （裏方の書き込みとしての扱いは人の判定、D68）。さらに VIPER-MCP は「特権の操作が目的のツール」（例: シェルを
+   実行するツール）を脆弱とみなさないと明記する（II-B の Research scope）。
+2. **Cisco は確信が無ければ指摘しない。** 指示文は分類ごとに「Uncertainty = No Flag」と書き、「Normal caching or state
+   management is NOT manipulation」と書く。上の履歴の書き込みは、悪意が無いので指摘しない向きになる。なお指示文は
+   「Function Metadata - Docstrings, decorators, and type annotations」を LLM に渡すので、`annotations=ToolAnnotations(...)`
+   を書いたデコレータの文字は LLM の目に入りうる。ただし宣言と比べよという指示は無い。
+3. **説明文と比べる仕事（DCIChecker・SkillScope）は、宣言とずれ方が逆になりうる。** 説明が「ノートを検索し、検索の履歴を
+   保存する」と書いていれば、DCIChecker の基準では一致（Eff-SM の定義は「説明が読み取りだけを思わせるのに書く」）。
+   同じツールに `readOnlyHint: true` があれば、AuthGap では矛盾。逆に説明が書き込みに触れず、宣言も無ければ、
+   DCIChecker は不整合、AuthGap は対象外。
+4. **DCIChecker の判定の段。** Direct と Reverse の 2 つの問いは点数で答え、点数 50 を「Ambiguous」と定める（付録の
+   Listing 1・2）。しかし仲裁の答えは「Consistent」か「Inconsistent」の 2 つから選ばせる（Listing 3）。点数 50 がどちらの
+   答えに変わるかは、本文にも手順（Algorithm 1）にも書かれていない（不明）。また、説明の側があいまいなことは
+   「Func-Am」として**不整合の 1 つの類**に数える（決められないもの、としては数えない）。上の表の「出力は一致 / 不一致
+   だけ」は最終の答えについて正しいが、この途中の段を書き足す。
+
 #### 前の記述の訂正
 
 - 本記録者が会話の中で「宣言を読み、かつ呼び出し先まで追う、の両方を満たすものは AuthGap のほかに見つからなかった」
