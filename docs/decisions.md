@@ -4013,6 +4013,14 @@ v4（D66）で分かったことを受けて、学生が決めた。**解析器�
    - **ドットの無い名前**（docker-compose のサービス名など）は local とみなす（公開の DNS で引けない）。解析器
      （`_const_host_class`）はこれを external とするので、解析器がそれで D3 の矛を出していたら判定は誤（原因は語彙・定義の差）。
      判定は原理と手引きで決め、解析器に合わせない（手引き 11.3）。
+   - **追記（2026-10-03、学生が承認）: `〜.internal` の名前**（`host.docker.internal`、`metadata.google.internal` など）も local
+     とみなす。きっかけ: 教科書の書き換えで、ドットを含むが `.local`・`.localhost` でない名前が local の範囲の表に無く、手引きでは
+     「外部の定数のホスト → 反する」と読めてしまうことが分かった（限界の記録 O42 の A2 は `host.docker.internal` を external に
+     するのを誤警報と書いていた）。根拠: IANA の担当者らの IETF の下書き draft-davies-internal-tld-03 の 1. Introduction
+     「Such domains will not resolve in the global DNS, but can be configured within closed networks as the network operator sees
+     fit.」（`scripts/verify_quote.py` で exact、2026-10-03）。ドットの無い名前を local とした理由（公開の DNS で引けない）と同じ。
+     ICANN の理事会の決議（2024-07）は検索の結果で見ただけで、決議のページは 404 で確かめていない。解析器はこれも external と
+     する（2026-10-03 に `_const_host_class` で確かめた）ので、それで出た D3 の矛は判定で誤。
 3. **D3・D4 の分母 M_d**: 矛の判定と同じ条件で数える。D1 = `D_kind.explicit` に `readOnlyHint`、D2 = `explicit` に
    `destructiveHint`、D3 = `D_kind.closed_world`、D4 = `D_kind.idempotent`。前の文面（D70 の 4「`D_kind.explicit` で数える」）は、
    D3 では逆の申告（`openWorldHint: true`）の木を数え、D4 では常に 0 になっていた（教科書 16.7 節）。D1・D2 は変わらない。

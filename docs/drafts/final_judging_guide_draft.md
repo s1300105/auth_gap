@@ -377,11 +377,12 @@ def _ensure_memory():
 | link-local | `169.254.0.0/16`、`fe80::/10` |
 | 未指定 | `0.0.0.0`、`::` |
 | 名前 | `localhost`、`〜.localhost`（RFC 6761）、`〜.local` |
+| `〜.internal` の名前（`host.docker.internal`、`metadata.google.internal` など） | local とみなす。`.internal` は組織の中だけで使う名前として取り置かれ、公開の DNS では引けない（D73 の 2 の追記） |
 | **ドットの無い名前**（`http://ollama:11434`、`http://db:5432` など。docker-compose のサービス名など） | local とみなす。公開の DNS では引けず、同じマシンかローカルの網の中の相手だから |
 
 - IPv4 を埋め込んだ IPv6（IPv4-mapped など）は、中の IPv4 で決める。
 - 上のどれでもない IP は、グローバルなら外部（反する）、そうでなければ不明。
-- **ドットの無い名前は、解析器（`authgap/dparse.py` の `_const_host_class`）では外部になる。** 解析器がそれで D3 の矛を出していたら、
+- **ドットの無い名前と `〜.internal` の名前は、解析器（`authgap/dparse.py` の `_const_host_class`）では外部になる。** 解析器がそれで D3 の矛を出していたら、
   判定は**誤**で、原因は語彙・定義の差（第 17 節）。解析器に合わせて判定を変えない（判定は原理と手引きで決める。第 11.3 節）。
 
 ### 15.4 D4 `idempotentHint: true` —「同じ引数で繰り返しても追加の効果が無いか」
