@@ -1,0 +1,2121 @@
+{
+ "_note": "D74 の予備調査。1 段上げて新しく出た矛から段ごとに最大 15 組。判定の前にコミットする。",
+ "seed": 202610031,
+ "n_per_step": 15,
+ "targets": [
+  {
+   "id": "C4-00",
+   "step": 4,
+   "n_new_in_step": 39,
+   "tree": "v4-double16__shyhurricane",
+   "unit_relpath": "shyhurricane/mcp_server/tools/find_indexed_metadata.py",
+   "unit_lineno": 44,
+   "tool": "find_domains",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "shyhurricane/index/web_resources.py:66",
+    "shyhurricane/task_queue/finding_worker.py:60",
+    "shyhurricane/task_queue/types.py:147"
+   ],
+   "witness_chain": [
+    "get_server_context",
+    "start_ingest_worker",
+    "<indirect>",
+    "_doc_type_watcher",
+    "prepare_worker_process"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C4-01",
+   "step": 4,
+   "n_new_in_step": 39,
+   "tree": "v4-double16__shyhurricane",
+   "unit_relpath": "shyhurricane/mcp_server/tools/find_web_resources.py",
+   "unit_lineno": 228,
+   "tool": "find_web_resources",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "shyhurricane/index/web_resources.py:66",
+    "shyhurricane/task_queue/finding_worker.py:60",
+    "shyhurricane/task_queue/types.py:147"
+   ],
+   "witness_chain": [
+    "get_server_context",
+    "start_ingest_worker",
+    "<indirect>",
+    "_doc_type_watcher",
+    "prepare_worker_process"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C4-02",
+   "step": 4,
+   "n_new_in_step": 39,
+   "tree": "v4-manavgup__wikimind",
+   "unit_relpath": "src/wikimind/mcp/server.py",
+   "unit_lineno": 141,
+   "tool": "wiki_search",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "src/wikimind/database.py:115"
+   ],
+   "witness_chain": [
+    "_get_session",
+    "get_session_factory",
+    "get_async_engine",
+    "get_engine"
+   ],
+   "chain_len": 4
+  },
+  {
+   "id": "C4-03",
+   "step": 4,
+   "n_new_in_step": 39,
+   "tree": "v4-manavgup__wikimind",
+   "unit_relpath": "src/wikimind/mcp/server.py",
+   "unit_lineno": 234,
+   "tool": "wiki_ask",
+   "site": "pathlib.Path.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "src/wikimind/services/activity_log.py:77"
+   ],
+   "witness_chain": [
+    "QueryService.ask",
+    "QAAgent.answer",
+    "QAAgent._persist_query",
+    "append_log_entry"
+   ],
+   "chain_len": 4
+  },
+  {
+   "id": "C4-04",
+   "step": 4,
+   "n_new_in_step": 39,
+   "tree": "v4-manavgup__wikimind",
+   "unit_relpath": "src/wikimind/mcp/tools_analysis.py",
+   "unit_lineno": 129,
+   "tool": "wiki_get_health",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "src/wikimind/database.py:115"
+   ],
+   "witness_chain": [
+    "_get_session",
+    "get_session_factory",
+    "get_async_engine",
+    "get_engine"
+   ],
+   "chain_len": 4
+  },
+  {
+   "id": "C4-05",
+   "step": 4,
+   "n_new_in_step": 39,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/ace_tools.py",
+   "unit_lineno": 444,
+   "tool": "ace_find_similar",
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/storage/_migration_phase1.py:32",
+    "ccr/core/storage/_migration_phase2.py:34",
+    "ccr/core/storage/_migration_phase2.py:37",
+    "ccr/core/storage/_migration_phase3.py:54",
+    "ccr/core/storage/_migration_phase3.py:238",
+    "ccr/core/storage/_migration_phase3.py:486",
+    "ccr/core/storage/_sqlite_fts5.py:185",
+    "ccr/core/storage/_sqlite_fts5.py:188",
+    "ccr/core/storage/_sqlite_fts5.py:213",
+    "ccr/core/storage/_sqlite_fts5.py:219",
+    "ccr/core/storage/_sqlite_fts5.py:220",
+    "ccr/core/storage/_sqlite_vec.py:61",
+    "ccr/core/storage/_sqlite_vec.py:89",
+    "ccr/core/storage/_sqlite_vec.py:95",
+    "ccr/core/storage/_sqlite_vec.py:118"
+   ],
+   "witness_chain": [
+    "_ensure_global_playbook",
+    "_init",
+    "SqliteStorageBackend.__init__",
+    "install_fts5"
+   ],
+   "chain_len": 4
+  },
+  {
+   "id": "C4-06",
+   "step": 4,
+   "n_new_in_step": 39,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/ace_tools.py",
+   "unit_lineno": 60,
+   "tool": "ace_get_playbook",
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/storage/_migration_phase1.py:32",
+    "ccr/core/storage/_migration_phase2.py:34",
+    "ccr/core/storage/_migration_phase2.py:37",
+    "ccr/core/storage/_migration_phase3.py:54",
+    "ccr/core/storage/_migration_phase3.py:238",
+    "ccr/core/storage/_migration_phase3.py:486",
+    "ccr/core/storage/_sqlite_fts5.py:185",
+    "ccr/core/storage/_sqlite_fts5.py:188",
+    "ccr/core/storage/_sqlite_fts5.py:213",
+    "ccr/core/storage/_sqlite_fts5.py:219",
+    "ccr/core/storage/_sqlite_fts5.py:220",
+    "ccr/core/storage/_sqlite_vec.py:61",
+    "ccr/core/storage/_sqlite_vec.py:89",
+    "ccr/core/storage/_sqlite_vec.py:95",
+    "ccr/core/storage/_sqlite_vec.py:118"
+   ],
+   "witness_chain": [
+    "_ensure_global_playbook",
+    "_init",
+    "SqliteStorageBackend.__init__",
+    "install_fts5"
+   ],
+   "chain_len": 4
+  },
+  {
+   "id": "C4-07",
+   "step": 4,
+   "n_new_in_step": 39,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 367,
+   "tool": "gcc_links",
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/memory_pkg/memory_file_io.py:111"
+   ],
+   "witness_chain": [
+    "LinkTraversalMixin.get_linked_commits",
+    "InitMixin.get_active_branch",
+    "FileIOMixin._read_file",
+    "FileIOMixin._file_lock"
+   ],
+   "chain_len": 4
+  },
+  {
+   "id": "C4-08",
+   "step": 4,
+   "n_new_in_step": 39,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 367,
+   "tool": "gcc_links",
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/storage/_migration_phase1.py:32",
+    "ccr/core/storage/_migration_phase2.py:34",
+    "ccr/core/storage/_migration_phase2.py:37",
+    "ccr/core/storage/_migration_phase3.py:54",
+    "ccr/core/storage/_migration_phase3.py:238",
+    "ccr/core/storage/_migration_phase3.py:486",
+    "ccr/core/storage/_sqlite_fts5.py:185",
+    "ccr/core/storage/_sqlite_fts5.py:188",
+    "ccr/core/storage/_sqlite_fts5.py:213",
+    "ccr/core/storage/_sqlite_fts5.py:219",
+    "ccr/core/storage/_sqlite_fts5.py:220",
+    "ccr/core/storage/_sqlite_vec.py:61",
+    "ccr/core/storage/_sqlite_vec.py:89",
+    "ccr/core/storage/_sqlite_vec.py:95",
+    "ccr/core/storage/_sqlite_vec.py:118"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "SqliteStorageBackend.__init__",
+    "install_fts5"
+   ],
+   "chain_len": 4
+  },
+  {
+   "id": "C4-09",
+   "step": 4,
+   "n_new_in_step": 39,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 814,
+   "tool": "gcc_search",
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/memory_pkg/memory_file_io.py:111"
+   ],
+   "witness_chain": [
+    "_search_single_project",
+    "InitMixin.get_active_branch",
+    "FileIOMixin._read_file",
+    "FileIOMixin._file_lock"
+   ],
+   "chain_len": 4
+  },
+  {
+   "id": "C4-10",
+   "step": 4,
+   "n_new_in_step": 39,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_todo_tools.py",
+   "unit_lineno": 69,
+   "tool": "gcc_todo_add",
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/memory_pkg/memory_file_io.py:111"
+   ],
+   "witness_chain": [
+    "TodoMixin.todo_add",
+    "InitMixin.get_active_branch",
+    "FileIOMixin._read_file",
+    "FileIOMixin._file_lock"
+   ],
+   "chain_len": 4
+  },
+  {
+   "id": "C4-11",
+   "step": 4,
+   "n_new_in_step": 39,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_tools.py",
+   "unit_lineno": 649,
+   "tool": "gcc_consolidate",
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/memory_pkg/memory_file_io.py:111"
+   ],
+   "witness_chain": [
+    "ConsolidationMixin.get_consolidation_prompt",
+    "InitMixin.get_active_branch",
+    "FileIOMixin._read_file",
+    "FileIOMixin._file_lock"
+   ],
+   "chain_len": 4
+  },
+  {
+   "id": "C4-12",
+   "step": 4,
+   "n_new_in_step": 39,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/index_tools.py",
+   "unit_lineno": 229,
+   "tool": "index_search",
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/storage/_migration_phase1.py:32",
+    "ccr/core/storage/_migration_phase2.py:34",
+    "ccr/core/storage/_migration_phase2.py:37",
+    "ccr/core/storage/_migration_phase3.py:54",
+    "ccr/core/storage/_migration_phase3.py:238",
+    "ccr/core/storage/_migration_phase3.py:486",
+    "ccr/core/storage/_sqlite_fts5.py:185",
+    "ccr/core/storage/_sqlite_fts5.py:188",
+    "ccr/core/storage/_sqlite_fts5.py:213",
+    "ccr/core/storage/_sqlite_fts5.py:219",
+    "ccr/core/storage/_sqlite_fts5.py:220",
+    "ccr/core/storage/_sqlite_vec.py:61",
+    "ccr/core/storage/_sqlite_vec.py:89",
+    "ccr/core/storage/_sqlite_vec.py:95",
+    "ccr/core/storage/_sqlite_vec.py:118"
+   ],
+   "witness_chain": [
+    "_ensure_index",
+    "_init",
+    "SqliteStorageBackend.__init__",
+    "install_fts5"
+   ],
+   "chain_len": 4
+  },
+  {
+   "id": "C4-13",
+   "step": 4,
+   "n_new_in_step": 39,
+   "tree": "v4-vladimir-human__ru-marketplace-mcp",
+   "unit_relpath": "packages/ozon-connector/src/ozon_connector/server.py",
+   "unit_lineno": 1288,
+   "tool": "ozon_search",
+   "site": "os.remove",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "packages/ozon-connector/src/ozon_connector/server.py:233"
+   ],
+   "witness_chain": [
+    "_ozon_search_impl",
+    "_fetch_composer",
+    "_run_sync_bounded",
+    "<indirect>",
+    "_sync_call_in_process"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C4-14",
+   "step": 4,
+   "n_new_in_step": 39,
+   "tree": "v4-vladimir-human__ru-marketplace-mcp",
+   "unit_relpath": "packages/ozon-connector/src/ozon_connector/server.py",
+   "unit_lineno": 1288,
+   "tool": "ozon_search",
+   "site": "pipe:write",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "packages/ozon-connector/src/ozon_connector/server.py:218"
+   ],
+   "witness_chain": [
+    "_ozon_search_impl",
+    "_fetch_composer",
+    "_run_sync_bounded",
+    "<indirect>",
+    "_sync_call_in_process"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C5-00",
+   "step": 5,
+   "n_new_in_step": 65,
+   "tree": "v4-citeck__citeck-claude-code-tools",
+   "unit_relpath": "plugins/citeck/servers/citeck_mcp.py",
+   "unit_lineno": 2255,
+   "tool": "preview_issue",
+   "site": "os.makedirs",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "plugins/citeck/lib/auth.py:47"
+   ],
+   "witness_chain": [
+    "_resolve_ref_labels",
+    "records_load",
+    "request",
+    "get_auth_header",
+    "_save_cache"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C5-01",
+   "step": 5,
+   "n_new_in_step": 65,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 286,
+   "tool": "gcc_conflicts",
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/memory_pkg/memory_file_io.py:111",
+    "ccr/core/memory_pkg/memory_file_io.py:143"
+   ],
+   "witness_chain": [
+    "_get_project_memory",
+    "InitMixin.ensure_structure",
+    "FileIOMixin._write_if_missing",
+    "FileIOMixin._write_file",
+    "FileIOMixin._file_lock"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C5-02",
+   "step": 5,
+   "n_new_in_step": 65,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 367,
+   "tool": "gcc_links",
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/context/embeddings.py:114",
+    "ccr/core/memory_pkg/memory_file_io.py:140"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "ContextMixin.save_index",
+    "FileIOMixin._write_file",
+    "FileIOMixin._write_file_unlocked"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C5-03",
+   "step": 5,
+   "n_new_in_step": 65,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 449,
+   "tool": "gcc_patterns",
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/memory_pkg/memory_file_io.py:111",
+    "ccr/core/memory_pkg/memory_file_io.py:143"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "ContextMixin.load_index",
+    "FileIOMixin._read_file",
+    "FileIOMixin._file_lock"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C5-04",
+   "step": 5,
+   "n_new_in_step": 65,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 657,
+   "tool": "gcc_discussions",
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/memory_pkg/memory_file_io.py:140"
+   ],
+   "witness_chain": [
+    "_get_project_memory",
+    "InitMixin.ensure_structure",
+    "FileIOMixin._write_if_missing",
+    "FileIOMixin._write_file",
+    "FileIOMixin._write_file_unlocked"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C5-05",
+   "step": 5,
+   "n_new_in_step": 65,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_todo_tools.py",
+   "unit_lineno": 109,
+   "tool": "gcc_todo_update",
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/memory_pkg/memory_file_io.py:140"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "ContextMixin.save_index",
+    "FileIOMixin._write_file",
+    "FileIOMixin._write_file_unlocked"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C5-06",
+   "step": 5,
+   "n_new_in_step": 65,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_todo_tools.py",
+   "unit_lineno": 109,
+   "tool": "gcc_todo_update",
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/storage/_migration_phase1.py:32",
+    "ccr/core/storage/_migration_phase1.py:67",
+    "ccr/core/storage/_migration_phase1.py:106",
+    "ccr/core/storage/_migration_phase1.py:142",
+    "ccr/core/storage/_migration_phase1.py:172",
+    "ccr/core/storage/_migration_phase2.py:34",
+    "ccr/core/storage/_migration_phase2.py:37",
+    "ccr/core/storage/_migration_phase2.py:88",
+    "ccr/core/storage/_migration_phase2.py:98",
+    "ccr/core/storage/_migration_phase2.py:133",
+    "ccr/core/storage/_migration_phase2.py:161",
+    "ccr/core/storage/_migration_phase2.py:169",
+    "ccr/core/storage/_migration_phase2.py:212",
+    "ccr/core/storage/_migration_phase2.py:223",
+    "ccr/core/storage/_migration_phase2.py:259",
+    "ccr/core/storage/_migration_phase2.py:302",
+    "ccr/core/storage/_migration_phase3.py:54",
+    "ccr/core/storage/_migration_phase3.py:123",
+    "ccr/core/storage/_migration_phase3.py:168",
+    "ccr/core/storage/_migration_phase3.py:204",
+    "ccr/core/storage/_migration_phase3.py:238",
+    "ccr/core/storage/_migration_phase3.py:281",
+    "ccr/core/storage/_migration_phase3.py:324",
+    "ccr/core/storage/_migration_phase3.py:347",
+    "ccr/core/storage/_migration_phase3.py:374",
+    "ccr/core/storage/_migration_phase3.py:411",
+    "ccr/core/storage/_migration_phase3.py:452",
+    "ccr/core/storage/_migration_phase3.py:463",
+    "ccr/core/storage/_migration_phase3.py:486",
+    "ccr/core/storage/_migration_phase3.py:550",
+    "ccr/core/storage/_migration_phase3.py:612",
+    "ccr/core/storage/_migration_phase3.py:668",
+    "ccr/core/storage/_migration_phase3.py:705",
+    "ccr/core/storage/_migration_phase3.py:730",
+    "ccr/core/storage/_sqlite_fts5.py:156",
+    "ccr/core/storage/_sqlite_fts5.py:159",
+    "ccr/core/storage/_sqlite_fts5.py:185",
+    "ccr/core/storage/_sqlite_fts5.py:188",
+    "ccr/core/storage/_sqlite_fts5.py:213",
+    "ccr/core/storage/_sqlite_fts5.py:219",
+    "ccr/core/storage/_sqlite_fts5.py:220",
+    "ccr/core/storage/_sqlite_vec.py:45",
+    "ccr/core/storage/_sqlite_vec.py:48",
+    "ccr/core/storage/_sqlite_vec.py:61",
+    "ccr/core/storage/_sqlite_vec.py:89",
+    "ccr/core/storage/_sqlite_vec.py:95",
+    "ccr/core/storage/_sqlite_vec.py:118",
+    "ccr/core/storage/sqlite_backend.py:400",
+    "ccr/core/storage/sqlite_backend.py:404"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "SqliteStorageBackend.__init__",
+    "install_fts5"
+   ],
+   "chain_len": 4
+  },
+  {
+   "id": "C5-07",
+   "step": 5,
+   "n_new_in_step": 65,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_todo_tools.py",
+   "unit_lineno": 156,
+   "tool": "gcc_todo_done",
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/memory_pkg/memory_file_io.py:111",
+    "ccr/core/memory_pkg/memory_file_io.py:143"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "ContextMixin.load_index",
+    "FileIOMixin._read_file",
+    "FileIOMixin._file_lock"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C5-08",
+   "step": 5,
+   "n_new_in_step": 65,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_todo_tools.py",
+   "unit_lineno": 33,
+   "tool": "gcc_todos",
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/memory_pkg/memory_file_io.py:140"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "ContextMixin.save_index",
+    "FileIOMixin._write_file",
+    "FileIOMixin._write_file_unlocked"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C5-09",
+   "step": 5,
+   "n_new_in_step": 65,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_todo_tools.py",
+   "unit_lineno": 33,
+   "tool": "gcc_todos",
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/memory_pkg/memory_file_io.py:111",
+    "ccr/core/memory_pkg/memory_file_io.py:143"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "ContextMixin.load_index",
+    "FileIOMixin._read_file",
+    "FileIOMixin._file_lock"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C5-10",
+   "step": 5,
+   "n_new_in_step": 65,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_todo_tools.py",
+   "unit_lineno": 69,
+   "tool": "gcc_todo_add",
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/memory_pkg/memory_file_io.py:140"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "ContextMixin.save_index",
+    "FileIOMixin._write_file",
+    "FileIOMixin._write_file_unlocked"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C5-11",
+   "step": 5,
+   "n_new_in_step": 65,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_tools.py",
+   "unit_lineno": 509,
+   "tool": "gcc_status",
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/memory_pkg/memory_file_io.py:140"
+   ],
+   "witness_chain": [
+    "_get_project_memory",
+    "InitMixin.ensure_structure",
+    "FileIOMixin._write_if_missing",
+    "FileIOMixin._write_file",
+    "FileIOMixin._write_file_unlocked"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C5-12",
+   "step": 5,
+   "n_new_in_step": 65,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_tools.py",
+   "unit_lineno": 649,
+   "tool": "gcc_consolidate",
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/storage/_migration_phase1.py:32",
+    "ccr/core/storage/_migration_phase1.py:67",
+    "ccr/core/storage/_migration_phase1.py:106",
+    "ccr/core/storage/_migration_phase1.py:142",
+    "ccr/core/storage/_migration_phase1.py:172",
+    "ccr/core/storage/_migration_phase2.py:34",
+    "ccr/core/storage/_migration_phase2.py:37",
+    "ccr/core/storage/_migration_phase2.py:88",
+    "ccr/core/storage/_migration_phase2.py:98",
+    "ccr/core/storage/_migration_phase2.py:133",
+    "ccr/core/storage/_migration_phase2.py:161",
+    "ccr/core/storage/_migration_phase2.py:169",
+    "ccr/core/storage/_migration_phase2.py:212",
+    "ccr/core/storage/_migration_phase2.py:223",
+    "ccr/core/storage/_migration_phase2.py:259",
+    "ccr/core/storage/_migration_phase2.py:302",
+    "ccr/core/storage/_migration_phase3.py:54",
+    "ccr/core/storage/_migration_phase3.py:123",
+    "ccr/core/storage/_migration_phase3.py:168",
+    "ccr/core/storage/_migration_phase3.py:204",
+    "ccr/core/storage/_migration_phase3.py:238",
+    "ccr/core/storage/_migration_phase3.py:281",
+    "ccr/core/storage/_migration_phase3.py:324",
+    "ccr/core/storage/_migration_phase3.py:347",
+    "ccr/core/storage/_migration_phase3.py:374",
+    "ccr/core/storage/_migration_phase3.py:411",
+    "ccr/core/storage/_migration_phase3.py:452",
+    "ccr/core/storage/_migration_phase3.py:463",
+    "ccr/core/storage/_migration_phase3.py:486",
+    "ccr/core/storage/_migration_phase3.py:550",
+    "ccr/core/storage/_migration_phase3.py:612",
+    "ccr/core/storage/_migration_phase3.py:668",
+    "ccr/core/storage/_migration_phase3.py:705",
+    "ccr/core/storage/_migration_phase3.py:730",
+    "ccr/core/storage/_sqlite_fts5.py:156",
+    "ccr/core/storage/_sqlite_fts5.py:159",
+    "ccr/core/storage/_sqlite_fts5.py:185",
+    "ccr/core/storage/_sqlite_fts5.py:188",
+    "ccr/core/storage/_sqlite_fts5.py:213",
+    "ccr/core/storage/_sqlite_fts5.py:219",
+    "ccr/core/storage/_sqlite_fts5.py:220",
+    "ccr/core/storage/_sqlite_vec.py:45",
+    "ccr/core/storage/_sqlite_vec.py:48",
+    "ccr/core/storage/_sqlite_vec.py:61",
+    "ccr/core/storage/_sqlite_vec.py:89",
+    "ccr/core/storage/_sqlite_vec.py:95",
+    "ccr/core/storage/_sqlite_vec.py:118",
+    "ccr/core/storage/sqlite_backend.py:400",
+    "ccr/core/storage/sqlite_backend.py:404"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "SqliteStorageBackend.__init__",
+    "install_fts5"
+   ],
+   "chain_len": 4
+  },
+  {
+   "id": "C5-13",
+   "step": 5,
+   "n_new_in_step": 65,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_tools.py",
+   "unit_lineno": 699,
+   "tool": "gcc_scratchpad",
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/storage/_migration_phase1.py:32",
+    "ccr/core/storage/_migration_phase1.py:67",
+    "ccr/core/storage/_migration_phase1.py:106",
+    "ccr/core/storage/_migration_phase1.py:142",
+    "ccr/core/storage/_migration_phase1.py:172",
+    "ccr/core/storage/_migration_phase2.py:34",
+    "ccr/core/storage/_migration_phase2.py:37",
+    "ccr/core/storage/_migration_phase2.py:88",
+    "ccr/core/storage/_migration_phase2.py:98",
+    "ccr/core/storage/_migration_phase2.py:133",
+    "ccr/core/storage/_migration_phase2.py:161",
+    "ccr/core/storage/_migration_phase2.py:169",
+    "ccr/core/storage/_migration_phase2.py:212",
+    "ccr/core/storage/_migration_phase2.py:223",
+    "ccr/core/storage/_migration_phase2.py:259",
+    "ccr/core/storage/_migration_phase2.py:302",
+    "ccr/core/storage/_migration_phase3.py:54",
+    "ccr/core/storage/_migration_phase3.py:123",
+    "ccr/core/storage/_migration_phase3.py:168",
+    "ccr/core/storage/_migration_phase3.py:204",
+    "ccr/core/storage/_migration_phase3.py:238",
+    "ccr/core/storage/_migration_phase3.py:281",
+    "ccr/core/storage/_migration_phase3.py:324",
+    "ccr/core/storage/_migration_phase3.py:347",
+    "ccr/core/storage/_migration_phase3.py:374",
+    "ccr/core/storage/_migration_phase3.py:411",
+    "ccr/core/storage/_migration_phase3.py:452",
+    "ccr/core/storage/_migration_phase3.py:463",
+    "ccr/core/storage/_migration_phase3.py:486",
+    "ccr/core/storage/_migration_phase3.py:550",
+    "ccr/core/storage/_migration_phase3.py:612",
+    "ccr/core/storage/_migration_phase3.py:668",
+    "ccr/core/storage/_migration_phase3.py:705",
+    "ccr/core/storage/_migration_phase3.py:730",
+    "ccr/core/storage/_sqlite_fts5.py:156",
+    "ccr/core/storage/_sqlite_fts5.py:159",
+    "ccr/core/storage/_sqlite_fts5.py:185",
+    "ccr/core/storage/_sqlite_fts5.py:188",
+    "ccr/core/storage/_sqlite_fts5.py:213",
+    "ccr/core/storage/_sqlite_fts5.py:219",
+    "ccr/core/storage/_sqlite_fts5.py:220",
+    "ccr/core/storage/_sqlite_vec.py:45",
+    "ccr/core/storage/_sqlite_vec.py:48",
+    "ccr/core/storage/_sqlite_vec.py:61",
+    "ccr/core/storage/_sqlite_vec.py:89",
+    "ccr/core/storage/_sqlite_vec.py:95",
+    "ccr/core/storage/_sqlite_vec.py:118",
+    "ccr/core/storage/sqlite_backend.py:400",
+    "ccr/core/storage/sqlite_backend.py:404"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "SqliteStorageBackend.__init__",
+    "install_fts5"
+   ],
+   "chain_len": 4
+  },
+  {
+   "id": "C5-14",
+   "step": 5,
+   "n_new_in_step": 65,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/rlm_tools.py",
+   "unit_lineno": 65,
+   "tool": "rlm_init",
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/memory_pkg/memory_file_io.py:111",
+    "ccr/core/memory_pkg/memory_file_io.py:143"
+   ],
+   "witness_chain": [
+    "_ensure_index",
+    "_init",
+    "ContextMixin.load_index",
+    "FileIOMixin._read_file",
+    "FileIOMixin._file_lock"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C6-00",
+   "step": 6,
+   "n_new_in_step": 30,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/ace_llm_tools.py",
+   "unit_lineno": 306,
+   "tool": "ace_generate_bullets",
+   "site": "os.rename",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/storage/_migration_utils.py:32"
+   ],
+   "witness_chain": [
+    "_ensure_playbook",
+    "_init",
+    "auto_migrate",
+    "migrate_phase_1",
+    "_migrate_scratchpad",
+    "_backup_file"
+   ],
+   "chain_len": 6
+  },
+  {
+   "id": "C6-01",
+   "step": 6,
+   "n_new_in_step": 30,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/ace_llm_tools.py",
+   "unit_lineno": 445,
+   "tool": "ace_evolve_from_failures",
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "locations": [
+    "ccr/context/embeddings.py:117",
+    "ccr/core/memory_pkg/memory_file_io.py:111",
+    "ccr/core/memory_pkg/memory_file_io.py:143"
+   ],
+   "witness_chain": [
+    "_resolve_playbook",
+    "_ensure_global_playbook",
+    "_init",
+    "ContextMixin.load_index",
+    "FileIOMixin._read_file",
+    "FileIOMixin._file_lock"
+   ],
+   "chain_len": 6
+  },
+  {
+   "id": "C6-02",
+   "step": 6,
+   "n_new_in_step": 30,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/ace_llm_tools.py",
+   "unit_lineno": 445,
+   "tool": "ace_evolve_from_failures",
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/storage/_migration_phase1.py:32",
+    "ccr/core/storage/_migration_phase1.py:67",
+    "ccr/core/storage/_migration_phase1.py:106",
+    "ccr/core/storage/_migration_phase1.py:142",
+    "ccr/core/storage/_migration_phase1.py:172",
+    "ccr/core/storage/_migration_phase2.py:34",
+    "ccr/core/storage/_migration_phase2.py:37",
+    "ccr/core/storage/_migration_phase2.py:88",
+    "ccr/core/storage/_migration_phase2.py:98",
+    "ccr/core/storage/_migration_phase2.py:133",
+    "ccr/core/storage/_migration_phase2.py:161",
+    "ccr/core/storage/_migration_phase2.py:169",
+    "ccr/core/storage/_migration_phase2.py:212",
+    "ccr/core/storage/_migration_phase2.py:223",
+    "ccr/core/storage/_migration_phase2.py:259",
+    "ccr/core/storage/_migration_phase2.py:302",
+    "ccr/core/storage/_migration_phase3.py:54",
+    "ccr/core/storage/_migration_phase3.py:123",
+    "ccr/core/storage/_migration_phase3.py:168",
+    "ccr/core/storage/_migration_phase3.py:204",
+    "ccr/core/storage/_migration_phase3.py:238",
+    "ccr/core/storage/_migration_phase3.py:281",
+    "ccr/core/storage/_migration_phase3.py:324",
+    "ccr/core/storage/_migration_phase3.py:347",
+    "ccr/core/storage/_migration_phase3.py:374",
+    "ccr/core/storage/_migration_phase3.py:411",
+    "ccr/core/storage/_migration_phase3.py:452",
+    "ccr/core/storage/_migration_phase3.py:463",
+    "ccr/core/storage/_migration_phase3.py:486",
+    "ccr/core/storage/_migration_phase3.py:550",
+    "ccr/core/storage/_migration_phase3.py:612",
+    "ccr/core/storage/_migration_phase3.py:668",
+    "ccr/core/storage/_migration_phase3.py:705",
+    "ccr/core/storage/_migration_phase3.py:730",
+    "ccr/core/storage/_sqlite_fts5.py:156",
+    "ccr/core/storage/_sqlite_fts5.py:159",
+    "ccr/core/storage/_sqlite_fts5.py:185",
+    "ccr/core/storage/_sqlite_fts5.py:188",
+    "ccr/core/storage/_sqlite_fts5.py:213",
+    "ccr/core/storage/_sqlite_fts5.py:219",
+    "ccr/core/storage/_sqlite_fts5.py:220",
+    "ccr/core/storage/_sqlite_vec.py:45",
+    "ccr/core/storage/_sqlite_vec.py:48",
+    "ccr/core/storage/_sqlite_vec.py:61",
+    "ccr/core/storage/_sqlite_vec.py:89",
+    "ccr/core/storage/_sqlite_vec.py:95",
+    "ccr/core/storage/_sqlite_vec.py:118",
+    "ccr/core/storage/sqlite_backend.py:400",
+    "ccr/core/storage/sqlite_backend.py:404"
+   ],
+   "witness_chain": [
+    "_resolve_playbook",
+    "_ensure_global_playbook",
+    "_init",
+    "SqliteStorageBackend.__init__",
+    "install_fts5"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C6-03",
+   "step": 6,
+   "n_new_in_step": 30,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/ace_tools.py",
+   "unit_lineno": 165,
+   "tool": "ace_apply_delta",
+   "site": "os.rename",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/storage/_migration_utils.py:32"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "auto_migrate",
+    "migrate_phase_1",
+    "_migrate_scratchpad",
+    "_backup_file"
+   ],
+   "chain_len": 6
+  },
+  {
+   "id": "C6-04",
+   "step": 6,
+   "n_new_in_step": 30,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/ace_tools.py",
+   "unit_lineno": 322,
+   "tool": "ace_update_counters",
+   "site": "os.rename",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/storage/_migration_utils.py:32"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "auto_migrate",
+    "migrate_phase_1",
+    "_migrate_scratchpad",
+    "_backup_file"
+   ],
+   "chain_len": 6
+  },
+  {
+   "id": "C6-05",
+   "step": 6,
+   "n_new_in_step": 30,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/ace_tools.py",
+   "unit_lineno": 60,
+   "tool": "ace_get_playbook",
+   "site": "os.rename",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/storage/_migration_utils.py:32"
+   ],
+   "witness_chain": [
+    "_ensure_global_playbook",
+    "_init",
+    "auto_migrate",
+    "migrate_phase_1",
+    "_migrate_scratchpad",
+    "_backup_file"
+   ],
+   "chain_len": 6
+  },
+  {
+   "id": "C6-06",
+   "step": 6,
+   "n_new_in_step": 30,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_branch_tools.py",
+   "unit_lineno": 99,
+   "tool": "gcc_evolve_memory",
+   "site": "os.rename",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/storage/_migration_utils.py:32"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "auto_migrate",
+    "migrate_phase_1",
+    "_migrate_scratchpad",
+    "_backup_file"
+   ],
+   "chain_len": 6
+  },
+  {
+   "id": "C6-07",
+   "step": 6,
+   "n_new_in_step": 30,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 316,
+   "tool": "gcc_conflicts_resolve",
+   "site": "psycopg.Cursor.execute",
+   "kind": "DB",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/storage/_migration_phase1.py:32",
+    "ccr/core/storage/_migration_phase1.py:67",
+    "ccr/core/storage/_migration_phase1.py:106",
+    "ccr/core/storage/_migration_phase1.py:142",
+    "ccr/core/storage/_migration_phase1.py:172",
+    "ccr/core/storage/_migration_phase2.py:34",
+    "ccr/core/storage/_migration_phase2.py:37",
+    "ccr/core/storage/_migration_phase2.py:88",
+    "ccr/core/storage/_migration_phase2.py:98",
+    "ccr/core/storage/_migration_phase2.py:133",
+    "ccr/core/storage/_migration_phase2.py:161",
+    "ccr/core/storage/_migration_phase2.py:169",
+    "ccr/core/storage/_migration_phase2.py:212",
+    "ccr/core/storage/_migration_phase2.py:223",
+    "ccr/core/storage/_migration_phase2.py:259",
+    "ccr/core/storage/_migration_phase2.py:302",
+    "ccr/core/storage/_migration_phase3.py:54",
+    "ccr/core/storage/_migration_phase3.py:123",
+    "ccr/core/storage/_migration_phase3.py:168",
+    "ccr/core/storage/_migration_phase3.py:204",
+    "ccr/core/storage/_migration_phase3.py:238",
+    "ccr/core/storage/_migration_phase3.py:281",
+    "ccr/core/storage/_migration_phase3.py:324",
+    "ccr/core/storage/_migration_phase3.py:347",
+    "ccr/core/storage/_migration_phase3.py:374",
+    "ccr/core/storage/_migration_phase3.py:411",
+    "ccr/core/storage/_migration_phase3.py:452",
+    "ccr/core/storage/_migration_phase3.py:463",
+    "ccr/core/storage/_migration_phase3.py:486",
+    "ccr/core/storage/_migration_phase3.py:550",
+    "ccr/core/storage/_migration_phase3.py:612",
+    "ccr/core/storage/_migration_phase3.py:668",
+    "ccr/core/storage/_migration_phase3.py:705",
+    "ccr/core/storage/_migration_phase3.py:730",
+    "ccr/core/storage/_sqlite_fts5.py:156",
+    "ccr/core/storage/_sqlite_fts5.py:159",
+    "ccr/core/storage/_sqlite_fts5.py:185",
+    "ccr/core/storage/_sqlite_fts5.py:188",
+    "ccr/core/storage/_sqlite_fts5.py:213",
+    "ccr/core/storage/_sqlite_fts5.py:219",
+    "ccr/core/storage/_sqlite_fts5.py:220",
+    "ccr/core/storage/_sqlite_vec.py:45",
+    "ccr/core/storage/_sqlite_vec.py:48",
+    "ccr/core/storage/_sqlite_vec.py:61",
+    "ccr/core/storage/_sqlite_vec.py:89",
+    "ccr/core/storage/_sqlite_vec.py:95",
+    "ccr/core/storage/_sqlite_vec.py:118",
+    "ccr/core/storage/sqlite_backend.py:400",
+    "ccr/core/storage/sqlite_backend.py:404"
+   ],
+   "witness_chain": [
+    "_get_project_memory",
+    "_ensure_memory",
+    "_init",
+    "SqliteStorageBackend.__init__",
+    "install_fts5"
+   ],
+   "chain_len": 5
+  },
+  {
+   "id": "C6-08",
+   "step": 6,
+   "n_new_in_step": 30,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_todo_tools.py",
+   "unit_lineno": 33,
+   "tool": "gcc_todos",
+   "site": "os.rename",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/storage/_migration_utils.py:32"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "auto_migrate",
+    "migrate_phase_1",
+    "_migrate_scratchpad",
+    "_backup_file"
+   ],
+   "chain_len": 6
+  },
+  {
+   "id": "C6-09",
+   "step": 6,
+   "n_new_in_step": 30,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_todo_tools.py",
+   "unit_lineno": 69,
+   "tool": "gcc_todo_add",
+   "site": "os.rename",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/storage/_migration_utils.py:32"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "auto_migrate",
+    "migrate_phase_1",
+    "_migrate_scratchpad",
+    "_backup_file"
+   ],
+   "chain_len": 6
+  },
+  {
+   "id": "C6-10",
+   "step": 6,
+   "n_new_in_step": 30,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_tools.py",
+   "unit_lineno": 104,
+   "tool": "gcc_commit",
+   "site": "os.rename",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/storage/_migration_utils.py:32"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "auto_migrate",
+    "migrate_phase_1",
+    "_migrate_scratchpad",
+    "_backup_file"
+   ],
+   "chain_len": 6
+  },
+  {
+   "id": "C6-11",
+   "step": 6,
+   "n_new_in_step": 30,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_tools.py",
+   "unit_lineno": 699,
+   "tool": "gcc_scratchpad",
+   "site": "os.rename",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/storage/_migration_utils.py:32"
+   ],
+   "witness_chain": [
+    "_ensure_memory",
+    "_init",
+    "auto_migrate",
+    "migrate_phase_1",
+    "_migrate_scratchpad",
+    "_backup_file"
+   ],
+   "chain_len": 6
+  },
+  {
+   "id": "C6-12",
+   "step": 6,
+   "n_new_in_step": 30,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/index_tools.py",
+   "unit_lineno": 378,
+   "tool": "index_status",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/replay.py:103"
+   ],
+   "witness_chain": [
+    "IndexDB.file_count",
+    "KernelSandbox.execute",
+    "MemoryEvalRunner.run",
+    "MemoryEvalRunner._run_case",
+    "RecallEngine.recall",
+    "RecallTraceStore.append_trace"
+   ],
+   "chain_len": 6
+  },
+  {
+   "id": "C6-13",
+   "step": 6,
+   "n_new_in_step": 30,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/index_tools.py",
+   "unit_lineno": 378,
+   "tool": "index_status",
+   "site": "os.makedirs",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/replay.py:102"
+   ],
+   "witness_chain": [
+    "IndexDB.file_count",
+    "KernelSandbox.execute",
+    "MemoryEvalRunner.run",
+    "MemoryEvalRunner._run_case",
+    "RecallEngine.recall",
+    "RecallTraceStore.append_trace"
+   ],
+   "chain_len": 6
+  },
+  {
+   "id": "C6-14",
+   "step": 6,
+   "n_new_in_step": 30,
+   "tree": "v4-vladimir-human__ru-marketplace-mcp",
+   "unit_relpath": "packages/lamoda-connector/src/lamoda_connector/server.py",
+   "unit_lineno": 395,
+   "tool": "lamoda_search",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "packages/mcp-core/src/mcp_core/transport/chrome_cdp.py:227"
+   ],
+   "witness_chain": [
+    "_cdp_render_search",
+    "current_mcp_session_id",
+    "get_context",
+    "get_browser",
+    "_ensure_cdp_running",
+    "<indirect>",
+    "_start_chrome_with_cdp"
+   ],
+   "chain_len": 7
+  },
+  {
+   "id": "C7-00",
+   "step": 7,
+   "n_new_in_step": 17,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/ace_llm_tools.py",
+   "unit_lineno": 445,
+   "tool": "ace_evolve_from_failures",
+   "site": "os.rename",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/storage/_migration_utils.py:32"
+   ],
+   "witness_chain": [
+    "_resolve_playbook",
+    "_ensure_global_playbook",
+    "_init",
+    "auto_migrate",
+    "migrate_phase_1",
+    "_migrate_scratchpad",
+    "_backup_file"
+   ],
+   "chain_len": 7
+  },
+  {
+   "id": "C7-01",
+   "step": 7,
+   "n_new_in_step": 17,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 131,
+   "tool": "gcc_facts",
+   "site": "os.rename",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/storage/_migration_utils.py:32"
+   ],
+   "witness_chain": [
+    "_get_project_memory",
+    "_ensure_memory",
+    "_init",
+    "auto_migrate",
+    "migrate_phase_1",
+    "_migrate_scratchpad",
+    "_backup_file"
+   ],
+   "chain_len": 7
+  },
+  {
+   "id": "C7-02",
+   "step": 7,
+   "n_new_in_step": 17,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 316,
+   "tool": "gcc_conflicts_resolve",
+   "site": "os.rename",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "locations": [
+    "ccr/core/storage/_migration_utils.py:32"
+   ],
+   "witness_chain": [
+    "_get_project_memory",
+    "_ensure_memory",
+    "_init",
+    "auto_migrate",
+    "migrate_phase_1",
+    "_migrate_scratchpad",
+    "_backup_file"
+   ],
+   "chain_len": 7
+  },
+  {
+   "id": "C7-03",
+   "step": 7,
+   "n_new_in_step": 17,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 527,
+   "tool": "gcc_experiments",
+   "site": "os.rename",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/storage/_migration_utils.py:32"
+   ],
+   "witness_chain": [
+    "_get_project_memory",
+    "_ensure_memory",
+    "_init",
+    "auto_migrate",
+    "migrate_phase_1",
+    "_migrate_scratchpad",
+    "_backup_file"
+   ],
+   "chain_len": 7
+  },
+  {
+   "id": "C7-04",
+   "step": 7,
+   "n_new_in_step": 17,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 71,
+   "tool": "gcc_recall",
+   "site": "os.rename",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/storage/_migration_utils.py:32"
+   ],
+   "witness_chain": [
+    "_get_project_memory",
+    "_ensure_memory",
+    "_init",
+    "auto_migrate",
+    "migrate_phase_1",
+    "_migrate_scratchpad",
+    "_backup_file"
+   ],
+   "chain_len": 7
+  },
+  {
+   "id": "C7-05",
+   "step": 7,
+   "n_new_in_step": 17,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 814,
+   "tool": "gcc_search",
+   "site": "os.rename",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/storage/_migration_utils.py:32"
+   ],
+   "witness_chain": [
+    "_get_project_memory",
+    "_ensure_memory",
+    "_init",
+    "auto_migrate",
+    "migrate_phase_1",
+    "_migrate_scratchpad",
+    "_backup_file"
+   ],
+   "chain_len": 7
+  },
+  {
+   "id": "C7-06",
+   "step": 7,
+   "n_new_in_step": 17,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_tools.py",
+   "unit_lineno": 355,
+   "tool": "gcc_context",
+   "site": "os.rename",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/storage/_migration_utils.py:32"
+   ],
+   "witness_chain": [
+    "_get_project_memory",
+    "_ensure_memory",
+    "_init",
+    "auto_migrate",
+    "migrate_phase_1",
+    "_migrate_scratchpad",
+    "_backup_file"
+   ],
+   "chain_len": 7
+  },
+  {
+   "id": "C7-07",
+   "step": 7,
+   "n_new_in_step": 17,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/gcc_tools.py",
+   "unit_lineno": 509,
+   "tool": "gcc_status",
+   "site": "os.rename",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/storage/_migration_utils.py:32"
+   ],
+   "witness_chain": [
+    "_get_project_memory",
+    "_ensure_memory",
+    "_init",
+    "auto_migrate",
+    "migrate_phase_1",
+    "_migrate_scratchpad",
+    "_backup_file"
+   ],
+   "chain_len": 7
+  },
+  {
+   "id": "C7-08",
+   "step": 7,
+   "n_new_in_step": 17,
+   "tree": "v4-qbit-glitch__ccr",
+   "unit_relpath": "ccr/mcp/index_tools.py",
+   "unit_lineno": 378,
+   "tool": "index_status",
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "ccr/core/memory_pkg/memory_file_io.py:111"
+   ],
+   "witness_chain": [
+    "IndexDB.file_count",
+    "KernelSandbox.execute",
+    "MemoryEvalRunner.run",
+    "MemoryEvalRunner._build_cases",
+    "InitMixin.get_active_branch",
+    "FileIOMixin._read_file",
+    "FileIOMixin._file_lock"
+   ],
+   "chain_len": 7
+  },
+  {
+   "id": "C7-09",
+   "step": 7,
+   "n_new_in_step": 17,
+   "tree": "v4-vladimir-human__ru-marketplace-mcp",
+   "unit_relpath": "packages/aliexpress-connector/src/aliexpress_connector/server.py",
+   "unit_lineno": 517,
+   "tool": "aliexpress_search",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "packages/mcp-core/src/mcp_core/transport/chrome_cdp.py:227"
+   ],
+   "witness_chain": [
+    "_cdp_render_search",
+    "open_page",
+    "_playwright_page",
+    "get_context",
+    "get_browser",
+    "_ensure_cdp_running",
+    "<indirect>",
+    "_start_chrome_with_cdp"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C7-10",
+   "step": 7,
+   "n_new_in_step": 17,
+   "tree": "v4-vladimir-human__ru-marketplace-mcp",
+   "unit_relpath": "packages/aliexpress-connector/src/aliexpress_connector/server.py",
+   "unit_lineno": 602,
+   "tool": "aliexpress_card",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "packages/mcp-core/src/mcp_core/transport/chrome_cdp.py:227"
+   ],
+   "witness_chain": [
+    "_cdp_card",
+    "open_page",
+    "_playwright_page",
+    "get_context",
+    "get_browser",
+    "_ensure_cdp_running",
+    "<indirect>",
+    "_start_chrome_with_cdp"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C7-11",
+   "step": 7,
+   "n_new_in_step": 17,
+   "tree": "v4-vladimir-human__ru-marketplace-mcp",
+   "unit_relpath": "packages/citilink-connector/src/citilink_connector/server.py",
+   "unit_lineno": 319,
+   "tool": "citilink_search",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "packages/mcp-core/src/mcp_core/transport/chrome_cdp.py:227"
+   ],
+   "witness_chain": [
+    "_cdp_render",
+    "open_page",
+    "_playwright_page",
+    "get_context",
+    "get_browser",
+    "_ensure_cdp_running",
+    "<indirect>",
+    "_start_chrome_with_cdp"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C7-12",
+   "step": 7,
+   "n_new_in_step": 17,
+   "tree": "v4-vladimir-human__ru-marketplace-mcp",
+   "unit_relpath": "packages/citilink-connector/src/citilink_connector/server.py",
+   "unit_lineno": 380,
+   "tool": "citilink_card",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "packages/mcp-core/src/mcp_core/transport/chrome_cdp.py:227"
+   ],
+   "witness_chain": [
+    "_cdp_render",
+    "open_page",
+    "_playwright_page",
+    "get_context",
+    "get_browser",
+    "_ensure_cdp_running",
+    "<indirect>",
+    "_start_chrome_with_cdp"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C7-13",
+   "step": 7,
+   "n_new_in_step": 17,
+   "tree": "v4-vladimir-human__ru-marketplace-mcp",
+   "unit_relpath": "packages/dns-connector/src/dns_connector/server.py",
+   "unit_lineno": 376,
+   "tool": "dns_search",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "packages/mcp-core/src/mcp_core/transport/chrome_cdp.py:227"
+   ],
+   "witness_chain": [
+    "_cdp_render",
+    "open_page",
+    "_playwright_page",
+    "get_context",
+    "get_browser",
+    "_ensure_cdp_running",
+    "<indirect>",
+    "_start_chrome_with_cdp"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C7-14",
+   "step": 7,
+   "n_new_in_step": 17,
+   "tree": "v4-vladimir-human__ru-marketplace-mcp",
+   "unit_relpath": "packages/dns-connector/src/dns_connector/server.py",
+   "unit_lineno": 437,
+   "tool": "dns_card",
+   "site": "pathlib.Path.mkdir",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "packages/mcp-core/src/mcp_core/transport/chrome_cdp.py:227"
+   ],
+   "witness_chain": [
+    "_cdp_render",
+    "open_page",
+    "_playwright_page",
+    "get_context",
+    "get_browser",
+    "_ensure_cdp_running",
+    "<indirect>",
+    "_start_chrome_with_cdp"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C8-00",
+   "step": 8,
+   "n_new_in_step": 38,
+   "tree": "v4-benjaminmridler__mcp-atlassian",
+   "unit_relpath": "src/mcp_atlassian/servers/jira.py",
+   "unit_lineno": 1797,
+   "tool": "get_all_projects",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "src/mcp_atlassian/utils/oauth.py:329"
+   ],
+   "witness_chain": [
+    "get_jira_fetcher",
+    "FormattingMixin.__init__",
+    "JiraClient.__init__",
+    "configure_oauth_session",
+    "OAuthConfig.ensure_valid_token",
+    "OAuthConfig.refresh_access_token",
+    "OAuthConfig._save_tokens",
+    "OAuthConfig._save_tokens_to_file"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C8-01",
+   "step": 8,
+   "n_new_in_step": 38,
+   "tree": "v4-benjaminmridler__mcp-atlassian",
+   "unit_relpath": "src/mcp_atlassian/servers/jira.py",
+   "unit_lineno": 2189,
+   "tool": "get_latest_comments",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "src/mcp_atlassian/utils/oauth.py:329"
+   ],
+   "witness_chain": [
+    "get_jira_fetcher",
+    "FormattingMixin.__init__",
+    "JiraClient.__init__",
+    "configure_oauth_session",
+    "OAuthConfig.ensure_valid_token",
+    "OAuthConfig.refresh_access_token",
+    "OAuthConfig._save_tokens",
+    "OAuthConfig._save_tokens_to_file"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C8-02",
+   "step": 8,
+   "n_new_in_step": 38,
+   "tree": "v4-benjaminmridler__mcp-atlassian",
+   "unit_relpath": "src/mcp_atlassian/servers/jira.py",
+   "unit_lineno": 2550,
+   "tool": "get_issue_history",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "src/mcp_atlassian/utils/oauth.py:329"
+   ],
+   "witness_chain": [
+    "get_jira_fetcher",
+    "FormattingMixin.__init__",
+    "JiraClient.__init__",
+    "configure_oauth_session",
+    "OAuthConfig.ensure_valid_token",
+    "OAuthConfig.refresh_access_token",
+    "OAuthConfig._save_tokens",
+    "OAuthConfig._save_tokens_to_file"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C8-03",
+   "step": 8,
+   "n_new_in_step": 38,
+   "tree": "v4-benjaminmridler__mcp-atlassian",
+   "unit_relpath": "src/mcp_atlassian/servers/jira.py",
+   "unit_lineno": 29,
+   "tool": "get_user_profile",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "src/mcp_atlassian/utils/oauth.py:329"
+   ],
+   "witness_chain": [
+    "get_jira_fetcher",
+    "FormattingMixin.__init__",
+    "JiraClient.__init__",
+    "configure_oauth_session",
+    "OAuthConfig.ensure_valid_token",
+    "OAuthConfig.refresh_access_token",
+    "OAuthConfig._save_tokens",
+    "OAuthConfig._save_tokens_to_file"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C8-04",
+   "step": 8,
+   "n_new_in_step": 38,
+   "tree": "v4-benjaminmridler__mcp-atlassian",
+   "unit_relpath": "src/mcp_atlassian/servers/jira.py",
+   "unit_lineno": 338,
+   "tool": "get_transitions",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "src/mcp_atlassian/utils/oauth.py:329"
+   ],
+   "witness_chain": [
+    "get_jira_fetcher",
+    "FormattingMixin.__init__",
+    "JiraClient.__init__",
+    "configure_oauth_session",
+    "OAuthConfig.ensure_valid_token",
+    "OAuthConfig.refresh_access_token",
+    "OAuthConfig._save_tokens",
+    "OAuthConfig._save_tokens_to_file"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C8-05",
+   "step": 8,
+   "n_new_in_step": 38,
+   "tree": "v4-benjaminmridler__mcp-atlassian",
+   "unit_relpath": "src/mcp_atlassian/servers/jira.py",
+   "unit_lineno": 463,
+   "tool": "get_board_issues",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "src/mcp_atlassian/utils/oauth.py:329"
+   ],
+   "witness_chain": [
+    "get_jira_fetcher",
+    "FormattingMixin.__init__",
+    "JiraClient.__init__",
+    "configure_oauth_session",
+    "OAuthConfig.ensure_valid_token",
+    "OAuthConfig.refresh_access_token",
+    "OAuthConfig._save_tokens",
+    "OAuthConfig._save_tokens_to_file"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C8-06",
+   "step": 8,
+   "n_new_in_step": 38,
+   "tree": "v4-benjaminmridler__mcp-atlassian",
+   "unit_relpath": "src/mcp_atlassian/servers/jira.py",
+   "unit_lineno": 583,
+   "tool": "get_sprint_issues",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "src/mcp_atlassian/utils/oauth.py:329"
+   ],
+   "witness_chain": [
+    "get_jira_fetcher",
+    "FormattingMixin.__init__",
+    "JiraClient.__init__",
+    "configure_oauth_session",
+    "OAuthConfig.ensure_valid_token",
+    "OAuthConfig.refresh_access_token",
+    "OAuthConfig._save_tokens",
+    "OAuthConfig._save_tokens_to_file"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C8-07",
+   "step": 8,
+   "n_new_in_step": 38,
+   "tree": "v4-pengfeip908__git-skill-test",
+   "unit_relpath": "external/mcp-servers/mcp-atlassian/src/mcp_atlassian/servers/jira.py",
+   "unit_lineno": 1605,
+   "tool": "get_project_versions",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "external/mcp-servers/mcp-atlassian/src/mcp_atlassian/utils/oauth.py:329"
+   ],
+   "witness_chain": [
+    "get_jira_fetcher",
+    "FormattingMixin.__init__",
+    "JiraClient.__init__",
+    "configure_oauth_session",
+    "OAuthConfig.ensure_valid_token",
+    "OAuthConfig.refresh_access_token",
+    "OAuthConfig._save_tokens",
+    "OAuthConfig._save_tokens_to_file"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C8-08",
+   "step": 8,
+   "n_new_in_step": 38,
+   "tree": "v4-pengfeip908__git-skill-test",
+   "unit_relpath": "external/mcp-servers/mcp-atlassian/src/mcp_atlassian/servers/jira.py",
+   "unit_lineno": 176,
+   "tool": "search",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "external/mcp-servers/mcp-atlassian/src/mcp_atlassian/utils/oauth.py:329"
+   ],
+   "witness_chain": [
+    "get_jira_fetcher",
+    "FormattingMixin.__init__",
+    "JiraClient.__init__",
+    "configure_oauth_session",
+    "OAuthConfig.ensure_valid_token",
+    "OAuthConfig.refresh_access_token",
+    "OAuthConfig._save_tokens",
+    "OAuthConfig._save_tokens_to_file"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C8-09",
+   "step": 8,
+   "n_new_in_step": 38,
+   "tree": "v4-pengfeip908__git-skill-test",
+   "unit_relpath": "external/mcp-servers/mcp-atlassian/src/mcp_atlassian/servers/jira.py",
+   "unit_lineno": 1816,
+   "tool": "jira_get_issue_dates",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "external/mcp-servers/mcp-atlassian/src/mcp_atlassian/utils/oauth.py:329"
+   ],
+   "witness_chain": [
+    "get_jira_fetcher",
+    "FormattingMixin.__init__",
+    "JiraClient.__init__",
+    "configure_oauth_session",
+    "OAuthConfig.ensure_valid_token",
+    "OAuthConfig.refresh_access_token",
+    "OAuthConfig._save_tokens",
+    "OAuthConfig._save_tokens_to_file"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C8-10",
+   "step": 8,
+   "n_new_in_step": 38,
+   "tree": "v4-pengfeip908__git-skill-test",
+   "unit_relpath": "external/mcp-servers/mcp-atlassian/src/mcp_atlassian/servers/jira.py",
+   "unit_lineno": 29,
+   "tool": "get_user_profile",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "external/mcp-servers/mcp-atlassian/src/mcp_atlassian/utils/oauth.py:329"
+   ],
+   "witness_chain": [
+    "get_jira_fetcher",
+    "FormattingMixin.__init__",
+    "JiraClient.__init__",
+    "configure_oauth_session",
+    "OAuthConfig.ensure_valid_token",
+    "OAuthConfig.refresh_access_token",
+    "OAuthConfig._save_tokens",
+    "OAuthConfig._save_tokens_to_file"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C8-11",
+   "step": 8,
+   "n_new_in_step": 38,
+   "tree": "v4-pengfeip908__git-skill-test",
+   "unit_relpath": "external/mcp-servers/mcp-atlassian/src/mcp_atlassian/servers/jira.py",
+   "unit_lineno": 338,
+   "tool": "get_transitions",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "external/mcp-servers/mcp-atlassian/src/mcp_atlassian/utils/oauth.py:329"
+   ],
+   "witness_chain": [
+    "get_jira_fetcher",
+    "FormattingMixin.__init__",
+    "JiraClient.__init__",
+    "configure_oauth_session",
+    "OAuthConfig.ensure_valid_token",
+    "OAuthConfig.refresh_access_token",
+    "OAuthConfig._save_tokens",
+    "OAuthConfig._save_tokens_to_file"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C8-12",
+   "step": 8,
+   "n_new_in_step": 38,
+   "tree": "v4-pengfeip908__git-skill-test",
+   "unit_relpath": "external/mcp-servers/mcp-atlassian/src/mcp_atlassian/servers/jira.py",
+   "unit_lineno": 361,
+   "tool": "get_worklog",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "external/mcp-servers/mcp-atlassian/src/mcp_atlassian/utils/oauth.py:329"
+   ],
+   "witness_chain": [
+    "get_jira_fetcher",
+    "FormattingMixin.__init__",
+    "JiraClient.__init__",
+    "configure_oauth_session",
+    "OAuthConfig.ensure_valid_token",
+    "OAuthConfig.refresh_access_token",
+    "OAuthConfig._save_tokens",
+    "OAuthConfig._save_tokens_to_file"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C8-13",
+   "step": 8,
+   "n_new_in_step": 38,
+   "tree": "v4-pengfeip908__git-skill-test",
+   "unit_relpath": "external/mcp-servers/mcp-atlassian/src/mcp_atlassian/servers/jira.py",
+   "unit_lineno": 634,
+   "tool": "get_link_types",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "external/mcp-servers/mcp-atlassian/src/mcp_atlassian/utils/oauth.py:329"
+   ],
+   "witness_chain": [
+    "get_jira_fetcher",
+    "FormattingMixin.__init__",
+    "JiraClient.__init__",
+    "configure_oauth_session",
+    "OAuthConfig.ensure_valid_token",
+    "OAuthConfig.refresh_access_token",
+    "OAuthConfig._save_tokens",
+    "OAuthConfig._save_tokens_to_file"
+   ],
+   "chain_len": 8
+  },
+  {
+   "id": "C8-14",
+   "step": 8,
+   "n_new_in_step": 38,
+   "tree": "v4-pengfeip908__git-skill-test",
+   "unit_relpath": "external/mcp-servers/mcp-atlassian/src/mcp_atlassian/servers/jira.py",
+   "unit_lineno": 90,
+   "tool": "get_issue",
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "locations": [
+    "external/mcp-servers/mcp-atlassian/src/mcp_atlassian/utils/oauth.py:329"
+   ],
+   "witness_chain": [
+    "get_jira_fetcher",
+    "FormattingMixin.__init__",
+    "JiraClient.__init__",
+    "configure_oauth_session",
+    "OAuthConfig.ensure_valid_token",
+    "OAuthConfig.refresh_access_token",
+    "OAuthConfig._save_tokens",
+    "OAuthConfig._save_tokens_to_file"
+   ],
+   "chain_len": 8
+  }
+ ]
+}
