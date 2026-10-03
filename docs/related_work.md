@@ -126,6 +126,69 @@ GPT Actions の測定（IMC 2025。仕様とポリシーの照合で、`x-openai
 - MCP-BiFlow の 32 / 100（登録の型が「その他 / 混在」）は、AuthGap の入口の規則の必要を示す外部の数字として本文に
   引ける（著者の主張。本記録者は再現していない）。
 
+### 呼び出し先を追うか — 本記録者が自分で確かめた（2026-10-03）
+
+学生の問い「本当にほかの研究は関数の本体しか見ていないのか」に答えるため、担当の報告を使わずに確かめた。
+道具はソースを読んだうえで実際に動かし、論文は呼び出しの扱いを書いた原文を `scripts/verify_quote.py` で照らし合わせ
+直した（`recheck_interprocedural.json`、64 個のうち 63 個が exact / loose。JPure の 1 個は取得の失敗）。
+
+**結論: 本体しか見ないのは、宣言を読む道具のうち HintLint の Python の経路と mcp-doctor だけだった。論文の多くは
+呼び出し先を追う。** ただし、追う論文はどれも宣言（ToolAnnotations）を読まない。
+
+#### 動かして確かめた（`evidence/related_work_20261002/depth_probe/`）
+
+`server.py` に `readOnlyHint=True` のツールを 3 つ置いた: 本体で `open(destination, "w")` する `body_write`、
+同じ書き込みを補助関数 `_save` に任せる `helper_write`、`os.remove` と `subprocess.run(["rm", "-rf", ...])` を補助関数
+`_purge` に任せる `helper_purge`（`destructiveHint=False` も宣言）。
+
+| 道具（版） | `body_write`（0 段） | `helper_write`（1 段） | `helper_purge`（1 段） |
+|---|---|---|---|
+| HintLint（5a51f2a4、Python） | 指摘（`false_readonly`） | **指摘なし**。`_save` の書き込みは「プロジェクト単位」の証拠として見つかるが、どのツールにも結びつかない | **指摘なし**（`subprocess` はプロジェクト単位の証拠、`os.remove` は規則に無く見つからない） |
+| HintLint（同、TypeScript の同じ形 `server.ts`） | — | **指摘**（`typescript-local-callgraph`、道すじ `helper_write → save`、深さ 1） | — |
+| mcp-doctor（HEAD 4def567、2026-10-02） | 指摘（`annotation_mismatch`、「own body contains ...」） | **指摘なし** | **指摘なし** |
+
+ソースの上の理由:
+
+- HintLint: Python のツールの範囲は、デコレータから次の `def` までの行（`src/extractors/python.js` 63〜73 行）。範囲の外
+  の証拠をツールに結びつけ直す `reachableEvidenceByTool` は、`typescript` / `javascript` 以外を飛ばす
+  （`src/evidence/typescript-reachability.js` 346 行）。外部の解析器（CodeQL・Semgrep・Bandit）の結果の取り込みも、
+  報告の行がツールの範囲の中にあるときだけツールに結びつける（`src/evidence/tool-location.js`、
+  `src/evidence/sarif-normalizer.js` 57〜62 行。データの流れの道すじ `trace` は保存するが、結びつけには使わない）。
+  なお CLI に配線されている外部の解析器は Semgrep だけ（`src/cli.js`）。
+- mcp-doctor: `_scan_for_mutation_signal(fn)` が `ast.unparse(fn)` に正規表現を当てる（`mcp_doctor/analyzer.py` 856〜871 行）。
+  同じファイルに補助関数を 5 段までたどる仕組みがあるが、例外処理の有無の検査にしか使わない（918〜922 行）。
+
+#### 論文と道具の一覧（原文で確かめた範囲）
+
+| 仕事 | 呼び出し先を追うか | 宣言（ToolAnnotations）を読むか |
+|---|---|---|
+| DCIChecker | **追う**。プロジェクト内を深さ k=3 まで（「we recursively follow intra-project calls up to depth k」「we set the depth k=3」）。外部ライブラリと許可リストで止める | 読まない（説明文と比べる） |
+| MCPDiFF | **追う**。入口から呼び出しグラフを深さ優先でたどる（入口は MCP のツール登録ではなく、呼ばれない関数） | 読まない |
+| VIPER-MCP | **追う**（「inter-procedural taint propagation」。CodeQL） | 読まない |
+| MCP-BiFlow | **追う**（呼び出しグラフの上の双方向の手続き間 taint） | 読まない |
+| MICRYSCOPE（暗号の誤用） | **追う**（大域の手続き間 Def–Use グラフ） | 読まない |
+| Cisco mcp-scanner | **追う**。ファイルをまたいで最大 3 段 | 読まない（docstring と比べる） |
+| SkillScope | **追う**。Joern の CPG からファイルをまたぐ辺を補ってグラフを作る（単位は skill 全体） | 読まない（SKILL.md と比べる） |
+| Stowaway | **追う**。手続き内の解析に深さ 2 の手続き間解析を足す | （Android の権限の宣言を読む） |
+| OpenAI の申請用 skill | **追うよう LLM に指示**（「inspect enough of that path」）。深さの決まり無し | 読む（D1〜D3） |
+| HintLint | TypeScript / JavaScript は**追う**（深さ 4、同じファイルと相対 import の中だけ）。**Python は追わない** | 読む（D1〜D3） |
+| mcp-doctor | **追わない** | 読む（D1 だけ） |
+| Agent Audit | **追わない**（「inter-procedural data flow across function boundaries is not tracked」） | 読まない |
+| mcp-sec-audit・名前や説明だけを見る道具（actlint・Tool Card Linter・toolfence など） | 追わない／コードを読まない | 読む（名前・説明と比べる）ものがある |
+| SkillConsist | 本文に呼び出しをたどる記述は見つからなかった（不明） | 読まない |
+
+#### 前の記述の訂正
+
+- 本記録者が会話の中で「宣言を読み、かつ呼び出し先まで追う、の両方を満たすものは AuthGap のほかに見つからなかった」
+  と答えたのは**言い過ぎだった**。HintLint は TypeScript / JavaScript では両方を満たす（上の試験で確かめた）。
+  OpenAI の申請用 skill も、LLM への指示としては両方を求める。正しくは「**Python の MCP サーバについて、宣言を読み、
+  呼び出し先まで追う静的な解析は、AuthGap のほかに見つからなかった**」。上の節の「言えそうなこと」2 はこの言い方に
+  なっている。
+- 「呼び出し先を追うこと」自体は新しくない。DCIChecker（深さ 3）・Cisco（深さ 3）・Stowaway（深さ 2）・HintLint の
+  TS / JS（深さ 4）など、多くの仕事がしている。AuthGap の違いとして言えるのは、追うことそのものではなく、
+  **追った先の効果を宣言（D1〜D4）と照らすこと**と、**追い切れなかったところ（深さ・再帰・解決できない呼び出し）を
+  `opaque` として数えること**である。
+
 ### R1 の訂正（2026-10-02。元の文は書き換えず、ここに書く）
 
 1. **「HintLint には未解決を表す語彙が無い」は言い過ぎだった。** ツール単位の語彙（`unknown_handler`・`metadata_only`・

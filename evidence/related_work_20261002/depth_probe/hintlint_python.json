@@ -1,0 +1,389 @@
+{
+  "hintlint_version": "0.1.0",
+  "scan_started_at": "2026-10-03T00:53:32.800Z",
+  "scan_duration_ms": 18,
+  "target": "<probe>/python",
+  "project": {
+    "languages": [
+      "python"
+    ],
+    "files_scanned": 1
+  },
+  "summary": {
+    "tools_scanned": 3,
+    "handlers_resolved": 3,
+    "annotations_present": 3,
+    "unsupported_patterns": 0,
+    "source_evidence": 1,
+    "project_evidence": 2,
+    "findings": 2,
+    "coverage_status": "supported",
+    "handler_mapping_rate": 1,
+    "evidence_records_by_tier": {
+      "L2": 2,
+      "L3": 1
+    },
+    "findings_by_tier": {
+      "L3": 2
+    }
+  },
+  "coverage": {
+    "extraction_status": "supported",
+    "extraction_reason": "Tool extraction produced at least one MCP tool.",
+    "mcp_markers_detected": true,
+    "tools_extracted": 3,
+    "metadata_only_tools": 0,
+    "handlers_resolved": 3,
+    "handler_mapping_rate": 1,
+    "annotation_coverage_rate": 1,
+    "unsupported_patterns": 0,
+    "unsupported_languages": [],
+    "supported_languages": [
+      "python"
+    ],
+    "file_language_counts": {
+      "python": 1
+    },
+    "evidence_records_by_tier": {
+      "L2": 2,
+      "L3": 1
+    },
+    "findings_by_tier": {
+      "L3": 2
+    }
+  },
+  "tools": [
+    {
+      "name": "body_write",
+      "description": "",
+      "language": "python",
+      "source": {
+        "file": "server.py",
+        "line": 19
+      },
+      "input_schema": {
+        "parameter_names": [
+          "data",
+          "destination"
+        ],
+        "schema_format": "python-signature",
+        "schema_source": "def body_write(destination: str, data: str) -> str:"
+      },
+      "declared_annotations": {
+        "readOnlyHint": true
+      },
+      "handler": {
+        "file": "server.py",
+        "line": 20,
+        "symbol": "body_write",
+        "confidence": "resolved"
+      },
+      "extraction": {
+        "extractor": "python-decorator-mvp",
+        "pattern": "@tool"
+      }
+    },
+    {
+      "name": "helper_purge",
+      "description": "",
+      "language": "python",
+      "source": {
+        "file": "server.py",
+        "line": 32
+      },
+      "input_schema": {
+        "parameter_names": [
+          "path"
+        ],
+        "schema_format": "python-signature",
+        "schema_source": "def helper_purge(path: str) -> str:"
+      },
+      "declared_annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false
+      },
+      "handler": {
+        "file": "server.py",
+        "line": 33,
+        "symbol": "helper_purge",
+        "confidence": "resolved"
+      },
+      "extraction": {
+        "extractor": "python-decorator-mvp",
+        "pattern": "@tool"
+      }
+    },
+    {
+      "name": "helper_write",
+      "description": "",
+      "language": "python",
+      "source": {
+        "file": "server.py",
+        "line": 26
+      },
+      "input_schema": {
+        "parameter_names": [
+          "data",
+          "destination"
+        ],
+        "schema_format": "python-signature",
+        "schema_source": "def helper_write(destination: str, data: str) -> str:"
+      },
+      "declared_annotations": {
+        "readOnlyHint": true
+      },
+      "handler": {
+        "file": "server.py",
+        "line": 27,
+        "symbol": "helper_write",
+        "confidence": "resolved"
+      },
+      "extraction": {
+        "extractor": "python-decorator-mvp",
+        "pattern": "@tool"
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "tool": "body_write",
+      "scope": "tool",
+      "category": "filesystem_mutation",
+      "sink_kind": "write",
+      "sink": "open(destination, \"w\"",
+      "file": "server.py",
+      "line": 21,
+      "source": "builtin-static-m2",
+      "engine": "builtin",
+      "rule_id": "hintlint.filesystem.mutation",
+      "confidence": "source-backed",
+      "evidence_tier": "L3",
+      "sanitizer": {
+        "status": "not_found",
+        "expected": "path root containment with an allowed base directory"
+      },
+      "flow": "filesystem",
+      "source_parameter": {
+        "name": "destination",
+        "schema_path": "$.tools[?(@.name==\"body_write\")].input_schema.parameter_names[?(@==\"destination\")]",
+        "file": "server.py",
+        "line": 19
+      },
+      "cwe_id": "CWE-22"
+    }
+  ],
+  "project_evidence": [
+    {
+      "tool": null,
+      "scope": "project",
+      "category": "filesystem_mutation",
+      "sink_kind": "write",
+      "sink": "open(destination, \"w\"",
+      "file": "server.py",
+      "line": 10,
+      "source": "builtin-static-m2",
+      "engine": "builtin",
+      "rule_id": "hintlint.filesystem.mutation",
+      "confidence": "needs-review",
+      "evidence_tier": "L2",
+      "sanitizer": {
+        "status": "not_found",
+        "expected": "path root containment with an allowed base directory"
+      },
+      "flow": "filesystem",
+      "cwe_id": "CWE-22"
+    },
+    {
+      "tool": null,
+      "scope": "project",
+      "category": "process_execution",
+      "sink_kind": "execute",
+      "sink": "subprocess.run(",
+      "file": "server.py",
+      "line": 16,
+      "source": "builtin-static-m2",
+      "engine": "builtin",
+      "rule_id": "hintlint.process.execution",
+      "confidence": "needs-review",
+      "evidence_tier": "L2",
+      "sanitizer": {
+        "status": "not_found",
+        "expected": "server-side command allowlist"
+      },
+      "flow": "process",
+      "cwe_id": "CWE-78"
+    }
+  ],
+  "findings": [
+    {
+      "id": "HINTLINT-READONLY-001",
+      "severity": "high",
+      "type": "false_readonly",
+      "tool": "body_write",
+      "confidence": "source-backed",
+      "confidence_tier": "L3",
+      "evidence_tier": "L3",
+      "message": "Tool 'body_write' declares readOnlyHint=true but source evidence shows state mutation, external side effect, or process execution.",
+      "declared_annotations": {
+        "readOnlyHint": true
+      },
+      "verified_behavior": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "writes_internal_state": true,
+        "external_side_effect": false,
+        "destructive_action": false,
+        "process_execution": false,
+        "filesystem_mutation": true,
+        "database_mutation": false,
+        "http_mutation": false,
+        "cloud_mutation": false,
+        "query_execution": false,
+        "url_construction": false,
+        "connection_string": false,
+        "unsafe_flows": [
+          "filesystem"
+        ],
+        "evidence_categories": [
+          "filesystem_mutation"
+        ],
+        "confidence": "source-backed"
+      },
+      "evidence": [
+        {
+          "tool": "body_write",
+          "scope": "tool",
+          "category": "filesystem_mutation",
+          "sink_kind": "write",
+          "sink": "open(destination, \"w\"",
+          "file": "server.py",
+          "line": 21,
+          "source": "builtin-static-m2",
+          "engine": "builtin",
+          "rule_id": "hintlint.filesystem.mutation",
+          "confidence": "source-backed",
+          "evidence_tier": "L3",
+          "sanitizer": {
+            "status": "not_found",
+            "expected": "path root containment with an allowed base directory"
+          },
+          "flow": "filesystem",
+          "source_parameter": {
+            "name": "destination",
+            "schema_path": "$.tools[?(@.name==\"body_write\")].input_schema.parameter_names[?(@==\"destination\")]",
+            "file": "server.py",
+            "line": 19
+          },
+          "cwe_id": "CWE-22"
+        }
+      ],
+      "repair": {
+        "type": "annotation_patch",
+        "summary": "Set readOnlyHint=false and align destructive/open-world hints with the verified behavior.",
+        "suggested_annotations": {
+          "readOnlyHint": false
+        }
+      },
+      "suggested_annotations": {
+        "readOnlyHint": false
+      }
+    },
+    {
+      "id": "HINTLINT-FLOW-FILESYSTEM-001",
+      "severity": "high",
+      "type": "tool_input_to_filesystem_write",
+      "tool": "body_write",
+      "confidence": "source-backed",
+      "confidence_tier": "L3",
+      "evidence_tier": "L3",
+      "message": "Tool 'body_write' has path-like MCP parameters and reaches filesystem write/path operations. Validate containment under an allowed root before writing.",
+      "declared_annotations": {
+        "readOnlyHint": true
+      },
+      "verified_behavior": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "writes_internal_state": true,
+        "external_side_effect": false,
+        "destructive_action": false,
+        "process_execution": false,
+        "filesystem_mutation": true,
+        "database_mutation": false,
+        "http_mutation": false,
+        "cloud_mutation": false,
+        "query_execution": false,
+        "url_construction": false,
+        "connection_string": false,
+        "unsafe_flows": [
+          "filesystem"
+        ],
+        "evidence_categories": [
+          "filesystem_mutation"
+        ],
+        "confidence": "source-backed"
+      },
+      "evidence": [
+        {
+          "tool": "body_write",
+          "scope": "tool",
+          "category": "filesystem_mutation",
+          "sink_kind": "write",
+          "sink": "open(destination, \"w\"",
+          "file": "server.py",
+          "line": 21,
+          "source": "builtin-static-m2",
+          "engine": "builtin",
+          "rule_id": "hintlint.filesystem.mutation",
+          "confidence": "source-backed",
+          "evidence_tier": "L3",
+          "sanitizer": {
+            "status": "not_found",
+            "expected": "path root containment with an allowed base directory"
+          },
+          "flow": "filesystem",
+          "source_parameter": {
+            "name": "destination",
+            "schema_path": "$.tools[?(@.name==\"body_write\")].input_schema.parameter_names[?(@==\"destination\")]",
+            "file": "server.py",
+            "line": 19
+          },
+          "cwe_id": "CWE-22"
+        }
+      ],
+      "cwe_id": "CWE-22",
+      "source_parameter": {
+        "name": "destination",
+        "schema_path": "$.tools[?(@.name==\"body_write\")].input_schema.parameter_names[?(@==\"destination\")]",
+        "file": "server.py",
+        "line": 19
+      },
+      "dangerous_sink": {
+        "category": "filesystem_mutation",
+        "sink_kind": "write",
+        "sink": "open(destination, \"w\"",
+        "file": "server.py",
+        "line": 21,
+        "rule_id": "hintlint.filesystem.mutation"
+      },
+      "validator_status": {
+        "status": "not_found",
+        "expected": "path root containment with an allowed base directory"
+      },
+      "repair": {
+        "type": "server_side_validation",
+        "summary": "Resolve destination paths under an allowed root and reject traversal before writing.",
+        "guidance": "Join caller paths to a configured base directory, normalize, then verify containment before mkdir/open/write."
+      }
+    }
+  ],
+  "unsupported": [],
+  "options": {
+    "config": null,
+    "ci": false,
+    "failOn": "high",
+    "semgrepJsonPath": null
+  }
+}
+

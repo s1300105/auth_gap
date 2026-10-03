@@ -1,0 +1,204 @@
+{
+  "hintlint_version": "0.1.0",
+  "scan_started_at": "2026-10-03T00:53:43.228Z",
+  "scan_duration_ms": 11,
+  "target": "<probe>/typescript",
+  "project": {
+    "languages": [
+      "typescript"
+    ],
+    "files_scanned": 1
+  },
+  "summary": {
+    "tools_scanned": 1,
+    "handlers_resolved": 1,
+    "annotations_present": 1,
+    "unsupported_patterns": 0,
+    "source_evidence": 1,
+    "project_evidence": 0,
+    "findings": 1,
+    "coverage_status": "supported",
+    "handler_mapping_rate": 1,
+    "evidence_records_by_tier": {
+      "L3": 1
+    },
+    "findings_by_tier": {
+      "L3": 1
+    }
+  },
+  "coverage": {
+    "extraction_status": "supported",
+    "extraction_reason": "Tool extraction produced at least one MCP tool.",
+    "mcp_markers_detected": true,
+    "tools_extracted": 1,
+    "metadata_only_tools": 0,
+    "handlers_resolved": 1,
+    "handler_mapping_rate": 1,
+    "annotation_coverage_rate": 1,
+    "unsupported_patterns": 0,
+    "unsupported_languages": [],
+    "supported_languages": [
+      "typescript"
+    ],
+    "file_language_counts": {
+      "typescript": 1
+    },
+    "evidence_records_by_tier": {
+      "L3": 1
+    },
+    "findings_by_tier": {
+      "L3": 1
+    }
+  },
+  "tools": [
+    {
+      "name": "helper_write",
+      "description": "write via helper",
+      "language": "typescript",
+      "source": {
+        "file": "server.ts",
+        "line": 11
+      },
+      "input_schema": {
+        "parameter_names": [
+          "data",
+          "destination"
+        ],
+        "schema_format": "typescript-expression",
+        "schema_source": "{ destination: z.string(), data: z.string() }"
+      },
+      "declared_annotations": {
+        "readOnlyHint": true
+      },
+      "handler": {
+        "file": "server.ts",
+        "line": 11,
+        "symbol": null,
+        "confidence": "resolved"
+      },
+      "extraction": {
+        "extractor": "typescript-regex-mvp",
+        "pattern": "registerTool",
+        "name_expression": null,
+        "dynamic_name": false
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "tool": "helper_write",
+      "scope": "tool",
+      "category": "filesystem_mutation",
+      "sink_kind": "write",
+      "sink": "writeFileSync(",
+      "file": "server.ts",
+      "line": 8,
+      "source": "builtin-static-m2",
+      "engine": "builtin",
+      "rule_id": "hintlint.filesystem.mutation",
+      "confidence": "source-backed",
+      "evidence_tier": "L3",
+      "sanitizer": {
+        "status": "not_found",
+        "expected": "path root containment with an allowed base directory"
+      },
+      "flow": "filesystem",
+      "cwe_id": "CWE-22",
+      "reachability": {
+        "kind": "typescript-local-callgraph",
+        "path": [
+          "helper_write",
+          "save"
+        ],
+        "depth": 1
+      }
+    }
+  ],
+  "project_evidence": [],
+  "findings": [
+    {
+      "id": "HINTLINT-READONLY-001",
+      "severity": "high",
+      "type": "false_readonly",
+      "tool": "helper_write",
+      "confidence": "source-backed",
+      "confidence_tier": "L3",
+      "evidence_tier": "L3",
+      "message": "Tool 'helper_write' declares readOnlyHint=true but source evidence shows state mutation, external side effect, or process execution.",
+      "declared_annotations": {
+        "readOnlyHint": true
+      },
+      "verified_behavior": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "writes_internal_state": true,
+        "external_side_effect": false,
+        "destructive_action": false,
+        "process_execution": false,
+        "filesystem_mutation": true,
+        "database_mutation": false,
+        "http_mutation": false,
+        "cloud_mutation": false,
+        "query_execution": false,
+        "url_construction": false,
+        "connection_string": false,
+        "unsafe_flows": [
+          "filesystem"
+        ],
+        "evidence_categories": [
+          "filesystem_mutation"
+        ],
+        "confidence": "source-backed"
+      },
+      "evidence": [
+        {
+          "tool": "helper_write",
+          "scope": "tool",
+          "category": "filesystem_mutation",
+          "sink_kind": "write",
+          "sink": "writeFileSync(",
+          "file": "server.ts",
+          "line": 8,
+          "source": "builtin-static-m2",
+          "engine": "builtin",
+          "rule_id": "hintlint.filesystem.mutation",
+          "confidence": "source-backed",
+          "evidence_tier": "L3",
+          "sanitizer": {
+            "status": "not_found",
+            "expected": "path root containment with an allowed base directory"
+          },
+          "flow": "filesystem",
+          "cwe_id": "CWE-22",
+          "reachability": {
+            "kind": "typescript-local-callgraph",
+            "path": [
+              "helper_write",
+              "save"
+            ],
+            "depth": 1
+          }
+        }
+      ],
+      "repair": {
+        "type": "annotation_patch",
+        "summary": "Set readOnlyHint=false and align destructive/open-world hints with the verified behavior.",
+        "suggested_annotations": {
+          "readOnlyHint": false
+        }
+      },
+      "suggested_annotations": {
+        "readOnlyHint": false
+      }
+    }
+  ],
+  "unsupported": [],
+  "options": {
+    "config": null,
+    "ci": false,
+    "failOn": "high",
+    "semgrepJsonPath": null
+  }
+}
+
