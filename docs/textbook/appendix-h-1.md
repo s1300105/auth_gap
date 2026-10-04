@@ -1,4 +1,4 @@
-[← 前](appendix-h.md) ｜ [付録 H の表紙](appendix-h.md) ｜ [目次](README.md) ｜ [次 →](appendix-h-2.md)
+[← 付録 H の表紙](appendix-h.md) ｜ [目次](README.md) ｜ [次 →](appendix-h-2.md)
 
 ---
 
@@ -1139,4 +1139,4 @@ D4（`idempotentHint: true`）です。冪等性は「同じ引数で繰り返�
 
 ---
 
-[← 前](appendix-h.md) ｜ [付録 H の表紙](appendix-h.md) ｜ [目次](README.md) ｜ [次 →](appendix-h-2.md)
+[← 付録 H の表紙](appendix-h.md) ｜ [目次](README.md) ｜ [次 →](appendix-h-2.md)
