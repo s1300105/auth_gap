@@ -4218,3 +4218,18 @@ v2〜v4 を除いたもの）の履歴に当てる。数百 repo ずつ取得（
 のとおりに、分母に件を持つ群だけを数えるよう直した（決めた規則に道具を合わせた直しで、規則は変えていない）。D1〜D3 の区間は
 再抽出の群の集合が変わるので小さく動いた（例: D1 厳しい 0.260–0.678 → 0.258–0.672）。直す前の出力は残していない（同じ commit の
 直前の値をこの追記に書いた）。
+
+## D80（2026-10-05）D79 の同じ 352 件で、既存の道具（HintLint・mcp-doctor）の再現率を測る（学生の承認。既存の道具を走らせる前に書く）
+
+**道具と版**: HintLint `complira/hintlint` `5a51f2a`（D40 と同じ版、`node src/cli.js <木> --format json`）、mcp-doctor
+（PyPI `mcp-server-lint` 0.12.13、`mcp-doctor --json <木>`）。D79 で取得した直す前の版（97 木、`corpus/fx-*`）にそのまま当てる。
+
+**見つけた、と数える規則**（走らせる前に決める。ツールの名前が一致した finding だけ）:
+- HintLint: D1 は `HINTLINT-READONLY-001`、D2 は `HINTLINT-DESTRUCTIVE-001`、D3 は `HINTLINT-OPEN-WORLD-001`。D4 は対応する規則が無い。
+  厳しい = その規則の finding で `confidence` が `source-backed`。緩い = その規則の finding（確度を問わない）。
+  参考 = そのツールに何かの finding（flow 系を含む）がある。
+- mcp-doctor: D1 だけ（`annotation_mismatch`）。D2〜D4 は対応する検査が無い。
+
+**分母**（2 つを並べる）: (i) 宣言ごとの全件。(ii) AuthGap の分母（D79 の 矛 + 不 + なし）に入った件だけ（同じ件で比べる）。
+AuthGap も (i) で出し直す（照らさない・ユニットが無い を見つけなかった側に数える）。区間は D79 と同じ（群を単位、seed 20261005）。
+道具が木で失敗したら、その木の件は「道具が失敗」として別に数える（落とさない）。
