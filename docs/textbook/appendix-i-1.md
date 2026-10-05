@@ -1,4 +1,4 @@
-[← 前](appendix-i.md) ｜ [付録 I の表紙](appendix-i.md) ｜ [目次](README.md) ｜ [次 →](appendix-i-2.md)
+[← 付録 I の表紙](appendix-i.md) ｜ [目次](README.md) ｜ [次 →](appendix-i-2.md)
 
 ---
 
@@ -1502,4 +1502,4 @@
 
 ---
 
-[← 前](appendix-i.md) ｜ [付録 I の表紙](appendix-i.md) ｜ [目次](README.md) ｜ [次 →](appendix-i-2.md)
+[← 付録 I の表紙](appendix-i.md) ｜ [目次](README.md) ｜ [次 →](appendix-i-2.md)

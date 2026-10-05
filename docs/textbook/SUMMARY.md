@@ -128,3 +128,8 @@
   - [付録 H-6 見落としと不の中身を判定する](appendix-h-6.md)
   - [付録 H-7 不明にするときと実例](appendix-h-7.md)
   - [付録 H-8 判定をぶれさせない](appendix-h-8.md)
+- [付録 I 判定の例題集](appendix-i.md)
+  - [付録 I-1 正になる例](appendix-i-1.md)
+  - [付録 I-2 誤になる例](appendix-i-2.md)
+  - [付録 I-3 条件とラベルの付け方](appendix-i-3.md)
+  - [付録 I-4 不明になる例と、不の中身の判定](appendix-i-4.md)

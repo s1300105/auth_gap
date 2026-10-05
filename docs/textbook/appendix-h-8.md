@@ -1,4 +1,4 @@
-[← 前](appendix-h-7.md) ｜ [付録 H の表紙](appendix-h.md) ｜ [目次](README.md)
+[← 前](appendix-h-7.md) ｜ [付録 H の表紙](appendix-h.md) ｜ [目次](README.md) ｜ [付録 I →](appendix-i.md)
 
 ---
 
@@ -1705,4 +1705,4 @@ client = Client(api_key=API_KEY)
 
 ---
 
-[← 前](appendix-h-7.md) ｜ [付録 H の表紙](appendix-h.md) ｜ [目次](README.md)
+[← 前](appendix-h-7.md) ｜ [付録 H の表紙](appendix-h.md) ｜ [目次](README.md) ｜ [付録 I →](appendix-i.md)
