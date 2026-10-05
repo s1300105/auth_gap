@@ -13,6 +13,12 @@
 **1 行も飛ばさずに**引用しながら、最初から順に解説した読み本です。8 つの分冊（[H-1](appendix-h-1.md)〜[H-8](appendix-h-8.md)）に分かれています。
 H-1 から順に読めば、手引きの全文と、その一つひとつの規則の意味・理由・当てはめ方が分かるように書いてあります。
 
+> **2026-10-05 の追記（D76）**: この付録の後、学生が決定シート（`docs/drafts/guide_decision_sheet.md`）で穴を決め（D76）、
+> 手引きの下書きに書き写した。**この付録が引用しているのは直す前の下書き（コミット `af897ef`）**で、D76 で直した箇所や
+> 規則を足した箇所は、今の下書きと違う。穴の多くは D76 で決まり、決まった中身は手引きの `（D76）` の印の文にある。
+> 引用を照合し直すときは、直す前の下書きを取り出して比べる:
+> `git show af897ef:docs/drafts/final_judging_guide_draft.md > /tmp/guide_af897ef.md && .venv/bin/python scripts/check_guide_quotes.py --draft /tmp/guide_af897ef.md docs/textbook/appendix-h-*.md`
+
 ### なぜ作ったのか
 
 手引きは、あなた（学生）が最終評価で 1 件ずつ判定するときの**唯一の基準**です。事前登録（§2.12）と同じコミットで封をし、
