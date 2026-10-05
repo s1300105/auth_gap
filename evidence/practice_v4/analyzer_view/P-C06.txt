@@ -1,0 +1,11 @@
+# P-C06 の解析器の出力（show_target.py、v4 の走査 scan_v2_v4_run1、深さ 4）
+# scripts/show_target.py evidence/scan_v2_v4_run1/v4-qbit-glitch__ccr.json ccr/mcp/gcc_tools.py 355 os.replace --decl D1
+
+========================================================================
+ツール: gcc_context  qualname: gcc_context  定義: ccr/mcp/gcc_tools.py:355  宣言: {'destructiveHint': False, 'idempotentHint': True, 'readOnlyHint': True}
+明示された宣言: ['readOnlyHint']  宣言の印: ['D1']  打ち切り: ['depth']  opaque: ['depth', 'dynamic', 'receiver', 'unresolved']
+---- 効果 FS_WRITE os.replace ccr/core/scratchpad.py:84
+  入口の呼び出し行: 466  道筋: Scratchpad.format_for_context -> Scratchpad.list_entries -> Scratchpad._save
+  slot path: 主体=OP 確度=opaque 根=[]
+  行 ccr/core/scratchpad.py:84 FS_WRITE os.replace path ['D1=矛(fs_write)']
+（効果 1、行 1）

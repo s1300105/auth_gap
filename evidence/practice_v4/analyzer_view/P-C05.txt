@@ -1,0 +1,82 @@
+# P-C05 の解析器の出力（show_target.py、v4 の走査 scan_v2_v4_run1、深さ 4）
+# scripts/show_target.py evidence/scan_v2_v4_run1/v4-qbit-glitch__ccr.json ccr/mcp/gcc_search_tools.py 71 builtins.open --decl D1
+
+========================================================================
+ツール: gcc_recall  qualname: gcc_recall  定義: ccr/mcp/gcc_search_tools.py:71  宣言: {'destructiveHint': False, 'idempotentHint': True, 'readOnlyHint': True}
+明示された宣言: ['readOnlyHint']  宣言の印: ['D1']  打ち切り: ['depth']  opaque: ['depth', 'dynamic', 'receiver', 'unresolved']
+---- 効果 FS_READ builtins.open ccr/mcp/server.py:397
+  入口の呼び出し行: 94  道筋: _get_project_memory -> _ensure_memory -> _init -> _load_playbook
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open ccr/mcp/server.py:463
+  入口の呼び出し行: 94  道筋: _get_project_memory -> _ensure_memory -> _init -> _load_global_playbook
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open ccr/context/indexer.py:135
+  入口の呼び出し行: 94  道筋: _get_project_memory -> _ensure_memory -> _init -> RepoIndex.build
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open ccr/context/indexer.py:135
+  入口の呼び出し行: 94  道筋: _get_project_memory -> _ensure_memory -> _init -> RepoIndex.build
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open ccr/cli.py:982
+  入口の呼び出し行: 94  道筋: _get_project_memory -> _ensure_memory -> _init -> _register_project
+  slot path: 主体=OP 確度=resolved 根=[]
+---- 効果 FS_WRITE builtins.open ccr/cli.py:1004
+  入口の呼び出し行: 94  道筋: _get_project_memory -> _ensure_memory -> _init -> _register_project
+  slot path: 主体=OP 確度=resolved 根=[]
+---- 効果 FS_WRITE builtins.open ccr/core/memory_pkg/memory_file_io.py:83
+  入口の呼び出し行: 94  道筋: _get_project_memory -> InitMixin.ensure_structure -> FileIOMixin._add_to_gitignore
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open ccr/core/memory_pkg/memory_init.py:174
+  入口の呼び出し行: 94  道筋: _get_project_memory -> InitMixin.ensure_structure -> InitMixin._register_in_global_registry
+  slot path: 主体=OP 確度=resolved 根=[]
+---- 効果 FS_WRITE builtins.open ccr/core/memory_pkg/memory_init.py:194
+  入口の呼び出し行: 94  道筋: _get_project_memory -> InitMixin.ensure_structure -> InitMixin._register_in_global_registry
+  slot path: 主体=OP 確度=resolved 根=[]
+---- 効果 FS_WRITE builtins.open ccr/core/observability.py:35
+  入口の呼び出し行: 96  道筋: RecallEngine.recall -> ccr_span -> _write_local_span
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_WRITE builtins.open ccr/core/observability.py:35
+  入口の呼び出し行: 96  道筋: RecallEngine.recall -> ccr_span -> _write_local_span
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open ccr/core/facts.py:167
+  入口の呼び出し行: 96  道筋: RecallEngine.recall -> RecallEngine._fact_evidence -> FactLedger.list_facts -> FactLedger._load_data
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_WRITE builtins.open ccr/core/observability.py:35
+  入口の呼び出し行: 96  道筋: RecallEngine.recall -> ccr_span -> _write_local_span
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_WRITE builtins.open ccr/core/observability.py:35
+  入口の呼び出し行: 96  道筋: RecallEngine.recall -> ccr_span -> _write_local_span
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_WRITE builtins.open ccr/core/observability.py:35
+  入口の呼び出し行: 96  道筋: RecallEngine.recall -> ccr_span -> _write_local_span
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_WRITE builtins.open ccr/core/observability.py:35
+  入口の呼び出し行: 96  道筋: RecallEngine.recall -> ccr_span -> _write_local_span
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_WRITE builtins.open ccr/core/observability.py:35
+  入口の呼び出し行: 96  道筋: RecallEngine.recall -> ccr_span -> _write_local_span
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open ccr/core/replay.py:113
+  入口の呼び出し行: 96  道筋: RecallEngine.recall -> RecallTraceStore.append_trace -> RecallTraceStore.list_traces
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_WRITE builtins.open ccr/core/replay.py:103
+  入口の呼び出し行: 96  道筋: RecallEngine.recall -> RecallTraceStore.append_trace
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open ccr/core/governance.py:191
+  入口の呼び出し行: 104  道筋: append_audit
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_WRITE builtins.open ccr/core/governance.py:206
+  入口の呼び出し行: 104  道筋: append_audit
+  slot path: 主体=OP 確度=opaque 根=[]
+  行 ccr/cli.py:1004 FS_WRITE builtins.open path ['D1=矛(fs_write)']
+  行 ccr/core/memory_pkg/memory_file_io.py:83 FS_WRITE builtins.open path ['D1=矛(fs_write)']
+  行 ccr/core/memory_pkg/memory_init.py:194 FS_WRITE builtins.open path ['D1=矛(fs_write)']
+  行 ccr/core/observability.py:35 FS_WRITE builtins.open path ['D1=矛(fs_write)']
+  行 ccr/core/observability.py:35 FS_WRITE builtins.open path ['D1=矛(fs_write)']
+  行 ccr/core/observability.py:35 FS_WRITE builtins.open path ['D1=矛(fs_write)']
+  行 ccr/core/observability.py:35 FS_WRITE builtins.open path ['D1=矛(fs_write)']
+  行 ccr/core/observability.py:35 FS_WRITE builtins.open path ['D1=矛(fs_write)']
+  行 ccr/core/observability.py:35 FS_WRITE builtins.open path ['D1=矛(fs_write)']
+  行 ccr/core/observability.py:35 FS_WRITE builtins.open path ['D1=矛(fs_write)']
+  行 ccr/core/replay.py:103 FS_WRITE builtins.open path ['D1=矛(fs_write)']
+  行 ccr/core/governance.py:206 FS_WRITE builtins.open path ['D1=矛(fs_write)']
+（効果 21、行 12）

@@ -1,0 +1,89 @@
+# P-C01 の解析器の出力（show_target.py、v4 の走査 scan_v2_v4_run1、深さ 4）
+# scripts/show_target.py evidence/scan_v2_v4_run1/v4-ei-nakamura__rails-lens.json src/rails_lens/tools/migration_context.py 260 builtins.open --decl D1
+
+========================================================================
+ツール: rails_lens_migration_context  qualname: register.migration_context  定義: src/rails_lens/tools/migration_context.py:260  宣言: {'destructiveHint': False, 'idempotentHint': True, 'openWorldHint': False, 'readOnlyHint': True}
+明示された宣言: ['readOnlyHint']  宣言の印: ['D1', 'D3']  打ち切り: ['depth']  opaque: ['depth', 'receiver', 'recursion', 'unresolved']
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 272  道筋: RailsBridge.execute -> RailsBridge._parse_output -> CacheManager.get
+  slot path: 主体=OP 確度=opaque 根=['params']
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 272  道筋: RailsBridge.execute -> RailsBridge._parse_output -> CacheManager.get
+  slot path: 主体=OP 確度=opaque 根=['params']
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 272  道筋: RailsBridge.execute -> RailsBridge._parse_output -> CacheManager.get
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 272  道筋: RailsBridge.execute -> RailsBridge._parse_output -> CacheManager.get
+  slot path: 主体=OP 確度=opaque 根=['params']
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 295  道筋: CacheManager.get
+  slot path: 主体=MODEL 確度=opaque 根=['params']
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 290  道筋: CacheManager.get
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 291  道筋: CacheManager.get
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 292  道筋: CacheManager.get
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 293  道筋: CacheManager.get
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 303  道筋: CacheManager.get
+  slot path: 主体=MODEL 確度=opaque 根=['params']
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 300  道筋: CacheManager.get
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 301  道筋: CacheManager.get
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 311  道筋: CacheManager.get
+  slot path: 主体=MODEL 確度=opaque 根=['params']
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 309  道筋: CacheManager.get
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_WRITE builtins.open src/rails_lens/cache/manager.py:90
+  入口の呼び出し行: 332  道筋: CacheManager.set
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 349  道筋: CacheManager.get
+  slot path: 主体=MODEL 確度=opaque 根=['params']
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 350  道筋: CacheManager.get
+  slot path: 主体=MODEL 確度=opaque 根=['params']
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 351  道筋: CacheManager.get
+  slot path: 主体=MODEL 確度=opaque 根=['params']
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 346  道筋: _generate_warnings -> CacheManager.get
+  slot path: 主体=MODEL 確度=opaque 根=['params']
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 346  道筋: _generate_warnings -> CacheManager.get
+  slot path: 主体=MODEL 確度=opaque 根=['params']
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 346  道筋: _generate_warnings -> CacheManager.get
+  slot path: 主体=MODEL 確度=opaque 根=['params']
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 346  道筋: _generate_warnings -> CacheManager.get
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 346  道筋: _generate_warnings -> CacheManager.get
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 346  道筋: _generate_warnings -> CacheManager.get
+  slot path: 主体=MODEL 確度=opaque 根=['params']
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 346  道筋: _generate_warnings -> CacheManager.get
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 346  道筋: _generate_warnings -> CacheManager.get
+  slot path: 主体=MODEL 確度=opaque 根=['params']
+---- 効果 FS_READ builtins.open src/rails_lens/cache/manager.py:37
+  入口の呼び出し行: 367  道筋: CacheManager.get
+  slot path: 主体=MODEL 確度=opaque 根=['params']
+  行 src/rails_lens/cache/manager.py:90 FS_WRITE builtins.open path ['D1=矛(fs_write)']
+（効果 27、行 1）

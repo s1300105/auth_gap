@@ -1,0 +1,11 @@
+# P-C04 の解析器の出力（show_target.py、v4 の走査 scan_v2_v4_run1、深さ 4）
+# scripts/show_target.py evidence/scan_v2_v4_run1/v4-qbit-glitch__ccr.json ccr/mcp/gcc_search_tools.py 594 os.unlink --decl D2
+
+========================================================================
+ツール: gcc_discuss  qualname: gcc_discuss  定義: ccr/mcp/gcc_search_tools.py:594  宣言: {'destructiveHint': False, 'idempotentHint': False, 'readOnlyHint': False}
+明示された宣言: ['destructiveHint']  宣言の印: ['D2']  打ち切り: ['depth']  opaque: ['depth', 'dynamic', 'receiver', 'unresolved']
+---- 効果 FS_WRITE os.unlink ccr/core/memory_pkg/memory_file_io.py:111
+  入口の呼び出し行: 638  道筋: DiscussionsMixin.add_discussion -> InitMixin.get_active_branch -> FileIOMixin._read_file -> FileIOMixin._file_lock
+  slot path: 主体=OP 確度=opaque 根=[]
+  行 ccr/core/memory_pkg/memory_file_io.py:111 FS_WRITE os.unlink path ['D2=矛(fs_remove)']
+（効果 1、行 1）

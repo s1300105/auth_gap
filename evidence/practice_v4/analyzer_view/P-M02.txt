@@ -1,0 +1,22 @@
+# P-M02 の解析器の出力（show_target.py、v4 の走査 scan_v2_v4_run1、深さ 4）
+# scripts/show_target.py evidence/scan_v2_v4_run1/v4-mgwalkerjr95__texas-grocery-mcp.json src/texas_grocery_mcp/tools/coupon.py 331 --decl D1
+# 見落としの練習: 18.2 の 1〜3（自分で読んで書き出す）を終えてから開く
+
+========================================================================
+ツール: coupon_clipped  qualname: coupon_clipped  定義: src/texas_grocery_mcp/tools/coupon.py:331  宣言: {'readOnlyHint': True}
+明示された宣言: ['readOnlyHint']  宣言の印: ['D1']  打ち切り: ['depth']  opaque: ['depth', 'recursion', 'unresolved']
+---- 効果 FS_READ builtins.open src/texas_grocery_mcp/auth/session.py:156
+  入口の呼び出し行: 343  道筋: is_authenticated
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open src/texas_grocery_mcp/auth/session.py:156
+  入口の呼び出し行: 356  道筋: HEBGraphQLClient.get_clipped_coupons -> HEBGraphQLClient._get_authenticated_client -> is_authenticated
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_READ builtins.open src/texas_grocery_mcp/auth/session.py:221
+  入口の呼び出し行: 356  道筋: HEBGraphQLClient.get_clipped_coupons -> HEBGraphQLClient._get_authenticated_client -> get_httpx_cookies -> get_cookies
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 NET httpx.AsyncClient.get src/texas_grocery_mcp/clients/graphql.py:2371
+  入口の呼び出し行: 356  道筋: HEBGraphQLClient.get_clipped_coupons -> HEBGraphQLClient._fetch_clipped_coupons_ssr
+  slot url.host: 主体=OP 確度=resolved 根=[]
+  slot url.path: 主体=OP 確度=resolved 根=[]
+  slot url.scheme: 主体=OP 確度=resolved 根=[]
+（効果 4、行 0）

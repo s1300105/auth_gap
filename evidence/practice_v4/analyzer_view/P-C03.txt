@@ -1,0 +1,11 @@
+# P-C03 の解析器の出力（show_target.py、v4 の走査 scan_v2_v4_run1、深さ 4）
+# scripts/show_target.py evidence/scan_v2_v4_run1/v4-qbit-glitch__ccr.json ccr/mcp/gcc_search_tools.py 131 os.remove --decl D2
+
+========================================================================
+ツール: gcc_facts  qualname: gcc_facts  定義: ccr/mcp/gcc_search_tools.py:131  宣言: {'destructiveHint': False, 'idempotentHint': False, 'readOnlyHint': False}
+明示された宣言: ['destructiveHint']  宣言の印: ['D2']  打ち切り: ['depth']  opaque: ['depth', 'dynamic', 'receiver', 'unresolved']
+---- 効果 FS_WRITE os.remove ccr/mcp/server.py:212
+  入口の呼び出し行: 168  道筋: _get_project_memory -> _ensure_memory -> _init
+  slot path: 主体=OP 確度=opaque 根=[]
+  行 ccr/mcp/server.py:212 FS_WRITE os.remove path ['D2=矛(fs_remove)']
+（効果 1、行 1）

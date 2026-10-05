@@ -1,0 +1,19 @@
+# P-C07 の解析器の出力（show_target.py、v4 の走査 scan_v2_v4_run1、深さ 4）
+# scripts/show_target.py evidence/scan_v2_v4_run1/v4-twelvetake-studios__reaper-mcp.json reaper_mcp_server.py 599 pathlib.Path.write_bytes --decl D1
+
+========================================================================
+ツール: get_master_track  qualname: get_master_track  定義: reaper_mcp_server.py:599  宣言: {'readOnlyHint': True}
+明示された宣言: ['readOnlyHint']  宣言の印: ['D1']  打ち切り: []  opaque: ['receiver', 'unresolved']
+---- 効果 FS_WRITE pathlib.Path.write_bytes reaper_mcp_server.py:343
+  入口の呼び出し行: 601  道筋: reaper_call -> ensure_bridge_current -> dispatch -> reaper_call_file
+  slot content: 主体=OP 確度=opaque 根=[]
+  slot path: 主体=OP 確度=opaque 根=[]
+---- 効果 FS_WRITE pathlib.Path.write_bytes reaper_mcp_server.py:343
+  入口の呼び出し行: 601  道筋: reaper_call -> dispatch -> reaper_call_file
+  slot content: 主体=OP 確度=opaque 根=[]
+  slot path: 主体=OP 確度=opaque 根=[]
+  行 reaper_mcp_server.py:343 FS_WRITE pathlib.Path.write_bytes content ['D1=矛(fs_write)']
+  行 reaper_mcp_server.py:343 FS_WRITE pathlib.Path.write_bytes path ['D1=矛(fs_write)']
+  行 reaper_mcp_server.py:343 FS_WRITE pathlib.Path.write_bytes content ['D1=矛(fs_write)']
+  行 reaper_mcp_server.py:343 FS_WRITE pathlib.Path.write_bytes path ['D1=矛(fs_write)']
+（効果 2、行 4）

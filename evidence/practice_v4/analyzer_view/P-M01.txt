@@ -1,0 +1,19 @@
+# P-M01 の解析器の出力（show_target.py、v4 の走査 scan_v2_v4_run1、深さ 4）
+# scripts/show_target.py evidence/scan_v2_v4_run1/v4-jahrik__mcp-servers.json src/mcp_servers/github/tools/issues.py 18 --decl D1
+# 見落としの練習: 18.2 の 1〜3（自分で読んで書き出す）を終えてから開く
+
+========================================================================
+ツール: gh_issue_list  qualname: gh_issue_list  定義: src/mcp_servers/github/tools/issues.py:18  宣言: {'destructiveHint': False, 'openWorldHint': True, 'readOnlyHint': True}
+明示された宣言: ['openWorldHint', 'readOnlyHint']  宣言の印: ['D1']  打ち切り: []  opaque: ['unresolved']
+---- 効果 NET httpx.AsyncClient.post src/mcp_servers/github/client.py:35
+  入口の呼び出し行: 31  道筋: gh_request -> get_installation_token
+  slot url.host: 主体=OP 確度=resolved 根=[]
+  slot url.path: 主体=OP 確度=resolved 根=[]
+  slot url.scheme: 主体=OP 確度=resolved 根=[]
+---- 効果 NET httpx.AsyncClient.request src/mcp_servers/github/client.py:90
+  入口の呼び出し行: 31  道筋: gh_request
+  slot url.host: 主体=MODEL 確度=opaque 根=['args.repo']
+  行 src/mcp_servers/github/client.py:35 NET httpx.AsyncClient.post url.host ['D1=不(net_post)']
+  行 src/mcp_servers/github/client.py:35 NET httpx.AsyncClient.post url.path ['D1=不(net_post)']
+  行 src/mcp_servers/github/client.py:35 NET httpx.AsyncClient.post url.scheme ['D1=不(net_post)']
+（効果 2、行 3）
