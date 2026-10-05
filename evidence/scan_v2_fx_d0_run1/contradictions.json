@@ -1,0 +1,844 @@
+{
+ "_note": "CONTRADICTION（ユニット × (site, kind)。ユニットは unit_id と位置で区別）。手検証の候補表。relpath / lineno は組の中の (relpath, lineno) の対の最小、全位置は locations。",
+ "n": 27,
+ "rows": [
+  {
+   "tree": "fx-biztactix-ryan__projectman-10610849ba",
+   "unit": "pm_restore",
+   "unit_relpath": "src/projectman/server.py",
+   "unit_lineno": 3772,
+   "tool": "pm_restore",
+   "relpath": "src/projectman/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "shutil.move",
+   "lineno": 3805,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/projectman/server.py",
+     "lineno": 3805,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-chigwell__telegram-mcp-fa960923d8",
+   "unit": "export_unread_messages",
+   "unit_relpath": "telegram_mcp/tools/messages.py",
+   "unit_lineno": 2662,
+   "tool": "export_unread_messages",
+   "relpath": "telegram_mcp/tools/messages.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 2773,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "telegram_mcp/tools/messages.py",
+     "lineno": 2773,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-dipseth__google_workspace_fastmcp2-8533a661f4",
+   "unit": "setup_slides_tools.export_and_download_presentation",
+   "unit_relpath": "slides/slides_tools.py",
+   "unit_lineno": 785,
+   "tool": "export_and_download_presentation",
+   "relpath": "slides/slides_tools.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 886,
+   "destructive": false,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "slides/slides_tools.py",
+     "lineno": 886,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "fx-dipseth__google_workspace_fastmcp2-8533a661f4",
+   "unit": "setup_slides_tools.export_and_download_presentation",
+   "unit_relpath": "slides/slides_tools.py",
+   "unit_lineno": 785,
+   "tool": "export_and_download_presentation",
+   "relpath": "slides/slides_tools.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 979,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "slides/slides_tools.py",
+     "lineno": 979,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-infokom-ki__wazuh-mcp-server-33ff514c87",
+   "unit": "blueteam_check_webshell",
+   "unit_relpath": "mcp_server/tools/webshell_check.py",
+   "unit_lineno": 194,
+   "tool": "blueteam_check_webshell",
+   "relpath": "mcp_server/tools/webshell_check.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 276,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "mcp_server/tools/webshell_check.py",
+     "lineno": 276,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    },
+    {
+     "relpath": "mcp_server/tools/webshell_check.py",
+     "lineno": 296,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-norman-finance__norman-mcp-server-509d9c5c2a",
+   "unit": "register_document_tools.upload_bulk_attachments",
+   "unit_relpath": "norman_mcp/tools/documents.py",
+   "unit_lineno": 227,
+   "tool": "upload_bulk_attachments",
+   "relpath": "norman_mcp/tools/documents.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 342,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 342,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-norman-finance__norman-mcp-server-509d9c5c2a",
+   "unit": "register_document_tools.upload_bulk_attachments",
+   "unit_relpath": "norman_mcp/tools/documents.py",
+   "unit_lineno": 227,
+   "tool": "upload_bulk_attachments",
+   "relpath": "norman_mcp/tools/documents.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.rmdir",
+   "lineno": 343,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 343,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-norman-finance__norman-mcp-server-924d51ce12",
+   "unit": "register_document_tools.upload_bulk_attachments",
+   "unit_relpath": "norman_mcp/tools/documents.py",
+   "unit_lineno": 227,
+   "tool": "upload_bulk_attachments",
+   "relpath": "norman_mcp/tools/documents.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 342,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 342,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-norman-finance__norman-mcp-server-924d51ce12",
+   "unit": "register_document_tools.upload_bulk_attachments",
+   "unit_relpath": "norman_mcp/tools/documents.py",
+   "unit_lineno": 227,
+   "tool": "upload_bulk_attachments",
+   "relpath": "norman_mcp/tools/documents.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.rmdir",
+   "lineno": 343,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 343,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-norman-finance__norman-mcp-server-a9d0a3d5d2",
+   "unit": "register_document_tools.create_attachment",
+   "unit_relpath": "norman_mcp/tools/documents.py",
+   "unit_lineno": 556,
+   "tool": "create_attachment",
+   "relpath": "norman_mcp/tools/documents.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 735,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 735,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    },
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 750,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-norman-finance__norman-mcp-server-a9d0a3d5d2",
+   "unit": "register_document_tools.create_attachment",
+   "unit_relpath": "norman_mcp/tools/documents.py",
+   "unit_lineno": 556,
+   "tool": "create_attachment",
+   "relpath": "norman_mcp/tools/documents.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.rmdir",
+   "lineno": 736,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 736,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    },
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 751,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-norman-finance__norman-mcp-server-a9d0a3d5d2",
+   "unit": "register_document_tools.upload_bulk_attachments",
+   "unit_relpath": "norman_mcp/tools/documents.py",
+   "unit_lineno": 261,
+   "tool": "upload_bulk_attachments",
+   "relpath": "norman_mcp/tools/documents.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 357,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 357,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    },
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 383,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-norman-finance__norman-mcp-server-a9d0a3d5d2",
+   "unit": "register_document_tools.upload_bulk_attachments",
+   "unit_relpath": "norman_mcp/tools/documents.py",
+   "unit_lineno": 261,
+   "tool": "upload_bulk_attachments",
+   "relpath": "norman_mcp/tools/documents.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.rmdir",
+   "lineno": 358,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 358,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    },
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 384,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-norman-finance__norman-mcp-server-e5a0a062bd",
+   "unit": "register_document_tools.upload_bulk_attachments",
+   "unit_relpath": "norman_mcp/tools/documents.py",
+   "unit_lineno": 271,
+   "tool": "upload_bulk_attachments",
+   "relpath": "norman_mcp/tools/documents.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 386,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 386,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-norman-finance__norman-mcp-server-e5a0a062bd",
+   "unit": "register_document_tools.upload_bulk_attachments",
+   "unit_relpath": "norman_mcp/tools/documents.py",
+   "unit_lineno": 271,
+   "tool": "upload_bulk_attachments",
+   "relpath": "norman_mcp/tools/documents.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.rmdir",
+   "lineno": 387,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 387,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-norman-finance__norman-mcp-server-f83026713c",
+   "unit": "register_document_tools.create_attachment",
+   "unit_relpath": "norman_mcp/tools/documents.py",
+   "unit_lineno": 556,
+   "tool": "create_attachment",
+   "relpath": "norman_mcp/tools/documents.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 735,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 735,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    },
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 750,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-norman-finance__norman-mcp-server-f83026713c",
+   "unit": "register_document_tools.create_attachment",
+   "unit_relpath": "norman_mcp/tools/documents.py",
+   "unit_lineno": 556,
+   "tool": "create_attachment",
+   "relpath": "norman_mcp/tools/documents.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.rmdir",
+   "lineno": 736,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 736,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    },
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 751,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-norman-finance__norman-mcp-server-f83026713c",
+   "unit": "register_document_tools.upload_bulk_attachments",
+   "unit_relpath": "norman_mcp/tools/documents.py",
+   "unit_lineno": 261,
+   "tool": "upload_bulk_attachments",
+   "relpath": "norman_mcp/tools/documents.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 357,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 357,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    },
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 383,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-norman-finance__norman-mcp-server-f83026713c",
+   "unit": "register_document_tools.upload_bulk_attachments",
+   "unit_relpath": "norman_mcp/tools/documents.py",
+   "unit_lineno": 261,
+   "tool": "upload_bulk_attachments",
+   "relpath": "norman_mcp/tools/documents.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.rmdir",
+   "lineno": 358,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 358,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    },
+    {
+     "relpath": "norman_mcp/tools/documents.py",
+     "lineno": 384,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-oaktreegames__aseprite-live-mcp-67074d6dfa",
+   "unit": "register.export_layers",
+   "unit_relpath": "aseprite_live_mcp/tools/export.py",
+   "unit_lineno": 175,
+   "tool": "export_layers",
+   "relpath": "aseprite_live_mcp/tools/export.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 182,
+   "destructive": false,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "aseprite_live_mcp/tools/export.py",
+     "lineno": 182,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "fx-oaktreegames__aseprite-live-mcp-67074d6dfa",
+   "unit": "register.export_tags",
+   "unit_relpath": "aseprite_live_mcp/tools/export.py",
+   "unit_lineno": 196,
+   "tool": "export_tags",
+   "relpath": "aseprite_live_mcp/tools/export.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 205,
+   "destructive": false,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "aseprite_live_mcp/tools/export.py",
+     "lineno": 205,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "fx-oaktreegames__aseprite-live-mcp-67074d6dfa",
+   "unit": "register.export_unity_slices",
+   "unit_relpath": "aseprite_live_mcp/tools/unity_export.py",
+   "unit_lineno": 327,
+   "tool": "export_unity_slices",
+   "relpath": "aseprite_live_mcp/tools/unity_export.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 347,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "aseprite_live_mcp/tools/unity_export.py",
+     "lineno": 347,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-oaktreegames__aseprite-live-mcp-67074d6dfa",
+   "unit": "register.export_unity_sprite",
+   "unit_relpath": "aseprite_live_mcp/tools/unity_export.py",
+   "unit_lineno": 279,
+   "tool": "export_unity_sprite",
+   "relpath": "aseprite_live_mcp/tools/unity_export.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 308,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "aseprite_live_mcp/tools/unity_export.py",
+     "lineno": 308,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-rasinmuhammed__misata-0eae4febdb",
+   "unit": "generate_dataset",
+   "unit_relpath": "misata/mcp/server.py",
+   "unit_lineno": 301,
+   "tool": "generate_dataset",
+   "relpath": "misata/mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 326,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "misata/mcp/server.py",
+     "lineno": 326,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "fx-rasinmuhammed__misata-0eae4febdb",
+   "unit": "generate_from_schema",
+   "unit_relpath": "misata/mcp/server.py",
+   "unit_lineno": 381,
+   "tool": "generate_from_schema",
+   "relpath": "misata/mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 650,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "misata/mcp/server.py",
+     "lineno": 650,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "fx-rasinmuhammed__misata-0eae4febdb",
+   "unit": "validate_yaml",
+   "unit_relpath": "misata/mcp/server.py",
+   "unit_lineno": 935,
+   "tool": "validate_yaml",
+   "relpath": "misata/mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.unlink",
+   "lineno": 1030,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "misata/mcp/server.py",
+     "lineno": 1030,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fx-talont-org__autoskillit-9eeb844637",
+   "unit": "write_telemetry_files",
+   "unit_relpath": "src/autoskillit/server/tools_status.py",
+   "unit_lineno": 334,
+   "tool": "write_telemetry_files",
+   "relpath": "src/autoskillit/server/tools_status.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 375,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/autoskillit/server/tools_status.py",
+     "lineno": 375,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  }
+ ]
+}
