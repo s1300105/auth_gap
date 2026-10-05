@@ -139,7 +139,7 @@ def _boot(rows: list[tuple[str, int, int]], seed: int, reps: int) -> tuple[float
     for g, k, n in rows:
         by[g][0] += k
         by[g][1] += n
-    gs = sorted(by)
+    gs = sorted(g for g in by if by[g][1] > 0)  # 分母に件を持つ群だけ（分母の外の件しかない群は数えない）
     if len(gs) < 10:
         return None
     rng = random.Random(seed)
