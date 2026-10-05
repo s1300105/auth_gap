@@ -1,0 +1,1082 @@
+{
+ "_note": "scripts/mine_annotation_fixes.py を開発用のデータ（docs/corpus_sample_v{2,3,4}.json の 300 repo）の履歴に当てた結果（2026-10-05）。宣言を副作用のある側に動かした（弱めた）ツールだけを残した。候補であって正解ではない。",
+ "summary": {
+  "n_repos": 300,
+  "status": {
+   "ok": 284,
+   "git_failed": 15,
+   "no_cache": 1
+  },
+  "n_commits_touching_hints": 1250,
+  "n_repos_with_weakening": 16,
+  "n_weakening_commits": 24,
+  "n_weakened_tools": 95,
+  "n_weakened_tools_body_unchanged": 61,
+  "by_hint": {
+   "destructiveHint": 62,
+   "readOnlyHint": 13,
+   "idempotentHint": 7,
+   "openWorldHint": 13
+  }
+ },
+ "failed": [
+  {
+   "repo": "bali-zero/teman2",
+   "status": "git_failed",
+   "error": "/pack/tmp_pack_6BhEHG' write error. Out of diskspace\nfatal: could not finish pack-objects to repack promisor objects\nfatal: failed to run repack\n\nfatal: write error: No space left on device\nfatal: index-pack failed\nfatal: could not fetch d61d62c84ce8216175f3a4d550f4f4d50e266b17 from promisor remote\n"
+  },
+  {
+   "repo": "callzhang/ceo-agent-service",
+   "status": "git_failed",
+   "error": "t help gc\" for manual housekeeping.\nAuto packing the repository in background for optimum performance.\nSee \"git help gc\" for manual housekeeping.\nfatal: write error: No space left on device\nfatal: index-pack failed\nfatal: could not fetch a1c20e3a3762328c1c5ecb0c9491a96023c37834 from promisor remote\n"
+  },
+  {
+   "repo": "intelligenzaartificiale/agentic-ai-operator-system",
+   "status": "no_cache",
+   "error": ""
+  },
+  {
+   "repo": "kaistenberg/mcp-linkedin",
+   "status": "git_failed",
+   "error": "t help gc\" for manual housekeeping.\nAuto packing the repository in background for optimum performance.\nSee \"git help gc\" for manual housekeeping.\nfatal: write error: No space left on device\nfatal: index-pack failed\nfatal: could not fetch 290c44a27fe2b081e1eb4cf4450848df9c75dfb5 from promisor remote\n"
+  },
+  {
+   "repo": "kvkthecreator/yarnnnn",
+   "status": "git_failed",
+   "error": "fatal: could not read Username for 'https://github.com': terminal prompts disabled\nfatal: could not fetch 57e075908507519453f029148de0bfe78502e715 from promisor remote\n"
+  },
+  {
+   "repo": "langchain-ai/docs",
+   "status": "git_failed",
+   "error": "t help gc\" for manual housekeeping.\nAuto packing the repository in background for optimum performance.\nSee \"git help gc\" for manual housekeeping.\nfatal: write error: No space left on device\nfatal: index-pack failed\nfatal: could not fetch a669356765075a2f9914421aa05c20d8f9f2ecd8 from promisor remote\n"
+  },
+  {
+   "repo": "lbliii/furatena",
+   "status": "git_failed",
+   "error": "user/auth_gap/corpus/_cache/lbliii__furatena/.git/packed-refs.new: No space left on device\nfatal: failed to run pack-refs\nerror: task 'gc' failed\nfatal: write error: No space left on device\nfatal: index-pack failed\nfatal: could not fetch c6f4b1a554c1b7663b17aceac2b23ae4d4667231 from promisor remote\n"
+  },
+  {
+   "repo": "lemony-ai/cascadeflow",
+   "status": "git_failed",
+   "error": "t help gc\" for manual housekeeping.\nAuto packing the repository in background for optimum performance.\nSee \"git help gc\" for manual housekeeping.\nfatal: write error: No space left on device\nfatal: index-pack failed\nfatal: could not fetch d6e1ee4e74f72445164b06f57fbb37245ae337cc from promisor remote\n"
+  },
+  {
+   "repo": "luisroft/back-kid",
+   "status": "git_failed",
+   "error": "fatal: write error: No space left on device\nfatal: index-pack failed\nfatal: could not fetch 49f4a0f88095ed8223f6d7161c35a49790ef6807 from promisor remote\n"
+  },
+  {
+   "repo": "lycorp-jp/awx-mcp",
+   "status": "git_failed",
+   "error": "fatal: write error: No space left on device\nfatal: index-pack failed\nfatal: could not fetch 2278fa45f3aa4598d4a740b0bef9136a7034f9ac from promisor remote\n"
+  },
+  {
+   "repo": "major/porkbun-mcp",
+   "status": "git_failed",
+   "error": "fatal: write error: No space left on device\nfatal: index-pack failed\nfatal: could not fetch af5906c7fc683d56efd8af624291b0e6391e1def from promisor remote\n"
+  },
+  {
+   "repo": "prebid/salesagent",
+   "status": "git_failed",
+   "error": "t help gc\" for manual housekeeping.\nAuto packing the repository in background for optimum performance.\nSee \"git help gc\" for manual housekeeping.\nfatal: write error: No space left on device\nfatal: index-pack failed\nfatal: could not fetch 6a404e57cfe8fe123256e6044c8c406ea0c46bb1 from promisor remote\n"
+  },
+  {
+   "repo": "ramgolladi1503-sys/tradebot",
+   "status": "git_failed",
+   "error": "/pack/tmp_pack_K3uFZi' write error. Out of diskspace\nfatal: could not finish pack-objects to repack promisor objects\nfatal: failed to run repack\n\nfatal: write error: No space left on device\nfatal: index-pack failed\nfatal: could not fetch 54d905f829ae7be741436cbe49070f7a1a412905 from promisor remote\n"
+  },
+  {
+   "repo": "seeker71/coherence-network",
+   "status": "git_failed",
+   "error": "t help gc\" for manual housekeeping.\nAuto packing the repository in background for optimum performance.\nSee \"git help gc\" for manual housekeeping.\nfatal: write error: No space left on device\nfatal: index-pack failed\nfatal: could not fetch 656f2320ed0b4d3e8e7e8e6e8e63eb1a170b2056 from promisor remote\n"
+  },
+  {
+   "repo": "starshipsuperjam/engine-template",
+   "status": "git_failed",
+   "error": "t help gc\" for manual housekeeping.\nAuto packing the repository in background for optimum performance.\nSee \"git help gc\" for manual housekeeping.\nfatal: write error: No space left on device\nfatal: index-pack failed\nfatal: could not fetch f6f46c370c748d3d6b5278834b9d6a416a91daae from promisor remote\n"
+  },
+  {
+   "repo": "xorbitsai/xagent",
+   "status": "git_failed",
+   "error": "t help gc\" for manual housekeeping.\nAuto packing the repository in background for optimum performance.\nSee \"git help gc\" for manual housekeeping.\nfatal: write error: No space left on device\nfatal: index-pack failed\nfatal: could not fetch 37f0830b6ae132e33ebb7abb2406e900a12f8eec from promisor remote\n"
+  }
+ ],
+ "candidates": [
+  {
+   "repo": "ageless-h/blender-mcp",
+   "sha": "6ae5d73502b8b942fd8334cac35a4c5d7e92b729",
+   "parent": "63ad40534e0e888f9aea88a4ad3f84422b7a785a",
+   "date": "2026-04-16",
+   "subject": "fix: address code review issues",
+   "weakened": [
+    {
+     "file": "src/blender_mcp/schemas/tools.py",
+     "tool": "blender_edit_animation",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": null
+    },
+    {
+     "file": "src/blender_mcp/schemas/tools.py",
+     "tool": "blender_edit_nodes",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": null
+    },
+    {
+     "file": "src/blender_mcp/schemas/tools.py",
+     "tool": "blender_edit_sequencer",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": null
+    },
+    {
+     "file": "src/blender_mcp/schemas/tools.py",
+     "tool": "blender_execute_operator",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": null
+    }
+   ]
+  },
+  {
+   "repo": "ageless-h/blender-mcp",
+   "sha": "aeeeb8907fc4ffcde5f77b1eda8f89cd10c545e3",
+   "parent": "19bfd399b3d4bea11f5646f14bc6b1409bd6cd5b",
+   "date": "2026-04-16",
+   "subject": "fix(security): Phase 1 security hardening",
+   "weakened": [
+    {
+     "file": "src/blender_mcp/schemas/tools.py",
+     "tool": "blender_manage_collection",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": null
+    },
+    {
+     "file": "src/blender_mcp/schemas/tools.py",
+     "tool": "blender_manage_constraints",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": null
+    },
+    {
+     "file": "src/blender_mcp/schemas/tools.py",
+     "tool": "blender_manage_material",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": null
+    },
+    {
+     "file": "src/blender_mcp/schemas/tools.py",
+     "tool": "blender_manage_modifier",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": null
+    },
+    {
+     "file": "src/blender_mcp/schemas/tools.py",
+     "tool": "blender_manage_physics",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": null
+    },
+    {
+     "file": "src/blender_mcp/schemas/tools.py",
+     "tool": "blender_manage_uv",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": null
+    },
+    {
+     "file": "src/blender_mcp/schemas/tools.py",
+     "tool": "blender_modify_object",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": null
+    }
+   ]
+  },
+  {
+   "repo": "akougkas/helios-mcp",
+   "sha": "6831cae2a0d5deb011395c8d9b69d8360ff3d72d",
+   "parent": "44183de1b8d6734800ea45da0df4d71dc1d67228",
+   "date": "2026-09-18",
+   "subject": "helios: route server and CLI through one HeliosService",
+   "weakened": [
+    {
+     "file": "src/helios_mcp/server.py",
+     "tool": "get_drift_report",
+     "hint": "readOnlyHint",
+     "old": true,
+     "new": false,
+     "body_changed": true
+    }
+   ]
+  },
+  {
+   "repo": "coplaydev/unity-mcp",
+   "sha": "f4e98d8a4fa86e764d68f54fb90bd5e7892ba94b",
+   "parent": "771fdf1a0244f6666ba6d9af412cb04ed7bf04da",
+   "date": "2026-03-28",
+   "subject": "feat(profiler): rewrite Python MCP tool with 14 actions across 4 groups",
+   "weakened": [
+    {
+     "file": "Server/src/services/tools/manage_profiler.py",
+     "tool": "manage_profiler",
+     "hint": "readOnlyHint",
+     "old": true,
+     "new": false,
+     "body_changed": true
+    }
+   ]
+  },
+  {
+   "repo": "darkcofy/sqlprism",
+   "sha": "c6d61016278fa69ab2ea33372eed6954d71b0144",
+   "parent": "0e274071d7c44767c3b70f2b661b7aa2b15c6548",
+   "date": "2026-03-13",
+   "subject": "fix(review): address remaining suggestions for reindex_files",
+   "weakened": [
+    {
+     "file": "src/sqlprism/core/mcp_tools.py",
+     "tool": "reindex_files",
+     "hint": "idempotentHint",
+     "old": true,
+     "new": false,
+     "body_changed": false
+    }
+   ]
+  },
+  {
+   "repo": "darkcofy/sqlprism",
+   "sha": "b25430f176a2a87619422ee34ebbe9059c90ff3e",
+   "parent": "b10fd28bb3fd679117321a3837dc2286d430b51d",
+   "date": "2026-03-13",
+   "subject": "",
+   "weakened": [
+    {
+     "file": "src/sqlprism/core/mcp_tools.py",
+     "tool": "reindex_files",
+     "hint": "idempotentHint",
+     "old": true,
+     "new": false,
+     "body_changed": false
+    }
+   ]
+  },
+  {
+   "repo": "diterex/youtube-research-mcp",
+   "sha": "4cf8856de30a6f74f0612d0b0f034397aa13f2e4",
+   "parent": "bee8a344ce0a1ea3ab66f7b26449a601b46a7568",
+   "date": "2026-08-10",
+   "subject": "get_video_frames: save frames to disk via output_dir, raise max_frames to 50",
+   "weakened": [
+    {
+     "file": "src/yt_research_mcp/server.py",
+     "tool": "get_video_frames",
+     "hint": "readOnlyHint",
+     "old": true,
+     "new": false,
+     "body_changed": true
+    }
+   ]
+  },
+  {
+   "repo": "evgenygurin/dj-music-plugin",
+   "sha": "0f9ecb62e3984e49ecc5a359970863fea6b9b0ee",
+   "parent": "9fe856150c8e0d3f5dd9f0ad6005756fef776515",
+   "date": "2026-03-27",
+   "subject": "fix: code review — runtime bugs, cache perf, annotations, test infra",
+   "weakened": [
+    {
+     "file": "app/mcp/tools/curation.py",
+     "tool": "classify_mood",
+     "hint": "readOnlyHint",
+     "old": true,
+     "new": false,
+     "body_changed": false
+    },
+    {
+     "file": "app/mcp/tools/sets.py",
+     "tool": "score_transitions",
+     "hint": "readOnlyHint",
+     "old": true,
+     "new": false,
+     "body_changed": false
+    }
+   ]
+  },
+  {
+   "repo": "hbg1345/teamplay-talk",
+   "sha": "a32be7d762899eba8f1df8ddef0f889780357d4a",
+   "parent": "475d215b91f86b8d87338fa15df1d8bd8508a6e5",
+   "date": "2026-06-27",
+   "subject": "Expand PM workflow tools",
+   "weakened": [
+    {
+     "file": "src/teamplay_talk/tools/feedback.py",
+     "tool": "close_poll",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": true
+    }
+   ]
+  },
+  {
+   "repo": "knuckles-team/tunnel-manager",
+   "sha": "eaae7371d3e359fdd46c93210f876268a3b8b4b3",
+   "parent": "4cad8875d9d6ab7d9803e82e3426d64ba6cdb31f",
+   "date": "2025-10-03",
+   "subject": "Working tunnels and inventory",
+   "weakened": [
+    {
+     "file": "tunnel_manager/tunnel_manager_mcp.py",
+     "tool": "check_ssh_server",
+     "hint": "openWorldHint",
+     "old": false,
+     "new": "（消えた＝既定値）",
+     "body_changed": true
+    },
+    {
+     "file": "tunnel_manager/tunnel_manager_mcp.py",
+     "tool": "copy_ssh_config",
+     "hint": "openWorldHint",
+     "old": false,
+     "new": "（消えた＝既定値）",
+     "body_changed": true
+    },
+    {
+     "file": "tunnel_manager/tunnel_manager_mcp.py",
+     "tool": "copy_ssh_config_on_all",
+     "hint": "openWorldHint",
+     "old": false,
+     "new": "（消えた＝既定値）",
+     "body_changed": true
+    },
+    {
+     "file": "tunnel_manager/tunnel_manager_mcp.py",
+     "tool": "download_file",
+     "hint": "openWorldHint",
+     "old": false,
+     "new": "（消えた＝既定値）",
+     "body_changed": true
+    },
+    {
+     "file": "tunnel_manager/tunnel_manager_mcp.py",
+     "tool": "remove_host_key",
+     "hint": "openWorldHint",
+     "old": false,
+     "new": "（消えた＝既定値）",
+     "body_changed": true
+    },
+    {
+     "file": "tunnel_manager/tunnel_manager_mcp.py",
+     "tool": "rotate_ssh_key",
+     "hint": "openWorldHint",
+     "old": false,
+     "new": "（消えた＝既定値）",
+     "body_changed": true
+    },
+    {
+     "file": "tunnel_manager/tunnel_manager_mcp.py",
+     "tool": "rotate_ssh_key_on_all",
+     "hint": "openWorldHint",
+     "old": false,
+     "new": "（消えた＝既定値）",
+     "body_changed": true
+    },
+    {
+     "file": "tunnel_manager/tunnel_manager_mcp.py",
+     "tool": "run_command_on_all",
+     "hint": "openWorldHint",
+     "old": false,
+     "new": "（消えた＝既定値）",
+     "body_changed": true
+    },
+    {
+     "file": "tunnel_manager/tunnel_manager_mcp.py",
+     "tool": "run_remote_command",
+     "hint": "openWorldHint",
+     "old": false,
+     "new": "（消えた＝既定値）",
+     "body_changed": true
+    },
+    {
+     "file": "tunnel_manager/tunnel_manager_mcp.py",
+     "tool": "setup_all_passwordless_ssh",
+     "hint": "openWorldHint",
+     "old": false,
+     "new": "（消えた＝既定値）",
+     "body_changed": true
+    },
+    {
+     "file": "tunnel_manager/tunnel_manager_mcp.py",
+     "tool": "setup_passwordless_ssh",
+     "hint": "openWorldHint",
+     "old": false,
+     "new": "（消えた＝既定値）",
+     "body_changed": true
+    },
+    {
+     "file": "tunnel_manager/tunnel_manager_mcp.py",
+     "tool": "test_key_auth",
+     "hint": "openWorldHint",
+     "old": false,
+     "new": "（消えた＝既定値）",
+     "body_changed": true
+    },
+    {
+     "file": "tunnel_manager/tunnel_manager_mcp.py",
+     "tool": "upload_file",
+     "hint": "openWorldHint",
+     "old": false,
+     "new": "（消えた＝既定値）",
+     "body_changed": true
+    }
+   ]
+  },
+  {
+   "repo": "md0-code/dosbox-x-mcp",
+   "sha": "380420b7d40794c2db79ae061844b89731a9db43",
+   "parent": "45d375a2e046c2af3f56afe89c3f3e7526739063",
+   "date": "2026-09-09",
+   "subject": "Fix tool side-effect annotations and preserve capture contracts",
+   "weakened": [
+    {
+     "file": "src/dosbox_mcp/server.py",
+     "tool": "dosbox_act_and_observe",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/dosbox_mcp/server.py",
+     "tool": "dosbox_build_world_mosaic",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/dosbox_mcp/server.py",
+     "tool": "dosbox_capture_screen",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/dosbox_mcp/server.py",
+     "tool": "dosbox_capture_video_snapshot",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/dosbox_mcp/server.py",
+     "tool": "dosbox_decode_video_snapshot",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/dosbox_mcp/server.py",
+     "tool": "dosbox_dump_segment",
+     "hint": "readOnlyHint",
+     "old": true,
+     "new": false,
+     "body_changed": false
+    },
+    {
+     "file": "src/dosbox_mcp/server.py",
+     "tool": "dosbox_emulator_command",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/dosbox_mcp/server.py",
+     "tool": "dosbox_read_framebuffer",
+     "hint": "readOnlyHint",
+     "old": true,
+     "new": false,
+     "body_changed": false
+    },
+    {
+     "file": "src/dosbox_mcp/server.py",
+     "tool": "dosbox_sample",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/dosbox_mcp/server.py",
+     "tool": "dosbox_watch_frames",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    }
+   ]
+  },
+  {
+   "repo": "neo4j-field/neo4j-mcp-workspace-template",
+   "sha": "e9c0d8b08fc1f3c1453c149345558c18a71ba9d8",
+   "parent": "d73825a495be2ab13abf6448a11468fecd267585",
+   "date": "2026-02-18",
+   "subject": "lexical-graph: rewrite server with multi-mode parsing, chunking, versioning, and docs",
+   "weakened": [
+    {
+     "file": "mcp-neo4j-lexical-graph/src/mcp_neo4j_lexical_graph/server.py",
+     "tool": "create_lexical_graph",
+     "hint": "idempotentHint",
+     "old": true,
+     "new": false,
+     "body_changed": true
+    }
+   ]
+  },
+  {
+   "repo": "qbit-glitch/ccr",
+   "sha": "41fd96e6f033fc018e857c553e9d8afc42ed9624",
+   "parent": "3b436c9d7704e9bd81010dcd9fd8baa882fe93a1",
+   "date": "2026-03-12",
+   "subject": "feat: hierarchical summaries (TiMem-inspired) + fix all NeurIPS reviewer findings",
+   "weakened": [
+    {
+     "file": "ccr/mcp_server.py",
+     "tool": "rlm_finalize",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": true
+    }
+   ]
+  },
+  {
+   "repo": "tallyfy/mcp-public",
+   "sha": "93352a49a9539b3d3673a4c5fd45bd901296cd6d",
+   "parent": "83437bc2fe71646ed47feaaad0ec93a70823d0ba",
+   "date": "2026-09-28",
+   "subject": "Sync from production 7a07fcd",
+   "weakened": [
+    {
+     "file": "server/tools/org_context.py",
+     "tool": "update_org_context",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    }
+   ]
+  },
+  {
+   "repo": "tallyfy/mcp-public",
+   "sha": "85ff902f791d371c3d5476b95e5c2ed2c9132507",
+   "parent": "6ec9be0fce9495f036df9769d079ca29db3f104e",
+   "date": "2026-09-09",
+   "subject": "Sync from production da5c193",
+   "weakened": [
+    {
+     "file": "server/tools/process_management.py",
+     "tool": "reopen_kickoff_form",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": true
+    }
+   ]
+  },
+  {
+   "repo": "tallyfy/mcp-public",
+   "sha": "f033e92ef5fef3fe734a5b488c55b481e586e201",
+   "parent": "405091f0516b19f69b44e26661406f604ba232d9",
+   "date": "2026-09-02",
+   "subject": "Sync from production 2663b93",
+   "weakened": [
+    {
+     "file": "server/tools/automation.py",
+     "tool": "update_automation_rule",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "server/tools/folder_management.py",
+     "tool": "update_folder",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "server/tools/form_fields.py",
+     "tool": "update_dropdown_options",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "server/tools/form_fields.py",
+     "tool": "update_form_field",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "server/tools/form_fields.py",
+     "tool": "update_kickoff_field",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "server/tools/group_management.py",
+     "tool": "update_group",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "server/tools/process_management.py",
+     "tool": "update_process",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "server/tools/tag_management.py",
+     "tool": "update_tag",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "server/tools/task_management.py",
+     "tool": "update_standalone_task",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "server/tools/template_management.py",
+     "tool": "edit_description_on_step",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "server/tools/template_management.py",
+     "tool": "update_step",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "server/tools/template_management.py",
+     "tool": "update_template",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "server/tools/user_management.py",
+     "tool": "change_user_role",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "server/tools/user_management.py",
+     "tool": "update_guest",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    }
+   ]
+  },
+  {
+   "repo": "tallyfy/mcp-public",
+   "sha": "7a2bbe47dc7a9dfab5ee98b6e7bedc9f6d0c19b7",
+   "parent": "d532e36115b54f1d933dea73306cf80802d0a385",
+   "date": "2026-08-28",
+   "subject": "Sync from production 0a9077b",
+   "weakened": [
+    {
+     "file": "server/tools/comment_management.py",
+     "tool": "update_task_comment",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "server/tools/task_management.py",
+     "tool": "update_task",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    }
+   ]
+  },
+  {
+   "repo": "tallyfy/mcp-public",
+   "sha": "9a485367d4a980b63d1d25981eb4f71f0105881c",
+   "parent": "04a84d2c141fecf6a920b6c0fe26a9b51b6c9c40",
+   "date": "2026-07-21",
+   "subject": "Sync from production 896b731",
+   "weakened": [
+    {
+     "file": "server/tools/tag_management.py",
+     "tool": "tag_process",
+     "hint": "idempotentHint",
+     "old": true,
+     "new": false,
+     "body_changed": false
+    },
+    {
+     "file": "server/tools/tag_management.py",
+     "tool": "tag_template",
+     "hint": "idempotentHint",
+     "old": true,
+     "new": false,
+     "body_changed": false
+    },
+    {
+     "file": "server/tools/task_management.py",
+     "tool": "complete_task",
+     "hint": "idempotentHint",
+     "old": true,
+     "new": false,
+     "body_changed": false
+    },
+    {
+     "file": "server/tools/task_management.py",
+     "tool": "reopen_task",
+     "hint": "idempotentHint",
+     "old": true,
+     "new": false,
+     "body_changed": false
+    }
+   ]
+  },
+  {
+   "repo": "teknovizier/tekla_mcp_server",
+   "sha": "494c4dc744b82c1ecd68b54d9d3da117963062b6",
+   "parent": "6e1b5690dc10a4814e1e208632952807e91c0eba",
+   "date": "2026-06-21",
+   "subject": "Add DXF-based drawing collision detection with revision clouds",
+   "weakened": [
+    {
+     "file": "src/tekla_mcp_server/providers/drawings_provider.py",
+     "tool": "close_drawing",
+     "hint": "readOnlyHint",
+     "old": true,
+     "new": false,
+     "body_changed": true
+    },
+    {
+     "file": "src/tekla_mcp_server/providers/drawings_provider.py",
+     "tool": "close_drawing",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": true
+    }
+   ]
+  },
+  {
+   "repo": "teknovizier/tekla_mcp_server",
+   "sha": "deed2fbe577d1fb6a3e0700454ef0c77d0d30dc3",
+   "parent": "b265ba6b8d767f077578a98ded95322da0ef89b9",
+   "date": "2026-05-31",
+   "subject": "Reclassify tool annotations to fail-closed `readOnlyHint` model",
+   "weakened": [
+    {
+     "file": "src/tekla_mcp_server/providers/operations_provider.py",
+     "tool": "check_for_orphans",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    }
+   ]
+  },
+  {
+   "repo": "teknovizier/tekla_mcp_server",
+   "sha": "660af5e96c7983ead7e3a21ad1a42cc8c8cabbd4",
+   "parent": "35bc4e70cbd4ec892d2a68bc3dbfe45374bf24db",
+   "date": "2026-05-15",
+   "subject": "Add attach parameter to auto-connect orphaned elements",
+   "weakened": [
+    {
+     "file": "src/tekla_mcp_server/providers/operations_provider.py",
+     "tool": "check_for_orphans",
+     "hint": "readOnlyHint",
+     "old": true,
+     "new": false,
+     "body_changed": true
+    }
+   ]
+  },
+  {
+   "repo": "vicampuzano/metricool-mcp",
+   "sha": "3e7e5100d320443542fe1bda9521b37178e9455b",
+   "parent": "60f99010a58aa30918e852b4d001a6e17d38959a",
+   "date": "2026-03-27",
+   "subject": "Fix directory submission requirements: annotations, origins, and docs",
+   "weakened": [
+    {
+     "file": "server.py",
+     "tool": "create_scheduled_post",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "server.py",
+     "tool": "update_scheduled_post",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    }
+   ]
+  },
+  {
+   "repo": "vishalsachdev/canvas-mcp",
+   "sha": "a973908eeaed7e6dda972238addc2c4e0c83caa6",
+   "parent": "5ac06cbdd230e99686c38ac43b2e07f868fae3dd",
+   "date": "2026-07-31",
+   "subject": "feat: complete the tool-annotation contract and gate it in CI (#205)",
+   "weakened": [
+    {
+     "file": "src/canvas_mcp/tools/accessibility.py",
+     "tool": "fix_accessibility_issues",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/canvas_mcp/tools/admin_tools.py",
+     "tool": "create_student_anonymization_map",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/canvas_mcp/tools/assignments.py",
+     "tool": "bulk_grade_submissions",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/canvas_mcp/tools/assignments.py",
+     "tool": "update_assignment",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/canvas_mcp/tools/discussions.py",
+     "tool": "update_discussion_topic",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/canvas_mcp/tools/files.py",
+     "tool": "upload_course_file",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/canvas_mcp/tools/modules.py",
+     "tool": "update_module",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/canvas_mcp/tools/modules.py",
+     "tool": "update_module_item",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/canvas_mcp/tools/pages.py",
+     "tool": "bulk_update_pages",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/canvas_mcp/tools/pages.py",
+     "tool": "create_page",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/canvas_mcp/tools/pages.py",
+     "tool": "edit_page_content",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/canvas_mcp/tools/pages.py",
+     "tool": "update_page_settings",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/canvas_mcp/tools/rubrics.py",
+     "tool": "associate_rubric",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/canvas_mcp/tools/rubrics.py",
+     "tool": "create_rubric",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "src/canvas_mcp/tools/rubrics.py",
+     "tool": "grade_with_rubric",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    }
+   ]
+  },
+  {
+   "repo": "vitexsoftware/mcp-server-abraflexi",
+   "sha": "e32e02453402373b03ff04512c6b2a82b264eb7a",
+   "parent": "4be18a3c55b1270c93953832205e0ee80d56d2d0",
+   "date": "2026-08-31",
+   "subject": "refactor(abraflexi_mcp_server/server.py): correct tool annotations for file writing tools",
+   "weakened": [
+    {
+     "file": "abraflexi_mcp_server/server.py",
+     "tool": "evidence_download_attachment",
+     "hint": "readOnlyHint",
+     "old": true,
+     "new": false,
+     "body_changed": false
+    },
+    {
+     "file": "abraflexi_mcp_server/server.py",
+     "tool": "evidence_download_attachment",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "abraflexi_mcp_server/server.py",
+     "tool": "evidence_export_report",
+     "hint": "readOnlyHint",
+     "old": true,
+     "new": false,
+     "body_changed": false
+    },
+    {
+     "file": "abraflexi_mcp_server/server.py",
+     "tool": "evidence_export_report",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "abraflexi_mcp_server/server.py",
+     "tool": "evidence_get_attachment_thumbnail",
+     "hint": "readOnlyHint",
+     "old": true,
+     "new": false,
+     "body_changed": false
+    },
+    {
+     "file": "abraflexi_mcp_server/server.py",
+     "tool": "evidence_get_attachment_thumbnail",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    },
+    {
+     "file": "abraflexi_mcp_server/server.py",
+     "tool": "evidence_get_qr_code",
+     "hint": "readOnlyHint",
+     "old": true,
+     "new": false,
+     "body_changed": false
+    },
+    {
+     "file": "abraflexi_mcp_server/server.py",
+     "tool": "evidence_get_qr_code",
+     "hint": "destructiveHint",
+     "old": false,
+     "new": true,
+     "body_changed": false
+    }
+   ]
+  }
+ ]
+}
