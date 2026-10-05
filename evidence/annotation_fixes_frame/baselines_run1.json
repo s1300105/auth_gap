@@ -1,0 +1,7353 @@
+{
+ "_note": "fix_recall_baselines.py compare（D80）。区間は群を単位にした bootstrap、群が 10 未満なら出さない",
+ "seed": 20261005,
+ "reps": 10000,
+ "by_decl": {
+  "D1": {
+   "all_items": {
+    "AuthGap 矛": {
+     "found": 31,
+     "n": 68,
+     "rate": 0.45588235294117646,
+     "ci": [
+      0.25675675675675674,
+      0.6666666666666666
+     ],
+     "n_groups": 30
+    },
+    "AuthGap 矛+不": {
+     "found": 36,
+     "n": 68,
+     "rate": 0.5294117647058824,
+     "ci": [
+      0.32098765432098764,
+      0.7454545454545455
+     ],
+     "n_groups": 30
+    },
+    "AuthGap 深さ0 矛": {
+     "found": 5,
+     "n": 68,
+     "rate": 0.07352941176470588,
+     "ci": [
+      0.0,
+      0.16666666666666666
+     ],
+     "n_groups": 30
+    },
+    "AuthGap 深さ0 矛+不": {
+     "found": 5,
+     "n": 68,
+     "rate": 0.07352941176470588,
+     "ci": [
+      0.0,
+      0.16666666666666666
+     ],
+     "n_groups": 30
+    },
+    "HintLint 厳しい": {
+     "found": 4,
+     "n": 68,
+     "rate": 0.058823529411764705,
+     "ci": [
+      0.0,
+      0.14492753623188406
+     ],
+     "n_groups": 30
+    },
+    "HintLint 緩い": {
+     "found": 4,
+     "n": 68,
+     "rate": 0.058823529411764705,
+     "ci": [
+      0.0,
+      0.14492753623188406
+     ],
+     "n_groups": 30
+    },
+    "HintLint 参考（何かの finding）": {
+     "found": 4,
+     "n": 68,
+     "rate": 0.058823529411764705,
+     "ci": [
+      0.0,
+      0.14492753623188406
+     ],
+     "n_groups": 30
+    },
+    "mcp-doctor": {
+     "found": 2,
+     "n": 68,
+     "rate": 0.029411764705882353,
+     "ci": [
+      0.0,
+      0.08064516129032258
+     ],
+     "n_groups": 30
+    }
+   },
+   "authgap_denominator": {
+    "AuthGap 矛": {
+     "found": 31,
+     "n": 67,
+     "rate": 0.4626865671641791,
+     "ci": [
+      0.25806451612903225,
+      0.6716417910447762
+     ],
+     "n_groups": 29
+    },
+    "AuthGap 矛+不": {
+     "found": 36,
+     "n": 67,
+     "rate": 0.5373134328358209,
+     "ci": [
+      0.323943661971831,
+      0.75
+     ],
+     "n_groups": 29
+    },
+    "AuthGap 深さ0 矛": {
+     "found": 5,
+     "n": 67,
+     "rate": 0.07462686567164178,
+     "ci": [
+      0.0,
+      0.16981132075471697
+     ],
+     "n_groups": 29
+    },
+    "AuthGap 深さ0 矛+不": {
+     "found": 5,
+     "n": 67,
+     "rate": 0.07462686567164178,
+     "ci": [
+      0.0,
+      0.16981132075471697
+     ],
+     "n_groups": 29
+    },
+    "HintLint 厳しい": {
+     "found": 4,
+     "n": 67,
+     "rate": 0.05970149253731343,
+     "ci": [
+      0.0,
+      0.15
+     ],
+     "n_groups": 29
+    },
+    "HintLint 緩い": {
+     "found": 4,
+     "n": 67,
+     "rate": 0.05970149253731343,
+     "ci": [
+      0.0,
+      0.15
+     ],
+     "n_groups": 29
+    },
+    "HintLint 参考（何かの finding）": {
+     "found": 4,
+     "n": 67,
+     "rate": 0.05970149253731343,
+     "ci": [
+      0.0,
+      0.15
+     ],
+     "n_groups": 29
+    },
+    "mcp-doctor": {
+     "found": 2,
+     "n": 67,
+     "rate": 0.029850746268656716,
+     "ci": [
+      0.0,
+      0.08163265306122448
+     ],
+     "n_groups": 29
+    }
+   },
+   "tool_failed": {
+    "hintlint": 0,
+    "mcp_doctor": 0
+   }
+  },
+  "D2": {
+   "all_items": {
+    "AuthGap 矛": {
+     "found": 5,
+     "n": 151,
+     "rate": 0.033112582781456956,
+     "ci": [
+      0.0,
+      0.10135135135135136
+     ],
+     "n_groups": 32
+    },
+    "AuthGap 矛+不": {
+     "found": 43,
+     "n": 151,
+     "rate": 0.2847682119205298,
+     "ci": [
+      0.09595959595959595,
+      0.5714285714285714
+     ],
+     "n_groups": 32
+    },
+    "AuthGap 深さ0 矛": {
+     "found": 0,
+     "n": 151,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 32
+    },
+    "AuthGap 深さ0 矛+不": {
+     "found": 0,
+     "n": 151,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 32
+    },
+    "HintLint 厳しい": {
+     "found": 0,
+     "n": 151,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 32
+    },
+    "HintLint 緩い": {
+     "found": 0,
+     "n": 151,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 32
+    },
+    "HintLint 参考（何かの finding）": {
+     "found": 0,
+     "n": 151,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 32
+    },
+    "mcp-doctor": {
+     "found": 0,
+     "n": 151,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 32
+    }
+   },
+   "authgap_denominator": {
+    "AuthGap 矛": {
+     "found": 5,
+     "n": 96,
+     "rate": 0.052083333333333336,
+     "ci": [
+      0.0,
+      0.16363636363636364
+     ],
+     "n_groups": 25
+    },
+    "AuthGap 矛+不": {
+     "found": 43,
+     "n": 96,
+     "rate": 0.4479166666666667,
+     "ci": [
+      0.16806722689075632,
+      0.75
+     ],
+     "n_groups": 25
+    },
+    "AuthGap 深さ0 矛": {
+     "found": 0,
+     "n": 96,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 25
+    },
+    "AuthGap 深さ0 矛+不": {
+     "found": 0,
+     "n": 96,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 25
+    },
+    "HintLint 厳しい": {
+     "found": 0,
+     "n": 96,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 25
+    },
+    "HintLint 緩い": {
+     "found": 0,
+     "n": 96,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 25
+    },
+    "HintLint 参考（何かの finding）": {
+     "found": 0,
+     "n": 96,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 25
+    },
+    "mcp-doctor": {
+     "found": 0,
+     "n": 96,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 25
+    }
+   },
+   "tool_failed": {
+    "hintlint": 0,
+    "mcp_doctor": 0
+   }
+  },
+  "D3": {
+   "all_items": {
+    "AuthGap 矛": {
+     "found": 2,
+     "n": 55,
+     "rate": 0.03636363636363636,
+     "ci": [
+      0.0,
+      0.10638297872340426
+     ],
+     "n_groups": 12
+    },
+    "AuthGap 矛+不": {
+     "found": 26,
+     "n": 55,
+     "rate": 0.4727272727272727,
+     "ci": [
+      0.11363636363636363,
+      0.8148148148148148
+     ],
+     "n_groups": 12
+    },
+    "AuthGap 深さ0 矛": {
+     "found": 0,
+     "n": 55,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 12
+    },
+    "AuthGap 深さ0 矛+不": {
+     "found": 0,
+     "n": 55,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 12
+    },
+    "HintLint 厳しい": {
+     "found": 0,
+     "n": 55,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 12
+    },
+    "HintLint 緩い": {
+     "found": 0,
+     "n": 55,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 12
+    },
+    "HintLint 参考（何かの finding）": {
+     "found": 1,
+     "n": 55,
+     "rate": 0.01818181818181818,
+     "ci": [
+      0.0,
+      0.08
+     ],
+     "n_groups": 12
+    },
+    "mcp-doctor": {
+     "found": 0,
+     "n": 55,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 12
+    }
+   },
+   "authgap_denominator": {
+    "AuthGap 矛": {
+     "found": 2,
+     "n": 55,
+     "rate": 0.03636363636363636,
+     "ci": [
+      0.0,
+      0.10638297872340426
+     ],
+     "n_groups": 12
+    },
+    "AuthGap 矛+不": {
+     "found": 26,
+     "n": 55,
+     "rate": 0.4727272727272727,
+     "ci": [
+      0.11363636363636363,
+      0.8148148148148148
+     ],
+     "n_groups": 12
+    },
+    "AuthGap 深さ0 矛": {
+     "found": 0,
+     "n": 55,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 12
+    },
+    "AuthGap 深さ0 矛+不": {
+     "found": 0,
+     "n": 55,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 12
+    },
+    "HintLint 厳しい": {
+     "found": 0,
+     "n": 55,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 12
+    },
+    "HintLint 緩い": {
+     "found": 0,
+     "n": 55,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 12
+    },
+    "HintLint 参考（何かの finding）": {
+     "found": 1,
+     "n": 55,
+     "rate": 0.01818181818181818,
+     "ci": [
+      0.0,
+      0.08
+     ],
+     "n_groups": 12
+    },
+    "mcp-doctor": {
+     "found": 0,
+     "n": 55,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 12
+    }
+   },
+   "tool_failed": {
+    "hintlint": 0,
+    "mcp_doctor": 0
+   }
+  },
+  "D4": {
+   "all_items": {
+    "AuthGap 矛": {
+     "found": 0,
+     "n": 78,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 15
+    },
+    "AuthGap 矛+不": {
+     "found": 0,
+     "n": 78,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 15
+    },
+    "AuthGap 深さ0 矛": {
+     "found": 0,
+     "n": 78,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 15
+    },
+    "AuthGap 深さ0 矛+不": {
+     "found": 0,
+     "n": 78,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 15
+    },
+    "HintLint 厳しい": {
+     "found": 0,
+     "n": 78,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 15
+    },
+    "HintLint 緩い": {
+     "found": 0,
+     "n": 78,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 15
+    },
+    "HintLint 参考（何かの finding）": {
+     "found": 0,
+     "n": 78,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 15
+    },
+    "mcp-doctor": {
+     "found": 0,
+     "n": 78,
+     "rate": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "n_groups": 15
+    }
+   },
+   "authgap_denominator": {
+    "AuthGap 矛": {
+     "found": 0,
+     "n": 28,
+     "rate": 0.0,
+     "ci": null,
+     "n_groups": 6
+    },
+    "AuthGap 矛+不": {
+     "found": 0,
+     "n": 28,
+     "rate": 0.0,
+     "ci": null,
+     "n_groups": 6
+    },
+    "AuthGap 深さ0 矛": {
+     "found": 0,
+     "n": 28,
+     "rate": 0.0,
+     "ci": null,
+     "n_groups": 6
+    },
+    "AuthGap 深さ0 矛+不": {
+     "found": 0,
+     "n": 28,
+     "rate": 0.0,
+     "ci": null,
+     "n_groups": 6
+    },
+    "HintLint 厳しい": {
+     "found": 0,
+     "n": 28,
+     "rate": 0.0,
+     "ci": null,
+     "n_groups": 6
+    },
+    "HintLint 緩い": {
+     "found": 0,
+     "n": 28,
+     "rate": 0.0,
+     "ci": null,
+     "n_groups": 6
+    },
+    "HintLint 参考（何かの finding）": {
+     "found": 0,
+     "n": 28,
+     "rate": 0.0,
+     "ci": null,
+     "n_groups": 6
+    },
+    "mcp-doctor": {
+     "found": 0,
+     "n": 28,
+     "rate": 0.0,
+     "ci": null,
+     "n_groups": 6
+    }
+   },
+   "tool_failed": {
+    "hintlint": 0,
+    "mcp_doctor": 0
+   }
+  }
+ },
+ "items": [
+  {
+   "group": "abetoluwani/linkedin-mcp-server",
+   "repo": "abetoluwani/linkedin-mcp-server",
+   "tree": "fx-abetoluwani__linkedin-mcp-server-a6418a4ed2",
+   "tool": "get_company_posts",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "abetoluwani/linkedin-mcp-server",
+   "repo": "abetoluwani/linkedin-mcp-server",
+   "tree": "fx-abetoluwani__linkedin-mcp-server-a6418a4ed2",
+   "tool": "get_company_profile",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "abetoluwani/linkedin-mcp-server",
+   "repo": "abetoluwani/linkedin-mcp-server",
+   "tree": "fx-abetoluwani__linkedin-mcp-server-52dad3902d",
+   "tool": "get_conversation",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "abetoluwani/linkedin-mcp-server",
+   "repo": "abetoluwani/linkedin-mcp-server",
+   "tree": "fx-abetoluwani__linkedin-mcp-server-a6418a4ed2",
+   "tool": "get_job_details",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "abetoluwani/linkedin-mcp-server",
+   "repo": "abetoluwani/linkedin-mcp-server",
+   "tree": "fx-abetoluwani__linkedin-mcp-server-a6418a4ed2",
+   "tool": "get_person_profile",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "abetoluwani/linkedin-mcp-server",
+   "repo": "abetoluwani/linkedin-mcp-server",
+   "tree": "fx-abetoluwani__linkedin-mcp-server-52dad3902d",
+   "tool": "search_conversations",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "abetoluwani/linkedin-mcp-server",
+   "repo": "abetoluwani/linkedin-mcp-server",
+   "tree": "fx-abetoluwani__linkedin-mcp-server-a6418a4ed2",
+   "tool": "search_jobs",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "abetoluwani/linkedin-mcp-server",
+   "repo": "abetoluwani/linkedin-mcp-server",
+   "tree": "fx-abetoluwani__linkedin-mcp-server-a6418a4ed2",
+   "tool": "search_people",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "agno-agi/agno",
+   "repo": "agno-agi/agno",
+   "tree": "fx-agno-agi__agno-338341e7d3",
+   "tool": "continue_run",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ahmedkishki/research-ultra-rag-mcp-server",
+   "repo": "ahmedkishki/research-ultra-rag-mcp-server",
+   "tree": "fx-ahmedkishki__research-ultra-rag-mcp-server-c1cfea1f27",
+   "tool": "set_source_inclusion",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ahmedkishki/research-ultra-rag-mcp-server",
+   "repo": "ahmedkishki/research-ultra-rag-mcp-server",
+   "tree": "fx-ahmedkishki__research-ultra-rag-mcp-server-c1cfea1f27",
+   "tool": "set_source_metadata",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "aidandaniel/context-eng-project",
+   "repo": "aidandaniel/context-eng-project",
+   "tree": "fx-aidandaniel__context-eng-project-a7057080cf",
+   "tool": "prepare_context",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "aliveranme/stata-mcp",
+   "repo": "aliveranme/stata-mcp",
+   "tree": "fx-aliveranme__stata-mcp-10d2140994",
+   "tool": "stata_run",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "aliveranme/stata-mcp",
+   "repo": "aliveranme/stata-mcp",
+   "tree": "fx-aliveranme__stata-mcp-69f3aa08a0",
+   "tool": "stata_run_do_file",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "alpacahq/alpaca-mcp-server",
+   "repo": "alpacahq/alpaca-mcp-server",
+   "tree": "fx-alpacahq__alpaca-mcp-server-c8ee9615ae",
+   "tool": "add_asset_to_watchlist_by_id",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "alpacahq/alpaca-mcp-server",
+   "repo": "alpacahq/alpaca-mcp-server",
+   "tree": "fx-alpacahq__alpaca-mcp-server-c8ee9615ae",
+   "tool": "update_watchlist_by_id",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "apache/superset",
+   "repo": "apache/superset",
+   "tree": "fx-apache__superset-f3255c46ac",
+   "tool": "update_dashboard",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "arielsacagiu/telegram-mcp",
+   "repo": "chigwell/telegram-mcp",
+   "tree": "fx-chigwell__telegram-mcp-fa960923d8",
+   "tool": "export_chat_invite",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "arielsacagiu/telegram-mcp",
+   "repo": "chigwell/telegram-mcp",
+   "tree": "fx-chigwell__telegram-mcp-fa960923d8",
+   "tool": "export_unread_messages",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "矛",
+   "hintlint": {
+    "strict": true,
+    "loose": true,
+    "any_finding": true
+   },
+   "mcp_doctor": true
+  },
+  {
+   "group": "arielsacagiu/telegram-mcp",
+   "repo": "chigwell/telegram-mcp",
+   "tree": "fx-chigwell__telegram-mcp-fa960923d8",
+   "tool": "get_invite_link",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "arimxyer/doc-manager-mcp",
+   "repo": "arimxyer/doc-manager-mcp",
+   "tree": "fx-arimxyer__doc-manager-mcp-f916a0e5d5",
+   "tool": "docmgr_map_changes",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "arimxyer/doc-manager-mcp",
+   "repo": "arimxyer/doc-manager-mcp",
+   "tree": "fx-arimxyer__doc-manager-mcp-f916a0e5d5",
+   "tool": "docmgr_track_dependencies",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "awslabs/mcp",
+   "repo": "awslabs/mcp",
+   "tree": "fx-awslabs__mcp-b1e768656d",
+   "tool": "generate_cost_report_wrapper",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "babtuna/locked_in_mcp",
+   "repo": "babtuna/locked_in_mcp",
+   "tree": "fx-babtuna__locked_in_mcp-5866728259",
+   "tool": "get_company_posts",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "babtuna/locked_in_mcp",
+   "repo": "babtuna/locked_in_mcp",
+   "tree": "fx-babtuna__locked_in_mcp-5866728259",
+   "tool": "get_company_profile",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "babtuna/locked_in_mcp",
+   "repo": "babtuna/locked_in_mcp",
+   "tree": "fx-babtuna__locked_in_mcp-5866728259",
+   "tool": "get_job_details",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "babtuna/locked_in_mcp",
+   "repo": "babtuna/locked_in_mcp",
+   "tree": "fx-babtuna__locked_in_mcp-5866728259",
+   "tool": "get_person_profile",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "babtuna/locked_in_mcp",
+   "repo": "babtuna/locked_in_mcp",
+   "tree": "fx-babtuna__locked_in_mcp-5866728259",
+   "tool": "search_jobs",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "babtuna/locked_in_mcp",
+   "repo": "babtuna/locked_in_mcp",
+   "tree": "fx-babtuna__locked_in_mcp-5866728259",
+   "tool": "search_people",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ball2jh/google-ads-mcp",
+   "repo": "ball2jh/google-ads-mcp",
+   "tree": "fx-ball2jh__google-ads-mcp-e70484edee",
+   "tool": "add_negative_keyword",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ball2jh/google-ads-mcp",
+   "repo": "ball2jh/google-ads-mcp",
+   "tree": "fx-ball2jh__google-ads-mcp-e70484edee",
+   "tool": "enable_ad_group",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ball2jh/google-ads-mcp",
+   "repo": "ball2jh/google-ads-mcp",
+   "tree": "fx-ball2jh__google-ads-mcp-e70484edee",
+   "tool": "enable_campaign",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ball2jh/google-ads-mcp",
+   "repo": "ball2jh/google-ads-mcp",
+   "tree": "fx-ball2jh__google-ads-mcp-e70484edee",
+   "tool": "enable_keyword",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ball2jh/google-ads-mcp",
+   "repo": "ball2jh/google-ads-mcp",
+   "tree": "fx-ball2jh__google-ads-mcp-e274147165",
+   "tool": "mutate",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ball2jh/google-ads-mcp",
+   "repo": "ball2jh/google-ads-mcp",
+   "tree": "fx-ball2jh__google-ads-mcp-e70484edee",
+   "tool": "pause_ad_group",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ball2jh/google-ads-mcp",
+   "repo": "ball2jh/google-ads-mcp",
+   "tree": "fx-ball2jh__google-ads-mcp-e70484edee",
+   "tool": "pause_campaign",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ball2jh/google-ads-mcp",
+   "repo": "ball2jh/google-ads-mcp",
+   "tree": "fx-ball2jh__google-ads-mcp-e70484edee",
+   "tool": "pause_keyword",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ball2jh/google-ads-mcp",
+   "repo": "ball2jh/google-ads-mcp",
+   "tree": "fx-ball2jh__google-ads-mcp-e70484edee",
+   "tool": "set_campaign_budget",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ball2jh/google-ads-mcp",
+   "repo": "ball2jh/google-ads-mcp",
+   "tree": "fx-ball2jh__google-ads-mcp-e70484edee",
+   "tool": "set_keyword_bid",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "basicmachines-co/basic-memory",
+   "repo": "basicmachines-co/basic-memory",
+   "tree": "fx-basicmachines-co__basic-memory-2860dc96f1",
+   "tool": "canvas",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "basicmachines-co/basic-memory",
+   "repo": "basicmachines-co/basic-memory",
+   "tree": "fx-basicmachines-co__basic-memory-2860dc96f1",
+   "tool": "edit_note",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "biztactix-ryan/projectman",
+   "repo": "biztactix-ryan/projectman",
+   "tree": "fx-biztactix-ryan__projectman-10610849ba",
+   "tool": "pm_push",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "biztactix-ryan/projectman",
+   "repo": "biztactix-ryan/projectman",
+   "tree": "fx-biztactix-ryan__projectman-10610849ba",
+   "tool": "pm_push_all",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "briandconnelly/mcp-server-tempest",
+   "repo": "briandconnelly/mcp-server-tempest",
+   "tree": "fx-briandconnelly__mcp-server-tempest-cee906b4aa",
+   "tool": "get_forecast",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "briandconnelly/mcp-server-tempest",
+   "repo": "briandconnelly/mcp-server-tempest",
+   "tree": "fx-briandconnelly__mcp-server-tempest-cee906b4aa",
+   "tool": "get_observation",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "briandconnelly/mcp-server-tempest",
+   "repo": "briandconnelly/mcp-server-tempest",
+   "tree": "fx-briandconnelly__mcp-server-tempest-cee906b4aa",
+   "tool": "get_station_details",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "briandconnelly/mcp-server-tempest",
+   "repo": "briandconnelly/mcp-server-tempest",
+   "tree": "fx-briandconnelly__mcp-server-tempest-cee906b4aa",
+   "tool": "get_stations",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "cbcoutinho/nextcloud-mcp-server",
+   "repo": "cbcoutinho/nextcloud-mcp-server",
+   "tree": "fx-cbcoutinho__nextcloud-mcp-server-7224a2ebe3",
+   "tool": "collectives_delete_collective",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "cbcoutinho/nextcloud-mcp-server",
+   "repo": "cbcoutinho/nextcloud-mcp-server",
+   "tree": "fx-cbcoutinho__nextcloud-mcp-server-44a27bd9e9",
+   "tool": "collectives_trash_page",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "cbcoutinho/nextcloud-mcp-server",
+   "repo": "cbcoutinho/nextcloud-mcp-server",
+   "tree": "fx-cbcoutinho__nextcloud-mcp-server-e5ad625a66",
+   "tool": "collectives_update_collective",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "cbcoutinho/nextcloud-mcp-server",
+   "repo": "cbcoutinho/nextcloud-mcp-server",
+   "tree": "fx-cbcoutinho__nextcloud-mcp-server-63eb0cd8ea",
+   "tool": "deck_assign_dependent_card",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "cbcoutinho/nextcloud-mcp-server",
+   "repo": "cbcoutinho/nextcloud-mcp-server",
+   "tree": "fx-cbcoutinho__nextcloud-mcp-server-e1412320a7",
+   "tool": "nc_semantic_search",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "clouatre-labs/math-mcp-learning-server",
+   "repo": "clouatre-labs/math-mcp-learning-server",
+   "tree": "fx-clouatre-labs__math-mcp-learning-server-156f8a64b1",
+   "tool": "calc_expression",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "clouatre-labs/math-mcp-learning-server",
+   "repo": "clouatre-labs/math-mcp-learning-server",
+   "tree": "fx-clouatre-labs__math-mcp-learning-server-156f8a64b1",
+   "tool": "calc_interest",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "clouatre-labs/math-mcp-learning-server",
+   "repo": "clouatre-labs/math-mcp-learning-server",
+   "tree": "fx-clouatre-labs__math-mcp-learning-server-156f8a64b1",
+   "tool": "calc_statistics",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "clouatre-labs/math-mcp-learning-server",
+   "repo": "clouatre-labs/math-mcp-learning-server",
+   "tree": "fx-clouatre-labs__math-mcp-learning-server-156f8a64b1",
+   "tool": "calc_units",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "clouatre-labs/math-mcp-learning-server",
+   "repo": "clouatre-labs/math-mcp-learning-server",
+   "tree": "fx-clouatre-labs__math-mcp-learning-server-156f8a64b1",
+   "tool": "matrix_determinant",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "clouatre-labs/math-mcp-learning-server",
+   "repo": "clouatre-labs/math-mcp-learning-server",
+   "tree": "fx-clouatre-labs__math-mcp-learning-server-156f8a64b1",
+   "tool": "matrix_eigenvalues",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "clouatre-labs/math-mcp-learning-server",
+   "repo": "clouatre-labs/math-mcp-learning-server",
+   "tree": "fx-clouatre-labs__math-mcp-learning-server-156f8a64b1",
+   "tool": "matrix_inverse",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "clouatre-labs/math-mcp-learning-server",
+   "repo": "clouatre-labs/math-mcp-learning-server",
+   "tree": "fx-clouatre-labs__math-mcp-learning-server-156f8a64b1",
+   "tool": "matrix_multiply",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "clouatre-labs/math-mcp-learning-server",
+   "repo": "clouatre-labs/math-mcp-learning-server",
+   "tree": "fx-clouatre-labs__math-mcp-learning-server-156f8a64b1",
+   "tool": "matrix_transpose",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "clouatre-labs/math-mcp-learning-server",
+   "repo": "clouatre-labs/math-mcp-learning-server",
+   "tree": "fx-clouatre-labs__math-mcp-learning-server-156f8a64b1",
+   "tool": "plot_box_plot",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "clouatre-labs/math-mcp-learning-server",
+   "repo": "clouatre-labs/math-mcp-learning-server",
+   "tree": "fx-clouatre-labs__math-mcp-learning-server-156f8a64b1",
+   "tool": "plot_financial_line",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "clouatre-labs/math-mcp-learning-server",
+   "repo": "clouatre-labs/math-mcp-learning-server",
+   "tree": "fx-clouatre-labs__math-mcp-learning-server-156f8a64b1",
+   "tool": "plot_function",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "clouatre-labs/math-mcp-learning-server",
+   "repo": "clouatre-labs/math-mcp-learning-server",
+   "tree": "fx-clouatre-labs__math-mcp-learning-server-156f8a64b1",
+   "tool": "plot_histogram",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "clouatre-labs/math-mcp-learning-server",
+   "repo": "clouatre-labs/math-mcp-learning-server",
+   "tree": "fx-clouatre-labs__math-mcp-learning-server-156f8a64b1",
+   "tool": "plot_line_chart",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "clouatre-labs/math-mcp-learning-server",
+   "repo": "clouatre-labs/math-mcp-learning-server",
+   "tree": "fx-clouatre-labs__math-mcp-learning-server-156f8a64b1",
+   "tool": "plot_scatter",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "clouatre-labs/math-mcp-learning-server",
+   "repo": "clouatre-labs/math-mcp-learning-server",
+   "tree": "fx-clouatre-labs__math-mcp-learning-server-156f8a64b1",
+   "tool": "workspace_load",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "clouatre-labs/math-mcp-learning-server",
+   "repo": "clouatre-labs/math-mcp-learning-server",
+   "tree": "fx-clouatre-labs__math-mcp-learning-server-156f8a64b1",
+   "tool": "workspace_save",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "coding-dev-tools/engraphis",
+   "repo": "coding-dev-tools/engraphis",
+   "tree": "fx-coding-dev-tools__engraphis-205f25c60f",
+   "tool": "engraphis_answer",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "coding-dev-tools/engraphis",
+   "repo": "coding-dev-tools/engraphis",
+   "tree": "fx-coding-dev-tools__engraphis-205f25c60f",
+   "tool": "engraphis_answer",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "colindmurray/google-sheets-mcp-and-skill",
+   "repo": "colindmurray/google-sheets-mcp-and-skill",
+   "tree": "fx-colindmurray__google-sheets-mcp-and-skill-a65ba20832",
+   "tool": "sheets_write_values",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "computersaysnull/claude-delegate-local-mcp",
+   "repo": "computersaysnull/claude-delegate-local-mcp",
+   "tree": "fx-computersaysnull__claude-delegate-local-mcp-a168f28857",
+   "tool": "backend_status",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "computersaysnull/claude-delegate-local-mcp",
+   "repo": "computersaysnull/claude-delegate-local-mcp",
+   "tree": "fx-computersaysnull__claude-delegate-local-mcp-a168f28857",
+   "tool": "list_agents",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "cursortouch/windows-mcp",
+   "repo": "cursortouch/windows-mcp",
+   "tree": "fx-cursortouch__windows-mcp-509b9a3840",
+   "tool": "app_tool",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "cursortouch/windows-mcp",
+   "repo": "cursortouch/windows-mcp",
+   "tree": "fx-cursortouch__windows-mcp-3cc6ba258d",
+   "tool": "notification_tool",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "devemberx/mcp-server-polarion",
+   "repo": "devemberx/mcp-server-polarion",
+   "tree": "fx-devemberx__mcp-server-polarion-f3ee0f8628",
+   "tool": "test_write_tool_annotation",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "dipseth/google_workspace_fastmcp2",
+   "repo": "dipseth/google_workspace_fastmcp2",
+   "tree": "fx-dipseth__google_workspace_fastmcp2-8533a661f4",
+   "tool": "manage_space",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "docling-project/docling-mcp",
+   "repo": "docling-project/docling-mcp",
+   "tree": "fx-docling-project__docling-mcp-6c92b1bedc",
+   "tool": "save_docling_document",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "eodhistoricaldata/eodhd-mcp-server",
+   "repo": "eodhistoricaldata/eodhd-mcp-server",
+   "tree": "fx-eodhistoricaldata__eodhd-mcp-server-a545a35ac5",
+   "tool": "get_mp_praams_report_bond_by_isin",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "eodhistoricaldata/eodhd-mcp-server",
+   "repo": "eodhistoricaldata/eodhd-mcp-server",
+   "tree": "fx-eodhistoricaldata__eodhd-mcp-server-a545a35ac5",
+   "tool": "get_mp_praams_report_equity_by_isin",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "eodhistoricaldata/eodhd-mcp-server",
+   "repo": "eodhistoricaldata/eodhd-mcp-server",
+   "tree": "fx-eodhistoricaldata__eodhd-mcp-server-d34c9941af",
+   "tool": "get_mp_praams_report_equity_by_ticker",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "epuzanov/gsrs-mcp-server",
+   "repo": "epuzanov/gsrs-mcp-server",
+   "tree": "fx-epuzanov__gsrs-mcp-server-2bf02a6256",
+   "tool": "rag_ingest",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ericmay256/highscoreserver",
+   "repo": "ericmay256/highscoreserver",
+   "tree": "fx-ericmay256__highscoreserver-943b73456a",
+   "tool": "vault_decide_review_case",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "evilander/claude-design-mcp",
+   "repo": "evilander/claude-design-mcp",
+   "tree": "fx-evilander__claude-design-mcp-f3cfc2f843",
+   "tool": "design_preview",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "extractaudio/massa_bmesh_console-main",
+   "repo": "extractaudio/massa_bmesh_console-main",
+   "tree": "fx-extractaudio__massa_bmesh_console-main-4c336db444",
+   "tool": "render_viewport_to_path",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "galbaz1/video-research-mcp",
+   "repo": "galbaz1/video-research-mcp",
+   "tree": "fx-galbaz1__video-research-mcp-4785e81a62",
+   "tool": "explainer_factcheck",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "galbaz1/video-research-mcp",
+   "repo": "galbaz1/video-research-mcp",
+   "tree": "fx-galbaz1__video-research-mcp-4785e81a62",
+   "tool": "explainer_generate",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "galbaz1/video-research-mcp",
+   "repo": "galbaz1/video-research-mcp",
+   "tree": "fx-galbaz1__video-research-mcp-4785e81a62",
+   "tool": "explainer_music",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "galbaz1/video-research-mcp",
+   "repo": "galbaz1/video-research-mcp",
+   "tree": "fx-galbaz1__video-research-mcp-4785e81a62",
+   "tool": "explainer_refine",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "galbaz1/video-research-mcp",
+   "repo": "galbaz1/video-research-mcp",
+   "tree": "fx-galbaz1__video-research-mcp-4785e81a62",
+   "tool": "explainer_short",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "galbaz1/video-research-mcp",
+   "repo": "galbaz1/video-research-mcp",
+   "tree": "fx-galbaz1__video-research-mcp-4785e81a62",
+   "tool": "explainer_sound",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "galbaz1/video-research-mcp",
+   "repo": "galbaz1/video-research-mcp",
+   "tree": "fx-galbaz1__video-research-mcp-4785e81a62",
+   "tool": "explainer_step",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "galbaz1/video-research-mcp",
+   "repo": "galbaz1/video-research-mcp",
+   "tree": "fx-galbaz1__video-research-mcp-b72a018e5a",
+   "tool": "research_web_followup",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "gensecaihq/pfsense-mcp-server",
+   "repo": "gensecaihq/pfsense-mcp-server",
+   "tree": "fx-gensecaihq__pfsense-mcp-server-c2e23ff4f3",
+   "tool": "export_certificate_pkcs12",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "gensecaihq/pfsense-mcp-server",
+   "repo": "gensecaihq/pfsense-mcp-server",
+   "tree": "fx-gensecaihq__pfsense-mcp-server-c2e23ff4f3",
+   "tool": "export_openvpn_client_config",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "grammy-jiang/research-pipeline",
+   "repo": "grammy-jiang/research-pipeline",
+   "tree": "fx-grammy-jiang__research-pipeline-5bcd7e2d01",
+   "tool": "tool_blinding_audit",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "grammy-jiang/research-pipeline",
+   "repo": "grammy-jiang/research-pipeline",
+   "tree": "fx-grammy-jiang__research-pipeline-5bcd7e2d01",
+   "tool": "tool_cite_context",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "grammy-jiang/research-pipeline",
+   "repo": "grammy-jiang/research-pipeline",
+   "tree": "fx-grammy-jiang__research-pipeline-5bcd7e2d01",
+   "tool": "tool_cluster",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "grammy-jiang/research-pipeline",
+   "repo": "grammy-jiang/research-pipeline",
+   "tree": "fx-grammy-jiang__research-pipeline-5bcd7e2d01",
+   "tool": "tool_dual_metrics",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "grammy-jiang/research-pipeline",
+   "repo": "grammy-jiang/research-pipeline",
+   "tree": "fx-grammy-jiang__research-pipeline-5bcd7e2d01",
+   "tool": "tool_export_bibtex",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "grammy-jiang/research-pipeline",
+   "repo": "grammy-jiang/research-pipeline",
+   "tree": "fx-grammy-jiang__research-pipeline-5bcd7e2d01",
+   "tool": "tool_export_html",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "grammy-jiang/research-pipeline",
+   "repo": "grammy-jiang/research-pipeline",
+   "tree": "fx-grammy-jiang__research-pipeline-5bcd7e2d01",
+   "tool": "tool_report",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_assign_label",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_backup_create",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_bulk_control",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_call_service",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-b4857111a4",
+   "tool": "ha_config_get_dashboard",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_config_set_area",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_config_set_automation",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_config_set_calendar_event",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_config_set_dashboard",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_config_set_floor",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_config_set_group",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_config_set_helper",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_config_set_label",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_config_set_script",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_config_update_dashboard_metadata",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_create_zone",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-b4857111a4",
+   "tool": "ha_get_dashboard_screenshot",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_rename_entity",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_update_device",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_update_todo_item",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "homeassistant-ai/ha-mcp",
+   "repo": "homeassistant-ai/ha-mcp",
+   "tree": "fx-homeassistant-ai__ha-mcp-bbd2796b4f",
+   "tool": "ha_update_zone",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ieepirzy/miradian",
+   "repo": "ieepirzy/miradian",
+   "tree": "fx-ieepirzy__miradian-8ed447825c",
+   "tool": "vault_write_note",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "infokom-ki/wazuh-mcp-server",
+   "repo": "infokom-ki/wazuh-mcp-server",
+   "tree": "fx-infokom-ki__wazuh-mcp-server-33ff514c87",
+   "tool": "blueteam_attack_graph",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "infokom-ki/wazuh-mcp-server",
+   "repo": "infokom-ki/wazuh-mcp-server",
+   "tree": "fx-infokom-ki__wazuh-mcp-server-33ff514c87",
+   "tool": "blueteam_pivot_suggest",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "infokom-ki/wazuh-mcp-server",
+   "repo": "infokom-ki/wazuh-mcp-server",
+   "tree": "fx-infokom-ki__wazuh-mcp-server-33ff514c87",
+   "tool": "blueteam_stix_killchain",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ishan-parihar/instagram-lyr",
+   "repo": "ishan-parihar/instagram-lyr",
+   "tree": "fx-ishan-parihar__instagram-lyr-6974b126fd",
+   "tool": "get_company_posts",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ishan-parihar/instagram-lyr",
+   "repo": "ishan-parihar/instagram-lyr",
+   "tree": "fx-ishan-parihar__instagram-lyr-6974b126fd",
+   "tool": "get_company_profile",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ishan-parihar/instagram-lyr",
+   "repo": "ishan-parihar/instagram-lyr",
+   "tree": "fx-ishan-parihar__instagram-lyr-6974b126fd",
+   "tool": "get_job_details",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ishan-parihar/instagram-lyr",
+   "repo": "ishan-parihar/instagram-lyr",
+   "tree": "fx-ishan-parihar__instagram-lyr-6974b126fd",
+   "tool": "get_person_profile",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ishan-parihar/instagram-lyr",
+   "repo": "ishan-parihar/instagram-lyr",
+   "tree": "fx-ishan-parihar__instagram-lyr-6974b126fd",
+   "tool": "search_jobs",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "ishan-parihar/instagram-lyr",
+   "repo": "ishan-parihar/instagram-lyr",
+   "tree": "fx-ishan-parihar__instagram-lyr-6974b126fd",
+   "tool": "search_people",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "joealfa/mcp-server-interactive",
+   "repo": "joealfa/mcp-server-interactive",
+   "tree": "fx-joealfa__mcp-server-interactive-7d406cb952",
+   "tool": "create_poll",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "kierandrewett/pikvm-agent",
+   "repo": "kierandrewett/pikvm-agent",
+   "tree": "fx-kierandrewett__pikvm-agent-6fe0069974",
+   "tool": "pikvm_autonomous_continue",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "kierandrewett/pikvm-agent",
+   "repo": "kierandrewett/pikvm-agent",
+   "tree": "fx-kierandrewett__pikvm-agent-6fe0069974",
+   "tool": "pikvm_click",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "kierandrewett/pikvm-agent",
+   "repo": "kierandrewett/pikvm-agent",
+   "tree": "fx-kierandrewett__pikvm-agent-6fe0069974",
+   "tool": "pikvm_key",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "kierandrewett/pikvm-agent",
+   "repo": "kierandrewett/pikvm-agent",
+   "tree": "fx-kierandrewett__pikvm-agent-6fe0069974",
+   "tool": "pikvm_run_burst",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "kierandrewett/pikvm-agent",
+   "repo": "kierandrewett/pikvm-agent",
+   "tree": "fx-kierandrewett__pikvm-agent-6fe0069974",
+   "tool": "pikvm_run_playbook",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "kierandrewett/pikvm-agent",
+   "repo": "kierandrewett/pikvm-agent",
+   "tree": "fx-kierandrewett__pikvm-agent-6fe0069974",
+   "tool": "pikvm_scroll",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "kierandrewett/pikvm-agent",
+   "repo": "kierandrewett/pikvm-agent",
+   "tree": "fx-kierandrewett__pikvm-agent-6fe0069974",
+   "tool": "pikvm_type_text",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "kimsanghyeon93/gemini-buffet",
+   "repo": "kimsanghyeon93/gemini-buffet",
+   "tree": "fx-kimsanghyeon93__gemini-buffet-2a7fa0cc71",
+   "tool": "get_latest_release",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "kimsanghyeon93/gemini-buffet",
+   "repo": "kimsanghyeon93/gemini-buffet",
+   "tree": "fx-kimsanghyeon93__gemini-buffet-2a7fa0cc71",
+   "tool": "get_repo_info",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "kimsanghyeon93/gemini-buffet",
+   "repo": "kimsanghyeon93/gemini-buffet",
+   "tree": "fx-kimsanghyeon93__gemini-buffet-2a7fa0cc71",
+   "tool": "list_open_prs",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "luroess/traenslenzor",
+   "repo": "luroess/traenslenzor",
+   "tree": "fx-luroess__traenslenzor-d63ee05e09",
+   "tool": "classify_document",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "malkreide/zurich-opendata-mcp",
+   "repo": "malkreide/zurich-opendata-mcp",
+   "tree": "fx-malkreide__zurich-opendata-mcp-e31c3d5c1c",
+   "tool": "zurich_air_quality",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "malkreide/zurich-opendata-mcp",
+   "repo": "malkreide/zurich-opendata-mcp",
+   "tree": "fx-malkreide__zurich-opendata-mcp-e31c3d5c1c",
+   "tool": "zurich_pedestrian_traffic",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "malkreide/zurich-opendata-mcp",
+   "repo": "malkreide/zurich-opendata-mcp",
+   "tree": "fx-malkreide__zurich-opendata-mcp-e31c3d5c1c",
+   "tool": "zurich_vbz_passengers",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "malkreide/zurich-opendata-mcp",
+   "repo": "malkreide/zurich-opendata-mcp",
+   "tree": "fx-malkreide__zurich-opendata-mcp-e31c3d5c1c",
+   "tool": "zurich_weather_live",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "mathiaspaulenko/wavexis-mcp",
+   "repo": "mathiaspaulenko/wavexis-mcp",
+   "tree": "fx-mathiaspaulenko__wavexis-mcp-b1d1f57a21",
+   "tool": "wavexis_eval",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "mathiaspaulenko/wavexis-mcp",
+   "repo": "mathiaspaulenko/wavexis-mcp",
+   "tree": "fx-mathiaspaulenko__wavexis-mcp-b1d1f57a21",
+   "tool": "wavexis_eval",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "mathiaspaulenko/wavexis-mcp",
+   "repo": "mathiaspaulenko/wavexis-mcp",
+   "tree": "fx-mathiaspaulenko__wavexis-mcp-b1d1f57a21",
+   "tool": "wavexis_iframe_eval",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "mathiaspaulenko/wavexis-mcp",
+   "repo": "mathiaspaulenko/wavexis-mcp",
+   "tree": "fx-mathiaspaulenko__wavexis-mcp-b1d1f57a21",
+   "tool": "wavexis_iframe_eval",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "mathiaspaulenko/wavexis-mcp",
+   "repo": "mathiaspaulenko/wavexis-mcp",
+   "tree": "fx-mathiaspaulenko__wavexis-mcp-b1d1f57a21",
+   "tool": "wavexis_shadow_eval",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "mathiaspaulenko/wavexis-mcp",
+   "repo": "mathiaspaulenko/wavexis-mcp",
+   "tree": "fx-mathiaspaulenko__wavexis-mcp-b1d1f57a21",
+   "tool": "wavexis_shadow_eval",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "mickpletcher/homeassistant-mcp",
+   "repo": "mickpletcher/homeassistant-mcp",
+   "tree": "fx-mickpletcher__homeassistant-mcp-9b262b6f55",
+   "tool": "ha_call_service",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "mickpletcher/homeassistant-mcp",
+   "repo": "mickpletcher/homeassistant-mcp",
+   "tree": "fx-mickpletcher__homeassistant-mcp-9b262b6f55",
+   "tool": "ha_trigger_automation",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "millsymills-com/flipperzero-mcp",
+   "repo": "millsymills-com/flipperzero-mcp",
+   "tree": "fx-millsymills-com__flipperzero-mcp-434c3c53b2",
+   "tool": "flipperzero_connection_reconnect",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "millsymills-com/gandi-mcp",
+   "repo": "millsymills-com/gandi-mcp",
+   "tree": "fx-millsymills-com__gandi-mcp-7934e46f33",
+   "tool": "email_refund_slot",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "millsymills-com/gandi-mcp",
+   "repo": "millsymills-com/gandi-mcp",
+   "tree": "fx-millsymills-com__gandi-mcp-bce5747ee7",
+   "tool": "gandi_domain_update_owner_contact",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "millsymills-com/unifi-mcp",
+   "repo": "millsymills-com/unifi-mcp",
+   "tree": "fx-millsymills-com__unifi-mcp-3949adce27",
+   "tool": "network_power_cycle_port",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "millsymills-com/unifi-mcp",
+   "repo": "millsymills-com/unifi-mcp",
+   "tree": "fx-millsymills-com__unifi-mcp-3949adce27",
+   "tool": "network_restart_device",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "millsymills-com/unifi-mcp",
+   "repo": "millsymills-com/unifi-mcp",
+   "tree": "fx-millsymills-com__unifi-mcp-3949adce27",
+   "tool": "network_upgrade_device",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "mumez/pharo-smalltalk-interop-mcp-server",
+   "repo": "mumez/pharo-smalltalk-interop-mcp-server",
+   "tree": "fx-mumez__pharo-smalltalk-interop-mcp-server-077c26272a",
+   "tool": "import_package",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "mumez/pharo-smalltalk-interop-mcp-server",
+   "repo": "mumez/pharo-smalltalk-interop-mcp-server",
+   "tree": "fx-mumez__pharo-smalltalk-interop-mcp-server-077c26272a",
+   "tool": "install_project",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "n24q02m/mnemo",
+   "repo": "n24q02m/mnemo",
+   "tree": "fx-n24q02m__mnemo-8ed8f2f505",
+   "tool": "memory",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "neviaumi/uk-hardware-store",
+   "repo": "neviaumi/uk-hardware-store",
+   "tree": "fx-neviaumi__uk-hardware-store-b9e559d141",
+   "tool": "get_product_detail",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "neviaumi/uk-hardware-store",
+   "repo": "neviaumi/uk-hardware-store",
+   "tree": "fx-neviaumi__uk-hardware-store-b9e559d141",
+   "tool": "search_products",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-e5a0a062bd",
+   "tool": "answer_workflow_question",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-f83026713c",
+   "tool": "approve_rule_execution",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-f83026713c",
+   "tool": "approve_rule_execution",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-e5a0a062bd",
+   "tool": "complete_workflow_step",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-e5a0a062bd",
+   "tool": "continue_workflow",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-509d9c5c2a",
+   "tool": "create_attachment",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-509d9c5c2a",
+   "tool": "create_invoice",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-509d9c5c2a",
+   "tool": "create_invoice",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-509d9c5c2a",
+   "tool": "create_offer",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-509d9c5c2a",
+   "tool": "create_offer",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-509d9c5c2a",
+   "tool": "create_recurring_invoice",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-509d9c5c2a",
+   "tool": "create_recurring_invoice",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-e5a0a062bd",
+   "tool": "dismiss_rule_execution",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-a9d0a3d5d2",
+   "tool": "ping_client_for_documents",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-e5a0a062bd",
+   "tool": "resume_recurring_invoice",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-e5a0a062bd",
+   "tool": "resume_recurring_invoice",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-e5a0a062bd",
+   "tool": "schedule_workflow",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-e5a0a062bd",
+   "tool": "schedule_workflow",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-a9d0a3d5d2",
+   "tool": "send_invoice",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-a9d0a3d5d2",
+   "tool": "send_invoice",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-a9d0a3d5d2",
+   "tool": "send_invoice_overdue_reminder",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-a9d0a3d5d2",
+   "tool": "send_invoice_overdue_reminder",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-a9d0a3d5d2",
+   "tool": "send_offer",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-a9d0a3d5d2",
+   "tool": "send_offer",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-e5a0a062bd",
+   "tool": "start_workflow",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-e5a0a062bd",
+   "tool": "stop_workflow",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-a9d0a3d5d2",
+   "tool": "submit_tax_report",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-e5a0a062bd",
+   "tool": "toggle_agent",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-e5a0a062bd",
+   "tool": "toggle_agent",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-e5a0a062bd",
+   "tool": "unschedule_workflow",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-924d51ce12",
+   "tool": "update_product",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-924d51ce12",
+   "tool": "update_transaction",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-509d9c5c2a",
+   "tool": "upload_bulk_attachments",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "norman-finance/norman-mcp-server",
+   "repo": "norman-finance/norman-mcp-server",
+   "tree": "fx-norman-finance__norman-mcp-server-509d9c5c2a",
+   "tool": "upload_structured_attachments",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "oaktreegames/aseprite-live-mcp",
+   "repo": "oaktreegames/aseprite-live-mcp",
+   "tree": "fx-oaktreegames__aseprite-live-mcp-67074d6dfa",
+   "tool": "export_layers",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "矛",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "oaktreegames/aseprite-live-mcp",
+   "repo": "oaktreegames/aseprite-live-mcp",
+   "tree": "fx-oaktreegames__aseprite-live-mcp-67074d6dfa",
+   "tool": "export_sprite",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "oaktreegames/aseprite-live-mcp",
+   "repo": "oaktreegames/aseprite-live-mcp",
+   "tree": "fx-oaktreegames__aseprite-live-mcp-67074d6dfa",
+   "tool": "export_spritesheet",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "oaktreegames/aseprite-live-mcp",
+   "repo": "oaktreegames/aseprite-live-mcp",
+   "tree": "fx-oaktreegames__aseprite-live-mcp-67074d6dfa",
+   "tool": "export_tags",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "矛",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "oaktreegames/aseprite-live-mcp",
+   "repo": "oaktreegames/aseprite-live-mcp",
+   "tree": "fx-oaktreegames__aseprite-live-mcp-67074d6dfa",
+   "tool": "render_onion_composite",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "okolovmark/odoo-fast-mcp",
+   "repo": "okolovmark/odoo-fast-mcp",
+   "tree": "fx-okolovmark__odoo-fast-mcp-bdb6a56f6e",
+   "tool": "execute",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "paulieb89/uk-legal-mcp",
+   "repo": "paulieb89/uk-legal-mcp",
+   "tree": "fx-paulieb89__uk-legal-mcp-08711f0def",
+   "tool": "citations_resolve",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "pipefy/ai-toolkit",
+   "repo": "pipefy/ai-toolkit",
+   "tree": "fx-pipefy__ai-toolkit-106576d7dd",
+   "tool": "create_card",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "pipefy/ai-toolkit",
+   "repo": "pipefy/ai-toolkit",
+   "tree": "fx-pipefy__ai-toolkit-73e8de8514",
+   "tool": "get_ipaas_connection_auth_url",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "pipefy/ai-toolkit",
+   "repo": "pipefy/ai-toolkit",
+   "tree": "fx-pipefy__ai-toolkit-106576d7dd",
+   "tool": "update_card",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "pipefy/ai-toolkit",
+   "repo": "pipefy/ai-toolkit",
+   "tree": "fx-pipefy__ai-toolkit-106576d7dd",
+   "tool": "update_card_field",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "pipefy/ai-toolkit",
+   "repo": "pipefy/ai-toolkit",
+   "tree": "fx-pipefy__ai-toolkit-bc7dd26b6a",
+   "tool": "update_card_field",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "publicdotcom/publicdotcom-mcp-server",
+   "repo": "publicdotcom/publicdotcom-mcp-server",
+   "tree": "fx-publicdotcom__publicdotcom-mcp-server-63a3d59b80",
+   "tool": "flatten_and_go_short",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "pvliesdonk/image-generation-mcp",
+   "repo": "pvliesdonk/image-generation-mcp",
+   "tree": "fx-pvliesdonk__image-generation-mcp-f608fadaac",
+   "tool": "test_tool_annotations",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "rasinmuhammed/misata",
+   "repo": "rasinmuhammed/misata",
+   "tree": "fx-rasinmuhammed__misata-0eae4febdb",
+   "tool": "generate_dataset",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": true
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "rasinmuhammed/misata",
+   "repo": "rasinmuhammed/misata",
+   "tree": "fx-rasinmuhammed__misata-0eae4febdb",
+   "tool": "generate_dataset",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "矛",
+   "hintlint": {
+    "strict": true,
+    "loose": true,
+    "any_finding": true
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "rasinmuhammed/misata",
+   "repo": "rasinmuhammed/misata",
+   "tree": "fx-rasinmuhammed__misata-0eae4febdb",
+   "tool": "generate_from_schema",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "矛",
+   "hintlint": {
+    "strict": true,
+    "loose": true,
+    "any_finding": true
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "rasinmuhammed/misata",
+   "repo": "rasinmuhammed/misata",
+   "tree": "fx-rasinmuhammed__misata-0eae4febdb",
+   "tool": "inspect_schema",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "rasinmuhammed/misata",
+   "repo": "rasinmuhammed/misata",
+   "tree": "fx-rasinmuhammed__misata-0eae4febdb",
+   "tool": "preview_story",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "rasinmuhammed/misata",
+   "repo": "rasinmuhammed/misata",
+   "tree": "fx-rasinmuhammed__misata-0eae4febdb",
+   "tool": "seed_database",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "renera-ai/boomi-mcp-server",
+   "repo": "renera-ai/boomi-mcp-server",
+   "tree": "fx-renera-ai__boomi-mcp-server-45bb6e5803",
+   "tool": "analyze_component",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "safebreach/safebreach-mcp",
+   "repo": "safebreach/safebreach-mcp",
+   "tree": "fx-safebreach__safebreach-mcp-ab3f4ff15a",
+   "tool": "create_new_studio_attack",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_analyze_library",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_analyze_library",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_compare_players",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_compare_players",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_discover",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_discover",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_find_friends_who_own",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_find_friends_who_own",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_app_details",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_app_details",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_app_news",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_app_news",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_app_regional_pricing",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_app_regional_pricing",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_app_reviews",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_app_reviews",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_app_tags",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_app_tags",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_current_players",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_current_players",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_deck_compatibility",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_deck_compatibility",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_dlc",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_dlc",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_featured_specials",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_featured_specials",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_friend_list",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_friend_list",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_market_price",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_market_price",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_owned_games",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_owned_games",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_package_details",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_package_details",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_player_badges",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_player_badges",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_player_bans",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_player_bans",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_player_summary",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_player_summary",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_rarest_unlocks",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_rarest_unlocks",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_recently_played_games",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_recently_played_games",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_steam_level",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_steam_level",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_store_highlights",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_store_highlights",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_user_groups",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_user_groups",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_wishlist",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_wishlist",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_workshop_item",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_get_workshop_item",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_plan_coop_night",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_plan_coop_night",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_recommend",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_recommend",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_resolve_vanity_url",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_resolve_vanity_url",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_search_apps",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_search_apps",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_should_i_buy",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sarg338/steam-mcp",
+   "repo": "sarg338/steam-mcp",
+   "tree": "fx-sarg338__steam-mcp-59dede959c",
+   "tool": "steam_should_i_buy",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "ユニットが無い",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "ユニットが無い",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "satoh-y-0323/clipwright",
+   "repo": "satoh-y-0323/clipwright",
+   "tree": "fx-satoh-y-0323__clipwright-763f0ce2c5",
+   "tool": "clipwright_detect_shake",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "satoh-y-0323/clipwright",
+   "repo": "satoh-y-0323/clipwright",
+   "tree": "fx-satoh-y-0323__clipwright-142aafd20f",
+   "tool": "clipwright_reframe",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sixteen-dev/obai",
+   "repo": "sixteen-dev/obai",
+   "tree": "fx-sixteen-dev__obai-e6f77e1e59",
+   "tool": "backtest_get_job_status_tool",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sixteen-dev/obai",
+   "repo": "sixteen-dev/obai",
+   "tree": "fx-sixteen-dev__obai-b8d2c2a050",
+   "tool": "crypto_backtest_get_job_status",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sontakmtp-cell/autocad-fastmcp",
+   "repo": "sontakmtp-cell/autocad-fastmcp",
+   "tree": "fx-sontakmtp-cell__autocad-fastmcp-17975fcedd",
+   "tool": "system",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "sontakmtp-cell/autocad-fastmcp",
+   "repo": "sontakmtp-cell/autocad-fastmcp",
+   "tree": "fx-sontakmtp-cell__autocad-fastmcp-17975fcedd",
+   "tool": "view",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "talont-org/autoskillit",
+   "repo": "talont-org/autoskillit",
+   "tree": "fx-talont-org__autoskillit-9eeb844637",
+   "tool": "set_commit_status",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "batch_modify_gmail_message_labels",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "batch_update_doc",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "batch_update_form",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "batch_update_presentation",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "download_chat_attachment",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "download_chat_attachment",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "export_doc_to_pdf",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "export_doc_to_pdf",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-a232eb17ba",
+   "tool": "find_and_replace_doc",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "get_drive_file_download_url",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "get_drive_file_download_url",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "get_gmail_attachment_content",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "get_gmail_attachment_content",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-b81cdbee5f",
+   "tool": "insert_smart_chips",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "manage_conditional_formatting",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "manage_contact",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "manage_contact_group",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "manage_contacts_batch",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "manage_deployment",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "manage_drive_access",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "manage_event",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "manage_focus_time",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "manage_gmail_filter",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "manage_gmail_label",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "manage_out_of_office",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "manage_task",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "manage_task_list",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-a232eb17ba",
+   "tool": "modify_doc_text",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "modify_gmail_message_labels",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "modify_sheet_values",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "resize_sheet_dimensions",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "run_script_function",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "set_drive_file_permissions",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-a232eb17ba",
+   "tool": "update_doc_headers_footers",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "update_drive_file",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "taylorwilsdon/google_workspace_mcp",
+   "repo": "taylorwilsdon/google_workspace_mcp",
+   "tree": "fx-taylorwilsdon__google_workspace_mcp-76183b5efb",
+   "tool": "update_script_content",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "tbelz/netops-api-navigator",
+   "repo": "tbelz/netops-api-navigator",
+   "tree": "fx-tbelz__netops-api-navigator-94bb1c0d5f",
+   "tool": "read_script",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "thecimal/quantified-self-mcp",
+   "repo": "thecimal/quantified-self-mcp",
+   "tree": "fx-thecimal__quantified-self-mcp-1d85d640e0",
+   "tool": "export_health_data_csv",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "thecimal/quantified-self-mcp",
+   "repo": "thecimal/quantified-self-mcp",
+   "tree": "fx-thecimal__quantified-self-mcp-ecbde48bf0",
+   "tool": "export_health_data_csv",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": true,
+    "loose": true,
+    "any_finding": true
+   },
+   "mcp_doctor": true
+  },
+  {
+   "group": "thecimal/quantified-self-mcp",
+   "repo": "thecimal/quantified-self-mcp",
+   "tree": "fx-thecimal__quantified-self-mcp-1d85d640e0",
+   "tool": "log_daily_metric",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "totonga/odsbox-jaquel-mcp",
+   "repo": "totonga/odsbox-jaquel-mcp",
+   "tree": "fx-totonga__odsbox-jaquel-mcp-55b98046d5",
+   "tool": "ods_connect",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "totonga/odsbox-jaquel-mcp",
+   "repo": "totonga/odsbox-jaquel-mcp",
+   "tree": "fx-totonga__odsbox-jaquel-mcp-55b98046d5",
+   "tool": "ods_connect_using_env",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "totonga/odsbox-jaquel-mcp",
+   "repo": "totonga/odsbox-jaquel-mcp",
+   "tree": "fx-totonga__odsbox-jaquel-mcp-55b98046d5",
+   "tool": "ods_disconnect",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "tradeparadigm/mcp-paradigm-py",
+   "repo": "tradeparadigm/mcp-paradigm-py",
+   "tree": "fx-tradeparadigm__mcp-paradigm-py-60f88092a2",
+   "tool": "paradigm_drfqv2_mmp",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "tradeparadigm/mcp-paradigm-py",
+   "repo": "tradeparadigm/mcp-paradigm-py",
+   "tree": "fx-tradeparadigm__mcp-paradigm-py-60f88092a2",
+   "tool": "paradigm_obv1_mmp",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "tumlinso/skills",
+   "repo": "tumlinso/skills",
+   "tree": "fx-tumlinso__skills-b0e3b72ff7",
+   "tool": "collect_delegation",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "照らさない（readOnly あり）",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": false,
+   "authgap_d0_outcome": "照らさない（readOnly あり）",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "tumlinso/skills",
+   "repo": "tumlinso/skills",
+   "tree": "fx-tumlinso__skills-b0e3b72ff7",
+   "tool": "collect_delegation",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "vmware-skills/vmware-aiops",
+   "repo": "vmware-skills/vmware-aiops",
+   "tree": "fx-vmware-skills__vmware-aiops-21e6e1bbbc",
+   "tool": "vm_create_snapshot",
+   "hint": "idempotentHint",
+   "decl": "D4",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "vmware-skills/vmware-aiops",
+   "repo": "vmware-skills/vmware-aiops",
+   "tree": "fx-vmware-skills__vmware-aiops-350f3ff2df",
+   "tool": "vm_guest_exec",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "vmware-skills/vmware-aiops",
+   "repo": "vmware-skills/vmware-aiops",
+   "tree": "fx-vmware-skills__vmware-aiops-350f3ff2df",
+   "tool": "vm_guest_exec_output",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "vmware-skills/vmware-aiops",
+   "repo": "vmware-skills/vmware-aiops",
+   "tree": "fx-vmware-skills__vmware-aiops-350f3ff2df",
+   "tool": "vm_guest_provision",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "vmware-skills/vmware-aiops",
+   "repo": "vmware-skills/vmware-aiops",
+   "tree": "fx-vmware-skills__vmware-aiops-350f3ff2df",
+   "tool": "vm_guest_upload",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "不",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "vmware-skills/vmware-aiops",
+   "repo": "vmware-skills/vmware-aiops",
+   "tree": "fx-vmware-skills__vmware-aiops-21e6e1bbbc",
+   "tool": "vm_set_ttl",
+   "hint": "destructiveHint",
+   "decl": "D2",
+   "outcome": "矛",
+   "authgap_contra": true,
+   "authgap_contra_or_unknown": true,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "whissleai/lulu-code",
+   "repo": "whissleai/lulu-code",
+   "tree": "fx-whissleai__lulu-code-a7364923ac",
+   "tool": "generate_image",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "whissleai/lulu-code",
+   "repo": "whissleai/lulu-code",
+   "tree": "fx-whissleai__lulu-code-a7364923ac",
+   "tool": "run_code",
+   "hint": "readOnlyHint",
+   "decl": "D1",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  },
+  {
+   "group": "youcited/cited-cli",
+   "repo": "youcited/cited-cli",
+   "tree": "fx-youcited__cited-cli-ea2c6b8e59",
+   "tool": "crawl_business",
+   "hint": "openWorldHint",
+   "decl": "D3",
+   "outcome": "なし",
+   "authgap_contra": false,
+   "authgap_contra_or_unknown": false,
+   "in_authgap_denominator": true,
+   "authgap_d0_outcome": "なし",
+   "hintlint": {
+    "strict": false,
+    "loose": false,
+    "any_finding": false
+   },
+   "mcp_doctor": false
+  }
+ ]
+}
