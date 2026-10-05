@@ -25,8 +25,10 @@ import argparse
 import ast
 import json
 import os
+import shutil
 import subprocess
 import sys
+import threading
 from concurrent.futures import ThreadPoolExecutor
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -98,8 +100,8 @@ def compare(old: dict[str, dict], new: dict[str, dict]) -> list[dict]:
     return out
 
 
-def mine(repo: str) -> dict:
-    d = os.path.join(CACHE, repo.replace("/", "__"))
+def mine(repo: str, d: str | None = None) -> dict:
+    d = d or os.path.join(CACHE, repo.replace("/", "__"))
     if not os.path.isdir(d):
         return {"repo": repo, "status": "no_cache"}
     r = subprocess.run(["git", "-C", d, "log", "--all", "--format=@@COMMIT %H %P|%ad|%s", "--date=short", "--name-only",
@@ -128,29 +130,75 @@ def mine(repo: str) -> dict:
     return {"repo": repo, "status": "ok", "n_commits_touching_hints": n_touch, "commits": commits}
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--repos", required=True, help='JSON: ["owner/repo", ...]')
-    ap.add_argument("--out", required=True)
-    ap.add_argument("--jobs", type=int, default=8)
-    a = ap.parse_args()
-    repos = json.load(open(a.repos, encoding="utf-8"))
-    with ThreadPoolExecutor(max_workers=a.jobs) as pool:
-        results = list(pool.map(mine, repos))
+def mine_cloned(repo: str, clone_dir: str) -> dict:
+    """取得して調べて消す（枠の repo 用。D78）。blob は 512 KiB を超えるものだけ後から取る。既定の branch だけ。"""
+    d = os.path.join(clone_dir, repo.replace("/", "__"))
+    shutil.rmtree(d, ignore_errors=True)
+    try:
+        r = subprocess.run(["git", "clone", "--quiet", "--filter=blob:limit=512k", "--no-checkout", "--single-branch",
+                            f"https://github.com/{repo}.git", d], capture_output=True, text=True, timeout=900)
+        if r.returncode != 0:
+            return {"repo": repo, "status": "clone_failed", "error": r.stderr[-500:]}
+        return mine(repo, d)
+    except subprocess.TimeoutExpired as exc:
+        return {"repo": repo, "status": "timeout", "error": str(exc)[-300:]}
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+
+
+def summarize(results: list[dict]) -> dict:
     summary = {"n_repos": len(results), "status": {}, "n_commits_touching_hints": 0, "n_repos_with_weakening": 0,
-               "n_weakening_commits": 0, "n_weakened_tools": 0, "n_weakened_tools_body_unchanged": 0, "by_hint": {}}
+               "n_weakening_commits": 0, "n_weakened_tools": 0, "n_weakened_tools_body_unchanged": 0,
+               "n_repos_with_body_unchanged_weakening": 0, "by_hint": {}}
     for res in results:
         summary["status"][res["status"]] = summary["status"].get(res["status"], 0) + 1
         summary["n_commits_touching_hints"] += res.get("n_commits_touching_hints", 0)
         cs = res.get("commits", [])
         if cs:
             summary["n_repos_with_weakening"] += 1
+        if any(w["body_changed"] is False for c in cs for w in c["weakened"]):
+            summary["n_repos_with_body_unchanged_weakening"] += 1
         summary["n_weakening_commits"] += len(cs)
         for c in cs:
             for w in c["weakened"]:
                 summary["n_weakened_tools"] += 1
                 summary["n_weakened_tools_body_unchanged"] += 1 if w["body_changed"] is False else 0
                 summary["by_hint"][w["hint"]] = summary["by_hint"].get(w["hint"], 0) + 1
+    return summary
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--repos", required=True, help='JSON: ["owner/repo", ...]')
+    ap.add_argument("--out", required=True, help="--clone-dir のときは 1 repo 1 行の JSONL（続きから再開できる）")
+    ap.add_argument("--jobs", type=int, default=8)
+    ap.add_argument("--clone-dir", help="取得して調べて消す（corpus/_cache を使わない）。D78")
+    a = ap.parse_args()
+    repos = json.load(open(a.repos, encoding="utf-8"))
+    if a.clone_dir:
+        os.makedirs(a.clone_dir, exist_ok=True)
+        done = set()
+        if os.path.exists(a.out):
+            with open(a.out, encoding="utf-8") as fh:
+                done = {json.loads(x)["repo"] for x in fh if x.strip()}
+        todo = [r for r in repos if r not in done]
+        print(f"済み {len(done)} / 残り {len(todo)}", flush=True)
+        lock = threading.Lock()
+
+        def one(repo: str) -> None:
+            res = mine_cloned(repo, a.clone_dir)
+            with lock, open(a.out, "a", encoding="utf-8") as fh:
+                fh.write(json.dumps(res, ensure_ascii=False) + "\n")
+
+        with ThreadPoolExecutor(max_workers=a.jobs) as pool:
+            list(pool.map(one, todo))
+        with open(a.out, encoding="utf-8") as fh:
+            results = [json.loads(x) for x in fh if x.strip()]
+        print(json.dumps(summarize(results), ensure_ascii=False))
+        return 0
+    with ThreadPoolExecutor(max_workers=a.jobs) as pool:
+        results = list(pool.map(mine, repos))
+    summary = summarize(results)
     json.dump({"summary": summary, "results": results}, open(a.out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(json.dumps(summary, ensure_ascii=False))
     return 0
