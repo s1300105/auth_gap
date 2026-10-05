@@ -1,0 +1,421 @@
+{
+ "_note": "練習用（v4 の開発用データ）。本番の抜き取りではない。seed は使い捨て",
+ "kind": "contradiction",
+ "seed": 11,
+ "seed_role": "① 矛の抜き取り",
+ "rules": {
+  "max_trees_per_decl": 200,
+  "max_pairs_per_tree": 1000,
+  "unit": "宣言ごと（D70 の 1 (a)）"
+ },
+ "rng_order": "random.Random(seed) を 1 本。D1→D2→D3→D4 の順に、(1) 木が上限を超えたら木の sample、(2) 選んだ木を名前の順に、組が上限を超えたらその木の組の sample。上限以下なら乱数を使わない。",
+ "python": "3.10.20",
+ "run": "scan_v2_v4_run1",
+ "analyzer_commit": "455169c2f0f6c10b94aa8a74eb310027a1849d7e",
+ "implementation_sha256_combined": "35606ba9c9ddb6c034bdedbb54b1cfc8c276c57d67e84a843c69d70068f801cb",
+ "authgap_dirty": false,
+ "max_depth": 4,
+ "python_scan": "3.12.3",
+ "n_trees_ok": 88,
+ "n_trees_summary": 88,
+ "warnings": [],
+ "denominators": {
+  "n_trees_scanned": 88,
+  "M_d": {
+   "D1": 62,
+   "D2": 35,
+   "D3": 40,
+   "D4": 23
+  },
+  "_note": "M_d は D_kind で決める（D1: explicit に readOnlyHint、D2: explicit に destructiveHint、D3: closed_world、D4: idempotent。事前登録 §2.12 (f)）。走査した木 = summary.json の ok の木。"
+ },
+ "consistency": {
+  "contradictions_json_by_decl": {
+   "D1": 323,
+   "D2": 155,
+   "D3": 0,
+   "D4": 3
+  },
+  "manifest_by_decl": {
+   "D1": 323,
+   "D2": 155,
+   "D3": 0,
+   "D4": 3
+  },
+  "match": true
+ },
+ "by_decl": {
+  "D1": {
+   "n_pairs": 323,
+   "n_trees": 17,
+   "trees_sampled": false,
+   "n_trees_selected": 17,
+   "n_pairs_selected": 323,
+   "trees": [
+    {
+     "tree": "v4-ankitdotgg__making-gemini-useful-with-claude",
+     "n_pairs": 1,
+     "selected": true,
+     "n_selected": 1
+    },
+    {
+     "tree": "v4-benjaminmridler__mcp-atlassian",
+     "n_pairs": 3,
+     "selected": true,
+     "n_selected": 3
+    },
+    {
+     "tree": "v4-double16__shyhurricane",
+     "n_pairs": 27,
+     "selected": true,
+     "n_selected": 27
+    },
+    {
+     "tree": "v4-ei-nakamura__rails-lens",
+     "n_pairs": 14,
+     "selected": true,
+     "n_selected": 14
+    },
+    {
+     "tree": "v4-elliotroe__lit-lake",
+     "n_pairs": 2,
+     "selected": true,
+     "n_selected": 2
+    },
+    {
+     "tree": "v4-jahrik__mcp-servers",
+     "n_pairs": 9,
+     "selected": true,
+     "n_selected": 9
+    },
+    {
+     "tree": "v4-manavgup__wikimind",
+     "n_pairs": 7,
+     "selected": true,
+     "n_selected": 7
+    },
+    {
+     "tree": "v4-neo4j-field__neo4j-mcp-workspace-template",
+     "n_pairs": 2,
+     "selected": true,
+     "n_selected": 2
+    },
+    {
+     "tree": "v4-pengfeip908__git-skill-test",
+     "n_pairs": 3,
+     "selected": true,
+     "n_selected": 3
+    },
+    {
+     "tree": "v4-qbit-glitch__ccr",
+     "n_pairs": 63,
+     "selected": true,
+     "n_selected": 63
+    },
+    {
+     "tree": "v4-ryxmarcus__mcp-aws",
+     "n_pairs": 2,
+     "selected": true,
+     "n_selected": 2
+    },
+    {
+     "tree": "v4-tallyfy__mcp-public",
+     "n_pairs": 1,
+     "selected": true,
+     "n_selected": 1
+    },
+    {
+     "tree": "v4-tsekennykl1__mytradingagentsbackend",
+     "n_pairs": 18,
+     "selected": true,
+     "n_selected": 18
+    },
+    {
+     "tree": "v4-twelvetake-studios__reaper-mcp",
+     "n_pairs": 162,
+     "selected": true,
+     "n_selected": 162
+    },
+    {
+     "tree": "v4-utahnlp__infinite-science-gym",
+     "n_pairs": 1,
+     "selected": true,
+     "n_selected": 1
+    },
+    {
+     "tree": "v4-vexxhost__entra-pim-mcp-server",
+     "n_pairs": 2,
+     "selected": true,
+     "n_selected": 2
+    },
+    {
+     "tree": "v4-vladimir-human__ru-marketplace-mcp",
+     "n_pairs": 6,
+     "selected": true,
+     "n_selected": 6
+    }
+   ]
+  },
+  "D2": {
+   "n_pairs": 155,
+   "n_trees": 14,
+   "trees_sampled": false,
+   "n_trees_selected": 14,
+   "n_pairs_selected": 155,
+   "trees": [
+    {
+     "tree": "v4-bossm747__agentboyong",
+     "n_pairs": 2,
+     "selected": true,
+     "n_selected": 2
+    },
+    {
+     "tree": "v4-criscode2022__task-manager-cloud",
+     "n_pairs": 2,
+     "selected": true,
+     "n_selected": 2
+    },
+    {
+     "tree": "v4-double16__shyhurricane",
+     "n_pairs": 1,
+     "selected": true,
+     "n_selected": 1
+    },
+    {
+     "tree": "v4-ei-nakamura__rails-lens",
+     "n_pairs": 1,
+     "selected": true,
+     "n_selected": 1
+    },
+    {
+     "tree": "v4-elliotroe__lit-lake",
+     "n_pairs": 1,
+     "selected": true,
+     "n_selected": 1
+    },
+    {
+     "tree": "v4-glenbover__kallisti-reels",
+     "n_pairs": 2,
+     "selected": true,
+     "n_selected": 2
+    },
+    {
+     "tree": "v4-jahrik__mcp-servers",
+     "n_pairs": 2,
+     "selected": true,
+     "n_selected": 2
+    },
+    {
+     "tree": "v4-knuckles-team__audio-transcriber",
+     "n_pairs": 1,
+     "selected": true,
+     "n_selected": 1
+    },
+    {
+     "tree": "v4-kowntaewook__iwantgohome",
+     "n_pairs": 4,
+     "selected": true,
+     "n_selected": 4
+    },
+    {
+     "tree": "v4-neo4j-field__neo4j-mcp-workspace-template",
+     "n_pairs": 2,
+     "selected": true,
+     "n_selected": 2
+    },
+    {
+     "tree": "v4-qbit-glitch__ccr",
+     "n_pairs": 39,
+     "selected": true,
+     "n_selected": 39
+    },
+    {
+     "tree": "v4-souvikroy__agent-to-agent-system",
+     "n_pairs": 2,
+     "selected": true,
+     "n_selected": 2
+    },
+    {
+     "tree": "v4-tsekennykl1__mytradingagentsbackend",
+     "n_pairs": 2,
+     "selected": true,
+     "n_selected": 2
+    },
+    {
+     "tree": "v4-twelvetake-studios__reaper-mcp",
+     "n_pairs": 94,
+     "selected": true,
+     "n_selected": 94
+    }
+   ]
+  },
+  "D3": {
+   "n_pairs": 0,
+   "n_trees": 0,
+   "trees_sampled": false,
+   "n_trees_selected": 0,
+   "n_pairs_selected": 0,
+   "trees": []
+  },
+  "D4": {
+   "n_pairs": 3,
+   "n_trees": 1,
+   "trees_sampled": false,
+   "n_trees_selected": 1,
+   "n_pairs_selected": 3,
+   "trees": [
+    {
+     "tree": "v4-qbit-glitch__ccr",
+     "n_pairs": 3,
+     "selected": true,
+     "n_selected": 3
+    }
+   ]
+  }
+ },
+ "n_targets": 8,
+ "targets": [
+  {
+   "pair_id": "P-C01",
+   "tree": "v4-ei-nakamura__rails-lens",
+   "unit": "register.migration_context",
+   "unit_relpath": "src/rails_lens/tools/migration_context.py",
+   "unit_lineno": 260,
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "locations": [
+    "src/rails_lens/cache/manager.py:90"
+   ],
+   "n_pairs_in_tree": 14
+  },
+  {
+   "pair_id": "P-C02",
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "ace_get_playbook",
+   "unit_relpath": "ccr/mcp/ace_tools.py",
+   "unit_lineno": 60,
+   "site": "os.remove",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "locations": [
+    "ccr/mcp/server.py:212"
+   ],
+   "n_pairs_in_tree": 63
+  },
+  {
+   "pair_id": "P-C05",
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_recall",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 71,
+   "site": "builtins.open",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "locations": [
+    "ccr/cli.py:1004",
+    "ccr/core/governance.py:206",
+    "ccr/core/memory_pkg/memory_file_io.py:83",
+    "ccr/core/memory_pkg/memory_init.py:194",
+    "ccr/core/observability.py:35",
+    "ccr/core/replay.py:103"
+   ],
+   "n_pairs_in_tree": 63
+  },
+  {
+   "pair_id": "P-C06",
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_context",
+   "unit_relpath": "ccr/mcp/gcc_tools.py",
+   "unit_lineno": 355,
+   "site": "os.replace",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "locations": [
+    "ccr/core/scratchpad.py:84"
+   ],
+   "n_pairs_in_tree": 63
+  },
+  {
+   "pair_id": "P-C07",
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "get_master_track",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 599,
+   "site": "pathlib.Path.write_bytes",
+   "kind": "FS_WRITE",
+   "decl": "D1",
+   "reasons": [
+    "fs_write"
+   ],
+   "locations": [
+    "reaper_mcp_server.py:343"
+   ],
+   "n_pairs_in_tree": 162
+  },
+  {
+   "pair_id": "P-C03",
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_facts",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 131,
+   "site": "os.remove",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "locations": [
+    "ccr/mcp/server.py:212"
+   ],
+   "n_pairs_in_tree": 39
+  },
+  {
+   "pair_id": "P-C04",
+   "tree": "v4-qbit-glitch__ccr",
+   "unit": "gcc_discuss",
+   "unit_relpath": "ccr/mcp/gcc_search_tools.py",
+   "unit_lineno": 594,
+   "site": "os.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "locations": [
+    "ccr/core/memory_pkg/memory_file_io.py:111"
+   ],
+   "n_pairs_in_tree": 39
+  },
+  {
+   "pair_id": "P-C08",
+   "tree": "v4-twelvetake-studios__reaper-mcp",
+   "unit": "insert_track",
+   "unit_relpath": "reaper_mcp_server.py",
+   "unit_lineno": 605,
+   "site": "pathlib.Path.unlink",
+   "kind": "FS_WRITE",
+   "decl": "D2",
+   "reasons": [
+    "fs_remove"
+   ],
+   "locations": [
+    "reaper_mcp_server.py:340",
+    "reaper_mcp_server.py:368"
+   ],
+   "n_pairs_in_tree": 94
+  }
+ ]
+}

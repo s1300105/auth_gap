@@ -1,0 +1,71 @@
+{
+ "_note": "練習用（v4 の開発用データ）。本番の抜き取りではない。seed は使い捨て",
+ "kind": "miss",
+ "seed": 12,
+ "seed_role": "② 見落としの抜き取り",
+ "rules": {
+  "max_trees": 200,
+  "units_per_tree": 1,
+  "eligible": "D_kind.explicit に readOnlyHint（D1）か destructiveHint（D2）があり、その宣言への矛が1 件も無いユニット。打ち切りの印のあるユニットも含める。D1 と D2 は木を選ぶときに合わせて扱う"
+ },
+ "rng_order": "random.Random(seed) を 1 本。(1) 木が上限を超えたら木の sample、(2) 選んだ木を名前の順に、その木の対象のユニット（relpath・行・qualname の順）から randrange で 1 つ（`scripts/v4pilot_depth.py` と同じ）。",
+ "python": "3.10.20",
+ "run": "scan_v2_v4_run1",
+ "analyzer_commit": "455169c2f0f6c10b94aa8a74eb310027a1849d7e",
+ "implementation_sha256_combined": "35606ba9c9ddb6c034bdedbb54b1cfc8c276c57d67e84a843c69d70068f801cb",
+ "authgap_dirty": false,
+ "max_depth": 4,
+ "python_scan": "3.12.3",
+ "n_trees_ok": 88,
+ "n_trees_summary": 88,
+ "warnings": [],
+ "pool": {
+  "n_units": 632,
+  "n_trees": 63,
+  "n_units_by_decl": {
+   "D1": 467,
+   "D2": 165
+  },
+  "n_trees_by_decl": {
+   "D1": 59,
+   "D2": 28
+  },
+  "n_units_truncated": 0
+ },
+ "n_targets": 3,
+ "targets": [
+  {
+   "pair_id": "P-M01",
+   "tree": "v4-jahrik__mcp-servers",
+   "unit": "gh_issue_list",
+   "unit_relpath": "src/mcp_servers/github/tools/issues.py",
+   "unit_lineno": 18,
+   "decl": "D1",
+   "n_effects": 2,
+   "truncated": [],
+   "n_units_in_tree": null
+  },
+  {
+   "pair_id": "P-M02",
+   "tree": "v4-mgwalkerjr95__texas-grocery-mcp",
+   "unit": "coupon_clipped",
+   "unit_relpath": "src/texas_grocery_mcp/tools/coupon.py",
+   "unit_lineno": 331,
+   "decl": "D1",
+   "n_effects": 4,
+   "truncated": [],
+   "n_units_in_tree": null
+  },
+  {
+   "pair_id": "P-M03",
+   "tree": "v4-ryxmarcus__mcp-aws",
+   "unit": "get_pricing",
+   "unit_relpath": "src/aws-pricing-mcp-server/awslabs/aws_pricing_mcp_server/server.py",
+   "unit_lineno": 387,
+   "decl": "D1",
+   "n_effects": 0,
+   "truncated": [],
+   "n_units_in_tree": null
+  }
+ ]
+}
