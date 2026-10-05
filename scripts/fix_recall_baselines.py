@@ -75,6 +75,10 @@ def _md_found(raw: dict, tool: str, decl: str) -> bool:
 
 def cmd_compare(a) -> int:
     ag = json.load(open(a.authgap, encoding="utf-8"))
+    d0 = {}
+    if a.authgap_d0:  # 深さ 0（本体だけ）の同じ件の結果（D80 の追記）
+        for x in json.load(open(a.authgap_d0, encoding="utf-8"))["items"]:
+            d0[(x["group"], x["tool"], x["hint"])] = x["outcome"]
     rows = []
     for x in ag["items"]:
         hl = json.load(open(os.path.join(a.dir, "hintlint", f"{x['tree']}.json"), encoding="utf-8"))
@@ -83,6 +87,7 @@ def cmd_compare(a) -> int:
         r["authgap_contra"] = x["outcome"] == "矛"
         r["authgap_contra_or_unknown"] = x["outcome"] in ("矛", "不")
         r["in_authgap_denominator"] = x["outcome"] in ("矛", "不", "なし")
+        r["authgap_d0_outcome"] = d0.get((x["group"], x["tool"], x["hint"]))
         if "_error" in hl:
             r["hintlint"] = "道具が失敗"
         else:
@@ -100,6 +105,8 @@ def cmd_compare(a) -> int:
     measures = {
         "AuthGap 矛": lambda r: r["authgap_contra"],
         "AuthGap 矛+不": lambda r: r["authgap_contra_or_unknown"],
+        "AuthGap 深さ0 矛": lambda r: None if r["authgap_d0_outcome"] is None else r["authgap_d0_outcome"] == "矛",
+        "AuthGap 深さ0 矛+不": lambda r: None if r["authgap_d0_outcome"] is None else r["authgap_d0_outcome"] in ("矛", "不"),
         "HintLint 厳しい": lambda r: None if r["hintlint"] == "道具が失敗" else r["hintlint"]["strict"],
         "HintLint 緩い": lambda r: None if r["hintlint"] == "道具が失敗" else r["hintlint"]["loose"],
         "HintLint 参考（何かの finding）": lambda r: None if r["hintlint"] == "道具が失敗" else r["hintlint"]["any_finding"],
@@ -135,6 +142,7 @@ def main() -> int:
     c = sub.add_parser("compare")
     c.add_argument("dir")
     c.add_argument("authgap")
+    c.add_argument("--authgap-d0", help="深さ 0 の fix_recall.py evaluate の出力（D80 の追記）")
     c.add_argument("--out", required=True)
     c.add_argument("--seed", type=int, required=True)
     c.add_argument("--reps", type=int, default=10000)
