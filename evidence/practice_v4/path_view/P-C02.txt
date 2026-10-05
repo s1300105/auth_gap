@@ -1,0 +1,319 @@
+# P-C02 の道筋（scripts/path_view.py。解析器の道筋をなぞった読む補助で、正しいとは限らない）
+# scripts/path_view.py evidence/scan_v2_v4_run1/v4-qbit-glitch__ccr.json corpus/v4-qbit-glitch__ccr ccr/mcp/ace_tools.py 60 os.remove --decl D1
+====================================================================================================
+ツール ace_get_playbook  本体 ccr/mcp/ace_tools.py:60  宣言 {'destructiveHint': False, 'idempotentHint': True, 'readOnlyHint': True}
+効果の行: ccr/mcp/server.py:212
+
+【1】道筋の一覧（解析器が通った関数の列。2 本）
+  道筋 1: 本体の 85 行 → _ensure_global_playbook → _init  → 効果 ccr/mcp/server.py:212
+  道筋 2: 本体の 86 行 → _ensure_playbook → _init  → 効果 ccr/mcp/server.py:212
+
+【2】関数のソース（道筋に出てくる順に 1 回ずつ。深さは道筋によって違うので一覧で確かめる）
+
+----------------------------------------------------------------------------------------------------
+■ 本体 ace_get_playbook
+[ace_get_playbook  ccr/mcp/ace_tools.py:59-161]
+     59  @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True))
+     60  def ace_get_playbook(
+     61      task_context: str = "",
+     62      include_stats: bool = False,
+     63      section: str = "",
+     64      keyword: str = "",
+     65  ) -> AcePlaybookResult:
+     66      """Get the current ACE playbook — both global and project-specific strategies.
+     67  
+     68      Returns two tiers:
+     69      - GLOBAL: Universal heuristics that transfer across all projects (~/.ccr/)
+     70      - PROJECT: Project-specific strategies (.ccr/)
+     71  
+     72      Review this after loading context to learn from past successes and failures.
+     73  
+     74      Args:
+     75          task_context: Optional task description. When provided, prepends a
+     76              policy-ranked top-5 section weighted by relevance to your task.
+     77          include_stats: If True, append per-bullet stats (counts, decay,
+     78              section breakdown, evolution triggers). Replaces ace_get_stats.
+     79          section: Optional section name filter (e.g., "STRATEGIES & INSIGHTS").
+     80              Only bullets from this section are returned. Case-insensitive.
+     81          keyword: Optional keyword filter on bullet content. Only bullets
+     82              containing this keyword (case-insensitive) are returned.
+     83              Combine with section= for targeted retrieval.
+     84      """
+▶    85      gpb = _srv._ensure_global_playbook()
+▶    86      ppb = _srv._ensure_playbook()
+     87  
+     88      parts = []
+     89  
+     90      # Policy-ranked section when task_context is provided
+?    91      if task_context.strip():
+     92          p_ranked = ppb.get_policy_ranked(task_context, top_k=5)
+     93          g_ranked = gpb.get_policy_ranked(task_context, top_k=5)
+     94          seen: set[str] = set()
+     95          merged: list = []
+?    96          for b in p_ranked + g_ranked:
+?    97              if b.id not in seen:
+     98                  seen.add(b.id)
+     99                  merged.append(b)
+    100          ranked = sorted(merged, key=lambda b: b.grpo_advantage, reverse=True)[:5]
+?   101          if ranked:
+    102              ranked_lines = ["# Policy-ranked skills for this task:"]
+?   103              for b in ranked:
+    104                  adv = f"{b.grpo_advantage:+.3f}"
+    105                  line = f"[{b.id}] (advantage={adv}) :: {b.content}"
+?   106                  if b.trigger:
+    107                      line += f"\n  TRIGGER: {b.trigger}"
+?   108                  if b.action:
+    109                      line += f"\n  ACTION: {b.action}"
+    110                  ranked_lines.append(line)
+    111              parts.append("\n".join(ranked_lines))
+    112  
+    113      # Apply section/keyword filters to bullet lists if requested
+    114      _sec_lower = section.strip().lower()
+    115      _kw_lower = keyword.strip().lower()
+    116  
+    117      def _filter_bullets(pb_obj) -> list:
+    118          """Return filtered bullet list if section/keyword filters active."""
+    119          bullets = pb_obj.bullets
+?   120          if _sec_lower:
+    121              bullets = [b for b in bullets if _sec_lower in b.section.lower()]
+?   122          if _kw_lower:
+    123              bullets = [b for b in bullets if _kw_lower in b.content.lower()]
+?   124          return bullets
+    125  
+?   126      if _sec_lower or _kw_lower:
+    127          # Filtered mode: render only matching bullets
+    128          g_bullets = _filter_bullets(gpb)
+    129          g_lines = "\n".join(b.format_line() for b in g_bullets)
+    130          filter_desc = " | ".join(f for f in [f"section={section!r}" if section else "", f"keyword={keyword!r}" if keyword else ""] if f)
+    131          p_bullets = _filter_bullets(ppb)
+    132          p_lines = "\n".join(b.format_line() for b in p_bullets)
+    133          parts.append(f"# GLOBAL PLAYBOOK [filtered: {filter_desc}] ({len(g_bullets)} bullets)\n{g_lines or '(no matches)'}")
+    134          parts.append(f"# PROJECT PLAYBOOK [filtered: {filter_desc}] ({len(p_bullets)} bullets)\n{p_lines or '(no matches)'}")
+?   135      else:
+    136          g_text = _srv._serialize_playbook(gpb)
+?   137          if g_text.strip():
+    138              parts.append(f"# GLOBAL PLAYBOOK (applies to all projects)\n{g_text}")
+?   139          else:
+    140              parts.append("# GLOBAL PLAYBOOK (applies to all projects)\n(empty)")
+    141  
+    142          p_text = _srv._serialize_playbook(ppb)
+?   143          if p_text.strip():
+    144              parts.append(f"# PROJECT PLAYBOOK (this project only)\n{p_text}")
+?   145          else:
+    146              parts.append("# PROJECT PLAYBOOK (this project only)\n(empty)")
+    147  
+    148      # Append stats if requested (replaces standalone ace_get_stats)
+?   149      if include_stats:
+    150          stats_data = json.dumps({
+    151              "global": asdict(gpb.get_stats()),
+    152              "project": asdict(ppb.get_stats()),
+    153          }, indent=2)
+    154          parts.append(f"# PLAYBOOK STATS\n{stats_data}")
+    155  
+    156      text = "\n\n".join(parts)
+?   157      return AcePlaybookResult(
+    158          global_bullet_count=len(gpb.bullets),
+    159          project_bullet_count=len(ppb.bullets),
+    160          message=text,
+    161      )
+
+----------------------------------------------------------------------------------------------------
+■ _ensure_global_playbook
+[_ensure_global_playbook  ccr/mcp/server.py:541-546]
+    541  def _ensure_global_playbook() -> Playbook:
+?   542      if _global_playbook is None:
+▶   543          _init()
+?   544      if _global_playbook is None:
+?   545          raise RuntimeError("Global playbook failed to initialize")
+?   546      return _global_playbook
+
+----------------------------------------------------------------------------------------------------
+■ _init
+[_init  ccr/mcp/server.py:138-312]
+    138  def _init(project_root: str | None = None) -> None:
+    139      """Initialize all subsystems for the given project root."""
+    140      global _project_root, _memory, _playbook, _playbook_path, _failure_lessons_path
+    141      global _global_playbook, _global_playbook_path, _global_failure_lessons_path, _repo_index
+    142      global _schema_path, _global_schema_path
+    143      global _embedding_model, _embeddings_path, _chunk_embeddings_path
+    144      global _scratchpad
+    145      global _triple_store
+    146      global _index_db
+    147      global _session_store, _session_db_path, _current_session_id
+    148  
+    149      _project_root = os.path.abspath(project_root or os.getcwd())
+    150      _default_backend = CCRConfig().storage_backend
+    151      storage_backend = os.environ.get("CCR_STORAGE_BACKEND", _default_backend)
+    152      _memory = MemoryManager(_project_root, CCRConfig(storage_backend=storage_backend))
+    153      _memory.ensure_structure()
+    154  
+    155      # Auto-migrate flat files → SQLite on first access (Phase 7)
+?   156      if storage_backend == "sqlite":
+    157          ccr_root = os.path.join(_project_root, ".ccr")
+    158          db_path = os.path.join(ccr_root, "memory.db")
+?   159          try:
+    160              from ccr.core.storage.migration import needs_migration, auto_migrate
+?   161              if needs_migration(ccr_root):
+    162                  from ccr.core.storage.sqlite_backend import SqliteStorageBackend
+    163                  _backend = SqliteStorageBackend(ccr_root)
+    164                  _backend.close()
+    165                  migration_loggers = [
+    166                      "ccr.core.storage._migration_utils",
+    167                      "ccr.core.storage._migration_phase1",
+    168                      "ccr.core.storage._migration_phase2",
+    169                      "ccr.core.storage._migration_phase3",
+    170                      "ccr.core.storage.migration",
+    171                  ]
+    172                  old_levels: dict[str, int] = {}
+    173                  quiet_migration = os.environ.get("CCR_MCP_VERBOSE", "").lower() not in {"1", "true", "yes"}
+?   174                  if quiet_migration:
+?   175                      for name in migration_loggers:
+    176                          log = logging.getLogger(name)
+    177                          old_levels[name] = log.level
+    178                          log.setLevel(logging.WARNING)
+?   179                  try:
+    180                      mig = auto_migrate(ccr_root, db_path)
+?   181                  finally:
+?   182                      for name, level in old_levels.items():
+    183                          logging.getLogger(name).setLevel(level)
+?   184                  if mig["errors"]:
+    185                      logger.warning("Auto-migration errors: %s", mig["errors"])
+?   186                  else:
+    187                      logger.debug(
+    188                          "Auto-migrated %d records across phases %s",
+    189                          mig["total_migrated"], mig["phases_run"],
+    190                      )
+?   191          except Exception as exc:
+    192              logger.warning("Auto-migration failed (will use flat files): %s", exc)
+    193  
+    194      def _cleanup_storage() -> None:
+?   195          if _memory and hasattr(_memory, "_storage"):
+?   196              try:
+    197                  _memory._storage.close()
+?   198              except Exception:
+    199                  pass
+    200  
+    201      atexit.register(_cleanup_storage)
+    202  
+    203      # Wire optional sub-model (Phase 2): activates GCC LLM rolling summary + ACE synthesis
+    204      sub = _get_sub_client()
+?   205      if sub is not None:
+    206          _memory.set_sub_client(sub)
+    207  
+    208      # Clear session marker so hooks detect new session on first prompt
+    209      session_marker = os.path.join(_project_root, ".ccr", ".session_active")
+?   210      if os.path.isfile(session_marker):
+?   211          try:
+★   212              os.remove(session_marker)
+?   213          except OSError:
+    214              pass
+    215  
+    216      _playbook_path = os.path.join(_project_root, ".ccr", "playbook.txt")
+    217      _failure_lessons_path = os.path.join(_project_root, ".ccr", "failure_lessons.json")
+    218      _playbook = _load_playbook()
+    219  
+    220      # Initialize global playbook (~/.ccr/)
+    221      global_ccr = os.path.expanduser("~/.ccr")
+    222      os.makedirs(global_ccr, exist_ok=True)
+    223      _global_playbook_path = os.path.join(global_ccr, "global_playbook.txt")
+    224      _global_failure_lessons_path = os.path.join(global_ccr, "global_failure_lessons.json")
+    225      _global_playbook = _load_global_playbook()
+    226  
+    227      # Schema paths (MCE-inspired schema evolution)
+    228      _schema_path = os.path.join(_project_root, ".ccr", "playbook_schema.json")
+    229      _global_schema_path = os.path.join(global_ccr, "global_playbook_schema.json")
+    230  
+    231      # Embeddings paths (A-RAG semantic search)
+    232      _embeddings_path = os.path.join(_project_root, ".ccr", "index_embeddings.json.gz")
+    233      _chunk_embeddings_path = os.path.join(_project_root, ".ccr", "index_chunk_embeddings.json.gz")
+    234  
+    235      # Working memory scratchpad (AgeMem-inspired ephemeral KV store)
+    236      _scratchpad = Scratchpad(os.path.join(_project_root, ".ccr", "scratchpad.json"))
+    237  
+    238      # Triple store (Memori-inspired semantic triple extraction)
+    239      _triple_store = TripleStore(
+    240          os.path.join(_project_root, ".ccr", "triples.json"),
+    241          max_buffer_size=_memory.config.triple_max_buffer_size,
+    242      )
+    243  
+    244      # Session logger — path set here; store initialized lazily on first use
+    245      _session_db_path = os.path.join(_project_root, ".ccr", "sessions.db")
+    246      _session_store = None
+    247      _current_session_id = ""
+    248  
+    249      # Initialize IndexDB (SQLite-backed index persistence)
+    250      _index_db_path = os.path.join(_project_root, ".ccr", "index.db")
+?   251      try:
+    252          from ccr.context.index_db import IndexDB
+    253          _index_db = IndexDB(_index_db_path)
+?   254      except Exception:
+    255          _index_db = None
+    256  
+    257      # Build repo index — try SQLite load first, then JSON cache, then full build
+    258      _repo_index = None
+?   259      if _index_db is not None:
+?   260          try:
+    261              cached = RepoIndex.from_db(_project_root, _index_db)
+?   262              if cached is not None:
+    263                  live_sig = cached._compute_mtime_sig()
+?   264                  if live_sig == cached._mtime_sig and cached._mtime_sig:
+    265                      _repo_index = cached
+?   266          except Exception:
+    267              pass
+?   268      if _repo_index is None:
+?   269          try:
+    270              cache_json = _memory.load_index()
+?   271              if cache_json:
+    272                  cached = RepoIndex.from_cache(_project_root, cache_json)
+?   273                  if cached is not None:
+    274                      live_sig = cached._compute_mtime_sig()
+?   275                      if live_sig == cached._mtime_sig and cached._mtime_sig:
+    276                          _repo_index = cached
+?   277          except Exception:
+    278              pass
+?   279      if _repo_index is None:
+    280          _repo_index = RepoIndex.build(_project_root)
+    281  
+    282      # Load cached embeddings if available
+?   283      if os.path.isfile(_embeddings_path):
+    284          _repo_index.load_embeddings(_embeddings_path)
+    285  
+    286      # Load cached chunk embeddings if available (A-RAG §3.1 sentence-level chunks)
+?   287      if os.path.isfile(_chunk_embeddings_path):
+    288          _repo_index.load_chunk_embeddings(_chunk_embeddings_path)
+    289  
+    290      # Save index to IndexDB (always, so FTS5 is populated for search)
+?   291      if _index_db is not None:
+?   292          try:
+    293              _repo_index.save_to_db(_index_db)
+?   294          except Exception:
+    295              pass
+    296      # Save JSON cache (only when freshly built — loaded-from-cache already has valid JSON)
+?   297      if not (hasattr(_repo_index, "_mtime_sig") and _repo_index._mtime_sig):
+?   298          try:
+    299              _memory.save_index(_repo_index.to_json())
+?   300          except Exception:
+    301              pass
+    302  
+    303      # Configure audit logging
+    304      ccr_root = os.path.join(_project_root, ".ccr")
+    305      configure_audit_log(ccr_root)
+    306  
+    307      # Register project in global registry
+?   308      try:
+    309          from ccr.cli import _register_project
+    310          _register_project(_project_root)
+?   311      except Exception:
+    312          pass  # Non-critical
+
+----------------------------------------------------------------------------------------------------
+■ _ensure_playbook
+[_ensure_playbook  ccr/mcp/server.py:578-583]
+    578  def _ensure_playbook() -> Playbook:
+?   579      if _playbook is None:
+▶   580          _init()
+?   581      if _playbook is None:
+?   582          raise RuntimeError("Playbook failed to initialize")
+?   583      return _playbook
+
+印: ▶ 次の段を呼ぶ行  ★ 効果の行  ? 条件の行（届くかはたいていここで決まる）

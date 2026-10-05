@@ -1,0 +1,700 @@
+# P-C05 の道筋（scripts/path_view.py。解析器の道筋をなぞった読む補助で、正しいとは限らない）
+# scripts/path_view.py evidence/scan_v2_v4_run1/v4-qbit-glitch__ccr.json corpus/v4-qbit-glitch__ccr ccr/mcp/gcc_search_tools.py 71 builtins.open --decl D1
+====================================================================================================
+ツール gcc_recall  本体 ccr/mcp/gcc_search_tools.py:71  宣言 {'destructiveHint': False, 'idempotentHint': True, 'readOnlyHint': True}
+効果の行: ccr/cli.py:1004, ccr/core/governance.py:206, ccr/core/memory_pkg/memory_file_io.py:83, ccr/core/memory_pkg/memory_init.py:194, ccr/core/observability.py:35, ccr/core/replay.py:103
+
+【1】道筋の一覧（解析器が通った関数の列。6 本）
+  道筋 1: 本体の 94 行 → _get_project_memory → InitMixin.ensure_structure → FileIOMixin._add_to_gitignore  → 効果 ccr/core/memory_pkg/memory_file_io.py:83
+  道筋 2: 本体の 94 行 → _get_project_memory → InitMixin.ensure_structure → InitMixin._register_in_global_registry  → 効果 ccr/core/memory_pkg/memory_init.py:194
+  道筋 3: 本体の 94 行 → _get_project_memory → _ensure_memory → _init → _register_project  → 効果 ccr/cli.py:1004
+  道筋 4: 本体の 96 行 → RecallEngine.recall → RecallTraceStore.append_trace  → 効果 ccr/core/replay.py:103
+  道筋 5: 本体の 96 行 → RecallEngine.recall → ccr_span → _write_local_span  → 効果 ccr/core/observability.py:35
+  道筋 6: 本体の 104 行 → append_audit  → 効果 ccr/core/governance.py:206
+
+【2】関数のソース（道筋に出てくる順に 1 回ずつ。深さは道筋によって違うので一覧で確かめる）
+
+----------------------------------------------------------------------------------------------------
+■ 本体 gcc_recall
+[gcc_recall  ccr/mcp/gcc_search_tools.py:70-127]
+     70  @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True))
+▶    71  def gcc_recall(
+     72      query: str,
+     73      limit: int = 5,
+     74      sources: list[str] | None = None,
+     75      include_sessions: bool = True,
+     76      project: str | None = None,
+     77  ) -> GccRecallResult:
+     78      """Evidence-first recall over CCR memory.
+     79  
+     80      Unlike gcc_context, which loads broad context for the agent, gcc_recall
+?    81      returns a compact answer with explicit evidence IDs, confidence, and
+     82      stale/conflict notes.
+     83  
+     84      Args:
+     85          query: Natural-language question to answer from CCR memory.
+     86          limit: Maximum evidence items to return.
+     87          sources: Optional source filter: facts, commits, discussions, sessions.
+     88          include_sessions: Whether to search .ccr/sessions.db turns.
+     89          project: Project path to query. None uses current project.
+     90      """
+     91      from ccr.core.recall import RecallEngine
+     92  
+?    93      with _srv._state_lock:
+▶    94          mem = _srv._get_project_memory(project)
+?    95      try:
+▶    96          result = RecallEngine(mem).recall(
+     97              query=query,
+     98              limit=limit,
+     99              sources=sources,
+    100              include_sessions=include_sessions,
+    101          )
+?   102          try:
+    103              from ccr.core.governance import append_audit
+▶   104              append_audit(mem.ccr_root, "memory_read", "mcp", {
+    105                  "tool": "gcc_recall",
+    106                  "query": query,
+    107                  "evidence_count": len(result.evidence),
+    108                  "confidence": result.confidence,
+    109              })
+?   110          except Exception:
+    111              pass
+?   112      except ValueError:
+?   113          raise
+?   114      except Exception as exc:
+?   115          raise ToolError(f"{type(exc).__name__}: {exc}") from exc
+    116      data = result.to_dict()
+?   117      return GccRecallResult(
+    118          query=data["query"],
+    119          answer=data["answer"],
+    120          confidence=data["confidence"],
+    121          evidence=data["evidence"],
+    122          stale_notes=data["stale_notes"],
+    123          conflict_notes=data["conflict_notes"],
+    124          plan=data.get("plan", {}),
+    125          trace_id=data.get("trace_id", ""),
+    126          message=data["message"],
+    127      )
+
+----------------------------------------------------------------------------------------------------
+■ _get_project_memory
+[_get_project_memory  ccr/mcp/server.py:557-575]
+    557  def _get_project_memory(project: str | None = None) -> MemoryManager:
+    558      """Return a MemoryManager for the given project path, or current project if None.
+    559  
+    560      For cross-project read-only queries.  Does NOT mutate global server state.
+    561      When CCR_AUTO_INIT is enabled, creates .ccr/ on first access instead of raising.
+    562      """
+?   563      if project is None:
+▶   564          return _ensure_memory()
+    565      project = os.path.abspath(os.path.expanduser(project))
+    566      ccr_dir = os.path.join(project, ".ccr")
+?   567      if not os.path.isdir(ccr_dir):
+?   568          if os.environ.get("CCR_AUTO_INIT", "").lower() in ("1", "true", "yes"):
+    569              mem = MemoryManager(project, CCRConfig())
+▶   570              mem.ensure_structure()
+?   571              return mem
+?   572          raise RuntimeError(
+    573              f"No CCR memory in {project} — run 'ccr init' there first."
+    574          )
+?   575      return MemoryManager(project, CCRConfig())
+
+----------------------------------------------------------------------------------------------------
+■ InitMixin.ensure_structure
+[InitMixin.ensure_structure  ccr/core/memory_pkg/memory_init.py:88-160]
+     88      def ensure_structure(self) -> bool:
+     89          """Create .ccr/ layout if missing. Idempotent. Returns True if created."""
+     90          # Import templates at call time to avoid circular imports
+     91          from ccr.core.memory_pkg.memory_types import (
+     92              MAIN_COMMITS_TEMPLATE,
+     93              MAIN_MD_TEMPLATE,
+     94              METADATA_TEMPLATE,
+     95              REGISTRY_TEMPLATE,
+     96          )
+     97  
+     98          main_branch_dir = os.path.join(self.branches_dir, "main")
+     99          metadata_path = self._get_metadata_path()
+    100  
+    101          # SQLite backend may create .ccr/ before ensure_structure runs,
+    102          # so check metadata.yaml as the canonical "was initialized" signal
+    103          created = not os.path.isfile(metadata_path)
+    104  
+?   105          if not os.path.isdir(self.ccr_root):
+    106              os.makedirs(self.ccr_root, exist_ok=True)
+    107  
+    108          os.makedirs(main_branch_dir, exist_ok=True)
+    109  
+    110          now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    111  
+    112          self._write_if_missing(
+    113              os.path.join(self.ccr_root, "main.md"),
+    114              MAIN_MD_TEMPLATE,
+    115          )
+    116          self._write_if_missing(
+    117              os.path.join(self.branches_dir, "_registry.md"),
+    118              REGISTRY_TEMPLATE.format(date=now),
+    119          )
+    120          self._write_if_missing(
+    121              os.path.join(main_branch_dir, "commits.md"),
+    122              MAIN_COMMITS_TEMPLATE,
+    123          )
+    124          self._write_if_missing(
+    125              os.path.join(main_branch_dir, "log.md"),
+    126              "",
+    127          )
+    128  
+    129          # metadata.yaml
+    130          metadata_path = self._get_metadata_path()
+?   131          if not os.path.isfile(metadata_path):
+    132              meta = dict(METADATA_TEMPLATE)
+    133              meta["created"] = now
+    134              meta["branches"] = [{"name": "main", "status": "active", "created": now, "parent": None}]
+    135              self._save_metadata(meta)
+    136  
+    137          # Hierarchical summaries directory (TiMem S3.1)
+    138          summaries_dir = os.path.join(self.ccr_root, "summaries")
+    139          os.makedirs(summaries_dir, exist_ok=True)
+    140  
+    141          # Initialize summary_meta.yaml if missing
+    142          summary_meta_path = self._get_summary_meta_path()
+?   143          if not os.path.isfile(summary_meta_path):
+    144              self._save_summary_meta(self._default_summary_meta())
+    145  
+    146          # Add .ccr to .gitignore if in a git repo
+    147          gitignore = os.path.join(self.project_root, ".gitignore")
+?   148          if os.path.isdir(os.path.join(self.project_root, ".git")):
+▶   149              self._add_to_gitignore(gitignore)
+    150  
+    151          # Load A-MEM evolved summaries overlay
+    152          self._load_evolved_summaries()
+    153  
+    154          # Register in global project registry (global setup awareness)
+?   155          try:
+▶   156              self._register_in_global_registry()
+?   157          except Exception:
+    158              pass  # Non-critical — never block init
+    159  
+?   160          return created
+
+----------------------------------------------------------------------------------------------------
+■ FileIOMixin._add_to_gitignore
+[FileIOMixin._add_to_gitignore  ccr/core/memory_pkg/memory_file_io.py:78-84]
+     78      def _add_to_gitignore(self, gitignore_path: str) -> None:
+     79          content = ""
+?    80          if os.path.isfile(gitignore_path):
+     81              content = self._read_file(gitignore_path) or ""
+?    82          if ".ccr/" not in content and ".ccr" not in content:
+★    83              with open(gitignore_path, "a", encoding="utf-8") as f:
+     84                  f.write("\n# CCR context directory\n.ccr/\n")
+
+----------------------------------------------------------------------------------------------------
+■ InitMixin._register_in_global_registry
+[InitMixin._register_in_global_registry  ccr/core/memory_pkg/memory_init.py:162-196]
+    162      def _register_in_global_registry(self) -> None:
+    163          """Register this project in ~/.ccr/projects.json for global discovery."""
+    164          import json
+    165          from datetime import datetime, timezone
+    166  
+    167          global_ccr = os.path.expanduser("~/.ccr")
+    168          os.makedirs(global_ccr, exist_ok=True)
+    169          registry_path = os.path.join(global_ccr, "projects.json")
+    170  
+    171          projects_list: list[dict] = []
+?   172          if os.path.isfile(registry_path):
+?   173              try:
+?   174                  with open(registry_path, "r", encoding="utf-8") as f:
+    175                      projects_list = json.loads(f.read())
+?   176              except (json.JSONDecodeError, OSError):
+    177                  projects_list = []
+    178  
+    179          abs_path = self.project_root
+    180          now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    181  
+?   182          for p in projects_list:
+?   183              if p.get("path") == abs_path:
+    184                  p["last_used"] = now
+?   185                  break
+?   186          else:
+    187              projects_list.append({
+    188                  "path": abs_path,
+    189                  "name": os.path.basename(abs_path),
+    190                  "last_used": now,
+    191                  "commit_count": 0,
+    192              })
+    193  
+★   194          with open(registry_path, "w", encoding="utf-8") as f:
+    195              json.dump(projects_list, f, indent=2)
+    196              f.write("\n")
+
+----------------------------------------------------------------------------------------------------
+■ _ensure_memory
+[_ensure_memory  ccr/mcp/server.py:549-554]
+    549  def _ensure_memory() -> MemoryManager:
+?   550      if _memory is None:
+▶   551          _init()
+?   552      if _memory is None:
+?   553          raise RuntimeError("MemoryManager failed to initialize")
+?   554      return _memory
+
+----------------------------------------------------------------------------------------------------
+■ _init
+[_init  ccr/mcp/server.py:138-312]
+    138  def _init(project_root: str | None = None) -> None:
+    139      """Initialize all subsystems for the given project root."""
+    140      global _project_root, _memory, _playbook, _playbook_path, _failure_lessons_path
+    141      global _global_playbook, _global_playbook_path, _global_failure_lessons_path, _repo_index
+    142      global _schema_path, _global_schema_path
+    143      global _embedding_model, _embeddings_path, _chunk_embeddings_path
+    144      global _scratchpad
+    145      global _triple_store
+    146      global _index_db
+    147      global _session_store, _session_db_path, _current_session_id
+    148  
+    149      _project_root = os.path.abspath(project_root or os.getcwd())
+    150      _default_backend = CCRConfig().storage_backend
+    151      storage_backend = os.environ.get("CCR_STORAGE_BACKEND", _default_backend)
+    152      _memory = MemoryManager(_project_root, CCRConfig(storage_backend=storage_backend))
+    153      _memory.ensure_structure()
+    154  
+    155      # Auto-migrate flat files → SQLite on first access (Phase 7)
+?   156      if storage_backend == "sqlite":
+    157          ccr_root = os.path.join(_project_root, ".ccr")
+    158          db_path = os.path.join(ccr_root, "memory.db")
+?   159          try:
+    160              from ccr.core.storage.migration import needs_migration, auto_migrate
+?   161              if needs_migration(ccr_root):
+    162                  from ccr.core.storage.sqlite_backend import SqliteStorageBackend
+    163                  _backend = SqliteStorageBackend(ccr_root)
+    164                  _backend.close()
+    165                  migration_loggers = [
+    166                      "ccr.core.storage._migration_utils",
+    167                      "ccr.core.storage._migration_phase1",
+    168                      "ccr.core.storage._migration_phase2",
+    169                      "ccr.core.storage._migration_phase3",
+    170                      "ccr.core.storage.migration",
+    171                  ]
+    172                  old_levels: dict[str, int] = {}
+    173                  quiet_migration = os.environ.get("CCR_MCP_VERBOSE", "").lower() not in {"1", "true", "yes"}
+?   174                  if quiet_migration:
+?   175                      for name in migration_loggers:
+    176                          log = logging.getLogger(name)
+    177                          old_levels[name] = log.level
+    178                          log.setLevel(logging.WARNING)
+?   179                  try:
+    180                      mig = auto_migrate(ccr_root, db_path)
+?   181                  finally:
+?   182                      for name, level in old_levels.items():
+    183                          logging.getLogger(name).setLevel(level)
+?   184                  if mig["errors"]:
+    185                      logger.warning("Auto-migration errors: %s", mig["errors"])
+?   186                  else:
+    187                      logger.debug(
+    188                          "Auto-migrated %d records across phases %s",
+    189                          mig["total_migrated"], mig["phases_run"],
+    190                      )
+?   191          except Exception as exc:
+    192              logger.warning("Auto-migration failed (will use flat files): %s", exc)
+    193  
+    194      def _cleanup_storage() -> None:
+?   195          if _memory and hasattr(_memory, "_storage"):
+?   196              try:
+    197                  _memory._storage.close()
+?   198              except Exception:
+    199                  pass
+    200  
+    201      atexit.register(_cleanup_storage)
+    202  
+    203      # Wire optional sub-model (Phase 2): activates GCC LLM rolling summary + ACE synthesis
+    204      sub = _get_sub_client()
+?   205      if sub is not None:
+    206          _memory.set_sub_client(sub)
+    207  
+    208      # Clear session marker so hooks detect new session on first prompt
+    209      session_marker = os.path.join(_project_root, ".ccr", ".session_active")
+?   210      if os.path.isfile(session_marker):
+?   211          try:
+    212              os.remove(session_marker)
+?   213          except OSError:
+    214              pass
+    215  
+    216      _playbook_path = os.path.join(_project_root, ".ccr", "playbook.txt")
+    217      _failure_lessons_path = os.path.join(_project_root, ".ccr", "failure_lessons.json")
+    218      _playbook = _load_playbook()
+    219  
+    220      # Initialize global playbook (~/.ccr/)
+    221      global_ccr = os.path.expanduser("~/.ccr")
+    222      os.makedirs(global_ccr, exist_ok=True)
+    223      _global_playbook_path = os.path.join(global_ccr, "global_playbook.txt")
+    224      _global_failure_lessons_path = os.path.join(global_ccr, "global_failure_lessons.json")
+    225      _global_playbook = _load_global_playbook()
+    226  
+    227      # Schema paths (MCE-inspired schema evolution)
+    228      _schema_path = os.path.join(_project_root, ".ccr", "playbook_schema.json")
+    229      _global_schema_path = os.path.join(global_ccr, "global_playbook_schema.json")
+    230  
+    231      # Embeddings paths (A-RAG semantic search)
+    232      _embeddings_path = os.path.join(_project_root, ".ccr", "index_embeddings.json.gz")
+    233      _chunk_embeddings_path = os.path.join(_project_root, ".ccr", "index_chunk_embeddings.json.gz")
+    234  
+    235      # Working memory scratchpad (AgeMem-inspired ephemeral KV store)
+    236      _scratchpad = Scratchpad(os.path.join(_project_root, ".ccr", "scratchpad.json"))
+    237  
+    238      # Triple store (Memori-inspired semantic triple extraction)
+    239      _triple_store = TripleStore(
+    240          os.path.join(_project_root, ".ccr", "triples.json"),
+    241          max_buffer_size=_memory.config.triple_max_buffer_size,
+    242      )
+    243  
+    244      # Session logger — path set here; store initialized lazily on first use
+    245      _session_db_path = os.path.join(_project_root, ".ccr", "sessions.db")
+    246      _session_store = None
+    247      _current_session_id = ""
+    248  
+    249      # Initialize IndexDB (SQLite-backed index persistence)
+    250      _index_db_path = os.path.join(_project_root, ".ccr", "index.db")
+?   251      try:
+    252          from ccr.context.index_db import IndexDB
+    253          _index_db = IndexDB(_index_db_path)
+?   254      except Exception:
+    255          _index_db = None
+    256  
+    257      # Build repo index — try SQLite load first, then JSON cache, then full build
+    258      _repo_index = None
+?   259      if _index_db is not None:
+?   260          try:
+    261              cached = RepoIndex.from_db(_project_root, _index_db)
+?   262              if cached is not None:
+    263                  live_sig = cached._compute_mtime_sig()
+?   264                  if live_sig == cached._mtime_sig and cached._mtime_sig:
+    265                      _repo_index = cached
+?   266          except Exception:
+    267              pass
+?   268      if _repo_index is None:
+?   269          try:
+    270              cache_json = _memory.load_index()
+?   271              if cache_json:
+    272                  cached = RepoIndex.from_cache(_project_root, cache_json)
+?   273                  if cached is not None:
+    274                      live_sig = cached._compute_mtime_sig()
+?   275                      if live_sig == cached._mtime_sig and cached._mtime_sig:
+    276                          _repo_index = cached
+?   277          except Exception:
+    278              pass
+?   279      if _repo_index is None:
+    280          _repo_index = RepoIndex.build(_project_root)
+    281  
+    282      # Load cached embeddings if available
+?   283      if os.path.isfile(_embeddings_path):
+    284          _repo_index.load_embeddings(_embeddings_path)
+    285  
+    286      # Load cached chunk embeddings if available (A-RAG §3.1 sentence-level chunks)
+?   287      if os.path.isfile(_chunk_embeddings_path):
+    288          _repo_index.load_chunk_embeddings(_chunk_embeddings_path)
+    289  
+    290      # Save index to IndexDB (always, so FTS5 is populated for search)
+?   291      if _index_db is not None:
+?   292          try:
+    293              _repo_index.save_to_db(_index_db)
+?   294          except Exception:
+    295              pass
+    296      # Save JSON cache (only when freshly built — loaded-from-cache already has valid JSON)
+?   297      if not (hasattr(_repo_index, "_mtime_sig") and _repo_index._mtime_sig):
+?   298          try:
+    299              _memory.save_index(_repo_index.to_json())
+?   300          except Exception:
+    301              pass
+    302  
+    303      # Configure audit logging
+    304      ccr_root = os.path.join(_project_root, ".ccr")
+    305      configure_audit_log(ccr_root)
+    306  
+    307      # Register project in global registry
+?   308      try:
+    309          from ccr.cli import _register_project
+▶   310          _register_project(_project_root)
+?   311      except Exception:
+    312          pass  # Non-critical
+
+----------------------------------------------------------------------------------------------------
+■ _register_project
+[_register_project  ccr/cli.py:967-1008]
+    967  def _register_project(project_root: str) -> None:
+    968      """Register a project in the global registry (~/.ccr/projects.json)."""
+    969      import json
+    970      from datetime import datetime, timezone
+    971  
+    972      global_ccr = os.path.expanduser("~/.ccr")
+?   973      try:
+    974          os.makedirs(global_ccr, exist_ok=True)
+?   975      except OSError:
+?   976          return
+    977      registry_path = os.path.join(global_ccr, "projects.json")
+    978  
+    979      projects_list: list[dict] = []
+?   980      if os.path.isfile(registry_path):
+?   981          try:
+?   982              with open(registry_path, "r", encoding="utf-8") as f:
+    983                  projects_list = json.loads(f.read())
+?   984          except (json.JSONDecodeError, OSError):
+    985              projects_list = []
+    986  
+    987      abs_path = os.path.abspath(project_root)
+    988      now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    989  
+    990      # Update existing or add new
+?   991      for p in projects_list:
+?   992          if p.get("path") == abs_path:
+    993              p["last_used"] = now
+?   994              break
+?   995      else:
+    996          projects_list.append({
+    997              "path": abs_path,
+    998              "name": os.path.basename(abs_path),
+    999              "last_used": now,
+   1000              "commit_count": 0,
+   1001          })
+   1002  
+?  1003      try:
+★  1004          with open(registry_path, "w", encoding="utf-8") as f:
+   1005              json.dump(projects_list, f, indent=2)
+   1006              f.write("\n")
+?  1007      except OSError:
+?  1008          return
+
+----------------------------------------------------------------------------------------------------
+■ RecallEngine.recall
+[RecallEngine.recall  ccr/core/recall.py:130-204]
+    130      def recall(
+    131          self,
+    132          query: str,
+    133          *,
+    134          limit: int = 5,
+    135          sources: list[str] | None = None,
+    136          include_sessions: bool = True,
+    137      ) -> RecallResult:
+    138          """Return a compact evidence-backed answer for ``query``."""
+    139          query = query.strip()
+?   140          if not query:
+?   141              raise ValueError("Recall query must not be empty.")
+    142          limit = max(1, min(limit, 25))
+    143          plan = self._plan(query, sources=sources, include_sessions=include_sessions)
+    144          active_sources = set(plan.sources)
+    145          evidence: list[RecallEvidence] = []
+    146          candidate_snapshot: list[dict[str, Any]] = []
+    147  
+    148          project_root = getattr(self.mem, "project_root", "") or os.path.dirname(self.mem.ccr_root)
+▶   149          with ccr_span(
+    150              "ccr.memory.recall",
+    151              project_root=project_root,
+    152              attributes={
+    153                  "query_len": len(query),
+    154                  "limit": limit,
+    155                  "sources": ",".join(sorted(active_sources)),
+    156                  "intent": plan.intent,
+    157                  "strategy": plan.strategy,
+    158              },
+    159          ):
+?   160              if "facts" in active_sources:
+▶   161                  with ccr_span("ccr.memory.retrieve.facts", project_root=project_root):
+    162                      evidence.extend(self._fact_evidence(query, limit=limit))
+?   163              if "graph" in active_sources:
+▶   164                  with ccr_span("ccr.memory.retrieve.temporal_graph", project_root=project_root):
+    165                      evidence.extend(self._graph_evidence(query, limit=limit))
+?   166              if "commits" in active_sources:
+▶   167                  with ccr_span("ccr.memory.retrieve.commits", project_root=project_root):
+    168                      evidence.extend(self._commit_evidence(query, limit=limit))
+?   169              if "discussions" in active_sources:
+▶   170                  with ccr_span("ccr.memory.retrieve.discussions", project_root=project_root):
+    171                      evidence.extend(self._discussion_evidence(query, limit=limit))
+?   172              if include_sessions and "sessions" in active_sources:
+▶   173                  with ccr_span("ccr.memory.retrieve.sessions", project_root=project_root):
+    174                      evidence.extend(self._session_evidence(query, limit=limit))
+    175  
+    176              evidence = self._dedupe_and_rank(evidence, limit=max(limit * 3, limit))
+    177              candidate_snapshot = [ev.to_dict() for ev in evidence]
+▶   178              with ccr_span("ccr.memory.rerank", project_root=project_root, attributes={"candidates": len(evidence)}):
+    179                  reranker = get_reranker()
+    180                  plan.reranker = reranker.provider
+    181                  evidence = reranker.rerank(query, evidence)[:limit]
+    182              stale_notes = self._stale_notes(evidence)
+    183              conflict_notes = self._conflict_notes(query)
+    184              confidence = self._confidence(evidence, conflict_notes)
+    185              answer = self._answer(query, evidence)
+▶   186              trace = self.traces.append_trace(
+    187                  query=query,
+    188                  plan=plan.to_dict(),
+    189                  candidates=candidate_snapshot,
+    190                  evidence=[ev.to_dict() for ev in evidence],
+    191                  stale_notes=stale_notes,
+    192                  conflict_notes=conflict_notes,
+    193                  confidence=confidence,
+    194              )
+?   195          return RecallResult(
+    196              query=query,
+    197              answer=answer,
+    198              confidence=confidence,
+    199              evidence=evidence,
+    200              stale_notes=stale_notes,
+    201              conflict_notes=conflict_notes,
+    202              plan=plan,
+    203              trace_id=trace.id,
+    204          )
+
+----------------------------------------------------------------------------------------------------
+■ RecallTraceStore.append_trace
+[RecallTraceStore.append_trace  ccr/core/replay.py:74-106]
+     74      def append_trace(
+     75          self,
+     76          *,
+     77          query: str,
+     78          plan: dict[str, Any],
+     79          candidates: list[dict[str, Any]],
+     80          evidence: list[dict[str, Any]],
+     81          stale_notes: list[str],
+     82          conflict_notes: list[str],
+     83          confidence: float,
+     84      ) -> RecallTrace:
+     85          """Append a recall trace and return the stored record."""
+     86          traces = list(reversed(self.list_traces(limit=100000)))
+     87          prev_hash = traces[-1].hash if traces else ""
+     88          trace = RecallTrace(
+     89              id=self._next_id(traces),
+     90              query=query,
+     91              plan=plan,
+     92              candidates=self._trim_candidates(candidates),
+     93              evidence=self._trim_candidates(evidence),
+     94              stale_notes=list(stale_notes),
+     95              conflict_notes=list(conflict_notes),
+     96              confidence=max(0.0, min(1.0, float(confidence))),
+     97              prev_hash=prev_hash,
+     98          )
+     99          data = trace.to_dict()
+    100          data["hash"] = _body_hash(data)
+    101          trace.hash = data["hash"]
+    102          os.makedirs(self.ccr_root, exist_ok=True)
+★   103          with open(self.path, "a", encoding="utf-8") as fh:
+    104              fh.write(json.dumps(data, sort_keys=True))
+    105              fh.write("\n")
+?   106          return trace
+
+----------------------------------------------------------------------------------------------------
+■ ccr_span
+[ccr_span  ccr/core/observability.py:40-82]
+     40  @contextlib.contextmanager
+     41  def ccr_span(
+     42      name: str,
+     43      *,
+     44      project_root: str = "",
+     45      attributes: dict[str, Any] | None = None,
+     46  ) -> Iterator[None]:
+     47      """Create an optional OTel span and optional local JSONL span.
+     48  
+     49      No dependency is required. If opentelemetry is unavailable or
+     50      CCR_OTEL_ENABLED is not set, this is a no-op except for optional local spans
+     51      when CCR_TRACE_LOCAL=1.
+     52      """
+     53      attrs = dict(attributes or {})
+     54      started = time.perf_counter()
+     55      started_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+     56      status = "ok"
+     57      error = ""
+     58      otel_cm = contextlib.nullcontext()
+?    59      if _enabled(os.environ.get("CCR_OTEL_ENABLED", "")):
+?    60          try:
+     61              from opentelemetry import trace  # type: ignore
+     62              tracer = trace.get_tracer("ccr")
+     63              otel_cm = tracer.start_as_current_span(name, attributes=attrs)
+?    64          except Exception:
+     65              otel_cm = contextlib.nullcontext()
+?    66      try:
+?    67          with otel_cm:
+     68              yield
+?    69      except Exception as exc:
+     70          status = "error"
+     71          error = f"{type(exc).__name__}: {exc}"
+?    72          raise
+?    73      finally:
+     74          duration_ms = (time.perf_counter() - started) * 1000
+▶    75          _write_local_span(project_root, SpanRecord(
+     76              name=name,
+     77              started_at=started_at,
+     78              duration_ms=duration_ms,
+     79              attributes=attrs,
+     80              status=status,
+     81              error=error,
+     82          ))
+
+----------------------------------------------------------------------------------------------------
+■ _write_local_span
+[_write_local_span  ccr/core/observability.py:28-37]
+     28  def _write_local_span(project_root: str, record: SpanRecord) -> None:
+?    29      if not project_root or not _enabled(os.environ.get("CCR_TRACE_LOCAL", "")):
+?    30          return
+     31      ccr_root = os.path.join(project_root, ".ccr")
+?    32      if not os.path.isdir(ccr_root):
+?    33          return
+     34      path = os.path.join(ccr_root, "traces.jsonl")
+★    35      with open(path, "a", encoding="utf-8") as fh:
+     36          fh.write(json.dumps(record.__dict__, sort_keys=True, default=str))
+     37          fh.write("\n")
+
+----------------------------------------------------------------------------------------------------
+■ append_audit
+[append_audit  ccr/core/governance.py:155-209]
+    155  def append_audit(ccr_root: str, event_type: str, actor: str, details: dict[str, Any]) -> dict[str, Any]:
+    156      """Append a hash-chained audit entry."""
+?   157      try:
+    158          ccr_root = os.fspath(ccr_root)
+?   159      except TypeError:
+?   160          return {
+    161              "timestamp": utc_now(),
+    162              "event_type": event_type,
+    163              "actor": actor or os.environ.get("USER", "unknown"),
+    164              "details": details,
+    165              "skipped": True,
+    166              "reason": "invalid_ccr_root",
+    167          }
+?   168      if not isinstance(ccr_root, str) or not ccr_root.strip():
+?   169          return {
+    170              "timestamp": utc_now(),
+    171              "event_type": event_type,
+    172              "actor": actor or os.environ.get("USER", "unknown"),
+    173              "details": details,
+    174              "skipped": True,
+    175              "reason": "invalid_ccr_root",
+    176          }
+?   177      if os.path.basename(os.path.normpath(ccr_root)) != ".ccr":
+?   178          return {
+    179              "timestamp": utc_now(),
+    180              "event_type": event_type,
+    181              "actor": actor or os.environ.get("USER", "unknown"),
+    182              "details": details,
+    183              "skipped": True,
+    184              "reason": "non_ccr_root",
+    185          }
+    186      os.makedirs(ccr_root, exist_ok=True)
+    187      path = os.path.join(ccr_root, "governance_audit.jsonl")
+    188      prev_hash = ""
+?   189      if os.path.isfile(path):
+?   190          try:
+?   191              with open(path, encoding="utf-8") as fh:
+?   192                  for line in fh:
+?   193                      if line.strip():
+    194                          prev_hash = json.loads(line).get("hash", prev_hash)
+?   195          except (OSError, json.JSONDecodeError):
+    196              prev_hash = ""
+    197      entry = {
+    198          "timestamp": utc_now(),
+    199          "event_type": event_type,
+    200          "actor": actor or os.environ.get("USER", "unknown"),
+    201          "details": details,
+    202          "prev_hash": prev_hash,
+    203      }
+    204      digest_input = json.dumps(entry, sort_keys=True).encode("utf-8")
+    205      entry["hash"] = hashlib.sha256(digest_input).hexdigest()
+★   206      with open(path, "a", encoding="utf-8") as fh:
+    207          fh.write(json.dumps(entry, sort_keys=True))
+    208          fh.write("\n")
+?   209      return entry
+
+印: ▶ 次の段を呼ぶ行  ★ 効果の行  ? 条件の行（届くかはたいていここで決まる）

@@ -1,0 +1,228 @@
+# P-C06 の道筋（scripts/path_view.py。解析器の道筋をなぞった読む補助で、正しいとは限らない）
+# scripts/path_view.py evidence/scan_v2_v4_run1/v4-qbit-glitch__ccr.json corpus/v4-qbit-glitch__ccr ccr/mcp/gcc_tools.py 355 os.replace --decl D1
+====================================================================================================
+ツール gcc_context  本体 ccr/mcp/gcc_tools.py:355  宣言 {'destructiveHint': False, 'idempotentHint': True, 'readOnlyHint': True}
+効果の行: ccr/core/scratchpad.py:84
+
+【1】道筋の一覧（解析器が通った関数の列。1 本）
+  道筋 1: 本体の 466 行 → Scratchpad.format_for_context → Scratchpad.list_entries → Scratchpad._save  → 効果 ccr/core/scratchpad.py:84
+
+【2】関数のソース（道筋に出てくる順に 1 回ずつ。深さは道筋によって違うので一覧で確かめる）
+
+----------------------------------------------------------------------------------------------------
+■ 本体 gcc_context
+[gcc_context  ccr/mcp/gcc_tools.py:354-505]
+    354  @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True))
+    355  def gcc_context(
+    356      level: int = 2,
+    357      search_term: str | None = None,
+    358      commit_id: str | None = None,
+    359      log_window: int = 0,
+    360      follow_links: bool = False,
+    361      include_summaries: bool = False,
+    362      summaries_tier: str = "all",
+    363      summaries_count: int = 5,
+    364      max_tokens: int | None = None,
+    365      result_limit: int = 20,
+    366      time_range_hours: int | None = None,
+    367      project: str | None = None,
+    368  ) -> GccContextResult:
+    369      """Retrieve project memory at the specified depth.
+    370  
+    371      Levels:
+    372          1: Project overview only (~200 tokens).
+    373          2: + rolling summary + last 3 commits. Use at session start.
+    374          3: + branch summary + thematic clusters + triples.
+    375          4: + last 10 commits. For finding related work.
+    376          5: + specific commit search + cross-links. For tracing history.
+    377  
+    378      Args:
+    379          level: Depth of context retrieval (1-5).
+    380          search_term: Keyword to search commits (level 5 only).
+    381          commit_id: Specific commit ID to retrieve (level 5 only).
+    382          log_window: Number of recent OTA log entries to include.
+    383          follow_links: If True and level >= 5, include linked commit summaries (1-hop BFS).
+    384          include_summaries: If True, append hierarchical summaries (replaces gcc_summaries).
+    385          summaries_tier: Which summary tier — "session", "phase", "project", or "all".
+    386          summaries_count: Max summaries per tier (default 5).
+    387          max_tokens: Optional upper bound on output size (rough 4 chars/token estimate).
+    388              Use to prevent overly large context at higher levels.
+    389          result_limit: Maximum number of commit blocks to include (default 20).
+    390          time_range_hours: If set, only include commit blocks from the last N hours.
+    391          project: Absolute or relative path to another project to query. If None, uses
+    392              the current project. Useful for recalling context from a different codebase.
+    393      """
+    394      from datetime import datetime, timezone, timedelta
+    395  
+    396      level = max(1, min(level, 5))
+    397      log_window = max(0, min(log_window, 50))
+    398      result_limit = max(1, result_limit)
+    399      _level_warnings: list[str] = []
+?   400      if search_term and level < 5:
+    401          _level_warnings.append(f"search_term is only active at level=5 (current level={level}); use level=5 to search commits.")
+?   402      if commit_id and level < 5:
+    403          _level_warnings.append(f"commit_id is only active at level=5 (current level={level}); use level=5 for specific commit lookup.")
+?   404      with _srv._state_lock:
+    405          mem = _srv._get_project_memory(project)
+?   406      with ccr_span(
+    407          "ccr.memory.read.context",
+    408          project_root=mem.project_root,
+    409          attributes={"level": level, "search": bool(search_term), "commit_id": bool(commit_id)},
+    410      ):
+    411          result = mem.get_context(
+    412              level=level,
+    413              search_term=search_term,
+    414              commit_id=commit_id,
+    415              log_window=log_window,
+    416              follow_links=follow_links,
+    417          )
+    418  
+    419      # Apply result_limit and time_range_hours filtering on commit blocks
+    420      # Commit blocks start with "\n## [C" or "## [C" at the beginning
+?   421      if "\n## [C" in result or result.startswith("## [C"):
+    422          # Split on commit block boundaries, preserving delimiter
+    423          _parts = result.split("\n## [C")
+    424          _pre = _parts[0]  # Content before the first commit block
+    425          _blocks = ["\n## [C" + p for p in _parts[1:]]
+    426  
+    427          # Apply time_range_hours filter
+?   428          if time_range_hours is not None and time_range_hours > 0:
+    429              _cutoff = datetime.now(timezone.utc) - timedelta(hours=time_range_hours)
+    430              _filtered = []
+?   431              for _blk in _blocks:
+    432                  # Header: ## [C001] 2026-03-10 22:25 | ...
+    433                  _ts_match = re.search(r"## \[C\d+\]\s+(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2})", _blk)
+?   434                  if _ts_match:
+?   435                      try:
+    436                          _ts = datetime.strptime(_ts_match.group(1), "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
+?   437                          if _ts >= _cutoff:
+    438                              _filtered.append(_blk)
+?   439                      except ValueError:
+    440                          _filtered.append(_blk)  # Keep if unparseable
+?   441                  else:
+    442                      _filtered.append(_blk)
+    443              _blocks = _filtered
+    444  
+    445          # Apply result_limit
+    446          _blocks = _blocks[:result_limit]
+    447  
+    448          result = _pre + "".join(_blocks)
+    449  
+    450      # Append thematic clusters (level 3+)
+?   451      if level >= 3:
+    452          clusters_text = mem.format_clusters_for_context()
+?   453          if clusters_text:
+    454              result += "\n\n" + clusters_text
+    455  
+    456      # Append knowledge graph triples (level 3+, Memori-inspired)
+    457      triple_store = _srv._triple_store
+?   458      if level >= 3 and triple_store and triple_store.size > 0:
+▶   459          triples_text = triple_store.format_for_context(top_k=8)
+?   460          if triples_text:
+    461              result += "\n\n" + triples_text
+    462  
+    463      # Append working memory if scratchpad has entries (level 2+)
+    464      scratchpad = _srv._scratchpad
+?   465      if level >= 2 and scratchpad and scratchpad.size > 0:
+▶   466          scratchpad_text = scratchpad.format_for_context()
+?   467          if scratchpad_text:
+    468              result += "\n\n" + scratchpad_text
+    469  
+    470      # Append hierarchical summaries if requested (replaces standalone gcc_summaries)
+?   471      if include_summaries:
+    472          sc = max(1, min(summaries_count, 50))
+    473          summaries_text = mem.get_summaries(tier=summaries_tier, count=sc)
+?   474          if summaries_text.strip():
+    475              result += "\n\n" + summaries_text
+    476  
+    477      # Apply token budget AFTER all sections appended (prevents silent overflow from clusters/summaries)
+?   478      if max_tokens is not None and max_tokens > 0:
+    479          budget_chars = max_tokens * 4  # ~4 chars/token heuristic (matches estimate_tokens)
+?   480          if len(result) > budget_chars:
+    481              # Markdown-aware cut: prefer cutting at a section boundary
+    482              cut = result.rfind("\n## ", 0, budget_chars)
+?   483              if cut == -1:
+    484                  cut = budget_chars
+    485              result = result[:cut] + f"\n\n[Context truncated to ~{max_tokens} tokens. Use level=2 or sections filter for targeted retrieval.]"
+    486  
+?   487      if _level_warnings:
+    488          result = "\n".join(f"[Warning: {w}]" for w in _level_warnings) + "\n\n" + result
+    489  
+    490      branch = mem.get_active_branch()
+    491  
+    492      # B2: Context level heuristic — suggest richer retrieval for large projects
+?   493      if level == 2:
+?   494          try:
+    495              total = len(mem._build_commit_index(branch))
+?   496              if total >= 30:
+    497                  result += (
+    498                      f"\n\n[Hint: This project has {total} commits. "
+    499                      f"Try gcc_context(level=3) for richer history or "
+    500                      f"gcc_context(level=5, search_term='<topic>') for targeted search.]"
+    501                  )
+?   502          except Exception:
+    503              pass
+    504  
+?   505      return GccContextResult(level=level, branch=branch, message=result)
+
+----------------------------------------------------------------------------------------------------
+■ Scratchpad.format_for_context
+[Scratchpad.format_for_context  ccr/core/scratchpad.py:229-240]
+    229      def format_for_context(self) -> str:
+    230          """Format scratchpad entries for inclusion in gcc_context output.
+    231  
+    232          Expired entries are excluded from context output.
+    233          """
+▶   234          active = self.list_entries()
+?   235          if not active:
+?   236              return ""
+    237          lines = ["# Working Memory"]
+?   238          for entry in active:
+    239              lines.append(f"- **{entry.key}**: {entry.value}")
+?   240          return "\n".join(lines)
+
+----------------------------------------------------------------------------------------------------
+■ Scratchpad.list_entries
+[Scratchpad.list_entries  ccr/core/scratchpad.py:140-162]
+    140      def list_entries(self) -> list[ScratchpadEntry]:
+    141          """List all working memory entries, sorted by updated_at descending.
+    142  
+    143          Expired entries are deleted in batch from disk to prevent bloat.
+    144          """
+    145          now = datetime.now(timezone.utc)
+?   146          with self._lock:
+    147              expired_keys = []
+    148              active = []
+?   149              for e in self._entries.values():
+?   150                  if e.expires_at:
+?   151                      try:
+?   152                          if datetime.fromisoformat(e.expires_at) <= now:
+    153                              expired_keys.append(e.key)
+?   154                              continue
+?   155                      except (ValueError, TypeError):
+    156                          pass
+    157                  active.append(e)
+?   158              if expired_keys:
+?   159                  for k in expired_keys:
+    160                      del self._entries[k]
+▶   161                  self._save()
+?   162              return sorted(active, key=lambda e: e.updated_at, reverse=True)
+
+----------------------------------------------------------------------------------------------------
+■ Scratchpad._save
+[Scratchpad._save  ccr/core/scratchpad.py:72-84]
+     72      def _save(self) -> None:
+     73          """Atomic write to disk (tmp + fsync + replace)."""
+     74          data = {
+     75              "version": 1,
+     76              "entries": {k: v.to_dict() for k, v in self._entries.items()},
+     77          }
+     78          tmp_path = self._path + ".tmp"
+     79          os.makedirs(os.path.dirname(self._path) or ".", exist_ok=True)
+?    80          with open(tmp_path, "w", encoding="utf-8") as f:
+     81              json.dump(data, f, indent=2)
+     82              f.flush()
+     83              os.fsync(f.fileno())
+★    84          os.replace(tmp_path, self._path)
+
+印: ▶ 次の段を呼ぶ行  ★ 効果の行  ? 条件の行（届くかはたいていここで決まる）

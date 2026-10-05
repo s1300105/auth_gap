@@ -1,0 +1,177 @@
+# P-C04 の道筋（scripts/path_view.py。解析器の道筋をなぞった読む補助で、正しいとは限らない）
+# scripts/path_view.py evidence/scan_v2_v4_run1/v4-qbit-glitch__ccr.json corpus/v4-qbit-glitch__ccr ccr/mcp/gcc_search_tools.py 594 os.unlink --decl D2
+====================================================================================================
+ツール gcc_discuss  本体 ccr/mcp/gcc_search_tools.py:594  宣言 {'destructiveHint': False, 'idempotentHint': False, 'readOnlyHint': False}
+効果の行: ccr/core/memory_pkg/memory_file_io.py:111
+
+【1】道筋の一覧（解析器が通った関数の列。1 本）
+  道筋 1: 本体の 638 行 → DiscussionsMixin.add_discussion → InitMixin.get_active_branch → FileIOMixin._read_file → FileIOMixin._file_lock  → 効果 ccr/core/memory_pkg/memory_file_io.py:111
+
+【2】関数のソース（道筋に出てくる順に 1 回ずつ。深さは道筋によって違うので一覧で確かめる）
+
+----------------------------------------------------------------------------------------------------
+■ 本体 gcc_discuss
+[gcc_discuss  ccr/mcp/gcc_search_tools.py:593-653]
+    593  @mcp.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False))
+    594  def gcc_discuss(
+    595      topic: str,
+    596      hypothesis: str,
+    597      alternatives_considered: str,
+    598      decision: str,
+    599      rationale: str,
+    600      uncertainty: str = "",
+    601      linked_commit: str | None = None,
+    602  ) -> GccDiscussResult:
+    603      """Log a decision or hypothesis to the persistent discussion log.
+    604  
+    605      Stores a structured record in .ccr/branches/{branch}/discussions.md.
+    606      Use to preserve the reasoning behind design choices, experiment directions,
+    607      and trade-off decisions that would otherwise be lost between sessions.
+    608  
+    609      Args:
+    610          topic: Short title for the decision (e.g., "dataset preprocessing approach").
+    611          hypothesis: The hypothesis or assumption being tested/decided.
+    612          alternatives_considered: Comma-separated alternatives that were rejected.
+    613          decision: The choice made.
+    614          rationale: Why this decision was made (evidence, benchmarks, constraints).
+    615          uncertainty: Open questions or risks that remain (optional).
+    616          linked_commit: Commit ID (e.g., "C045") this decision relates to (optional).
+    617  
+    618      Returns:
+    619          id: Discussion ID (D001, D002, ...).
+    620          date: Timestamp of the record.
+    621          topic: The topic as stored.
+    622          message: The formatted discussion block.
+    623  
+    624      Example:
+    625          gcc_discuss(
+    626              topic="optimizer choice for LoRA fine-tuning",
+    627              hypothesis="AdamW with warmup outperforms SGD",
+    628              alternatives_considered="SGD, Adam (no weight decay), LAMB",
+    629              decision="AdamW with linear warmup",
+    630              rationale="15% lower val_loss vs SGD in 3-epoch ablation (C041)",
+    631              uncertainty="Not tested beyond 10K steps",
+    632              linked_commit="C041",
+    633          )
+    634      """
+?   635      with _srv._state_lock:
+    636          mem = _srv._ensure_memory()
+    637  
+▶   638      result = mem.add_discussion(
+    639          topic=topic,
+    640          hypothesis=hypothesis,
+    641          alternatives_considered=alternatives_considered,
+    642          decision=decision,
+    643          rationale=rationale,
+    644          uncertainty=uncertainty,
+    645          linked_commit=linked_commit,
+    646      )
+    647  
+?   648      return GccDiscussResult(
+    649          id=result["id"],
+    650          date=result["date"],
+    651          topic=result["topic"],
+    652          message=result["message"],
+    653      )
+
+----------------------------------------------------------------------------------------------------
+■ DiscussionsMixin.add_discussion
+[DiscussionsMixin.add_discussion  ccr/core/memory_pkg/memory_discussions.py:118-166]
+    118      def add_discussion(
+    119          self,
+    120          topic: str,
+    121          hypothesis: str,
+    122          alternatives_considered: str,
+    123          decision: str,
+    124          rationale: str,
+    125          uncertainty: str = "",
+    126          linked_commit: str | None = None,
+    127      ) -> dict[str, Any]:
+    128          """Append a discussion record via storage backend.
+    129  
+    130          Returns dict with id, date, topic, message (formatted block).
+    131          """
+▶   132          branch = self.get_active_branch()
+    133          disc_id = self._storage.discussion_get_next_id(branch)
+    134          now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
+    135  
+    136          data = {
+    137              "id": disc_id,
+    138              "timestamp": now,
+    139              "topic": topic,
+    140              "hypothesis": hypothesis,
+    141              "alternatives": alternatives_considered,
+    142              "decision": decision,
+    143              "rationale": rationale,
+    144              "uncertainty": uncertainty,
+    145              "linked_commit": linked_commit or "",
+    146          }
+    147          self._storage.discussion_insert(branch, data)
+    148  
+    149          lines = [
+    150              f"## [{disc_id}] {now} | {topic}",
+    151              f"**Hypothesis**: {hypothesis}",
+    152              f"**Alternatives**: {alternatives_considered}",
+    153              f"**Decision**: {decision}",
+    154              f"**Rationale**: {rationale}",
+    155          ]
+?   156          if uncertainty:
+    157              lines.append(f"**Uncertainty**: {uncertainty}")
+?   158          if linked_commit:
+    159              lines.append(f"**Linked Commit**: {linked_commit}")
+    160  
+?   161          return {
+    162              "id": disc_id,
+    163              "date": now,
+    164              "topic": topic,
+    165              "message": "\n".join(lines),
+    166          }
+
+----------------------------------------------------------------------------------------------------
+■ InitMixin.get_active_branch
+[InitMixin.get_active_branch  ccr/core/memory_pkg/memory_init.py:200-205]
+    200      def get_active_branch(self) -> str:
+▶   201          registry = self._read_file(os.path.join(self.branches_dir, "_registry.md"))
+?   202          if not registry:
+?   203              return "main"
+    204          match = re.search(r"## Active Branch\s*\n(\S+)", registry)
+?   205          return match.group(1) if match else "main"
+
+----------------------------------------------------------------------------------------------------
+■ FileIOMixin._read_file
+[FileIOMixin._read_file  ccr/core/memory_pkg/memory_file_io.py:115-117]
+    115      def _read_file(self, path: str) -> str:
+▶   116          with self._locks[path], self._file_lock(path):
+?   117              return self._read_file_unlocked(path)
+
+----------------------------------------------------------------------------------------------------
+■ FileIOMixin._file_lock
+[FileIOMixin._file_lock  ccr/core/memory_pkg/memory_file_io.py:88-113]
+     88      @contextmanager
+     89      def _file_lock(self, path: str):
+     90          """Cross-process file lock. Uses fcntl.flock on POSIX; falls back to
+     91          threading.Lock on Windows (no cross-process isolation on Windows — safe
+?    92          for single-instance Claude Code use).
+     93          """
+?    94          if _fcntl is None:
+     95              # Windows fallback: threading lock only (no cross-process isolation)
+     96              lock = self._locks.setdefault(path + ".lock", threading.Lock())
+?    97              with lock:
+     98                  yield
+?    99              return
+    100          lock_path = path + ".lock"
+    101          os.makedirs(os.path.dirname(lock_path) or ".", exist_ok=True)
+    102          lock_fd = open(lock_path, "w", encoding="utf-8")
+?   103          try:
+    104              _fcntl.flock(lock_fd.fileno(), _fcntl.LOCK_EX)
+    105              yield
+?   106          finally:
+    107              _fcntl.flock(lock_fd.fileno(), _fcntl.LOCK_UN)
+    108              lock_fd.close()
+    109              # M5: Clean up .lock files
+?   110              try:
+★   111                  os.unlink(lock_path)
+?   112              except OSError:
+    113                  pass  # Race condition: another process may have already removed it
+
+印: ▶ 次の段を呼ぶ行  ★ 効果の行  ? 条件の行（届くかはたいていここで決まる）

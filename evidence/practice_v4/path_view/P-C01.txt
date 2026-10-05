@@ -1,0 +1,186 @@
+# P-C01 の道筋（scripts/path_view.py。解析器の道筋をなぞった読む補助で、正しいとは限らない）
+# scripts/path_view.py evidence/scan_v2_v4_run1/v4-ei-nakamura__rails-lens.json corpus/v4-ei-nakamura__rails-lens src/rails_lens/tools/migration_context.py 260 builtins.open --decl D1
+====================================================================================================
+ツール rails_lens_migration_context  本体 src/rails_lens/tools/migration_context.py:260  宣言 {'destructiveHint': False, 'idempotentHint': True, 'openWorldHint': False, 'readOnlyHint': True}
+効果の行: src/rails_lens/cache/manager.py:90
+
+【1】道筋の一覧（解析器が通った関数の列。1 本）
+  道筋 1: 本体の 332 行 → CacheManager.set  → 効果 src/rails_lens/cache/manager.py:90
+
+【2】関数のソース（道筋に出てくる順に 1 回ずつ。深さは道筋によって違うので一覧で確かめる）
+
+----------------------------------------------------------------------------------------------------
+■ 本体 register.migration_context
+[register.migration_context  src/rails_lens/tools/migration_context.py:251-381]
+    251      @mcp.tool(
+    252          name="rails_lens_migration_context",
+    253          annotations=ToolAnnotations(
+    254              readOnlyHint=True,
+    255              destructiveHint=False,
+    256              idempotentHint=True,
+    257              openWorldHint=False,
+    258          ),
+    259      )
+    260      async def migration_context(params: MigrationContextInput) -> str:
+    261          """テーブルのスキーマ・インデックス・外部キー・マイグレーション履歴を返し、適切な警告とテンプレートを提供する"""
+?   262          try:
+    263              config, bridge, cache, grep = get_deps()
+?   264          except Exception as e:
+?   265              return ErrorResponse(
+    266                  code="INITIALIZATION_ERROR", message=str(e)
+    267              ).model_dump_json(indent=2)
+    268  
+    269          file_analysis_fallback = False
+?   270          try:
+    271              # ランタイム解析 (Ruby)
+    272              raw_data = await bridge.execute(
+    273                  "migration_context.rb",
+    274                  args=[params.table_name, params.operation],
+    275              )
+?   276          except (RailsRunnerExecutionError, RailsRunnerTimeoutError, FileNotFoundError, OSError):
+    277              schema_path = config.rails_project_path / "db" / "schema.rb"
+    278              raw_data = _parse_schema_for_table(schema_path, params.table_name)
+    279              file_analysis_fallback = True
+?   280          except Exception as e:
+?   281              return ErrorResponse(
+    282                  code="RUNTIME_ANALYSIS_ERROR", message=str(e)
+    283              ).model_dump_json(indent=2)
+    284  
+?   285          try:
+    286              # Build SchemaInfo from raw data
+    287              columns = [
+    288                  ColumnInfo(
+    289                      name=col["name"],
+    290                      type=col.get("type", "string"),
+    291                      null=col.get("null", True),
+    292                      default=col.get("default"),
+    293                      limit=col.get("limit"),
+    294                  )
+?   295                  for col in raw_data.get("columns", [])
+    296              ]
+    297              indexes = [
+    298                  IndexInfo(
+    299                      name=idx["name"],
+    300                      columns=idx.get("columns", []),
+    301                      unique=idx.get("unique", False),
+    302                  )
+?   303                  for idx in raw_data.get("indexes", [])
+    304              ]
+    305              foreign_keys = [
+    306                  ForeignKeyInfo(
+    307                      from_column=fk["from_column"],
+    308                      to_table=fk["to_table"],
+    309                      to_column=fk.get("to_column", "id"),
+    310                  )
+?   311                  for fk in raw_data.get("foreign_keys", [])
+    312              ]
+    313              schema = SchemaInfo(columns=columns, indexes=indexes, foreign_keys=foreign_keys)
+    314  
+    315              # Parse migration history: enrich from files
+    316  
+    317              migration_history: list[MigrationHistoryItem] = []
+    318              migrate_dir = config.rails_project_path / "db" / "migrate"
+?   319              if migrate_dir.exists():
+    320                  migration_files = sorted(
+    321                      migrate_dir.glob("*.rb"), reverse=True
+    322                  )[:20]
+?   323                  for mf in migration_files:
+    324                      item = _parse_migration_file(mf, params.table_name)
+?   325                      if item:
+    326                          migration_history.append(item)
+    327  
+    328              # Find related models (models using this table)
+    329              related_models: list[str] = []
+?   330              try:
+    331                  table_refs = grep.search(params.table_name, scope="models", search_type="any")
+▶   332                  seen: set[str] = set()
+?   333                  for ref in table_refs[:10]:
+    334                      # Extract model class names from file paths
+    335                      fpath = ref.file
+?   336                      if "app/models" in fpath and fpath.endswith(".rb"):
+    337                          model_file = Path(fpath).stem
+    338                          model_name = "".join(w.capitalize() for w in model_file.split("_"))
+?   339                          if model_name not in seen:
+    340                              seen.add(model_name)
+    341                              related_models.append(model_name)
+?   342              except Exception:
+    343                  pass
+    344  
+    345              # Generate warnings
+    346              warnings = _generate_warnings(
+    347                  {
+    348                      "table_name": params.table_name,
+    349                      "estimated_row_count": raw_data.get("estimated_row_count"),
+    350                      "indexes": raw_data.get("indexes", []),
+    351                      "foreign_keys": raw_data.get("foreign_keys", []),
+    352                  },
+    353                  params.operation,
+    354              )
+    355  
+    356              # Generate template for the requested operation
+    357              template = _generate_template(params.table_name, params.operation)
+    358  
+    359              output = MigrationContextOutput(
+    360                  table_name=params.table_name,
+    361                  operation=params.operation,
+    362                  schema=schema,
+    363                  migration_history=migration_history,
+    364                  warnings=warnings,
+    365                  template=template,
+    366                  related_models=related_models,
+    367                  estimated_row_count=raw_data.get("estimated_row_count"),
+    368              )
+?   369              if file_analysis_fallback:
+    370                  result = output.model_dump()
+    371                  result["_metadata"] = {
+    372                      "source": "file_analysis",
+    373                      "note": "Rails runner unavailable",
+    374                  }
+?   375                  return json.dumps(result, ensure_ascii=False, indent=2)
+?   376              return output.model_dump_json(indent=2)
+    377  
+?   378          except Exception as e:
+?   379              return ErrorResponse(
+    380                  code="MIGRATION_CONTEXT_ERROR", message=str(e)
+    381              ).model_dump_json(indent=2)
+
+----------------------------------------------------------------------------------------------------
+■ CacheManager.set
+[CacheManager.set  src/rails_lens/cache/manager.py:59-93]
+     59      def set(
+     60          self,
+     61          tool_name: str,
+     62          key: str,
+     63          data: dict[str, Any],
+     64          source_files: list[str] | None = None,
+     65      ) -> None:
+     66          """データをキャッシュに書き込む。"""
+     67          path = self._cache_file_path(tool_name, key)
+     68          path.parent.mkdir(parents=True, exist_ok=True)
+     69  
+     70          # ソースファイルのmtimeを記録
+     71          source_files_mtime: dict[str, str] = {}
+?    72          if source_files:
+?    73              for sf in source_files:
+     74                  sf_path = self.config.rails_project_path / sf
+?    75                  if sf_path.is_file():
+     76                      mtime = sf_path.stat().st_mtime
+     77                      source_files_mtime[sf] = datetime.fromtimestamp(
+     78                          mtime, tz=UTC
+     79                      ).isoformat()
+     80  
+     81          cache_entry = {
+     82              "_cache_metadata": {
+     83                  "created_at": datetime.now(tz=UTC).isoformat(),
+     84                  "source_files_mtime": source_files_mtime,
+     85                  "rails_lens_version": "0.1.0",
+     86              },
+     87              "data": data,
+     88          }
+     89  
+★    90          with open(path, "w", encoding="utf-8") as f:
+     91              json.dump(cache_entry, f, ensure_ascii=False, indent=2)
+     92  
+     93          logger.debug("Cache written: %s/%s", tool_name, key)
+
+印: ▶ 次の段を呼ぶ行  ★ 効果の行  ? 条件の行（届くかはたいていここで決まる）

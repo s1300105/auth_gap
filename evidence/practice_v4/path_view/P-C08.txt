@@ -1,0 +1,363 @@
+# P-C08 の道筋（scripts/path_view.py。解析器の道筋をなぞった読む補助で、正しいとは限らない）
+# scripts/path_view.py evidence/scan_v2_v4_run1/v4-twelvetake-studios__reaper-mcp.json corpus/v4-twelvetake-studios__reaper-mcp reaper_mcp_server.py 605 pathlib.Path.unlink --decl D2
+====================================================================================================
+ツール insert_track  本体 reaper_mcp_server.py:605  宣言 {'destructiveHint': False}
+効果の行: reaper_mcp_server.py:340, reaper_mcp_server.py:368
+
+【1】道筋の一覧（解析器が通った関数の列。4 本）
+  道筋 1: 本体の 617 行 → reaper_call → dispatch → reaper_call_file  → 効果 reaper_mcp_server.py:340, reaper_mcp_server.py:368
+  道筋 2: 本体の 617 行 → reaper_call → ensure_bridge_current → dispatch → reaper_call_file  → 効果 reaper_mcp_server.py:340, reaper_mcp_server.py:368
+  道筋 3: 本体の 623 行 → reaper_batch → ensure_bridge_current → dispatch → reaper_call_file  → 効果 reaper_mcp_server.py:340, reaper_mcp_server.py:368
+  道筋 4: 本体の 623 行 → reaper_batch → reaper_call_file  → 効果 reaper_mcp_server.py:340, reaper_mcp_server.py:368
+
+【2】関数のソース（道筋に出てくる順に 1 回ずつ。深さは道筋によって違うので一覧で確かめる）
+
+----------------------------------------------------------------------------------------------------
+■ 本体 insert_track
+[insert_track  reaper_mcp_server.py:604-626]
+    604  @mcp.tool(annotations=ToolAnnotations(destructiveHint=False))
+    605  async def insert_track(index: int = None, name: str = None) -> dict:
+    606      """
+    607      Insert a new track at the specified index.
+    608  
+    609      Args:
+    610          index: Position to insert track (0-based). If not specified, adds at end.
+    611          name: Optional name for the new track.
+    612  
+    613      Returns:
+    614          Info about the created track.
+    615      """
+?   616      if index is None:
+▶   617          count_result = await reaper_call("CountTracks", 0)
+    618          index = count_result.get("ret", 0)
+    619  
+    620      calls = [("InsertTrackAtIndex", index, True)]
+?   621      if name:
+    622          calls.append(("GetSetMediaTrackInfo_String", index, "P_NAME", name, True))
+▶   623      batch = await reaper_batch(*calls)
+?   624      if not batch.get("ok"):
+?   625          return {"ok": False, "error": batch.get("error", "unknown error")}
+?   626      return batch["results"][0]
+
+----------------------------------------------------------------------------------------------------
+■ reaper_call  （同じ名前の定義が 2 個。全部出す）
+[reaper_call  reaper_mcp_server.py:539-554]
+    539  async def reaper_call(func: str, *args, timeout: float = None) -> dict:
+    540      """
+    541      Call a REAPER function via the bridge's file mailbox.
+    542  
+    543      `timeout` overrides the deadline for this call only (issue #11). Keyword-only, so
+    544      every existing positional call site keeps passing REAPER arguments and cannot
+    545      accidentally donate one to the deadline.
+    546      """
+    547      args_list = list(args)
+    548  
+?   549      if func != "GetBridgeVersion":
+▶   550          stale = await ensure_bridge_current()
+?   551          if stale:
+?   552              return stale
+    553  
+▶   554      return await dispatch(func, args_list, timeout=timeout)
+[reaper_call  test_connection.py:36-68]
+     36  def reaper_call(func: str, args: list, timeout: float = TIMEOUT) -> dict:
+     37      """Send one request through the file bridge and return the decoded response."""
+     38      global _counter
+     39      _counter = (_counter % 999) + 1
+     40      BRIDGE_DIR.mkdir(parents=True, exist_ok=True)
+     41  
+     42      request_file = BRIDGE_DIR / f"request_{_counter}.json"
+     43      response_file = BRIDGE_DIR / f"response_{_counter}.json"
+     44  
+?    45      try:
+     46          response_file.unlink(missing_ok=True)
+?    47      except OSError:
+     48          pass
+     49  
+     50      request_file.write_text(json.dumps({"func": func, "args": args}))
+     51  
+     52      start = time.time()
+?    53      while time.time() - start < timeout:
+?    54          if response_file.exists():
+     55              text = response_file.read_text().strip()
+?    56              if text:
+?    57                  try:
+     58                      data = json.loads(text)
+?    59                  except json.JSONDecodeError:
+     60                      time.sleep(POLL_INTERVAL)
+?    61                      continue
+     62                  request_file.unlink(missing_ok=True)
+     63                  response_file.unlink(missing_ok=True)
+?    64                  return data
+     65          time.sleep(POLL_INTERVAL)
+     66  
+     67      request_file.unlink(missing_ok=True)
+?    68      return {"ok": False, "error": "timeout"}
+
+----------------------------------------------------------------------------------------------------
+■ dispatch
+[dispatch  reaper_mcp_server.py:460-462]
+    460  async def dispatch(func: str, args_list: list, timeout: float = None) -> dict:
+    461      """Send one call over the file transport, with no version gate."""
+▶   462      return await reaper_call_file(func, args_list, timeout=timeout)
+
+----------------------------------------------------------------------------------------------------
+■ reaper_call_file
+[reaper_call_file  reaper_mcp_server.py:268-457]
+    268  async def reaper_call_file(func: str, args: list, timeout: float = None, calls: list = None) -> dict:
+    269      """Call a REAPER function via file-based bridge.
+    270  
+    271      `timeout` overrides the deadline for this one call. FILE_TIMEOUT is read here at call
+    272      time rather than bound as a def-time default, because the test fixtures monkeypatch
+    273      the module global and a bound default would stop seeing it.
+    274      """
+    275      global request_counter
+    276      deadline = FILE_TIMEOUT if timeout is None else timeout
+    277  
+    278      # Refuse rather than create a junk directory and then time out against it forever.
+?   279      if BRIDGE_DIR_PROBLEM:
+?   280          return {"ok": False, "error": BRIDGE_DIR_PROBLEM}
+    281  
+    282      # Ensure bridge directory exists
+    283      BRIDGE_DIR.mkdir(parents=True, exist_ok=True)
+    284  
+    285      # Every request carries an id and the bridge echoes it back. Claiming makes the slot
+    286      # provably ours, but the fallback path below does not claim, and a response read out
+    287      # of a slot we do not own is a well-formed WRONG ANSWER rather than a timeout -- the
+    288      # failure mode claiming was introduced to kill (#16). The id is what makes that loud.
+    289      # It also closes the abandonment case: a slot reclaimed after a timeout could still
+    290      # read the previous call's answer, because the stale response is newer than the new
+    291      # request and nothing distinguished them.
+    292      #
+    293      # uuid rather than pid+counter: a pid is reused after a process dies and a restarted
+    294      # process starts its counter over, so pid+counter repeats across restarts, which is
+    295      # exactly when abandoned responses are lying around.
+    296      request_id = uuid.uuid4().hex[:16]
+?   297      if calls is None:
+    298          request = {"func": func, "args": args, "id": request_id}
+?   299      else:
+    300          request = {"calls": calls, "id": request_id}
+    301      undo = undo_label.get()
+?   302      if undo:
+    303          request["undo"] = undo
+    304      payload = json.dumps(request, ensure_ascii=False).encode("utf-8")
+    305  
+    306      # Claim a slot by EXCLUSIVE CREATE rather than trusting the counter.
+    307      #
+    308      # `request_counter` is a per-process global starting at 0, and the mailbox
+    309      # is shared by every MCP client on this machine. One stdio server is
+    310      # spawned per client (Claude Desktop and Claude Code each get their own),
+    311      # so two live servers both allocated request_1.json on their first call and
+    312      # collided from then on. Observed failure modes: a request silently
+    313      # overwritten (caller times out), a response deleted by the other process
+    314      # mid-wait, and worst - CROSS-TALK, where one client reads the answer to
+    315      # the other client's question and returns it as a success. A well-formed
+    316      # wrong answer is far more dangerous than a timeout for a measurement
+    317      # pipeline.
+    318      #
+    319      # O_EXCL makes co-selection impossible: only one process can create a given
+    320      # request_N.json, and the loser advances to the next slot. The bridge derives
+    321      # response_N from the request's own index and matches names against
+    322      # ^request_(%d+)%.json$, so the filename format MUST stay request_<int>.json:
+    323      # PID-suffixed names would never be seen by it.
+    324      request_file = None
+    325      response_file = None
+    326      claim_error = None
+    327  
+?   328      if not _bridge_check["claims_ok"]:
+    329          # Deployed bridge predates the mid-claim guard (or has not been probed yet).
+    330          # Claiming would leave request_N.json visible at zero bytes while the stale
+    331          # response is cleared, and a bridge without the guard answers that window with
+    332          # "Malformed request JSON" -- a false failure for a valid call. Fall back to
+    333          # the single-shot write those bridges were built against. It cannot protect
+    334          # against a second client, which is exactly what it did before 1.6.6, so the
+    335          # upgrade is never a downgrade for anyone.
+    336          request_counter = (request_counter % 999) + 1
+    337          request_file = BRIDGE_DIR / f"request_{request_counter}.json"
+    338          response_file = BRIDGE_DIR / f"response_{request_counter}.json"
+?   339          try:
+★   340              response_file.unlink(missing_ok=True)
+?   341          except OSError:
+    342              pass
+    343          request_file.write_bytes(payload)
+    344  
+    345      # Skipped entirely when the fallback above already placed the request.
+?   346      for _ in range(999 if request_file is None else 0):
+    347          request_counter = (request_counter % 999) + 1
+    348          candidate = BRIDGE_DIR / f"request_{request_counter}.json"
+?   349          try:
+    350              fd = os.open(candidate, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+?   351          except FileExistsError:
+?   352              continue  # another process (or an abandoned call) owns this slot
+?   353          except OSError as exc:
+    354              # Only FileExistsError means "taken". Anything else -- no
+    355              # permission, full disk, read-only mount -- is a fault that will
+    356              # hit every other slot too, so advancing would burn 998 more
+    357              # attempts and then report a full mailbox: the wrong diagnosis
+    358              # for the wrong problem.
+    359              claim_error = exc
+?   360              break
+    361          request_file = candidate
+    362          response_file = BRIDGE_DIR / f"response_{request_counter}.json"
+    363          # The slot is ours, so any response_N sitting here is an orphan from
+    364          # an abandoned earlier call (the mailbox held exactly such an orphan,
+    365          # response_21.json, for 12 days). Drop it before writing the request:
+    366          # this is what stops it being read back as our answer.
+?   367          try:
+★   368              response_file.unlink(missing_ok=True)
+?   369          except OSError:
+    370              pass
+?   371          try:
+    372              os.write(fd, payload)
+?   373          finally:
+    374              os.close(fd)
+?   375          break
+    376  
+?   377      if request_file is None:
+?   378          if claim_error is not None:
+?   379              return {
+    380                  "ok": False,
+    381                  "error": f"Cannot claim a bridge request slot: {claim_error}",
+    382                  "bridge_dir": str(BRIDGE_DIR),
+    383                  "hint": "The bridge directory above could not be written to. Check its "
+    384                          "permissions and that the disk is neither full nor read-only.",
+    385              }
+?   386          return {
+    387              "ok": False,
+    388              "error": "No free bridge request slot (all 999 in use)",
+    389              "hint": "Stale request_*.json files in the bridge directory, or the "
+    390                      "REAPER bridge script is not draining them",
+    391          }
+    392  
+?   393      try:
+    394          # Wait for response
+    395          start_time = time.time()
+?   396          while time.time() - start_time < deadline:
+?   397              if response_file.exists():
+?   398                  try:
+    399                      response_text = response_file.read_text(encoding="utf-8")
+?   400                      if response_text.strip():
+    401                          response_data = json.loads(response_text)
+    402                          answered = response_data.get("id")
+?   403                          if answered is not None and answered != request_id:
+    404                              # Someone else's answer is sitting in this slot. Do not
+    405                              # return it: a well-formed wrong answer is far worse than a
+    406                              # timeout for anything editing a project. Do not delete it
+    407                              # either -- the process that asked for it is still waiting.
+    408                              # Time out instead and let the caller retry into a fresh slot.
+    409                              await asyncio.sleep(FILE_POLL_INTERVAL)
+?   410                              continue
+    411                          # No id at all means a bridge older than the echo, or the
+    412                          # malformed-JSON path which never decoded an id to echo. Both are
+    413                          # safe to take: the first is exactly today's behaviour, and the
+    414                          # second hands back an error rather than a plausible answer.
+?   415                          try:
+    416                              request_file.unlink(missing_ok=True)
+    417                              response_file.unlink(missing_ok=True)
+?   418                          except:
+    419                              pass
+?   420                          return response_data
+?   421                  except (json.JSONDecodeError, UnicodeDecodeError):
+    422                      pass
+?   423                  except OSError:
+    424                      pass
+    425              await asyncio.sleep(FILE_POLL_INTERVAL)
+    426  
+    427          # Timeout
+?   428          try:
+    429              request_file.unlink(missing_ok=True)
+?   430          except:
+    431              pass
+    432  
+?   433          return {
+    434              "ok": False,
+    435              "error": f"{func} timed out after {deadline:g}s",
+    436              "bridge_dir": str(BRIDGE_DIR),
+    437              "hint": (
+    438                  "This does NOT mean the work did not happen. The bridge answers only after "
+    439                  "the operation finishes, so anything slower than the timeout (rendering, "
+    440                  "freezing, glueing, normalizing, opening or saving a project) reports a "
+    441                  "timeout while REAPER completes it normally. Renders in particular run at "
+    442                  "close to realtime unless the project's render settings say otherwise. "
+    443                  "Set REAPER_FILE_TIMEOUT to a number of seconds that covers the work you "
+    444                  "are asking for; it defaults to 5.0. "
+    445                  "Check the expected result before retrying. When retrying a render, do not "
+    446                  "pass overwrite=true to clear a 'target already exists' error: REAPER "
+    447                  "creates the target at zero bytes when a render starts, so that file is the "
+    448                  "render still in progress and overwrite deletes it. "
+    449                  "If nothing happened at all, check in order: (1) REAPER is running; "
+    450                  "(2) reaper_mcp_bridge.lua is loaded and running in REAPER; (3) the "
+    451                  "directory printed by the bridge on startup matches bridge_dir above; if it "
+    452                  "does not, set REAPER_BRIDGE_DIR to the bridge's directory. Deploy the "
+    453                  "bundled script with: twelvetake-reaper-mcp --install-bridge"
+    454              ),
+    455          }
+?   456      except Exception as e:
+?   457          return {"ok": False, "error": f"File request failed: {str(e)}"}
+
+----------------------------------------------------------------------------------------------------
+■ ensure_bridge_current
+[ensure_bridge_current  reaper_mcp_server.py:492-536]
+    492  async def ensure_bridge_current() -> Optional[dict]:
+    493      """Probe the deployed bridge once; return an error dict if it is too old.
+    494  
+    495      Worth the single extra round trip: an older bridge carries JSON decoder bugs that
+    496      drop a small float or split a name containing a comma, and both of those shorten
+    497      the argument list rather than failing. A shortened argument list is a wrong edit to
+    498      the user's project, so a stale bridge is refused rather than used.
+    499  
+    500      Only a pass is cached. A refusal is re-probed on the next call, so redeploying the
+    501      bridge and re-running it in REAPER clears the refusal without reconnecting the server.
+    502      A probe that merely times out (REAPER closed) is not a verdict at all.
+    503      """
+?   504      if _bridge_check["done"]:
+?   505          return None
+    506  
+▶   507      result = await dispatch("GetBridgeVersion", [])
+    508  
+?   509      if result.get("ok") and result.get("version"):
+    510          deployed = str(result["version"])
+    511          _bridge_check["claims_ok"] = (
+    512              version_tuple(deployed) >= version_tuple(SLOT_CLAIM_BRIDGE_VERSION)
+    513          )
+?   514          if version_tuple(deployed) < version_tuple(MIN_BRIDGE_VERSION):
+    515              _bridge_check["error"] = {
+    516                  "ok": False,
+    517                  "error": f"Bridge script is out of date (deployed {deployed}, need {MIN_BRIDGE_VERSION})",
+    518                  "hint": _STALE_BRIDGE_HINT,
+    519              }
+?   520              return _bridge_check["error"]
+    521          _bridge_check["error"] = None
+    522          _bridge_check["done"] = True
+?   523          return None
+    524  
+    525      # A bridge older than 1.6.1 has no GetBridgeVersion handler and says so.
+?   526      if "Unknown function" in str(result.get("error", "")):
+    527          _bridge_check["error"] = {
+    528              "ok": False,
+    529              "error": f"Bridge script is out of date (pre-{MIN_BRIDGE_VERSION}, cannot report its version)",
+    530              "hint": _STALE_BRIDGE_HINT,
+    531          }
+?   532          return _bridge_check["error"]
+    533  
+    534      # Timeout, misconfigured directory, REAPER closed: not a version verdict. Say nothing
+    535      # and let the real call surface its own (already actionable) error.
+?   536      return None
+
+----------------------------------------------------------------------------------------------------
+■ reaper_batch
+[reaper_batch  reaper_mcp_server.py:557-569]
+    557  async def reaper_batch(*calls, timeout: float = None) -> dict:
+    558      """
+    559      Run several bridge calls in one request, stopping at the first that fails.
+    560  
+    561      Each call is a tuple of (func, *args). The bridge runs them in one pass, so an edit
+    562      made of several calls is a single step in REAPER's undo history. Answers
+    563      {ok, results: [one response per call run], failed_at, error}.
+    564      """
+▶   565      stale = await ensure_bridge_current()
+?   566      if stale:
+?   567          return stale
+    568      payload = [{"func": func, "args": list(args)} for func, *args in calls]
+▶   569      return await reaper_call_file("batch", [], timeout=timeout, calls=payload)
+
+印: ▶ 次の段を呼ぶ行  ★ 効果の行  ? 条件の行（届くかはたいていここで決まる）
