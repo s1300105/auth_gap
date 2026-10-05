@@ -1,0 +1,357 @@
+{
+ "_note": "CONTRADICTION（ユニット × (site, kind)。ユニットは unit_id と位置で区別）。手検証の候補表。relpath / lineno は組の中の (relpath, lineno) の対の最小、全位置は locations。",
+ "n": 12,
+ "rows": [
+  {
+   "tree": "fxdev-tallyfy__mcp-public-405091f051",
+   "unit": "register_api_fallback_tool.tallyfy_api_read",
+   "unit_relpath": "server/tools/api_fallback.py",
+   "unit_lineno": 540,
+   "tool": "tallyfy_api_read",
+   "relpath": "server/tools/api_fallback.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.request",
+   "lineno": 457,
+   "destructive": null,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "server/tools/api_fallback.py",
+     "lineno": 457,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "fxdev-tallyfy__mcp-public-83437bc2fe",
+   "unit": "register_api_fallback_tool.tallyfy_api_read",
+   "unit_relpath": "server/tools/api_fallback.py",
+   "unit_lineno": 540,
+   "tool": "tallyfy_api_read",
+   "relpath": "server/tools/api_fallback.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.request",
+   "lineno": 457,
+   "destructive": null,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "server/tools/api_fallback.py",
+     "lineno": 457,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "fxdev-tallyfy__mcp-public-d532e36115",
+   "unit": "register_api_fallback_tool.tallyfy_api_read",
+   "unit_relpath": "server/tools/api_fallback.py",
+   "unit_lineno": 374,
+   "tool": "tallyfy_api_read",
+   "relpath": "server/tools/api_fallback.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.request",
+   "lineno": 291,
+   "destructive": null,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "server/tools/api_fallback.py",
+     "lineno": 291,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "fxdev-vishalsachdev__canvas-mcp-5ac06cbdd2",
+   "unit": "register_peer_review_comment_tools.extract_peer_review_dataset",
+   "unit_relpath": "src/canvas_mcp/tools/peer_review_comments.py",
+   "unit_lineno": 149,
+   "tool": "extract_peer_review_dataset",
+   "relpath": "src/canvas_mcp/tools/peer_review_comments.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 214,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/canvas_mcp/tools/peer_review_comments.py",
+     "lineno": 214,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    },
+    {
+     "relpath": "src/canvas_mcp/tools/peer_review_comments.py",
+     "lineno": 226,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fxdev-vishalsachdev__canvas-mcp-5ac06cbdd2",
+   "unit": "register_peer_review_comment_tools.extract_peer_review_dataset",
+   "unit_relpath": "src/canvas_mcp/tools/peer_review_comments.py",
+   "unit_lineno": 149,
+   "tool": "extract_peer_review_dataset",
+   "relpath": "src/canvas_mcp/tools/peer_review_comments.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 195,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/canvas_mcp/tools/peer_review_comments.py",
+     "lineno": 195,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "fxdev-vishalsachdev__canvas-mcp-5ac06cbdd2",
+   "unit": "register_peer_review_tools.generate_peer_review_report",
+   "unit_relpath": "src/canvas_mcp/tools/peer_reviews.py",
+   "unit_lineno": 91,
+   "tool": "generate_peer_review_report",
+   "relpath": "src/canvas_mcp/tools/peer_reviews.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 149,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/canvas_mcp/tools/peer_reviews.py",
+     "lineno": 149,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fxdev-vishalsachdev__canvas-mcp-5ac06cbdd2",
+   "unit": "register_peer_review_tools.generate_peer_review_report",
+   "unit_relpath": "src/canvas_mcp/tools/peer_reviews.py",
+   "unit_lineno": 91,
+   "tool": "generate_peer_review_report",
+   "relpath": "src/canvas_mcp/tools/peer_reviews.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 135,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/canvas_mcp/tools/peer_reviews.py",
+     "lineno": 135,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "fxdev-vishalsachdev__canvas-mcp-5ac06cbdd2",
+   "unit": "register_shared_file_tools.download_course_file",
+   "unit_relpath": "src/canvas_mcp/tools/files.py",
+   "unit_lineno": 43,
+   "tool": "download_course_file",
+   "relpath": "src/canvas_mcp/tools/files.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/canvas_mcp/tools/files.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fxdev-vitexsoftware__mcp-server-abraflexi-4be18a3c55",
+   "unit": "evidence_download_attachment",
+   "unit_relpath": "abraflexi_mcp_server/server.py",
+   "unit_lineno": 1700,
+   "tool": "evidence_download_attachment",
+   "relpath": "abraflexi_mcp_server/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 1732,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "abraflexi_mcp_server/server.py",
+     "lineno": 1732,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fxdev-vitexsoftware__mcp-server-abraflexi-4be18a3c55",
+   "unit": "evidence_export_report",
+   "unit_relpath": "abraflexi_mcp_server/server.py",
+   "unit_lineno": 1817,
+   "tool": "evidence_export_report",
+   "relpath": "abraflexi_mcp_server/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 1861,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "abraflexi_mcp_server/server.py",
+     "lineno": 1861,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fxdev-vitexsoftware__mcp-server-abraflexi-4be18a3c55",
+   "unit": "evidence_get_attachment_thumbnail",
+   "unit_relpath": "abraflexi_mcp_server/server.py",
+   "unit_lineno": 1739,
+   "tool": "evidence_get_attachment_thumbnail",
+   "relpath": "abraflexi_mcp_server/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 1775,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "abraflexi_mcp_server/server.py",
+     "lineno": 1775,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "fxdev-vitexsoftware__mcp-server-abraflexi-4be18a3c55",
+   "unit": "evidence_get_qr_code",
+   "unit_relpath": "abraflexi_mcp_server/server.py",
+   "unit_lineno": 1868,
+   "tool": "evidence_get_qr_code",
+   "relpath": "abraflexi_mcp_server/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 1902,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "abraflexi_mcp_server/server.py",
+     "lineno": 1902,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  }
+ ]
+}

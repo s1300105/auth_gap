@@ -1,0 +1,202 @@
+{
+ "_note": "母集団 v2 の full scan（fxdev_run1）。scripts/scan_v2.py で作成。",
+ "analyzer_commit": "54c4a0aa7339dfc04d5c72d08db3b0bf074ac201",
+ "implementation_sha256_combined": "35606ba9c9ddb6c034bdedbb54b1cfc8c276c57d67e84a843c69d70068f801cb",
+ "authgap_dirty": false,
+ "authgap_last_commit": "b87c0228308b9ff7463b865555d4d6d001d88d30",
+ "python": "3.12.3",
+ "max_depth": 4,
+ "n_trees_resumed": 0,
+ "n_trees": 11,
+ "n_units": 734,
+ "n_dangerous_units": 447,
+ "n_rows": 4114,
+ "n_effects": 2104,
+ "n_effects_unique": 931,
+ "verdict_rows": {
+  "CONTRADICTION": 16,
+  "GAP_INJECT": 850,
+  "INVENTORY": 28,
+  "UNKNOWN": 4066
+ },
+ "trees": [
+  {
+   "tree": "fxdev-darkcofy__sqlprism-b10fd28bb3",
+   "status": "ok",
+   "n_units": 11,
+   "n_rows": 9,
+   "n_effects": 3,
+   "n_effects_unique": 2,
+   "verdicts": {
+    "UNKNOWN": 9
+   },
+   "budget_skipped": 0,
+   "n_parse_failures": 0,
+   "n_truncations": 0,
+   "elapsed_s": 3.0
+  },
+  {
+   "tree": "fxdev-evgenygurin__dj-music-plugin-9fe856150c",
+   "status": "ok",
+   "n_units": 56,
+   "n_rows": 34,
+   "n_effects": 23,
+   "n_effects_unique": 13,
+   "verdicts": {
+    "GAP_INJECT": 28,
+    "UNKNOWN": 34
+   },
+   "budget_skipped": 0,
+   "n_parse_failures": 0,
+   "n_truncations": 0,
+   "elapsed_s": 8.9
+  },
+  {
+   "tree": "fxdev-md0-code__dosbox-x-mcp-45d375a2e0",
+   "status": "ok",
+   "n_units": 0,
+   "n_rows": 0,
+   "n_effects": 0,
+   "n_effects_unique": 0,
+   "verdicts": {},
+   "budget_skipped": 0,
+   "n_parse_failures": 0,
+   "n_truncations": 1,
+   "elapsed_s": 1.7
+  },
+  {
+   "tree": "fxdev-tallyfy__mcp-public-04a84d2c14",
+   "status": "ok",
+   "n_units": 108,
+   "n_rows": 5,
+   "n_effects": 2,
+   "n_effects_unique": 2,
+   "verdicts": {
+    "GAP_INJECT": 2,
+    "UNKNOWN": 2
+   },
+   "budget_skipped": 0,
+   "n_parse_failures": 0,
+   "n_truncations": 0,
+   "elapsed_s": 9.1
+  },
+  {
+   "tree": "fxdev-tallyfy__mcp-public-405091f051",
+   "status": "ok",
+   "n_units": 113,
+   "n_rows": 429,
+   "n_effects": 213,
+   "n_effects_unique": 109,
+   "verdicts": {
+    "CONTRADICTION": 2,
+    "GAP_INJECT": 4,
+    "INVENTORY": 12,
+    "UNKNOWN": 420
+   },
+   "budget_skipped": 0,
+   "n_parse_failures": 0,
+   "n_truncations": 0,
+   "elapsed_s": 21.2
+  },
+  {
+   "tree": "fxdev-tallyfy__mcp-public-83437bc2fe",
+   "status": "ok",
+   "n_units": 119,
+   "n_rows": 458,
+   "n_effects": 227,
+   "n_effects_unique": 117,
+   "verdicts": {
+    "CONTRADICTION": 2,
+    "GAP_INJECT": 6,
+    "INVENTORY": 4,
+    "UNKNOWN": 449
+   },
+   "budget_skipped": 0,
+   "n_parse_failures": 0,
+   "n_truncations": 0,
+   "elapsed_s": 27.5
+  },
+  {
+   "tree": "fxdev-tallyfy__mcp-public-d532e36115",
+   "status": "ok",
+   "n_units": 110,
+   "n_rows": 426,
+   "n_effects": 212,
+   "n_effects_unique": 108,
+   "verdicts": {
+    "CONTRADICTION": 2,
+    "GAP_INJECT": 3,
+    "INVENTORY": 12,
+    "UNKNOWN": 420
+   },
+   "budget_skipped": 0,
+   "n_parse_failures": 0,
+   "n_truncations": 0,
+   "elapsed_s": 20.5
+  },
+  {
+   "tree": "fxdev-teknovizier__tekla_mcp_server-b265ba6b8d",
+   "status": "ok",
+   "n_units": 42,
+   "n_rows": 25,
+   "n_effects": 25,
+   "n_effects_unique": 11,
+   "verdicts": {
+    "UNKNOWN": 18
+   },
+   "budget_skipped": 0,
+   "n_parse_failures": 0,
+   "n_truncations": 0,
+   "elapsed_s": 8.1
+  },
+  {
+   "tree": "fxdev-vicampuzano__metricool-mcp-60f99010a5",
+   "status": "ok",
+   "n_units": 7,
+   "n_rows": 19,
+   "n_effects": 7,
+   "n_effects_unique": 6,
+   "verdicts": {
+    "GAP_INJECT": 6,
+    "UNKNOWN": 19
+   },
+   "budget_skipped": 0,
+   "n_parse_failures": 0,
+   "n_truncations": 0,
+   "elapsed_s": 0.4
+  },
+  {
+   "tree": "fxdev-vishalsachdev__canvas-mcp-5ac06cbdd2",
+   "status": "ok",
+   "n_units": 100,
+   "n_rows": 2705,
+   "n_effects": 1388,
+   "n_effects_unique": 559,
+   "verdicts": {
+    "CONTRADICTION": 6,
+    "GAP_INJECT": 797,
+    "UNKNOWN": 2695
+   },
+   "budget_skipped": 0,
+   "n_parse_failures": 0,
+   "n_truncations": 0,
+   "elapsed_s": 85.1
+  },
+  {
+   "tree": "fxdev-vitexsoftware__mcp-server-abraflexi-4be18a3c55",
+   "status": "ok",
+   "n_units": 68,
+   "n_rows": 4,
+   "n_effects": 4,
+   "n_effects_unique": 4,
+   "verdicts": {
+    "CONTRADICTION": 4,
+    "GAP_INJECT": 4
+   },
+   "budget_skipped": 0,
+   "n_parse_failures": 0,
+   "n_truncations": 0,
+   "elapsed_s": 1.5
+  }
+ ]
+}
