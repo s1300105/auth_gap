@@ -93,7 +93,7 @@ def sheet_rows(kind: str, targets: list[dict], seed: int) -> list[list[str]]:
 
 
 def write_csv(path: str, cols: list[str], rows: list[list[str]]) -> None:
-    with open(path, "w", encoding="utf-8", newline="") as fh:
+    with open(path, "w", encoding="utf-8-sig", newline="") as fh:  # BOM つき: Excel で日本語が化けない
         w = csv.writer(fh)
         w.writerow(cols)
         w.writerows(rows)
@@ -113,7 +113,7 @@ def main(argv: list[str] | None = None) -> int:
     os.makedirs(a.out_dir, exist_ok=True)
     sheets: dict[str, list[list[str]]] = {}
     for kind, path in given.items():
-        with open(path, encoding="utf-8") as fh:
+        with open(path, encoding="utf-8-sig") as fh:
             s = json.load(fh)
         if s.get("kind") != kind:
             raise SystemExit(f"--{kind} に渡したファイルの kind が {s.get('kind')!r}")
@@ -124,7 +124,7 @@ def main(argv: list[str] | None = None) -> int:
         write_csv(os.path.join(a.out_dir, f"{kind}.csv"), columns(kind), sheets[kind])
         print(f"{kind}.csv: {len(sheets[kind])} 行")
     if a.agreement:
-        with open(a.agreement, encoding="utf-8") as fh:
+        with open(a.agreement, encoding="utf-8-sig") as fh:
             ag = json.load(fh)
         if ag.get("kind") != "agreement":
             raise SystemExit(f"--agreement に渡したファイルの kind が {ag.get('kind')!r}")

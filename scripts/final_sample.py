@@ -76,15 +76,17 @@ def unit_sort_key(u: dict) -> tuple:
 
 def declared(dk: dict) -> set[str]:
     """ユニットが明示した宣言（解析器が矛を判定するときと同じ条件。事前登録 §2.12 (f)、D73 の 3）。"""
+    # `authgap/dparse.py: contradiction_findings` と同じ分岐: D2 は readOnly が無いとき（elif）、D4 も readOnly が無いとき
     ex = set(dk.get("explicit") or [])
+    ro = "readOnlyHint" in ex
     out = set()
-    if "readOnlyHint" in ex:
+    if ro:
         out.add("D1")
-    if "destructiveHint" in ex:
+    elif "destructiveHint" in ex:
         out.add("D2")
     if dk.get("closed_world"):
         out.add("D3")
-    if dk.get("idempotent"):
+    if dk.get("idempotent") and not ro:
         out.add("D4")
     return out
 

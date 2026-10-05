@@ -284,7 +284,7 @@ ANALYZER_COLS = {"reasons", "locations", "site", "kind", "n_effects", "truncated
 
 
 def read_csv(path):
-    with open(path, encoding="utf-8", newline="") as fh:
+    with open(path, encoding="utf-8-sig", newline="") as fh:
         return list(csv.DictReader(fh))
 
 
@@ -321,7 +321,7 @@ def test_sheet_columns_and_no_analyzer_output_in_miss(tmp_path):
                 "note", "minutes", "ai_used", "ai_model", "ai_log", "pair_id", "decl", "unit_relpath", "unit_lineno"):
         assert col in miss[0]
     # 打ち切りの印は sample の JSON にだけある
-    raw = (out / "miss.csv").read_text(encoding="utf-8")
+    raw = (out / "miss.csv").read_text(encoding="utf-8-sig")
     assert "TRUNCATED" not in raw
     assert any(t["truncated"] for t in json.load(open(paths["miss"], encoding="utf-8"))["targets"])
     con = read_csv(out / "contradiction.csv")
@@ -345,8 +345,8 @@ def test_sheet_order_is_seeded_shuffle_with_stable_ids(tmp_path):
     run_sheet(paths, tmp_path / "s2", 5)
     run_sheet(paths, tmp_path / "s3", 99)
     for kind in fs.KINDS:
-        a = (tmp_path / "s1" / f"{kind}.csv").read_text(encoding="utf-8")
-        assert a == (tmp_path / "s2" / f"{kind}.csv").read_text(encoding="utf-8")
+        a = (tmp_path / "s1" / f"{kind}.csv").read_text(encoding="utf-8-sig")
+        assert a == (tmp_path / "s2" / f"{kind}.csv").read_text(encoding="utf-8-sig")
         r1 = read_csv(tmp_path / "s1" / f"{kind}.csv")
         r3 = read_csv(tmp_path / "s3" / f"{kind}.csv")
         assert [r["seq"] for r in r1] == [str(i) for i in range(1, len(r1) + 1)]
