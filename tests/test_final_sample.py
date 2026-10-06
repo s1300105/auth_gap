@@ -318,7 +318,8 @@ def test_sheet_columns_and_no_analyzer_output_in_miss(tmp_path):
     miss = read_csv(out / "miss.csv")
     assert miss and not (ANALYZER_COLS & set(miss[0]))
     for col in ("outcome", "cause", "write_target", "condition_type", "condition", "depth", "evidence", "ai_found",
-                "note", "minutes", "ai_used", "ai_model", "ai_log", "pair_id", "decl", "unit_relpath", "unit_lineno"):
+                "output_found", "note", "minutes", "ai_used", "ai_model", "ai_log", "pair_id", "decl", "unit_relpath",
+                "unit_lineno"):
         assert col in miss[0]
     # 打ち切りの印は sample の JSON にだけある
     raw = (out / "miss.csv").read_text(encoding="utf-8-sig")

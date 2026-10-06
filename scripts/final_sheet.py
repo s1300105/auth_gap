@@ -49,7 +49,7 @@ JUDGE_COLS = {
                       "minutes", *AI_COLS],
     # 手引き 18.4（unknown_reason は 18.4 の表に無いが、第 19 節「不明の理由は集計で内訳として報告する」ために足した）
     "miss": ["outcome", "cause", "write_target", "condition_type", "condition", "depth", "unknown_reason", "evidence",
-             "ai_found", "note", "minutes", *AI_COLS],
+             "ai_found", "output_found", "note", "minutes", *AI_COLS],  # output_found: 手引き 18.2 の 4・18.4（D76）
     # 手引き 18A.3
     "unknown": ["outcome", "reachable", "violates", "write_target", "condition_type", "condition", "unknown_reason",
                 "evidence", "note", "minutes", *AI_COLS],
