@@ -1337,10 +1337,12 @@ D1 について**矛**です。
 ### 確認問題 19-4
 
 - **写す欄**: `tree`、`site`、`reasons`、`locations`、`decl`、`unit_lineno`
-- **書く欄**: `verdict`、`condition_type`、`evidence`、`write_target`、`minutes`、`violates`
+- **書く欄**: `verdict`、`condition_type`、`evidence`、`write_target`、`minutes`、`error_class`
 
 写す欄は抜き取りの出力（候補表と manifest の注記）から機械が埋め、判定の途中で変えません。
-書く欄は、判定者が手順 E〜H で埋めます（`write_target` は正のとき、D3 では通信先の種類）。
+書く欄は、判定者が手順 E〜H で埋めます。
+どの欄を書くかは判定ごとに決まっています（D83。2026-10-06 に欄を減らした）。
+`verdict`・`evidence`・`minutes` はどの判定でも書き、`condition_type` と `write_target` は正のとき（`write_target` は D3 では通信先の種類）、`error_class` は誤のときに書きます。
 
 
 ---
@@ -1367,7 +1369,7 @@ v2 は開発用のデータで、論文には使いません。
 **(2)**
 
 - `condition_type`: `初回`
-- `condition`: 「その利用者（引数 `user`）のセッションのファイル `/var/app/sessions/<user>.json` がまだ無く、`load_session` が `None` を返すとき（`auth.py:22-23`）」
+- 条件の中身は、`evidence` の文末に「条件: …。」として書きます（D83。前の形の `condition` の欄はありません）。例:「条件: その利用者（引数 `user`）のセッションのファイル `/var/app/sessions/<user>.json` がまだ無く、`load_session` が `None` を返すとき（`auth.py:22-23`）。」
 
 考え方:
 
@@ -1388,10 +1390,10 @@ v2 は開発用のデータで、論文には使いません。
 
 **(4)** どちらも変わりません。
 
-- `verdict`: `正`。到達する（はい）、D1 に反する（はい。保存したファイルは呼び出しの後も残る）。
+- `verdict`: `正`。到達し、D1 に反する（保存したファイルは呼び出しの後も残る）。
 - `write_target`: `キャッシュ・状態の保存`。ツールの動作のために自分で保存し、13 行で読み返す点は同じです。
 
-元の題材との違いは、`condition_type`（`なし` → `初回`）と `condition`、それに `evidence` の条件の書き方だけです。
+元の題材との違いは、`condition_type`（`なし` → `初回`）と、`evidence` の条件の書き方（文末の「条件: …」を含む）だけです。
 
 ### 演習 20-2（この題材の `evidence` を自分で書く）
 
