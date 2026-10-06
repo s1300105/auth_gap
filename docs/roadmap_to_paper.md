@@ -12,7 +12,7 @@
 - 判定の規則: `docs/drafts/final_judging_guide_draft.md`（封の後は `docs/final_judging_guide.md`）
 - 事前登録: `docs/drafts/prereg_2_12_draft.md`（封の後は `docs/preregistration.md` §2.12）
 - 最終評価の細かい手順: `docs/final_evaluation_procedure.md`（この手順書と食い違うところは、下の「手順書の更新」に書いた）
-- 決定の記録: `docs/decisions.md`（D76〜D82 が最近のもの）
+- 決定の記録: `docs/decisions.md`（D76〜D83 が最近のもの）
 
 ---
 
@@ -29,7 +29,7 @@
 | **再現率の評価**（開発者が宣言を直したコミット 352 件、既存の道具との比較、深さ 0 との比較） | D78〜D80、`evidence/annotation_fixes_frame/` |
 | 評価の組み立ての決定（実態調査 D1・最大 200 件を足し、再現率と精度の評価にも使う） | D82 |
 | 判定者 1 人の先行例の調査 | `docs/single_rater_precedents.md` |
-| 教科書を D76〜D82 に合わせた（第 46 章 46.18 にまとめ、第 6・7・22・25・45・47 章と付録 A・C・E を直した） | `docs/textbook/ch46.md` |
+| 教科書を D76〜D83 に合わせた（第 46 章 46.18 にまとめ、判定の章（第 45〜54 章）と付録の記録の表・未決の記述を直した） | `docs/textbook/ch46.md` |
 | 手引きが決めていない点の一覧（11 個。A3 で決める） | `docs/textbook/appendix-i.md` の表紙 |
 
 **残っている大きな仕事**: 実態調査（D1）と精度（解析器の矛のうち本当の違反の割合）の判定と、論文の執筆。
@@ -144,6 +144,11 @@
 3. **1 つのコミットで封**: `docs/preregistration.md` に §2.12、`docs/final_judging_guide.md` に手引き。
    7 つの seed は封の日付で決まる（YYYYMMDD1〜7）。大学の生成 AI の規程の名前・版をこのとき書く。
 4. 封の後は、手引き・規則・seed・分母を変えない（変えるなら事前登録の §5 に逸脱として書く）。
+5. 封の前に、手引きと道具の食い違いを揃える（2026-10-06 に見つけたもの）:
+   - 手引き 21 の 1 は「矛と不の中身を 1 つの表に混ぜて並べる」だが、`scripts/final_sheet.py` は種類ごとに別の表を作り、表ごとに
+     seed ⑤ で並べる（D77 の 6）。どちらかに揃え、実態調査を最初に判定すること（D82）も 21 の 1 に書く。
+   - 手引き 12.1 は「道具は手順書 6.5 の定義のまま」だが、手順書 6.5 は最小の形のコードで、今の `scripts/show_target.py` と違う。
+     手引きの参照先を今の道具に直す。
 
 ---
 
