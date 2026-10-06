@@ -145,7 +145,7 @@
 
 | 手順 | コマンド（要点） | 出力 |
 |---|---|---|
-| C1 抽出と pin | `scripts/sample_population_v2.py --all --exclude docs/corpus_sample_v2.json --exclude docs/corpus_sample_v3.json --exclude docs/corpus_sample_v4.json --prefix final --out evidence/population_final/sample_final.json` | 約 3,464 repo と SHA |
+| C1 抽出と pin | `scripts/sample_population_v2.py --all --exclude docs/corpus_sample_v2.json --exclude docs/corpus_sample_v3.json --exclude docs/corpus_sample_v4.json --exclude docs/corpus_sample.json --prefix final --out evidence/population_final/sample_final.json` | 約 3,462 repo と SHA（v1〜v4 を除く。D81） |
 | C2 取得 | `scripts/fetch_corpus.py --spec <C1 の出力>`（ディスクが約 3 GB なので、数百 repo ずつ「取得 → 走査 → 消す」をくり返す） | `corpus/final-*` |
 | C2 取得後の条件 | `scripts/check_population_v2.py`（mcp を import しない・宣言ファイルが無い・取れない木を件数を出して除く） | 除いた木の一覧 |
 | C2 重複の除去 | `.venv312/bin/python scripts/dedup_trees.py hash …` → `dedup …`（Python 3.12 で取る。D77 の 16） | `dedup.json` |

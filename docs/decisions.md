@@ -4238,3 +4238,25 @@ AuthGap も (i) で出し直す（照らさない・ユニットが無い を見
 `scan_v2.py --max-depth 0`（ツールの本体だけ。呼び出し先には降りず `opaque(depth)` になる。`authgap/val/engine.py:1065`）で
 1 回走査し（label `fx_d0_run1`）、`fix_recall.py evaluate` の同じ規則で数えて、深さ 4（`fx_run1`）と並べる。解析器のコードは
 変えない（指紋は同じ）。主の比較は「AuthGap 深さ 0 と深さ 4」、既存の道具との比較は参考とする。
+
+## D81（2026-10-06）最終評価の除外に旧枠 v1 の標本を足す（学生の承認。最終評価のデータを見る前）
+
+**問題**: 最終評価で除いていたのは v2・v3・v4 の抽出分（本記録者が開発・中間検証で見たデータ）だけだった。旧枠 v1 の標本
+（`docs/corpus_sample.json`、import 文の code search の枠、143 repo）も本記録者が開発中に走査して見たデータだが、除外に入って
+いなかった。v1 は宣言をほとんど持たないので v2 の枠とは別だと思い込んでいたが、照らすと 3 repo が列挙
+（`evidence/population_v2/enumeration.jsonl`）に入り、そのうち 2 repo（`ancientdev0x/nanodistill`・
+`mastermindx-market-intelligence/mastermind`）は母集団（src 側に宣言のある 3,764 repo）に入っていた（もう 1 つ
+`xianabcedesuba-ux/openai_api_key` は src 側の宣言が無く、もともと母集団の外）。
+
+**決定**（学生「足していいです」）: `sample_population_v2.py --all` に `--exclude docs/corpus_sample.json` を足し、その 2 repo を
+除く。除外の後の残りは 3,764 − 300 − 2 = **3,462 repo**。
+- 理由:「開発に使ったデータは評価に使わない」という除外の説明と食い違わないため。v1〜v4 はどれも無作為の標本なので、除いても
+  残りの代表性は変わらない（減るのは数だけ）。
+- **v1 は中身の重複の照合（D70 の 6）には入れない。** v1 は pin していない（`ref` が `HEAD`、O9）ので、見た版の中身を取り直せない。
+  照合は v2〜v4 のまま。限界として書く（v1 の fork が最終評価に残りうる。v1 は宣言をほとんど持たないので、数は小さいと見込む。
+  見込みで、測っていない）。
+- **D78・D79 の再現率への影響は無い**: D78 の宣言を直したコミットの掘り出しは 3,464 repo の履歴で行ったが、その 2 repo からは
+  件が出ていない（`evidence/annotation_fixes_frame/items.json` に無い。2026-10-06 に照らした）。結果は変えない。
+- 直した文書: 事前登録の下書き §2.12 (b)、`docs/final_evaluation_procedure.md`（段階 3 の命令・確かめること・禁止事項・チェック
+  リスト）、`docs/roadmap_to_paper.md` の C1、教科書の第 7 章と付録 A の件数。教科書の他の箇所（付録 D-5 の件数の流れの書き方の
+  例、付録 D-8 の当時の見込み）は、その時点の記録なので 3,464 のまま残す。
