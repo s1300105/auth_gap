@@ -532,7 +532,7 @@ E.1 で 3 種類の判定の全体を見て、E.2〜E.10 で矛の判定、E.11 
 
 | 記号・言葉 | 定義 |
 |---|---|
-| seed ①〜⑥ | ① YYYYMMDD1 矛の抜き取り、② YYYYMMDD2 見落とし、③ YYYYMMDD3 不の中身、④ YYYYMMDD4 bootstrap（YYYYMMDD は封の日）。⑤ YYYYMMDD5 判定表の順序の並べ替え、⑥ YYYYMMDD6 判定の一致を確かめる組の抜き取り（D73 の 4・1） |
+| seed ①〜⑦ | ① YYYYMMDD1 矛の抜き取り、② YYYYMMDD2 見落とし、③ YYYYMMDD3 不の中身、④ YYYYMMDD4 bootstrap（YYYYMMDD は封の日）。⑤ YYYYMMDD5 判定表の順序の並べ替え、⑥ YYYYMMDD6 判定の一致を確かめる組の抜き取り（D73 の 4・1）、⑦ YYYYMMDD7 実態調査の抜き取り（D82） |
 | n / k / N | 判定した木の数 / そのうち本当の矛（正）が 1 件以上あった木の数 / 宣言 d の矛が出た木の総数 |
 | M_d | 宣言 d を明示したユニットを 1 つ以上持つ、走査した木の数。「明示した」は矛の判定と同じ条件: D1 は `explicit` に `readOnlyHint`、D2 は `explicit` に `destructiveHint`、D3 は `closed_world`、D4 は `idempotent`（D73 の 3） |
 | 主 (a) | k / n。解析器が矛を出した木のうち、本当に違反があった木の割合 |
