@@ -117,7 +117,7 @@ def test_kappa_hand_computed():
 # --- 判定表の検証 ---------------------------------------------------------------------------------------
 
 def _crow(**kw):
-    base = {"pair_id": "C-D1-001", "tree": "t1", "decl": "D1", "verdict": "正", "reachable": "はい", "violates": "はい",
+    base = {"pair_id": "C-D1-001", "tree": "t1", "decl": "D1", "verdict": "正",
             "condition_type": "なし", "error_class": "", "write_target": "ログ", "unknown_reason": "",
             "minutes": "12", "ai_used": "なし", "ai_model": "", "ai_log": ""}
     base.update(kw)
@@ -135,9 +135,20 @@ def test_unknown_reason_class_parsing():
 def test_valid_row_parses():
     (p,) = fa.parse_contradiction_rows([_crow()])
     assert p.verdict == "正" and p.conditions == ("なし",) and p.write_target == "ログ"
-    (q,) = fa.parse_contradiction_rows([_crow(verdict="誤", violates="いいえ", condition_type="", write_target="",
+    (q,) = fa.parse_contradiction_rows([_crow(verdict="誤", condition_type="", write_target="",
                                               error_class="E1: lifespan で済む")])
     assert q.error_class == "E1"
+    # 宣言に反しない誤（E8）は到達するので、condition_type を書いてもよい
+    (r,) = fa.parse_contradiction_rows([_crow(verdict="誤", write_target="", error_class="E8: 冪等な追記")])
+    assert r.error_class == "E8"
+
+
+def test_old_form_rows_still_checked():
+    """D83 の前の形（reachable・violates を書いた表。v4 の判定・練習の表）も読め、11.2 の表と突き合わせる。"""
+    (p,) = fa.parse_contradiction_rows([_crow(reachable="はい", violates="はい")])
+    assert p.verdict == "正"
+    with pytest.raises(fa.VocabularyError):
+        fa.parse_contradiction_rows([_crow(reachable="いいえ", violates="")])  # 到達しないのに正
 
 
 @pytest.mark.parametrize("bad", [
@@ -151,13 +162,15 @@ def test_valid_row_parses():
     {"write_target": "ファイル"},
     {"write_target": ""},  # 正なのに空
     {"decl": "D3", "write_target": "データベース"},  # D3 は通信先の種類
-    {"verdict": "誤", "violates": "いいえ", "error_class": "X1 なにか", "write_target": ""},
-    {"verdict": "誤", "violates": "いいえ", "error_class": "E10", "write_target": ""},
-    {"verdict": "誤", "violates": "いいえ", "error_class": "", "write_target": ""},
+    {"verdict": "誤", "condition_type": "", "error_class": "X1 なにか", "write_target": ""},
+    {"verdict": "誤", "condition_type": "", "error_class": "E10", "write_target": ""},
+    {"verdict": "誤", "condition_type": "", "error_class": "", "write_target": ""},
     {"error_class": "E3"},  # 正に誤の原因
-    {"verdict": "誤"},  # reachable / violates が「はい / はい」なのに誤
+    {"verdict": "誤"},  # error_class が空
+    {"verdict": "誤", "reachable": "はい", "violates": "はい", "error_class": "E8: x"},  # 前の形: はい / はい なのに誤
     {"reachable": "たぶん"},
     {"verdict": "不明", "reachable": "決められない", "violates": "", "unknown_reason": ""},
+    {"verdict": "不明", "condition_type": "", "write_target": "", "unknown_reason": ""},
     {"ai_used": "少し"},
     {"ai_used": "あり"},  # ai_model / ai_log が空
     {"minutes": "十分"},
@@ -166,7 +179,10 @@ def test_valid_row_parses():
      "unknown_reason": "よく分からない"},  # 第 19 節の類で始まらない
     {"verdict": "誤", "reachable": "いいえ", "violates": "", "write_target": "", "error_class": "E6: 死んだコード"},
     # ↑ 到達しないのに condition_type（base の「なし」）がある
-    {"verdict": "誤", "violates": "いいえ", "condition_type": "", "write_target": "", "error_class": "E3: 組み込みの set"},
+    {"verdict": "誤", "write_target": "", "error_class": "E6: 死んだコード"},  # 同じ。D83 の形（reachable 無し）
+    {"verdict": "誤", "write_target": "", "error_class": "E3: 組み込みの set"},  # 同じ（E3 も到達しない）
+    {"verdict": "誤", "reachable": "はい", "violates": "いいえ", "condition_type": "", "write_target": "",
+     "error_class": "E3: 組み込みの set"},  # 前の形: E3 なのに reachable = はい
     {"verdict": "誤", "reachable": "いいえ", "violates": "", "condition_type": "", "write_target": "",
      "error_class": "E5: パイプ"},
 ])

@@ -16,6 +16,9 @@ H-1 から順に読めば、手引きの全文と、その一つひとつの規�
 > **2026-10-05 の追記（D76）**: この付録の後、学生が決定シート（`docs/drafts/guide_decision_sheet.md`）で穴を決め（D76）、
 > 手引きの下書きに書き写した。**この付録が引用しているのは直す前の下書き（コミット `af897ef`）**で、D76 で直した箇所や
 > 規則を足した箇所は、今の下書きと違う。穴の多くは D76 で決まり、決まった中身は手引きの `（D76）` の印の文にある。
+> **2026-10-06 の追記（D83）**: 手順 H の矛の判定で書く欄を判定ごとに減らした（正: `verdict`・`evidence`・`write_target`・`condition_type`、
+> 誤: `verdict`・`evidence`・`error_class`、不明: `verdict`・`evidence`・`unknown_reason`）。`reachable`・`violates`・`condition` の欄は無くなった。
+> この付録が引く手順 H の表は前の形である。
 > 引用を照合し直すときは、直す前の下書きを取り出して比べる:
 > `git show af897ef:docs/drafts/final_judging_guide_draft.md > /tmp/guide_af897ef.md && .venv/bin/python scripts/check_guide_quotes.py --draft /tmp/guide_af897ef.md docs/textbook/appendix-h-*.md`
 

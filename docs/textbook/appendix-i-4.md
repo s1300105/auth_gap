@@ -176,14 +176,8 @@ AI に聞いた時間は含めます（手引き 12.3）。この分冊の記録
 | 欄 | 値 |
 |---|---|
 | `verdict` | `不明` |
-| `reachable` | `はい` |
-| `condition_type` | `なし` |
-| `condition` | `なし` |
-| `violates` | `決められない` |
-| `write_target` | （空。正のときだけ） |
-| `error_class` | （空。誤のときだけ） |
 | `unknown_reason` | `外の値: 消すファイルのパスが docrender.render の戻り値。呼び出しごとに新しく作るのか、前からあるファイル（キャッシュ）を返すのかが、公式の文書に無く、ソースも無い（.so だけ）` |
-| `evidence` | `server.py:18 pdf_path = docrender.render(report_id, fmt="pdf") → server.py:20 os.remove(pdf_path)。docrender の文書 <開いた URL> に戻り値のファイルの寿命の記述なし。site-packages の docrender は .so だけ` |
+| `evidence` | `server.py:18 pdf_path = docrender.render(report_id, fmt="pdf") → server.py:20 os.remove(pdf_path)。docrender の文書 <開いた URL> に戻り値のファイルの寿命の記述なし。site-packages の docrender は .so だけ`。 |
 | `note` | `E2 か正かは render の動作しだい` |
 | `minutes` | `25`（記入の例） |
 | `ai_used` | `なし` |
@@ -500,13 +494,8 @@ show = "server:ShowNote"
 | 欄 | 値 |
 |---|---|
 | `verdict` | `不明` |
-| `reachable` | `はい` |
-| `condition_type` | `なし` |
-| `condition` | `なし` |
-| `violates` | `決められない` |
-| `error_class` | （空） |
 | `unknown_reason` | `その他: 子プロセス ocrd（取引先の閉じたバイナリ）が、標準入力を受けてファイルを書くかが、マニュアルに無く、ソースも無い` |
-| `evidence` | `server.py:24 → server.py:12 subprocess.Popen(["ocrd", "--stdin", "--format", "text"], stdin=PIPE) → server.py:17 proc.communicate(input=data)。ocrd のマニュアル <開いた URL> に書き込みの記述なし` |
+| `evidence` | `server.py:24 → server.py:12 subprocess.Popen(["ocrd", "--stdin", "--format", "text"], stdin=PIPE) → server.py:17 proc.communicate(input=data)。ocrd のマニュアル <開いた URL> に書き込みの記述なし`。 |
 | `note` | `同じユニットの subprocess.Popen × SPAWN の不（spawn_command）も、同じ理由で決まらない` |
 | `minutes` | `20`（記入の例） |
 | `ai_used` | `なし` |

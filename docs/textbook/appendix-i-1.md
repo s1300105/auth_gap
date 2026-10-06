@@ -20,7 +20,7 @@
 
 **判定表の行の読み方**: 手引き 13 の手順 A の欄のうち、`decl`（照らす宣言）・`site`（効果を起こす関数）・`kind`（効果の種類）・`reasons`（理由のコード。手引き 13.1）・`locations`（その組の効果の位置）を出します。不の組は `reasons` を「不: `net_post`」のように書きます。その下の「解析器の言い分」は手順 B の道具（`scripts/show_target.py`）で見える、道筋（`witness_chain`）・入口の呼び出し行（`entry_lineno`）・slot の主体です。
 
-**記録の欄**: 手引き 13 の手順 H のとおりに書きます。手順 H の既定（D76）により、11.2 の表の「—」に当たる欄と、当てはまらない欄（正のときの `error_class`・`unknown_reason` など）は空欄にします。表では空欄を「（空）」と書きます。`minutes`・`ai_used` などの欄は、例では省きます。
+**記録の欄**: 手引き 13 の手順 H のとおりに書きます。書く欄は判定ごとに決まっています（D83）。正は `verdict`・`evidence`・`write_target`・`condition_type`、誤は `verdict`・`evidence`・`error_class`、不明は `verdict`・`evidence`・`unknown_reason` です。`reachable`・`violates`・`condition` は書かず、条件の中身は `evidence` に「条件: …」として入れます。`minutes`・`ai_used` などの欄は、例では省きます。
 
 ---
 
@@ -82,14 +82,9 @@
 | 欄 | 値 |
 |---|---|
 | `verdict` | 正 |
-| `reachable` | はい |
 | `condition_type` | 引数 |
-| `condition` | 引数 place の地名のキャッシュファイル（`~/.geo_cache/<place>.json`）がまだ無いとき |
-| `violates` | はい |
 | `write_target` | キャッシュ・状態の保存 |
-| `error_class` | （空） |
-| `unknown_reason` | （空） |
-| `evidence` | `server.py:32`（geocode が `_lookup(place)` を呼ぶ）→ `server.py:21-25`（キャッシュが無ければ 25 行で `_save_cache(path, data)`）→ `server.py:15` `open(path, "w")`。path は `~/.geo_cache/<place>.json` で、place はモデルが決める引数 |
+| `evidence` | `server.py:32`（geocode が `_lookup(place)` を呼ぶ）→ `server.py:21-25`（キャッシュが無ければ 25 行で `_save_cache(path, data)`）→ `server.py:15` `open(path, "w")`。path は `~/.geo_cache/<place>.json` で、place はモデルが決める引数。条件: 引数 place の地名のキャッシュファイル（`~/.geo_cache/<place>.json`）がまだ無いとき。 |
 
 **この例で学ぶこと**: 道筋は `witness_chain` を地図にして、自分で 1 段ずつ開きます（手順 D）。種類が「キャッシュ・状態の保存」になるのは、判定しているツール自身が 22 行で**読み返す**からです（手引き 16.1 の順 6 と、その下の「読み返す」の主語）。**読み返しが無ければ、名前がキャッシュでも「その他・不明」になります**（手引き 20.1 の組 1）。別の組の `os.makedirs`（14 行。`exist_ok=True`）は、ディレクトリが無い最初のときだけ環境が変わるので、条件は `初回` です（手引き 14.3 の「迷いやすい条件の書き方」の 1 行目）。
 
@@ -157,13 +152,8 @@
 | 欄 | 値 |
 |---|---|
 | `verdict` | 正 |
-| `reachable` | はい |
 | `condition_type` | なし |
-| `condition` | なし |
-| `violates` | はい |
 | `write_target` | データベース |
-| `error_class` | （空） |
-| `unknown_reason` | （空） |
 | `evidence` | `server.py:31`（search_docs が `_remember` を呼ぶ）→ `server.py:18-20` `INSERT INTO search_history`。毎回届く |
 | `note` | 位置 `server.py:12`（27 → 12、`PRAGMA journal_mode=WAL`）も正。条件は 初回。site は psycopg と表示されるが sqlite3 の接続で、kind DB は合う |
 
@@ -234,14 +224,9 @@
 | 欄 | 値 |
 |---|---|
 | `verdict` | 正 |
-| `reachable` | はい |
 | `condition_type` | 起動の方法 |
-| `condition` | `main()` を通らない起動（`fastmcp run server.py:mcp` など）で、最初に get_recipe を呼んだとき |
-| `violates` | はい |
 | `write_target` | データベース |
-| `error_class` | （空） |
-| `unknown_reason` | （空） |
-| `evidence` | `server.py:23`（get_recipe が `_db()` を呼ぶ）→ `server.py:12`（`_conn` が None のとき）→ `server.py:14-16` `CREATE TABLE IF NOT EXISTS recipes`。先に済ませるのは `main()`（28 行）だけで lifespan は無い。`_conn` を None にするのは 7 行だけ |
+| `evidence` | `server.py:23`（get_recipe が `_db()` を呼ぶ）→ `server.py:12`（`_conn` が None のとき）→ `server.py:14-16` `CREATE TABLE IF NOT EXISTS recipes`。先に済ませるのは `main()`（28 行）だけで lifespan は無い。`_conn` を None にするのは 7 行だけ。条件: `main()` を通らない起動（`fastmcp run server.py:mcp` など）で、最初に get_recipe を呼んだとき。 |
 
 **この例で学ぶこと**: `起動の方法` は (A) に数え、(B)(C) には数えません（手引き 14.3 の表）。**同じ `_db()` を lifespan の中で呼んでいれば、どの起動でも受付より前に済むので「到達しない」（誤、E1）になります**（手引き 14.4 の表の 2 行目）。モジュールの一番上で `_conn = _db()` としていても E1 です（同じ表の 3 行目）。13 行の `sqlite3.connect` がファイルを作る点は、I-1.2 と同じく `note` に書きます。
 
@@ -303,13 +288,8 @@
 | 欄 | 値 |
 |---|---|
 | `verdict` | 正 |
-| `reachable` | はい |
 | `condition_type` | なし |
-| `condition` | なし |
-| `violates` | はい |
 | `write_target` | 相手側の状態 |
-| `error_class` | （空） |
-| `unknown_reason` | （空） |
 | `evidence` | `server.py:30`（get_ticket が `_touch(ticket_id)` を呼ぶ）→ `server.py:18-23` `requests.put(f"{API}/tickets/{ticket_id}/last_viewed", json={…, "at": 時刻})`。API は `https://desk.example.com/api`（9 行） |
 
 **この例で学ぶこと**: HTTP は**メソッドで表の行が決まります**。29 行の `GET` は反しません（15.1 の `GET` の行）。**18 行が `requests.post` なら、解析器は不（`net_post`）を出し、人は相手の API の意味を調べて決めます**（[I-1.10](#ai-1-10)）。種類は 16.1 の順 1「相手側の状態」で、DB やファイルより先に当てはめます。
@@ -360,13 +340,10 @@
 | 欄 | D1 の組 | D3 の組 |
 |---|---|---|
 | `verdict` | 正 | 正 |
-| `reachable` | はい | はい |
 | `condition_type` | なし | なし |
-| `condition` | なし | なし |
-| `violates` | はい | はい |
 | `write_target` | プロセスの起動・コードの実行 | モデルが決めるコード・コマンド |
 | `error_class`・`unknown_reason` | （空） | （空） |
-| `evidence` | `server.py:12-14` `subprocess.run(command, shell=True, …)`。command はモデルが決める引数で、本体で毎回届く | 同じ |
+| `evidence` | `server.py:12-14` `subprocess.run(command, shell=True, …)`。command はモデルが決める引数で、本体で毎回届く | 同じ。 |
 
 **この例で学ぶこと**: D3 の正には書き込み先の種類ではなく、**通信先の種類**（手引き 16.3）を書きます。D1 の SPAWN の正は、子が何を変えるか分かっても常に「プロセスの起動・コードの実行」です（16.2）。**コマンドが定数（`subprocess.run(["df", "-h"])`）なら、解析器は D1・D3 とも不（`spawn_command`）を出します**（本書で試した）。D1 の不は（抜き取りで選ばれれば）不の中身の判定表に載り、人は `df` が何をするかを調べて「違反でない」と決めます（15.1 の SPAWN の行）。D3 の不は判定しません（18A.1）。
 
@@ -423,14 +400,9 @@
 | 欄 | 値 |
 |---|---|
 | `verdict` | 正 |
-| `reachable` | はい |
 | `condition_type` | 引数 |
-| `condition` | 引数 out_dir に空でない値を渡したとき |
-| `violates` | はい |
 | `write_target` | 利用者のファイル |
-| `error_class` | （空） |
-| `unknown_reason` | （空） |
-| `evidence` | `server.py:22`（`if out_dir:`）→ `server.py:24` `open(os.path.join(out_dir, "report.md"), "w")`。out_dir はモデルが決める引数 |
+| `evidence` | `server.py:22`（`if out_dir:`）→ `server.py:24` `open(os.path.join(out_dir, "report.md"), "w")`。out_dir はモデルが決める引数。条件: 引数 out_dir に空でない値を渡したとき。 |
 
 **この例で学ぶこと**: 書き先をモデルが指定するので、種類は 16.1 の順 3「利用者のファイル」です（16.2 の「モデルが決めたパスへのエクスポート」）。**既定値が `out_dir: str = "reports"` のように真なら、引数を渡さなくても書くので条件は `なし` になります**（手引き 14.3 の「迷いやすい条件の書き方」の 3 行目）。`os.makedirs` の組は別の組として、同じ手順で判定します。
 
@@ -486,13 +458,8 @@
 | 欄 | 値 |
 |---|---|
 | `verdict` | 正 |
-| `reachable` | はい |
 | `condition_type` | なし |
-| `condition` | なし |
-| `violates` | はい |
 | `write_target` | 一時ファイル |
-| `error_class` | （空） |
-| `unknown_reason` | （空） |
 | `evidence` | `server.py:16`（`tempfile.mkdtemp` で作業ディレクトリを作る）→ `server.py:23-24` `finally:` で `shutil.rmtree(workdir)`。毎回届く |
 
 **この例で学ぶこと**: 種類は 16.1 の順 5「一時ファイル」（同じ呼び出しの中で作って消す、OS の一時領域に作る）です。**同じコードを D2（`destructiveHint: false`）で判定すると、呼び出しの前からあったものではないので反しません**（誤、E2。手引き 15.2 の迷いやすい形の 1 つ目）。D1 と D2 で答えが逆になる代表の形です。16 行の `mkdtemp` もディレクトリを作りますが、解析器はこれを効果に挙げていません。この組の判定には関係しないので、気づいたら `note` に書きます。
@@ -548,14 +515,9 @@
 | 欄 | 値 |
 |---|---|
 | `verdict` | 正 |
-| `reachable` | はい |
 | `condition_type` | 運用者の設定 |
-| `condition` | 環境変数 HR_AUDIT_FILE を設定して起動したとき |
-| `violates` | はい |
 | `write_target` | ログ |
-| `error_class` | （空） |
-| `unknown_reason` | （空） |
-| `evidence` | `server.py:23`（lookup_employee が `_audit` を呼ぶ）→ `server.py:13`（AUDIT_PATH が空なら抜ける。AUDIT_PATH は 8 行の環境変数 HR_AUDIT_FILE）→ `server.py:16-17` `open(AUDIT_PATH, "a")` で「時刻 操作 対象」の 1 行を追記 |
+| `evidence` | `server.py:23`（lookup_employee が `_audit` を呼ぶ）→ `server.py:13`（AUDIT_PATH が空なら抜ける。AUDIT_PATH は 8 行の環境変数 HR_AUDIT_FILE）→ `server.py:16-17` `open(AUDIT_PATH, "a")` で「時刻 操作 対象」の 1 行を追記。条件: 環境変数 HR_AUDIT_FILE を設定して起動したとき。 |
 
 **この例で学ぶこと**: `運用者の設定` の正は (A) に数え、(B) には数えません。書く場所を運用者が決めても、それだけで「利用者のファイル」にはしません。中身で決めます（16.2）。「いつ・何をした」の行なので「ログ」です。**8 行が `os.environ.get("HR_AUDIT_FILE", "hr_audit.log")` のように既定値を持つなら、運用者が何もしなくても書くので条件は `なし` です**（本書で試した。解析器の出力は同じ矛 `server.py:16`）。
 
@@ -810,13 +772,8 @@
 | 欄 | 値 |
 |---|---|
 | `verdict` | 正 |
-| `reachable` | はい |
 | `condition_type` | なし |
-| `condition` | なし |
-| `violates` | はい |
 | `write_target` | 利用者のファイル |
-| `error_class` | （空） |
-| `unknown_reason` | （空） |
 | `evidence` | `server.py:21`（src は `~/notes/<name>`、name はモデルが決める引数）→ `server.py:22`（ファイルがあるときだけ進む）→ `server.py:24` → `server.py:15` `os.remove(src)` |
 
 **この例で学ぶこと**: docstring の言い分ではなく、コードの動作で決めます（手引き 11.2）。**消すのが同じ呼び出しで自分が作った一時ファイルなら、反しません**（誤、E2。15.2 の迷いやすい形）。別の組の `shutil.copy2`（14 行）は、アーカイブにある同じ名前の古いメモを上書きしうる書き出しで、不の中身の判定表で別に判定します。
@@ -870,13 +827,8 @@
 | 欄 | 値 |
 |---|---|
 | `verdict` | 正 |
-| `reachable` | はい |
 | `condition_type` | なし |
-| `condition` | なし |
-| `violates` | はい |
 | `write_target` | 利用者のファイル |
-| `error_class` | （空） |
-| `unknown_reason` | （空） |
 | `evidence` | `server.py:19`（path = `~/notes/<title>.md`。`_note_path` は 10-12 行）→ `server.py:20` `open(path, "w")`。title はモデルが決める引数で、既存のメモと同じ題なら上書きする |
 
 **この例で学ぶこと**: 「書き先をモデルが決められるか」は問い 2 の話で、問い 1 の条件ではありません。**20 行が `open(path, "x")`（無いときだけ作る）なら、15.2 の「新しく作るだけ」で反しません。** 名前を毎回 `uuid` などで新しく作る作りでも、「呼び出しごとに新しい名前なら反しない」（15.2 の書き出しの行）です。
@@ -931,13 +883,8 @@
 | 欄 | 値 |
 |---|---|
 | `verdict` | 正 |
-| `reachable` | はい |
 | `condition_type` | なし |
-| `condition` | なし |
-| `violates` | はい |
 | `write_target` | データベース |
-| `error_class` | （空） |
-| `unknown_reason` | （空） |
 | `evidence` | `server.py:14`（SELECT で頁を読む）→ `server.py:15-16`（無ければ抜ける）→ `server.py:17` `UPDATE pages SET views = views + 1 WHERE slug = ?` |
 
 **この例で学ぶこと**: 1 つの効果でも、宣言ごとに組と扱いが分かれます。D4 の組は、解析器が不を出し、人は反すると読みますが、判定はしません。報告には不の件数と理由だけが出ます（18A.1）。**17 行が `SET is_read = 1` なら、D4 には反しません（同じ値になる）が、D2 には反するままです**（既存の行を変える）。
@@ -1046,13 +993,8 @@
 | 欄 | 値 |
 |---|---|
 | `verdict` | 正 |
-| `reachable` | はい |
 | `condition_type` | なし |
-| `condition` | なし |
-| `violates` | はい |
 | `write_target` | 定数の外部ホスト |
-| `error_class` | （空） |
-| `unknown_reason` | （空） |
 | `evidence` | `server.py:18`（is_holiday が `_holidays` を呼ぶ）→ `server.py:10` `httpx.get(f"{HOLIDAYS_URL}/{year}")`。HOLIDAYS_URL は `https://holidays.example.org/api/v1/jp`（6 行） |
 
 **この例で学ぶこと**: D3 は「環境を変えるか」ではなく「外の相手と通信するか」です。読み取りの `GET` でも反します。D1 は反しません。**6 行が `http://holidays:8080/…`（ドットの無い名前）なら、解析器は同じ矛（`net_external_host`）を出しますが、手引き 15.3 ではドットの無い名前は local なので反しません。判定は誤です**（本書で試した。原因は 15.3 の「語彙・定義の差」。E1〜E9 のどれを書くかは手引きに書かれていません。[付録 H-4](appendix-h-4.md) の穴 H-4-24）。
@@ -1097,13 +1039,8 @@
 | 欄 | 値 |
 |---|---|
 | `verdict` | 正 |
-| `reachable` | はい |
 | `condition_type` | なし |
-| `condition` | なし |
-| `violates` | はい |
 | `write_target` | モデルが決める宛先 |
-| `error_class` | （空） |
-| `unknown_reason` | （空） |
 | `evidence` | `server.py:10`（引数 base_url。既定は `http://localhost:8080`）→ `server.py:12` `requests.get(f"{base_url}/…")`。base_url はモデルが決める引数で、外部の URL を渡せば外部と通信する |
 
 **この例で学ぶこと**: 既定値や docstring（「ローカルの文書サーバ」）ではなく、モデルが**選べる**値の全体で読みます（手引き 11.3 の原理 3）。**`base_url` を引数から外し、宛先を定数の `DEFAULT_BASE` だけにすると、解析器は D3 の行を出さず、人も「local なので反しない」と読みます**（本書で試した）。
@@ -1157,13 +1094,8 @@
 | 欄 | 値 |
 |---|---|
 | `verdict` | 正 |
-| `reachable` | はい |
 | `condition_type` | なし |
-| `condition` | なし |
-| `violates` | はい |
 | `write_target` | ログ |
-| `error_class` | （空） |
-| `unknown_reason` | （空） |
 | `evidence` | `server.py:21`（convert が `_record(...)` を呼ぶ）→ `server.py:13-14` `open(HISTORY, "a")` で時刻つきの 1 行を足す。同じ引数で 2 回呼ぶと 2 行になる |
 
 **この例で学ぶこと**: 「いつ・何をした」の行で、ツールは読み返さないので「ログ」です（16.2）。**`_record` が「同じ行がすでにあれば書かない」作り（時刻なし）なら、解析器は同じ矛（`fs_append`）を出しますが、15.4 の「書く前に内容を確かめて、すでにあれば書かない → 反しない」により誤（E8）です**（本書で試した）。
@@ -1248,8 +1180,8 @@
 
 <details><summary>答え</summary>
 
-- 判定: **正**。`reachable` はい、`violates` はい。
-- 問い 1: 33 行の `_token()` → 18 行でトークンの期限が切れていれば → 25 行 `open(TOKEN_FILE, "w")`。`condition_type` は **`失敗・期限切れ`**（手引き 14.3 の表の例「トークンの更新」）。`condition` は「保存したトークンの期限が切れているとき」。
+- 判定: **正**。
+- 問い 1: 33 行の `_token()` → 18 行でトークンの期限が切れていれば → 25 行 `open(TOKEN_FILE, "w")`。`condition_type` は **`失敗・期限切れ`**（手引き 14.3 の表の例「トークンの更新」）。`evidence` に入れる条件は「保存したトークンの期限が切れているとき」。
 - 問い 2: 15.1 の `FS_WRITE` の行。
 - `write_target`: **キャッシュ・状態の保存**（16.2「OAuth のトークンをファイルに保存 → 後で読み返す」。16 行で同じツールが読み返す）。
 - `evidence`: `server.py:33 → server.py:18 → server.py:25`。
@@ -1355,7 +1287,7 @@
 <details><summary>答え</summary>
 
 - 判定: **正**。
-- 問い 1: 16 行は「`trace` が真 **または** 環境変数 `SEARCH_TRACE` が設定されている」。手引き 14.3 の「迷いやすい条件の書き方」の「または」の行により、一番弱い道の条件だけを書きます。`condition_type` は **`引数`**（`運用者の設定` を並べない。(B) に数える）。`condition` は「引数 trace に真を渡したとき」。
+- 問い 1: 16 行は「`trace` が真 **または** 環境変数 `SEARCH_TRACE` が設定されている」。手引き 14.3 の「迷いやすい条件の書き方」の「または」の行により、一番弱い道の条件だけを書きます。`condition_type` は **`引数`**（`運用者の設定` を並べない。(B) に数える）。`evidence` に入れる条件は「引数 trace に真を渡したとき」。
 - 問い 2: 15.1 の `FS_WRITE` の行。
 - `write_target`: **ログ**（「時刻 search 語 -> 件数」の、いつ・何をしたの行。読み返さない）。
 - `evidence`: `server.py:16`（`if trace or os.environ.get("SEARCH_TRACE")`）→ `server.py:17-18` `open(TRACE_FILE, "a")`。

@@ -4320,3 +4320,34 @@ AuthGap も (i) で出し直す（照らさない・ユニットが無い を見
 **7. 直した文書**: 事前登録の下書き §2.12（(d) に seed ⑦ と実態調査、(e) に判定の仕方、(f2) に指標、(h) に禁止事項）、
 `docs/roadmap_to_paper.md`（段階 B〜E と論文の構成）。抜き取りの道具（`scripts/final_sample.py` に実態調査の種類）と判定表・集計の
 道具は、段階 B2（封の前）で作る。
+
+## D83（2026-10-06）矛の判定で書く欄を判定ごとに減らす（学生の決定。最終評価のデータを見る前）
+
+**学生の問い**: 「書く項目が多すぎでは？ verdict だけでいいのでは」。本記録者が欄を「削っても困らないもの」と「削ると困るもの」に
+分け、3 つの案（1 判定ごとに 2〜4 欄 / 2 verdict と evidence だけ / 3 verdict だけ）を示した。学生は **1** を選んだ。
+
+**決めたこと**（手引き 手順 H。矛の判定の表）:
+
+| 判定 | 必ず書く欄 |
+|---|---|
+| 正 | `verdict`・`evidence`・`write_target`・`condition_type` |
+| 誤 | `verdict`・`evidence`・`error_class` |
+| 不明 | `verdict`・`evidence`・`unknown_reason` |
+| どれでも | `minutes`・`ai_used`（`あり` なら `ai_model`・`ai_log`）。`note` は迷ったときだけ |
+
+- **書かなくなった欄**: `reachable`・`violates`（`verdict` と `error_class` から分かる。正 = 到達して反する、E1・E3・E4・E6 = 到達しない、
+  E2・E5・E8 = 到達するが反しない、E7・E9 は説明の文で分かるように書く）、`condition`（条件の中身は `evidence` の文に入れる）。
+- **削らなかった欄と理由**: `evidence`（判定者 1 人の研究で、第三者が判定を確かめられる唯一の手段。D67 の 4）、`write_target`
+  （「見つけた違反は些細では」への答え。D67 の 1）、`condition_type`（事前登録の併記 (B)(C)。D68 の 1）、`error_class`（考察）、
+  `unknown_reason`（不明を分母から除く理由。D70 の 5）。事前登録の分析は変わらない。
+- `condition_type` は正のときに書き、到達しない誤（E1・E3・E4・E6）には書かない（D76 の「到達するときだけ書く」を、`reachable` の欄なしで
+  確かめる）。
+- **範囲**: 矛の判定の表だけ。見落とし（18.4）・不の中身（18A.3）・実態調査の表は変えていない（不の中身の表には `reachable`・`violates` が
+  残る）。
+
+**道具**: `scripts/final_sheet.py` の矛の表から 3 つの欄を除いた。`scripts/final_aggregate.py` は 3 つの欄を要求しなくなり、前の形の表
+（v4 の判定・練習の `evidence/practice_v4/contradiction.csv`）で書いてあれば今までどおり 11.2 の表と突き合わせる。テストを直した
+（`tests/test_final_aggregate.py`・`tests/test_final_sample.py`）。
+
+**直した文書**: 判定の手引きの下書き 手順 H、教科書の第 48 章（48.12・48.14 に注）・付録 E（E.13）・付録 I（表紙に注）。付録 I の例の
+「判定と記録」の表は、考え方の説明として前の形のまま残した。

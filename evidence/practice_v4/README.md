@@ -28,8 +28,9 @@ git restore docs/frame.csv docs/fetch_failures.md   # 取得の道具が書き�
 
 1. `unit_relpath:unit_lineno` を `corpus/<tree>/` の下で開く（ツールの本体）。
 2. `locations`（効果の位置）まで本体からたどる。解析器が見た道筋は `analyzer_view/<pair_id>.txt` にある。
-3. `reachable`（はい / いいえ / 決められない）・`violates`（同じ）・`verdict`（正 / 誤 / 不明）を決め、正なら `condition_type`・`write_target`、
-   誤なら `error_class`（E1〜E9）、不明なら `unknown_reason` を書く。
+3. 2 つの問い（届くか・宣言に反するか）に答えて `verdict`（正 / 誤 / 不明）を決め、正なら `condition_type`・`write_target`、
+   誤なら `error_class`（E1〜E9）、不明なら `unknown_reason` を書く。**`reachable`・`violates`・`condition` の欄は空のままでよい**
+   （D83。2026-10-06 に書く欄を減らした。この CSV は前の形で作ったので欄が残っている）。条件の中身は `evidence` に「条件: …」と書く。
 4. `evidence` にたどったファイルと行を、`minutes` に分数を書く（手順 A から書き終わりまで。手引き 12.3）。
 
 ## 見落としの 1 行（手引き 18.2）

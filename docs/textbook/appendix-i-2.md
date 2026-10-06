@@ -27,13 +27,14 @@ E9 は「その他」です。迷ったら E9 にして説明を書きます（�
 **解析器がなぜ外したか**も、例ごとに `authgap/` の `ファイル:行` で書きます。これは判定の材料ではありません。
 判定するのはコードの動作で、解析器の説明ではないからです（手引き 11.2）。仕組みを知ると、似た形を見つけやすくなります。
 
-**記録の書き方の約束**（手引き 手順 H の「書き方の既定」、D76）:
+**記録の書き方の約束**（手引き 手順 H、D76・D83）:
 
-- 11.2 の表の「—」の欄は空欄にします。到達しないときは `violates` を空欄にします。
-- `condition_type`・`condition` は、到達するときだけ書きます。
-- 誤の原因が E3・E4 なら `reachable` は `いいえ`、E5 なら `violates` は `いいえ` にします。
+- 書く欄は判定ごとに決まっています。正は `verdict`・`evidence`・`write_target`・`condition_type`、誤は `verdict`・`evidence`・
+  `error_class`、不明は `verdict`・`evidence`・`unknown_reason`（D83）。`reachable`・`violates`・`condition` は書きません。
+- 到達するか・反するかは `error_class` から分かります。E1・E3・E4・E6 は到達しない、E2・E5・E8 は到達するが反しない誤です。
+- `condition_type` は正のときに書きます。条件の中身は `evidence` の文に「条件: …」として入れます。
 - `write_target` は正のときだけ付けます。誤には付けません。
-- `evidence` は木の根からの相対の `ファイル:行` で書きます。表では、空欄を「（空）」と書きます。
+- `evidence` は木の根からの相対の `ファイル:行` で書きます。
 
 **この分冊の地図**:
 
@@ -130,13 +131,7 @@ lifespan の本体の効果は、ツールには付けません（`authgap/entry
 | 欄 | 値 |
 |---|---|
 | verdict | 誤 |
-| reachable | いいえ |
-| condition_type | （空） |
-| condition | （空） |
-| violates | （空） |
-| write_target | （空） |
 | error_class | `E1: lifespan の app_lifespan（server.py:22-25）が起動時に _get_conn() を済ませ、_conn が入るので、ツールの呼び出しでは server.py:15 の if が偽になり :16 に来ない` |
-| unknown_reason | （空） |
 | evidence | `server.py:34 find_note が _get_conn() を呼ぶ → server.py:15 if _conn is None → server.py:16 os.makedirs。server.py:28 FastMCP(..., lifespan=app_lifespan) → server.py:24 で無条件に _get_conn() を済ませる。_conn への代入は server.py:10・:17 だけで、None に戻す文は無い` |
 
 **この例で学ぶこと**: lifespan の中で必ず済む初期化は、ツールの呼び出しでは届かない（E1）。
@@ -211,13 +206,7 @@ lifespan の本体の効果は、ツールには付けません（`authgap/entry
 | 欄 | 値 |
 |---|---|
 | verdict | 誤 |
-| reachable | いいえ |
-| condition_type | （空） |
-| condition | （空） |
-| violates | （空） |
-| write_target | （空） |
 | error_class | `E1: モジュールの読み込み時（server.py:24）に _load_index() が走り _index が入るので、ツールの呼び出しでは server.py:13 の if が偽になり :17 に来ない` |
-| unknown_reason | （空） |
 | evidence | `server.py:31 lookup_term → _load_index() → server.py:13 if _index is None → :16 → :17 open(path, "w")。server.py:24 のモジュールの一番上の _load_index() が import 時に済ませる。_index への代入は :8・:20 だけ` |
 
 **この例で学ぶこと**: 「一度だけ」の守りを見たら、守りの外で先に呼ぶ場所（lifespan・モジュールの一番上・`main()`）を grep で探す。
@@ -300,14 +289,9 @@ lifespan の本体の効果は、ツールには付けません（`authgap/entry
 | 欄 | 値 |
 |---|---|
 | verdict | 正 |
-| reachable | はい |
 | condition_type | `起動の方法` |
-| condition | `main() を通らない起動（fastmcp run server.py:mcp など）で、最初の呼び出しのとき` |
-| violates | はい |
 | write_target | `キャッシュ・状態の保存`（作ったファイルを :19-20 で読み返す。16.1 の順 6） |
-| error_class | （空） |
-| unknown_reason | （空） |
-| evidence | `server.py:30 lookup_term → _load_index() → server.py:13 if _index is None（main() を通らない起動では最初の呼び出しで真）→ :16 if not os.path.exists(path) → :17 open(path, "w")。先に済ませるのは server.py:34 の main() の中だけ` |
+| evidence | `server.py:30 lookup_term → _load_index() → server.py:13 if _index is None（main() を通らない起動では最初の呼び出しで真）→ :16 if not os.path.exists(path) → :17 open(path, "w")。先に済ませるのは server.py:34 の main() の中だけ`。条件: `main() を通らない起動（fastmcp run server.py:mcp など）で、最初の呼び出しのとき`。 |
 
 **この例で学ぶこと**: 同じ初期化でも、`main()` の中だけなら「到達する」（正になりうる）、lifespan・読み込み時なら「到達しない」（E1）。
 解析器はこの区別をしないので、解析器に有利な側（この例）と不利な側（[I-2.1](#ai-2-1)・[I-2.2](#ai-2-2)）の両方が出ます（手引き 14.4 の結び）。
@@ -372,14 +356,8 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:355
 | 欄 | 値 |
 |---|---|
 | verdict | 誤 |
-| reachable | はい |
-| condition_type | `なし` |
-| condition | `なし` |
-| violates | いいえ |
-| write_target | （空） |
 | error_class | `E2: server.py:21 が消すのは、同じ呼び出しの :14 で mkstemp が作った一時ファイル tmp` |
-| unknown_reason | （空） |
-| evidence | `server.py:14 tempfile.mkstemp で新しい一時ファイルを作る → :16-17 code を書く → :18 pyflakes に渡す → :21 finally で os.remove(tmp)。tmp は :14 の戻り値だけ` |
+| evidence | `server.py:14 tempfile.mkstemp で新しい一時ファイルを作る → :16-17 code を書く → :18 pyflakes に渡す → :21 finally で os.remove(tmp)。tmp は :14 の戻り値だけ`。 |
 
 **この例で学ぶこと**: 同じコードでも、**宣言が D1（読み取り専用）なら答えが変わり、正**になる（15.1: 一時ファイルの作成・削除も環境の変更。
 [自分で判定してみる 問 3](#ai-2-y)）。D2 なら誤 E2。また、21 行が**前の呼び出しが残したファイル**を消すのなら、D2 でも反する（15.2）。
@@ -456,14 +434,8 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:355
 | 欄 | 値 |
 |---|---|
 | verdict | 誤 |
-| reachable | はい |
-| condition_type | `なし` |
-| condition | `なし` |
-| violates | いいえ |
-| write_target | （空） |
 | error_class | `E2: server.py:21 は同じ呼び出しの :16 で作ったロックを消す。:15 は前の呼び出しが途中で止まって残したロックで、ふつうの流れで決める（15.2、D76）` |
-| unknown_reason | （空） |
-| evidence | `server.py:27 _acquire → :16 open(LOCK, "x") でロックを作る → server.py:31 finally で _release → :21 os.remove(LOCK)。:15 の os.remove は :14 で 600 秒より古いロックが残っているときだけで、ロックを作るのは :16 だけ（grep "LOCK"）` |
+| evidence | `server.py:27 _acquire → :16 open(LOCK, "x") でロックを作る → server.py:31 finally で _release → :21 os.remove(LOCK)。:15 の os.remove は :14 で 600 秒より古いロックが残っているときだけで、ロックを作るのは :16 だけ（grep "LOCK"）`。 |
 
 **この例で学ぶこと**: 毎回作って消すロックは、途中で止まった前の呼び出しの残りを消しても誤 E2（D76）。
 **消す物が、前の呼び出しが正常に残したもの（前回の出力ファイルなど）なら答えが変わり、反する**（15.2）。
@@ -551,13 +523,7 @@ D1 の規則は確度を問わず `FS_WRITE` を `fs_write` の矛にします�
 | 欄 | 値 |
 |---|---|
 | verdict | 誤 |
-| reachable | いいえ |
-| condition_type | （空） |
-| condition | （空） |
-| violates | （空） |
-| write_target | （空） |
 | error_class | `E3: server.py:34 の set() は組み込みの set 型で、木の中の CacheManager.set（:22）は呼ばれない` |
-| unknown_reason | （空） |
 | evidence | `server.py:34 visited: set[str] = set()（組み込みの set）。witness_chain の CacheManager.set（server.py:22-25）は、木の中に CacheManager( の文が無く、どこからも呼ばれない（grep "CacheManager"）` |
 
 **この例で学ぶこと**: 道筋の段は、名前ではなく受け手（何の物か）で確かめる。エディタの「定義へ移動」も名前で当てることがある（手引き 12.2）。
@@ -668,14 +634,8 @@ D1 は `FS_WRITE` をすべて `fs_write` の矛にします（`authgap/dparse.p
 | 欄 | 値 |
 |---|---|
 | verdict | 誤 |
-| reachable | はい |
-| condition_type | `なし` |
-| condition | `なし` |
-| violates | いいえ |
-| write_target | （空） |
 | error_class | `E5: server.py:13 は子プロセス wc -w の標準入力に text を流すだけ。wc は数を標準出力に書くだけで、ファイルを変えない` |
-| unknown_reason | （空） |
-| evidence | `server.py:12 Popen(["wc", "-w"], stdin=PIPE, stdout=PIPE) → :13 communicate(input=text) → :14 標準出力の数を返す。wc の OUTPUT FILES は None（https://pubs.opengroup.org/onlinepubs/9799919799/utilities/wc.html）` |
+| evidence | `server.py:12 Popen(["wc", "-w"], stdin=PIPE, stdout=PIPE) → :13 communicate(input=text) → :14 標準出力の数を返す。wc の OUTPUT FILES は None（https://pubs.opengroup.org/onlinepubs/9799919799/utilities/wc.html）`。 |
 
 **この例で学ぶこと**: パイプの組は、子が何をするかで決める。
 **子が `tee -a <ファイル>` のように受け取った内容をファイルに足すなら答えが変わり、正**（[自分で判定してみる 問 6](#ai-2-y)）。
@@ -744,13 +704,7 @@ D1 は `FS_WRITE` をすべて `fs_write` の矛にします（`authgap/dparse.p
 | 欄 | 値 |
 |---|---|
 | verdict | 誤 |
-| reachable | いいえ |
-| condition_type | （空） |
-| condition | （空） |
-| violates | （空） |
-| write_target | （空） |
 | error_class | `E6: server.py:20 の if DEBUG は、:8 の DEBUG = False（木の中で書き換えない）で閉じた枝` |
-| unknown_reason | （空） |
 | evidence | `server.py:8 DEBUG = False → server.py:20 if DEBUG:（常に偽）→ :21-23 には来ない。DEBUG への代入は :8 だけ（grep "DEBUG"）` |
 
 **この例で学ぶこと**: 定数で閉じた枝は E6。ただし、**同じ `DEBUG` が「運用者が書き換える」と書かれた `config.py` にあるなら答えが変わり**、
@@ -818,13 +772,7 @@ D1 は `FS_WRITE` をすべて `fs_write` の矛にします（`authgap/dparse.p
 | 欄 | 値 |
 |---|---|
 | verdict | 誤 |
-| reachable | いいえ |
-| condition_type | （空） |
-| condition | （空） |
-| violates | （空） |
-| write_target | （空） |
 | error_class | `E6: server.py:20 の _require_pro() が必ず PermissionError を投げる（:12）ので、:21-23 に来ない` |
-| unknown_reason | （空） |
 | evidence | `server.py:19 if export → :20 _require_pro() → server.py:12 raise PermissionError（無条件）。_require_pro の定義は :11 だけ。:21-22 には来ない` |
 
 **この例で学ぶこと**: 「引数で通れる枝」でも、その中で必ず抜けるなら到達しない。条件の種類（`引数`）を書く前に、枝の中を最後まで読む。
@@ -886,14 +834,8 @@ D1 は `FS_WRITE` をすべて `fs_write` の矛にします（`authgap/dparse.p
 | 欄 | 値 |
 |---|---|
 | verdict | 誤 |
-| reachable | はい |
-| condition_type | `なし` |
-| condition | `なし` |
-| violates | いいえ |
-| write_target | （空） |
 | error_class | `E7: server.py:15 のモデルの値 pattern は shlex.quote で 1 つの引数に閉じ、-e の後のパターンにしかならない。起動するのは定数の grep で、モデルはコマンドを決められない` |
-| unknown_reason | （空） |
-| evidence | `server.py:15 cmd = f"grep -rn -e {shlex.quote(pattern)} -- {shlex.quote(NOTES_DIR)}" → :16 subprocess.run(cmd, shell=True)。grep は一致行を標準出力に書くだけ（OUTPUT FILES: None。https://pubs.opengroup.org/onlinepubs/9799919799/utilities/grep.html）` |
+| evidence | `server.py:15 cmd = f"grep -rn -e {shlex.quote(pattern)} -- {shlex.quote(NOTES_DIR)}" → :16 subprocess.run(cmd, shell=True)。grep は一致行を標準出力に書くだけ（OUTPUT FILES: None。https://pubs.opengroup.org/onlinepubs/9799919799/utilities/grep.html）`。 |
 
 **この例で学ぶこと**: 解析器の「モデルが決められる」は、値が流れ込むことしか見ていない。E7 は手引き 17 の見分け方
 「固定のコマンドに `shlex.quote` した値だけを渡す spawn など」の形。
@@ -954,14 +896,8 @@ D1 は `FS_WRITE` をすべて `fs_write` の矛にします（`authgap/dparse.p
 | 欄 | 値 |
 |---|---|
 | verdict | 誤 |
-| reachable | はい |
-| condition_type | `なし` |
-| condition | `なし` |
-| violates | いいえ |
-| write_target | （空） |
 | error_class | `E8: server.py:12 の mode は :11 で "rb" か "r" のどちらかで、どちらも読み取り。ファイルに書かない` |
-| unknown_reason | （空） |
-| evidence | `server.py:19 read_note → :10 _read(path)（binary は既定の False）→ :11 mode = "r" → :12 open(path, mode) → :13 fh.read()` |
+| evidence | `server.py:19 read_note → :10 _read(path)（binary は既定の False）→ :11 mode = "r" → :12 open(path, mode) → :13 fh.read()`。 |
 
 **この例で学ぶこと**: 解析器は読めないモードを「書くかもしれない」と出す。人はモードの取りうる値を全部読む。
 **モードがツールの引数（`mode: str = "r"`）なら答えが変わり**、モデルが `"w"` を渡せるので反する（正。原理 3-a。[自分で判定してみる 問 8](#ai-2-y)）。
@@ -1015,14 +951,8 @@ D1 は `FS_WRITE` をすべて `fs_write` の矛にします（`authgap/dparse.p
 | 欄 | 値 |
 |---|---|
 | verdict | 誤 |
-| reachable | はい |
-| condition_type | `なし` |
-| condition | `なし` |
-| violates | いいえ |
-| write_target | （空） |
 | error_class | `E8: server.py:8 が開くのは /dev/stderr（プロセスの標準エラー）で、15.1 の標準エラーへのログ。ファイルではない` |
-| unknown_reason | （空） |
-| evidence | `server.py:15 add → :7 _trace → :8 open("/dev/stderr", "a") → :9 log.write(msg)` |
+| evidence | `server.py:15 add → :7 _trace → :8 open("/dev/stderr", "a") → :9 log.write(msg)`。 |
 
 **この例で学ぶこと**: 同じ `open(…, "a")` でも、**行き先が `~/calc.log` なら答えが変わり、正**（ラベルはログ）。
 似た「反しない」形に、**プロセスのメモリの中の状態**（モジュール水準の辞書のキャッシュなど）があります。これは D1 の違反にしません（15.1、D76 の 2。6 (a) は A）。
@@ -1084,14 +1014,8 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 | 欄 | 値 |
 |---|---|
 | verdict | 誤 |
-| reachable | はい |
-| condition_type | `なし` |
-| condition | `なし` |
-| violates | いいえ |
-| write_target | （空） |
 | error_class | `E8: server.py:18 が権限を変えるのは、同じ呼び出しの :16 で 'x' で新しく作ったファイル（名前は :15 の uuid4）で、呼び出しの前からあったものではない` |
-| unknown_reason | （空） |
-| evidence | `server.py:15 path = KEY_DIR/<uuid4>.token → :16 open(path, "x")（すでにあれば失敗）→ :18 os.chmod(path, 0o600)。path は :15 の値だけ` |
+| evidence | `server.py:15 path = KEY_DIR/<uuid4>.token → :16 open(path, "x")（すでにあれば失敗）→ :18 os.chmod(path, 0o600)。path は :15 の値だけ`。 |
 
 **この例で学ぶこと**: E2 は「同じ呼び出しで作った**一時ファイル・ロックの後始末**」に限る類。後始末ではない形で反しないときは E8 にする（手引き 17）。
 **`os.chmod` の対象がモデルの決めるパス（引数）なら答えが変わり**、既存のファイルを指せるので反する（正。15.2、原理 3-a）。
@@ -1159,14 +1083,8 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 | 欄 | 値 |
 |---|---|
 | verdict | 誤 |
-| reachable | はい |
-| condition_type | `引数` |
-| condition | `todo.txt にまだ無い item を渡したとき` |
-| violates | いいえ |
-| write_target | （空） |
 | error_class | `E8: server.py:18 で同じ item がすでにあれば :19 で返すので、同じ引数の 2 回目は書かない（冪等な追記。15.4）` |
-| unknown_reason | （空） |
-| evidence | `server.py:13 item をそろえる → :15-17 todo.txt を読む → :18 item in text.splitlines() なら :19 で返す → そうでなければ :20 open(TODO, "a") → :23 1 行足す` |
+| evidence | `server.py:13 item をそろえる → :15-17 todo.txt を読む → :18 item in text.splitlines() なら :19 で返す → そうでなければ :20 open(TODO, "a") → :23 1 行足す`。条件: `todo.txt にまだ無い item を渡したとき`。 |
 
 **この例で学ぶこと**: D4 は「同じ引数で 2 回」を頭の中で実行して決める。
 **確かめずに日付つきの行を毎回足す（[自分で判定してみる 問 4](#ai-2-y)）なら答えが変わり、正**（15.4: 時刻を含むものを書く → 反する）。
@@ -1226,14 +1144,8 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 | 欄 | 値 |
 |---|---|
 | verdict | 誤 |
-| reachable | はい |
-| condition_type | `なし` |
-| condition | `なし` |
-| violates | いいえ |
-| write_target | （空） |
 | error_class | `E8: server.py:16 の 'a' は flock のために開くだけで、lock には何も書かない（15.4、O41）` |
-| unknown_reason | （空） |
-| evidence | `server.py:16 open(LOCKFILE, "a") as lock → :17 flock(LOCK_SH) → :19-20 state.json を読む → :22 flock(LOCK_UN)。lock への write は無い` |
+| evidence | `server.py:16 open(LOCKFILE, "a") as lock → :17 flock(LOCK_SH) → :19-20 state.json を読む → :22 flock(LOCK_UN)。lock への write は無い`。 |
 
 **この例で学ぶこと**: `'a'` は「追記するかもしれない」の印にすぎない。書く文があるかを読む。
 **同じロックファイルに `lock.write(f"{time.time()} read {account}\n")` と書き足していたら答えが変わり、正**（2 回目でさらに行が増える。ラベルはログ）。
@@ -1309,14 +1221,8 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 | 欄 | 値 |
 |---|---|
 | verdict | 誤 |
-| reachable | はい |
-| condition_type | `なし` |
-| condition | `なし` |
-| violates | いいえ |
-| write_target | （空） |
 | error_class | `E9: 語彙・定義の差 — 宛先 ollama はドットの無い名前で、手引き 15.3 では local（D73 の 2）。解析器（_const_host_class）は外部とする` |
-| unknown_reason | （空） |
-| evidence | `server.py:12 httpx.post("http://ollama:11434/api/generate", ...)。ホストは ollama（ドットの無い名前。docker compose のサービス名）` |
+| evidence | `server.py:12 httpx.post("http://ollama:11434/api/generate", ...)。ホストは ollama（ドットの無い名前。docker compose のサービス名）`。 |
 
 **記号についての注意（手引きの穴）**: 15.3 は誤の原因を「語彙・定義の差（第 17 節）」と書きますが、17 節の E1〜E9 の表に、この類はありません。
 本書は 17 節の結び「分類に迷ったら E9 にして説明を書く」に従い、E9 にして説明の先頭に「語彙・定義の差」と書きました。
@@ -1362,7 +1268,7 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 <a id="ai-2-y"></a>
 ### I-2.y 自分で判定してみる
 
-コードと判定表の行だけを出します。記録の欄（`verdict`・`reachable`・`condition_type`・`violates`・`write_target` か `error_class`）を
+コードと判定表の行だけを出します。記録の欄（`verdict`・`evidence` と、正なら `condition_type`・`write_target`、誤なら `error_class`）を
 自分で決めてから、答えを開いてください。どの問も、本文のどれかの例と 1 か所だけ違います。判定表の行は、凍結版で走査した本物の出力です（本書の試験）。
 
 **問 1**（宣言 D1。ツール `count_notes`）
@@ -1409,7 +1315,7 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 
 <details><summary>答え</summary>
 
-**正**。reachable はい、condition_type `初回`、violates はい、write_target `キャッシュ・状態の保存`。
+**正**。condition_type `初回`、write_target `キャッシュ・状態の保存`。
 
 - [I-2.1](#ai-2-1) と違い、lifespan の初期化は 22 行の条件つきです。手引き 14.4 の見分け方「条件つきなら、条件が偽のときはツールの呼び出しで届くので『到達する』」。
 - 既定（`NOTES_PRELOAD` を設定しない）では、最初の呼び出しで 14 行が真になり、15 行に届きます。
@@ -1459,7 +1365,7 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 
 <details><summary>答え</summary>
 
-**誤 E3**。reachable いいえ（violates・condition は空欄）。
+**誤 E3**。到達しない誤なので `condition_type` は書かない。
 
 - 25 行の `merged` は 24 行の `dict(DEFAULTS)` で、組み込みの `dict` です。`merged.update` は `dict.update` で、メモリの中の辞書を変えるだけです。
 - `SettingsStore` の実体を作る文は木の中にありません（grep `SettingsStore`）。解析器は末尾の名前 `update` で木の中の唯一の候補に降りました
@@ -1501,7 +1407,7 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 
 <details><summary>答え</summary>
 
-**正**。reachable はい、condition_type `なし`、violates はい、write_target `一時ファイル`。
+**正**。condition_type `なし`、write_target `一時ファイル`。
 
 - [I-2.4](#ai-2-4) と同じコードで、宣言だけが D1 です。
 - 15.1 の表の FS_WRITE の行: 「ログ・キャッシュ・一時ファイル・ディレクトリの作成も含む（同じ呼び出しの中で作って消す一時ファイルは、
@@ -1538,7 +1444,7 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 
 <details><summary>答え</summary>
 
-**正**。reachable はい、condition_type `なし`、violates はい、write_target `利用者のファイル`。
+**正**。condition_type `なし`、write_target `利用者のファイル`。
 
 - [I-2.15](#ai-2-15) と違い、書く前に確かめません。同じ `item` で 2 回呼ぶと、15 行の行が 2 つになります。
   15.4 の表の「定数の `'a'` で追記する → 繰り返すと追記が重なるなら反する」と「時刻…を含むものを書く → 反する」の行。
@@ -1587,7 +1493,7 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 
 <details><summary>答え</summary>
 
-**正**。reachable はい、condition_type `運用者の設定`、condition `config.py の DEBUG を True に書き換えて起動したとき`、violates はい、write_target `一時ファイル`。
+**正**。condition_type `運用者の設定`、write_target `一時ファイル`。`evidence` に条件「config.py の DEBUG を True に書き換えて起動したとき」を書く。
 
 - [I-2.9](#ai-2-9) と違い、`DEBUG` は「運用者が書き換える」と書かれた `config.py` の定数です。手引き 14.2 の表の但し書き
   「運用者が書き換える前提の `config.py` の定数は、閉じた枝ではなく 14.3 の `運用者の設定`」（D76）。
@@ -1624,7 +1530,7 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 
 <details><summary>答え</summary>
 
-**正**。reachable はい、condition_type `なし`、violates はい、write_target `利用者のファイル`。
+**正**。condition_type `なし`、write_target `利用者のファイル`。
 
 - [I-2.8](#ai-2-8) と違い、子は `tee -a ~/journal.txt` です。`tee` は標準入力を標準出力に写し、`-a` で指定のファイルに追記します
   （POSIX の `tee` の仕様 <https://pubs.opengroup.org/onlinepubs/9799919799/utilities/tee.html> を開いて確かめる）。
@@ -1659,7 +1565,7 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 
 <details><summary>答え</summary>
 
-**正**。reachable はい、condition_type `引数`、condition `引数 mode に "w" などの書き込みのモードを渡したとき`、violates はい、write_target `利用者のファイル`。
+**正**。condition_type `引数`、write_target `利用者のファイル`。`evidence` に条件「引数 mode に "w" などの書き込みのモードを渡したとき」を書く。
 
 - [I-2.12](#ai-2-12) と違い、`mode` はツールの引数で、モデルが決められます。原理 3-a で「取りうる値の全体」を考えます（手引き 手順 F）。
 - `mode="w"` なら、13 行の `open` が既存のノートを空にします。14 行の `read()` は失敗しますが、その前にファイルはもう切り詰められています。
@@ -1703,7 +1609,7 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 
 <details><summary>答え</summary>
 
-**誤 E2**。reachable はい、condition_type `なし`、violates いいえ。
+**誤 E2**（到達するが反しない）。
 
 - 22 行が消す `work` は、15 行の `mkdtemp` がこの呼び出しで作った一時ディレクトリです。中身も、この呼び出しの 17 行の clone が作った物です。
 - 15.2 の迷いやすい形「同じ呼び出しで自分が作った一時ファイル…を消す → 反しない（誤、E2）」。[I-2.4](#ai-2-4) と同じ類です。

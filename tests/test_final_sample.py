@@ -326,9 +326,11 @@ def test_sheet_columns_and_no_analyzer_output_in_miss(tmp_path):
     assert any(t["truncated"] for t in json.load(open(paths["miss"], encoding="utf-8"))["targets"])
     con = read_csv(out / "contradiction.csv")
     for col in ("tree", "unit", "unit_relpath", "unit_lineno", "site", "kind", "decl", "reasons", "locations",
-                "verdict", "reachable", "condition_type", "condition", "violates", "error_class", "write_target",
+                "verdict", "condition_type", "error_class", "write_target",
                 "unknown_reason", "evidence", "note", "minutes", "ai_used", "ai_model", "ai_log"):
         assert col in con[0]
+    for col in ("reachable", "violates", "condition"):  # D83 で書かない欄にした
+        assert col not in con[0]
     unk = read_csv(out / "unknown.csv")
     for col in ("outcome", "reachable", "violates", "write_target", "condition_type", "condition", "unknown_reason",
                 "evidence", "reasons", "ai_used"):

@@ -301,8 +301,11 @@ def _check_unique_ids(items, where: str) -> None:
         raise _err(where, f"id が重複: {dup[:10]}")
 
 
-CONTRA_COLUMNS = (ID_COL, "tree", "decl", "verdict", "reachable", "violates", "condition_type", "error_class",
-                  "write_target", "unknown_reason", "minutes", "ai_used")
+CONTRA_COLUMNS = (ID_COL, "tree", "decl", "verdict", "condition_type", "error_class", "write_target", "unknown_reason",
+                  "minutes", "ai_used")
+#: 誤の原因のうち「到達しない」側（手引き 14.2・17）。D83 で `reachable` の欄を書かなくなったので、到達しない誤に
+#: `condition_type` が付いていないかはこの類で確かめる（D76 の「到達するときだけ書く」）。
+UNREACHABLE_ERROR_CLASSES = frozenset({"E1", "E3", "E4", "E6"})
 
 
 def parse_contradiction_rows(rows: list[dict], where: str = "矛の判定表", strict: bool = True) -> list[Pair]:
@@ -318,8 +321,11 @@ def parse_contradiction_rows(rows: list[dict], where: str = "矛の判定表", s
         if r.get("verdict", "") == "":
             raise _err(w, "verdict が空（判定し残し）")
         verdict = _in(r["verdict"], VERDICTS, w, "verdict")
+        # D83: `reachable`・`violates`・`condition` は書かない欄になった（verdict と error_class から分かる）。
+        # 前の形の表（v4 の判定・練習の表）で書いてあれば、今までどおり 11.2 の表と突き合わせる。
         reach, viol = r.get("reachable", ""), r.get("violates", "")
-        if strict or reach or viol:
+        old_form = bool(reach or viol)
+        if old_form:
             _in(reach, TERNARY, w, "reachable")
             if not (reach in ("いいえ", "決められない") and viol == ""):  # 11.2 の表の「—」
                 _in(viol, TERNARY, w, "violates")
@@ -331,7 +337,7 @@ def parse_contradiction_rows(rows: list[dict], where: str = "矛の判定表", s
         ct = r.get("condition_type", "")
         if ct:
             conds = parse_conditions(ct, w)
-            if strict and reach != "はい":
+            if strict and old_form and reach != "はい":
                 raise _err(w, f"reachable = {reach} なのに condition_type がある（到達するときだけ書く。手順 H の既定、D76）")
         elif strict and verdict == "正":
             raise _err(w, "正なのに condition_type が空（14.3）")
@@ -345,10 +351,12 @@ def parse_contradiction_rows(rows: list[dict], where: str = "矛の判定表", s
                 raise _err(w, "誤なのに error_class が空（第 17 節）")
         elif ec_raw and strict:
             raise _err(w, f"{verdict} なのに error_class = {ec_raw!r}（誤のときだけ書く）")
-        if strict and ec in ("E3", "E4") and reach != "いいえ":
+        if strict and old_form and ec in ("E3", "E4") and reach != "いいえ":
             raise _err(w, f"error_class = {ec} なのに reachable = {reach}（E3・E4 は いいえ。手順 H の既定、D76）")
-        if strict and ec == "E5" and viol != "いいえ":
+        if strict and old_form and ec == "E5" and viol != "いいえ":
             raise _err(w, f"error_class = E5 なのに violates = {viol}（E5 は いいえ。手順 H の既定、D76）")
+        if strict and not old_form and ct and ec in UNREACHABLE_ERROR_CLASSES:
+            raise _err(w, f"error_class = {ec}（到達しない誤）なのに condition_type がある（到達するときだけ書く。D76・D83）")
         wt = r.get("write_target", "")
         if wt:
             _in(wt, target_vocab(decl), w, "write_target")

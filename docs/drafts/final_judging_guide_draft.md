@@ -190,16 +190,21 @@ psycopg と表示していても、読み取り専用のツールが本当に DB
 
 ### 手順 H: 記録する
 
-判定表の 1 行に次を書く。
+判定表の 1 行に次を書く。**書く欄は判定ごとに決まっている**（D83。学生の決定。`reachable`・`violates`・`condition` の欄は
+書かない。到達するか・反するかは `verdict` と `error_class` から分かる。条件の中身は `evidence` に書く）。
+
+| 判定 | 必ず書く欄 |
+|---|---|
+| 正 | `verdict`・`evidence`・`write_target`・`condition_type` |
+| 誤 | `verdict`・`evidence`・`error_class` |
+| 不明 | `verdict`・`evidence`・`unknown_reason` |
+| どれでも | `minutes`・`ai_used`（`あり` なら `ai_model`・`ai_log` も）。`note` は迷ったときだけ |
 
 | 欄 | 書くこと | 例 |
 |---|---|---|
 | `pair_id`・`seq` | 判定表の id（抜き取りで付く。例 `C-D1-001`）と判定の順（seed ⑤ で並べた通し番号）。どちらも `scripts/final_sheet.py` が書く（D76） | `C-D1-001`・`17` |
 | `verdict` | `正` / `誤` / `不明` | `正` |
-| `reachable` | `はい` / `いいえ` / `決められない` | `はい` |
 | `condition_type` | 条件の種類（14.3）。複数の条件が重なるなら全部を `;` で並べる | `引数` |
-| `condition` | 条件の中身を 1 文で（無ければ `なし`） | `引数 output_file を渡したとき` |
-| `violates` | `はい` / `いいえ` / `決められない` | `はい` |
 | `error_class` | 誤のとき、第 17 節の分類（E1〜E9）と 1 文の説明 | `E1: lifespan の init_db が起動時に済ませる` |
 | `write_target` | 正のとき、第 16 節の種類（D1・D2・D4）。D3 は通信先の種類（16.3） | `ログ` |
 | `unknown_reason` | 不明のとき、決められない理由 | `書き先のパスが外部ライブラリの戻り値で決まる` |
@@ -212,8 +217,11 @@ psycopg と表示していても、読み取り専用のツールが本当に DB
 
 書き方の既定（D76）:
 
-- 11.2 の表の「—」の欄は空欄にする。`condition_type`・`condition` は到達するときだけ書く。
-- 誤の原因が E3・E4 なら `reachable` を `いいえ`、E5 なら `violates` を `いいえ` にする。
+- `condition_type` は正のときに書く。到達しない誤（E1・E3・E4・E6）には書かない（D76・D83）。条件の中身（どの引数・どの設定か）は
+  `evidence` の文に入れる（例「引数 output_file を渡したとき」）。
+- 到達するか・反するかは、`verdict` と `error_class` から分かる: 正 = 到達して反する、E1・E3・E4・E6 = 到達しない、
+  E2・E5・E8 = 到達するが反しない。E7・E9 は `error_class` の説明の文でどちらか分かるように書く（D83。前の形の
+  `reachable`・`violates` の欄は書かない）。
 - `evidence` のパスは木の根からの相対で書く。書くのは正にした位置の道筋だけで、ほかの位置の扱いは `note` に書く。
 - AI のやりとりのログは全文を残し、会話ごとに 1 ファイルにする。中に、使った件の `id` を書く。
 - 数に入らない気づき（誤の組のツールにある別の違反など）は `note` に書く。組の判定は変えない。
