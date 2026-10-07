@@ -12,7 +12,7 @@
 - 判定の規則: `docs/drafts/final_judging_guide_draft.md`（封の後は `docs/final_judging_guide.md`）
 - 事前登録: `docs/drafts/prereg_2_12_draft.md`（封の後は `docs/preregistration.md` §2.12）
 - 最終評価の細かい手順: `docs/final_evaluation_procedure.md`（この手順書と食い違うところは、下の「手順書の更新」に書いた）
-- 決定の記録: `docs/decisions.md`（D76〜D84 が最近のもの）
+- 決定の記録: `docs/decisions.md`（D76〜D85 が最近のもの）
 
 ---
 
@@ -165,7 +165,8 @@
 | C2 重複の除去 | `.venv312/bin/python scripts/dedup_trees.py hash …` → `dedup …`（Python 3.12 で取る。D77 の 16） | `dedup.json` |
 | C3 走査 | `.venv312/bin/python -u scripts/scan_v2.py --sample … --label final_run1 --require-fingerprint docs/fingerprint.json`（深さ 4）。深さ 3・5 も 1 回ずつ（件数だけ） | `evidence/scan_v2_final_run1/` |
 | C3 確かめ | `summary.json` の指紋・dirty・`max_depth`・打ち切り・メモリ超過で除いた木（D75 の 4） | 手順書 9.3 |
-| C4 抜き取り | `scripts/final_sample.py survey / contradiction / miss / unknown / agreement`（seed ⑦①②③⑥）→ `scripts/final_sheet.py`（seed ⑤）→ 1 件ごとに `scripts/path_view.py` | 判定表の CSV と道筋のファイル |
+| C2' 実態調査の名簿（D85） | `scripts/survey_roster.py build --prefix final- --keep <dedup の出力>` → `sample --seed <⑦>`（**走査を待たない**。解析器を使わない名簿） | 名簿と順番の列 |
+| C4 抜き取り | `scripts/final_sample.py contradiction / miss / unknown / agreement`（seed ①②③⑥）→ `scripts/final_sheet.py`（seed ⑤）→ 1 件ごとに `scripts/path_view.py` | 判定表の CSV と道筋のファイル |
 
 各手順の出力は、次に進む前にコミットする（何を先に決めたかの証拠になる）。
 
