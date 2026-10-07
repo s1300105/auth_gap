@@ -34,6 +34,8 @@ E9 は「その他」です。迷ったら E9 にして説明を書きます（�
 - 到達するか・反するかは `error_class` から分かります。E1・E3・E4・E6 は到達しない、E2・E5・E8 は到達するが反しない誤です。
 - `condition_type` は正のときに書きます。条件の中身は `evidence` の文に「条件: …」として入れます。
 - `write_target` は正のときだけ付けます。誤には付けません。
+- D1 の正には `target_by_arg` も書きます（D84）。変える場所（書き先のパス、DB の表・行、相手側の資源、起動するコマンドとその引数）を
+  ツールの引数の値が一部でも決めれば `はい`、決めなければ `いいえ`、読み切れなければ `決められない`。誤・不明と、D1 以外の宣言には書きません。
 - `evidence` は木の根からの相対の `ファイル:行` で書きます。
 
 **この分冊の地図**:
@@ -291,6 +293,7 @@ lifespan の本体の効果は、ツールには付けません（`authgap/entry
 | verdict | 正 |
 | condition_type | `起動の方法` |
 | write_target | `キャッシュ・状態の保存`（作ったファイルを :19-20 で読み返す。16.1 の順 6） |
+| target_by_arg | `いいえ`（書き先は定数の INDEX_DIR/terms.json。ツールの引数 term は読む項目を選ぶだけ） |
 | evidence | `server.py:30 lookup_term → _load_index() → server.py:13 if _index is None（main() を通らない起動では最初の呼び出しで真）→ :16 if not os.path.exists(path) → :17 open(path, "w")。先に済ませるのは server.py:34 の main() の中だけ`。条件: `main() を通らない起動（fastmcp run server.py:mcp など）で、最初の呼び出しのとき`。 |
 
 **この例で学ぶこと**: 同じ初期化でも、`main()` の中だけなら「到達する」（正になりうる）、lifespan・読み込み時なら「到達しない」（E1）。
@@ -834,7 +837,7 @@ D1 は `FS_WRITE` をすべて `fs_write` の矛にします（`authgap/dparse.p
 | 欄 | 値 |
 |---|---|
 | verdict | 誤 |
-| error_class | `E7: server.py:15 のモデルの値 pattern は shlex.quote で 1 つの引数に閉じ、-e の後のパターンにしかならない。起動するのは定数の grep で、モデルはコマンドを決められない` |
+| error_class | `E7（到達するが反しない）: server.py:15 のモデルの値 pattern は shlex.quote で 1 つの引数に閉じ、-e の後のパターンにしかならない。起動するのは定数の grep で、モデルはコマンドを決められない。grep はファイルを書かない` |
 | evidence | `server.py:15 cmd = f"grep -rn -e {shlex.quote(pattern)} -- {shlex.quote(NOTES_DIR)}" → :16 subprocess.run(cmd, shell=True)。grep は一致行を標準出力に書くだけ（OUTPUT FILES: None。https://pubs.opengroup.org/onlinepubs/9799919799/utilities/grep.html）`。 |
 
 **この例で学ぶこと**: 解析器の「モデルが決められる」は、値が流れ込むことしか見ていない。E7 は手引き 17 の見分け方
@@ -1067,7 +1070,7 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 
 - 20 行に来るのは、18 行で `item` がまだファイルに無いときです。
 - 条件の種類: 「まだ無い `item` を渡したとき」は、`引数` とも `外部の状態` とも読めます。手引き 14.3 は、2 つ以上の種類に読めるときは
-  表の上からの順で先のものを 1 つだけ書くと決めています（鍵が引数のキャッシュの「無いとき」は `引数`。D76）。`引数` にします。
+  表の上からの順で先のものを 1 つだけ書くと決めています（鍵が引数のキャッシュの「無いとき」は `引数`。D76）。`引数` にします。ただし、この組は誤なので `condition_type` の欄は書かず（手引き 手順 H の既定。D83）、条件の中身だけを `evidence` に入れます。
 - 答え: **はい**（条件つき）。
 
 **問い 2: 宣言に反するか**
@@ -1221,7 +1224,7 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 | 欄 | 値 |
 |---|---|
 | verdict | 誤 |
-| error_class | `E9: 語彙・定義の差 — 宛先 ollama はドットの無い名前で、手引き 15.3 では local（D73 の 2）。解析器（_const_host_class）は外部とする` |
+| error_class | `E9（到達するが反しない）: 語彙・定義の差 — 宛先 ollama はドットの無い名前で、手引き 15.3 では local（D73 の 2）。解析器（_const_host_class）は外部とする` |
 | evidence | `server.py:12 httpx.post("http://ollama:11434/api/generate", ...)。ホストは ollama（ドットの無い名前。docker compose のサービス名）`。 |
 
 **記号についての注意（手引きの穴）**: 15.3 は誤の原因を「語彙・定義の差（第 17 節）」と書きますが、17 節の E1〜E9 の表に、この類はありません。
@@ -1268,7 +1271,7 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 <a id="ai-2-y"></a>
 ### I-2.y 自分で判定してみる
 
-コードと判定表の行だけを出します。記録の欄（`verdict`・`evidence` と、正なら `condition_type`・`write_target`、誤なら `error_class`）を
+コードと判定表の行だけを出します。記録の欄（`verdict`・`evidence` と、正なら `condition_type`・`write_target`（D1 の正なら `target_by_arg` も。D84）、誤なら `error_class`）を
 自分で決めてから、答えを開いてください。どの問も、本文のどれかの例と 1 か所だけ違います。判定表の行は、凍結版で走査した本物の出力です（本書の試験）。
 
 **問 1**（宣言 D1。ツール `count_notes`）
@@ -1315,7 +1318,7 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 
 <details><summary>答え</summary>
 
-**正**。condition_type `初回`、write_target `キャッシュ・状態の保存`。
+**正**。condition_type `初回`、write_target `キャッシュ・状態の保存`、target_by_arg `いいえ`（作るのは定数の `~/.notes_mcp`。count_notes に引数は無い）。
 
 - [I-2.1](#ai-2-1) と違い、lifespan の初期化は 22 行の条件つきです。手引き 14.4 の見分け方「条件つきなら、条件が偽のときはツールの呼び出しで届くので『到達する』」。
 - 既定（`NOTES_PRELOAD` を設定しない）では、最初の呼び出しで 14 行が真になり、15 行に届きます。
@@ -1407,7 +1410,7 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 
 <details><summary>答え</summary>
 
-**正**。condition_type `なし`、write_target `一時ファイル`。
+**正**。condition_type `なし`、write_target `一時ファイル`、target_by_arg `いいえ`（消すのは mkstemp が名前を決めた一時ファイル。引数 code は中身だけ）。
 
 - [I-2.4](#ai-2-4) と同じコードで、宣言だけが D1 です。
 - 15.1 の表の FS_WRITE の行: 「ログ・キャッシュ・一時ファイル・ディレクトリの作成も含む（同じ呼び出しの中で作って消す一時ファイルは、
@@ -1493,7 +1496,7 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 
 <details><summary>答え</summary>
 
-**正**。condition_type `運用者の設定`、write_target `一時ファイル`。`evidence` に条件「config.py の DEBUG を True に書き換えて起動したとき」を書く。
+**正**。condition_type `運用者の設定`、write_target `一時ファイル`、target_by_arg `いいえ`（書き先は config.py の定数 `/tmp/weather_debug/last.json`。引数 city は書く中身だけ）。`evidence` に条件「config.py の DEBUG を True に書き換えて起動したとき」を書く。
 
 - [I-2.9](#ai-2-9) と違い、`DEBUG` は「運用者が書き換える」と書かれた `config.py` の定数です。手引き 14.2 の表の但し書き
   「運用者が書き換える前提の `config.py` の定数は、閉じた枝ではなく 14.3 の `運用者の設定`」（D76）。
@@ -1530,7 +1533,7 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 
 <details><summary>答え</summary>
 
-**正**。condition_type `なし`、write_target `利用者のファイル`。
+**正**。condition_type `なし`、write_target `利用者のファイル`、target_by_arg `いいえ`（子のコマンド `tee -a ~/journal.txt` とその引数は定数。引数 text は標準入力に流す中身だけ）。
 
 - [I-2.8](#ai-2-8) と違い、子は `tee -a ~/journal.txt` です。`tee` は標準入力を標準出力に写し、`-a` で指定のファイルに追記します
   （POSIX の `tee` の仕様 <https://pubs.opengroup.org/onlinepubs/9799919799/utilities/tee.html> を開いて確かめる）。
@@ -1565,7 +1568,7 @@ D2 の規則はこれを `fs_remove` の矛にします（`authgap/dparse.py:409
 
 <details><summary>答え</summary>
 
-**正**。condition_type `引数`、write_target `利用者のファイル`。`evidence` に条件「引数 mode に "w" などの書き込みのモードを渡したとき」を書く。
+**正**。condition_type `引数`、write_target `利用者のファイル`、target_by_arg `はい`（引数 name が `~/notes` の中のどのノートかを決める。`os.path.basename` で区切りを落とすので `~/notes` の外には出られない。`note` に書く）。`evidence` に条件「引数 mode に "w" などの書き込みのモードを渡したとき」を書く。
 
 - [I-2.12](#ai-2-12) と違い、`mode` はツールの引数で、モデルが決められます。原理 3-a で「取りうる値の全体」を考えます（手引き 手順 F）。
 - `mode="w"` なら、13 行の `open` が既存のノートを空にします。14 行の `read()` は失敗しますが、その前にファイルはもう切り詰められています。
