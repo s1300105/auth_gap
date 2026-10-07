@@ -13,6 +13,7 @@
 
 - **`condition_type`（条件の種類）**: 効果が「どんなときに」起きるか。手引き 14.3 の 7 種類から選びます。
 - **`write_target`（書き込み先の種類）**: 何に書いたか。手引き 16.1 の 8 種類から選びます。D3 の正では、代わりに通信先の種類（手引き 16.3）を書きます。
+- **`target_by_arg`**（D84。**D1 の正だけ**）: 変える場所（書き先のパス、DB の表・行、相手側の資源、起動するコマンドとその引数）を、ツールの引数の値が一部でも決めるか。`はい` / `いいえ` / `決められない`。決まったフォルダの外に出られるかなどは `note` に書きます。この分冊の例の表にも書き足しました。
 
 どちらの欄も、**正か誤かを変えません。** 変わるのは、併記の数 (B)(C) と、ラベルの内訳です。だから、1 例ごとに「この選び方で (A)(B)(C) のどれに数えるか」を書きます。
 
@@ -70,7 +71,7 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 ### 1 組に位置が複数あるとき（手引き 手順 G）
 
 - 1 つでも「到達する かつ 反する」位置があれば正。**条件つきの位置で正が見つかったら、そこで止めてよい**（`note` に書く。D76）。
-- `condition_type` は読んだ位置のうち一番弱い条件。読まなかった位置に弱いものがありうるので、**(B)(C) は報告で下限**です。
+- `condition_type` は読んだ位置のうち一番弱い条件。弱い順は `なし` → 運用者が決めない条件 → 運用者が決める条件（`運用者の設定`・`起動の方法`）で、運用者が決めない条件どうしは 14.3 の表の上からの順（`引数` → `初回` → `失敗・期限切れ` → `外部の状態`）で先のものを弱いとします（手順 G。2026-10-06 に手引きに書き足された）。読まなかった位置に弱いものがありうるので、**(B)(C) は報告で下限**です。
 - 種類が違う位置が複数あるときは、**最初に正と分かった位置の種類**を付けます（D76）。
 
 <a id="ai-3-test"></a>
@@ -80,7 +81,7 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 
 - コードの左の数字は行番号です（写して使うときは消してください）。`locations` と `evidence` の行番号はこの番号です。
 - sqlite3 の呼び出しは、解析器が site を `psycopg.Cursor.execute` と表示します。動作の種類（kind = `DB`）は合っているので、判定には影響しません（手引き 手順 C）。
-- `evidence` のパスは木の根からの相対です（手引き 手順 H）。正の例では `error_class`・`unknown_reason` を書きません（D83）。
+- `evidence` のパスは木の根からの相対です（手引き 手順 H）。正の例では `error_class`・`unknown_reason` を書きません（D83）。D1 の正には `target_by_arg` を書きます（D84）。
 
 ---
 
@@ -130,6 +131,7 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 | verdict | 正 |
 | condition_type | なし |
 | write_target | ログ |
+| target_by_arg | いいえ |
 | evidence | `server.py:20 → server.py:12` `open(LOG_PATH, "a")`。`LOG_PATH` は `~/.notes_search.log`。呼ぶたびに時刻・検索語・件数の 1 行を追記する。条件なし。 |
 | note | `search_notes` の道筋に `LOG_PATH` を読む行は無い（16.1 の「読み返す」の主語は判定しているツールだけ）。 |
 
@@ -190,7 +192,9 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 | verdict | 正 |
 | condition_type | 引数 |
 | write_target | 利用者のファイル |
+| target_by_arg | はい |
 | evidence | `server.py:22`（`if output_file:`）→ `server.py:23` `open(output_file, "w")`。`output_file` はモデルが決める引数で、そのパスにレポートを書き出す。条件: 引数 `output_file` を空でない値で渡したとき。 |
+| note | target_by_arg: 書き先のパスを引数 `output_file` が丸ごと決める（どこでも指せる）。 |
 
 **数え方**: (A) 数える・(B) 数える・(C) 数えない。
 
@@ -242,6 +246,7 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 | verdict | 正 |
 | condition_type | なし |
 | write_target | ログ |
+| target_by_arg | いいえ |
 | evidence | `server.py:16`（`if track:`、`track` の既定値は `True`）→ `server.py:17` `open(ACCESS_LOG, "a")`。呼ぶたびに時刻と読んだノートの名前を `~/.notes_access.log` に追記する。 |
 | note | 16 行の `if track:` は既定値 `True` で真。`track=False` を渡したときだけ書かないが、何も渡さなくても届くので条件なし（14.3、D76）。 |
 
@@ -294,6 +299,7 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 | verdict | 正 |
 | condition_type | 初回 |
 | write_target | キャッシュ・状態の保存 |
+| target_by_arg | いいえ |
 | evidence | `server.py:17 → server.py:10` `os.makedirs(WORKDIR, exist_ok=True)`。`WORKDIR` は `~/.projtool`。無ければ作る。18 行でその中を一覧する。条件: `~/.projtool` がまだ無いとき（最初の呼び出し）。 |
 
 **数え方**: (A) 数える・(B) 数える・(C) 数えない。
@@ -362,6 +368,7 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 | verdict | 正 |
 | condition_type | 初回 |
 | write_target | 一時ファイル |
+| target_by_arg | いいえ |
 | evidence | `server.py:32 → server.py:23`（`if not os.path.exists(INDEX):`）`→ server.py:24 → server.py:18` `open(INDEX, "w")`。`INDEX` は `tempfile.gettempdir()` の下の固定のパス。無ければ索引を作って書く。条件: 索引 `<一時領域>/dictmcp/index.json` がまだ無いとき。 |
 | note | 25 行で同じツールが読み返すので順 6 にも当たるが、OS の一時領域に置くので順 5 が先（16.2、D76）。 |
 
@@ -431,6 +438,7 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 | verdict | 正 |
 | condition_type | 失敗・期限切れ |
 | write_target | キャッシュ・状態の保存 |
+| target_by_arg | いいえ |
 | evidence | `server.py:32 → server.py:24`（期限の比較）`→ server.py:25 → server.py:16` `open(TOKEN_FILE, "w")`。`TOKEN_FILE` は `~/.calmcp/token.json`。更新したトークンで上書きする。22 行で同じツールが読み返す。条件: 保存したアクセストークンの期限が切れているとき。 |
 
 **数え方**: (A) 数える・(B) 数える・(C) 数えない。
@@ -488,6 +496,7 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 | verdict | 正 |
 | condition_type | 外部の状態 |
 | write_target | その他・不明 |
+| target_by_arg | いいえ |
 | evidence | `server.py:18-19` `(MAILBOX / "response.json").unlink(missing_ok=True)`。`MAILBOX` は `~/.worker_mailbox`。ワーカーが前の質問に書いた応答が残っていれば消す。条件: 前の呼び出しへの応答 `response.json` が受け渡しの場所に残っているとき。 |
 | note | 不明: 別のプロセスとの受け渡しファイルのうち、前の呼び出しが残した応答ファイルの削除。手引き 16.2 の 1 行目（D76）により「その他・不明」。 |
 
@@ -543,7 +552,9 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 | verdict | 正 |
 | condition_type | 運用者の設定 |
 | write_target | ログ |
+| target_by_arg | いいえ |
 | evidence | `server.py:19 → server.py:11`（`if AUDIT_LOG:`）`→ server.py:12` `open(AUDIT_LOG, "a")`。`AUDIT_LOG` は 7 行で環境変数 `FILES_AUDIT_LOG` から読む。時刻・操作・パスの 1 行を追記する。条件: 環境変数 `FILES_AUDIT_LOG` にパスを設定して起動したとき。 |
+| note | target_by_arg: 書き先は運用者の環境変数で決まる。引数 `path` は追記する行の中身と、読むファイル（20 行）を決めるだけ。 |
 
 **数え方**: (A) 数える・(B) **数えない**・(C) 数えない。
 
@@ -605,8 +616,9 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 | verdict | 正 |
 | condition_type | 引数 |
 | write_target | キャッシュ・状態の保存 |
+| target_by_arg | はい |
 | evidence | `server.py:16`（`url` からパスを作る）→ `server.py:17`（キャッシュがあれば返す）→ `server.py:21-22` `open(path, "w")`。既定（`FETCH_NO_CACHE` 未設定）で書く。18 行で同じツールが読み返す。条件: 引数 `url` のページがまだキャッシュに無いとき。 |
-| note | `FETCH_NO_CACHE` は止めるための設定なので条件に書かない（14.3、D76）。置き場所 `FETCH_CACHE_DIR` は運用者が決めるが、ラベルは中身で決める（16.2、D76）。 |
+| note | `FETCH_NO_CACHE` は止めるための設定なので条件に書かない（14.3、D76）。置き場所 `FETCH_CACHE_DIR` は運用者が決めるが、ラベルは中身で決める（16.2、D76）。target_by_arg: ファイル名を引数 `url` のハッシュが決める（一部でも決めるので `はい`）。ハッシュの 16 進の名前なので、`CACHE_DIR` の外には出られない。 |
 
 **数え方**: (A) 数える・(B) 数える・(C) 数えない。
 
@@ -675,8 +687,9 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 | verdict | 正 |
 | condition_type | 起動の方法 |
 | write_target | データベース |
+| target_by_arg | いいえ |
 | evidence | `server.py:25 → server.py:17`（`if _conn is None:`）`→ server.py:18 → server.py:11` `CREATE TABLE IF NOT EXISTS bookmarks`。初期化は `main()`（29 行）の中だけで、`lifespan` は無い。条件: `main()` を通らない起動（`fastmcp run server.py:mcp` など）で、最初のツール呼び出しのとき。 |
-| note | site は `psycopg.Cursor.execute` と出るが、実際は sqlite3 の接続。kind（DB）は合っている。10 行の `sqlite3.connect` が無いファイルを作る効果は解析器の行に無く、この組の判定には入れない。 |
+| note | site は `psycopg.Cursor.execute` と出るが、実際は sqlite3 の接続。kind（DB）は合っている。10 行の `sqlite3.connect` が無いファイルを作る効果は解析器の行に無く、この組の判定には入れない（それ自体は手引き 15.1 の迷いやすい形により D1 に反する）。 |
 
 **数え方**: (A) 数える・(B) **数えない**・(C) 数えない。
 
@@ -733,6 +746,7 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 | verdict | 正 |
 | condition_type | 引数 |
 | write_target | ログ |
+| target_by_arg | いいえ |
 | evidence | `server.py:22`（`if trace or os.environ.get("STATUS_TRACE"):`）`→ server.py:23 → server.py:14` `open(TRACE_FILE, "a")`。時刻つきの 1 行を `~/.statusmcp/trace.jsonl` に追記する。読み返さない。条件: 引数 `trace=True` を渡したとき（または環境変数 `STATUS_TRACE` を設定したとき）。 |
 
 **数え方**: (A) 数える・(B) 数える・(C) 数えない。
@@ -785,6 +799,7 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 | verdict | 正 |
 | condition_type | 引数;運用者の設定 |
 | write_target | 利用者のファイル |
+| target_by_arg | はい |
 | evidence | `server.py:8`（`EXPORT_ENABLED` を環境変数から読む）、`server.py:16`（`export_path and EXPORT_ENABLED`）`→ server.py:17` `open(export_path, "w")`。`export_path` はモデルが決める引数で、顧客の一覧を CSV で書き出す。条件: 引数 `export_path` を渡し、かつ環境変数 `CRM_ALLOW_EXPORT=1` で起動したとき。 |
 
 **数え方**: (A) 数える・(B) **数えない**・(C) 数えない。
@@ -840,8 +855,9 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 | verdict | 正 |
 | condition_type | なし |
 | write_target | データベース |
+| target_by_arg | いいえ |
 | evidence | `server.py:14-17`（空の入力と DB が無いときは先に抜ける）`→ server.py:20` `INSERT INTO search_history (query, at)`。検索のたびに検索語と時刻の行を足す。 |
-| note | site は `psycopg.Cursor.execute` と出るが sqlite3。kind（DB）は合っている。 |
+| note | site は `psycopg.Cursor.execute` と出るが sqlite3。kind（DB）は合っている。target_by_arg: DB のファイルと表 `search_history` は定数。引数 `query` は足す行の中身を決めるだけ（表紙の「決めていない点」13）。 |
 
 **数え方**: (A) 数える・(B) 数える・(C) 数える。
 
@@ -893,7 +909,9 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 | verdict | 正 |
 | condition_type | 外部の状態 |
 | write_target | 相手側の状態 |
+| target_by_arg | はい |
 | evidence | `server.py:16`（課題を `GET`）`→ server.py:17`（`unread` が真なら）`→ server.py:18 → server.py:10` `requests.patch(f"{API}/issues/{issue_id}", json={"unread": False})`。相手のサーバで課題を既読に変える。条件: 相手のサーバが課題を未読（`unread` が真）と返したとき。 |
+| note | target_by_arg: 引数 `issue_id`（int）が `PATCH` する課題 `/issues/{issue_id}` を決める。ホストは定数。 |
 
 **数え方**: (A) 数える・(B) 数える・(C) 数えない。
 
@@ -938,6 +956,7 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 | verdict | 正 |
 | condition_type | なし |
 | write_target | プロセスの起動・コードの実行 |
+| target_by_arg | はい |
 | evidence | `server.py:11` `subprocess.run([linter, "check", "--fix", path])`。起動するプログラム `linter` はモデルが決める引数（既定 `"ruff"`）。 |
 | note | 既定の `ruff check --fix` は `path` のファイルを書き換えるが、ラベルは子の動作で変えない（16.2、D76）。 |
 
@@ -998,6 +1017,7 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 | verdict | 正 |
 | condition_type | なし |
 | write_target | 一時ファイル |
+| target_by_arg | いいえ |
 | evidence | `server.py:24 → server.py:11`（`tempfile.mkstemp` で作る）`→ server.py:18` `os.remove(src)`（`finally` の中で毎回消す）。 |
 | note | 解析器の語彙に `tempfile.mkstemp`・`os.fdopen` は無く（`authgap/catalog/` を検索して確かめた）、作成と書き込みは行に出ない。この組（`os.remove`）の判定には関係しない。 |
 
@@ -1069,10 +1089,11 @@ D76 で決まった境目（手引き 16.2）: 初回に作る作業ディレク
 | verdict | 正 |
 | condition_type | 引数 |
 | write_target | 利用者のファイル |
+| target_by_arg | はい |
 | evidence | `server.py:27`（`if export_path:`）`→ server.py:28 → server.py:13` `open(export_path, "w")`。`export_path` はモデルが決める引数で、検索結果を書き出す。条件: 引数 `export_path` を渡したとき。 |
 | note | `server.py:13` で正と分かり、止めた（手順 G、D76）。`server.py:18` は読んでいない。 |
 
-**もし 2 つ目も読んでいたら**: `server.py:18` は、本体の 29 行 `_remember(query)` から毎回届く `open(HISTORY, "a")` で、条件は `なし`、反します。正にできる位置のうち一番弱い条件は `なし` なので、`condition_type` は **`なし`** になります。ラベルは、最初に正と分かった位置（`server.py:13`）の **利用者のファイル** のままです（手順 G・16.1、D76）。
+**もし 2 つ目も読んでいたら**: `server.py:18` は、本体の 29 行 `_remember(query)` から毎回届く `open(HISTORY, "a")` で、条件は `なし`、反します。正にできる位置のうち一番弱い条件は `なし` なので、`condition_type` は **`なし`** になります。ラベルは、最初に正と分かった位置（`server.py:13`）の **利用者のファイル** のままです（手順 G・16.1、D76）。`target_by_arg` も、本書は同じく最初に正と分かった位置（13 行。書き先は引数 `export_path`）で **`はい`** と書きます。18 行の書き先 `HISTORY` は定数なので、位置ごとに答えが違う形です。どの位置で書くかは D84 も手引きも決めていません（表紙の「決めていない点」12）。
 
 | 読み方 | `condition_type` | `write_target` | (A) | (B) | (C) |
 |---|---|---|---|---|---|
@@ -1196,7 +1217,7 @@ I-3.17 で 2 つ目まで読んでいれば (C) は 9 です。**止めた分だ
 <a id="ai-3-y"></a>
 ### I-3.y 自分で判定してみる
 
-8 問です。どれも作った例で、判定表の行は凍結版の解析器の本物の出力です。各問で、`verdict`・`condition_type`・`write_target` と、(A)(B)(C) のどれに数えるかを答えてください。答えは開いて確かめます。
+8 問です。どれも作った例で、判定表の行は凍結版の解析器の本物の出力です。各問で、`verdict`・`condition_type`・`write_target`（D1 の正なので `target_by_arg` も。D84）と、(A)(B)(C) のどれに数えるかを答えてください。答えは開いて確かめます。
 
 <a id="ai-3-y1"></a>
 #### 問 1
@@ -1227,7 +1248,7 @@ I-3.17 で 2 つ目まで読んでいれば (C) は 9 です。**止めた分だ
 
 <details><summary>答え</summary>
 
-- **正**。`condition_type` は **`なし`**、`write_target` は **ログ**。(A)(B)(C) すべてに数える。
+- **正**。`condition_type` は **`なし`**、`write_target` は **ログ**、`target_by_arg` は **`いいえ`**（書き先は定数の `~/.glossary_history`。引数 term は書く行の中身だけ）。(A)(B)(C) すべてに数える。
 - 14 行の `if not os.environ.get("GLOSSARY_NO_HISTORY"):` は、既定では真です。運用者が何もしなければ毎回書くので、`運用者の設定` を書きません（手引き 14.3「既定では起きるが、設定で止められる」、D76）。ほかに条件は無いので `なし` です。
 - 15 行の追記は時刻と操作の記録で、`define` は読み返しません → ログ（16.2、D76）。
 - evidence: `server.py:14`（既定で真）`→ server.py:15` `open(HISTORY, "a")`。
@@ -1268,7 +1289,7 @@ I-3.17 で 2 つ目まで読んでいれば (C) は 9 です。**止めた分だ
 
 <details><summary>答え</summary>
 
-- **正**。`condition_type` は **`引数`**、`write_target` は **キャッシュ・状態の保存**。(A)(B) に数え、(C) には数えない。
+- **正**。`condition_type` は **`引数`**、`write_target` は **キャッシュ・状態の保存**、`target_by_arg` は **`はい`**（書き先のファイル名を引数 `city` が決める。`city` に `../` を含めるか `/` で始めれば `~/.cache/weathermcp` の外にも書けることを `note` に書く）。(A)(B) に数え、(C) には数えない。
 - 書くのは、引数 `city` のキャッシュがまだ無いときです（17〜18 行であれば返す）。鍵が引数のキャッシュの「無いとき」は `引数` とも `初回` とも読めるので、表の上の **`引数`** を 1 つだけ書きます（手引き 14.3、D76）。
 - `~/.cache/` は OS の一時領域ではありません。18 行で同じツールが読み返すので、順 6 です。
 - 10 行の `mkdir` はモジュールの読み込み時なので、ツールの道筋ではありません（解析器も組に出していません）。
@@ -1308,7 +1329,7 @@ I-3.17 で 2 つ目まで読んでいれば (C) は 9 です。**止めた分だ
 
 <details><summary>答え</summary>
 
-- **正**。`condition_type` は **`引数`**、`write_target` は **キャッシュ・状態の保存**。(A)(B) に数え、(C) には数えない。
+- **正**。`condition_type` は **`引数`**、`write_target` は **キャッシュ・状態の保存**、`target_by_arg` は **`いいえ`**（書き先は定数の `~/.thememcp/settings.json`。引数 theme は書く中身、dry_run は書くかどうかを決めるだけ）。(A)(B) に数え、(C) には数えない。
 - `dry_run` の既定値は `True` で、既定では書きません。モデルが `dry_run=False` を渡したときだけ 18 行に届きます → `引数`。[I-3.3](#ai-3-3)（既定値で起きる → `なし`）の裏返しです。
 - 書き先はツール自身の設定ファイル（`~/.thememcp/settings.json`）です。利用者やモデルが指定した場所でも、利用者の文書でもないので、順 3 には当たりません。ツールの動作のために保存し、13 行で同じツールが読み返すので、順 6 の定義に当たります。
 - evidence: `server.py:16`（`if not dry_run:`）`→ server.py:18` `open(SETTINGS, "w")`。
@@ -1346,7 +1367,8 @@ I-3.17 で 2 つ目まで読んでいれば (C) は 9 です。**止めた分だ
 
 <details><summary>答え</summary>
 
-- **正**。`condition_type` は **`なし`**、`write_target` は **データベース**。(A)(B)(C) すべてに数える。
+- **正**。`condition_type` は **`なし`**、`write_target` は **データベース**、`target_by_arg` は **`決められない`**。(A)(B)(C) すべてに数える。
+- `target_by_arg`: DB のファイル `~/.cache/geomcp.db` と表 `geocache` は定数です。`INSERT OR REPLACE` がどの既存の行を置き換えるかは表の一意の鍵で決まりますが、表を作る文（スキーマ）が木にありません。`address` が鍵なら、置き換える行を引数が選ぶので `はい`、鍵でなければ新しい行を足すだけで `いいえ` です。`note` にこのことを書きます（表紙の「決めていない点」13）。
 - 16 行の `INSERT OR REPLACE` は毎回実行され、毎回 DB の行を足すか置き換えます。D1 では 15.1 の「DB のデータ…の変更（`INSERT` …）→ 反する」です（15 の前書きの表の `INSERT OR REPLACE` の行は D2 の話です）。
 - 名前はキャッシュですが、SQLite に書くので順 2 のデータベースが順 6 より先です（16.2「SQLite のキャッシュ DB への書き込み → データベース」）。
 - site は `psycopg` と出ますが sqlite3 です。kind は合っています（`note` に書く）。
@@ -1385,7 +1407,7 @@ I-3.17 で 2 つ目まで読んでいれば (C) は 9 です。**止めた分だ
 
 <details><summary>答え</summary>
 
-- **正**。`condition_type` は **`運用者の設定`**、`evidence` に入れる条件は「環境変数 `AUTH_ENABLE_ADMIN_TOOLS=1` で起動したとき」、`write_target` は **データベース**。(A) だけに数え、(B)(C) には数えない。
+- **正**。`condition_type` は **`運用者の設定`**、`evidence` に入れる条件は「環境変数 `AUTH_ENABLE_ADMIN_TOOLS=1` で起動したとき」、`write_target` は **データベース**、`target_by_arg` は **`いいえ`**（消す行は `expires_at` と時刻で決まり、ツールに引数は無い）。(A) だけに数え、(B)(C) には数えない。
 - 16 行の `DELETE` はツールの中では毎回実行されますが、ツールの登録そのもの（10 行の `if` の中の `@mcp.tool`）が設定しだいです → `運用者の設定`（手引き 14.3「ツールの登録そのものが設定しだい」、D76）。
 - `DELETE` は 15.1 の「DB のデータ…の変更」で反します。
 - evidence: `server.py:10`（登録は環境変数しだい）、`server.py:16` `DELETE FROM sessions WHERE expires_at < ?`。
@@ -1419,7 +1441,7 @@ I-3.17 で 2 つ目まで読んでいれば (C) は 9 です。**止めた分だ
 
 <details><summary>答え</summary>
 
-- **正**。`condition_type` は **`引数`**、`write_target` は **プロセスの起動・コードの実行**。(A)(B) に数え、(C) には数えない。
+- **正**。`condition_type` は **`引数`**、`write_target` は **プロセスの起動・コードの実行**、`target_by_arg` は **`はい`**（起動するコマンドを引数 post_cmd が丸ごと決める）。(A)(B) に数え、(C) には数えない。
 - 13 行 `if post_cmd:` → モデルが空でないコマンドを渡したときだけ起動します → `引数`。
 - `shell=True` で、文字列をモデルが決めるので、15.1 の `SPAWN` の行で反します。子が何をするかに関係なく、ラベルは常にこの種類です（16.2、D76）。
 - evidence: `server.py:13`（`if post_cmd:`）`→ server.py:14` `subprocess.run(post_cmd, shell=True)`。
@@ -1459,7 +1481,7 @@ I-3.17 で 2 つ目まで読んでいれば (C) は 9 です。**止めた分だ
 
 <details><summary>答え</summary>
 
-- **正**。`condition_type` は **`なし`**、`write_target` は **一時ファイル**。(A)(B)(C) すべてに数える。
+- **正**。`condition_type` は **`なし`**、`write_target` は **一時ファイル**、`target_by_arg` は **`いいえ`**（書き先は定数の `/tmp/watchmcp_latest.html`。ツールに引数は無い）。(A)(B)(C) すべてに数える。
 - 16 行の `if` は読み取り（17 行）の枝で、19 行の書き込みは毎回実行されます → `なし`。
 - 書き先は `/tmp` の下です。次の呼び出しで読み返しますが、OS の一時領域に置くので場所で決め、一時ファイルです（16.2、D76。[I-3.5](#ai-3-5) と同じ境目）。
 - evidence: `server.py:19` `open(SNAP, "w")`。`SNAP` は `/tmp/watchmcp_latest.html`。毎回上書きし、次の呼び出しで 17 行が読み返す。
@@ -1509,7 +1531,7 @@ I-3.17 で 2 つ目まで読んでいれば (C) は 9 です。**止めた分だ
 
 <details><summary>答え</summary>
 
-- **正**。`condition_type` は **`運用者の設定;失敗・期限切れ`**、`write_target` は **キャッシュ・状態の保存**。(A) だけに数え、(B)(C) には数えない。
+- **正**。`condition_type` は **`運用者の設定;失敗・期限切れ`**、`write_target` は **キャッシュ・状態の保存**、`target_by_arg` は **`いいえ`**（書き先は定数の `~/.drivemcp/oauth.json`。引数 folder は 29 行の `GET` の中身だけ）。(A) だけに数え、(B)(C) には数えない。
 - 15 行は、認証の方式が `oauth` でなければ先に返します。これは失敗や前提の崩れではなく、運用者が `DRIVE_AUTH` で選ぶ設定です。そのうえで 19 行の期限切れが重なるので、「かつ」で全部を並べます（手引き 14.3 の最後の行、v4 の R04 と同じ形、D76）。
 - OAuth のトークンをファイルに保存し、17 行で読み返します → キャッシュ・状態の保存（16.2）。
 - evidence: `server.py:29 → server.py:15`（`DRIVE_AUTH` が `oauth` のとき進む）`→ server.py:19`（期限切れ）`→ server.py:21` `open(TOKEN_FILE, "w")`。

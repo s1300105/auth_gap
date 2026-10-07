@@ -29,6 +29,11 @@
 | 手引き 19 | 不明にするとき・20〜30 分・理由の類 | 全部 |
 | 手引き 21 の 6 | AI は事実を調べる補助としてだけ使う | I-4.7・I-4.11 |
 
+**記録の欄**: 矛の組（I-4.1・I-4.5 と問 5・問 7）は手引き 手順 H の D83 の形で、判定ごとに必要な欄だけを書きます（正は `verdict`・
+`evidence`・`write_target`・`condition_type`、誤は `verdict`・`evidence`・`error_class`、不明は `verdict`・`evidence`・`unknown_reason`。
+`reachable`・`violates`・`condition` は書かない）。D1 の正には `target_by_arg` も書きます（D84）が、この分冊に D1 の矛の正の例はありません。
+不の中身（18A.3）の表には `reachable`・`violates`・`condition` が残り、`target_by_arg` は書きません。見落とし（18.4）の表にも書きません。
+
 教科書の本文では、[第 52 章](ch52.md)（見落とし・不の中身・不明）、[第 50 章](ch50.md)（15.1 の迷いやすい形）、
 [第 48 章](ch48.md)（手順 A〜H）が同じ範囲です。手引きの文を 1 行ずつ追う読み本は[付録 H-6](appendix-h-6.md)・
 [付録 H-7](appendix-h-7.md)・[付録 H-8](appendix-h-8.md) です。ただし付録 H は D76 の前の下書きを引いています。
@@ -1238,11 +1243,12 @@ D1 の組はありません（`GET` は D1 で内）。
 
 8 行の既定値は `https://geocoder.mapvendor.io` で、公開の外部のホストです。答え: **はい**（反する）。
 
-**練習としての記入**（最終評価の判定表には載らない）
+**練習としての記入**（最終評価の判定表には載らない。D3 の矛として出たときの、D83 の形の書き方）
 
 | 欄 | 値 |
 |---|---|
-| `violates` | `はい`（既定値が外部のホスト） |
+| `verdict` | `正`（既定値が外部のホスト） |
+| `condition_type` | `なし` |
 | `write_target` | `その他・不明`（手引き 16.3 の例「宛先が運用者の設定で、既定値が外部のもの」） |
 | `note` | 先頭に `その他:` を書き、「宛先が運用者の設定 GEO_URL、既定値が外部のホスト」と書く（手引き 16.2 の最後の段落と 16.3。D76） |
 | `evidence` | `server.py:8 GEO_URL = os.environ.get("GEO_URL", "https://geocoder.mapvendor.io") → server.py:14 httpx.get(f"{GEO_URL}/search", ...)` |
@@ -1420,7 +1426,7 @@ query or a mutation, so the HTTP verb is `POST`」と書き、query を「Querie
 
 <details><summary>答え</summary>
 
-**誤（E2）**。`reachable`: `はい`、`violates`: `いいえ`。20 行が消す `path` は、14 行の `tempfile.mkstemp` が同じ呼び出しで作ったファイルです。
+**誤（E2）**（到達するが反しない。D83 の形なので `reachable`・`violates` の欄は書かず、`error_class` に `E2: server.py:20 が消すのは、同じ呼び出しの :14 で mkstemp が作った一時ファイル` と書く）。20 行が消す `path` は、14 行の `tempfile.mkstemp` が同じ呼び出しで作ったファイルです。
 Python の公式の文書（`https://docs.python.org/3/library/tempfile.html`）は `mkstemp` を「Creates a temporary file in the most secure manner
 possible.」と説明し、消すのは使う側の責任と書きます。手引き 15.2 の迷いやすい形「同じ呼び出しで自分が作った一時ファイルを消す → 反しない
 （誤、E2）」です。I-4.1 との違いは、戻り値の性質が公式の文書で分かるかの 1 点です。
@@ -1487,7 +1493,7 @@ stats:
 **正**。社内 API で文書がありませんが、不明にはしません。手引き 15.2 の表の `PUT` の行は「宛先をモデルが決められるなら反する。
 そうでなければ、既存の資源の置き換えか新規作成かで決める」です。宛先の `customers/{customer_id}/tags` の `customer_id` はモデルが
 決める引数で、モデルは既存の顧客の資源を指せます。表の前半で決まるので、API の意味を調べる後半には進みません。
-`reachable`: `はい`（`なし`）、`violates`: `はい`、`write_target`: `相手側の状態`。手引きの表の行で決まる形を、文書が無いことを
+`condition_type`: `なし`、`write_target`: `相手側の状態`（D83 の形なので `reachable`・`violates` の欄は書かない。D2 の正なので `target_by_arg` も書かない。D84）。手引きの表の行で決まる形を、文書が無いことを
 理由に不明にしないこと（手引き 19 の「調べれば分かるものを不明にしない」）が要点です。
 
 </details>
