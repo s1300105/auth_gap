@@ -19,6 +19,9 @@ H-1 から順に読めば、手引きの全文と、その一つひとつの規�
 > **2026-10-06 の追記（D83）**: 手順 H の矛の判定で書く欄を判定ごとに減らした（正: `verdict`・`evidence`・`write_target`・`condition_type`、
 > 誤: `verdict`・`evidence`・`error_class`、不明: `verdict`・`evidence`・`unknown_reason`）。`reachable`・`violates`・`condition` の欄は無くなった。
 > この付録が引く手順 H の表は前の形である。
+> **2026-10-07 の追記（D86）**: D76 で「まれ」として決めずにいた穴のうち、【穴 H-1-7】（到達は決められない・反しない → 誤 E8）、
+> 【穴 H-1-8】（kind は違うが実際の動作も反する → 正）、【穴 H-4-24】・【穴 H-5-12】（D3 の local の誤の記号 → E9）と、【穴 H-8-18】の
+> 機械翻訳（`ai_used` に当たらない）は、段階 A3 の D86 で決まった（[付録 I の表紙](appendix-i.md#ai-0-4)の 16 点。手引きの `（D86）` の印の文）。
 > 引用を照合し直すときは、直す前の下書きを取り出して比べる:
 > `git show af897ef:docs/drafts/final_judging_guide_draft.md > /tmp/guide_af897ef.md && .venv/bin/python scripts/check_guide_quotes.py --draft /tmp/guide_af897ef.md docs/textbook/appendix-h-*.md`
 
