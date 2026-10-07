@@ -143,6 +143,31 @@ def test_valid_row_parses():
     assert r.error_class == "E8"
 
 
+def test_target_by_arg_d84():
+    """D84: D1 の正だけに target_by_arg を書く。層別は ① 正 → ② 重い書き込み先 → ③ はい。"""
+    rows = [_crow(pair_id="C-D1-001", tree="t1", write_target="利用者のファイル", target_by_arg="はい"),
+            _crow(pair_id="C-D1-002", tree="t2", write_target="データベース", target_by_arg="いいえ"),
+            _crow(pair_id="C-D1-003", tree="t2", write_target="ログ", target_by_arg="はい"),
+            _crow(pair_id="C-D1-004", tree="t3", verdict="誤", condition_type="", write_target="", error_class="E8: x")]
+    ps = fa.parse_contradiction_rows(rows)
+    st = fa.impact_strata(ps)
+    assert st["step1_d1_correct"] == {"pairs": 3, "trees": 2}
+    assert st["step2_heavy_target"] == {"pairs": 2, "trees": 2}
+    assert st["step3_target_by_arg_yes"] == {"pairs": 1, "trees": 1}
+    assert st["step3_breakdown"]["いいえ"] == 1
+    with pytest.raises(fa.VocabularyError):  # 語彙の外
+        fa.parse_contradiction_rows([_crow(target_by_arg="たぶん")])
+    with pytest.raises(fa.VocabularyError):  # D1 の正なのに空（欄がある表）
+        fa.parse_contradiction_rows([_crow(target_by_arg="")])
+    with pytest.raises(fa.VocabularyError):  # 誤には書かない
+        fa.parse_contradiction_rows([_crow(verdict="誤", condition_type="", write_target="", error_class="E8: x",
+                                           target_by_arg="はい")])
+    with pytest.raises(fa.VocabularyError):  # D2 には書かない
+        fa.parse_contradiction_rows([_crow(decl="D2", target_by_arg="はい")])
+    (p,) = fa.parse_contradiction_rows([_crow()])  # 欄の無い前の形の表は求めない
+    assert p.target_by_arg is None
+
+
 def test_old_form_rows_still_checked():
     """D83 の前の形（reachable・violates を書いた表。v4 の判定・練習の表）も読め、11.2 の表と突き合わせる。"""
     (p,) = fa.parse_contradiction_rows([_crow(reachable="はい", violates="はい")])

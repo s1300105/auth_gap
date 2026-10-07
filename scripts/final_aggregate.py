@@ -180,6 +180,7 @@ class Pair:
     minutes: Optional[float] = None
     unknown_reason: str = ""
     unknown_class: Optional[str] = None
+    target_by_arg: Optional[str] = None
 
 
 @dataclass
@@ -266,6 +267,12 @@ def parse_error_class(value: str, where: str) -> str:
     if not m:
         raise _err(where, f"error_class = {value!r} が E1〜E9 で始まらない（第 17 節）")
     return m.group(1)
+
+
+#: D84 の層別。② で「重い」とする書き込み先の種類（D1 の正だけを層別する）。
+HEAVY_WRITE_TARGETS = ("利用者のファイル", "データベース", "相手側の状態", "プロセスの起動・コードの実行")
+#: D84 の ③ の欄 `target_by_arg` の値。
+TARGET_BY_ARG = ("はい", "いいえ", "決められない")
 
 
 def target_vocab(decl: str) -> tuple[str, ...]:
@@ -367,9 +374,18 @@ def parse_contradiction_rows(rows: list[dict], where: str = "矛の判定表", s
             if not r.get("unknown_reason"):
                 raise _err(w, "不明なのに unknown_reason が空（第 19 節）")
             ur_class = parse_unknown_reason(r["unknown_reason"], w)
+        # D84: D1 の正には ③「変える場所をツールの引数が決めるか」を書く。ほかの行には書かない。
+        tba = r.get("target_by_arg", "")
+        if tba:
+            _in(tba, TARGET_BY_ARG, w, "target_by_arg")
+            if strict and not (decl == "D1" and verdict == "正"):
+                raise _err(w, f"target_by_arg = {tba!r} は D1 の正だけに書く（D84）")
+        elif strict and decl == "D1" and verdict == "正" and "target_by_arg" in r:
+            raise _err(w, "D1 の正なのに target_by_arg が空（D84）")
         out.append(Pair(id=r[ID_COL], tree=r["tree"], decl=decl, verdict=verdict, conditions=conds, error_class=ec,
                         write_target=wt or None, ai_used=_ai_used(r, w, strict), minutes=_minutes(r.get("minutes", ""), w),
-                        unknown_reason=r.get("unknown_reason", ""), unknown_class=ur_class))
+                        unknown_reason=r.get("unknown_reason", ""), unknown_class=ur_class,
+                        target_by_arg=tba or None))
     _check_unique_ids(out, where)
     return out
 
@@ -738,6 +754,26 @@ def _minutes_summary(items) -> dict:
             "median": percentile(ms, 0.5) if ms else None}
 
 
+def impact_strata(ps: list[Pair]) -> dict:
+    """D84 の層別（D1 の正だけ）。① D1（クライアントが確認を省く宣言）→ ② 重い書き込み先 → ③ 変える場所を引数が決める。
+
+    組の数と木の数の両方を出す。③ は ② の中で数え、「決められない」と未記入も別に数える（黙って落とさない）。
+    """
+    correct = [p for p in ps if p.verdict == "正"]
+    heavy = [p for p in correct if p.write_target in HEAVY_WRITE_TARGETS]
+
+    def cnt(xs: list[Pair]) -> dict:
+        return {"pairs": len(xs), "trees": len({p.tree for p in xs})}
+
+    return {"_note": "D84。① D1 の正 → ② 書き込み先が重い 4 種類 → ③ 変える場所をツールの引数が決める（target_by_arg = はい）",
+            "heavy_write_targets": list(HEAVY_WRITE_TARGETS),
+            "step1_d1_correct": cnt(correct),
+            "step2_heavy_target": cnt(heavy),
+            "step3_target_by_arg_yes": cnt([p for p in heavy if p.target_by_arg == "はい"]),
+            "step3_breakdown": {v: cnt([p for p in heavy if p.target_by_arg == v])["pairs"] for v in TARGET_BY_ARG}
+            | {"（未記入）": sum(1 for p in heavy if not p.target_by_arg)}}
+
+
 def aggregate_contradictions(pairs: list[Pair], facts: Optional[RunFacts], sample_N: dict, sample_M: dict,
                              sample_scan: Optional[int], seed: int, reps: int, warnings: list,
                              resolved: Optional[dict] = None) -> dict:
@@ -785,6 +821,8 @@ def aggregate_contradictions(pairs: list[Pair], facts: Optional[RunFacts], sampl
                                             for t in vocab}
         block["write_target_of_correct"]["（未記入）"] = sum(1 for p in ps if p.verdict == "正" and not p.write_target)
         block["conditions_of_correct"] = condition_breakdown([p for p in ps if p.verdict == "正"])
+        if d == "D1":
+            block["impact_strata"] = impact_strata(ps)
         block["unknown_reasons"] = sorted(p.unknown_reason for p in ps if p.verdict == "不明" and p.unknown_reason)
         block["unknown_reason_classes"] = _class_counts(p.unknown_class for p in ps if p.verdict == "不明")
         block["ai_used"] = dict(collections.Counter(p.ai_used or "（未記入）" for p in ps))
@@ -955,6 +993,12 @@ def to_markdown(res: dict) -> str:
         cb = blk["conditions_of_correct"]
         o.append(f"- {d} 正の条件: " + ", ".join(f"{k} {v}" for k, v in cb["per_type"].items())
                  + f"。(A) {cb['A']} / (B) {cb['B']} / (C) {cb['C']}（条件の記入なし {cb['no_condition_recorded']}）")
+        if blk.get("impact_strata"):
+            st = blk["impact_strata"]
+            o.append(f"- {d} の層別（D84）: ① 正 {st['step1_d1_correct']['pairs']} 組・{st['step1_d1_correct']['trees']} 木"
+                     f" → ② 重い書き込み先 {st['step2_heavy_target']['pairs']} 組・{st['step2_heavy_target']['trees']} 木"
+                     f" → ③ 場所を引数が決める {st['step3_target_by_arg_yes']['pairs']} 組・{st['step3_target_by_arg_yes']['trees']} 木"
+                     f"（③ の内訳: " + ", ".join(f"{k} {v}" for k, v in st["step3_breakdown"].items()) + "）")
     if res.get("misses"):
         a = res["misses"]["all"]
         o += ["", "## 見落とし", "", f"判定 {a['judged']}。" + ", ".join(f"{k} {v}" for k, v in a["outcomes"].items())

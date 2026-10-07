@@ -197,7 +197,7 @@ psycopg と表示していても、読み取り専用のツールが本当に DB
 
 | 判定 | 必ず書く欄 |
 |---|---|
-| 正 | `verdict`・`evidence`・`write_target`・`condition_type` |
+| 正 | `verdict`・`evidence`・`write_target`・`condition_type`。D1 の正は `target_by_arg` も（D84） |
 | 誤 | `verdict`・`evidence`・`error_class` |
 | 不明 | `verdict`・`evidence`・`unknown_reason` |
 | どれでも | `minutes`・`ai_used`（`あり` なら `ai_model`・`ai_log` も）。`note` は迷ったときだけ |
@@ -209,6 +209,7 @@ psycopg と表示していても、読み取り専用のツールが本当に DB
 | `condition_type` | 条件の種類（14.3）。複数の条件が重なるなら全部を `;` で並べる | `引数` |
 | `error_class` | 誤のとき、第 17 節の分類（E1〜E9）と 1 文の説明 | `E1: lifespan の init_db が起動時に済ませる` |
 | `write_target` | 正のとき、第 16 節の種類（D1・D2・D4）。D3 は通信先の種類（16.3） | `ログ` |
+| `target_by_arg` | D1 の正のとき、変える場所（書き先のパス、DB の表・行、相手側の資源、起動するコマンドとその引数）をツールの引数の値が**一部でも**決めるか: `はい` / `いいえ` / `決められない`。フォルダの外に出られるかなどは `note` に（D84） | `はい` |
 | `unknown_reason` | 不明のとき、決められない理由 | `書き先のパスが外部ライブラリの戻り値で決まる` |
 | `evidence` | **ファイルと行**の連なりと、各段で何が起きるかを 1〜3 文で | 下の例 |
 | `note` | 迷った点・ほかの位置の扱い・解析器の読み違い（kind は合っている場合）など | |

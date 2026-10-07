@@ -45,8 +45,8 @@ AI_COLS = ["ai_used", "ai_model", "ai_log"]
 #: 空の判定の欄
 JUDGE_COLS = {
     # 手引き 手順 H（D83: reachable・violates・condition は書かない。verdict と error_class から分かる）
-    "contradiction": ["verdict", "condition_type", "write_target", "error_class", "unknown_reason", "evidence", "note",
-                      "minutes", *AI_COLS],
+    "contradiction": ["verdict", "condition_type", "write_target", "target_by_arg", "error_class", "unknown_reason",
+                      "evidence", "note", "minutes", *AI_COLS],  # target_by_arg: D1 の正だけ（D84）
     # 手引き 18.4（unknown_reason は 18.4 の表に無いが、第 19 節「不明の理由は集計で内訳として報告する」ために足した）
     "miss": ["outcome", "cause", "write_target", "condition_type", "condition", "depth", "unknown_reason", "evidence",
              "ai_found", "output_found", "note", "minutes", *AI_COLS],  # output_found: 手引き 18.2 の 4・18.4（D76）
