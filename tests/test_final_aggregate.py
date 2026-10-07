@@ -174,6 +174,10 @@ def test_old_form_rows_still_checked():
     assert p.verdict == "正"
     with pytest.raises(fa.VocabularyError):
         fa.parse_contradiction_rows([_crow(reachable="いいえ", violates="")])  # 到達しないのに正
+    # D86: 到達は決められないが反しない → 誤（E8）
+    (q,) = fa.parse_contradiction_rows([_crow(verdict="誤", reachable="決められない", violates="いいえ", condition_type="",
+                                              write_target="", error_class="E8: 到達は決められないが、反しない")])
+    assert q.verdict == "誤"
 
 
 @pytest.mark.parametrize("bad", [

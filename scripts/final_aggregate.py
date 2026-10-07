@@ -337,7 +337,7 @@ def parse_contradiction_rows(rows: list[dict], where: str = "矛の判定表", s
             if not (reach in ("いいえ", "決められない") and viol == ""):  # 11.2 の表の「—」
                 _in(viol, TERNARY, w, "violates")
             expect = ("正" if reach == "はい" and viol == "はい"
-                      else "誤" if reach == "いいえ" or (reach == "はい" and viol == "いいえ") else "不明")
+                      else "誤" if reach == "いいえ" or viol == "いいえ" else "不明")  # 決められない・いいえ → 誤（D86）
             if verdict != expect:
                 raise _err(w, f"verdict = {verdict} が reachable = {reach} / violates = {viol} と合わない（11.2 の表では {expect}）")
         conds = None
@@ -488,7 +488,7 @@ def parse_unknown_rows(rows: list[dict], where: str = "不の中身の判定表"
             if not (reach in ("いいえ", "決められない") and viol == ""):  # 11.2 の表の「—」
                 _in(viol, TERNARY, w, "violates")
             expect = ("違反" if reach == "はい" and viol == "はい"
-                      else "違反でない" if reach == "いいえ" or (reach == "はい" and viol == "いいえ") else "不明")
+                      else "違反でない" if reach == "いいえ" or viol == "いいえ" else "不明")  # D86
             if outcome != expect:
                 raise _err(w, f"outcome = {outcome} が reachable / violates と合わない（{expect}）")
         out.append(UnknownPair(id=r[ID_COL], tree=r["tree"], decl=decl, outcome=outcome, reasons=reasons,

@@ -12,7 +12,7 @@
 - 判定の規則: `docs/drafts/final_judging_guide_draft.md`（封の後は `docs/final_judging_guide.md`）
 - 事前登録: `docs/drafts/prereg_2_12_draft.md`（封の後は `docs/preregistration.md` §2.12）
 - 最終評価の細かい手順: `docs/final_evaluation_procedure.md`（この手順書と食い違うところは、下の「手順書の更新」に書いた）
-- 決定の記録: `docs/decisions.md`（D76〜D85 が最近のもの）
+- 決定の記録: `docs/decisions.md`（D76〜D86 が最近のもの）
 
 ---
 
@@ -104,6 +104,8 @@
 **最低限**: 3 件でも時間が分かれば B1 に進める。
 
 ### A3. 手引きの曖昧な点を決める【学生】（30 分）
+
+**済み（2026-10-07、D86）**: 決定シート `docs/drafts/a3_decision_sheet.md` の 16 点を、学生が推奨どおりに決めた。
 
 付録 I の表紙「手引きが決めていない点」の 13 個（8〜11 は 2026-10-06、12・13 は 2026-10-07 に足した）と、A2 で迷った点を、本記録者が選択肢つきの短い表にする。
 学生が選ぶ（「推奨どおり」でもよい）。本記録者が決定として `docs/decisions.md` に記録し（D83 以降の番号）、手引きに書き足す。
