@@ -52,7 +52,14 @@
    - **DBHub の CVE-2026-61788**: `readOnlyHint: true` を宣言した `execute_sql` が、実際には書き込めた（0.22.5 のソースを git で確認）。ただし advisory は注釈に触れていない（§3.3）
    - **Gemini CLI の Plan Mode** を Google の報奨金（VRP）に報告し「Won't Fix / Infeasible」で閉じられた、と報告者が GitHub の issue に書いている（[WebFetch]。§3.4）
    - 隣のプロトコル ACP の **CVE-2026-32898**（OpenClaw）: 自己申告の tool の種類（`kind`）で自動承認していたのを、修正で「許可の根拠にしない」に変えた（§3.2）
-4. [判断] AuthGap の動機は「**被害が出ている**」ではなく「**宣言だけで確認が省かれる経路が、多くの製品に実在し、その経路で宣言を確かめる層がどこにも無い**」と書くのが正確。DBHub の CVE は、宣言と実際が食い違った tool が実在した例として引けるが、AuthGap の対象（Python）の外である（§5）。
+4. **GitHub の議論では、異議は出ているが、変わった製品は少ない**（§3.5）。
+   - 「サーバがうそをつけば通る」という異議は、Gemini CLI・goose・Qwen Code・n8n・AgentScope・TrueForge・agent-pane で出た。
+   - 異議でふるまいが変わったのは Qwen Code と agent-pane の 2 つ。Qwen Code は v0.19.11 で `readOnlyHint` での自動許可を消し、
+     「利用者が信頼と印を付けたサーバ」を条件にした（`2132a61`、[確認: git]）。
+   - goose（手動モードでも注釈で許可していた）と Codex（注釈の欠落で承認を省いていた）は、監査・社内の修正で締めた。
+   - VS Code と Codex が `readOnlyHint: true` で確認を省くことには、公開の異議が見つからない。
+   - 注釈を信じる側に押す理由は、ほぼ毎回「確認の出すぎ」。
+5. [判断] AuthGap の動機は「**被害が出ている**」ではなく「**宣言だけで確認が省かれる経路が、多くの製品に実在し、その経路で宣言を確かめる層がどこにも無い**」と書くのが正確。DBHub の CVE は、宣言と実際が食い違った tool が実在した例として引けるが、AuthGap の対象（Python）の外である（§5）。
 
 ---
 
@@ -261,8 +268,54 @@ MCPSafe の主張の裏: github-mcp-server v0.5.0 の `enable_toolset` には `R
 
 ### 3.5 GitHub の issue・PR での議論
 
-**未記入（2026-10-08）。** GitHub の issue・PR を読む担当の報告がまだ届いていない。届きしだい、この節を埋める別のコミットを足す。
-それまでは、Gemini CLI の #28548 と VRP の件（§3.4、[WebFetch]）だけが GitHub 上の記録として入っている。
+担当が 2026-10-08 に、20 を超えるリポジトリの issue・PR を読んだ。issue・PR の本文とコメントはすべて **[WebFetch]**
+（github.com は curl に 403 を返すので文字列は照合していない）。コードの変更は担当が git で読み、そのうち
+Qwen Code `2132a61`・Codex `32c4993`・goose `b0f4e2a0` は本記録者が git で取り直した **[確認]**。
+
+#### 3.5.1 製品ごとの議論と結果
+
+| 製品 | スレッド | 争点 | 結果 |
+|---|---|---|---|
+| **Qwen Code** | #6917（2026-07-14、category/security・P2） | 仕様の「信頼できない」の文を引いて、自動許可には「利用者が決める信頼」が要る、と指摘 | **ふるまいが変わった。** PR #6924（`2132a61`、2026-07-15、v0.19.11）が `readOnlyHint → 'allow'` を消した。削除された行は `// MCP tools annotated with readOnlyHint: true are safe` / `if (this.annotations?.readOnlyHint === true) { return 'allow'; }`、コミットの題は "fix(mcp): require trust for read-only auto-approval (#6924)" **[確認: git]**。今は、サーバに `trust: true` を付け、かつ信頼したフォルダのときだけ自動で許可する。担当によれば、接続が切れた呼び出しの送り直し（PR #8387）も信頼と `idempotentHint` の両方を条件にした |
+| **goose** | PR #10528（2026-07-21 マージ、`b0f4e2a0`、v1.44.0）。外部の監査（Project Loupe）の所見から | v1.28.0〜v1.43.x では、**手動の Approve モードでも** `readOnlyHint` で自動許可していた（担当が git で確認） | **変わった。** Smart Approve のときだけに絞り、テスト `approve_ignores_annotation` を足した（担当 [確認]）。題 "fix(permissions): enforce manual approval for code mode (#10528)" **[確認: git]**。監査の issue（project-loupe/audit-goose #209・#219）は 404 |
+| goose | PR #10970（2026-08-05） | "A malicious or compromised MCP server can mark a destructive tool `readOnlyHint: true` and have goose auto-execute it" | 「CONTRIBUTING.md に従って issue を開いて」とだけ返されて閉じられた。issue は見つからない。**変わっていない** |
+| **Codex** | PR #15519（2026-03-25、`32c4993`、rust-v0.117.0） | 社内の修正 | **変わった。** コミットの本文 "Failed open for missing annotations, which was unsafe for custom MCP tools that omitted or forgot annotations." **[確認: git]**。注釈が欠けたら承認を求める側に変えた |
+| Codex | #15824（open）・PR #16632 | 上の変更で自作のサーバに確認が出すぎる、という利用者の苦情。緩める修正 PR は "waiting for a security team member review" のまま bot が閉じた | 緩めていない。利用者の 1 人は「注釈を足して」回避した |
+| Codex | — | `readOnlyHint: true` を信じること自体への異議 | **見つからない**。PR #38492（rust-v0.148.0）は、注釈が承認を省く場合でも自動のレビューに回せるようにした（担当 [確認]） |
+| **Gemini CLI** | #16748・PR #18229（2026-02-05 マージ、v0.29.0） | Plan Mode で `readOnlyHint` の MCP ツールを使えるようにする。レビュー「plan mode は最も保守的に」 | 採用。ただし ALLOW ではなく「毎回聞く」（ASK_USER）に上げる形 |
+| Gemini CLI | PR #24226（2026-03-30〜04-28） | 読み取り専用の MCP ツールを全モードで確認なしに実行する | 作者が閉じた。未マージ。レビューは「フラグの陰に置くべきでは」 |
+| Gemini CLI | PR #27156・#27163（2026-05） | Plan Mode で注釈を信じる opt-in の設定 `general.plan.trustReadOnlyHint`（既定 false）。最初の版の ALLOW への変更を、レビューの bot が "security-high" の迂回として指摘 | 未マージ。issue は "not planned"。保守担当のコメントは無い |
+| Gemini CLI | #28548・PR #28549（2026-07-27） | 悪意あるサーバが破壊的なツールに `readOnlyHint` を付ければ Plan Mode で提示される。報告者自身が "The confirmation prompt still fires, so this is not silent execution." と書く。VRP は Won't Fix / Infeasible（報告者の記載） | PR（確認の画面に「サーバの申告で、確かめていない」と出す）は「help wanted」の札が無いとして bot が閉じた。issue は Stale。**変わっていない** |
+| **VS Code** | #270618・PR #272628（2025-10、保守担当自身の提案） | 読み取りの tool の危険は出力の側にある（issue の隠し文字など）として、`readOnlyHint` は事前の確認なし、`openWorldHint` は事後の確認、に分けた | 採用。**`readOnlyHint` で確認を省くことへの異議のスレッドは見つからない** |
+| **n8n** | PR #39303（2026-09-30 マージ）・PR #39878（open） | `readOnlyHint === true` を名前より先に「read」に分類し、read は既定で always allow。#39878 のレビューが "a server-supplied `{ name: "delete_record", annotations: { readOnlyHint: true } }` can still enter the user-configured read category" と指摘 | 返事なし |
+| AgentScope | PR #2131（2026-07〜09） | "readOnlyHint trust bypass (MEDIUM)" を所見に挙げる | 作者が閉じた。保守担当のコメントなし |
+| TrueForge | #318（2026-08〜09） | Code Mode の破壊的なツールの門が、注釈の無いツールを通す | 保守担当「注釈の無いツールの扱いは今は変えない」（多くのサーバが注釈を持たないため）。**意図して通す側のまま** |
+| MCP Proxy for AWS | PR #350（2026-07-16、v1.6.4） | `--read-only` が一覧から隠すだけで、名前を知っていれば呼べた | 呼び出し時にも拒否するように直した。ただし read-only の判定は上流の `readOnlyHint` のまま |
+| Docker Agent | PR #1785（2026-02-19、v1.23.4） | `readOnlyHint: true` のツールが常に自動承認され、設定で上書きできなかった | 確認を求める一覧（Ask）を足した。注釈を信じる既定は残った |
+| Amazon Q Developer CLI | #3095（2025-10） | `--trust-read-only=@server` の提案。提案者自身が "readOnlyHint is a hint, not a guarantee. Malicious servers could lie." と書く | 別の方式（#3205）を採り、提案は使われなかった |
+| agent-pane（copse-dev） | #661 → PR #733（2026-07） | 悪意あるサーバが読み取り専用を自己申告できる | **変わった。** 名前の構造から読み取りと分かるツールであることも条件にした |
+| Claude Code・Claude Desktop | #12368・#78085・#87452・#83886・#79734 ほか | 利用者が「`readOnlyHint` を信じて自動許可してほしい」と求める側。#90058 は許可リストと注釈の両方を条件にする案 | 社員の返事なし。多くは stale の bot が閉じた |
+| Hermes Agent（NousResearch） | PR #133532（2026-10-05 マージ） | `trust: untrusted` と印を付けたサーバでは、`readOnlyHint` がちょうど True なら承認を省く設計。mcp 2.x でヒントが読めず全部確認になっていた不具合を直した。理由は確認が「読まずに押す癖を付ける」から | 自動許可を戻した。trust を書かないサーバは "full" 扱いで、そもそも門が無い |
+
+仕様の側の記録（[WebFetch]）:
+- 注釈を入れた PR #185（2025-03-26 マージ）で、jspahrsummers が "some worries here, particularly around the trust model" と書き、
+  信頼できないサーバの注釈の多くは無視すべきだと述べた。今の「信頼できないものとして扱う」の文の出どころ。
+- Python SDK #2937（2026-06-22、not planned）: "there's no way for the SDK to know what side effects may occur."
+
+#### 3.5.2 実際に誤った承認・書き込みが起きたか
+
+**うその注釈が原因の誤承認・書き込みは、どのスレッドにも見つからなかった。** 異議はすべて脅威のモデルとしての指摘だった。近いものは次のとおりで、どれも当たらない。
+- Codex #25593: 背景の「提案」の経路で実際に状態が変わったが、注釈がどう効いたかは書かれていない（不明）。
+- Qwen Code PR #8387: 1 回の承認で書き込みが複数回起きたのは、作者の試験の環境の中だけ。
+- MCP の discussion #3203: 本番の事故で承認の門をすり抜けたが、引数の渡し方の問題で、注釈は正しかった。
+- github-mcp-server #2723: 削除もできる `label_write` に `DestructiveHint` が無かった（#2763 で修正）。結果は仮定の話。
+
+#### 3.5.3 読み取れること（本記録者の判断）
+
+[判断] 議論で注釈を信じる側に押す理由は、ほぼ毎回「**確認の出すぎ**」（Hermes #133532、TrueForge #318、Codex #15824）。
+異議は外部の報告者・寄稿者・レビューの bot から出て、保守担当が「注釈を信じてよいか」に立場を取ったのは、読んだ範囲では
+Qwen Code（#6924）だけだった。異議でふるまいが変わったのは Qwen Code・agent-pane の 2 つで、goose と Codex は
+異議ではなく監査・社内の修正で変わった。大手の VS Code・Codex の `readOnlyHint` での確認の省略は、公開の場で異議が出ていない。
 
 ### 3.6 作者が「確認を出させないため」に値を選んだ例
 
@@ -358,6 +411,11 @@ MCPSafe の主張の裏: github-mcp-server v0.5.0 の `enable_toolset` には `R
 - **絞る: 9**（5・7・13・17・18・20・21・26・27）
 - **不明: 2**（Slack、Notion）
 
+27 製品の外で、GitHub の担当が見つけた「注釈を当てはめるサーバを、利用者の信頼の印で絞る」実装が 2 つある（§3.5。27 の数には入れていない）:
+- Qwen Code（v0.19.11 以降）: `trust: true` のサーバ、かつ信頼したフォルダのときだけ自動許可。注釈だけでは許可しない（`2132a61` [確認: git]）。
+- Hermes Agent: `trust: untrusted` と印を付けたサーバに限って、`readOnlyHint` で承認を省く。trust を書かないサーバは全部許可なので、
+  「絞る」というより「信頼しないと決めたサーバの中で、注釈を例外に使う」形（担当 [確認]、本記録者は取り直していない）。
+
 「信頼」の実際の意味:
 - ほとんどは「**設定した・インストールした＝信頼した**」。VS Code は利用者が設定したサーバを確認なしに `Trusted` にする
   （`src/vs/workbench/contrib/mcp/common/discovery/installedMcpServersDiscovery.ts` 136 行 `trustBehavior: McpServerTrust.Kind.Trusted,`
@@ -426,6 +484,12 @@ MCPSafe の主張の裏: github-mcp-server v0.5.0 の `enable_toolset` には `R
 - §4 の不明: M365 の管理者による配布の承認、TrueForge で誰がサーバを登録できるか、n8n の登録簿が注釈を審査するか、
   Devin の Plan モードが今も注釈で絞るか、Slack の実際の挙動、Notion の読み / 書きの区分の根拠、Copilot CLI 1.0.93
   （ネイティブのモジュールに移っていて読んでいない）。Claude Desktop と Cursor は付録 G のカードの配布物に頼り、取り直していない。
+- §3.5 の issue・PR の本文とコメントは [WebFetch] で、文字列を照合していない。論文で引くときは github.com を自分で開く。
+- 付録 G のカード [C09-19](textbook/appendix-g-10.md#g-c09-servers-gateways-security-19) が引く Elastic の agentic-interface-program #147
+  （MCP 経由で確認の画面が出なかった不具合）は、2026-10-08 に 404 で開けなかった（非公開になったか、消えたかは不明）。
+- goose の監査の issue（project-loupe/audit-goose #209・#219）は 404。
+- Claude Code の `isReadOnly`（`readOnlyHint ?? false`）が、plan mode と並列実行のほかに承認へどう効くかは、ミニファイされたコードからは不明。
+- Codex #25593 で、状態の変化に注釈がどう関わったか。
 - GitHub Advisory Database の unreviewed の記録は、OSV の一括の取得に入らないので grep していない（検索の画面で `readOnlyHint` は 0 件 [WebFetch]）。
 - AI Incident Database（JavaScript で描くページ）、NSA の文書（403）。
 
@@ -450,4 +514,8 @@ MCPSafe の主張の裏: github-mcp-server v0.5.0 の `enable_toolset` には `R
 
 本記録者が git で読んだコード: dynatrace-oss/dynatrace-mcp `2851d3ce`・`15d3546c` とその親、bytebase/dbhub `d65c6b42`・`872bb338`、
 sysown/proxysql `f4fd5e4c`、awslabs/mcp `e596a8b9`・`9480a33c`、doobidoo/mcp-memory-service `0a04f0b`（v10.65.3）、
-microsoft/vscode `3a7c8e0`（担当の clone を点検）、openai/codex `ea27864`（同）、google-gemini/gemini-cli `44d764e`（同）。
+microsoft/vscode `3a7c8e0`（担当の clone を点検）、openai/codex `ea27864`（同）、google-gemini/gemini-cli `44d764e`（同）、
+QwenLM/qwen-code `2132a61`（`mcp-tool.ts` の差分）、openai/codex `32c4993`（コミットの本文）、goose `b0f4e2a0`（コミットの題）。
+
+§3.5 の担当の報告のうち、上に無いコードの [確認]（Gemini CLI・Docker Agent・n8n・TrueForge・Hermes・AWS proxy の各コミット）は、
+担当が git で読んだもので、本記録者は取り直していない。
