@@ -1,0 +1,63 @@
+{
+  "purpose": "ToolAnnotations（readOnlyHint ほか）を安全の判断に使ったことが、脆弱性 DB の記録に現れるかの調査（docs/annotations_security_decisions.md §3）",
+  "searched_at": "2026-10-08",
+  "nvd": {
+    "endpoint": "https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=<語>",
+    "note": "keywordSearch は CVE の説明文（description）だけを探す。Microsoft などの CVE は説明文が短く、仕組みの語が出ないので、0 件は『DB の説明文に語が無い』という意味にとどまる",
+    "queries": [
+      {"keyword": "readOnlyHint", "total": 0},
+      {"keyword": "destructiveHint", "total": 0},
+      {"keyword": "openWorldHint", "total": 0},
+      {"keyword": "idempotentHint", "total": 0},
+      {"keyword": "read-only hint", "total": 0},
+      {"keyword": "MCP annotations", "total": 0},
+      {"keyword": "tool annotation MCP", "total": 0},
+      {"keyword": "tool annotations", "total": 5, "relevant": 0, "note": "Argo CD・CVAT の別の意味の annotation"},
+      {"keyword": "MCP annotation", "total": 1, "relevant": 0, "note": "CVE-2026-63646。Java の注釈（permission annotation）の話"},
+      {"keyword": "MCP auto-approve", "total": 2, "relevant": 0, "note": "CVE-2025-4143（OAuth redirect_uri）・CVE-2025-53098（Roo Code の設定ファイル）。どちらも注釈を使わない"},
+      {"keyword": "MCP read-only tool", "total": 7, "relevant": "宣言の上では読み取り専用の MCP ツールが書き込めた CVE が 3 件（CVE-2026-61788・CVE-2026-48774・CVE-2026-18954）。注釈を付けていたかは git で確かめた（下の read_only_contract_cves）"}
+    ]
+  },
+  "osv": {
+    "source": "https://osv-vulnerabilities.storage.googleapis.com/<ecosystem>/all.zip",
+    "fetched_at": "2026-10-08T08:05:22Z",
+    "records": {"npm": 230146, "PyPI": 26126, "Go": 9528, "crates.io": 2896, "Maven": 7179, "NuGet": 1922, "total": 277797},
+    "records_note": "ファイルの数。GHSA と PYSEC など、同じ脆弱性の別名の記録を重ねて数えている。npm の大半は MAL-（悪性パッケージ）",
+    "grep": "grep -l -i -E 'readOnlyHint|destructiveHint|openWorldHint|idempotentHint|read_only_hint|destructive_hint|read-only hint|ToolAnnotations|tool annotation' -r .",
+    "hits": [
+      {"id": "GHSA-pqh8-p93p-2rx7", "package": "@dynatrace-oss/dynatrace-mcp-server", "fixed": "2.1.1", "relevant": true,
+       "why": "影響の節が『readOnlyHint: true の tool は一部のクライアントが自動承認する。注入でそれが任意の DQL の面になる』と書く。注釈による自動承認を脅威の前提に置いた advisory"},
+      {"id": "GHSA-pc2w-4mq8-32qw", "package": "@dynatrace-oss/dynatrace-mcp-server", "fixed": "1.8.7", "relevant": true,
+       "why": "書き込みの tool に人の承認の門が無かった件。advisory のコードの注記に『No destructiveHint annotation.』。修正コミット 2851d3ce が承認の門と一緒に destructiveHint: true・idempotentHint: false を足した"},
+      {"id": "GHSA-3p2m-h2v6-g9mx", "package": "@mobilenext/mobile-mcp", "fixed": "0.0.49", "relevant": false,
+       "why": "パスの走査。引用したコードに destructiveHint: true が出るだけで、注釈は脆弱性の仕組みに関わらない"}
+    ],
+    "mal_records_with_hint_names": 0,
+    "approval_keyword_grep": {
+      "grep": "auto-?approv|autoApprov|without (user )?(confirmation|approval)|approval (gate|prompt)|confirmation (dialog|prompt) のうち MCP / model context protocol も含むもの",
+      "files": 25,
+      "relevant_beyond_hits_above": 0,
+      "note": "CodeWhale・PraisonAI・Copilot CLI のシェル展開など。どれも注釈を使わない承認の欠陥"
+    }
+  },
+  "read_only_contract_cves": [
+    {"cve": "CVE-2026-61788", "ghsa": "GHSA-mwwr-p57h-56pf", "product": "DBHub (bytebase/dbhub)", "vulnerable": "0.22.5 以前", "fixed": "0.22.6",
+     "annotation_declared": "readOnlyHint: true（readonly = true の execute_sql）",
+     "evidence": "bytebase/dbhub@d65c6b424e9d10678fb6f7dda93fba180d7baff9（package.json version 0.22.5）src/utils/tool-metadata.ts 147・150-151 行: const isReadonly = executeOptions.readonly === true; / readOnlyHint: isReadonly, / destructiveHint: !isReadonly。修正は 872bb338f7d31f6afe517a076ac3e3edafaaaf08（engine の水準で read-only を強制）",
+     "advisory_mentions_annotation": false},
+    {"cve": "CVE-2026-48774", "ghsa": "GHSA-7wh6-2vcc-gcm4", "product": "ProxySQL GenAI/MCP run_sql_readonly", "fixed": "3.0.9",
+     "annotation_declared": "なし。読み取り専用の約束は tool 名と文書だけ",
+     "evidence": "sysown/proxysql 修正 e32b7fd50c7c234ea628e392e621e09a2a919e08 の親 f4fd5e4c068fa93fb4660d5243155fe117833bfa で git grep readOnlyHint（lib・include・plugins）0 件"},
+    {"cve": "CVE-2026-18954", "ghsa": "GHSA-j694-4m5j-w8hc", "product": "AWS Labs DocumentDB MCP Server aggregate", "vulnerable": "1.0.11 以前", "fixed": "1.0.12",
+     "annotation_declared": "なし。読み取り専用はサーバのモード",
+     "evidence": "awslabs/mcp 修正 9480a33c12cc6691df637507299d598518d19fee の親 e596a8b9124da2557a9a324ccfd7decbc1d492b9 で src/documentdb-mcp-server/awslabs に readOnlyHint・ToolAnnotations 0 件。server.py 72 行 mcp.tool(name='aggregate')(aggregate)"},
+    {"cve": "CVE-2026-49291", "ghsa": "GHSA-2r68-g678-7qr3", "product": "mcp-memory-service", "fixed": "10.65.3",
+     "annotation_declared": "サーバ側には readOnlyHint / destructiveHint がある（mcp_server.py）。ただし修正の権限検査は注釈ではなく名前の一覧",
+     "evidence": "doobidoo/mcp-memory-service v10.65.3（0a04f0b）src/mcp_memory_service/web/api/mcp.py 27 行 _WRITE_TOOLS: frozenset = frozenset({\"store_memory\", \"delete_memory\"})。修正コミット 7334d74"}
+  ],
+  "not_searched": [
+    "GitHub Advisory Database の unreviewed（エコシステムの無い記録）。OSV の一括の取得に入らない。NVD の記録と重なるものが多いと考えるが、確かめていない",
+    "Microsoft・Google・Anthropic・OpenAI の自社の security bulletin の本文の全件",
+    "HackerOne・Huntr などの公開の報告（Web の調査で別に探した。docs/annotations_security_decisions.md §3.3）"
+  ]
+}
