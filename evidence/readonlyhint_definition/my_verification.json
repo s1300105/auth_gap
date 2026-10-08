@@ -1,0 +1,1793 @@
+{
+ "note": "本記録者の照合。out1 は verify_quote.py（github の blob は raw に直した）。out2 は取得に失敗したものを Wayback / raw でやり直したもの。normalized は Markdown・コメントの記号を除いて照合したもの。github.com の issue / PR のページは 403 で開けなかった（文書では [agent]）。",
+ "out1": [
+  {
+   "url": "https://modelcontextprotocol.io/specification/2026-07-28/schema#toolannotations-readonlyhint",
+   "final_url": "https://modelcontextprotocol.io/specification/2026-07-28/schema#toolannotations-readonlyhint",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:23Z",
+   "sha256": "9c42f2ac2ff32d03fa868ef2e24be695290a6b2ccceda1bbf71a36b3fb51f2bb",
+   "bytes": 2335665,
+   "quote": "readOnlyHint?: boolean If true, the tool does not modify its environment. Default: false",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "Schema Reference > tools/list > ToolAnnotations",
+     "heading_id": "toolannotations",
+     "anchored_url": "https://modelcontextprotocol.io/specification/2026-07-28/schema#toolannotations",
+     "context": "hould never make tool use decisions based on ToolAnnotations received from untrusted servers. title?: string A human-readable title for the tool. readOnlyHint?: boolean If true, the tool does not modify its environment. Default: false destructiveHint?: boolean If true, the tool may perform destructive updates to its environment. If false, the tool performs only additive updates. ("
+    }
+   ],
+   "kind": "html",
+   "id": "s1_spec#1"
+  },
+  {
+   "url": "https://modelcontextprotocol.io/specification/2025-11-25/schema#toolannotations",
+   "final_url": "https://modelcontextprotocol.io/specification/2025-11-25/schema#toolannotations",
+   "status": "000",
+   "content_type": "",
+   "fetched_at": "2026-10-08T09:30:31Z",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "bytes": 0,
+   "quote": "Additional properties describing a Tool to clients. NOTE: all properties in ToolAnnotations are hints. They are not guaranteed to provide a faithful description of tool behavior (including descriptive properties like title). Clients should never make tool use decisions based on ToolAnnotations received from untrusted servers.",
+   "match": "fetch_failed",
+   "error": "curl: (35) Recv failure: Connection reset by peer",
+   "id": "s1_spec#2"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/schema/2026-07-28/schema.ts",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/schema/2026-07-28/schema.ts",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:31Z",
+   "sha256": "742750af0bb8c716e7030c4977c992b55d1adc4407e9e66997db5846baedc2cd",
+   "bytes": 98426,
+   "quote": "If true, this tool may interact with an \"open world\" of external entities. If false, the tool's domain of interaction is closed. For example, the world of a web search tool is open, whereas that of a memory tool is not.",
+   "match": "loose",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "1946-1949",
+     "md_heading": "",
+     "context": "s environment. * * (This property is meaningful only when `readOnlyHint == false`) * * Default: false */ idempotentHint?: boolean; /** * If true, this tool may interact with an \"open world\" of external * entities. If false, the tool's domain of interaction is closed. * For example, the world of a web search tool is open, whereas that * of a memory tool is not. * * Default: true */ openWorldHint?: boolean; } /** * Definition for a tool the client can call. * * @example With default 2020-12 input schema"
+    }
+   ],
+   "kind": "text",
+   "id": "s1_spec#6"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/617989139fd5bab91a9a20fc57aa5c320c445e4b/schema/draft/schema.ts",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/617989139fd5bab91a9a20fc57aa5c320c445e4b/schema/draft/schema.ts",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:32Z",
+   "sha256": "96ac7a16f55eb3fc8d54adfd9349efdf85eda211c4ac9e907c0c64bcf72cb1cb",
+   "bytes": 32365,
+   "quote": "If true, this tool does not perform writes or updates, or otherwise change external state in ways that would be visible in subsequent tool calls.",
+   "match": "loose",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "699-701",
+     "md_heading": "",
+     "context": "rastructure, * and is distinct from what a model will extract/infer from the tool's description * property. */ export interface ToolAnnotations { /** * If true, this tool does not perform writes or updates, * or otherwise change external state in ways that would * be visible in subsequent tool calls. * * If not set, this is assumed to be false. */ readonly?: boolean; /** * A simple string descriptor that categorizes this tool, e.g. * \"se"
+    }
+   ],
+   "kind": "text",
+   "id": "s2_origin#1"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/25c8e7c835e463bd19be89083e8baf5067647c05/schema/draft/schema.ts",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/25c8e7c835e463bd19be89083e8baf5067647c05/schema/draft/schema.ts",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:32Z",
+   "sha256": "3183dbe2b0c02165069bc5e6fa33bee6a66b17ba4d5115af7bc2b791dd3cce6b",
+   "bytes": 32630,
+   "quote": "If true, this tool does not perform writes or updates, or otherwise change server-side state in ways that would be visible in subsequent tool calls.",
+   "match": "loose",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "704-706",
+     "md_heading": "",
+     "context": "cations/tools/list_changed\"; } /** * Optional, supplemental properties that characterize a tool's behavior. */ export interface ToolAnnotations { /** * If true, this tool does not perform writes or updates, * or otherwise change server-side state in ways that would * be visible in subsequent tool calls. * * If not set, this is assumed to be false. */ readOnly?: boolean; /** * If true, this tool may interact with an open set of \"external\" *"
+    }
+   ],
+   "kind": "text",
+   "id": "s2_origin#2"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/3a96a59ce9806bf0b512fa931adff994eb11df12/schema/draft/schema.ts",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/3a96a59ce9806bf0b512fa931adff994eb11df12/schema/draft/schema.ts",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:32Z",
+   "sha256": "06132edd86cecd810bf51b484f1c1b1b6d2042cb5e731c98fe5190ce88de7f54",
+   "bytes": 33258,
+   "quote": "Describes the effects a tool may have on its environment. NOTE: these properties are **hints**. They do not guarantee tool behavior.",
+   "match": "loose",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "709-711",
+     "md_heading": "",
+     "context": "erties describing a Tool to clients. */ export interface ToolAnnotations { /** * A human-readable title for the tool. */ title?: string; /** * Describes the effects a tool may have on its environment. * * NOTE: these properties are **hints**. They do not guarantee tool behavior. * * If not set, this property is assumed to have the value: * { readOnly: false, destructive: true, idempotent: false } */ effectHints?: | {"
+    }
+   ],
+   "kind": "text",
+   "id": "s2_origin#3"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/f025054da93e448aeeaac4d44a4eb6a3c11c56dd/schema/draft/schema.ts",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/f025054da93e448aeeaac4d44a4eb6a3c11c56dd/schema/draft/schema.ts",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:33Z",
+   "sha256": "a17b439e2a5cc072b04378fe6192b2b51203e4cd39c84dc532741e1e1f6b7844",
+   "bytes": 33361,
+   "quote": "If true, the tool does not modify its environment. Default: false",
+   "match": "loose",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "716-718",
+     "md_heading": "",
+     "context": "* received from untrusted servers. */ export interface ToolAnnotations { /** * A human-readable title for the tool. */ title?: string; /** * If true, the tool does not modify its environment. * * Default: false */ readOnlyHint?: boolean; /** * If true, the tool may perform destructive updates to its environment. * If false, the tool performs only additiv"
+    }
+   ],
+   "kind": "text",
+   "id": "s2_origin#7"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/pull/185#discussion_r2004108571",
+   "final_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/pull/185#discussion_r2004108571",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:33Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "My mental model for this is that it describes whether or not a tool operates in a closed environment - so e.g. a database tool would be false (as would the current filesystem tool), but an open web query tool would be true. A client might use this to select only tools that operate in closed environments.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s2_origin#15"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/pull/185#discussion_r2004108571",
+   "final_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/pull/185#discussion_r2004108571",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:33Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "There's definitely an elephant in the room here, that clients will often want to know much more fine-grained and varietal operational information about the behavior of specific tools than we can provide in a universal schema.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s2_origin#16"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/pull/185#discussion_r2004108571",
+   "final_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/pull/185#discussion_r2004108571",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:34Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "I think of the metric as being some kind of 80/20 rule where a property is informative enough, for enough tools, to warrant inclusion.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s2_origin#17"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/pull/185#discussion_r2010722827",
+   "final_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/pull/185#discussion_r2010722827",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:34Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "In the presence of extensibility it feels like the ROI of the extra precision isn't high enough to offset the extra fussiness, since we'd be defining a taxonomy that some tools won't fit into w.r.t. custom properties, as well as complicating parsing.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s2_origin#22"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/pull/185#issuecomment-2749580411",
+   "final_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/pull/185#issuecomment-2749580411",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:34Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "switched from the variant-type setup to simple boolean properties. The data model is less precise in a closed world but I think the discussion here shines a light on the relative benefit of closed-world precision vs ease of extensibility/coherence of custom properties.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s2_origin#23"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/pull/185#issuecomment-2743603359",
+   "final_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/pull/185#issuecomment-2743603359",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:35Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "Re docs: given that the wording is \"a tool definition includes\" I'm not sure if the aim is to be concise here and defer to the schema for the full definition, or we want to be completist, so I held off on adding annotations because it sort of portends a more extended walkthrough (not just of the fields in ToolAnnotation but e.g. something about description being model-facing and optional).",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s2_origin#25"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/114",
+   "final_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/114",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:35Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "A way for the server to easily respond with a more precise risk level for a given call",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s2_origin#36"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/114",
+   "final_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/114",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:35Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "a user might be happy with AI systems reading any of the data in their database, but not editing any of it without checking with them",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s2_origin#37"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/e30f85cb01f42905b1244f97f51c70a599533958/docs/legacy/concepts/tools.mdx",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/e30f85cb01f42905b1244f97f51c70a599533958/docs/legacy/concepts/tools.mdx",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:36Z",
+   "sha256": "539601b33a45e6f8dfd18e47de4ffcc6211363f0cb92250ede2fd8399746aff2",
+   "bytes": 15351,
+   "quote": "Tool annotations serve several key purposes: 1. Provide UX-specific information without affecting model context 2. Help clients categorize and present tools appropriately 3. Convey information about a tool's potential side effects 4. Assist in developing intuitive interfaces for tool approval",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "341-346",
+     "md_heading": "### Purpose of tool annotations",
+     "context": "se annotations are hints that describe the nature and impact of a tool, but should not be relied upon for security decisions. ### Purpose of tool annotations Tool annotations serve several key purposes: 1. Provide UX-specific information without affecting model context 2. Help clients categorize and present tools appropriately 3. Convey information about a tool's potential side effects 4. Assist in developing intuitive interfaces for tool approval ### Available tool annotations The MCP specification defines the following annotations for tools: | Annotation | Type | Default | Description"
+    }
+   ],
+   "kind": "text",
+   "id": "s2_origin#40"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/e30f85cb01f42905b1244f97f51c70a599533958/docs/legacy/concepts/tools.mdx",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/e30f85cb01f42905b1244f97f51c70a599533958/docs/legacy/concepts/tools.mdx",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:36Z",
+   "sha256": "539601b33a45e6f8dfd18e47de4ffcc6211363f0cb92250ede2fd8399746aff2",
+   "bytes": 15351,
+   "quote": "// A read-only search tool { name: \"web_search\", title: \"Web Search\", description: \"Search the web for information\",",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "365-369",
+     "md_heading": "### Example usage",
+     "context": "| ### Example usage Here's how to define tools with annotations for different scenarios: ```typescript // A read-only search tool { name: \"web_search\", title: \"Web Search\", description: \"Search the web for information\", inputSchema: { type: \"object\", properties: { query: { type: \"string\" } }, required: [\"query\"] }, annotations: { title: \"Web Sea"
+    }
+   ],
+   "kind": "text",
+   "id": "s2_origin#44"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/e30f85cb01f42905b1244f97f51c70a599533958/docs/legacy/concepts/tools.mdx",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/e30f85cb01f42905b1244f97f51c70a599533958/docs/legacy/concepts/tools.mdx",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:36Z",
+   "sha256": "539601b33a45e6f8dfd18e47de4ffcc6211363f0cb92250ede2fd8399746aff2",
+   "bytes": 15351,
+   "quote": "annotations: { title: \"Web Search\", readOnlyHint: true, openWorldHint: true }",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "377-381",
+     "md_heading": "### Example usage",
+     "context": "\"Search the web for information\", inputSchema: { type: \"object\", properties: { query: { type: \"string\" } }, required: [\"query\"] }, annotations: { title: \"Web Search\", readOnlyHint: true, openWorldHint: true } } // A destructive file deletion tool { name: \"delete_file\", title: \"Delete File\", description: \"Delete a file from the filesystem\", inputSchema: {"
+    }
+   ],
+   "kind": "text",
+   "id": "s2_origin#45"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/e30f85cb01f42905b1244f97f51c70a599533958/docs/legacy/concepts/tools.mdx",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/e30f85cb01f42905b1244f97f51c70a599533958/docs/legacy/concepts/tools.mdx",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:36Z",
+   "sha256": "539601b33a45e6f8dfd18e47de4ffcc6211363f0cb92250ede2fd8399746aff2",
+   "bytes": 15351,
+   "quote": "annotations: { title: \"Delete File\", readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: false }",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "396-402",
+     "md_heading": "### Example usage",
+     "context": "\"Delete a file from the filesystem\", inputSchema: { type: \"object\", properties: { path: { type: \"string\" } }, required: [\"path\"] }, annotations: { title: \"Delete File\", readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: false } } // A non-destructive database record creation tool { name: \"create_record\", title: \"Create Database Record\", description: \"Create a new record in the"
+    }
+   ],
+   "kind": "text",
+   "id": "s2_origin#46"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/e30f85cb01f42905b1244f97f51c70a599533958/docs/legacy/concepts/tools.mdx",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/e30f85cb01f42905b1244f97f51c70a599533958/docs/legacy/concepts/tools.mdx",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:36Z",
+   "sha256": "539601b33a45e6f8dfd18e47de4ffcc6211363f0cb92250ede2fd8399746aff2",
+   "bytes": 15351,
+   "quote": "annotations: { title: \"Create Database Record\", readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false }",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "418-424",
+     "md_heading": "### Example usage",
+     "context": "utSchema: { type: \"object\", properties: { table: { type: \"string\" }, data: { type: \"object\" } }, required: [\"table\", \"data\"] }, annotations: { title: \"Create Database Record\", readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false } } ``` ### Integrating annotations in server implementation <CodeGroup> ```typescript TypeScript server.setRequestHandler(ListToolsRequestSchema, async () =>"
+    }
+   ],
+   "kind": "text",
+   "id": "s2_origin#47"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/e30f85cb01f42905b1244f97f51c70a599533958/docs/legacy/concepts/tools.mdx",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/e30f85cb01f42905b1244f97f51c70a599533958/docs/legacy/concepts/tools.mdx",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:36Z",
+   "sha256": "539601b33a45e6f8dfd18e47de4ffcc6211363f0cb92250ede2fd8399746aff2",
+   "bytes": 15351,
+   "quote": "**Be accurate about side effects**: Clearly indicate whether a tool modifies its environment and whether those modifications are destructive.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "486",
+     "md_heading": "### Best practices for tool annotations",
+     "context": "number to add b: Second number to add \"\"\" result = a + b return str(result) ``` </CodeGroup> ### Best practices for tool annotations 1. **Be accurate about side effects**: Clearly indicate whether a tool modifies its environment and whether those modifications are destructive. 2. **Use descriptive titles**: Provide human-friendly titles that clearly describe the tool's purpose. 3. **Indicate idempotency properly**: Mark tools as id"
+    }
+   ],
+   "kind": "text",
+   "id": "s2_origin#49"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:36Z",
+   "sha256": "b75aa06bbcacfd9ff7efc0e03c00544b25d37c346d733aa5f6734bb6c756d655",
+   "bytes": 17098,
+   "quote": "These four boolean hints give clients a basic risk vocabulary: readOnlyHint: Does the tool modify its environment? destructiveHint: If it does modify things, is the change destructive (as opposed to additive)?",
+   "match": "none",
+   "count": 0,
+   "hits": [],
+   "kind": "text",
+   "id": "s3_blog_ig#1"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:36Z",
+   "sha256": "b75aa06bbcacfd9ff7efc0e03c00544b25d37c346d733aa5f6734bb6c756d655",
+   "bytes": 17098,
+   "quote": "The first three hints mostly answer a preflight question: should the client ask for confirmation before calling this tool? openWorldHint is different. It's about where the tool reaches and what its output might carry back, which matters after the call as much as before.",
+   "match": "loose",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "36",
+     "md_heading": "## What Tool Annotations Are",
+     "context": "safely call it again with the same arguments? - **`openWorldHint`**: Does the tool interact with an open world of external entities, or is its domain closed? The first three hints mostly answer a preflight question: should the client ask for confirmation before calling this tool? `openWorldHint` is different. It's about where the tool reaches and what its output might carry back, which matters after the call as much as before. It's also the hint most sensitive to deployment context. \"External\" might mean anything outside a corporate network or anything beyond the local machine, depen"
+    }
+   ],
+   "kind": "text",
+   "id": "s3_blog_ig#4"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:36Z",
+   "sha256": "b75aa06bbcacfd9ff7efc0e03c00544b25d37c346d733aa5f6734bb6c756d655",
+   "bytes": 17098,
+   "quote": "It's also the hint most sensitive to deployment context. \"External\" might mean anything outside a corporate network or anything beyond the local machine, depending on where the server runs. The safest posture is to treat anything a tool considers external as a potential source of untrusted content.",
+   "match": "loose",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "36",
+     "md_heading": "## What Tool Annotations Are",
+     "context": "his tool? `openWorldHint` is different. It's about where the tool reaches and what its output might carry back, which matters after the call as much as before. It's also the hint most sensitive to deployment context. \"External\" might mean anything outside a corporate network or anything beyond the local machine, depending on where the server runs. The safest posture is to treat anything a tool considers **external** as a potential source of untrusted content. The defaults are deliberately cautious: a tool with no annotations is assumed to be non-read-only, potentially destructive, non-idempotent, and open-world. Th"
+    }
+   ],
+   "kind": "text",
+   "id": "s3_blog_ig#5"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:36Z",
+   "sha256": "b75aa06bbcacfd9ff7efc0e03c00544b25d37c346d733aa5f6734bb6c756d655",
+   "bytes": 17098,
+   "quote": "An untrusted server can lie. A server can claim readOnlyHint: true and delete your files anyway. This is why the spec says clients must treat annotations from untrusted servers as untrusted.",
+   "match": "loose",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "96",
+     "md_heading": "## What Annotations Can't Do",
+     "context": "o is let the client treat the session as tainted once that tool runs and tighten approvals from then on - a defense at the host layer, not inside the model. **An untrusted server can lie.** A server can claim `readOnlyHint: true` and delete your files anyway. This is why the spec says clients **must** treat annotations from untrusted servers as untrusted. **They aren't enforcement.** If you need a guarantee that a tool can't exfiltrate data, that's a job for network controls or sandboxing, not a boolean hint. W"
+    }
+   ],
+   "kind": "text",
+   "id": "s3_blog_ig#13"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:36Z",
+   "sha256": "b75aa06bbcacfd9ff7efc0e03c00544b25d37c346d733aa5f6734bb6c756d655",
+   "bytes": 17098,
+   "quote": "readOnlyHint: true Skip the confirmation dialog",
+   "match": "none",
+   "count": 0,
+   "hits": [],
+   "kind": "text",
+   "id": "s3_blog_ig#15"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:36Z",
+   "sha256": "b75aa06bbcacfd9ff7efc0e03c00544b25d37c346d733aa5f6734bb6c756d655",
+   "bytes": 17098,
+   "quote": "Among the questions on the group's agenda are whether annotations belong on tool responses as well as tool definitions, and whether any annotations should be evaluated at runtime rather than declared statically.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "139",
+     "md_heading": "## Where This Is Heading",
+     "context": "n contract: they need annotations expressive enough to surface risk to their users, and they need to author annotations that other clients will actually honor. Among the questions on the group's agenda are whether annotations belong on tool responses as well as tool definitions, and whether any annotations should be evaluated at runtime rather than declared statically. In the meantime, the existing annotations are worth using. If you're writing a server, set `readOnlyHint: true` on read-only tools, `destructiveHint: false` o"
+    }
+   ],
+   "kind": "text",
+   "id": "s3_blog_ig#18"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:36Z",
+   "sha256": "b75aa06bbcacfd9ff7efc0e03c00544b25d37c346d733aa5f6734bb6c756d655",
+   "bytes": 17098,
+   "quote": "If you're writing a server, set readOnlyHint: true on read-only tools, destructiveHint: false on additive operations, and openWorldHint: false on closed-domain tools.",
+   "match": "loose",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "141",
+     "md_heading": "## Where This Is Heading",
+     "context": "itions, and whether any annotations should be evaluated at runtime rather than declared statically. In the meantime, the existing annotations are worth using. If you're writing a server, set `readOnlyHint: true` on read-only tools, `destructiveHint: false` on additive operations, and `openWorldHint: false` on closed-domain tools. If you're writing a client, treat annotations from untrusted servers as informational and lean on them for UX, but keep your actual safety guarantees in determ"
+    }
+   ],
+   "kind": "text",
+   "id": "s3_blog_ig#19"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/experimental-ext-tool-annotations/fecace78a9552f70ba735d750fc3c4b190e20429/specification/draft/action-metadata.mdx",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/experimental-ext-tool-annotations/fecace78a9552f70ba735d750fc3c4b190e20429/specification/draft/action-metadata.mdx",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:37Z",
+   "sha256": "985a052969d9b8f67b98e46bb564b62960de47c1e43fdf8f8b9eb157bf50532f",
+   "bytes": 6268,
+   "quote": "MCP today treats all tool calls as equivalent at the protocol level beyond the coarse readOnlyHint / destructiveHint / idempotentHint / openWorldHint hints. A tool that reads drafts and a tool that sends email are otherwise indistinguishable, even though their privacy and consent implications differ radically. Runtimes fall back to inferring risk from tool names or model behavior, which does not scale.",
+   "match": "loose",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "29-34",
+     "md_heading": "## Motivation",
+     "context": "r*. The two are complementary and independently adoptable - a client can consume action metadata without implementing trust annotations at all. ## Motivation MCP today treats all tool calls as equivalent at the protocol level beyond the coarse `readOnlyHint` / `destructiveHint` / `idempotentHint` / `openWorldHint` hints. A tool that reads drafts and a tool that sends email are otherwise indistinguishable, even though their privacy and consent implications differ radically. Runtimes fall back to inferring risk from tool names or model behavior, which does not scale. This was reinforced in the May 28 2026 IG meeting: a model often **cannot tell whether a target is private or public**, and absent that signal it may push con"
+    }
+   ],
+   "kind": "text",
+   "id": "s3_blog_ig#23"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/experimental-ext-tool-annotations/5d1276ff234303090aa07821254f75849af60bfc/specification/draft/tool-resolution.mdx",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/experimental-ext-tool-annotations/5d1276ff234303090aa07821254f75849af60bfc/specification/draft/tool-resolution.mdx",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:37Z",
+   "sha256": "9866904dd8cd12eb8afd442b04425a351f71d7ceeabbc9a264042e060806d672",
+   "bytes": 18475,
+   "quote": "Tool definitions returned by tools/list are static, but the behavior of a tool can depend on its arguments. A multi-action file tool may read, append, replace, or delete; its static ToolAnnotations must conservatively describe the most risky possibility, which can cause confirmation fatigue for safe calls.",
+   "match": "loose",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "17-20",
+     "md_heading": "## Abstract",
+     "context": "otiation > framework established by > [SEP-2133](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/seps/2133-extensions.md). ## Abstract Tool definitions returned by `tools/list` are static, but the behavior of a tool can depend on its arguments. A multi-action file tool may read, append, replace, or delete; its static `ToolAnnotations` must conservatively describe the most risky possibility, which can cause confirmation fatigue for safe calls. This extension lets a client submit the exact intended tool name and arguments to an extension-defined `tools/resolve` method before `tools/call`. The server"
+    }
+   ],
+   "kind": "text",
+   "id": "s3_blog_ig#28"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/experimental-ext-tool-annotations/5d1276ff234303090aa07821254f75849af60bfc/specification/draft/tool-resolution.mdx",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/experimental-ext-tool-annotations/5d1276ff234303090aa07821254f75849af60bfc/specification/draft/tool-resolution.mdx",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:37Z",
+   "sha256": "9866904dd8cd12eb8afd442b04425a351f71d7ceeabbc9a264042e060806d672",
+   "bytes": 18475,
+   "quote": "Static annotations remain the conservative fallback. For every valid argument set: - readOnlyHint: true in tools/list means every resolution MUST also be read-only.",
+   "match": "loose",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "160-164",
+     "md_heading": "## Marking resolvable tools",
+     "context": "pports `tools/resolve` for that tool. A server SHOULD omit the marker from a `tools/list` response when the current request does not advertise this extension. Static annotations remain the conservative fallback. For every valid argument set: - `readOnlyHint: true` in `tools/list` means every resolution MUST also be read-only. - `destructiveHint: false` for a non-read-only static tool means no resolution may be destructive. - `idempotentHint: true` means every non-read-only resolut"
+    }
+   ],
+   "kind": "text",
+   "id": "s3_blog_ig#32"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/986918f0dbf370638a2d64cc643a5829c0918486/schema/draft/schema.ts",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/986918f0dbf370638a2d64cc643a5829c0918486/schema/draft/schema.ts",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:37Z",
+   "sha256": "a9855d63ab5787e43158f4a235e91105417d70a0508727afaf147c50039bffd2",
+   "bytes": 41332,
+   "quote": "If true, the tool does not modify its environment. * * This means the tool only reads or retrieves information * without making any changes to data, files, or system state.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "763-766",
+     "md_heading": "",
+     "context": "s: * - Tool name: \"calc_sum\" → Title: \"Calculate Sum\" * - Tool name: \"gh_create_issue\" → Title: \"Create GitHub Issue\" */ title?: string; /** * If true, the tool does not modify its environment. * * This means the tool only reads or retrieves information * without making any changes to data, files, or system state. * * Examples: * - readOnlyHint: true → search_database, get_weather, read_file * - readOnlyHint: false → create_user, delete_file, send_email *"
+    }
+   ],
+   "kind": "text",
+   "id": "s4_seps_issues#6"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/986918f0dbf370638a2d64cc643a5829c0918486/schema/draft/schema.ts",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/986918f0dbf370638a2d64cc643a5829c0918486/schema/draft/schema.ts",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:37Z",
+   "sha256": "a9855d63ab5787e43158f4a235e91105417d70a0508727afaf147c50039bffd2",
+   "bytes": 41332,
+   "quote": "readOnlyHint: true → search_database, get_weather, read_file * - readOnlyHint: false → create_user, delete_file, send_email",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "769-770",
+     "md_heading": "",
+     "context": ". * * This means the tool only reads or retrieves information * without making any changes to data, files, or system state. * * Examples: * - readOnlyHint: true → search_database, get_weather, read_file * - readOnlyHint: false → create_user, delete_file, send_email * * Default: false */ readOnlyHint?: boolean; /** * If true, the tool may perform destructive updates to its environment. * If false, the t"
+    }
+   ],
+   "kind": "text",
+   "id": "s4_seps_issues#7"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/c934643b241eccf380aba21b8c264a89c6341cbe/seps/1862-tool-resolution.md",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/c934643b241eccf380aba21b8c264a89c6341cbe/seps/1862-tool-resolution.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:37Z",
+   "sha256": "483c502a0f8ae304dd8e418f4e0f9f45772f2dcac2ccebd2f69d83bb53f82a4b",
+   "bytes": 31146,
+   "quote": "When `resolve: true`, the `annotations` field **SHOULD** represent the worst-case (most conservative) behavior across all possible arguments, providing a safe default when resolution is not supported or desired by the client.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "174",
+     "md_heading": "### Tool Definition Extension",
+     "context": "ts before invoking them when metadata accuracy matters for * user experience or safety decisions. * * Default: false */ resolve?: boolean; } ``` When `resolve: true`, the `annotations` field **SHOULD** represent the worst-case (most conservative) behavior across all possible arguments, providing a safe default when resolution is not supported or desired by the client. ### Protocol Messages #### Request: `tools/resolve` Clients send this request to resolve a tool with specific arguments: **Request:** ```json { \"jsonrpc"
+    }
+   ],
+   "kind": "text",
+   "id": "s4_seps_issues#9"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/33d61ca4209854d935477693975c8bf02216dda3/seps/1862-dynamic-tool-annotations.md",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/33d61ca4209854d935477693975c8bf02216dda3/seps/1862-dynamic-tool-annotations.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:38Z",
+   "sha256": "a201f4fb21d0d3af51cc297e9f0421db375da5ec1e79dd1353a91218a5abd122",
+   "bytes": 20642,
+   "quote": "A `github_api` tool making REST calls: - `GET /repos/:owner/:repo` → read-only - `POST /repos/:owner/:repo/issues` → creates (additive) - `DELETE /repos/:owner/:repo` → destructive",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "57-61",
+     "md_heading": "#### Example 3: API Client Tool",
+     "context": "n → `destructiveHint: false` - `overwrite` operation → `destructiveHint: true` - `delete` operation → `destructiveHint: true` #### Example 3: API Client Tool A `github_api` tool making REST calls: - `GET /repos/:owner/:repo` → read-only - `POST /repos/:owner/:repo/issues` → creates (additive) - `DELETE /repos/:owner/:repo` → destructive ### Consequences of Static Over-Annotation When tools must declare their worst-case behavior: 1. **Over-prompting**: Users see confirmation dialogs for safe"
+    }
+   ],
+   "kind": "text",
+   "id": "s4_seps_issues#12"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/servers/pull/3534#pullrequestreview-3950322875",
+   "final_url": "https://github.com/modelcontextprotocol/servers/pull/3534#pullrequestreview-3950322875",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:38Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "`readOnlyHint: true` — the tool doesn't modify any external environment (files, network, DB). The in-process state accumulation (thoughtHistory, branches) is an implementation detail, not an environmental side effect in the MCP sense.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s4_seps_issues#28"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/servers/pull/5015",
+   "final_url": "https://github.com/modelcontextprotocol/servers/pull/5015",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:38Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "Every sequentialthinking call appends to the server's in-memory thoughtHistory (and branches) and returns a growing thoughtHistoryLength, so advertising readOnlyHint and idempotentHint as true was wrong: a client may skip a confirmation, or retry a call, on the strength of those hints.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s4_seps_issues#29"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/servers/issues/3572#issue-4076130086",
+   "final_url": "https://github.com/modelcontextprotocol/servers/issues/3572#issue-4076130086",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:38Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "This tool fetches a URL via HTTP GET and returns the content as markdown. It does not modify any data on the target server or locally.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s4_seps_issues#35"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/servers/issues/3401",
+   "final_url": "https://github.com/modelcontextprotocol/servers/issues/3401",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:39Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "These toggle internal server state. While the effect is trivial in a test server, they do mutate state, so `readOnlyHint: false` is accurate.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s4_seps_issues#36"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/python-sdk/issues/2937#issuecomment-4769539786",
+   "final_url": "https://github.com/modelcontextprotocol/python-sdk/issues/2937#issuecomment-4769539786",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:39Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "If a server author decides to mark their tool as read only then it is their responsibility to make sure their tool actually is read only. It is also impossible for the SDK to actually know whether a tool is read only or destructive or not, server authors can write any code in there they want and there's no way for the SDK to know what side effects may occur.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s4_seps_issues#39"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/csharp-sdk/issues/1454#issuecomment-4181067827",
+   "final_url": "https://github.com/modelcontextprotocol/csharp-sdk/issues/1454#issuecomment-4181067827",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:39Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "But server authors are the ones making the claims about their own tools. From the server author's perspective, they know whether their tool is read-only--it's a fact about their code, not a hint.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s4_seps_issues#40"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/440",
+   "final_url": "https://github.com/modelcontextprotocol/modelcontextprotocol/issues/440",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:40Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "**State-changing vs read-only:** Whether calling the action leads to updates/additions/removals in the external environment or in a lasting change to the internal state of stateful actions. Note that this is already captured by the `readOnlyHint` property.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s4_seps_issues#44"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/python-sdk/91941ed4d3985d59def99e090baa3f880c626cc8/docs/servers/tools.md",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/python-sdk/91941ed4d3985d59def99e090baa3f880c626cc8/docs/servers/tools.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:40Z",
+   "sha256": "c830b883c638f0257a56e5eb33f4f5f3aa19771bbccb653d3f8fe4378dbe00fd",
+   "bytes": 7149,
+   "quote": "read_only_hint=True: this tool doesn't change anything. open_world_hint=False: it works on a closed set of things (this catalog), not the open web.",
+   "match": "none",
+   "count": 0,
+   "hits": [],
+   "kind": "text",
+   "id": "s5_sdks#1"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/typescript-sdk/b022522089a0c8b632595c6e7b536453945ed5a9/docs/servers/tools.md",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/typescript-sdk/b022522089a0c8b632595c6e7b536453945ed5a9/docs/servers/tools.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:41Z",
+   "sha256": "abf4cf726febddb9a3ad053609974b8a9b78cb85f4411ad4957601093b76a608",
+   "bytes": 9606,
+   "quote": "'clear-catalog', { title: 'Clear the catalog', description: 'Remove every product from the catalog', annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: true } }, async () => { catalog.length = 0;",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "201-208",
+     "md_heading": "## Annotate the tool",
+     "context": "notations` are behavior hints for the client. ```ts source=\"../../examples/guides/servers/tools.examples.ts#registerTool_annotations\" server.registerTool( 'clear-catalog', { title: 'Clear the catalog', description: 'Remove every product from the catalog', annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: true } }, async () => { catalog.length = 0; return { content: [{ type: 'text', text: 'Catalog cleared' }] }; } ); ``` A tool that takes no arguments omits `inputSchema`. Annotations never ch"
+    }
+   ],
+   "kind": "text",
+   "id": "s5_sdks#4"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/csharp-sdk/3338e88e15c42cfc27465143c140d7d10f1a2707/src/ModelContextProtocol.Core/Protocol/ToolAnnotations.cs",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/csharp-sdk/3338e88e15c42cfc27465143c140d7d10f1a2707/src/ModelContextProtocol.Core/Protocol/ToolAnnotations.cs",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:41Z",
+   "sha256": "4453cf6fe2a5dca77302ba3ecd3f75d1648c71b8ef4e0f46b73800d7c9b59fc2",
+   "bytes": 4074,
+   "quote": "Read-only tools do not have side effects beyond computational resource usage. They don't create, update, or delete data in any system.",
+   "match": "none",
+   "count": 0,
+   "hits": [],
+   "kind": "text",
+   "id": "s5_sdks#9"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/csharp-sdk/b24f338525190565a7f3633b532d50f3347180ba/src/ModelContextProtocol/Server/McpServerToolAttribute.cs",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/csharp-sdk/b24f338525190565a7f3633b532d50f3347180ba/src/ModelContextProtocol/Server/McpServerToolAttribute.cs",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:41Z",
+   "sha256": "d23283d8e658a85ac36c50f7de2c242a8f70e40c4282bf9c3c1056664dcf2317",
+   "bytes": 6052,
+   "quote": "/// Read-only tools should not create, update, or delete data, and should have no side effects /// beyond computational resource usage (CPU, memory, etc.).",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "135-136",
+     "md_heading": "",
+     "context": "ng state. /// If false, the tool may make modifications to its environment. /// Default: false. /// </summary> /// <remarks> /// <para> /// Read-only tools should not create, update, or delete data, and should have no side effects /// beyond computational resource usage (CPU, memory, etc.). /// </para> /// <para> /// Examples of read-only tools include calculator functions, data retrieval operations, /// and search functionality. S"
+    }
+   ],
+   "kind": "text",
+   "id": "s5_sdks#12"
+  },
+  {
+   "url": "https://patch-diff.githubusercontent.com/raw/modelcontextprotocol/csharp-sdk/pull/238.patch",
+   "final_url": "https://patch-diff.githubusercontent.com/raw/modelcontextprotocol/csharp-sdk/pull/238.patch",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:42Z",
+   "sha256": "b108ce3a59019754d5bd54a62fe25f785e6f46e553a3688a30274206c09b14be",
+   "bytes": 1488202,
+   "quote": "From: Rob Chambers <robc@thinkman.com> Date: Tue, 8 Apr 2025 06:19:17 -0700 Subject: [PATCH 01/10] AI generated `///` comment updates",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "2-4",
+     "md_heading": "",
+     "context": "From b24f338525190565a7f3633b532d50f3347180ba Mon Sep 17 00:00:00 2001 From: Rob Chambers <robc@thinkman.com> Date: Tue, 8 Apr 2025 06:19:17 -0700 Subject: [PATCH 01/10] AI generated `///` comment updates --- src/Common/Throw.cs | 35 +- .../AIContentExtensions.cs | 315 +++++++- src/ModelContextProtocol/Client/IMc"
+    }
+   ],
+   "kind": "text",
+   "id": "s5_sdks#16"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/PrefectHQ/fastmcp/5baeacfe20eca735cb949564b4915f93a622b916/docs/servers/tools.mdx",
+   "final_url": "https://raw.githubusercontent.com/PrefectHQ/fastmcp/5baeacfe20eca735cb949564b4915f93a622b916/docs/servers/tools.mdx",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:43Z",
+   "sha256": "78df0f0b4b019e215d23cfb465128befde1fb5407411f6d5d5ef283e841d00da",
+   "bytes": 48240,
+   "quote": "For tools that write to databases, send notifications, create/update/delete resources, or trigger workflows, omit readOnlyHint or set it to False. Use destructiveHint=True for operations that cannot be undone.",
+   "match": "none",
+   "count": 0,
+   "hits": [],
+   "kind": "text",
+   "id": "s5_sdks#21"
+  },
+  {
+   "url": "https://support.claude.com/en/articles/12922490-remote-mcp-server-submission-guide",
+   "final_url": "https://support.claude.com/en/articles/12922490-remote-mcp-server-submission-guide",
+   "status": "404",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:43Z",
+   "sha256": "bec045efab7f3d370693f585c6478cd13992411b7670f2f62daf6a9d3ad95bc1",
+   "bytes": 167632,
+   "quote": "readOnlyHint: true - For tools that only read data destructiveHint: true - For tools that modify data or have side effects",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s6_vendors#4"
+  },
+  {
+   "url": "https://support.claude.com/en/articles/12922832-local-mcp-server-submission-guide",
+   "final_url": "https://support.claude.com/en/articles/12922832-local-mcp-server-submission-guide",
+   "status": "404",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:44Z",
+   "sha256": "c55672656540dfa1de9044ab2da50752b4c24e80d7e9210c96b93b017a1a0cf1",
+   "bytes": 167607,
+   "quote": "Writes/modifies data destructiveHint: true create, update, delete, send, write Creates temp files destructiveHint: true Even temporary writes count",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s6_vendors#5"
+  },
+  {
+   "url": "https://support.claude.com/en/articles/12922832-local-mcp-server-submission-guide",
+   "final_url": "https://support.claude.com/en/articles/12922832-local-mcp-server-submission-guide",
+   "status": "404",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:44Z",
+   "sha256": "f4029980df1e88207d4d380b92eb3750339ff42dc34e1ae88c1f02a75046f773",
+   "bytes": 167607,
+   "quote": "Caches internally only readOnlyHint: true Internal optimization OK",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s6_vendors#6"
+  },
+  {
+   "url": "https://developers.openai.com/plugins/deploy/app-review",
+   "final_url": "https://developers.openai.com/plugins/deploy/app-review",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:44Z",
+   "sha256": "dc6ac1ca5c6d3fcdec867070ddec3c959d2b48256337aac083bbc2dd70aa3d41",
+   "bytes": 412024,
+   "quote": "readOnlyHint: Set to true if it strictly fetches/looks up/lists/retrieves data and does not modify anything. Set to false if the tool can create/update/delete anything, trigger actions (send emails/messages, run jobs, enqueue tasks, write logs, start workflows), or otherwise change state.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "Remote MCP server review requirements > Review and approval > Review and approval FAQs",
+     "heading_id": "review-and-approval-faqs",
+     "anchored_url": "https://developers.openai.com/plugins/deploy/app-review#review-and-approval-faqs",
+     "context": "sted and directly tied to the user's intent (not \"looked up and echoed\" by default). Tool hint annotations do not appear to match the tool's behavior: readOnlyHint: Set to true if it strictly fetches/looks up/lists/retrieves data and does not modify anything. Set to false if the tool can create/update/delete anything, trigger actions (send emails/messages, run jobs, enqueue tasks, write logs, start workflows), or otherwise change state. Destructive hint: Set the destructive annotation to true if the tool can cause irreversible outcomes (deleting, overwriting, sending messages or transactions"
+    }
+   ],
+   "kind": "html",
+   "id": "s6_vendors#7"
+  },
+  {
+   "url": "https://developers.openai.com/plugins/plugin-guidelines",
+   "final_url": "https://developers.openai.com/plugins/plugin-guidelines",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:44Z",
+   "sha256": "d8ec561e37856c9e12d1636e4665e9ad8e3f77455e46379f8a2da24d2cdc9296",
+   "bytes": 438821,
+   "quote": "readOnlyHint: Use true for retrieval, computation, or previews that do not modify the environment. Use false for external-state changes, persisting artifacts, starting stateful jobs or workflows, queuing work, or write-style outbound actions such as posting messages, sending emails, or uploading files.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "Plugin guidelines > MCP requirements > Tools > Correct annotation",
+     "heading_id": "correct-annotation",
+     "anchored_url": "https://developers.openai.com/plugins/plugin-guidelines#correct-annotation",
+     "context": "fications are no longer required. If our automated review flags an annotation issue, you can submit an appeal with clarification or additional information. readOnlyHint: Use true for retrieval, computation, or previews that do not modify the environment. Use false for external-state changes, persisting artifacts, starting stateful jobs or workflows, queuing work, or write-style outbound actions such as posting messages, sending emails, or uploading files. destructiveHint: Use false for read-only tools. For writes, use true for potentially destructive or irreversible effects, such as deletion, overwriting, canc"
+    }
+   ],
+   "kind": "html",
+   "id": "s6_vendors#9"
+  },
+  {
+   "url": "https://developers.openai.com/plugins/build/mcp-server",
+   "final_url": "https://developers.openai.com/plugins/build/mcp-server",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:45Z",
+   "sha256": "7deb0b5f2f19ac51c7b26f40e6bcc1bef350a7bfd2917279c4ccef7d43c3c5c0",
+   "bytes": 406465,
+   "quote": "Set annotations according to actual behavior: readOnlyHint: true only when the tool cannot change state.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "Build an MCP server > Tool annotations and elicitation",
+     "heading_id": "tool-annotations-and-elicitation",
+     "anchored_url": "https://developers.openai.com/plugins/build/mcp-server#tool-annotations-and-elicitation",
+     "context": "connect multiple accounts without a profile tool. See Support multiple accounts for the schema and implementation example. Tool annotations and elicitation Set annotations according to actual behavior: readOnlyHint: true only when the tool cannot change state. destructiveHint: true when a tool can cause irreversible or difficult to reverse outcomes. openWorldHint: true when a tool accesses the public internet or"
+    }
+   ],
+   "kind": "html",
+   "id": "s6_vendors#10"
+  },
+  {
+   "url": "https://developers.openai.com/apps-sdk/app-submission-guidelines",
+   "final_url": "https://developers.openai.com/plugins/plugin-guidelines",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:45Z",
+   "sha256": "d8ec561e37856c9e12d1636e4665e9ad8e3f77455e46379f8a2da24d2cdc9296",
+   "bytes": 438821,
+   "quote": "You should label a tool with the readOnlyHint annotation if it only retrieves or lists data, but does not change anything outside of ChatGPT.",
+   "match": "none",
+   "count": 0,
+   "kind": "html",
+   "id": "s6_vendors#14"
+  },
+  {
+   "url": "https://code.claude.com/docs/en/agent-sdk/custom-tools",
+   "final_url": "https://code.claude.com/docs/en/agent-sdk/custom-tools",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:45Z",
+   "sha256": "29de422e0ca0955a25bd1297c553f8c336365871c5d293593ef530f7d2416c76",
+   "bytes": 1058290,
+   "quote": "Annotations are metadata, not enforcement. A tool marked readOnlyHint: true can still write to disk if that’s what the handler does. Keep the annotation accurate to the handler.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "Give Claude custom tools > Create a custom tool > Add tool annotations",
+     "heading_id": "add-tool-annotations",
+     "anchored_url": "https://code.claude.com/docs/en/agent-sdk/custom-tools#add-tool-annotations",
+     "context": "the same arguments have no additional effect. Informational only. openWorldHint true Tool reaches systems outside your process. Informational only. Annotations are metadata, not enforcement. A tool marked readOnlyHint: true can still write to disk if that's what the handler does. Keep the annotation accurate to the handler. This example adds readOnlyHint to the get_temperature tool from the weather tool example. Python TypeScript from claude_agent_sdk"
+    }
+   ],
+   "kind": "html",
+   "id": "s6_vendors#18"
+  },
+  {
+   "url": "https://claude.com/docs/connectors/building/review-criteria",
+   "final_url": "https://claude.com/docs/connectors/building/review-criteria",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:46Z",
+   "sha256": "aa340ed03d183aa489bcf523b3a563714bdd5626d36f84dc0550e780fdca01f4",
+   "bytes": 451961,
+   "quote": "Split a catch-all tool into a read-only tool and one or more write tools. Ideally, split write operations further by action type: create, update, and delete. Documenting safe versus unsafe operations within one tool’s description doesn’t satisfy this requirement.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "Connector pre-submission checklist > Design tools that pass review > Separate read and write tools",
+     "heading_id": "separate-read-and-write-tools",
+     "anchored_url": "https://claude.com/docs/connectors/building/review-criteria#separate-read-and-write-tools",
+     "context": "GET, HEAD, and OPTIONS, and unsafe methods, such as POST, PUT, PATCH, and DELETE, is rejected. Don't ship a catch-all api_request tool with a method parameter. Split a catch-all tool into a read-only tool and one or more write tools. Ideally, split write operations further by action type: create, update, and delete. Documenting safe versus unsafe operations within one tool's description doesn't satisfy this requirement. The operations must be in separate tools. Reference API docs in custom query tools If a tool accepts freeform endpoint paths, query strings, or request b"
+    }
+   ],
+   "kind": "html",
+   "id": "s6_vendors#21"
+  },
+  {
+   "url": "https://claude.com/docs/connectors/building/review-criteria",
+   "final_url": "https://claude.com/docs/connectors/building/review-criteria",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:46Z",
+   "sha256": "aa340ed03d183aa489bcf523b3a563714bdd5626d36f84dc0550e780fdca01f4",
+   "bytes": 451961,
+   "quote": "Every tool must include a title and the applicable hint: readOnlyHint: true for read-only tools, and destructiveHint: true for tools that modify or delete data. These determine auto-permissions in Claude. Read-only tools can run without per-call confirmation, and destructive tools always prompt.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "Connector pre-submission checklist > Design tools that pass review > Provide tool annotations",
+     "heading_id": "provide-tool-annotations",
+     "anchored_url": "https://claude.com/docs/connectors/building/review-criteria#provide-tool-annotations",
+     "context": "applies only to custom query tools. Purpose-built tools that call a fixed endpoint internally don't need an API docs reference. Provide tool annotations Every tool must include a title and the applicable hint: readOnlyHint: true for read-only tools, and destructiveHint: true for tools that modify or delete data. These determine auto-permissions in Claude. Read-only tools can run without per-call confirmation, and destructive tools always prompt. Keep tool names short Tool names must be 64 characters or fewer. Write narrow, accurate descriptions Each tool description should state precisely w"
+    }
+   ],
+   "kind": "html",
+   "id": "s6_vendors#22"
+  },
+  {
+   "url": "https://mcp-toolbox.dev/documentation/configuration/tools/",
+   "final_url": "https://mcp-toolbox.dev/documentation/configuration/tools/",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:46Z",
+   "sha256": "e0c8798affa68a747b8a2f7d1a1a948f3bb77bbb498b3564817ddae36d2997af",
+   "bytes": 477059,
+   "quote": "readOnlyHint bool false Tool only reads data, no modifications to the environment.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "Tools > Tool Annotations > Available Annotations",
+     "heading_id": "available-annotations",
+     "anchored_url": "https://mcp-toolbox.dev/documentation/configuration/tools/#available-annotations",
+     "context": "clients to make better decisions about tool usage and provide appropriate user experiences. Available Annotations annotation type default description readOnlyHint bool false Tool only reads data, no modifications to the environment. destructiveHint bool true Tool may create, update, or delete data. idempotentHint bool false Repeated calls with same arguments have no additional"
+    }
+   ],
+   "kind": "html",
+   "id": "s6_vendors#30"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/servers/pull/3246",
+   "final_url": "https://github.com/modelcontextprotocol/servers/pull/3246",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:46Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "The annotation values follow the MCP spec semantics: * **readOnlyHint**: `true` when the tool only returns data with no side effects",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "g2"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/servers/pull/3246",
+   "final_url": "https://github.com/modelcontextprotocol/servers/pull/3246",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:47Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "| `trigger-long-running-operation` | `true` | `false` | `true` | `false` | Simulates work with progress, no lasting state change |",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "g3"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/servers/pull/3246",
+   "final_url": "https://github.com/modelcontextprotocol/servers/pull/3246",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:47Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "| `toggle-simulated-logging` | `false` | `false` | `false` | `false` | Toggles server-side logging state (not idempotent) |",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "g4"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/servers/pull/3246",
+   "final_url": "https://github.com/modelcontextprotocol/servers/pull/3246",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:47Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "| `trigger-elicitation-request` | `false` | `false` | `false` | `false` | Triggers user-facing dialog via client |",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "g5"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/servers/pull/3246",
+   "final_url": "https://github.com/modelcontextprotocol/servers/pull/3246",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:47Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "| `trigger-sampling-request` | `false` | `false` | `false` | `true` | Triggers LLM inference (external API) |",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "g6"
+  },
+  {
+   "url": "https://github.com/modelcontextprotocol/servers/pull/3246#issuecomment-4289466237",
+   "final_url": "https://github.com/modelcontextprotocol/servers/pull/3246#issuecomment-4289466237",
+   "status": "403",
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:48Z",
+   "sha256": "b3e03aaaff81d68730d67392a135ac3fdfdf022880c66632ab188d2fe084cda3",
+   "bytes": 378,
+   "quote": "The tool sends `notifications/progress` back to the client during execution, which is a side effect within the session. However, it doesn't persist any state externally, so `readOnlyHint: true` is defensible per spec.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "g10"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/servers/5abed86c5317b833dd59907492d56c65981642aa/src/filesystem/README.md",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/servers/5abed86c5317b833dd59907492d56c65981642aa/src/filesystem/README.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:48Z",
+   "sha256": "df276d57efc04b85fa1e8163fe1aa3d5b11d5b2a7de5ec51ba083e5cb04019cd",
+   "bytes": 15068,
+   "quote": "| `write_file`                | `false`      | `true`         | `true`          | Overwrites existing files                       |",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "206",
+     "md_heading": "### Tool annotations (MCP hints)",
+     "context": "| | `create_directory` | `false` | `true` | `false` | Re‑creating the same dir is a no‑op | | `write_file` | `false` | `true` | `true` | Overwrites existing files | | `edit_file` | `false` | `false` | `true` | Re‑applying edits can fail or double‑apply | | `move_file`"
+    }
+   ],
+   "kind": "text",
+   "id": "g12"
+  },
+  {
+   "url": "https://www.rfc-editor.org/rfc/rfc9110.html#name-safe-methods",
+   "final_url": "https://www.rfc-editor.org/rfc/rfc9110.html#name-safe-methods",
+   "status": "200",
+   "content_type": "text/html",
+   "fetched_at": "2026-10-08T09:30:49Z",
+   "sha256": "d431760660ea44e130f6e919dab216df2d0b3a490567a98089267523368fe1e5",
+   "bytes": 1187554,
+   "quote": "For example, most servers append request information to access log files at the completion of every response, regardless of the method, and that is considered safe even though the log storage might become full and cause the server to fail. Likewise, a safe request initiated by selecting an advertisement on the Web will often have the side effect of charging an advertising account.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "HTTP Semantics > 9. Methods > 9.2. Common Method Properties > 9.2.1. Safe Methods",
+     "heading_id": "name-safe-methods",
+     "anchored_url": "https://www.rfc-editor.org/rfc/rfc9110.html#name-safe-methods",
+     "context": "while invoking a safe method. What is important, however, is that the client did not request that additional behavior and cannot be held accountable for it. For example, most servers append request information to access log files at the completion of every response, regardless of the method, and that is considered safe even though the log storage might become full and cause the server to fail. Likewise, a safe request initiated by selecting an advertisement on the Web will often have the side effect of charging an advertising account.¶ Of the request methods defined by this specification, the GET, HEAD, OPTIONS, and TRACE methods are defined to be safe.¶ The purpose of distinguishi"
+    }
+   ],
+   "kind": "html",
+   "id": "g14"
+  },
+  {
+   "url": "https://www.rfc-editor.org/rfc/rfc9110.html#name-safe-methods",
+   "final_url": "https://www.rfc-editor.org/rfc/rfc9110.html#name-safe-methods",
+   "status": "200",
+   "content_type": "text/html",
+   "fetched_at": "2026-10-08T09:30:49Z",
+   "sha256": "d431760660ea44e130f6e919dab216df2d0b3a490567a98089267523368fe1e5",
+   "bytes": 1187554,
+   "quote": "When a resource is constructed such that parameters within the target URI have the effect of selecting an action, it is the resource owner's responsibility to ensure that the action is consistent with the request method semantics.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "HTTP Semantics > 9. Methods > 9.2. Common Method Properties > 9.2.1. Safe Methods",
+     "heading_id": "name-safe-methods",
+     "anchored_url": "https://www.rfc-editor.org/rfc/rfc9110.html#name-safe-methods",
+     "context": "en safe and unsafe methods when presenting potential actions to a user, such that the user can be made aware of an unsafe action before it is requested.¶ When a resource is constructed such that parameters within the target URI have the effect of selecting an action, it is the resource owner's responsibility to ensure that the action is consistent with the request method semantics. For example, it is common for Web-based content editing software to use actions within query parameters, such as \"page?do=delete\". If the purpose of such a"
+    }
+   ],
+   "kind": "html",
+   "id": "g15"
+  },
+  {
+   "url": "https://aident.ai/blog/mcp-tool-annotations-explained",
+   "final_url": "https://aident.ai/blog/mcp-tool-annotations-explained",
+   "status": "200",
+   "content_type": "text/html",
+   "fetched_at": "2026-10-08T09:30:50Z",
+   "sha256": "43a60ea0e5a5c42e8f34c3218e9cc8aba30e2ace9034d6b5ce5c97f9192a2bb7",
+   "bytes": 599500,
+   "quote": "Inspect the input schema for fields that can change the consequence. A message-retrieval tool with markAsRead: true, a get-named tool that starts an export, or a list operation that refreshes a remote cache may alter state. If any accepted input can do that, a blanket read-only annotation is misleading unless the server splits the behavior into separate tools or constrains the schema.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "MCP Tool Annotations Explained: What the Four Hints Actually Mean > readOnlyHint: Does the Tool Change State?",
+     "heading_id": "",
+     "anchored_url": "",
+     "context": "only when the tool performs no side effect beyond consuming computational resources. A search, list, or get operation can qualify, but its name is not enough. Inspect the input schema for fields that can change the consequence. A message-retrieval tool with markAsRead: true, a get-named tool that starts an export, or a list operation that refreshes a remote cache may alter state. If any accepted input can do that, a blanket read-only annotation is misleading unless the server splits the behavior into separate tools or constrains the schema. Read-only also does not mean low-risk. A tool can reveal customer records, source code, credentials, private messages, or commercially sensitive analytics wit"
+    }
+   ],
+   "kind": "html",
+   "id": "g18"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/awslabs/mcp/6864d7bd21286bf2982b3386ec08eb53da9281e8/src/aws-api-mcp-server/README.md",
+   "final_url": "https://raw.githubusercontent.com/awslabs/mcp/6864d7bd21286bf2982b3386ec08eb53da9281e8/src/aws-api-mcp-server/README.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:30:50Z",
+   "sha256": "5a1a7d4a1d9059e0c761e80bb69a2d91b4fb522db12755027acc0745f2498a05",
+   "bytes": 42354,
+   "quote": "\"Read-Only\" only refers to the API classification, not the file system, that is such \"read-only\" actions can still write to the file system if necessary or upon user request.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "273",
+     "md_heading": "### 🔑 Credential Management and Access Control",
+     "context": "hen set to true, we'll compare each CLI command against a list of known read-only actions, and will only execute the command if it's found in the allowed list. \"Read-Only\" only refers to the API classification, not the file system, that is such \"read-only\" actions can still write to the file system if necessary or upon user request. While this environment variable provides an additional layer of protection, IAM permissions remain the primary and most reliable security control. Users should"
+    }
+   ],
+   "kind": "text",
+   "id": "aws_readme"
+  }
+ ],
+ "out2": [
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/schema/2025-11-25/schema.ts",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/schema/2025-11-25/schema.ts",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:31:56Z",
+   "sha256": "e74b56e73b2e37bdb595f74ba22e428ad7f07aa3519355ba661d681298ed38ac",
+   "bytes": 66671,
+   "quote": "Additional properties describing a Tool to clients. NOTE: all properties in ToolAnnotations are hints. They are not guaranteed to provide a faithful description of tool behavior (including descriptive properties like title). Clients should never make tool use decisions based on ToolAnnotations received from untrusted servers.",
+   "match": "none",
+   "count": 0,
+   "hits": [],
+   "kind": "text",
+   "id": "s1_spec#2"
+  },
+  {
+   "url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185",
+   "final_url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:32:10Z",
+   "sha256": "b30cc571aec10aa4d3b54a9d53dc5bcb10792e269e2583b20291f3368ca48125",
+   "bytes": 728236,
+   "quote": "My mental model for this is that it describes whether or not a tool operates in a closed environment - so e.g. a database tool would be false (as would the current filesystem tool), but an open web query tool would be true. A client might use this to select only tools that operate in closed environments.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "ToolAnnotations #185 > Additional context > Choose a reason for hiding this comment",
+     "heading_id": "top",
+     "anchored_url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185#top",
+     "context": "describe this comment to others. Learn more. Choose a reason Spam Abuse Off Topic Outdated Duplicate Resolved Hide comment My mental model for this is that it describes whether or not a tool operates in a closed environment - so e.g. a database tool would be false (as would the current filesystem tool), but an open web query tool would be true. A client might use this to select only tools that operate in closed environments. There's definitely an elephant in the room here, that clients will often want to know much more fine-grained and varietal operational information about the b"
+    }
+   ],
+   "kind": "html",
+   "id": "s2_origin#15"
+  },
+  {
+   "url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185",
+   "final_url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:32:10Z",
+   "sha256": "b30cc571aec10aa4d3b54a9d53dc5bcb10792e269e2583b20291f3368ca48125",
+   "bytes": 728236,
+   "quote": "There's definitely an elephant in the room here, that clients will often want to know much more fine-grained and varietal operational information about the behavior of specific tools than we can provide in a universal schema.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "ToolAnnotations #185 > Additional context > Choose a reason for hiding this comment",
+     "heading_id": "top",
+     "anchored_url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185#top",
+     "context": "uld the current filesystem tool), but an open web query tool would be true. A client might use this to select only tools that operate in closed environments. There's definitely an elephant in the room here, that clients will often want to know much more fine-grained and varietal operational information about the behavior of specific tools than we can provide in a universal schema. The protocol's stance on how that kind of info is best delivered is one question, but more immediately it means that the properties we do include need to pay t"
+    }
+   ],
+   "kind": "html",
+   "id": "s2_origin#16"
+  },
+  {
+   "url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185",
+   "final_url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:32:10Z",
+   "sha256": "b30cc571aec10aa4d3b54a9d53dc5bcb10792e269e2583b20291f3368ca48125",
+   "bytes": 728236,
+   "quote": "I think of the metric as being some kind of 80/20 rule where a property is informative enough, for enough tools, to warrant inclusion.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "ToolAnnotations #185 > Additional context > Choose a reason for hiding this comment",
+     "heading_id": "top",
+     "anchored_url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185#top",
+     "context": "ol's stance on how that kind of info is best delivered is one question, but more immediately it means that the properties we do include need to pay their way - I think of the metric as being some kind of 80/20 rule where a property is informative enough, for enough tools, to warrant inclusion. openWorld came from some conversations about whether a tool \"reads externally\", which passed the smell test for me, but I could definitely see a counterargumen"
+    }
+   ],
+   "kind": "html",
+   "id": "s2_origin#17"
+  },
+  {
+   "url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185",
+   "final_url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:32:10Z",
+   "sha256": "b30cc571aec10aa4d3b54a9d53dc5bcb10792e269e2583b20291f3368ca48125",
+   "bytes": 728236,
+   "quote": "In the presence of extensibility it feels like the ROI of the extra precision isn't high enough to offset the extra fussiness, since we'd be defining a taxonomy that some tools won't fit into w.r.t. custom properties, as well as complicating parsing.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "ToolAnnotations #185 > Additional context > Choose a reason for hiding this comment",
+     "heading_id": "top",
+     "anchored_url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185#top",
+     "context": "... Edit 2: I'm going to go ahead and flatten this, even though we could add multilevel extensibility by making effectHints a variant type across subobjects. In the presence of extensibility it feels like the ROI of the extra precision isn't high enough to offset the extra fussiness, since we'd be defining a taxonomy that some tools won't fit into w.r.t. custom properties, as well as complicating parsing. Sorry, something went wrong. All reactions"
+    }
+   ],
+   "kind": "html",
+   "id": "s2_origin#22"
+  },
+  {
+   "url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185",
+   "final_url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:32:10Z",
+   "sha256": "b30cc571aec10aa4d3b54a9d53dc5bcb10792e269e2583b20291f3368ca48125",
+   "bytes": 728236,
+   "quote": "switched from the variant-type setup to simple boolean properties. The data model is less precise in a closed world but I think the discussion here shines a light on the relative benefit of closed-world precision vs ease of extensibility/coherence of custom properties.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "ToolAnnotations #185 > Additional context > bhosmer-ant commented Mar 24, 2025",
+     "heading_id": "issuecomment-2749580411-permalink",
+     "anchored_url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185#issuecomment-2749580411-permalink",
+     "context": "@jspahrsummers looks like my post-approve changes caused your review to be dismissed, sorry about that, can I get you to TAL? Here's what's changed: switched from the variant-type setup to simple boolean properties. The data model is less precise in a closed world but I think the discussion here shines a light on the relative benefit of closed-world precision vs ease of extensibility/coherence of custom properties. added trusting-annotations callout to the Security and Trust & Safety section in _index.md added annotations to the property list in TOOLS.md (and another"
+    }
+   ],
+   "kind": "html",
+   "id": "s2_origin#23"
+  },
+  {
+   "url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185",
+   "final_url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:32:10Z",
+   "sha256": "b30cc571aec10aa4d3b54a9d53dc5bcb10792e269e2583b20291f3368ca48125",
+   "bytes": 728236,
+   "quote": "Re docs: given that the wording is \"a tool definition includes\" I'm not sure if the aim is to be concise here and defer to the schema for the full definition, or we want to be completist, so I held off on adding annotations because it sort of portends a more extended walkthrough (not just of the fields in ToolAnnotation but e.g. something about description being model-facing and optional).",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "ToolAnnotations #185 > Additional context > bhosmer-ant commented Mar 21, 2025 • edited Loading",
+     "heading_id": "issuecomment-2743603359-permalink",
+     "anchored_url": "https://web.archive.org/web/20250407235836/https://github.com/modelcontextprotocol/specification/pull/185#issuecomment-2743603359-permalink",
+     "context": "to fall back to straight bools if you think that's better. Also put more color on openWorld, but happy to discuss more or pull it if you're still skeptical. Re docs: given that the wording is \"a tool definition includes\" I'm not sure if the aim is to be concise here and defer to the schema for the full definition, or we want to be completist, so I held off on adding annotations because it sort of portends a more extended walkthrough (not just of the fields in ToolAnnotation but e.g. something about description being model-facing and optional). Happy to add if the latter, LMK your inclination. All reactions"
+    }
+   ],
+   "kind": "html",
+   "id": "s2_origin#25"
+  },
+  {
+   "url": "https://web.archive.org/web/20250313152820/https://github.com/modelcontextprotocol/specification/issues/114",
+   "final_url": "https://web.archive.org/web/20250313152820/https://github.com/modelcontextprotocol/specification/issues/114",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:32:12Z",
+   "sha256": "0bdfee07922395bcc37d6d8d354c9770b835a13a65f3450809977fbc3d4b15e2",
+   "bytes": 333611,
+   "quote": "A way for the server to easily respond with a more precise risk level for a given call",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "feat: Some kind of risk level returned by servers #114 > Description",
+     "heading_id": "",
+     "anchored_url": "",
+     "context": "able!] Another way this might be thought of is maybe like oauth scopes, which again define a class of actions usually by how impactful they can be. A way for the server to easily respond with a more precise risk level for a given call e.g. if making an Amazon purchase of a specific item, it might return an impact statement like 'This will authorise a payment of £25.99 to buy Cuddly Stuffe"
+    }
+   ],
+   "kind": "html",
+   "id": "s2_origin#36"
+  },
+  {
+   "url": "https://web.archive.org/web/20250313152820/https://github.com/modelcontextprotocol/specification/issues/114",
+   "final_url": "https://web.archive.org/web/20250313152820/https://github.com/modelcontextprotocol/specification/issues/114",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:32:12Z",
+   "sha256": "0bdfee07922395bcc37d6d8d354c9770b835a13a65f3450809977fbc3d4b15e2",
+   "bytes": 333611,
+   "quote": "a user might be happy with AI systems reading any of the data in their database, but not editing any of it without checking with them",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "feat: Some kind of risk level returned by servers #114 > Description",
+     "heading_id": "",
+     "anchored_url": "",
+     "context": "ith autoapproving AI system taking any actions with moderate privacy risk (corresponding to a level of accessing general documents), but zero financial risk. a user might be happy with AI systems reading any of the data in their database, but not editing any of it without checking with them (In the future, AI systems might themselves be able to make these judgements based on a risk profile set by the user - e.g. evaluating the request against"
+    }
+   ],
+   "kind": "html",
+   "id": "s2_origin#37"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:32:13Z",
+   "sha256": "b75aa06bbcacfd9ff7efc0e03c00544b25d37c346d733aa5f6734bb6c756d655",
+   "bytes": 17098,
+   "quote": "These four boolean hints give clients a basic risk vocabulary: readOnlyHint: Does the tool modify its environment? destructiveHint: If it does modify things, is the change destructive (as opposed to additive)?",
+   "match": "none",
+   "count": 0,
+   "hits": [],
+   "kind": "text",
+   "id": "s3_blog_ig#1"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/0a11bf68c7ec4473526ec15589f592afcd12d1e8/blog/content/posts/2026-03-16-tool-annotations.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:32:13Z",
+   "sha256": "b75aa06bbcacfd9ff7efc0e03c00544b25d37c346d733aa5f6734bb6c756d655",
+   "bytes": 17098,
+   "quote": "readOnlyHint: true Skip the confirmation dialog",
+   "match": "none",
+   "count": 0,
+   "hits": [],
+   "kind": "text",
+   "id": "s3_blog_ig#15"
+  },
+  {
+   "url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/pull/3534",
+   "final_url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/pull/3534",
+   "status": "403",
+   "content_type": "text/html; charset=UTF-8",
+   "fetched_at": "2026-10-08T09:32:19Z",
+   "sha256": "a7d99d4d284ecd0d0173e6892abee4e975ff4cc87fc896765ee0bad0dabfc315",
+   "bytes": 5805,
+   "quote": "`readOnlyHint: true` — the tool doesn't modify any external environment (files, network, DB). The in-process state accumulation (thoughtHistory, branches) is an implementation detail, not an environmental side effect in the MCP sense.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s4_seps_issues#28"
+  },
+  {
+   "url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/pull/5015",
+   "final_url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/pull/5015",
+   "status": "403",
+   "content_type": "text/html; charset=UTF-8",
+   "fetched_at": "2026-10-08T09:32:20Z",
+   "sha256": "a5291221b35a80723ffe3820d7d5a55e2ff559eee903ead51552f8307231ccfd",
+   "bytes": 5805,
+   "quote": "Every sequentialthinking call appends to the server's in-memory thoughtHistory (and branches) and returns a growing thoughtHistoryLength, so advertising readOnlyHint and idempotentHint as true was wrong: a client may skip a confirmation, or retry a call, on the strength of those hints.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s4_seps_issues#29"
+  },
+  {
+   "url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/issues/3572",
+   "final_url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/issues/3572",
+   "status": "403",
+   "content_type": "text/html; charset=UTF-8",
+   "fetched_at": "2026-10-08T09:32:20Z",
+   "sha256": "7b3c85402059ee76dfe5d6be2538630c4649859aa5d9554140e4eb27f1bb32d2",
+   "bytes": 5811,
+   "quote": "This tool fetches a URL via HTTP GET and returns the content as markdown. It does not modify any data on the target server or locally.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s4_seps_issues#35"
+  },
+  {
+   "url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/issues/3401",
+   "final_url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/issues/3401",
+   "status": "403",
+   "content_type": "text/html; charset=UTF-8",
+   "fetched_at": "2026-10-08T09:32:20Z",
+   "sha256": "6d542457ac9a5331ad40a9ba4bfa5901ee4e46497c2cb8a3c8e048683b609fb1",
+   "bytes": 5811,
+   "quote": "These toggle internal server state. While the effect is trivial in a test server, they do mutate state, so `readOnlyHint: false` is accurate.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s4_seps_issues#36"
+  },
+  {
+   "url": "https://r.jina.ai/https://github.com/modelcontextprotocol/python-sdk/issues/2937",
+   "final_url": "https://r.jina.ai/https://github.com/modelcontextprotocol/python-sdk/issues/2937",
+   "status": "403",
+   "content_type": "text/html; charset=UTF-8",
+   "fetched_at": "2026-10-08T09:32:20Z",
+   "sha256": "52564a2ef284e2fdbbb83c72761e85ab613000ab47d1880a1fced6d5d611c9fc",
+   "bytes": 5820,
+   "quote": "If a server author decides to mark their tool as read only then it is their responsibility to make sure their tool actually is read only. It is also impossible for the SDK to actually know whether a tool is read only or destructive or not, server authors can write any code in there they want and there's no way for the SDK to know what side effects may occur.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s4_seps_issues#39"
+  },
+  {
+   "url": "https://r.jina.ai/https://github.com/modelcontextprotocol/csharp-sdk/issues/1454",
+   "final_url": "https://r.jina.ai/https://github.com/modelcontextprotocol/csharp-sdk/issues/1454",
+   "status": "403",
+   "content_type": "text/html; charset=UTF-8",
+   "fetched_at": "2026-10-08T09:32:20Z",
+   "sha256": "44ed0194ed363e183969bb8f83f3a157888afd3525fef36c3f4be14f08f684e8",
+   "bytes": 5820,
+   "quote": "But server authors are the ones making the claims about their own tools. From the server author's perspective, they know whether their tool is read-only--it's a fact about their code, not a hint.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s4_seps_issues#40"
+  },
+  {
+   "url": "https://r.jina.ai/https://github.com/modelcontextprotocol/modelcontextprotocol/issues/440",
+   "final_url": "https://r.jina.ai/https://github.com/modelcontextprotocol/modelcontextprotocol/issues/440",
+   "status": "403",
+   "content_type": "text/html; charset=UTF-8",
+   "fetched_at": "2026-10-08T09:32:20Z",
+   "sha256": "8d92bea7ea625f286da067ca466809986b52e9685ec1b61ee932623b53c4ac21",
+   "bytes": 5868,
+   "quote": "**State-changing vs read-only:** Whether calling the action leads to updates/additions/removals in the external environment or in a lasting change to the internal state of stateful actions. Note that this is already captured by the `readOnlyHint` property.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "s4_seps_issues#44"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/python-sdk/91941ed4d3985d59def99e090baa3f880c626cc8/docs/servers/tools.md",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/python-sdk/91941ed4d3985d59def99e090baa3f880c626cc8/docs/servers/tools.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:32:14Z",
+   "sha256": "c830b883c638f0257a56e5eb33f4f5f3aa19771bbccb653d3f8fe4378dbe00fd",
+   "bytes": 7149,
+   "quote": "read_only_hint=True: this tool doesn't change anything. open_world_hint=False: it works on a closed set of things (this catalog), not the open web.",
+   "match": "none",
+   "count": 0,
+   "hits": [],
+   "kind": "text",
+   "id": "s5_sdks#1"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/modelcontextprotocol/csharp-sdk/3338e88e15c42cfc27465143c140d7d10f1a2707/src/ModelContextProtocol.Core/Protocol/ToolAnnotations.cs",
+   "final_url": "https://raw.githubusercontent.com/modelcontextprotocol/csharp-sdk/3338e88e15c42cfc27465143c140d7d10f1a2707/src/ModelContextProtocol.Core/Protocol/ToolAnnotations.cs",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:32:14Z",
+   "sha256": "4453cf6fe2a5dca77302ba3ecd3f75d1648c71b8ef4e0f46b73800d7c9b59fc2",
+   "bytes": 4074,
+   "quote": "Read-only tools do not have side effects beyond computational resource usage. They don't create, update, or delete data in any system.",
+   "match": "none",
+   "count": 0,
+   "hits": [],
+   "kind": "text",
+   "id": "s5_sdks#9"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/PrefectHQ/fastmcp/5baeacfe20eca735cb949564b4915f93a622b916/docs/servers/tools.mdx",
+   "final_url": "https://raw.githubusercontent.com/PrefectHQ/fastmcp/5baeacfe20eca735cb949564b4915f93a622b916/docs/servers/tools.mdx",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-08T09:32:14Z",
+   "sha256": "78df0f0b4b019e215d23cfb465128befde1fb5407411f6d5d5ef283e841d00da",
+   "bytes": 48240,
+   "quote": "For tools that write to databases, send notifications, create/update/delete resources, or trigger workflows, omit readOnlyHint or set it to False. Use destructiveHint=True for operations that cannot be undone.",
+   "match": "none",
+   "count": 0,
+   "hits": [],
+   "kind": "text",
+   "id": "s5_sdks#21"
+  },
+  {
+   "url": "https://web.archive.org/web/20260404231615/https://support.claude.com/en/articles/12922490-remote-mcp-server-submission-guide",
+   "final_url": "https://web.archive.org/web/20260404231615/https://support.claude.com/en/articles/12922490-remote-mcp-server-submission-guide",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:32:16Z",
+   "sha256": "fe3074f9b47896fe1b77ae69f24ca19a3fff1d50327149805b70ea1a74a90c8c",
+   "bytes": 194981,
+   "quote": "readOnlyHint: true - For tools that only read data destructiveHint: true - For tools that modify data or have side effects",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "Remote MCP Server Submission Guide > 2. Mandatory Requirements > Are safety annotations required?",
+     "heading_id": "h_9374c994c2",
+     "anchored_url": "https://web.archive.org/web/20260404231615/https://support.claude.com/en/articles/12922490-remote-mcp-server-submission-guide#h_9374c994c2",
+     "context": "or revision requests. Are safety annotations required? YES - Every tool MUST have accurate safety annotations. Required on every tool: readOnlyHint: true - For tools that only read data destructiveHint: true - For tools that modify data or have side effects See MCP Protocol - Tool Annotations for complete schema and implementation details. Not optional. This is a hard requirement derived from the MCP"
+    }
+   ],
+   "kind": "html",
+   "id": "s6_vendors#4"
+  },
+  {
+   "url": "https://web.archive.org/web/20260315110031/https://support.claude.com/en/articles/12922832-local-mcp-server-submission-guide",
+   "final_url": "https://web.archive.org/web/20260315110031/https://support.claude.com/en/articles/12922832-local-mcp-server-submission-guide",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:32:16Z",
+   "sha256": "66ca6c7697f24d9729c5311c69a5c9563491b76eb8ce7107d818fe016b133a02",
+   "bytes": 197467,
+   "quote": "Writes/modifies data destructiveHint: true create, update, delete, send, write Creates temp files destructiveHint: true Even temporary writes count",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "Local MCP Server Submission Guide > 2. Mandatory Requirements > Are tool annotations required?",
+     "heading_id": "h_f9369e03c3",
+     "anchored_url": "https://web.archive.org/web/20260315110031/https://support.claude.com/en/articles/12922832-local-mcp-server-submission-guide#h_f9369e03c3",
+     "context": "which annotation: Tool Behavior Annotation Examples Only reads data readOnlyHint: true search, get, list, fetch, read Writes/modifies data destructiveHint: true create, update, delete, send, write Creates temp files destructiveHint: true Even temporary writes count Sends external requests destructiveHint: true Emails, notifications, webhooks Caches internally only readOnlyHint: true Inter"
+    }
+   ],
+   "kind": "html",
+   "id": "s6_vendors#5"
+  },
+  {
+   "url": "https://web.archive.org/web/20260315110031/https://support.claude.com/en/articles/12922832-local-mcp-server-submission-guide",
+   "final_url": "https://web.archive.org/web/20260315110031/https://support.claude.com/en/articles/12922832-local-mcp-server-submission-guide",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:32:16Z",
+   "sha256": "66ca6c7697f24d9729c5311c69a5c9563491b76eb8ce7107d818fe016b133a02",
+   "bytes": 197467,
+   "quote": "Caches internally only readOnlyHint: true Internal optimization OK",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "Local MCP Server Submission Guide > 2. Mandatory Requirements > Are tool annotations required?",
+     "heading_id": "h_f9369e03c3",
+     "anchored_url": "https://web.archive.org/web/20260315110031/https://support.claude.com/en/articles/12922832-local-mcp-server-submission-guide#h_f9369e03c3",
+     "context": "destructiveHint: true Even temporary writes count Sends external requests destructiveHint: true Emails, notifications, webhooks Caches internally only readOnlyHint: true Internal optimization OK Implementation details: See MCP Protocol - Tools for: Complete tool schema with annotations Tool definition structure Input/output schem"
+    }
+   ],
+   "kind": "html",
+   "id": "s6_vendors#6"
+  },
+  {
+   "url": "https://web.archive.org/web/20251218073727id_/https://developers.openai.com/apps-sdk/app-submission-guidelines",
+   "final_url": "https://web.archive.org/web/20251218073727id_/https://developers.openai.com/apps-sdk/app-submission-guidelines",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-08T09:32:17Z",
+   "sha256": "e25fa1c1921f198706e25a51b57ede0cd6ef2d7613ffdeb2977b01838272890f",
+   "bytes": 101732,
+   "quote": "You should label a tool with the readOnlyHint annotation if it only retrieves or lists data, but does not change anything outside of ChatGPT.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "App submission guidelines > App fundamentals > Tools > Correct annotation",
+     "heading_id": "correct-annotation",
+     "anchored_url": "https://web.archive.org/web/20251218073727id_/https://developers.openai.com/apps-sdk/app-submission-guidelines#correct-annotation",
+     "context": ". Correct annotation Tool annotations must be correctly set so that ChatGPT and users understand whether an action is safe or requires extra caution. You should label a tool with the readOnlyHint annotation if it only retrieves or lists data, but does not change anything outside of ChatGPT. Write or destructive tools (e.g., creating, updating, deleting, posting, sending) must be clearly marked using the readOnlyHint and openWorldHint. Tools th"
+    }
+   ],
+   "kind": "html",
+   "id": "s6_vendors#14"
+  },
+  {
+   "url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/pull/3246",
+   "final_url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/pull/3246",
+   "status": "403",
+   "content_type": "text/html; charset=UTF-8",
+   "fetched_at": "2026-10-08T09:32:21Z",
+   "sha256": "006ec32f8e9c04a74e4a9e17ff81cb6f58541bdfd7ea2286a86b780f1422bf44",
+   "bytes": 5805,
+   "quote": "The annotation values follow the MCP spec semantics: * **readOnlyHint**: `true` when the tool only returns data with no side effects",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "g2"
+  },
+  {
+   "url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/pull/3246",
+   "final_url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/pull/3246",
+   "status": "403",
+   "content_type": "text/html; charset=UTF-8",
+   "fetched_at": "2026-10-08T09:32:21Z",
+   "sha256": "fcfc27098b2b6451c231beb667a30a26bbf87856189f1428d4c24c5a55d3b450",
+   "bytes": 5805,
+   "quote": "| `trigger-long-running-operation` | `true` | `false` | `true` | `false` | Simulates work with progress, no lasting state change |",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "g3"
+  },
+  {
+   "url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/pull/3246",
+   "final_url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/pull/3246",
+   "status": "403",
+   "content_type": "text/html; charset=UTF-8",
+   "fetched_at": "2026-10-08T09:32:21Z",
+   "sha256": "d6e4845132c433071d43442925bfa57cb8620649bd14803c1f65f8a9d67db437",
+   "bytes": 5805,
+   "quote": "| `toggle-simulated-logging` | `false` | `false` | `false` | `false` | Toggles server-side logging state (not idempotent) |",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "g4"
+  },
+  {
+   "url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/pull/3246",
+   "final_url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/pull/3246",
+   "status": "403",
+   "content_type": "text/html; charset=UTF-8",
+   "fetched_at": "2026-10-08T09:32:21Z",
+   "sha256": "e81094ed52e30fcaf2e3c4575124d875fc6607a5f5b8b97de14f387de48e354d",
+   "bytes": 5805,
+   "quote": "| `trigger-elicitation-request` | `false` | `false` | `false` | `false` | Triggers user-facing dialog via client |",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "g5"
+  },
+  {
+   "url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/pull/3246",
+   "final_url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/pull/3246",
+   "status": "403",
+   "content_type": "text/html; charset=UTF-8",
+   "fetched_at": "2026-10-08T09:32:21Z",
+   "sha256": "ce17c8bc2ba1fa4a01aab5e71a0c85edc2e51e2224674e669ae564b91e2af15a",
+   "bytes": 5805,
+   "quote": "| `trigger-sampling-request` | `false` | `false` | `false` | `true` | Triggers LLM inference (external API) |",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "g6"
+  },
+  {
+   "url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/pull/3246",
+   "final_url": "https://r.jina.ai/https://github.com/modelcontextprotocol/servers/pull/3246",
+   "status": "403",
+   "content_type": "text/html; charset=UTF-8",
+   "fetched_at": "2026-10-08T09:32:21Z",
+   "sha256": "e6bb9a60c35cc3b1d4812aecf3562b17988b7ee5019d8d25904a03a112be35c2",
+   "bytes": 5805,
+   "quote": "The tool sends `notifications/progress` back to the client during execution, which is a side effect within the session. However, it doesn't persist any state externally, so `readOnlyHint: true` is defensible per spec.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "g10"
+  }
+ ],
+ "normalized_match": [
+  "s1_spec#2",
+  "s3_blog_ig#1",
+  "s3_blog_ig#15",
+  "s5_sdks#1",
+  "s5_sdks#9",
+  "s5_sdks#21"
+ ],
+ "git_checked": {
+  "spec 50671e92": "Habib Lawal 2025-10-02 docs: fix grammar mistake in description of idempotent hint",
+  "spec 3a96a59": "Basil Hosmer 2025-03-21, message contains 'Generated with [Claude Code]'",
+  "spec f025054": "Basil Hosmer 2025-03-24 simplify data model ... (at the cost of correctness by construction)",
+  "spec 25c8e7c": "Basil Hosmer 2025-03-15",
+  "spec 868b1fd6": "2025-03-26 Merge pull request #185 from modelcontextprotocol/basil/tool-annotation",
+  "servers 8a4139c": "cliffhall 2026-10-04 fix(sequentialthinking): set readOnlyHint/idempotentHint to false (v2/main)",
+  "servers v2/main 0763da6 src/sequentialthinking/index.ts": "readOnlyHint: false",
+  "servers main 5abed86 src/sequentialthinking/index.ts": "readOnlyHint: true",
+  "servers main 5abed86 src/everything/tools/*": "trigger-long-running-operation true; toggle-simulated-logging false; trigger-elicitation-request false; trigger-sampling-request false; gzip-file-as-resource false; simulate-research-query false"
+ }
+}
