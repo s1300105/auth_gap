@@ -1,0 +1,864 @@
+[
+ {
+  "documents": [
+   {
+    "title": "MCP (Model Context Protocol) Security Cheat Sheet",
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "publisher": "OWASP Cheat Sheet Series",
+    "date_or_version": "新規作成 2026-03-02 (#2005)、最終変更 2026-10-04 (#2576)。リポジトリ OWASP/CheatSheetSeries の HEAD cb9fe01 (2026-10-08) で照合。公開ページは 2026-10-09T05:19Z 取得、sha256 0ed0e940f327f973…",
+    "reachable": true,
+    "summary_ja": "MCP の危険（ツール記述の汚染、定義のすり替え、他サーバーのツールへの干渉、混乱した代理人、普通に見える呼び出しでの情報持ち出し、権限の取りすぎ、サンドボックス脱出など）と、12 項目の対策（最小権限、ツール定義の完全性、隔離、人の確認、入出力の検証、認証、監視、導入時の同意、ツール応答経由のプロンプト注入）をまとめたもの。OWASP のチートシートの中で『tool annotations』に触れているのは、§2 の 1 文（『annotations は hint であって強制ではない』）だけ。この 1 文は 2026-10-04 のコミット 6b880e7 (#2549) で加わり、MCP 公式ブログ（下記）にリンクしている。readOnlyHint などの個別の名前は出てこない。"
+   },
+   {
+    "title": "AI Agent Security Cheat Sheet",
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html",
+    "publisher": "OWASP Cheat Sheet Series",
+    "date_or_version": "新規作成 2025-12-17 (#1926)、最終変更 2026-10-04 (#2755)。HEAD cb9fe01 で照合。2026-10-09 取得",
+    "reachable": true,
+    "summary_ja": "エージェント一般の危険と対策。ツールごとに『読むだけか書くか』で権限を分けること、危険度の段階に応じて人の確認を入れること（危険度が低いツールは確認を省く例のコードあり）、影響の大きい操作の承認を『その呼び出しそのもの』に結びつけること、冪等にできない操作は重複の確認を取ること、分類や承認の確認に失敗したら止める側に倒すこと、などを書いている。MCP の語は出てくるが、annotations の語は出てこない。確認を省く例の危険度分類は、サーバーが宣言した値ではなく、クライアントが自分でツール名ごとに決めた表を使っている。"
+   },
+   {
+    "title": "LLM Prompt Injection Prevention Cheat Sheet",
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html",
+    "publisher": "OWASP Cheat Sheet Series",
+    "date_or_version": "最終変更 2026-10-04。HEAD cb9fe01 で照合。2026-10-09 取得",
+    "reachable": true,
+    "summary_ja": "プロンプト注入の対策。人の確認（HITL）の判断は操作・対象・引数・呼び出し元の権限で決めること、確認の求めすぎで人が疲れること、副作用を起こすツールのすぐ隣で検証すること、フレームワークの承認フックは設定しないと何も止めないこと、などを書いている。"
+   },
+   {
+    "title": "Secure Coding with AI Cheat Sheet",
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/Secure_Coding_with_AI_Cheat_Sheet.html",
+    "publisher": "OWASP Cheat Sheet Series",
+    "date_or_version": "新規作成 2026-05-05 (#2132)、最終変更 2026-10-04。2026-10-09 取得",
+    "reachable": true,
+    "summary_ja": "AI コーディングエージェント向け。§4 で MCP とツールの安全を扱う（サーバーの許可リスト、ツール定義の固定と差分検出、記述の中の隠れた指示、最小権限、同名ツールの横取り）。確認を飛ばすフラグや自動承認モードの危険にも触れる。"
+   },
+   {
+    "title": "RAG Security Cheat Sheet",
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/RAG_Security_Cheat_Sheet.html",
+    "publisher": "OWASP Cheat Sheet Series",
+    "date_or_version": "新規作成 2026-05-06 (#2131)、最終変更 2026-10-04。2026-10-09 取得",
+    "reachable": true,
+    "summary_ja": "検索で取ってきた文書がモデルを動かし、モデルがツールを呼び、ツールが取り消せない操作をする、という連鎖を 1 文で書いている（Section 10）。検索が許可されていたからといって、その結果のツール呼び出しも許可されているとみなすな、とも書く。"
+   },
+   {
+    "title": "Logging Vocabulary Cheat Sheet（MCP Servers [MCP] の節）",
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Vocabulary_Cheat_Sheet.html",
+    "publisher": "OWASP Cheat Sheet Series",
+    "date_or_version": "最終変更 2026-10-04。2026-10-09 取得",
+    "reachable": true,
+    "summary_ja": "ログのイベント名の語彙。MCP の節に mcp_prompt_injection、mcp_resource_exhaustion、mcp_tool_poisoning の 3 つがある。mcp_tool_poisoning の説明に『怪しいツールのメタデータ』が例として入っている。"
+   },
+   {
+    "title": "AML and Sanctions Compliance for AI Agent Payments Cheat Sheet",
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/AML_Sanctions_AI_Agent_Payments_Cheat_Sheet.html",
+    "publisher": "OWASP Cheat Sheet Series",
+    "date_or_version": "新規作成 2026-06-03 (#2210)、最終変更 2026-10-04。2026-10-09 取得",
+    "reachable": true,
+    "summary_ja": "AI エージェントによる支払いの話。MCP の認証と認可の節を参照している。自己申告のヘッダーは暗号的な裏付けがなければ拒否せよ、という一文がある（エージェントの身元の話であって、ツールの宣言の話ではない）。OWASP AISVS の第 10 章（MCP Security Requirements）にも触れている。"
+   },
+   {
+    "title": "Tool Annotations as Risk Vocabulary: What Hints Can and Can't Do（OWASP の資料ではない。OWASP MCP チートシート §2 のリンク先）",
+    "url": "https://blog.modelcontextprotocol.io/posts/2026-03-16-tool-annotations/",
+    "publisher": "Model Context Protocol Blog（ページの author メタデータは Ola Hungerford (Maintainer)）",
+    "date_or_version": "datePublished 2026-03-16。2026-10-09T05:21Z 取得、sha256 82888044d831c3bd…",
+    "reachable": true,
+    "summary_ja": "OWASP の MCP チートシートが『annotations は hint であって強制ではない』の根拠としてリンクしている一次資料（アンカー #what-annotations-cant-do は実在する）。4 つの hint の意味、最初の 3 つは『呼ぶ前に確認を出すか』に答えるもの、readOnlyHint:true なら自動承認されうること、信頼できないサーバーは readOnlyHint:true と宣言しながらファイルを消せること、を書いている。AuthGap の『宣言を信じて確認を省く』という前提に最も直接効く資料。ただし OWASP の資料ではないので、OWASP として引用してはいけない。"
+   }
+  ],
+  "usable": [
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "quote": "Pin reviewed tool definitions using cryptographic hashes and require review when they change. This detects metadata changes, not changes to server code or behavior behind an unchanged definition; tool annotations are hints, not enforcement.",
+    "verify_match": "exact",
+    "use_for": "related_work_positioning",
+    "location": "#2-tool-description-schema-integrity（repo cheatsheets/MCP_Security_Cheat_Sheet.md 49 行目、commit 6b880e7 / 2026-10-04 で追加）",
+    "how_to_use_ja": "OWASP の中で annotations に触れている唯一の箇所なので、AuthGap の立ち位置の説明の中心に使える。『ツール定義のハッシュ固定で分かるのはメタデータの変化だけで、定義が同じまま裏でコードの振る舞いが違っても分からない』と OWASP 自身が書いている。宣言 D とコードの実効 M の食い違いは、まさにこの『定義が変わらないまま振る舞いが違う』場合で、定義の固定や記述の検査では見つからない、という主張の根拠にできる。2026-10-04 に加わったばかりの文なので、引用するときは取得日とコミットを書く。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "quote": "Review server source code and tool definitions before installation.",
+    "verify_match": "exact",
+    "use_for": "recommended_control_authgap_implements",
+    "location": "#9-supply-chain-security（repo 107 行目）",
+    "how_to_use_ja": "OWASP は『導入前にサーバーのソースコードとツール定義を確認せよ』と勧めているが、やり方は人の目視を想定している。AuthGap は『コードと定義（宣言）が合っているか』のうち annotations の 4 項目について、この確認の一部を機械でやるもの、と位置づけられる。全部を代わりにやるとは書かない。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "quote": "Use tools like mcp-scan to automatically detect poisoned descriptions and cross-server shadowing.",
+    "verify_match": "exact",
+    "use_for": "related_work_positioning",
+    "location": "#2-tool-description-schema-integrity（repo 50 行目）",
+    "how_to_use_ja": "OWASP が名前を挙げている既存の自動検査は、ツールの記述（自然言語のメタデータ）の汚染を見るもの。AuthGap はメタデータの中身の悪意ではなく、真偽をサーバーのコードと照らし合わせる点で違う、と関連研究の節で対比できる。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "quote": "Unlike traditional APIs where developers control every call, MCP lets LLMs decide which tools to invoke, when, and with what parameters.",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "#introduction（repo 7 行目）",
+    "how_to_use_ja": "脅威の連鎖の 4 段目『呼び出しの引数が対象を選ぶ』の前提として使える。どのツールを、いつ、どの引数で呼ぶかを LLM が決めるので、引数（＝操作の対象）は開発者が固定したものではない、という一般的な説明に OWASP の言葉を当てられる。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "quote": "Tool Poisoning: Malicious instructions hidden in tool descriptions, parameter schemas, or return values that manipulate the LLM's behavior.",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "#key-risks（repo 26 行目）",
+    "how_to_use_ja": "連鎖の 2 段目『モデルが読む内容が呼び出しを操る』の根拠。ツールの戻り値に紛れた指示でもモデルの振る舞いが変わる、と OWASP が危険の一覧に入れている。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "quote": "Treat every tool response as untrusted data, including responses from approved servers.",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "#12-prompt-injection-via-tool-return-values（repo 133 行目）",
+    "how_to_use_ja": "承認済みのサーバーからの応答であっても、その中身は信用できない、という立場。連鎖の 2 段目で『攻撃者が書いた内容が、正当なツールの応答としてモデルに届く』という仮定が OWASP の想定と同じであることを示せる。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "quote": "Validate all inputs to MCP server tools — treat them as untrusted (they originate from LLM output influenced by potentially malicious context).",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "#5-input-and-output-validation（repo 70 行目）",
+    "how_to_use_ja": "連鎖の 2 段目と 4 段目をつなぐ文。ツールの引数は、悪意ある内容に影響されうる LLM の出力から来る、と OWASP が明言している。AuthGap で『引数が効果の対象（パス、URL、SQL）に流れる』ことを危険の条件にする根拠に使える。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "quote": "Protect against SSRF: MCP tools that fetch URLs based on LLM-generated parameters can be manipulated via prompt injection to access internal services (e.g., cloud metadata endpoints).",
+    "verify_match": "exact",
+    "use_for": "harm_categories",
+    "location": "#5-input-and-output-validation（repo 74 行目）",
+    "how_to_use_ja": "『引数が対象を選ぶ』の具体例。openWorldHint:false（外に出ない）と宣言しながら、引数で決まる URL を取りに行くツールがあれば、この SSRF の型の害につながる、という説明に使える。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "quote": "Data Exfiltration via Legitimate Channels: Attackers use prompt injection to encode sensitive data into seemingly normal tool calls (e.g., search queries, email subjects).",
+    "verify_match": "exact",
+    "use_for": "harm_categories",
+    "location": "#key-risks（repo 30 行目）",
+    "how_to_use_ja": "隠れた効果の害の類として使える。特に openWorldHint:false と宣言しているのに実際は外へ送るツールは、普通に見える呼び出しを経由した持ち出しの経路になる、と結びつけられる。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "quote": "Confused Deputy Problem: The MCP server executes actions with its own (often broad) privileges, not the requesting user's permissions.",
+    "verify_match": "exact",
+    "use_for": "harm_categories",
+    "location": "#key-risks（repo 29 行目）",
+    "how_to_use_ja": "隠れた効果が害になる理由の説明に使える。サーバーは利用者ではなく自分の（広い）権限で動くので、宣言にない書き込みや削除がサーバーの権限の範囲で起きる、という筋。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "quote": "Sandbox Escapes: Local MCP servers running with full host access, enabling file system traversal, credential theft, or arbitrary code execution.",
+    "verify_match": "exact",
+    "use_for": "harm_categories",
+    "location": "#key-risks（repo 34 行目）",
+    "how_to_use_ja": "ローカルの MCP サーバーがホスト全体に触れる前提で、ファイルの書き込みやコマンド実行が宣言と食い違っていたときの害の大きさを説明するのに使える。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "quote": "Require explicit user confirmation for destructive, financial, or data-sharing operations.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "#4-human-in-the-loop-for-sensitive-actions（repo 63 行目）",
+    "how_to_use_ja": "確認を出すかどうかは『その操作が破壊的か、外に出すか』で決めよ、と OWASP は勧めている。クライアントがそれを知る手がかりの 1 つが destructiveHint / openWorldHint の宣言なので、宣言が偽だと確認が出るべき操作で出なくなる、という連鎖の 1 段目の説明に使える。ただし OWASP 自身は『annotations を見て判断せよ』とは書いていないので、そこは自分の推論として書く。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "quote": "Never auto-approve tool calls, especially in multi-server setups.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "#4-human-in-the-loop-for-sensitive-actions（repo 65 行目）",
+    "how_to_use_ja": "OWASP の推奨は『自動承認しない』だが、MCP ブログ（下記）は readOnlyHint:true なら自動承認されうると書いている。推奨と実際の使われ方のずれとして並べると、宣言を信じて確認を省くクライアントがありうる、という前提の説明になる。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "quote": "Display full tool call parameters to the user — not just a summary name.",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "#4-human-in-the-loop-for-sensitive-actions（repo 64 行目）",
+    "how_to_use_ja": "確認画面で引数まで見せよ、という推奨。確認が省かれると、引数（＝どのファイル、どの URL か）を人が見る機会もなくなる。連鎖の 1 段目と 4 段目が重なるとどうなるかの説明に使える。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "quote": "Enforce authorization and validate subsequent tool calls in trusted application code, independently of the model's interpretation.",
+    "verify_match": "exact",
+    "use_for": "recommended_control_authgap_implements",
+    "location": "#12-prompt-injection-via-tool-return-values（repo 136 行目）",
+    "how_to_use_ja": "判断をモデルではなく信頼できるコードの側に置け、という原則。宣言（annotations）もサーバーの自己申告なので、それに頼る判断はこの原則から外れる。AuthGap は宣言をコードで裏付けるので、この原則に沿う、と書ける。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "quote": "Enforce least privilege per MCP server and per tool.",
+    "verify_match": "exact",
+    "use_for": "recommended_control_authgap_implements",
+    "location": "#dos-and-donts（Do の一覧、repo 143 行目）",
+    "how_to_use_ja": "『ツールごとの最小権限』を実際に設定するには、そのツールが何をするか（読むだけか、書くか、外に出るか）を知る必要がある。宣言はその要約だが、偽なら権限設定も誤る。AuthGap の出力は、ツールごとの権限を決めるための材料になる、と書ける。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+    "quote": "Rug Pull Attacks: A server changes its tool definitions after initial user approval, turning a trusted tool malicious.",
+    "verify_match": "exact",
+    "use_for": "terminology",
+    "location": "#key-risks（repo 27 行目）",
+    "how_to_use_ja": "関連する攻撃の用語として使える。AuthGap が扱うのは定義が変わる攻撃（rug pull）ではなく、定義は最初から同じで中身が違う、という点で区別して書ける。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html",
+    "quote": "Only the two mapped low-risk tools skip human review in this example. Medium, high, critical, and unmapped tools require it. This classification does not grant permission to run a tool; the execution component must still check the actor's authorization and any required approval for the exact action.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "#action-classification-example（repo 195 行目。直前のコード例で read_file と search_documents を LOW にし、LOW だけ確認を省く）",
+    "how_to_use_ja": "OWASP 自身が『危険度が低いツールは人の確認を省く』という段階づけの例を出している。この危険度の入力に readOnlyHint のようなサーバーの宣言を使えば、偽の宣言で書き込むツールが確認なしの段に入る、という筋の説明に使える。ただしこの例の分類はクライアントが自分でツール名ごとに決めた表で、サーバーの宣言ではない。引用するときはこの違いを必ず書く。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html",
+    "quote": "Implement per-tool permission scoping (read-only vs. write, specific resources).",
+    "verify_match": "exact",
+    "use_for": "recommended_control_authgap_implements",
+    "location": "#1-tool-security-least-privilege（repo 28 行目）",
+    "how_to_use_ja": "『読むだけか書くか』をツールごとに分けよ、という推奨は、D1（readOnlyHint）が表す区別そのもの。この区分が正しく決まっているかをコードで確かめる、という AuthGap の役割の説明に使える。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html",
+    "quote": "Make high-impact actions idempotent where possible and require explicit duplicate confirmation when idempotency is not possible.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "#high-impact-action-integrity-controls（repo 205 行目）",
+    "how_to_use_ja": "D4（idempotentHint）に直接対応する唯一の OWASP の文。冪等でない操作には重複の確認を取れ、と言っているので、idempotentHint:true と偽って宣言すると、重複の確認や再試行の判断が誤る、という害の説明に使える。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html",
+    "quote": "High-Impact Action Abuse: Agents executing irreversible, financial, administrative, or externally visible operations without independent validation.",
+    "verify_match": "exact",
+    "use_for": "harm_categories",
+    "location": "#key-risks（repo 15 行目）",
+    "how_to_use_ja": "害の類として使える。『取り消せない』は destructiveHint、『外から見える』は openWorldHint に対応させて、宣言との食い違いが『独立した確認なしの影響の大きい操作』につながる、と書ける。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html",
+    "quote": "Decision and Approval Manipulation: Attackers influencing risk scores, model confidence, or approval thresholds to bypass safeguards.",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "#key-risks（repo 16 行目）",
+    "how_to_use_ja": "危険度の評価をいじって確認を回避する、という危険の類。偽の annotations は、クライアントの危険度判定への入力を偽ることにあたる、という類推に使える。OWASP は annotations の例は挙げていないので、類推であると明記する。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html",
+    "quote": "Fail closed when risk classification, approval validation, policy lookup, or audit logging fails.",
+    "verify_match": "exact",
+    "use_for": "recommended_control_authgap_implements",
+    "location": "#high-impact-action-integrity-controls（repo 206 行目）",
+    "how_to_use_ja": "判断ができないときは止める側に倒せ、という原則。宣言がないツールを最悪の値として扱う MCP の既定値の考え方とも合う。AuthGap で解析しきれなかったものを『安全』にしない方針の根拠として使える。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html",
+    "quote": "Separate decision-making from execution. The agent can propose an action, but a policy service or execution component should independently validate scope, privilege, and approval state before execution.",
+    "verify_match": "exact",
+    "use_for": "recommended_control_authgap_implements",
+    "location": "#high-impact-action-integrity-controls（repo 201 行目）",
+    "how_to_use_ja": "判断を、提案する側から独立した仕組みで検証せよ、という推奨。ツールの宣言も提案する側（サーバー）の自己申告なので、独立した検証（AuthGap による静的照合）が要る、という主張につなげられる。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html",
+    "quote": "Bind approval to the exact action. Include the actor, tool name, target resource, normalized parameters, timestamp, and expiry in the approval record.",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "#high-impact-action-integrity-controls（repo 202 行目）",
+    "how_to_use_ja": "承認は『対象のリソース』と引数に結びつけよ、とある。危険が『どのツールか』だけでなく『引数がどの対象を選ぶか』で決まる、という AuthGap の 4 段目の考え方を支える。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html",
+    "quote": "Require human approval for consequential tool actions before execution. Base the decision on the proposed operation, target, arguments, and caller's authority; keyword counts in the user's prompt do not establish the action's risk.",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "#human-in-the-loop-hitl-controls（repo 268 行目）",
+    "how_to_use_ja": "確認を出すかどうかは『操作・対象・引数』で決めよ、と明言している。つまりクライアントは操作の性質を知る必要があり、それをサーバーの宣言から取るなら宣言の正しさが安全を左右する、という連鎖の 1 段目の前提に使える。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html",
+    "quote": "Keep in mind that, as ever, the most vulnerable pieces of a system are humans, as we are prone to get user fatigue when constantly being prompted to approve or deny actions, which can affect even the most cautious among us.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "#model-based-guardrails（Caveats、repo 348 行目、2026-09-28 #2249 で追加）",
+    "how_to_use_ja": "確認を毎回出すと人が疲れる、と OWASP が認めている。だからクライアントは『安全そうな』ツールの確認を省きたくなり、その判断に宣言（readOnlyHint など）が使われる、という動機の説明に使える。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html",
+    "quote": "Agent-level input and output checks have limited coverage; place validation next to the tool that creates the side effect and review pending actions before resuming execution.",
+    "verify_match": "exact",
+    "use_for": "recommended_control_authgap_implements",
+    "location": "#openai-api（repo 366 行目）",
+    "how_to_use_ja": "検証は副作用を起こすツールのすぐ隣に置け、という推奨。AuthGap はまさにツールの実装（副作用が起きる場所）を見て効果を取り出すので、この推奨の向きと合う、と書ける。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html",
+    "quote": "Framework guardrails and approval hooks require application configuration; they do not establish that an action is authorized.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "#framework-specific-implementations（repo 362 行目）",
+    "how_to_use_ja": "承認の仕組みは、どのツールに確認をかけるかを設定しないと何も止めない、という指摘。どのツールを『危険』として設定するかの判断に宣言が使われると、偽の宣言で設定から漏れる、という説明に使える。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/Secure_Coding_with_AI_Cheat_Sheet.html",
+    "quote": "Understand and evaluate the risk of flags like --dangerously-skip-permissions or auto-accept modes. These bypass confirmation prompts and give the agent unrestricted execution.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "#do_4（repo 139 行目）",
+    "how_to_use_ja": "確認を飛ばす設定や自動承認のモードが実際に存在し、使われている、という事実の裏付けに使える。宣言による確認の省略は、こうした全体の省略よりも細かい省略として位置づけられる。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/Secure_Coding_with_AI_Cheat_Sheet.html",
+    "quote": "Pin tool definitions and detect changes. Use snapshot-and-diff mechanisms to catch rug-pull updates where a tool's behavior changes after initial approval.",
+    "verify_match": "exact",
+    "use_for": "related_work_positioning",
+    "location": "#do_3（Section 4: MCP and Tool Security、repo 114 行目）",
+    "how_to_use_ja": "この文は『定義の差分で振る舞いの変化を捕まえる』と書いていて、MCP チートシートの『定義の固定で分かるのはメタデータの変化だけ』と食い違う。OWASP の中でも、定義の検査で振る舞いが分かるかについて書き方が揃っていないことを示せる。AuthGap は振る舞いをコードから取るので、この隙間を埋める、と書ける。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/Secure_Coding_with_AI_Cheat_Sheet.html",
+    "quote": "A malicious or compromised MCP server can poison tool descriptions, shadow legitimate tool names, exfiltrate credentials through tool arguments, or update tool definitions after initial approval (rug-pull).",
+    "verify_match": "exact",
+    "use_for": "harm_categories",
+    "location": "#threat-actors-and-attack-surfaces（repo 39 行目）",
+    "how_to_use_ja": "悪意あるサーバーができることの一覧。『宣言を偽る』は入っていないので、AuthGap の扱う『偽りまたは誤りの annotations』はこの一覧にない新しい類として足せる、と書ける。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/RAG_Security_Cheat_Sheet.html",
+    "quote": "This is where theoretical RAG risks become real-world damage: retrieved content influences the model, the model invokes a tool, and the tool takes an irreversible action.",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "#section-10-tool-invocation-and-agent-safety（repo 274 行目）",
+    "how_to_use_ja": "連鎖の 2〜3 段目（モデルが読む内容が呼び出しを動かし、ツールが害のある操作をする）を OWASP が 1 文で書いている。AuthGap の脅威の連鎖の図の説明にそのまま引ける。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/RAG_Security_Cheat_Sheet.html",
+    "quote": "Require explicit user confirmation for high-risk actions triggered by RAG-influenced model output (e.g. payments, data deletion, external API calls).",
+    "verify_match": "exact",
+    "use_for": "harm_categories",
+    "location": "#do_11（repo 278 行目）",
+    "how_to_use_ja": "確認が要る操作として『データの削除』と『外部 API の呼び出し』を挙げている。それぞれ destructiveHint と openWorldHint に対応し、宣言が偽だとこの確認が省かれる、という説明に使える。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Vocabulary_Cheat_Sheet.html",
+    "quote": "When an MCP client or server detects that a tool may be malicious or tampered with (for example, unexpected tool changes, signature/hash verification failures, suspicious tool metadata, or a tool sourced from an agent/tool marketplace with minimal validation), block or quarantine the tool and log the attempt.",
+    "verify_match": "exact",
+    "use_for": "other",
+    "location": "#mcp_tool_poisoninguserid（repo 927 行目）",
+    "how_to_use_ja": "『怪しいツールのメタデータ』を見つけたら止めて記録せよ、というイベント名がすでにある。AuthGap の『宣言とコードが食い違う』という判定を、このイベントを出す条件の 1 つとして使える、と応用の例に書ける。"
+   },
+   {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/AML_Sanctions_AI_Agent_Payments_Cheat_Sheet.html",
+    "quote": "Self-declared identity headers (e.g. X-Agent-ID, X-Agent-Role) without cryptographic proof MUST be rejected.",
+    "verify_match": "exact",
+    "use_for": "other",
+    "location": "#section-1-agent-identity-before-screening（repo 28 行目）",
+    "how_to_use_ja": "裏付けのない自己申告は信じない、という OWASP の一般的な姿勢の例。ただし対象はエージェントの身元のヘッダーで、ツールの宣言ではない。類推として軽く触れる程度にとどめる。"
+   },
+   {
+    "url": "https://blog.modelcontextprotocol.io/posts/2026-03-16-tool-annotations/",
+    "quote": "An untrusted server can lie. A server can claim readOnlyHint: true and delete your files anyway. This is why the spec says clients must treat annotations from untrusted servers as untrusted.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "#what-annotations-cant-do（OWASP の資料ではない。OWASP MCP チートシート §2 のリンク先）",
+    "how_to_use_ja": "AuthGap が調べる食い違い（readOnlyHint:true なのに削除する）を、MCP の保守者側がそのまま例に出している。OWASP の『hint であって強制ではない』の中身はこれ。引用元は MCP ブログとして書き、OWASP の文としては扱わない。"
+   },
+   {
+    "url": "https://blog.modelcontextprotocol.io/posts/2026-03-16-tool-annotations/",
+    "quote": "Drive confirmation prompts. A tool marked readOnlyHint: true from a trusted server might be auto-approved, while destructiveHint: true gets a confirmation step.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "#what-annotations-can-do（OWASP の資料ではない）",
+    "how_to_use_ja": "連鎖の 1 段目『クライアントが宣言を信じて確認を省く』の最も直接の根拠。readOnlyHint:true なら自動承認されうる、と書いている。続く文に『これが annotations の今いちばん多い使い方』とあるが、数字の裏付けはないので、CLAUDE.md の規則 1 に従い『未検証の主張』として扱う。"
+   },
+   {
+    "url": "https://blog.modelcontextprotocol.io/posts/2026-03-16-tool-annotations/",
+    "quote": "The first three hints mostly answer a preflight question: should the client ask for confirmation before calling this tool?",
+    "verify_match": "exact",
+    "use_for": "terminology",
+    "location": "#what-tool-annotations-are（OWASP の資料ではない）",
+    "how_to_use_ja": "D1・D2・D4（readOnly / destructive / idempotent）は『呼ぶ前に確認を出すか』のための hint で、openWorldHint はそれとは性格が違う（出力が外の内容を持ち込むかにも関わる）という整理。宣言の種類ごとに害の筋を分けて書くときの用語として使える。"
+   }
+  ],
+  "not_found_ja": "1) OWASP のチートシート（2026-10-08 時点の全 cheatsheets/*.md を grep）に readOnlyHint・destructiveHint・idempotentHint・openWorldHint の名前は 1 度も出てこない。「tool annotations」は MCP Security Cheat Sheet の §2 に 1 回だけ出てくる（『hint であって強制ではない』）。この文は 2026-10-04 のコミット 6b880e7 (#2549, Jim Manico) で加わったばかりで、中身は MCP 公式ブログへのリンクに頼っている。annotations の偽りや誤りを脆弱性の類として挙げた OWASP の文、深刻度の付け方、開示の手順は見つからなかった。\n2) 『クライアントが annotations を見て確認を省く』と OWASP が書いた文はない。AI Agent Security Cheat Sheet の危険度の段階づけの例（LOW なら確認を省く）は、クライアントが自分で決めたツール名の表を使っていて、サーバーの宣言は使っていない。宣言を信じて確認を省くことの直接の根拠は、OWASP ではなく MCP ブログ（2026-03-16）の文。そこにある『annotations の今いちばん多い使い方』『GitHub の read-only モードを約 17% の利用者が有効にしている』は数字の出所が示されていないので未検証とし、usable には入れなかった。\n3) サーバーのコードと宣言の食い違いを静的解析で調べることを勧める OWASP の文はない。一番近いのは『導入前にソースコードとツール定義を確認せよ』（人の目視を想定）と、mcp-scan（記述の汚染の検査）の紹介だけ。\n4) OWASP の中で書き方が揃っていない点がある。Secure Coding with AI は『定義の差分で振る舞いの変化を捕まえる』と書き、MCP Security は『定義の固定で分かるのはメタデータの変化だけ』と書いている。\n5) 確かめられなかったこと: GitHub API はこのリポジトリに使えなかった（403）ので、コミットの日付は git の clone を 2025-06-01 まで深くして取った。そのため LLM Prompt Injection Prevention と Logging Vocabulary の作成日は分からない（窓の外）。チートシートは 7 つとも 2026-10-04 に変更されているほど頻繁に書き換わるので、引用するときは取得日（2026-10-09）とコミット cb9fe01 を添えるとよい。\n6) この label の範囲外なので読まなかったもの: AML のチートシートが挙げている OWASP AISVS の第 10 章（MCP Security Requirements, https://github.com/OWASP/AISVS）。OWASP の MCP 関連資料として別に調べる価値がある。OWASP MCP Top 10 の repo は指示どおり扱っていない。\nダウンロードしたものは /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/owasp/cheatsheet/（repo/cs が clone、blog/ がブログ、vq/ が照合のキャッシュ）、照合の入力と結果は /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/owasp_work_cheatsheet/{in,out,in2,out2}.json にある。/home/user/auth_gap は変更していない。"
+ },
+ {
+  "documents": [
+   {
+    "title": "CheatSheet – A Practical Guide for Securely Using Third-Party MCP Servers 1.0",
+    "url": "https://genai.owasp.org/resource/cheatsheet-a-practical-guide-for-securely-using-third-party-mcp-servers-1-0/",
+    "publisher": "OWASP GenAI Security Project (Agentic Security Initiative)",
+    "date_or_version": "v1.0。PDF 表紙は 2025-10-23、公開ページの datePublished は 2025-11-04。PDF 本体は https://genai.owasp.org/download/51928/?tmstv=1762283701（16 ページ、sha256 先頭 4a0c877803ec174a）",
+    "reachable": true,
+    "summary_ja": "他社が作った MCP サーバを使う組織と開発者向けのチートシート。サーバを作る人向けではないと本文に明記されている。攻撃の型として Tool Poisoning / Rug Pull、Prompt Injection、Memory Poisoning、Tool Interference の 4 つを挙げ、それぞれに対策を付けている。そのほか、クライアント側の注意点（信頼を最小にする、サンドボックス、ツールの全情報を表示する）、サーバの発見と検証（版の固定、段階的な導入）、OAuth による認証と認可（最小のスコープ、初めての操作には人の承認）、スキャナなどの道具の一覧（MCP-Scan、Semgrep MCP など）、レジストリを中心にした統制の流れを載せている。AuthGap に直接関係するのは「ツール名を説明文やコードと突き合わせて食い違いを探せ」という一文。注釈（annotations）という語は出てこない。"
+   },
+   {
+    "title": "A Practical Guide for Secure MCP Server Development",
+    "url": "https://genai.owasp.org/resource/a-practical-guide-for-secure-mcp-server-development/",
+    "publisher": "OWASP GenAI Security Project",
+    "date_or_version": "v1.0。PDF 表紙は 2026 年 2 月、公開ページの datePublished は 2026-02-17。PDF 本体は https://genai.owasp.org/download/52676/?tmstv=1771286427（17 ページ）",
+    "reachable": true,
+    "summary_ja": "MCP サーバを作る開発者向けのガイド。8 つの領域（構成、安全なツール設計、入出力の検証、プロンプトインジェクション対策、認証と認可、配備、統制、道具と継続的な検証）と、最低限のレビュー用チェックリストからなる。『2. Safe Tool Design』に「説明文が述べる機能と実際のコードの振る舞いが合っているか確かめよ」「説明文に書いていない動作（例: ネットワークへの書き込み）をするツールを検出せよ」とあり、チェックリストにも同じ趣旨の項目がある。AuthGap の『宣言 D と実効 M の照合』に最も近い OWASP の推奨。ただし対象は説明文（description）で、手段は手作業の確認・版の固定・LLM によるスキャンであり、実行時の振る舞いを想定している。注釈という語は出てこない。"
+   },
+   {
+    "title": "OWASP Top 10 for Agentic Applications for 2026",
+    "url": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/",
+    "publisher": "OWASP GenAI Security Project – Agentic Security Initiative",
+    "date_or_version": "Version 2026。PDF 表紙は 2025 年 12 月、公開ページの datePublished は 2025-12-10。PDF 本体は https://genai.owasp.org/download/52117/?tmstv=1765059207（57 ページ）",
+    "reachable": true,
+    "summary_ja": "エージェント型アプリの上位 10 リスク（ASI01〜ASI10）。AuthGap に関係が深い項目は次の 4 つ。ASI02 Tool Misuse and Exploitation（与えられた権限の中で正規のツールを危険に使うこと。ツールの記述子やメタデータを偽って偽の能力を信じさせる Tool Poisoning、『リスクがないとして自動実行を許されたツール』の悪用例、ツールごとの最小権限、破壊的な操作への人の確認）。ASI04 Agentic Supply Chain（ツールのメタデータを信頼できる指示として扱ってしまう問題）。ASI09 Human-Agent Trust Exploitation（『read-only』に見えるプレビューが副作用を起こす consent laundering と、確認の欠如）。ASI10 Rogue Agents（期待される能力を宣言した署名つきマニフェストと、実際の振る舞いとのずれの監視）。冒頭の書簡で Least-Agency という考え方を導入している。MCP の ToolAnnotations そのものには触れていない。"
+   },
+   {
+    "title": "OWASP Top 10 for LLM Applications 2026（公開ページ名: OWASP GenAI LLM Top 10 2026）",
+    "url": "https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/",
+    "publisher": "OWASP GenAI Security Project",
+    "date_or_version": "Version 2026。公開ページの datePublished は 2026-08-04 だが、PDF 表紙は『[Publication date to be set]』のまま。PDF 本体は https://genai.owasp.org/download/56857/?tmstv=1785822482（122 ページ）",
+    "reachable": true,
+    "summary_ja": "LLM アプリの 2026 年版上位 10 リスク。Excessive Agency が LLM03:2026 に上がった。LLM03 には次の内容がある。読むためのツールが UPDATE / INSERT / DELETE 権限を持つ例。対策 7 の Complete mediation の中で、影響が小さい・戻せる操作は自動承認し、不可逆な操作は人の確認に回す段階的な運用。LLM01:2026（Prompt Injection）では、MCP 経由で読んだ GitHub issue などがツール呼び出しを乗っ取るシナリオ #9 と、『pin しても説明文の毒入れは止まらない』という注記がある。付録 A の AIVSS 対応表には『read-only のアクセスに変更・削除・送信が抱き合わせになっている』という記述がある。序文の 7,714 件 / 6,639 件というインシデント集計は見たが、自分では検証していない（verified_by_me = none）。"
+   },
+   {
+    "title": "Agentic AI – Threats and Mitigations（公開ページ名: Agentic AI - OWASP Lists Threats and Mitigations）",
+    "url": "https://genai.owasp.org/resource/agentic-ai-threats-and-mitigations/",
+    "publisher": "OWASP Top 10 for LLM Apps & Gen AI – Agentic Security Initiative",
+    "date_or_version": "公開ページの datePublished は 2025-02-17（初版）。同じダウンロード（https://genai.owasp.org/download/45674/?tmstv=1739819891）で、今は表紙が Version 1.1 / 2025 年 12 月の PDF（53 ページ）が配られている",
+    "reachable": true,
+    "summary_ja": "Agentic Top 10 の土台になっている脅威の分類（T1〜T17）。T2 Tool Misuse の定義（与えられた権限の中で、ツールを騙されて濫用する）と、そのシナリオを載せている。シナリオ 1 は同意の流れを操作して削除を自動承認させる例、シナリオ 2 は MCP の応答にツールのメタデータを注入する例、シナリオ 3 は誤解を招く説明文のツールを誤った前提で呼ばせる Descriptive Exploitation。注釈という語は出てこない。"
+   },
+   {
+    "title": "Securing Agentic Applications Guide 1.0",
+    "url": "https://genai.owasp.org/resource/securing-agentic-applications-guide-1-0/",
+    "publisher": "OWASP Gen AI Security Project – Agentic Security Initiative",
+    "date_or_version": "Version 1.0、2025-07-28。PDF 本体は https://genai.owasp.org/download/49059/?tmstv=1753666640（81 ページ）",
+    "reachable": true,
+    "summary_ja": "エージェント型アプリの設計・開発・配備の手引き。ツール連携（KC5）では、MCP 経由も含めて T2 Tool Misuse を中心の脆弱性としている。権限の節には『読み取りと書き込みの権限を分ける』『既定は read-only にし、書き込みは必要なときだけ明示的に与える』という最小権限の一般論がある。MCP の注釈には触れていない。今回はキーワード検索で拾い読みしただけで、全文は読んでいない。"
+   },
+   {
+    "title": "LLM06:2025 Excessive Agency",
+    "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+    "publisher": "OWASP GenAI Security Project（OWASP Top 10 for LLM Applications 2025）",
+    "date_or_version": "2025 年版（ウェブページ）。2026 年版では LLM03:2026 に移っている",
+    "reachable": true,
+    "summary_ja": "Excessive Agency の定義（LLM の予期しない・曖昧な・操作された出力に応じて害のある行為が実行されてしまう脆弱性）と、その根本原因 3 つ（過剰な機能・過剰な権限・過剰な自律）を述べている。読むための拡張が UPDATE / INSERT / DELETE 権限を持つ例、ユーザーの確認なしに削除する例がある。対策として、判断を LLM に任せずに下流で認可する complete mediation を挙げている。2026 年版とほぼ同じ文面で、2025 年版を引く場合はこちら。"
+   },
+   {
+    "title": "GenAI and Agentic AI Exploit Roundup Q3 2026",
+    "url": "https://genai.owasp.org/2026/10/08/genai-and-agentic-ai-exploit-roundup-q3-2026/",
+    "publisher": "OWASP GenAI Security Project（ブログ）",
+    "date_or_version": "2026-10-08",
+    "reachable": true,
+    "summary_ja": "2026 年第 3 四半期の悪用事例のまとめ。MCP に関係するのは Deadbugz。悪性の MCP サーバが 23 件のプルリクエストで広められようとしたもので、最初の 3 回のツール呼び出しは普通に動き、その後に自分のツールメタデータを書き換えて、接続したエージェントに SSH 鍵などを集めさせようとした。マージはされず、実害は確認されていない。承認した時点のメタデータを信じ続けることの危うさを示す事例。注釈には触れていない。"
+   },
+   {
+    "title": "Securing AI’s New Frontier: The Power of Open Collaboration on MCP Security",
+    "url": "https://genai.owasp.org/2025/04/22/securing-ais-new-frontier-the-power-of-open-collaboration-on-mcp-security/",
+    "publisher": "OWASP GenAI Security Project（ブログ。著者 Idan Habler, Vineeth Sai Narajala, Ron F. Del Rosario, John Sotiropoulos）",
+    "date_or_version": "2025-04-22",
+    "reachable": true,
+    "summary_ja": "OWASP GenAI が MCP の安全性に初期に出した要約記事。論文『Enterprise-Grade Security for the Model Context Protocol (MCP)』の要約で、Tool Poisoning、データの持ち出し、C2、ID の乗っ取りを脅威として挙げ、ゼロトラスト・JIT・継続的な検証などの多層防御を勧めている。ツール説明文へのコンテンツポリシーと振る舞い監視には触れているが、注釈には触れていない。関連研究の節で『OWASP は早くから MCP を扱っていた』と書く程度にしか使えない。"
+   },
+   {
+    "title": "Agent Control Standard (ACS)",
+    "url": "https://genai.owasp.org/resource/agent-control-standard-acs/",
+    "publisher": "OWASP GenAI Security Project（リポジトリは GenAI-Security-Project/agent-control-standard）",
+    "date_or_version": "公開ページは 2026-09-01。仕様は v0.1.0。照合には GitHub の commit 770f1e06b0a037518e910255109be4e6f2e0ca0c（2026-10-05）の raw ファイルを使った",
+    "reachable": true,
+    "summary_ja": "エージェント基盤が実行時のフック（toolCallRequest など）を外部の Guardian に渡し、Guardian がポリシーで許可・拒否・人への確認を決めるための標準。toolCallRequest は、ツール実行の直前に発火する主要な強制点と定義されており、filesystem.delete のような抽象的な能力の識別子や、引数ごとの出所（provenance）を運べる。データの信頼ラベル（trust）は送り手の自己申告ではなく、受け手が自分のポリシーで決め直すものとし、適合プロファイルも『自己申告であって検証された事実ではない』と書いている。MCP の注釈には触れていない。AuthGap にとっては、実行時の対策の側の関連標準、また『自己申告の宣言を鵜呑みにしない』という設計原則の類例になる。"
+   }
+  ],
+  "usable": [
+   {
+    "url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+    "quote": "Approved Tool misuse: A coding agent has a set of tools that are approved to auto-run because they pose supposedly no risk, including a ping tool. An attacker makes the agent trigger the ping tool repeatedly, exfiltrating data through DNS queries.",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "Agentic Top 10 2026 PDF p.14（印刷ページ 13）、ASI02 > Example Attack Scenarios #7",
+    "how_to_use_ja": "AuthGap の連鎖のうち『リスクがないと思われたツールの呼び出しを確認なしで許す』→『攻撃者がエージェントにそのツールを呼ばせる』→『見えていなかった効果（ここでは DNS 経由の持ち出し）が害になる』の 3 段を、OWASP 自身が 1 つの例で示している。readOnlyHint:true や openWorldHint:false を見て自動実行を許すクライアントと同じ形の話として引ける。ただし OWASP が書いているのは『リスクがないとされたツール』で、注釈を根拠に自動実行を許すとは書いていない。類比として引くこと。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/56857/?tmstv=1785822482",
+    "quote": "A graduated enforcement policy (audit, warn, block, escalate) permits low-consequence or easily reversible actions to auto-approve",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "LLM Top 10 2026 PDF p.26、LLM03:2026 Excessive Agency > Prevention and Mitigation Strategies 7. Complete mediation",
+    "how_to_use_ja": "OWASP 自身が『影響が小さい・戻せる操作は自動承認してよい』という段階的な運用を勧めている、という根拠になる。この運用では『影響が小さいか』『戻せるか』の判定が要る。その判定を宣言（readOnlyHint / destructiveHint:false / idempotentHint:true）に頼ると、宣言が誤っているときに不可逆な操作が自動承認の側に入る。これが AuthGap の連鎖の第 1 段（宣言を信じて確認を省く）の動機になる。OWASP はこの判定の材料として注釈を挙げていない点を書き添えること。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/56857/?tmstv=1785822482",
+    "quote": "irreversible ones route to human review.",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "LLM Top 10 2026 PDF p.26、LLM03:2026 > 7. Complete mediation（上の引用の直後。原文は改行で 'high- consequence or irreversible ones route to human review.'）",
+    "how_to_use_ja": "上の『自動承認』の引用と対にして、『不可逆な操作だけを人の確認に回す』運用であることを示す。確認に回すかどうかの分かれ目が『不可逆か』であり、MCP ではその信号が destructiveHint / readOnlyHint である、という議論の土台になる（後半は AuthGap 側の主張）。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/45674/?tmstv=1739819891",
+    "quote": "Tool Misuse via Descriptive Exploitation – An attacker embeds misleading or overly broad tool descriptions in a shared tool registry. During agent collaboration, another agent accepts and calls the tool under false assumptions, unintentionally leaking sensitive data or triggering privileged API calls.",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "Agentic AI – Threats and Mitigations v1.1 PDF p.29（印刷ページ 28）、Tool Misuse > Scenario 3",
+    "how_to_use_ja": "『ツールについての記述が実体と違う』→『呼ぶ側が誤った前提で呼ぶ』→『害が出る』という形を、OWASP の脅威分類が T2 Tool Misuse のシナリオとして既に挙げている。AuthGap の『宣言 D と実効 M の食い違い』は、この記述的な食い違いのうち、機械が読む宣言（注釈）に当たる部分だと位置づけられる。ただし OWASP が書いているのは説明文（description）で、攻撃者が故意に仕込む前提。AuthGap が見る『開発者の不注意による誤宣言』とは動機が違う点を明記すること。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/51928/?tmstv=1762283701",
+    "quote": "Attackers craft malicious user inputs, content retrieved by tools or tool arguments to hijack the model's context and force it to perform unintended actions, such as calling a dangerous tool, leaking conversation history, or overriding safety policies.",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "第三者 MCP チートシート PDF p.7（印刷ページ 6）、Current Vulnerability Landscape > Prompt Injection",
+    "how_to_use_ja": "連鎖の第 2 段（モデルが読む内容が呼び出しを操る）の根拠。『ツールが取ってきた内容』がモデルに『危険なツールを呼ばせる』と OWASP の MCP 文書が直接書いている。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/56857/?tmstv=1785822482",
+    "quote": "An attacker plants text in a low-privilege channel (a public GitHub issue, a support ticket, or a malicious npm package), and the developer's LLM reads it under elevated credentials.",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "LLM Top 10 2026 PDF p.16、LLM01:2026 Prompt Injection > Scenario #9: Trusted-Backend Indirect Injection through MCP",
+    "how_to_use_ja": "連鎖の第 2 段の実例。MCP 経由で読んだ公開 issue などが、高い権限でのツール呼び出しにつながる。同じ段落で Invariant Labs（GitHub MCP）、Supabase MCP、postmark-mcp の事例を引用しているので、実在の事例への入口としても使える（各事例の中身は原典で確かめること）。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/56857/?tmstv=1785822482",
+    "quote": "the model treats system prompt, user input, retrieved documents, tool outputs, conversation history, and memory as a single token stream, with no enforced trust boundary.",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "LLM Top 10 2026 PDF p.10、LLM01:2026 Prompt Injection > Description",
+    "how_to_use_ja": "ツールの出力がそのまま次の呼び出しの判断材料になる理由（信頼の境界がない）を一文で言える。第 2 段の前提として引く。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52676/?tmstv=1771286427",
+    "quote": "The MCP server passes model-provided inputs directly into system commands, APIs, or database queries without validation.",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "MCP サーバ開発ガイド PDF p.5、Current Vulnerability Landscape > Code Injection & Unsafe Execution",
+    "how_to_use_ja": "連鎖の第 4 段（呼び出しの引数が操作の対象を選ぶ）の根拠。モデルが作った引数がコマンド・API・クエリにそのまま入ることを、OWASP が MCP サーバの典型的な脆弱性として挙げている。AuthGap の『引数が効果の slot に届くか』という見方を説明するときに引ける。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+    "quote": "Unvalidated input forwarding: Agent passes untrusted model output to a shell (e.g., rm -rf /)",
+    "verify_match": "exact",
+    "use_for": "threat_model_chain",
+    "location": "Agentic Top 10 2026 PDF p.13（印刷ページ 12）、ASI02 > Common Examples of the Vulnerability #3",
+    "how_to_use_ja": "第 4 段の別の言い方。モデルの出力（＝ツールの引数）が破壊的な操作の対象を決める例。上の開発ガイドの引用と並べて使える。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+    "quote": "An attacker compromises the tool interface - such as MCP tool descriptors, schemas, metadata, or routing information - causing the agent to invoke a tool based on falsified or malicious capabilities.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "Agentic Top 10 2026 PDF p.14（印刷ページ 13）、ASI02 > Example Attack Scenarios #1 Tool Poisoning",
+    "how_to_use_ja": "エージェントは MCP ツールのメタデータが示す『能力』を前提にツールを選んで呼ぶ、と OWASP が認めている箇所。注釈も MCP ツールのメタデータの一部なので、『メタデータが偽なら呼び出しの判断が狂う』という一般論の中に注釈の誤宣言を置ける。OWASP が想定しているのは攻撃者による改ざんで、AuthGap は改ざんがなくても最初から食い違っている場合を扱う、という違いを書くこと。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+    "quote": "Consent laundering through “read-only” previews: The agent shows a preview pane that triggers webhook side effects on open, exploiting users’ mental model of read-only review.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "Agentic Top 10 2026 PDF p.35（印刷ページ 34）、ASI09 Human-Agent Trust Exploitation > Example Attack Scenarios #6",
+    "how_to_use_ja": "『read-only だと思わせて、実は副作用がある』ことを OWASP が攻撃の型（consent laundering）として名指ししている。readOnlyHint:true なのに書き込みをする MCP ツールが、利用者やクライアントの『読むだけ』という思い込みを悪用する、という AuthGap の主張に最も近い OWASP の記述。ただし対象は UI のプレビュー画面で、MCP の注釈ではない。用語を借りる形で引くとよい。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+    "quote": "Separate preview from effect: Block any network or state-changing calls during preview context and display a risk badge with source provenance and expected side effects.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "Agentic Top 10 2026 PDF p.36（印刷ページ 35）、ASI09 > Prevention and Mitigation Guidelines #7",
+    "how_to_use_ja": "OWASP は『予想される副作用』を利用者に表示するよう勧めている。MCP でその表示の元になりうるのが注釈なので、注釈が誤っていれば表示も誤る。AuthGap の検出が『副作用の表示を正しくするための前提を点検する』ものだと説明するときに使える（注釈とのつながりは AuthGap 側の主張）。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+    "quote": "Missing Confirmation for Sensitive Actions: Lack of a final verification step converts user trust into immediate execution.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "Agentic Top 10 2026 PDF p.34（印刷ページ 33）、ASI09 > Common Examples of the Vulnerability #2",
+    "how_to_use_ja": "確認の手順が抜けると、信頼がそのまま実行に変わるという一文。宣言を信じて確認を省いたときに何が起きるかを短く言う引用として使える。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+    "quote": "Require explicit authentication for each tool invocation and human confirmation for high-impact or destructive actions (delete, transfer, publish).",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "Agentic Top 10 2026 PDF p.15（印刷ページ 14）、ASI02 > Prevention and Mitigation Guidelines #2 Action-Level Authentication and Approval",
+    "how_to_use_ja": "OWASP は破壊的な操作（delete, transfer, publish）に人の確認を求めている。この対策を実装するクライアントは、どのツールが破壊的かを知る必要がある。MCP でそれを伝える仕組みが destructiveHint / readOnlyHint なので、宣言が誤っていると確認が必要なところで確認が出ない、という議論につなげられる（後半は AuthGap 側の主張）。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52676/?tmstv=1771286427",
+    "quote": "For high-risk actions (e.g., deleting data, sending money, system-level changes), implement an approval checkpoint.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "MCP サーバ開発ガイド PDF p.9、4. Prompt Injection Controls > Human-in-the-Loop (HITL)",
+    "how_to_use_ja": "MCP 向けのガイドが、データ削除などの危険な操作に承認の関門を置けと言っている（同じ箇所で MCP elicitation の利用にも触れている）。どの操作が high-risk かの判断が、ツールの宣言と食い違うと関門が働かないことの前提として引ける。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/51928/?tmstv=1762283701",
+    "quote": "Require human-in-the-loop approval for actions that have not previously been performed, like local MCP server access to the file system, or remote MCP execution against new resources, like accessing emails.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "第三者 MCP チートシート PDF p.11（印刷ページ 10）、Authentication and Authorization > Authorization > Human-in-the-Loop controls",
+    "how_to_use_ja": "人の承認を『初めての操作』に限って求める運用を OWASP が勧めている。逆に言えば、それ以外は承認なしで流れる。承認を省く判断の材料として宣言が使われる余地がある、という文脈づけに使える。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/51928/?tmstv=1762283701",
+    "quote": "MCP clients should display the full tool manifest, including descriptions, parameters, and capabilities, before user activation.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "第三者 MCP チートシート PDF p.7（印刷ページ 6）、Tool Poisoning & Rug Pull Attacks > Mitigations > Enforcing Full Tool Transparency",
+    "how_to_use_ja": "OWASP は、利用者がツールを有効にする前に、クライアントがツールの能力（capabilities）を表示することを求めている。利用者の判断が表示されたメタデータに頼る、という前提の根拠になる。表示されるメタデータ自体が正しいかは誰も確かめていない、という AuthGap の問題提起につなげられる。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/51928/?tmstv=1762283701",
+    "quote": "Trust Minimization: Do not assume servers are trustworthy; always validate manifests, enforce schemas, and apply allowlists.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "第三者 MCP チートシート PDF p.9（印刷ページ 8）、Client Security and Server Discovery > MCP Client Security Considerations",
+    "how_to_use_ja": "OWASP の立場は『サーバを信頼できると仮定するな』。サーバが自分で書く注釈も、その仮定に含まれる自己申告である。MCP 仕様が注釈を hint（ヒント）として扱うことと合わせて、『注釈は検証すべき主張だ』と述べる根拠にできる。"
+   },
+   {
+    "url": "https://genai.owasp.org/2026/10/08/genai-and-agentic-ai-exploit-roundup-q3-2026/",
+    "quote": "an MCP server that appears benign when approved can later change its tool metadata and use a connected agent to access sensitive local information without requiring the server itself to read those files directly.",
+    "verify_match": "exact",
+    "use_for": "client_trust_of_annotations",
+    "location": "Exploit Roundup Q3 2026（HTML）、GenAI and Agentic AI Exploit Details > Deadbugz: An Active Malicious MCP Distribution Campaign > Impact Assessment",
+    "how_to_use_ja": "承認した時点のツールメタデータを信じ続けることが、実際の攻撃の手口になった事例（実害は確認されていない）。AuthGap はある版のコードと宣言を静的に照合するので、承認後のメタデータの変化は捉えられない。これは限界として書ける。逆に、同じ記事の『承認時にツール定義を記録し、変わったら再承認する』という対策と組み合わせれば、版ごとに AuthGap を回し直す運用を提案する根拠にもなる。"
+   },
+   {
+    "url": "https://genai.owasp.org/2026/10/08/genai-and-agentic-ai-exploit-roundup-q3-2026/",
+    "quote": "Snapshot MCP tool and prompt definitions at approval time and require re-approval when they change.",
+    "verify_match": "exact",
+    "use_for": "recommended_control_authgap_implements",
+    "location": "Exploit Roundup Q3 2026（HTML）、Deadbugz > Potential Mitigations",
+    "how_to_use_ja": "『ツール定義が変わったら再承認する』という OWASP の推奨。注釈もツール定義の一部なので、再承認のときに AuthGap で宣言とコードの食い違いを確かめる、という使い方を提案できる。ただし OWASP はこの検査の中身（何を照合するか）までは定めていない。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52676/?tmstv=1771286427",
+    "quote": "Validate Descriptions vs. Behavior: Implement manual checks, tool pinning, and LLM scans to ensure a tool's advertised functionality (in its description) matches its actual code behavior during runtime.",
+    "verify_match": "exact",
+    "use_for": "recommended_control_authgap_implements",
+    "location": "MCP サーバ開発ガイド PDF p.7、2. Safe Tool Design > Strict Onboarding and Approval > Validate Descriptions vs. Behavior",
+    "how_to_use_ja": "AuthGap の核（宣言 D と実効 M の照合）を、OWASP が MCP サーバの必須に近い管理策として求めていることの最も直接的な根拠。『AuthGap はこの推奨のうち、機械が読む宣言（注釈）について、コードから静的に照合するものだ』と位置づけられる。ただし違いが 3 つある。OWASP の対象は説明文（description）であること。手段に手作業・版の固定・LLM スキャンを挙げていること。『during runtime』と書いていて静的解析に限っていないこと。この 3 点を明記し、『OWASP が AuthGap の方法を推奨している』とは書かないこと。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52676/?tmstv=1771286427",
+    "quote": "Flag any tool that attempts to perform actions (e.g., network writes) not mentioned in its description.",
+    "verify_match": "exact",
+    "use_for": "recommended_control_authgap_implements",
+    "location": "MCP サーバ開発ガイド PDF p.7、2. Safe Tool Design > Validate Descriptions vs. Behavior",
+    "how_to_use_ja": "『宣言にない動作をするツールを検出せよ』。AuthGap が出す CONTRADICTION（例: openWorldHint:false なのに外部に通信する、readOnlyHint:true なのに書き込む）は、まさにこの『宣言にない動作』の検出に当たる。例に挙がっている network writes は、AuthGap の D3（openWorldHint:false）や D1 の矛盾と同じ種類の効果。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52676/?tmstv=1771286427",
+    "quote": "Tool descriptions are validated against runtime behavior.",
+    "verify_match": "exact",
+    "use_for": "recommended_control_authgap_implements",
+    "location": "MCP サーバ開発ガイド PDF p.14、MCP Security Minimum Bar (Review Checklist) > 3. Trusted, Controlled Tooling",
+    "how_to_use_ja": "OWASP の『最低限の基準』のチェックリストに、記述と振る舞いの照合が入っている。AuthGap の結果を、この項目を満たしているかの確認材料（注釈の部分について）として示せる。ここでも対象は description で、runtime と書いてある点に注意。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/51928/?tmstv=1762283701",
+    "quote": "Review the full MCP code if available, and compare tool names to descriptions and code to identify any suspicious mismatches.",
+    "verify_match": "exact",
+    "use_for": "recommended_control_authgap_implements",
+    "location": "第三者 MCP チートシート PDF p.7（印刷ページ 6）、Tool Poisoning & Rug Pull Attacks > Mitigations > Sanitize Descriptions",
+    "how_to_use_ja": "利用する側（第三者のサーバを導入する組織）に向けても、OWASP は『名前・説明・コードを突き合わせて食い違いを探せ』と言っている。AuthGap を、サーバの開発者だけでなく導入前の審査にも使える道具として位置づける根拠になる。対象は名前と説明文で、注釈は含まれていない。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/51928/?tmstv=1762283701",
+    "quote": "Automated security tools analyze the server (or code repository if available) for malware, hidden instructions, and other risks.",
+    "verify_match": "exact",
+    "use_for": "recommended_control_authgap_implements",
+    "location": "第三者 MCP チートシート PDF p.13（印刷ページ 12）、Governance > Governance Workflow > 2. Scanning",
+    "how_to_use_ja": "OWASP が勧める統制の流れ（提出→スキャン→審査と承認→段階的な配備→定期的な再検証）のうち、『スキャン』の段に AuthGap を入れられる、と運用上の居場所を示せる。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52676/?tmstv=1771286427",
+    "quote": "This must include code scanning (SAST), dynamic testing, dependency scanning (SCA), and manual security review.",
+    "verify_match": "exact",
+    "use_for": "recommended_control_authgap_implements",
+    "location": "MCP サーバ開発ガイド PDF p.7、2. Safe Tool Design > Strict Onboarding and Approval",
+    "how_to_use_ja": "ツールの追加・更新の承認にコードの静的解析（SAST）を含めよ、と OWASP が言っている。AuthGap は静的解析なので、この承認手順の SAST の一部として組み込める、と書ける。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+    "quote": "Attach signed behavioral manifests declaring expected capabilities, tools, and goals that are validated by orchestration services before each action.",
+    "verify_match": "exact",
+    "use_for": "recommended_control_authgap_implements",
+    "location": "Agentic Top 10 2026 PDF p.38（印刷ページ 37）、ASI10 Rogue Agents > Prevention and Mitigation Guidelines #5",
+    "how_to_use_ja": "『期待される能力を宣言し、その宣言からのずれを監視する』という考え方を OWASP がエージェントの水準で勧めている。MCP の注釈は、ツールの水準での能力の宣言にあたる。AuthGap はその宣言が実体と合っているかを、配る前に確かめるものだと言える。OWASP のこの項目は署名と実行時の監視が中心で、静的な照合ではない。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+    "quote": "This entry covers cases where the agent operates within its authorized privileges but applies a legitimate tool in an unsafe or unintended way - for example deleting valuable data, over-invoking costly APIs, or exfiltrating information.",
+    "verify_match": "exact",
+    "use_for": "harm_categories",
+    "location": "Agentic Top 10 2026 PDF p.13（印刷ページ 12）、ASI02 Tool Misuse and Exploitation > Description",
+    "how_to_use_ja": "害の分類として、データの削除、費用のかかる API の過剰な呼び出し、情報の持ち出し、の 3 つが使える。AuthGap の 4 つの宣言に対応づけられる。D1 / D2 の矛盾は削除や書き込み、D3 の矛盾は外部への持ち出し、D4 の矛盾は繰り返し呼ばれたときの過剰な効果。『権限の内側での誤用』（ASI02）であって権限の昇格（ASI03）ではない、という区別も、注釈の誤宣言の位置づけに使える。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/51928/?tmstv=1762283701",
+    "quote": "Since tools can execute code, access files, and make network calls, a compromised MCP stack can lead to data theft, malicious code execution, and system sabotage.",
+    "verify_match": "exact",
+    "use_for": "harm_categories",
+    "location": "第三者 MCP チートシート PDF p.5（印刷ページ 4）、Introduction & Background",
+    "how_to_use_ja": "MCP のツールが持つ効果の種類（コード実行・ファイル操作・ネットワーク通信）と、その害（データの窃取・悪性コードの実行・システムの破壊）を一文で言っている。AuthGap の効果の種類（sinks.py の kind）が、OWASP の言う害のどれに当たるかを示すときの見出しに使える。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/56857/?tmstv=1785822482",
+    "quote": "a tool intended to read data connects to a database server using an identity that not only has SELECT permissions, but also UPDATE, INSERT and DELETE permissions.",
+    "verify_match": "exact",
+    "use_for": "harm_categories",
+    "location": "LLM Top 10 2026 PDF p.24、LLM03:2026 Excessive Agency > Common Examples of Risk 4. Excessive Permissions",
+    "how_to_use_ja": "『読むためのツールが書き込み権限も持っている』という、readOnlyHint:true の矛盾と同じ形の例を OWASP が挙げている。AuthGap が SQL 文の種類（SELECT か UPDATE / INSERT / DELETE か）で D1 の矛盾を判定していることと直接対応する。OWASP の論点は DB の権限の付けすぎで、宣言の誤りではない。『宣言が read でも、使う ID とコードは write できる』という並べ方で引くこと。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/56857/?tmstv=1785822482",
+    "quote": "Extensions carry functions beyond what the task needs, such as read-only access bundled with modify, delete, or send, so a malfunctioning model invokes capabilities it was never meant to use.",
+    "verify_match": "exact",
+    "use_for": "harm_categories",
+    "location": "LLM Top 10 2026 PDF p.101、Appendix A > OWASP AIVSS 対応表の LLM03 Excessive Agency × AIVSS-1 Agentic AI Tool Misuse の欄",
+    "how_to_use_ja": "『read-only のつもりのものに変更・削除・送信が抱き合わせになっている』と、そのとき『モデルが使うはずのなかった能力を呼んでしまう』という因果を一文で言っている。readOnlyHint の矛盾の害を説明する引用として使いやすい。表の欄からの抽出なので、引くときは表の位置を示すこと。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+    "quote": "Email summarizer can delete or send mail without confirmation.",
+    "verify_match": "exact",
+    "use_for": "harm_categories",
+    "location": "Agentic Top 10 2026 PDF p.13（印刷ページ 12）、ASI02 > Common Examples of the Vulnerability #1 Over-privileged tool access",
+    "how_to_use_ja": "『読むだけに見えるツール（要約）が、確認なしに削除・送信できる』という典型例。readOnlyHint:true の要約ツールが実は送信・削除をする、という AuthGap の矛盾の具体例を示す前置きに使える。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/56857/?tmstv=1785822482",
+    "quote": "Unauthorized invocation of tools the agent is permitted to call, escalating to arbitrary command execution and destructive actions where the agent has shell, file-system, or cloud-API access.",
+    "verify_match": "exact",
+    "use_for": "harm_categories",
+    "location": "LLM Top 10 2026 PDF p.11、LLM01:2026 Prompt Injection > Description（起こりうる結果の列挙）",
+    "how_to_use_ja": "注入によって、呼ぶことを許されたツールが呼ばれ、それが破壊的な操作につながる。AuthGap の連鎖の第 2 段と第 3 段を、OWASP の LLM01 の『結果』の欄で裏づけられる。"
+   },
+   {
+    "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+    "quote": "an extension intended to read data connects to a database server using an identity that not only has SELECT permissions, but also UPDATE, INSERT and DELETE permissions.",
+    "verify_match": "exact",
+    "use_for": "harm_categories",
+    "location": "LLM06:2025 Excessive Agency（HTML）> Common Examples of Risks > 4. Excessive Permissions",
+    "how_to_use_ja": "2026 年版の LLM03 と同じ例の 2025 年版。2025 年版の LLM Top 10 を基準に書く場合や、2026 年版の公開日が確定していない（PDF 表紙が未設定）ことを気にする場合はこちらを引く。"
+   },
+   {
+    "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+    "quote": "Excessive Agency is the vulnerability that enables damaging actions to be performed in response to unexpected, ambiguous or manipulated outputs from an LLM, regardless of what is causing the LLM to malfunction.",
+    "verify_match": "exact",
+    "use_for": "terminology",
+    "location": "LLM06:2025 Excessive Agency（HTML）、本文冒頭の定義",
+    "how_to_use_ja": "『モデルが誤る原因によらず、害のある行為ができてしまうこと』という Excessive Agency の定義。AuthGap の脅威モデルを『モデルが操られた・間違えたときに、宣言の誤りで確認が省かれていると被害が出る』と述べるときの用語の出典になる。2026 年版の LLM03:2026 にも同じ定義がある。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+    "quote": "We expand on the concepts of Least-Privilege and Excessive Agency by citing Least-Agency.",
+    "verify_match": "exact",
+    "use_for": "terminology",
+    "location": "Agentic Top 10 2026 PDF p.8（印刷ページ 7）、Letter from The Agentic Top 10 Leaders",
+    "how_to_use_ja": "Least-Agency（不要な自律を与えない）という用語の出典。宣言が実際より安全に見せていると、クライアントが必要以上の自律（確認なしの実行）を与えてしまう。AuthGap はこの原則の前提を点検する、と述べられる。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/45674/?tmstv=1739819891",
+    "quote": "Tool Misuse occurs when attackers manipulate AI agents into abusing their authorized tools through deceptive prompts and operational misdirection, leading to unauthorized data access, system manipulation, or resource exploitation while staying within granted permissions.",
+    "verify_match": "exact",
+    "use_for": "terminology",
+    "location": "Agentic AI – Threats and Mitigations v1.1 PDF p.26（印刷ページ 25）、Tool Misuse > Description",
+    "how_to_use_ja": "T2 Tool Misuse の定義。『与えられた権限の内側で』騙されてツールを濫用する、という点が、注釈の誤宣言から起きる被害（攻撃者が新しい権限を得るのではなく、確認が省かれた既存のツールを使わせる）と一致する。ASI02 はこの T2 に対応している。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/56857/?tmstv=1785822482",
+    "quote": "The moment that model becomes an actor, with tools it can call, memory it carries between sessions, and consequences it sets in motion downstream, the risk moves to the OWASP Agentic Top 10.",
+    "verify_match": "exact",
+    "use_for": "terminology",
+    "location": "LLM Top 10 2026 PDF p.7、What's New in the 2026 Top 10",
+    "how_to_use_ja": "OWASP 自身が、ツールを呼ぶ主体としてのモデルのリスクは Agentic Top 10 の担当だと境界を引いている。AuthGap の論文では、主に ASI02 / ASI09 を引き、LLM03（Excessive Agency）は補助として引く、という使い分けの根拠になる。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/51928/?tmstv=1762283701",
+    "quote": "Semgrep MCP Scanner: A static analysis tool with rules for MCP(beta), which scans Python and Node.js dependencies, and integrates with MCP-Get to scan all listed servers.",
+    "verify_match": "exact",
+    "use_for": "related_work_positioning",
+    "location": "第三者 MCP チートシート PDF p.12（印刷ページ 11）、Tools & Utilities > Automated Scanners",
+    "how_to_use_ja": "OWASP が挙げる MCP 向けの道具（MCP-Scan、Semgrep MCP Scanner、mcp-watch、mcp-context-protector、Vijil Evaluate）の一覧を、関連研究・関連ツールの節の出発点にできる。OWASP の説明では、どれも悪性の説明文、依存関係、資格情報の扱いなどを見るもので、注釈とコードの照合には触れていない。各ツールが本当に照合しないかは、それぞれの原典で確かめてから書くこと。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52676/?tmstv=1771286427",
+    "quote": "Use static analysis (SAST) tools (with custom MCP rules) and Invariant MCP-Scan in your CI/CD pipeline.",
+    "verify_match": "exact",
+    "use_for": "related_work_positioning",
+    "location": "MCP サーバ開発ガイド PDF p.13、8. Tools & Continuous Validation > Automated Code Scanning",
+    "how_to_use_ja": "OWASP は、MCP 向けの規則を加えた SAST を CI/CD に入れることを勧めている。AuthGap を、そうした MCP 向け SAST の規則の一つ（宣言と効果の照合）として位置づけられる。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/56857/?tmstv=1785822482",
+    "quote": "Pinning does not stop a payload shipped in the pinned version or tool-description poisoning that leaves the version unchanged.",
+    "verify_match": "exact",
+    "use_for": "related_work_positioning",
+    "location": "LLM Top 10 2026 PDF p.15、LLM01:2026 > Prevention and Mitigation 10",
+    "how_to_use_ja": "版の固定やハッシュの照合は『変わったか』しか見ず、『最初から食い違っているか』は見ない、と OWASP 自身が認めている。OWASP の MCP 文書が繰り返し勧める pinning / checksum では、AuthGap が見る『固定した版の中にある宣言と実体の食い違い』は捕まらない。両者が補い合うことを言う根拠になる。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+    "quote": "validate the intended semantics of tool calls (e.g., query type or category) rather than relying on syntax alone.",
+    "verify_match": "exact",
+    "use_for": "related_work_positioning",
+    "location": "Agentic Top 10 2026 PDF p.15（印刷ページ 14）、ASI02 > Prevention and Mitigation Guidelines #7 Semantic and Identity Validation",
+    "how_to_use_ja": "『呼び出しの意味（クエリの種類など）を見よ』という OWASP の推奨は実行時の検査。AuthGap が SQL の文の種類などで読み・書きを分けて宣言と照合するのは、同じ考え方を配る前に静的に行うものだ、と対比できる。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+    "quote": "validates intent and arguments, enforces schemas and rate limits, issues short-lived credentials, and revokes or audits on drift.",
+    "verify_match": "exact",
+    "use_for": "related_work_positioning",
+    "location": "Agentic Top 10 2026 PDF p.15（印刷ページ 14）、ASI02 > Prevention and Mitigation Guidelines #4 Policy Enforcement Middleware (\"Intent Gate\")",
+    "how_to_use_ja": "実行の直前に意図と引数を検査する強制点（PEP/PDP）の推奨。AuthGap は静的な照合なので、この実行時の強制点を置き換えるものではない。強制点のポリシーが頼るツールの性質の情報を事前に点検するもの、という補完関係を書くのに使える。"
+   },
+   {
+    "url": "https://raw.githubusercontent.com/GenAI-Security-Project/agent-control-standard/770f1e06b0a037518e910255109be4e6f2e0ca0c/specification/v0.1.0/hooks/tool-call-request.json",
+    "quote": "Abstract capability identifier (e.g., filesystem.delete, network.egress, process.execute)",
+    "verify_match": "exact",
+    "use_for": "related_work_positioning",
+    "location": "ACS v0.1.0 specification/v0.1.0/hooks/tool-call-request.json の properties.capability.description（commit 770f1e0、24 行目付近）",
+    "how_to_use_ja": "OWASP の ACS は、実行時の Guardian にツールの抽象的な能力（filesystem.delete、network.egress など）を渡す欄を持っている。AuthGap が静的に求める効果の種類（ファイル書き込み、外部通信、プロセス実行）は、この欄に入れる値の根拠になりうる、と将来の接続先として書ける。ただし、ACS が能力の値を誰がどう決めるかは今回確かめていない。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+    "quote": "The entry aligns with AIVSS Core Risk: Agentic AI Tool Misuse.",
+    "verify_match": "exact",
+    "use_for": "disclosure_or_severity",
+    "location": "Agentic Top 10 2026 PDF p.13（印刷ページ 12）、ASI02 > Description の末尾",
+    "how_to_use_ja": "ASI02 は OWASP AIVSS（AI Vulnerability Scoring System）の Core Risk『Agentic AI Tool Misuse』に対応している。見つけた矛盾の重さを示したり、開示するときの分類を付けたりする場合に、AIVSS の該当リスクを参照先にできる。AIVSS の本文と採点のしかたは今回読んでいないので、使う前に原典で確かめること。"
+   },
+   {
+    "url": "https://raw.githubusercontent.com/GenAI-Security-Project/agent-control-standard/770f1e06b0a037518e910255109be4e6f2e0ca0c/docs/spec/instrument/specification.md",
+    "quote": "`trust` is never a content judgment and never a producer claim.",
+    "verify_match": "exact",
+    "use_for": "other",
+    "location": "ACS docs/spec/instrument/specification.md、### 7.1 Optional `trust` enum（240 行目、commit 770f1e0）",
+    "how_to_use_ja": "OWASP の ACS は、データの信頼ラベルを『送り手の主張にしてはならない』と決めている。MCP の注釈は、まさにサーバ（送り手）の主張である。『OWASP の新しい標準は、送り手の自己申告を安全の判断に使わない設計を採っている』という類例として引ける。ACS の対象はデータの出所のラベルで、ツールの注釈ではない点を明記すること。"
+   },
+   {
+    "url": "https://raw.githubusercontent.com/GenAI-Security-Project/agent-control-standard/770f1e06b0a037518e910255109be4e6f2e0ca0c/docs/spec/instrument/specification.md",
+    "quote": "MUST treat the field as a hint and re-derive trust against local policy keyed off `origin` + `source_id` rather than honor a remote-asserted label at face value.",
+    "verify_match": "exact",
+    "use_for": "other",
+    "location": "ACS docs/spec/instrument/specification.md、### 7.1 Optional `trust` enum（242 行目、commit 770f1e0）",
+    "how_to_use_ja": "『相手が付けたラベルは hint として扱い、額面どおりに受け取らずに自分で決め直せ』。MCP 仕様も注釈を hint と呼んでいるので、『hint は受け手が検証すべきもの』という読み方を OWASP の標準の言葉で補強できる。上と同じく類比として引くこと。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/49059/?tmstv=1753666640",
+    "quote": "Default to read-only access and explicitly grant write permissions only when needed",
+    "verify_match": "exact",
+    "use_for": "other",
+    "location": "Securing Agentic Applications Guide 1.0 PDF p.48、権限の節 > Distinguish between read and write access",
+    "how_to_use_ja": "『既定は read-only、書き込みは必要なときだけ』という最小権限の原則。クライアントが readOnlyHint:true のツールを『既定で許す側』に入れる運用はこの原則に沿っている。だからこそ、read-only の宣言が誤っていると原則が崩れる、という議論の前置きに使える。"
+   },
+   {
+    "url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+    "quote": "restrict agentic tool functionality and each tool's permissions and data scope to those profiles – e.g., read-only queries for databases, no send/delete rights for email summarizers, and minimal CRUD operations when exposing APIs.",
+    "verify_match": "exact",
+    "use_for": "other",
+    "location": "Agentic Top 10 2026 PDF p.14（印刷ページ 13）、ASI02 > Prevention and Mitigation Guidelines #1 Least Agency and Least Privilege for Tools",
+    "how_to_use_ja": "ツールごとの最小権限の具体例（DB は read-only のクエリだけ、要約ツールには送信・削除の権限なし）。AuthGap の D1（readOnlyHint）の矛盾は、こうした最小権限のプロファイルを宣言の上では満たしているのにコードでは破っている状態だ、と説明できる。同じ項目で、プロファイルを場当たりの慣習ではなく認可ポリシーとして書くよう勧めている点も引ける。"
+   }
+  ],
+  "not_found_ja": "読んだ文書は 10 件ある。第三者 MCP 利用チートシート v1.0、MCP サーバ開発ガイド v1.0、Agentic Top 10 2026、LLM Top 10 2026、Agentic AI Threats and Mitigations v1.1、Securing Agentic Applications Guide 1.0（キーワード検索による拾い読み）、LLM06:2025 のページ、Exploit Roundup Q3 2026、2025-04-22 の MCP ブログ、ACS v0.1.0（GitHub の commit 770f1e0）。\n\n(1) どの文書にも、MCP の ToolAnnotations（readOnlyHint / destructiveHint / idempotentHint / openWorldHint）も「annotation」という語も出てこない。PDF から抽出したテキストすべてと、ACS リポジトリ全体を grep して 0 件だった。したがって、OWASP が「クライアントは注釈を信じて確認を省く」と書いた箇所は無い。連鎖の第 1 段は、次のような類比で支えるしかない。ASI02 シナリオ 7（リスクがないとして自動実行を許されたツール）、LLM03:2026 対策 7（影響の小さい操作の自動承認）、ASI09 シナリオ 6（read-only に見えるプレビューの副作用）、T2 シナリオ 3（誤解を招く説明文）。\n\n(2) 「宣言と振る舞いを照合せよ」という推奨（開発ガイド 2. Safe Tool Design とチェックリスト、チートシートの Sanitize Descriptions）が対象にしているのは説明文（description）とツール名で、注釈は含まれていない。手段も手作業・版の固定・LLM スキャン・実行時の監視で、静的解析に限っていない。「OWASP が AuthGap の方法を推奨している」とは書けない。\n\n(3) 注釈の誤宣言の頻度や害の件数のような、OWASP による数値は無い。LLM Top 10 2026 の序文にあるインシデント 7,714 件 / 分類済み 6,639 件は見たが、自分では検証していない（verified_by_me = none）。注釈とも関係しない。\n\n(4) 日付で決まらないものが 2 つある。LLM Top 10 2026 の PDF 表紙は「[Publication date to be set]」のままで、公開ページの datePublished（2026-08-04）としか一致を確かめられていない。Threats and Mitigations は公開ページが 2025-02-17（初版）だが、同じダウンロード ID で今は v1.1（2025 年 12 月）が配られており、v1.0 と同じ文面かどうかは不明。\n\n(5) 取得のしかたに注意がある。genai.owasp.org は、verify_quote.py の既定 UA（Chrome の文字列）にもともと 403 を返す。そこで同じ URL を UA「Mozilla/5.0」で curl 取得し、VERIFY_QUOTE_CACHE に置いてから照合した（各 meta に ua_override を記録してある）。PDF は /download/<id>/ の URL から取った。UA によっては no-access ページに転送される。照合結果はすべて exact。\n\n(6) 範囲外・未確認のもの。ASI02 の例示シナリオ 4 は見出しの文字が PDF の抽出で化けているため引用できない。ACS は公開ページの PDF 版を取っておらず、GitHub の HEAD の文面で照合した（v0.1.0 のタグとの一致は未確認）。ACS が能力の値を誰がどう決めるかも未確認。AIVSS の本文、2025 年 6 月のウェビナー、Habler / Narajala の論文本体は読んでいない。指示どおり、OWASP MCP Top 10（www-project-mcp-top-10）は扱っていない。\n\n保存場所: 取得物は /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/owasp/genai/dl/（PDF と抽出テキスト）と同じディレクトリの genai/acs/repo/。照合のキャッシュは genai/vq/。照合の入出力は scratchpad/owasp/genai_quotes_in*.json と genai_quotes_out*.json。/home/user/auth_gap は変更していない。"
+ }
+]

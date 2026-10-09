@@ -1,0 +1,592 @@
+{
+ "note": "本記録者の照合。top10 は OWASP/www-project-mcp-top-10 @165fe0f の raw を verify_quote.py で照合（21 件 exact）。genai_pdf の 8 件は genai.owasp.org の PDF が 2026-10-09 に 403 を返したため、調査の agent が同日に取得した PDF（mcpdev.pdf・asi2026.pdf・llm2026.pdf・tp.pdf）から本記録者が pypdf で文字を取り出し、空白と引用符を正規化して照合した（全件一致）。cheatsheet の 1 件は verify_quote.py で exact。",
+ "top10": [
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP03-2025%E2%80%93Tool-Poisoning.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP03-2025%E2%80%93Tool-Poisoning.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:24Z",
+   "sha256": "d8373cfc1b3a947a2ebde47d255ddbdd6853eb2137a69c3de5f0df9c05a25746",
+   "bytes": 8674,
+   "quote": "No testing or contract verification exists that asserts semantic invariants (e.g., archive must not map to DELETE).",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "28",
+     "md_heading": "### Is the Application Vulnerable? (Checklist)",
+     "context": "t on schema changes at runtime without operator confirmation. - There is no provenance or version binding stored with the schema (who changed it, when, why). - No testing or contract verification exists that asserts semantic invariants (e.g., archive must not map to DELETE). If schemas are treated as configuration files that can be changed without formal governance, treat them as a high-value attack vector. ### Detection Indicato"
+    }
+   ],
+   "kind": "text",
+   "id": "m03_invariant"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP03-2025%E2%80%93Tool-Poisoning.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP03-2025%E2%80%93Tool-Poisoning.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:24Z",
+   "sha256": "d8373cfc1b3a947a2ebde47d255ddbdd6853eb2137a69c3de5f0df9c05a25746",
+   "bytes": 8674,
+   "quote": "If an attacker can modify a schema (or its metadata) so that a benign-sounding operation maps to a destructive action, agents that trust and follow the schema may inadvertently execute dangerous commands.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "9",
+     "md_heading": "### Description",
+     "context": "teractions in an MCP ecosystem. Schemas define the shape, types, and semantics of requests and responses - effectively the \"language\" agents use to call tools. If an attacker can modify a schema (or its metadata) so that a benign-sounding operation maps to a destructive action, agents that trust and follow the schema may inadvertently execute dangerous commands. Schema attacks are a supply-chain style compromise: the attacker doesn't exploit a code bug directly, they change the contract so legitimate agents behave inco"
+    }
+   ],
+   "kind": "text",
+   "id": "m03_desc"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP03-2025%E2%80%93Tool-Poisoning.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP03-2025%E2%80%93Tool-Poisoning.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:24Z",
+   "sha256": "d8373cfc1b3a947a2ebde47d255ddbdd6853eb2137a69c3de5f0df9c05a25746",
+   "bytes": 8674,
+   "quote": "Encode semantic invariants as policy checks (e.g., using OPA/Rego): archive actions cannot map to HTTP DELETE unless explicitly approved.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "60",
+     "md_heading": "### How to Prevent (Controls & Best Practices)",
+     "context": "it. - Use short-lived tokens for deployment pipelines and require human approvals for critical schema releases. 4. Policy-as-Code for Semantic Constraints - Encode semantic invariants as policy checks (e.g., using OPA/Rego): archive actions cannot map to HTTP DELETE unless explicitly approved. - Run these policy checks in CI and in a runtime policy decision point (PDP) before execution. 5. Schema Provenance & Metadata - Each schema/version should in"
+    }
+   ],
+   "kind": "text",
+   "id": "m03_policy"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP03-2025%E2%80%93Tool-Poisoning.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP03-2025%E2%80%93Tool-Poisoning.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:24Z",
+   "sha256": "d8373cfc1b3a947a2ebde47d255ddbdd6853eb2137a69c3de5f0df9c05a25746",
+   "bytes": 8674,
+   "quote": "Tool poisoning via description text is detectable before install, by statically analyzing each tool's declared `name`, `description`, and parameter descriptions",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "34",
+     "md_heading": "### Detection Indicators (Static Analysis)",
+     "context": "ed as configuration files that can be changed without formal governance, treat them as a high-value attack vector. ### Detection Indicators (Static Analysis) Tool poisoning via description text is detectable before install, by statically analyzing each tool's declared `name`, `description`, and parameter descriptions (the text the model treats as authoritative). Treat the presence of any of the following in a tool's declared surface as a strong signal to review the server b"
+    }
+   ],
+   "kind": "text",
+   "id": "m03_static"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP03-2025%E2%80%93Tool-Poisoning.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP03-2025%E2%80%93Tool-Poisoning.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:24Z",
+   "sha256": "d8373cfc1b3a947a2ebde47d255ddbdd6853eb2137a69c3de5f0df9c05a25746",
+   "bytes": 8674,
+   "quote": "if an operation’s semantic impact exceeds a threshold (e.g., destructive verbs, data volume), pause execution and require human approval.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "70",
+     "md_heading": "### How to Prevent (Controls & Best Practices)",
+     "context": "without revalidation. - Require a \"schema attestation\" that binds the schema hash to a specific agent identity and session. - Implement runtime sanity checks: if an operation's semantic impact exceeds a threshold (e.g., destructive verbs, data volume), pause execution and require human approval. ### Remediation - Revoke or block the promoted schema version (remove from registry or mark as compromised). - Roll back agents to the last known-good schema"
+    }
+   ],
+   "kind": "text",
+   "id": "m03_runtime"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/recommended-controls/Client-Side-Tool-Risk-Gating.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/recommended-controls/Client-Side-Tool-Risk-Gating.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:25Z",
+   "sha256": "2a08078d14a1f9b5b957a82b05cdabf25328481e054a991a57391040ea517942",
+   "bytes": 10334,
+   "quote": "External tools** score from what the upstream declares: MCP tool annotations (`readOnlyHint`, `destructiveHint`, `idempotentHint`, `openWorldHint`)",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "46",
+     "md_heading": "### 1. Ordered risk scoring with floor overrides",
+     "context": "e-operation flag floored at L5, and host class permissions), merged with a **monotonic max**: a capability can raise the level, nothing silently lowers it. - **External tools** score from what the upstream declares: MCP tool annotations (`readOnlyHint`, `destructiveHint`, `idempotentHint`, `openWorldHint`), a side-effect scope, a sends-user-data flag, and a documentation-quality penalty. Server registrations score separately on transport, authentication, catalog"
+    }
+   ],
+   "kind": "text",
+   "id": "g_external"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/recommended-controls/Client-Side-Tool-Risk-Gating.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/recommended-controls/Client-Side-Tool-Risk-Gating.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:25Z",
+   "sha256": "2a08078d14a1f9b5b957a82b05cdabf25328481e054a991a57391040ea517942",
+   "bytes": 10334,
+   "quote": "Floors make the scoring resistant to gaming by omission: missing or vague metadata raises the score rather than lowering it.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "48",
+     "md_heading": "### 1. Ordered risk scoring with floor overrides",
+     "context": "`wipe_`), a destructive hint without an idempotent hint, or a remote unauthenticated server at an unknown host all pin the result to L5 regardless of the sum. Floors make the scoring resistant to gaming by omission: missing or vague metadata raises the score rather than lowering it. Reference implementation: [`SandboxPostureCalculator`](https://github.com/spring-ai-community/spring-ai-playground/blob/main/src/main/java/org/springaicommuni"
+    }
+   ],
+   "kind": "text",
+   "id": "g_omission"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/recommended-controls/Client-Side-Tool-Risk-Gating.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/recommended-controls/Client-Side-Tool-Risk-Gating.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:25Z",
+   "sha256": "2a08078d14a1f9b5b957a82b05cdabf25328481e054a991a57391040ea517942",
+   "bytes": 10334,
+   "quote": "The model never sees a tool above the ceiling, which turns the risk level from advice into an access-control decision.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "54",
+     "md_heading": "### 2. Hard exposure ceiling",
+     "context": "enabling a tool whose resolved level exceeds the ceiling is **refused outright** - a deny with no approval path, checked by ordinal comparison at enable time. The model never sees a tool above the ceiling, which turns the risk level from advice into an access-control decision. ### 3. Definition fingerprint pinning (trust-on-first-use) The host records a SHA-256 fingerprint of each tool's canonical definition (name, description, inp"
+    }
+   ],
+   "kind": "text",
+   "id": "g_ceiling"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/recommended-controls/Client-Side-Tool-Risk-Gating.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/recommended-controls/Client-Side-Tool-Risk-Gating.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:25Z",
+   "sha256": "2a08078d14a1f9b5b957a82b05cdabf25328481e054a991a57391040ea517942",
+   "bytes": 10334,
+   "quote": "a matching fingerprint shows only that the *declared interface* is unchanged, not that backend behavior is",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "63",
+     "md_heading": "### 3. Definition fingerprint pinning (trust-on-first-use)",
+     "context": "until a human explicitly re-approves it. A rug-pull redefinition therefore cannot ride in on a prior approval. Two properties keep the control honest. First, a matching fingerprint shows only that the *declared interface* is unchanged, not that backend behavior is; the pin is change *detection*, not proof of trustworthiness, and the human re-review gate is where the trust decision lives. Second, TOFU trusts the first pre"
+    }
+   ],
+   "kind": "text",
+   "id": "g_fingerprint"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/recommended-controls/Client-Side-Tool-Risk-Gating.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/recommended-controls/Client-Side-Tool-Risk-Gating.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:25Z",
+   "sha256": "2a08078d14a1f9b5b957a82b05cdabf25328481e054a991a57391040ea517942",
+   "bytes": 10334,
+   "quote": "upstream annotations are not covered on the live path, so an annotation-only redefinition is a stated blind spot.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "84",
+     "md_heading": "## Limitations",
+     "context": "venance where available and an enforced ceiling everywhere. ## Limitations - The fingerprint covers the declared interface (name, description, input schema); upstream annotations are not covered on the live path, so an annotation-only redefinition is a stated blind spot. - TOFU trusts first sight; only floors and scoring confront a malicious first presentation. - The pattern does not inspect tool *results* at runtime; instructi"
+    }
+   ],
+   "kind": "text",
+   "id": "g_blindspot"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP06-2025%E2%80%93Intent-Flow-Subversion.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP06-2025%E2%80%93Intent-Flow-Subversion.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:25Z",
+   "sha256": "b8af55de6ee7c3387a18e0c0538a2076a9151b1fcce109bb048d179f1be276c6",
+   "bytes": 6767,
+   "quote": "if the user intent is \"Read,\" the agent is blocked from \"Delete\" or \"Write\" tool calls",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "30",
+     "md_heading": "### Prevention and Mitigation Strategies",
+     "context": "that original anchor. * Implement a **Policy Decision Point (PDP)** that checks proposed tool calls against a whitelist of \"Goal-Aligned Actions\" (e.g., if the user intent is \"Read,\" the agent is blocked from \"Delete\" or \"Write\" tool calls). 2. **Independent Intent Verification (The Checker Pattern)** * Use a separate, independent \"Guardrail Model\" to verify proposed tool calls. This mode"
+    }
+   ],
+   "kind": "text",
+   "id": "m06_pdp"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP06-2025%E2%80%93Intent-Flow-Subversion.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP06-2025%E2%80%93Intent-Flow-Subversion.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:25Z",
+   "sha256": "b8af55de6ee7c3387a18e0c0538a2076a9151b1fcce109bb048d179f1be276c6",
+   "bytes": 6767,
+   "quote": "The agent uses its connected MCP tools to perform destructive or privileged actions (e.g., deleting repositories, modifying cloud config).",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "15",
+     "md_heading": "### Impact",
+     "context": "pursues an objective entirely different from the user's (e.g., instead of \"Summarizing logs,\" it \"Exfiltrates logs\"). * **Unauthorized Autonomous Actions:** The agent uses its connected MCP tools to perform destructive or privileged actions (e.g., deleting repositories, modifying cloud config). * **Trust Erosion:** Users can no longer rely on the agent to follow instructions faithfully when external data is involved. * **Stealthy Persistence:** At"
+    }
+   ],
+   "kind": "text",
+   "id": "m06_impact"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP06-2025%E2%80%93Intent-Flow-Subversion.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP06-2025%E2%80%93Intent-Flow-Subversion.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:25Z",
+   "sha256": "b8af55de6ee7c3387a18e0c0538a2076a9151b1fcce109bb048d179f1be276c6",
+   "bytes": 6767,
+   "quote": "subversion happens \"in-flow\": the model retrieves a resource that contains \"hidden instructions\" which override the original user intent.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "11",
+     "md_heading": "### Description",
+     "context": "ersion** occurs when malicious instructions are embedded within this retrieved context. Unlike a direct prompt injection where a user tries to trick the model, subversion happens \"in-flow\": the model retrieves a resource that contains \"hidden instructions\" which override the original user intent. This causes the agent to pivot away from the user's goal toward an attacker's objective-often while the agent still appears to be fulfilling the original reque"
+    }
+   ],
+   "kind": "text",
+   "id": "m06_def"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP05-2025%E2%80%93Command-Injection%26Execution.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP05-2025%E2%80%93Command-Injection%26Execution.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:25Z",
+   "sha256": "fad5d40c1ceaa49ce9baed93b6172fd8b11be2fa86611dab60c8270e46769218",
+   "bytes": 8369,
+   "quote": "Tool implementations pass agent outputs directly to exec(), system(), eval(), subprocess.run(shell=True), or similar unsafe execution functions.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "36",
+     "md_heading": "### Is the Application Vulnerable? (Checklist)",
+     "context": "ment is likely vulnerable if: - Agents construct shell commands by concatenating user input, prompts, or retrieved data without escaping or parameterization. - Tool implementations pass agent outputs directly to exec(), system(), eval(), subprocess.run(shell=True), or similar unsafe execution functions. - No input validation exists for parameters before they're incorporated into system calls, SQL queries, or API requests. - Models generate code (bash, Python,"
+    }
+   ],
+   "kind": "text",
+   "id": "m05_exec"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP05-2025%E2%80%93Command-Injection%26Execution.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP05-2025%E2%80%93Command-Injection%26Execution.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:25Z",
+   "sha256": "fad5d40c1ceaa49ce9baed93b6172fd8b11be2fa86611dab60c8270e46769218",
+   "bytes": 8369,
+   "quote": "File path operations accept unsanitized input, allowing directory traversal (../../../etc/passwd) or overwriting critical files.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "39",
+     "md_heading": "### Is the Application Vulnerable? (Checklist)",
+     "context": "tem calls, SQL queries, or API requests. - Models generate code (bash, Python, PowerShell) that is automatically executed without sandboxing or human review. - File path operations accept unsanitized input, allowing directory traversal (../../../etc/passwd) or overwriting critical files. - API or database calls are constructed using string interpolation rather than parameterized queries or safe APIs. - Agent outputs are not constrained to allow"
+    }
+   ],
+   "kind": "text",
+   "id": "m05_path"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP05-2025%E2%80%93Command-Injection%26Execution.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP05-2025%E2%80%93Command-Injection%26Execution.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:25Z",
+   "sha256": "fad5d40c1ceaa49ce9baed93b6172fd8b11be2fa86611dab60c8270e46769218",
+   "bytes": 8369,
+   "quote": "Require approval for destructive, privileged, or system-modifying operations.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "74",
+     "md_heading": "### How to Prevent (Defensive Design & Governance)",
+     "context": "ever interpolate input. Reject unsafe patterns: chained commands, redirection, wildcards, command substitution. 6. Add Human-in-the-Loop for Sensitive Actions Require approval for destructive, privileged, or system-modifying operations. Log all tool calls with full parameters and maintain immutable audit trails. ### Example Attack Scenarios #### Scenario 1 - Shell Metacharacter Injection A u"
+    }
+   ],
+   "kind": "text",
+   "id": "m05_hitl"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP07-2025%E2%80%93Insufficient-Authentication%26Authorization.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP07-2025%E2%80%93Insufficient-Authentication%26Authorization.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:25Z",
+   "sha256": "f46951bcad33029fa21fc7ce78298162920bf758a833a94196a99d511fd69870",
+   "bytes": 7641,
+   "quote": "Authorization decisions rely on client input or context hints rather than server-side checks",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "37",
+     "md_heading": "### Is the Application Vulnerable? (Checklist)",
+     "context": "any of the following apply: - MCP servers don't require mutual authentication between agents and tools - Tokens or API keys are shared, static, or long-lived - Authorization decisions rely on client input or context hints rather than server-side checks - Tools or connectors don't validate caller identity or scope before execution - There is no role-based or attribute-based access control (RBAC / ABAC) - Acces"
+    }
+   ],
+   "kind": "text",
+   "id": "m07_hints"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP07-2025%E2%80%93Insufficient-Authentication%26Authorization.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/2025/MCP07-2025%E2%80%93Insufficient-Authentication%26Authorization.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:25Z",
+   "sha256": "f46951bcad33029fa21fc7ce78298162920bf758a833a94196a99d511fd69870",
+   "bytes": 7641,
+   "quote": "Access control checks rely solely on client-side enforcement",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "19",
+     "md_heading": "###### Authorization flaws occur when:",
+     "context": "no expiry, weak entropy, or non-scoped tokens) ###### Authorization flaws occur when: - Agents or users can perform actions beyond their intended privileges - Access control checks rely solely on client-side enforcement - MCP servers trust unverified \"caller identity\" metadata - Tool endpoints don't validate permission scopes per user or agent - Together, these weaknesses can"
+    }
+   ],
+   "kind": "text",
+   "id": "m07_client"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/tab_top10.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/tab_top10.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:26Z",
+   "sha256": "024c5c51a55a66a74bea928faf2212849dd5581a98040766149205bca9ad2f14",
+   "bytes": 4887,
+   "quote": "OWASP Top 10 for Model Context Protocol version [v0.1]",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "9",
+     "md_heading": "## OWASP Top 10 for Model Context Protocol version [v0.1]",
+     "context": "--- title: Top10 layout: null tab: true order: 2 tags: mcptopten --- ## OWASP Top 10 for Model Context Protocol version [v0.1] ## MCP1:2025 - [Token Mismanagement & Secret Exposure](2025/MCP01-2025-Token-Mismanagement-and-Secret-Exposure) Hard-coded credentials, long-lived tokens, and"
+    }
+   ],
+   "kind": "text",
+   "id": "tab_version"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/tab_top10.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/tab_top10.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:26Z",
+   "sha256": "024c5c51a55a66a74bea928faf2212849dd5581a98040766149205bca9ad2f14",
+   "bytes": 4887,
+   "quote": "Prompt Injection via Contextual Payloads",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "26",
+     "md_heading": "## MCP6:2025 – [Prompt Injection via Contextual Payloads](2025/MCP06-2025–Prompt-InjectionviaContextual-Payloads)",
+     "context": "ets using untrusted input-whether from user prompts, retrieved context, or third-party data sources-without proper validation or sanitization. ## MCP6:2025 - [Prompt Injection via Contextual Payloads](2025/MCP06-2025-Prompt-InjectionviaContextual-Payloads) This risk is analogous to classic injection attacks (e.g., XSS, SQLi), but in the MCP world the \"inter"
+    }
+   ],
+   "kind": "text",
+   "id": "tab_m06title"
+  },
+  {
+   "url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/index.md",
+   "final_url": "https://raw.githubusercontent.com/OWASP/www-project-mcp-top-10/165fe0f78ef104459237b4a8e0f6e78db9b02391/index.md",
+   "status": "200",
+   "content_type": "text/plain; charset=utf-8",
+   "fetched_at": "2026-10-09T05:19:26Z",
+   "sha256": "4d65ec4917c33b9196b2bc7d15c89935c2084509dbbadf2ec4debf9dcfac7ded",
+   "bytes": 6868,
+   "quote": "Phase 3 – Beta Release and Pilot Testing - We are here right now",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "lines": "29",
+     "md_heading": "## Road Map",
+     "context": "the industry aspects. Phase 2 - Community Review and Feedback Publish the draft in a public repository for the community to review. Inputs from the community Phase 3 - Beta Release and Pilot Testing - We are here right now Release a \"beta\" version of MCP Top 10. Gather feedback on usability and coverage. Phase 4 - Final Release Incorporate feedback from pilot testing. ## Next P"
+    }
+   ],
+   "kind": "text",
+   "id": "idx_beta"
+  }
+ ],
+ "cheatsheet_and_genai": [
+  {
+   "url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+   "final_url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html",
+   "status": "200",
+   "content_type": "text/html; charset=utf-8",
+   "fetched_at": "2026-10-09T05:35:13Z",
+   "sha256": "0ed0e940f327f973f06e5921806ab47269751b0bf54fbc865fd4213fa00ad585",
+   "bytes": 86454,
+   "quote": "This detects metadata changes, not changes to server code or behavior behind an unchanged definition; tool annotations are hints, not enforcement.",
+   "match": "exact",
+   "count": 1,
+   "hits": [
+    {
+     "heading_path": "MCP (Model Context Protocol) Security Cheat Sheet¶ > Best Practices¶ > 2. Tool Description & Schema Integrity¶",
+     "heading_id": "2-tool-description-schema-integrity",
+     "anchored_url": "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html#2-tool-description-schema-integrity",
+     "context": "a potential injection surface - not just the description field. Pin reviewed tool definitions using cryptographic hashes and require review when they change. This detects metadata changes, not changes to server code or behavior behind an unchanged definition; tool annotations are hints, not enforcement. Use tools like mcp-scan to automatically detect poisoned descriptions and cross-server shadowing. Use strict JSON Schema for tool parameters: set additiona"
+    }
+   ],
+   "kind": "html",
+   "id": "cs_hash"
+  },
+  {
+   "url": "https://genai.owasp.org/download/52676/?tmstv=1771286427",
+   "final_url": "https://genai.owasp.org/download/52676/?tmstv=1771286427",
+   "status": "403",
+   "content_type": "text/html",
+   "fetched_at": "2026-10-09T05:35:14Z",
+   "sha256": "25fb23868ebf48348f9e438e00cb9b9d9b3a054f32482a781c762cc4f9cc6393",
+   "bytes": 548,
+   "quote": "Validate Descriptions vs. Behavior: Implement manual checks, tool pinning, and LLM scans to ensure a tool's advertised functionality (in its description) matches its actual code behavior during runtime.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "dev_validate"
+  },
+  {
+   "url": "https://genai.owasp.org/download/52676/?tmstv=1771286427",
+   "final_url": "https://genai.owasp.org/download/52676/?tmstv=1771286427",
+   "status": "403",
+   "content_type": "text/html",
+   "fetched_at": "2026-10-09T05:35:14Z",
+   "sha256": "25fb23868ebf48348f9e438e00cb9b9d9b3a054f32482a781c762cc4f9cc6393",
+   "bytes": 548,
+   "quote": "Flag any tool that attempts to perform actions (e.g., network writes) not mentioned in its description.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "dev_flag"
+  },
+  {
+   "url": "https://genai.owasp.org/download/52676/?tmstv=1771286427",
+   "final_url": "https://genai.owasp.org/download/52676/?tmstv=1771286427",
+   "status": "403",
+   "content_type": "text/html",
+   "fetched_at": "2026-10-09T05:35:14Z",
+   "sha256": "25fb23868ebf48348f9e438e00cb9b9d9b3a054f32482a781c762cc4f9cc6393",
+   "bytes": 548,
+   "quote": "Tool descriptions are validated against runtime behavior.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "dev_minbar"
+  },
+  {
+   "url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+   "final_url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+   "status": "403",
+   "content_type": "text/html",
+   "fetched_at": "2026-10-09T05:35:14Z",
+   "sha256": "25fb23868ebf48348f9e438e00cb9b9d9b3a054f32482a781c762cc4f9cc6393",
+   "bytes": 548,
+   "quote": "Approved Tool misuse: A coding agent has a set of tools that are approved to auto-run because they pose supposedly no risk, including a ping tool.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "asi02_ping"
+  },
+  {
+   "url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+   "final_url": "https://genai.owasp.org/download/52117/?tmstv=1765059207",
+   "status": "403",
+   "content_type": "text/html",
+   "fetched_at": "2026-10-09T05:35:15Z",
+   "sha256": "25fb23868ebf48348f9e438e00cb9b9d9b3a054f32482a781c762cc4f9cc6393",
+   "bytes": 548,
+   "quote": "Consent laundering through “read-only” previews",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "asi09_consent"
+  },
+  {
+   "url": "https://genai.owasp.org/download/56857/?tmstv=1785822482",
+   "final_url": "https://genai.owasp.org/download/56857/?tmstv=1785822482",
+   "status": "403",
+   "content_type": "text/html",
+   "fetched_at": "2026-10-09T05:35:15Z",
+   "sha256": "25fb23868ebf48348f9e438e00cb9b9d9b3a054f32482a781c762cc4f9cc6393",
+   "bytes": 548,
+   "quote": "A graduated enforcement policy (audit, warn, block, escalate) permits low-consequence or easily reversible actions to auto-approve",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "llm03_graduated"
+  },
+  {
+   "url": "https://genai.owasp.org/download/56857/?tmstv=1785822482",
+   "final_url": "https://genai.owasp.org/download/56857/?tmstv=1785822482",
+   "status": "403",
+   "content_type": "text/html",
+   "fetched_at": "2026-10-09T05:35:15Z",
+   "sha256": "25fb23868ebf48348f9e438e00cb9b9d9b3a054f32482a781c762cc4f9cc6393",
+   "bytes": 548,
+   "quote": "Pinning does not stop a payload shipped in the pinned version or tool-description poisoning that leaves the version unchanged.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "llm01_pinning"
+  },
+  {
+   "url": "https://genai.owasp.org/download/51928/?tmstv=1762283701",
+   "final_url": "https://genai.owasp.org/download/51928/?tmstv=1762283701",
+   "status": "403",
+   "content_type": "text/html",
+   "fetched_at": "2026-10-09T05:35:15Z",
+   "sha256": "25fb23868ebf48348f9e438e00cb9b9d9b3a054f32482a781c762cc4f9cc6393",
+   "bytes": 548,
+   "quote": "Review the full MCP code if available, and compare tool names to descriptions and code to identify any suspicious mismatches.",
+   "match": "fetch_failed",
+   "error": "",
+   "id": "tp_compare"
+  }
+ ],
+ "genai_pdf_local_check": {
+  "mcpdev.pdf (A Practical Guide for Secure MCP Server Development)": {
+   "Validate Descriptions vs. Behavior ...": "p.7",
+   "Flag any tool that attempts to perform actions ...": "p.7",
+   "Tool descriptions are validated against runtime behavior.": "p.14"
+  },
+  "asi2026.pdf (OWASP Top 10 for Agentic Applications 2026)": {
+   "Approved Tool misuse ...": "p.14",
+   "Consent laundering through \"read-only\" previews": "p.35"
+  },
+  "llm2026.pdf (OWASP Top 10 for LLM Applications 2026)": {
+   "A graduated enforcement policy ...": "p.26",
+   "Pinning does not stop ...": "p.15"
+  },
+  "tp.pdf (A Practical Guide for Securely Using Third-Party MCP Servers 1.0)": {
+   "Review the full MCP code if available ...": "p.7"
+  }
+ }
+}
