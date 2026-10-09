@@ -233,6 +233,15 @@ def test_main_explains_a_bad_header(tmp_path, capsys):
     assert "件の行が無い" in capsys.readouterr().out
 
 
-def test_violation_without_read_range_is_a_note():
-    _, notes = cs.check_row(row(**{**VIOLATION, "evidence": "a.py:10 → a.py:20 open(p, 'a')"}))
-    assert any("読んだ範囲" in n for n in notes)
+def test_violation_without_read_range_is_an_error():
+    errs, _ = cs.check_row(row(**{**VIOLATION, "evidence": "a.py:10 → a.py:20 open(p, 'a')"}))
+    assert any("読んだ範囲" in e for e in errs)
+
+
+def test_guide_gap_unknown_needs_a_note():
+    base = dict(outcome="不明", evidence="a.py:3／読んだ範囲: a.py:1-9",
+                unknown_reason="手引きで決まらない: a.py:3 の遅延 import の一番上の書き込み")
+    errs, _ = cs.check_row(row(**base))
+    assert any("note" in e for e in errs)
+    errs, _ = cs.check_row(row(**{**base, "note": "読めば 違反（初回）"}))
+    assert errs == []

@@ -155,7 +155,7 @@ if os.getenv("ENABLE_SUB"):
   - デコレータの変数（`sub`）が、どのサーバかを確かめる。
   - 起動時の初期化（Q26）を判断するときは、そのサーバの `lifespan=` と、取り付け先の親の lifespan を読む。
   - `grep 'lifespan='` は uvicorn の `lifespan="on"` や FastAPI の lifespan にも当たる。渡している相手を開いて確かめる。
-  - 取り付けが環境変数しだいなら、14.3 の「ツールの登録そのものが設定しだい」と同じ形と読める（手順書の当てはめ）。
+  - 取り付けが環境変数しだいなら、14.3 の「ツールの登録そのものが設定しだい」と同じ形と読む（**仮の扱い**、O48 (4)）。
   - 起動する行が木の中に見つからないサーバのツールも、登録されていれば判定する（**仮の扱い**、O48 (4)。`02_steps.md` の段 2 の 4）。MCP 以外の枠組みにだけ登録しているときは**仮の扱いは無い**（答えが変わるなら 22 節）。
 - **結果**: 条件つきの取り付けの先で違反に届くなら、`condition_type` = `運用者の設定`。
 - **出典**:
@@ -259,7 +259,7 @@ def other(q): ...
   - `functools.wraps` は名前を写すだけで、呼ばれるのは wrapper。
   - デコレータは下から順に掛かる。`@mcp.tool` が上にあるか下にあるかで、wrapper が道筋に乗るかが変わる。
   - `mcp.tool(...)(fn)` の形なら、`fn` の定義に付いたデコレータを見る。
-  - 深さは wrapper の分を足さない。**仮の扱い**（O48 (4)）: wrapper の中の文はツールの本体と同じ深さ 0。wrapper が本体を呼ぶこと（`asyncio.to_thread(func)` などを通しても）は段に数えず、本体は深さ 0 のまま。wrapper が本体のほかに呼ぶ木の中の関数が深さ 1。
+  - 深さは wrapper の分を足さない。**仮の扱い**（O48 (4)）: wrapper の中の文はツールの本体と同じ深さ 0。wrapper が本体を呼ぶこと（`asyncio.to_thread(fn)` などを通しても）は段に数えず、本体は深さ 0 のまま。wrapper が本体のほかに呼ぶ木の中の関数が深さ 1。
 - **結果**: wrapper の中の書き込みも違反に数える。
 - **出典**:
   - 手引き 18.2 の 2（:601-603「「たどらない」は**深さを数えない**という意味で、wrapper（デコレータなど）の中の動作もツールの呼び出しで実行されるので、読む範囲に入れる（深さは wrapper の分を足さない。D86）」）
@@ -283,7 +283,7 @@ mcp = FastMCP("x", middleware=[Audit()])
 - **結果**: `違反`、`condition_type` = `なし`、`write_target` = ログ（`note` に「O48 (1) の仮の扱い: middleware を読んだ」）。
 - **`mount()` のとき**: サーバ `sub` を親のサーバ `app` に `app.mount(sub)` で取り付けているなら、`app` の middleware も読む（仮の扱い、
   O48 (1)。`02_steps.md` の段 3 の 5）。親の middleware は親の入口を通した呼び出しでだけ走るので、そこにだけある違反の
-  `condition_type` は `運用者の設定`（どの入口で公開するかは運用者が決める）とし、`note` に書く。
+  `condition_type` は `運用者の設定`（どの入口で公開するかは運用者が決める。**仮の扱い**、O48 (4)）とし、`note` に書く。
 - **深さ**: middleware の中の文は深さ 0。そこから呼ぶ木の中の関数は深さ 1（`04_rules.md` の 1 節）。
 - **出典**: `docs/open_questions.md`
 
@@ -311,7 +311,7 @@ loop.call_soon(_save, q)                     # 表に無い
   - `docs/open_questions.md`
   - 教科書 `docs/textbook/ch15.md:406-420`
 
-### Q14. 暗黙に走るコード（`@property`・`cached_property`・`__enter__`/`__exit__`・`__call__`・pydantic の検証子・`lambda`）【手引きに無い: 新しい穴 N1】
+### Q14. 暗黙に走るコード（`@property`・`cached_property`・`__enter__`/`__exit__`・`__call__`・pydantic の検証子）【手引きに無い: 新しい穴 N1】
 
 ```python
 class Repo:
@@ -663,8 +663,8 @@ SAVE_HISTORY = False                              # 運用者が書き換える�
   - 実行時にできたファイルや相手の応答は `外部の状態` で、運用者が決める条件とは分ける。
   - **ツールが動くのに要る設定と、機能を有効にする設定を分ける**【手引きに無い O48 (4)】: 設定が無いとツールがエラーで抜ける（API の
     キー・接続先が無ければ例外）なら、14.3 の「前提の崩れで、効果の前に抜ける」として条件に数えない。設定が無くてもツールは動き、
-    その効果だけが起きない（`if os.getenv("HISTORY_FILE"):`）なら `運用者の設定`。どちらか読み分けられなければ、表の上の
-    `運用者の設定` を書き、`note` に書く。
+    その効果だけが起きない（`if os.getenv("HISTORY_FILE"):`）なら `運用者の設定`。どちらか読み分けられなければ、練習の仮の扱いと
+    して `運用者の設定` を書き（(B) に数えない側。14.3 の表の順の規則ではない）、`note` に書く。
 - **結果**:
   - `HISTORY_FILE`: `運用者の設定`
   - `NO_CACHE`: `運用者の設定` を書かない（ほかに条件が無ければ `なし`）
@@ -747,12 +747,11 @@ url = BASE.format(host=host)                      # テンプレートの穴に�
 
 ```python
 logging.basicConfig(level=logging.INFO)               # 標準エラー → 反しない
-logging.basicConfig(filename="app.log")               # ファイル → 反する
+logging.basicConfig(filename="app.log", level=logging.INFO)  # ファイル → INFO 以上が反する（水準の指定が無ければ WARNING 以上だけ）
 logger.addHandler(RotatingFileHandler(LOG))
 logging.config.dictConfig(CFG)                        # handler の class / filename を読む
 logging.config.fileConfig("logging.ini")              # ini が木に無ければ読み切れない
 from loguru import logger; logger.add("~/.app/x.log")
-structlog.configure(logger_factory=structlog.WriteLoggerFactory(file=open(P, "a")))
 ```
 
 - **すること**:
@@ -893,11 +892,11 @@ requests.post(GQL, json={"query": query_from_model})                   # 文を�
 
 - **すること**:
   - どれも同じ URL への `POST` なので、本体の文が `query` か `mutation` かで決める。
-  - 文をモデルが決めるなら、取りうる値の全体（`mutation` も書ける）で考えると読める。手引きの例は SQL の `db_model_sql` だけで、GraphQL の文をモデルが決める例は無い（手順書の当てはめ）。
+  - 文をモデルが決めるなら、取りうる値の全体（`mutation` も書ける）で考えると読める。手引きの例は SQL の `db_model_sql` だけで、GraphQL の文をモデルが決める例は無い（**仮の扱い**、O48 (4)）。
 - **結果**:
   - `mutation`: `違反`、`write_target` = 相手側の状態。
   - `query`: `違反でない`。
-  - モデルが文を決める形: `違反`、`condition_type` = `引数`（当てはめ）。
+  - モデルが文を決める形: `違反`、`condition_type` = `引数`（仮の扱い。`note` に「O48 (4) の仮の扱い: …」）。
 - **出典**: 手引き 15.1（:413）、11.3（:91）、13.1（:269）、教科書 `docs/textbook/ch50.md:529-547`
 
 ### Q44. 認証・トークン・ログインの POST と、トークンの保存
@@ -924,7 +923,10 @@ logger.addHandler(SysLogHandler(address="/dev/log"))
 - **すること**:
   - `POST` の行と同じく、相手の API の意味で決める。
   - `init` だけ書いて、例外のたびにライブラリが中で送る形は、「ライブラリの中の動作」の扱い（O48 (3)）に当たる。
-- **結果**: 相手の文書で記録の作成と確かめれば `違反`、`write_target` = 相手側の状態。
+- **結果**:
+  - ツールの道筋で直接送る呼び出し（`posthog.capture(...)`）: 相手の文書で記録の作成と確かめれば `違反`、`write_target` = 相手側の状態。
+  - `sentry_sdk.init` だけで、ライブラリが中で送る形: 読む範囲の外なので答えは変えず、`note` に書く（**仮の扱い**、O48 (3) の ④）。
+  - `SysLogHandler` をロガーに付けていて、ツールの道筋がそのロガーに書く: syslog への送信として、15.1 の外のログの行で決める。
 - **出典**: 手引き 15.1（:430）、`docs/open_questions.md`
 
 ### Q46. HTTP 以外で相手を変えるもの（メール・キュー・クラウドの保存・gRPC）【一部 手引きに無い: O48 (4)】
@@ -1139,7 +1141,7 @@ open(path, "r+")                          # 読み書き。書けば上書き
 | 到達は決められないが、どう見ても反しない | `違反でない`（D86 の 10） |
 | 到達するが反するか決められない、または到達が決められず反しうる | `不明` |
 | 違反が深さ 4 の外にだけある | `違反（深さ 4 の外）` |
-| 1 つのツールに違う結果の動作が混ざる | 違反 ＞ 不明 ＞ 違反でない（18.2 の「見落とし ＞ 不明 ＞ …」の当てはめ。**仮の扱い**、O48 (4)）。深さ 4 の外の違反と、深さ 4 の中の不明が重なるときは `不明`（**仮の扱い**、O48 (4)。奥の違反は `note` に書く） |
+| 1 つのツールに違う結果の動作が混ざる | 違反 ＞ 不明 ＞ 違反でない（18.2 の「見落とし ＞ 不明 ＞ …」の当てはめ。**仮の扱い**、O48 (4)）。深さ 4 の外の違反と、深さ 4 の中の決められない動作が重なるときは `違反（深さ 4 の外）`（18.3 の字義「深さ 4 の中に「反する動作」が無く…」。中の動作は `note` に「深さ 4 の中の不明: …」） |
 
 - **出典**:
   - 手引き 11.2（:62-69）、18.2（:619）、18.3（:643-647）
@@ -1186,7 +1188,7 @@ open(path, "r+")                          # 読み書き。書けば上書き
 
 | 番号 | 中身 | 練習の仮の扱い | 関わる FAQ |
 |---|---|---|---|
-| N1 | 暗黙に走るコードの読む範囲と深さ（`@property`・`cached_property`・`__enter__`/`__exit__`・`__call__`・dataclass の `__post_init__`/`default_factory`・pydantic の検証子・`lambda`） | 読む。書かれた位置から 1 段（構築で走るものは `__init__` と同じ 1 段） | Q10、Q14 |
+| N1 | 暗黙に走るコードの読む範囲と深さ（`@property`・`cached_property`・`__enter__`/`__exit__`・`__call__`・dataclass の `__post_init__`/`default_factory`・pydantic の検証子） | 読む。書かれた位置から 1 段（構築で走るものは `__init__` と同じ 1 段） | Q10、Q14 |
 | N2 | 解析器の INDIRECT の表に無い間接の形（`Executor.map`・`call_soon`・`add_done_callback`）、起動時から常駐の worker、`atexit` の書き出しの深さ（`atexit` の到達の明文も無い） | 表に無い形も 1 段。常駐の worker は積む行の関数から 1 段。`atexit` は無い | Q13、Q34 |
 | N3 | ログの水準で書かれない記録（水準が定数、または環境変数） | 無い | Q36 |
 | N4 | 起動した木の中のスクリプト（子プロセス）の深さ | 無い | Q49 |

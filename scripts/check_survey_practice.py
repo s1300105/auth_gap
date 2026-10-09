@@ -80,10 +80,8 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
         v = r.get(c, "")
         if v[:1] in ("=", "+", "-", "@"):
             notes.append(f"{c} の先頭が {v[:1]!r}（表計算のソフトで式として読まれる）")
-    if out in ("違反でない", "不明") and "読んだ範囲" not in ev:
-        errs.append(f"{out} なのに evidence に「読んだ範囲」が無い（18.4）")
-    elif out in VIOLATIONS and "読んだ範囲" not in ev:
-        notes.append("evidence に「読んだ範囲」が無い（18.4 はどの答えでも書くとする。止めたなら止めたところまで）")
+    if out in ("違反でない", "不明", *VIOLATIONS) and "読んだ範囲" not in ev:
+        errs.append(f"{out} なのに evidence に「読んだ範囲」が無い（18.4 はどの答えでも書くとする。止めたなら止めたところまで）")
 
     if out in VIOLATIONS:
         wt = r.get("write_target", "").strip()
@@ -125,6 +123,8 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
                     errs.append(f"unknown_reason の類 {cls} は実態調査では使わない（解析器の打ち切りの類）")
                 elif not re.match(r"^[:：]\s*\S", ur[len(cls):]):
                     errs.append("unknown_reason が類だけで説明が無い（「類: 説明（ファイル:行つき）」の形で書く）")
+                elif cls == "手引きで決まらない" and not note:
+                    errs.append("unknown_reason が「手引きで決まらない」なのに note が空（読めば何になるかを書く。03_record.md の 3.5）")
             except VocabularyError as e:
                 spaced = [c for c in UNKNOWN_REASON_CLASSES if re.match(re.escape(c) + r"\s+[:：]", ur)]
                 if spaced:
