@@ -85,6 +85,10 @@
 
 **材料**: `evidence/practice_v4/`（手順は同じフォルダの `README.md`）。
 
+**時間を測る前に 1 件練習するなら**（2026-10-09、学生の希望）: `evidence/practice_v4/warmup_and_timing.md`。練習の練習
+（W-01。P-M の 3 木と別の v4 の木）で手順をなぞり、P-M02 を本番と同じ条件（実態調査の形）で測る。1 件の手順を段ごとに
+細かく書いてある。
+
 1. `cd ~/research/auth_gap && git pull`
 2. 練習の 6 木を取る（初回だけ）:
    ```bash
