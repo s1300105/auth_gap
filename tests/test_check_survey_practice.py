@@ -91,8 +91,13 @@ def test_stopped_early_matches_outcome():
     assert any("stopped_early" in e for e in errs)
     errs, _ = cs.check_row(row(outcome="違反でない", evidence="読んだ範囲: a.py:1", stopped_early="はい"))
     assert any("stopped_early" in e for e in errs)
-    _, notes = cs.check_row(row(**{**VIOLATION, "stopped_early": "はい"}))
-    assert any("最初の違反で止めた" in n for n in notes)
+    errs, _ = cs.check_row(row(**{**VIOLATION, "stopped_early": "はい"}))
+    assert any("最初の違反で止めた" in e for e in errs)  # 03_record が「必ず」とする書き方は誤り
+    errs, _ = cs.check_row(row(**{**VIOLATION, "stopped_early": "はい", "note": "最初の違反で止めた（深さ 2 まで読んだ）"}))
+    assert errs == []
+    errs, _ = cs.check_row(row(**{**VIOLATION, "outcome": "違反（深さ 4 の外）", "depth": "6", "stopped_early": "はい",
+                                  "note": "最初の違反で止めた（深さ 6 まで読んだ）"}))
+    assert any("深さ 4 の外" in e and "いいえ" in e for e in errs)
 
 
 def test_ai_fields():
@@ -137,20 +142,84 @@ def test_main_skips_unjudged_rows_and_checks_the_practice_sheet_columns(tmp_path
     assert "使わない欄" in capsys.readouterr().out
 
 
-def test_condition_order_and_none_with_text_are_notes():
-    _, notes = cs.check_row(row(**{**VIOLATION, "condition_type": "運用者の設定;失敗・期限切れ"}))
-    assert any("失敗・期限切れ;運用者の設定" in n for n in notes)
-    _, notes = cs.check_row(row(**{**VIOLATION, "condition_type": "なし", "condition": "毎回"}))
-    assert any("なし" in n for n in notes)
+def test_condition_order_and_none_with_text_are_errors():
+    errs, _ = cs.check_row(row(**{**VIOLATION, "condition_type": "運用者の設定;失敗・期限切れ"}))
+    assert any("失敗・期限切れ;運用者の設定" in e for e in errs)  # 集計は書いた順の組み合わせを数える
+    errs, _ = cs.check_row(row(**{**VIOLATION, "condition_type": "なし", "condition": "毎回"}))
+    assert any("なし" in e for e in errs)
 
 
-def test_ai_found_must_be_exactly_nashi():
-    base = {**VIOLATION, "ai_used": "あり", "ai_model": "m 1（Web、記憶なし）", "ai_log": "ai_logs/X-01.md", "t_ai": "0"}
-    errs, _ = cs.check_row(row(**{**base, "ai_found": "なし"}))
+AI_BASE = {**VIOLATION, "ai_used": "あり", "ai_model": "m 1（Web、記憶なし）", "ai_log": "ai_logs/X-01.md", "t_ai": "0",
+           "note": "AI の前の判定: 違反"}
+
+
+def test_ai_found_must_be_exactly_nashi_or_name_a_line():
+    errs, _ = cs.check_row(row(**{**AI_BASE, "ai_found": "なし"}))
     assert errs == []
-    for bad in ("無し", "なし。", "特になし"):
-        errs, _ = cs.check_row(row(**{**base, "ai_found": bad}))
+    errs, _ = cs.check_row(row(**{**AI_BASE, "ai_found": "src/a.py:40: open(p, 'w') で設定ファイルを書く"}))
+    assert errs == []
+    # 集計は「なし」と同じ字だけを「無し」と数えるので、ほかの書き方は「新しい動作あり」に数えられてしまう
+    for bad in ("無し", "なし。", "特になし", "特に無し", "ない", "None", "N/A", "見つからなかった"):
+        errs, _ = cs.check_row(row(**{**AI_BASE, "ai_found": bad}))
         assert any("ひらがな 2 文字" in e for e in errs), bad
+
+
+def test_ai_used_needs_the_pre_ai_outcome_in_note():
+    errs, _ = cs.check_row(row(**{**AI_BASE, "ai_found": "なし", "note": ""}))
+    assert any("AI の前の判定" in e for e in errs)
+
+
+def test_unknown_reason_needs_an_explanation():
+    errs, _ = cs.check_row(row(outcome="不明", evidence="a.py:3／読んだ範囲: a.py:1-9", unknown_reason="相手の API"))
+    assert any("説明" in e for e in errs)
+
+
+def test_time_errors_are_reported_even_with_other_errors():
+    errs, _ = cs.check_row(row(**{**VIOLATION, "write_target": "ファイル", "t_ai": "5", "t_guide": "40"}))
+    assert any("write_target" in e for e in errs)
+    assert any("t_ai" in e for e in errs) and any("t_guide" in e for e in errs)
+
+
+def test_time_with_seconds_gets_a_hint():
+    errs, _ = cs.check_row(row(**{**VIOLATION, "t_start": "10:00:00"}))
+    assert any("秒" in e for e in errs)
+
+
+def test_newline_in_any_cell_is_an_error():
+    errs, _ = cs.check_row(row(**{**VIOLATION, "ai_model": "m\nweb"}))
+    assert any("ai_model" in e and "改行" in e for e in errs)
+
+
+def _write(p, lines):
+    with open(p, "w", encoding="utf-8-sig", newline="") as f:
+        f.write("\r\n".join(lines) + "\r\n")
+
+
+def test_main_reports_short_and_long_rows_without_crashing(tmp_path, capsys):
+    header = ",".join(BASE)
+    good = list(row(**VIOLATION).values())
+    p = tmp_path / "s.csv"
+    _write(p, [header, ",".join(good[:10])])  # 欄が足りない（区切りの , が足りない）
+    assert cs.main([str(p)]) == 1
+    assert "少ない" in capsys.readouterr().out
+    long_row = list(good)
+    long_row[list(BASE).index("evidence")] = "a.py:1, b.py:2"
+    _write(p, [header, ",".join(long_row)])  # セルの中の , を " で囲んでいない
+    assert cs.main([str(p)]) == 1
+    assert "多い" in capsys.readouterr().out
+
+
+def test_main_explains_a_bad_header(tmp_path, capsys):
+    p = tmp_path / "s.csv"
+    _write(p, ["練習の表", ",".join(BASE), ",".join(row(**VIOLATION).values())])
+    assert cs.main([str(p)]) == 1
+    assert "1 行目が見出しでない" in capsys.readouterr().out
+    _write(p, [";".join(BASE), ";".join(row(**VIOLATION).values())])
+    assert cs.main([str(p)]) == 1
+    assert "区切りが ;" in capsys.readouterr().out
+    _write(p, [",".join(BASE)])
+    assert cs.main([str(p)]) == 1
+    assert "件の行が無い" in capsys.readouterr().out
 
 
 def test_violation_without_read_range_is_a_note():

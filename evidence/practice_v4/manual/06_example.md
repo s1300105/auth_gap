@@ -79,7 +79,8 @@
 
 ## 6.2 EX-1（`search_notes`）を段ごとに
 
-**段 0**: 木の窓を開き、読み込みを待った（`t_setup` = 1）。ワークシートを写した。止めるかの方針は「止めない」とする。
+**段 0**: 写してあるワークシートと表を開き、木の窓を開いて読み込みを待った（`t_setup` = 1）。止める方針は「止めない（最初の違反の
+分を `note` に）」とし、ワークシートの A 節に書いた。
 
 **段 1**: 時計を動かした（`t_start` = 14:05）。`roster_form` は `decorator` → 段 2 では `def` の上のデコレータを見る。
 
@@ -99,15 +100,16 @@
 | 深さ | 関数 | ファイル:行の範囲 | どこから呼ばれるか | 呼ばれる条件 | 環境を変えうる行 |
 |---|---|---|---|---|---|
 | 0 | `search_notes` | `notes_server.py:43-48` | （本体） | | `:47` `log.info` |
-| 1 | `_search` | `:34-39` | `:48` | 空でない検索語 | |
+| 1 | `_search` | `:34-39` | `:48` | （なし。`:45-46` の空の検索語で抜けるのは条件に数えない） | |
 | 2 | `NotesClient.__init__` | `:19-21` | `:35`（構築） | | `:21` `httpx.Client(...)` |
 | 2 | `NotesClient.search` | `:23-26` | `:36`（受け手は `:35` の `NotesClient`） | | `:24` `GET` |
 | 2 | `_remember_query` | `:29-31` | `:38` | `:37` `save_history` が真 | `:30-31` `open(..., "a")`・`write` |
 
 深さ 3 の木の中の関数は無い（`httpx`・`json`・`time`・`os.path` は木の外）。
 
-**段 5**: ログの設定を `FileHandler|basicConfig|logger\.add|dictConfig` で検索 → `:10` の `basicConfig(level=logging.INFO)` だけ（ファイルの
-指定が無いので標準エラー）。モジュールの一番上の `:15` の `os.makedirs` も候補に入れる（届くかは段 6）。
+**段 5**: ログの設定を段 5 の 3 の 6 語の正規表現（`FileHandler|basicConfig|logger\.add|dictConfig|fileConfig|addHandler`）で木全体に
+検索 → 当たりは `:10` の `basicConfig(level=logging.INFO)` だけ（このサーバの起動で走る。ファイルの指定が無いので標準エラー）。
+モジュールの一番上の `:15` の `os.makedirs` も候補に入れる（届くかは段 6）。
 
 **段 6**（ワークシートの F 節）:
 
@@ -123,16 +125,18 @@
 モデルが指定した場所・利用者の文書）→ いいえ（場所はサーバが決めた `~/.notes_mcp`）。ログ（記録のためだけに書き、ツールの動作では
 読み返さない）→ **はい**（「いつ・何をした」を書く行で、`search_notes` の道筋に読み返す行は無い。16.2 の「読み返さない記録」）。
 
-**段 7**: 深さ 4 の中に反する動作 #4 がある → `違反`。反する動作は 1 つなので、ラベルは #4 から。止めても止めなくても同じ。
+**段 7**: 深さ 4 の中に反する動作 #4 がある → `違反`。反する動作は 1 つなので、ラベルは #4 から。止めても止めなくても同じ。止めない
+方針なので、#4 が届いて反すると決まった時点の分（12 分）を `note` に「最初の違反: 12 分（深さ 2 の notes_server.py:30）」と書く。
 
 **段 8**: 20 分より前に決まった（メモなし）。
 
-**段 9**: 表に写し、`evidence` の行（`:30`）を開き直した。ラップ 23 分 → `t_noai` = 23。
+**段 9**: 表に写し、`evidence` の行（`:30`）を開き直した。ラップ 21 分 → H 節の「段 9 の終わり」に 21 と書いた。
 
 **段 10**: しない。
 
-**段 11**: 時計を止めた（`t_end` = 14:31、休憩 3 分 → `t_break` = 3）。`minutes` = 23。手引きの 16.2 を読み返した 2 分 → `t_guide` = 2。
-確かめの道具で「よい」。
+**段 11**: `ai_used` = `なし`、`t_ai` = 0。時計を動かしたまま保存し、確かめの道具にかけた → 時間の欄が空という誤りだけ（ほかの誤りは
+無い）。時計を止めた（`t_end` = 14:31、休憩 3 分 → `t_break` = 3）。`minutes` = 23。手引きの 16.2 を 1 回開いて 2 分 → `t_guide` = 2。
+`t_noai` = 23 − 0 = 23。保存してもう一度かけ、「よい」。
 
 ## 6.3 EX-1 の表の行
 
@@ -144,9 +148,9 @@
 | `condition` | 引数 save_history に真を渡したとき（既定は False） |
 | `depth` | `2` |
 | `unknown_reason` | （空） |
-| `evidence` | 登録: notes_server.py:42 の宣言で :13 の FastMCP("notes") に search_notes を登録／道筋: notes_server.py:43-48 search_notes（深さ 0。:48 で _search(query, save_history)）→ :34-39 _search（深さ 1。条件: :37 save_history が真）→ :29-31 _remember_query（深さ 2）:30 open(STATE_DIR/history.jsonl, "a") で時刻と検索語を 1 行追記（STATE_DIR は :14 の ~/.notes_mcp）。このツールは history.jsonl を読み返さない／読んだ範囲: notes_server.py:1-48（深さ 0〜2。NotesClient.__init__ :19-21・search :23-26 は深さ 2）／確かめたこと: HTTP は :24 の GET だけ。ログの設定は :10 の basicConfig(level=INFO) だけで標準エラー（FileHandler\|basicConfig\|logger\.add\|dictConfig をファイル全体で検索）。:15 の makedirs はモジュールの読み込み時で届かない（14.4） |
+| `evidence` | 登録: notes_server.py:42 の宣言で :13 の FastMCP("notes") に search_notes を登録／道筋: notes_server.py:43-48 search_notes（深さ 0。:48 で _search(query, save_history)）→ :34-39 _search（深さ 1。条件: :37 save_history が真）→ :29-31 _remember_query（深さ 2）:30 open(STATE_DIR/history.jsonl, "a") で時刻と検索語を 1 行追記（STATE_DIR は :14 の ~/.notes_mcp）。このツールは history.jsonl を読み返さない／読んだ範囲: 深さ 0: notes_server.py:43-48 search_notes；深さ 1: :34-39 _search；深さ 2: :19-21 NotesClient.__init__、:23-26 NotesClient.search、:29-31 _remember_query／木の外: :24 httpx の GET、:47 log.info、:48 json.dumps／確かめたこと: HTTP は :24 の GET だけ。ログの設定は :10 の basicConfig(level=INFO) だけで標準エラー（段 5 の 3 の 6 語の正規表現を木全体で検索）。:15 の makedirs はモジュールの読み込み時で届かない（14.4） |
 | `ai_found` | （空） |
-| `note` | （空） |
+| `note` | 最初の違反: 12 分（深さ 2 の notes_server.py:30） |
 | `minutes` | `23` |
 | `ai_used` | `なし` |
 | `ai_model`・`ai_log` | （空） |
@@ -154,7 +158,6 @@
 | `t_start` / `t_end` | `14:05` / `14:31` |
 | `t_break` / `t_noai` / `t_ai` / `t_guide` / `t_setup` | `3` / `23` / `0` / `2` / `1` |
 
-（`evidence` の中の `\|` は、この表の中で `|` を表すための書き方です。表計算のソフトには `|` だけを書きます。）
 
 ## 6.4 EX-2（`list_tags`）の表の行（短く）
 
@@ -166,15 +169,24 @@
 | `outcome` | `違反でない` |
 | `evidence` | 登録: notes_server.py:51 の宣言で :13 の FastMCP("notes") に list_tags を登録／読んだ範囲: notes_server.py:52-55（深さ 0）、:19-21 NotesClient.__init__（深さ 1、:54 の構築）、:23-26 NotesClient.search（深さ 1、:55）／反しない理由: HTTP は :24 の GET だけ（15.1 の GET の行）。書き込み・DB・プロセスの起動は無い／確かめたこと: このツールはログを出さない。ログの設定は :10 で標準エラー。:15 の makedirs はモジュールの読み込み時で届かない（14.4） |
 | `stopped_early` | `違反なし` |
-| ラベルの 4 欄・`unknown_reason` | （空） |
+| ラベルの 4 欄・`unknown_reason`・`note` | （空） |
+| `ai_used` | `なし` |
+| `ai_model`・`ai_log`・`ai_found` | （空） |
+| `minutes` | `9` |
+| `t_start` / `t_end` | `15:00` / `15:09` |
+| `t_break` / `t_noai` / `t_ai` / `t_guide` / `t_setup` | `0` / `9` / `0` / `0` / `0` |
+
+（EX-2 は時計を測っていないので、時間の欄は確かめの道具を通すための作り物の値です。`05_practice.md` の 5.3 では、この値をそのまま
+写します。）
 
 ## 6.5 例題を少し変えると（答えがどう変わるか）
 
 | 変えたところ | 答え | 理由 |
 |---|---|---|
-| `:15` の `os.makedirs` を `_remember_query` の最初に移す | `違反`。**止めずに読めば**、`makedirs` は `引数;初回`（「かつ」）で `引数` より強いので選ばず、ラベルは追記（`ログ`・`引数`）のまま。**最初の違反で止めるなら**、先に確定する `makedirs` のラベル（`キャッシュ・状態の保存`・`引数;初回`。16.2 の「初回だけ `~/.app/` を作る」）になる | 14.3（`exist_ok=True` は `初回`）。段 7 の 2・3 |
+| `:15` の `os.makedirs` を `_remember_query` の最初に移す | `違反`。**止めずに読めば**、`makedirs` は `引数;初回`（「かつ」）で、一番強い `初回` の強さとして比べる【O48 (4)】ので `引数` より強く、ラベルは追記（`ログ`・`引数`）のまま。**最初の違反で止めるなら**、同じ関数の中で先の行の `makedirs` が先に確定する（同じ深さでは呼ばれる行の順に読む【O48 (4)】）ので、そのラベル（`キャッシュ・状態の保存`・`引数;初回`。16.2 の「初回だけ `~/.app/` を作る」）になる | 14.3（`exist_ok=True` は `初回`）。段 7 の 2・3 |
 | `save_history: bool = True`（既定を真） | `違反`、`condition_type` = `なし`、`condition` は空 | 引数の既定値で効果が起きる → `なし`（14.3） |
-| `:10` を `logging.basicConfig(filename="notes.log")` | `違反`。止めずに読めば、条件の一番弱い `:47` のログ（`なし`、深さ 0、`ログ`）がラベルになる | ログの出力先がファイル（18.3・15.1）。段 7 の 2 |
-| `:24` を `self._http.post(f"{self.base_url}/api/notes/search", json={"q": q})` | API の意味しだい。相手の文書で検索（照会）なら反しない、文書が無く名前「search」がはっきり照会を示すなら「API 名から」反しない、決められなければ `不明`（`相手の API`） | 15.1 の POST の行（D86） |
+| `:10` を `logging.basicConfig(filename="notes.log")` | `違反`。ラベルは `:47` のログ（`なし`、深さ 0、`ログ`）。浅い深さから読むので最初に決まるのも、条件が一番弱いのも `:47` で、止めても止めなくても同じ | ログの出力先がファイル（18.3・15.1）。段 7 の 2・3 |
+| `:24` を `self._http.post(f"{self.base_url}/api/notes/search", json={"q": q})` | **`違反` のまま**（`:30-31` の追記は変わらず届いて反する。違反 ＞ 不明）。POST の意味で変わるのはラベルだけ: 照会（相手の文書か、名前「search」がはっきり照会を示すなら「API 名から」）か、決められないなら、ラベルは #4 のまま（`ログ`・`引数`・深さ 2）で、POST の読みを `note` に書く。作成・更新なら、POST は毎回届く（`なし`）ので `引数` より弱く、ラベルは POST（`相手側の状態`・`なし`・深さ 2） | 15.1 の POST の行（D86 の 15）。段 7 の 1・2 |
+| `:24` を `/api/notes/sync` への POST に変え、さらに `:37-38`（`save_history` の追記）を消す | POST の意味で答えが決まる: 相手の文書で照会なら `違反でない`、作成・更新なら `違反`（`相手側の状態`・`なし`・深さ 2）、文書が無く名前の `sync` でも決まらなければ `不明`（`相手の API: notes_server.py:24 の POST /api/notes/sync …`） | 15.1 の POST の行。段 7 の 3 |
 | `if save_history:` を `if os.environ.get("NOTES_SAVE"):` | `違反`、`condition_type` = `運用者の設定`、`condition` = 環境変数 NOTES_SAVE を設定したとき | 14.3（環境変数で有効になる） |
 | `:42` の宣言を削り、`READ_ONLY = {"readOnlyHint": True}` を `docs_examples.py` に置くだけ（どこにも登録しない） | `対象外` | ツールの宣言ではない（D85） |

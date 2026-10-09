@@ -10,6 +10,9 @@
   （語彙は 1 か所でしか定義しない）。実態調査の答えの値だけはここで定義する（手引きに実態調査の節がまだ無い。O48 (4)）。
 * `outcome` が空の行は「まだ判定していない」として飛ばす（`--all` を付けると誤りにする）。
 * 誤りがあれば行ごとに出し、終了コード 1。注意（直さなくてもよいが見てほしい点）は終了コードに影響しない。
+* 03_record.md が「必ず」とする書き方は誤りにする（注意にすると、学生は直さなくてよいと読む）。
+* 欄の数が見出しと合わない行（セルの中の `,` を `"` で囲んでいない、など）は、欄がずれて値の誤りが連なるので、その行の
+  ほかの確かめをせずに欄の数の誤りだけを出す。
 """
 from __future__ import annotations
 
@@ -46,7 +49,10 @@ REQUIRED_COLUMNS = ("pair_id", "tree", "outcome", *LABEL_COLS, "unknown_reason",
                     "t_noai", "t_ai", "t_guide", "t_setup")
 FORBIDDEN_COLUMNS = ("target_by_arg", "cause", "verdict")
 TIME_RE = re.compile(r"^([01]?\d|2[0-3]):[0-5]\d$")
+TIME_WITH_SECONDS_RE = re.compile(r"^\d{1,2}:\d{2}:\d{2}$")
 INT_RE = re.compile(r"^\d+$")
+#: `ai_found` に新しい動作を書くときは「ファイル:行」を含める（03_record.md の 3.6）。
+FILE_LINE_RE = re.compile(r"\S+:\d+")
 
 
 def _minutes_of(hhmm: str) -> int:
@@ -64,12 +70,14 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
         return errs, notes
 
     ev = r.get("evidence", "").strip()
+    note = r.get("note", "").strip()
     if not ev:
         errs.append("evidence が空（どの答えでも書く）")
-    for c in TEXT_COLS:
-        v = r.get(c, "")
+    for c, v in r.items():
         if "\n" in v or "\r" in v:
             errs.append(f"{c} に改行がある（1 つのセルに改行を入れない。「／」で区切る）")
+    for c in TEXT_COLS:
+        v = r.get(c, "")
         if v[:1] in ("=", "+", "-", "@"):
             notes.append(f"{c} の先頭が {v[:1]!r}（表計算のソフトで式として読まれる）")
     if out in ("違反でない", "不明") and "読んだ範囲" not in ev:
@@ -92,9 +100,10 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
         if parts and parts != ("なし",) and not r.get("condition", "").strip():
             errs.append("condition_type に条件があるのに condition（条件の中身）が空")
         if parts == ("なし",) and r.get("condition", "").strip():
-            notes.append("condition_type = なし なのに condition がある（なし のときは空にし、「毎回届く」は evidence に書く）")
+            errs.append("condition_type = なし なのに condition がある（なし のときは空にし、「毎回届く」は evidence に書く）")
         if parts and list(parts) != sorted(parts, key=CONDITION_TYPES.index):
-            notes.append(f"condition_type = {ct!r} の順が 14.3 の表の順でない（{';'.join(sorted(parts, key=CONDITION_TYPES.index))} と書く）")
+            errs.append(f"condition_type = {ct!r} の順が 14.3 の表の順でない（集計は書いた順のまま組み合わせを数えるので、練習では"
+                        f" {';'.join(sorted(parts, key=CONDITION_TYPES.index))} とそろえる。O48 (4) の仮の扱い）")
         d = r.get("depth", "").strip()
         if not INT_RE.match(d):
             errs.append(f"depth = {d!r} が 0 以上の整数でない")
@@ -115,7 +124,7 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
                 if cls in NOT_IN_SURVEY_CLASSES:
                     errs.append(f"unknown_reason の類 {cls} は実態調査では使わない（解析器の打ち切りの類）")
                 elif not re.match(r"^[:：]\s*\S", ur[len(cls):]):
-                    notes.append("unknown_reason が類だけで説明が無い（「類: 説明（行つき）」の形がよい）")
+                    errs.append("unknown_reason が類だけで説明が無い（「類: 説明（ファイル:行つき）」の形で書く）")
             except VocabularyError as e:
                 errs.append(str(e) + f"（使える類: {[c for c in UNKNOWN_REASON_CLASSES if c not in NOT_IN_SURVEY_CLASSES]}）")
         elif ur:
@@ -126,8 +135,10 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
         errs.append(f"stopped_early = {se!r} は {list(STOPPED)} のどれでもない")
     elif (se == "違反なし") == (out in VIOLATIONS):
         errs.append(f"stopped_early = {se} と outcome = {out} が合わない（違反のときは はい / いいえ、それ以外は 違反なし）")
-    elif se == "はい" and "最初の違反で止めた" not in r.get("note", ""):
-        notes.append("stopped_early = はい なのに note に「最初の違反で止めた（深さ N まで読んだ）」が無い")
+    elif se == "はい" and out == "違反（深さ 4 の外）":
+        errs.append("違反（深さ 4 の外）は深さ 4 の中を全部読んで違反が無かったときの答えなので、stopped_early = はい にならない（いいえ）")
+    elif se == "はい" and "最初の違反で止めた" not in note:
+        errs.append("stopped_early = はい なのに note に「最初の違反で止めた（深さ N まで読んだ）」が無い")
 
     au = r.get("ai_used", "").strip()
     if au not in AI_USED:
@@ -138,8 +149,11 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
         af = r.get("ai_found", "").strip()
         if not af:
             errs.append("ai_used = あり なのに ai_found が空（新しく見つからなければ「なし」と書く）")
-        elif af != "なし" and re.match(r"^(なし|無し|ナシ|特になし|とくになし)", af):
-            errs.append(f"ai_found = {af!r}: 新しく見つからなければ、ひらがな 2 文字の「なし」だけを書く（集計は「なし」と同じ字だけを見る）")
+        elif af != "なし" and not FILE_LINE_RE.search(af):
+            errs.append(f"ai_found = {af!r}: 新しく見つからなければ、ひらがな 2 文字の「なし」だけを書く（集計は「なし」と同じ字"
+                        "だけを見て、ほかの字は「新しい動作あり」に数える）。見つかったなら「ファイル:行: 理由」の形で書く")
+        if "AI の前の判定" not in note:
+            errs.append("ai_used = あり なのに note に「AI の前の判定: <outcome>」が無い（段 10 の 1、手引き 21 の 6）")
     else:
         for c in ("ai_model", "ai_log", "ai_found"):
             if r.get(c, "").strip():
@@ -147,7 +161,10 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
 
     t0, t1 = r.get("t_start", "").strip(), r.get("t_end", "").strip()
     for name, v in (("t_start", t0), ("t_end", t1)):
-        if not TIME_RE.match(v):
+        if TIME_WITH_SECONDS_RE.match(v):
+            errs.append(f"{name} = {v!r} に秒が付いている。表計算のソフトが時刻に変えたので、列を文字列にするか先頭に ' を付けて"
+                        " HH:MM で入れ直す（03_record.md の 5 節）")
+        elif not TIME_RE.match(v):
             errs.append(f"{name} = {v!r} が HH:MM（24 時間）でない")
     ints = {}
     for name in ("minutes", "t_break", "t_noai", "t_ai", "t_guide", "t_setup"):
@@ -156,17 +173,28 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
             errs.append(f"{name} = {v!r} が 0 以上の整数（分）でない")
         else:
             ints[name] = int(v)
-    if not errs and TIME_RE.match(t0) and TIME_RE.match(t1) and len(ints) == 6:
+    if TIME_RE.match(t0) and TIME_RE.match(t1) and {"minutes", "t_break"} <= ints.keys():
         span = (_minutes_of(t1) - _minutes_of(t0)) % (24 * 60)
         if abs(span - ints["t_break"] - ints["minutes"]) > 2:
             notes.append(f"t_end − t_start − t_break = {span - ints['t_break']} 分と minutes = {ints['minutes']} 分が 2 分より離れている")
-        if abs(ints["t_noai"] + ints["t_ai"] - ints["minutes"]) > 2:
-            notes.append(f"t_noai + t_ai = {ints['t_noai'] + ints['t_ai']} 分と minutes = {ints['minutes']} 分が合わない")
-        if au == "なし" and ints["t_ai"] != 0:
-            errs.append("ai_used = なし なのに t_ai が 0 でない")
-        if ints["t_guide"] > ints["minutes"]:
-            errs.append("t_guide が minutes より大きい（手引きを読み返した分は minutes の内数）")
+    if {"minutes", "t_noai", "t_ai"} <= ints.keys() and abs(ints["t_noai"] + ints["t_ai"] - ints["minutes"]) > 2:
+        notes.append(f"t_noai + t_ai = {ints['t_noai'] + ints['t_ai']} 分と minutes = {ints['minutes']} 分が合わない")
+    if au == "なし" and ints.get("t_ai", 0) != 0:
+        errs.append("ai_used = なし なのに t_ai が 0 でない")
+    if {"minutes", "t_guide"} <= ints.keys() and ints["t_guide"] > ints["minutes"]:
+        errs.append("t_guide が minutes より大きい（手引きを読み返した分は minutes の内数）")
     return errs, notes
+
+
+def _header_hint(first_line: str) -> str:
+    """見出しの欄が足りないときに、よくある原因を 1 つ当てる。"""
+    if "pair_id" not in first_line:
+        return "（1 行目が見出しでない。表の上に行を足していないか、見出しの行を消していないか）"
+    if first_line.count(";") > first_line.count(","):
+        return "（区切りが ; になっている。コンマ区切りの CSV で保存し直す）"
+    if first_line.count("\t") > first_line.count(","):
+        return "（区切りがタブになっている。コンマ区切りの CSV で保存し直す）"
+    return ""
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -176,22 +204,39 @@ def main(argv: list[str] | None = None) -> int:
     a = ap.parse_args(argv)
     try:
         with open(a.csv, encoding="utf-8-sig", newline="") as f:
-            rows = list(csv.DictReader(f))
+            first_line = f.readline()
+            f.seek(0)
+            reader = csv.DictReader(f)
+            rows = list(reader)
+            header = [c for c in (reader.fieldnames or []) if c is not None]
     except UnicodeDecodeError:
         print("誤り: 表が UTF-8 で保存されていない。Excel なら「CSV UTF-8（コンマ区切り）」で保存し直す（03_record.md の 5 節）")
         return 1
-    header = set(rows[0].keys()) if rows else set()
     bad = 0
     missing = [c for c in REQUIRED_COLUMNS if c not in header]
     extra = [c for c in FORBIDDEN_COLUMNS if c in header]
     if missing:
-        print(f"誤り: 欄が無い: {missing}")
-        bad += 1
+        print(f"誤り: 欄が無い: {missing}{_header_hint(first_line)}")
+        print(f"誤りのある行・欄: {bad + 1}")
+        return 1
     if extra:
         print(f"誤り: 実態調査では使わない欄がある: {extra}")
         bad += 1
-    for i, r in enumerate(rows, start=2):
-        pid = r.get("pair_id", "?")
+    if not rows:
+        print("誤り: 見出しの行だけで、件の行が無い")
+        return 1
+    for i, raw in enumerate(rows, start=2):
+        pid = raw.get("pair_id") or "?"
+        if None in raw:
+            print(f"{i} 行目 {pid}: 誤り: 欄の数が見出しより多い（セルの中の , を \" で囲んでいない。表計算のソフトで開いて"
+                  " 保存し直すか、テキストエディタなら \"…\" で囲む）")
+            bad += 1
+            continue
+        if any(v is None for v in raw.values()):
+            print(f"{i} 行目 {pid}: 誤り: 欄の数が見出しより少ない（区切りの , が足りない。表計算のソフトで開いて保存し直す）")
+            bad += 1
+            continue
+        r = dict(raw)
         if not r.get("outcome", "").strip():
             if a.all:
                 print(f"{i} 行目 {pid}: 誤り: outcome が空（まだ判定していない）")
