@@ -126,7 +126,12 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
                 elif not re.match(r"^[:：]\s*\S", ur[len(cls):]):
                     errs.append("unknown_reason が類だけで説明が無い（「類: 説明（ファイル:行つき）」の形で書く）")
             except VocabularyError as e:
-                errs.append(str(e) + f"（使える類: {[c for c in UNKNOWN_REASON_CLASSES if c not in NOT_IN_SURVEY_CLASSES]}）")
+                spaced = [c for c in UNKNOWN_REASON_CLASSES if re.match(re.escape(c) + r"\s+[:：]", ur)]
+                if spaced:
+                    errs.append(f"unknown_reason = {ur!r}: 類 {spaced[0]} とコロンのあいだに空白がある（「{spaced[0]}: 説明」のように、"
+                                "類の直後に : を書く）")
+                else:
+                    errs.append(str(e) + f"（使える類: {[c for c in UNKNOWN_REASON_CLASSES if c not in NOT_IN_SURVEY_CLASSES]}）")
         elif ur:
             errs.append(f"{out} なのに unknown_reason がある（不明のときだけ書く）")
 
@@ -139,6 +144,9 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
         errs.append("違反（深さ 4 の外）は深さ 4 の中を全部読んで違反が無かったときの答えなので、stopped_early = はい にならない（いいえ）")
     elif se == "はい" and "最初の違反で止めた" not in note:
         errs.append("stopped_early = はい なのに note に「最初の違反で止めた（深さ N まで読んだ）」が無い")
+    elif se == "いいえ" and out == "違反" and "最初の違反:" not in note:
+        errs.append("止めない方針（stopped_early = いいえ）の違反なのに note に「最初の違反: N 分（深さ D の ファイル:行）」が無い"
+                    "（段 7 の 3。B1 で止めたときの時間を出すのに使う）")
 
     au = r.get("ai_used", "").strip()
     if au not in AI_USED:

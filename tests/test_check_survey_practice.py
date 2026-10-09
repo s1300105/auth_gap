@@ -26,7 +26,8 @@ def row(**kw):
 
 
 VIOLATION = dict(outcome="違反", write_target="ログ", condition_type="引数", condition="引数 save=True のとき",
-                 depth="2", evidence="a.py:10 → a.py:20 open(p, 'a')／読んだ範囲: a.py:1-30", stopped_early="いいえ")
+                 depth="2", evidence="a.py:10 → a.py:20 open(p, 'a')／読んだ範囲: a.py:1-30", stopped_early="いいえ",
+                 note="最初の違反: 5 分（深さ 2 の a.py:20）")
 
 
 def test_good_violation_row_passes():
@@ -70,7 +71,7 @@ def test_condition_text_required_unless_none():
 def test_other_unknown_target_needs_note_prefix():
     errs, _ = cs.check_row(row(**{**VIOLATION, "write_target": "その他・不明"}))
     assert any("その他:" in e for e in errs)
-    errs, _ = cs.check_row(row(**{**VIOLATION, "write_target": "その他・不明", "note": "その他: 受け渡しファイル"}))
+    errs, _ = cs.check_row(row(**{**VIOLATION, "write_target": "その他・不明", "note": "その他: 受け渡しファイル／最初の違反: 5 分（深さ 2 の a.py:20）"}))
     assert errs == []
 
 
@@ -150,7 +151,7 @@ def test_condition_order_and_none_with_text_are_errors():
 
 
 AI_BASE = {**VIOLATION, "ai_used": "あり", "ai_model": "m 1（Web、記憶なし）", "ai_log": "ai_logs/X-01.md", "t_ai": "0",
-           "note": "AI の前の判定: 違反"}
+           "note": "最初の違反: 5 分（深さ 2 の a.py:20）／AI の前の判定: 違反"}
 
 
 def test_ai_found_must_be_exactly_nashi_or_name_a_line():
@@ -167,6 +168,16 @@ def test_ai_found_must_be_exactly_nashi_or_name_a_line():
 def test_ai_used_needs_the_pre_ai_outcome_in_note():
     errs, _ = cs.check_row(row(**{**AI_BASE, "ai_found": "なし", "note": ""}))
     assert any("AI の前の判定" in e for e in errs)
+
+
+def test_not_stopping_needs_the_first_violation_minute():
+    errs, _ = cs.check_row(row(**{**VIOLATION, "note": ""}))
+    assert any("最初の違反:" in e for e in errs)
+
+
+def test_space_before_colon_in_unknown_reason_gets_a_hint():
+    errs, _ = cs.check_row(row(outcome="不明", evidence="a.py:3／読んだ範囲: a.py:1-9", unknown_reason="相手の API : a.py:3 の POST"))
+    assert any("空白" in e for e in errs)
 
 
 def test_unknown_reason_needs_an_explanation():

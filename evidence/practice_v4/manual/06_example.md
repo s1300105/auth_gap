@@ -167,7 +167,7 @@
 | 欄 | 値 |
 |---|---|
 | `outcome` | `違反でない` |
-| `evidence` | 登録: notes_server.py:51 の宣言で :13 の FastMCP("notes") に list_tags を登録／読んだ範囲: notes_server.py:52-55（深さ 0）、:19-21 NotesClient.__init__（深さ 1、:54 の構築）、:23-26 NotesClient.search（深さ 1、:55）／反しない理由: HTTP は :24 の GET だけ（15.1 の GET の行）。書き込み・DB・プロセスの起動は無い／確かめたこと: このツールはログを出さない。ログの設定は :10 で標準エラー。:15 の makedirs はモジュールの読み込み時で届かない（14.4） |
+| `evidence` | 登録: notes_server.py:51 の宣言で :13 の FastMCP("notes") に list_tags を登録／読んだ範囲: 深さ 0: notes_server.py:52-55 list_tags；深さ 1: :19-21 NotesClient.__init__（:54 の構築）、:23-26 NotesClient.search（:55）／木の外: :21 httpx.Client の構築、:24 httpx の GET、:55 json.dumps／反しない理由: HTTP は :24 の GET だけ（15.1 の GET の行）。書き込み・DB・プロセスの起動は無い／確かめたこと: このツールはログを出さない。ログの設定は :10 で標準エラー。:15 の makedirs はモジュールの読み込み時で届かない（14.4） |
 | `stopped_early` | `違反なし` |
 | ラベルの 4 欄・`unknown_reason`・`note` | （空） |
 | `ai_used` | `なし` |
