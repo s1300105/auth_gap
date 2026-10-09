@@ -1,0 +1,18 @@
+import json,os,sys
+sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
+from analyze import build_graph, closure, load_decl_paths, load_roster
+S=os.path.dirname(os.path.abspath(__file__))
+summ=json.load(open(S+'/summary.json'))
+dp=load_decl_paths(); ro=load_roster()
+def flags(t, f):
+    d=json.load(open(f'{S}/out/{t}.json')); files=d['files']; g=build_graph(files)
+    roots=summ[t]['roots']; dr=[p for p in dp.get(t,[]) if p in files]
+    rof=sorted({e['relpath'] for e in ro.get(t,[]) if e['relpath'] in files})
+    R=f in closure(g,roots); D=f in closure(g,dr) if dr else False; O=f in closure(g,rof) if rof else False
+    # which RO files reach f
+    ro_reach=[x for x in rof if f in closure(g,[x])]
+    return R,D,O,ro_reach,files.get(f,{}).get('cls')
+for arg in sys.argv[1:]:
+    t,f=arg.split(':',1)
+    R,D,O,rr,c=flags(t,f)
+    print(f"{t} {f} cls={c} R={int(R)} D={int(D)} O={int(O)} ro_files_reaching={len(rr)} {rr[:4]}")

@@ -1,0 +1,177 @@
+#!/usr/bin/env python3
+"""Manual classification (after reading code) + automatic env-credential pass -> per-sample counts."""
+from __future__ import annotations
+
+import json
+import os
+import re
+import sys
+from collections import Counter, defaultdict
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from analyze import build_graph, closure  # noqa: E402
+
+S = os.path.dirname(os.path.abspath(__file__))
+summ = json.load(open(os.path.join(S, "summary.json")))
+flows = json.load(open(os.path.join(S, "oauth_flows.json")))
+
+# category per tree (manual).  A = third-party/first-party API-capability scope literal in MCP-server code
+# Aid = identity/refresh-only scope literal in MCP-server code;  B = upstream OAuth/credential flow in MCP-server
+# code but no capability-bearing scope literal (env/console/RBAC);  C = scope literal only outside MCP-server code;
+# M = only MCP-layer (downstream) scopes; everything else = N (then E is computed automatically)
+MANUAL = {
+    # ---- A
+    "v2-aixolotl__microsoft-planner-mcp": ("A", ["microsoft"], "W"),
+    "v2-dbt-labs__dbt-mcp": ("A", ["dbt"], "W(coarse)"),
+    "v2-hbg1345__teamplay-talk": ("A", ["kakao"], "W"),
+    "v2-jag-k__google-docs-mcp": ("A", ["google"], "W"),
+    "v2-prebid__salesagent": ("A", ["google"], "W(coarse)"),
+    "v2-yahoojp-marketing__ly-ads-mcp-server": ("A", ["ly-ads"], "W(coarse)"),
+    "v3-bauer-group__ip-zammad-mcpserver": ("A", ["zammad"], "W(coarse)"),
+    "v3-golinks__goprofiles-mcp": ("A", ["goprofiles(1st-party)"], "W"),
+    "v3-julianobarbosa__azure-finops-mcp-server": ("A", ["microsoft(azure-arm)"], "U(.default)"),
+    "v3-kvkthecreator__yarnnnn": ("A", ["slack", "github", "reddit"], "W"),
+    "v3-matisup10__e-boekhouden-mcp": ("A", ["microsoft"], "U(.default)"),
+    "v3-natejswenson__local-fitness": ("A", ["google"], "W"),
+    "v3-porkbutts__gsheets-mcp-server": ("A", ["google"], "W"),
+    "v3-typerobot__klavis": ("A", ["google", "microsoft", "reddit", "spotify"], "W"),
+    "v4-callzhang__ceo-agent-service": ("A", ["memory-connector(own svc)"], "W"),
+    "v4-roystondalmeida__crypto-price-tracker-mcp": ("A", ["google"], "W"),
+    "v4-vexxhost__entra-pim-mcp-server": ("A", ["microsoft"], "W"),
+    "v4-jayrockliffe-defused__gsc-mcp": ("A", ["google"], "R"),
+    "v3-aslamkhan-github__lab": ("A", ["linkedin"], "W"),
+    "v4-mohanrajp05__trading-agent-": ("A", ["linkedin"], "W"),
+    "v4-appachhi__bugasura-mcp-server": ("A", ["bugasura(1st-party)"], "W(coarse)"),
+    # ---- Aid
+    "v2-deploylabs429__agent-langchain-fastapi": ("Aid", ["google", "github"], "ID"),
+    "v2-mathis-14__docstral": ("Aid", ["google"], "ID"),
+    "v3-mcp-kanzennyumon-book-team__mcpbook-samples": ("Aid", ["google"], "ID"),
+    "v4-corradocavalli__mcp_2_the_max": ("Aid", ["microsoft"], "ID"),
+    "v4-citeck__citeck-claude-code-tools": ("Aid", ["citeck"], "ID(+refresh)"),
+    "v2-nan-fe__agents": ("Aid", ["lark"], "ID(refresh only)"),
+    # ---- B
+    "v2-mcparmory__registry": ("B", ["many (32 generated servers)"], "env OAUTH2_SCOPES"),
+    "v4-benjaminmridler__mcp-atlassian": ("B", ["atlassian"], "env ATLASSIAN_OAUTH_SCOPE"),
+    "v3-lazyseaseal__validationtpmcp": ("B", ["atlassian"], "env ATLASSIAN_OAUTH_SCOPE"),
+    "v4-pengfeip908__git-skill-test": ("B", ["atlassian"], "env ATLASSIAN_OAUTH_SCOPE"),
+    "v3-w159__tech-tools": ("B", ["crowdstrike"], "console; needed-scope map in code"),
+    "v4-missionit__claroty-workshop": ("B", ["crowdstrike"], "console; needed-scope map in code"),
+    "v3-niduran-orion__bigquery-mcp-server": ("B", ["google"], "service account, no scopes"),
+    "v3-vrahad-analytics__pydatarheo": ("B", ["google"], "service account, no scopes"),
+    "v2-vishalsachdev__canvas-mcp": ("B", ["azure"], "DefaultAzureCredential (RBAC)"),
+    "v2-jsyzlbw__bbwatch": ("B", ["adfs"], "SSO login, no scope"),
+    "v2-oldmangrizzz__hughmkiii": ("B", ["neo4j"], "client credentials (vendored extension)"),
+    "v4-glenbover__kallisti-reels": ("B", ["tiktok"], "refresh grant, no scope"),
+    "v4-nt-nerdtechnic__navide": ("B", ["google"], "refresh grant of another CLI's token"),
+    "v4-andrewbolster__mcp.bolster.online": ("B", ["github"], "GitHubProvider, default scopes"),
+    # ---- C
+    "v2-david-li0406__meta-skill-evloving": ("C", ["google", "spotify", "microsoft"], "vendored skill collection"),
+    "v2-kirlts__toolset": ("C", ["google"], "non_src only"),
+    "v2-leoalord__learningfocused": ("C", ["google"], "pipeline not reachable"),
+    "v2-remembra-ai__remembra": ("C", ["google"], "not reachable"),
+    "v2-rwheeler007__cohort": ("C", ["google", "twitter", "linkedin", "facebook"], "not reachable"),
+    "v2-xorbitsai__xagent": ("C", ["many"], "platform connector registry, not reachable"),
+    "v3-bali-zero__teman2": ("C", ["google", "zoho"], "app backend/scripts, not reachable"),
+    "v3-trycaspian__caspian-sdk": ("C", ["slack"], "not reachable"),
+    "v3-ttokttokttok__outfix": ("C", ["google"], "not reachable"),
+    "v3-w4sp4nx2__hr-ai-operations": ("C", ["oidc"], "identity, not reachable"),
+    "v4-makfuncky__zozi": ("C", ["google", "facebook"], "identity, not reachable"),
+    "v4-manavgup__wikimind": ("C", ["google", "github"], "identity login, not reachable"),
+    "v3-starshipsuperjam__engine-template": ("C", ["github"], "tests only"),
+    "v4-ryxmarcus__mcp-aws": ("C", ["google", "cognito"], "docs text / not reachable"),
+    "v4-tushar3006__macp-aws-lambda": ("C", ["cognito"], "not reachable"),
+    "v2-moon201595__agent": ("C", ["google"], "Apps Script manifest (json)"),
+    "v2-fanfan-de__anybox": ("C", ["google"], "plugin registry json"),
+}
+M_TREES = {
+    "v2-8dionysus__abyss-stack", "v2-ariffazil__wealth", "v2-dddabtc__winremote-mcp", "v2-innovatehubph__innovatehub-ai-platform",
+    "v2-kaistenberg__mcp-linkedin", "v2-redhat-ai-americas__memory-hub", "v2-thepapermen__django-mcp-sql",
+    "v3-andrijadumancic__mcp_test", "v3-evgenygurin__dj-music-plugin", "v3-myrikld__tg-mcp", "v3-p-v1shnu__pressure-harness",
+    "v3-kaizencycle__civic-protocol-core", "v3-iqmia__quollnet-mcp", "v3-vicampuzano__metricool-mcp", "v3-neilcohen322__storecipe",
+    "v3-tattzy25__digital-hustle-memory", "v3-openai__openai-apps-sdk-examples", "v4-ariffazil__geox", "v4-bimobintang__tradingagents",
+    "v4-criscode2022__task-manager-cloud", "v4-cursortouch__macos-mcp", "v4-kskwon02__mqtt-mcp", "v4-langchain-ai__docs",
+    "v4-shm379__telegram-notebooklm-mvp", "v4-souvikroy__agent-to-agent-system", "v4-konsti__fastmcp-playground",
+    "v4-kylestratis__ai_agents_mcp_examples", "v4-lfi2022__cmpmail", "v4-tallyfy__mcp-public",
+}
+
+UP_CRED = re.compile(r"(TOKEN|API[_-]?KEY|APIKEY|ACCESS[_-]?KEY|CLIENT[_-]?SECRET|(^|_)PAT($|_)|CREDENTIALS?$|SECRET[_-]?KEY|_SECRET$|PASSWORD|PASSWD|BEARER)", re.I)
+INBOUND = re.compile(r"(MCP|JWT|SESSION|SIGNING|ENCRYPT|CSRF|FLASK_SECRET|DJANGO_SECRET|APP_SECRET|ADMIN_PASSWORD|AUTH_TOKEN_SECRET)", re.I)
+LLM = re.compile(r"(OPENAI|ANTHROPIC|CLAUDE|GEMINI|GOOGLE_API_KEY|GROQ|MISTRAL|COHERE|DEEPSEEK|OPENROUTER|TOGETHER|HF_|HUGGING|AZURE_OPENAI|PERPLEXITY|XAI|DASHSCOPE|MOONSHOT|ZHIPU|QWEN|LLM|OLLAMA|VOYAGE|JINA|FIREWORKS|REPLICATE|LANGSMITH|LANGCHAIN|LANGFUSE|OPENAI|MINIMAX|KIMI|SILICONFLOW|ARK_|VOLC|BAICHUAN|LITELLM|AI_API_KEY|MODEL)", re.I)
+SETTINGS_FIELD = re.compile(r"(token|api_key|apikey|access_key|client_secret|secret_key|password|credentials?)$", re.I)
+
+
+def env_creds(t, reach_only):
+    d = json.load(open(os.path.join(S, "out", t + ".json")))
+    files = d["files"]
+    reach = None
+    if reach_only:
+        g = build_graph(files)
+        reach = closure(g, summ[t]["roots"]) if summ[t]["roots"] else set()
+    names = set()
+    for f, r in files.items():
+        if r["cls"] != "src" or "skill-flow/data" in f:
+            continue
+        if reach is not None and f not in reach:
+            continue
+        for name, _ in r["env"]:
+            if UP_CRED.search(name) and not INBOUND.search(name):
+                names.add(name)
+        for name, _ in r["settings_fields"]:
+            if SETTINGS_FIELD.search(name) and not INBOUND.search(name):
+                names.add("settings:" + name)
+    return names
+
+
+def main():
+    out = {}
+    for t in sorted(summ):
+        st = summ[t]["status"]
+        cat = MANUAL.get(t, ("M", [], "") if t in M_TREES else ("N", [], ""))
+        ea = env_creds(t, False)
+        er = env_creds(t, True)
+        out[t] = {"status": st, "mcp_ast": summ[t]["mcp_tree_ast"], "cat": cat[0], "prov": cat[1], "rw": cat[2],
+                  "env_any": sorted(ea), "env_reach": sorted(er),
+                  "env_any_nonllm": sorted(n for n in ea if not LLM.search(n)),
+                  "env_reach_nonllm": sorted(n for n in er if not LLM.search(n))}
+    json.dump(out, open(os.path.join(S, "final.json"), "w"), indent=1)
+
+    def report(label, pred):
+        print(f"\n=== denominator: {label}")
+        tot = Counter()
+        for s in ("v2", "v3", "v4"):
+            ts = [t for t in out if t.startswith(s + "-") and pred(out[t])]
+            c = Counter(out[t]["cat"] for t in ts)
+            a_w = sum(1 for t in ts if out[t]["cat"] == "A" and out[t]["rw"].startswith("W"))
+            a_r = sum(1 for t in ts if out[t]["cat"] == "A" and out[t]["rw"] == "R")
+            a_u = sum(1 for t in ts if out[t]["cat"] == "A" and out[t]["rw"].startswith("U"))
+            no_up = [t for t in ts if out[t]["cat"] not in ("A", "Aid", "B")]
+            e_any = sum(1 for t in no_up if out[t]["env_any"])
+            e_reach = sum(1 for t in no_up if out[t]["env_reach"])
+            e_reach_nonllm = sum(1 for t in no_up if out[t]["env_reach_nonllm"])
+            e_any_nonllm = sum(1 for t in no_up if out[t]["env_any_nonllm"])
+            row = dict(n=len(ts), A=c["A"], A_write=a_w, A_read=a_r, A_undet=a_u, Aid=c["Aid"], B=c["B"], C=c["C"], M=c["M"], N=c["N"],
+                       E_any=e_any, E_reach=e_reach, E_any_nonllm=e_any_nonllm, E_reach_nonllm=e_reach_nonllm)
+            tot.update(row)
+            print(s, row)
+        print("all", dict(tot))
+
+    report("post_fetch mcp_server (project definition)", lambda r: r["status"] == "mcp_server")
+    report("AST tool registration (this script)", lambda r: r["mcp_ast"])
+    report("all local trees", lambda r: True)
+    # providers among A (post-fetch MCP)
+    pc = Counter()
+    for t, r in out.items():
+        if r["status"] == "mcp_server" and r["cat"] == "A":
+            for p in r["prov"]:
+                pc[p.split("(")[0]] += 1
+    print("\nproviders among A (mcp_server):", dict(pc.most_common()))
+    pc2 = Counter()
+    for t, r in out.items():
+        if r["status"] == "mcp_server" and r["cat"] in ("A", "Aid"):
+            for p in r["prov"]:
+                pc2[p.split("(")[0]] += 1
+    print("providers among A+Aid (mcp_server):", dict(pc2.most_common()))
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,28 @@
+import json,os,sys,collections
+sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
+from analyze import build_graph, closure, load_decl_paths
+S=os.path.dirname(os.path.abspath(__file__))
+summ=json.load(open(S+'/summary.json'))
+dp=load_decl_paths()
+UP={'google_auth_oauthlib','google.oauth2','google.auth','googleapiclient','requests_oauthlib','oauthlib','authlib','msal','azure.identity','spotipy','httpx_oauth','slack_sdk.oauth','social_core','msgraph','O365','dropbox','tweepy','praw','atlassian','PyGithub','slack_sdk','slack_bolt','notion_client','python-gitlab'}
+MCPL={'fastmcp.server.auth','mcp.server.auth','mcp.client.auth'}
+out={}
+for t in sorted(summ):
+    d=json.load(open(f'{S}/out/{t}.json'))
+    files=d['files']
+    roots=summ[t]['roots']
+    g=build_graph(files)
+    reach=closure(g,roots) if roots else set()
+    up=collections.defaultdict(set); ml=collections.defaultdict(set); urls=[]
+    for f in reach:
+        r=files[f]
+        if r['cls']!='src': continue
+        for m in r['oauth_imports']:
+            (ml if m in MCPL else up)[m].add(f)
+        for u,ln in r['oauth_urls']:
+            urls.append((f,ln,u[:90]))
+    out[t]={'up':{k:sorted(v) for k,v in up.items()},'mcpl':{k:sorted(v) for k,v in ml.items()},'urls':urls}
+json.dump(out,open(S+'/oauth_flows.json','w'),indent=1)
+for t,v in out.items():
+    if v['up'] or v['mcpl'] or v['urls']:
+        print(t, summ[t]['status'], 'UP:',sorted(v['up']), 'MCPL:',sorted(v['mcpl']), 'urls:',len(v['urls']), [u[2] for u in v['urls'][:3]])

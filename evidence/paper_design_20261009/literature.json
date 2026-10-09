@@ -1,0 +1,384 @@
+{
+ "items": [
+  {
+   "title": "MiniScope: Authorizing Agents with Least-Privilege Permissions（v1 の題は MiniScope: A Least Privilege Framework for Authorizing Tool Calling Agents）",
+   "url": "https://arxiv.org/abs/2512.11147",
+   "authors_venue_year": "Jinhao Zhu, Xiao Huang, Kevin Tseng, Gil Vernik, Shishir G. Patil, Vivian Fang, Raluca Ada Popa / arXiv cs.CR / v1 2025-12-11, v2 2026-10-06（3 日前に改訂。題が変わった）",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "OAuth のスコープが許す API メソッドの集合を比べて、スコープの階層を作る（付録 A の Algorithm 1。各スコープを、メソッド集合が最小の上位スコープにつなぐ）。対象は Google（Gmail・Calendar・Drive・Storage）、Microsoft（Outlook・Outlook Calendar）、Slack、Dropbox、Notion、Zoom で、GitHub は無い。§5.6「Overprivileged Deployments」では ChatGPT と Claude のコネクタを監査し、要旨によれば「six overprivileged connector configurations」を見つけた。本文（v2 の HTML）によると、ChatGPT の Gmail・Calendar のコネクタは「advertised tools are read-only」なのに変更・削除できる権限を持つ。Claude の Drive/Storage には任意で付けられる書き込み・削除の権限がある。Notion は 32 メソッドを許すが、最小で要るのは 13 または 29 だった。比べる元は「コネクタが宣伝する機能」で、コードは読んでいない。調べたコネクタの総数は書かれていない。本文に MCP と readOnlyHint は出てこない（参考文献にだけある）。repo では docs/textbook/appendix-g-13.md が v1 を「注釈の語が 0 件」と確かめただけで、このコネクタの監査は related_work.md に入っていない。上の文言は WebFetch の要約器を通して得たものなので、引用する前に verify_quote.py で照らすこと",
+   "overlap": "scoops_scope_axis",
+   "already_in_related_work": false
+  },
+  {
+   "title": "A First Measurement Study on Authentication Security in Real-World Remote MCP Servers",
+   "url": "https://arxiv.org/abs/2605.22333",
+   "authors_venue_year": "Huijun Zhou, Xiaohan Zhang, Haozhe Zhang, Haoyang Zhang, Mi Zhang, Min Yang / arXiv cs.CR / 2026-05-21",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "生きているリモート MCP サーバ 7,973 台を測った。40.55% は認証なしでツールを呼べる。OAuth を使うのは 30.45%、静的トークンは 29%。OAuth の欠陥を 4 類 9 型に分類し、試験できた 119 台で 325 件の欠陥を見つけた（動的クライアント登録の欠陥が 96.6%）。CVE は 9 件。測っているのは、MCP サーバが自分で持つ認可の実装の欠陥である。要旨には scope・least privilege・上流のトークンの語が出てこない（本文は未読）",
+   "overlap": "adjacent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Permissions on the Loose: Measuring Overprivilege in Real-World Serverless Applications（PrivLess）",
+   "url": "https://arxiv.org/abs/2607.02875",
+   "authors_venue_year": "Elvis Yeboah-Duako, Pubali Datta / arXiv cs.CR / v1 2026-07-03, v2 2026-09-08（venue の記載なし）",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "静的解析で、ソースコードから関数とクラウド資源のやり取りを取り出し、各やり取りに要る IAM の権限に写し、宣言された IAM ポリシーと突き合わせて過剰な分を数えた。AWS Lambda の 789 アプリ・1,293 関数のうち 47.7% が過剰な権限を持ち、18.8% は不要な権限昇格の能力を持つ（著者の主張）。「コード → 要る権限 → 宣言と照らす」という流れは、上流スコープの軸 (1) とほぼ同じ形である",
+   "overlap": "method_precedent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "ALPS: Automated Least-Privilege Enforcement for Securing Serverless Functions",
+   "url": "https://arxiv.org/abs/2603.25393",
+   "authors_venue_year": "Changhee Shin, Bom Kim, Seungsoo Lee / IEEE INFOCOM 2026（arXiv の注記）/ 2026",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "関数のコードを静的に解析して要る権限を出し、微調整した LLM で各クラウド向けのポリシーを生成する。実行時の監視もする。AWS・GCP・Azure の 8,322 関数で、最小権限の要件を 94.8% 覆ったと報告する（著者の主張）",
+   "overlap": "method_precedent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Take Over the Whole Cluster: Attacking Kubernetes via Excessive Permissions of Third-party Applications",
+   "url": "https://www.cs.wm.edu/~smherwig/readings/papers/23-ccs-kubernetes_excessive_permissions.pdf",
+   "authors_venue_year": "Nanzi Yang, Wenbo Shen, Jinku Li, Xunqi Liu, Xin Guo, Jianfeng Ma / ACM CCS 2023",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "PDF の本文を取得して確かめた。Kubernetes の第三者アプリの RBAC 権限のうち、正常な機能に要らないもの（excessive permissions）を定義し、それを悪用する攻撃の戦略を 3 つ作った。手順は半自動で、導入と攻撃は手作業、重要なアプリの特定はスクリプトで行う。CNCF の第三者アプリ 153 件のうち 51 件（33.3%）に危険があり、CVE は 8 件（著者の主張）。宣言された権限を「必要」と比べる枠組みが、OAuth の外にもある例である",
+   "overlap": "method_precedent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "EPScan: Automated Detection of Excessive RBAC Permissions in Kubernetes Applications",
+   "url": "https://mmlab.snu.ac.kr/community/seminar/2025-08-27-epscan-automated-detection-of-excessive-rbac-permissions-in-kubernetes-applications",
+   "authors_venue_year": "検索結果によれば Gu Yue ほか（復旦大学）/ IEEE S&P 2025（研究室の頁は 404 で取得できず、要旨はセミナーの転載でだけ見た）",
+   "verified": "search_snippet_only",
+   "what_they_did_ja": "pod 単位のプログラム解析で各 pod のプログラムが行う資源アクセスを特定し、それに要る権限と、pod の設定が要求する権限を比べて、悪用できる過剰な権限を報告する（転載された要旨による）。「コードから要る権限を出し、宣言と比べる」型の最近の例。静的解析かどうかは、取得した頁では確かめられなかった",
+   "overlap": "method_precedent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "The Effectiveness of Application Permissions",
+   "url": "https://people.eecs.berkeley.edu/~daw/papers/perms-webapps11.pdf",
+   "authors_venue_year": "Adrienne Porter Felt, Kate Greenwood, David Wagner / USENIX WebApps 2011",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "PDF の本文を取得して確かめた。Chrome 拡張 1,000 件の宣言された権限（browser manager）を、ソースコード（外から読み込むスクリプトを含む）の文字列検索と照らし合わせた。宣言しているのに使わない拡張は 14.7%。15 件を抜き取り、文字列を組み立てて名前を隠す例が無いことを確かめた。domain の権限は 50 件を手で調べ、7 件が過剰だった。注: evidence/related_work_20261002/D1_other_domains.json の notes は、この論文を「宣言の分布を測ったもので、コードとの照合は主題ではない」として採らなかった。しかし本文 §4.2.1 は、ソースの文字列検索で宣言と照らしている（記述の訂正が要る）",
+   "overlap": "method_precedent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Security Analysis of Emerging Smart Home Applications",
+   "url": "https://www.microsoft.com/en-us/research/publication/security-analysis-emerging-smart-home-applications/",
+   "authors_venue_year": "Earlence Fernandes, Jaeyeon Jung, Atul Prakash / IEEE S&P 2016",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "SmartThings の SmartApp 499 件とデバイスハンドラ 132 件を静的に解析し、試験も足した。過剰な権限の原因を 2 つに分けた。capability が粗すぎること（プラットフォーム側の原因）と、導入するとデバイスへの全権が与えられること。55% 超の SmartApp が過剰な権限を持つ。過剰な権限を「開発者が求めすぎた」と「提供者の粒度が粗い」に分ける先例として重要である",
+   "overlap": "method_precedent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Decoupled-IFTTT: Constraining Privilege in Trigger-Action Platforms for the Internet of Things",
+   "url": "https://arxiv.org/abs/1707.00405",
+   "authors_venue_year": "Earlence Fernandes, Amir Rahmati, Jaeyeon Jung, Atul Prakash / arXiv 2017",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "IFTTT の OAuth のモデルを半自動の道具で解析し、「75% of IFTTT's channels ... use overprivileged OAuth tokens」と報告した。そのうえで権限を分ける設計 dIFTTT を提案した。中継者が上流の OAuth トークンを持つという構図は、MCP の proxy サーバと同じである。過剰かどうかの判定手順は要旨に書かれていない",
+   "overlap": "method_precedent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Practical Data Access Minimization in Trigger-Action Platforms（minTAP）",
+   "url": "https://www.usenix.org/conference/usenixsecurity22/presentation/chen-yunang",
+   "authors_venue_year": "Yunang Chen, Mohannad Alhanahnah, Andrei Sabelfeld, Rahul Chatterjee, Earlence Fernandes / USENIX Security 2022",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "trigger-action プラットフォームの過剰な権限を 2 つの水準に分けた。属性の水準（規則に要らないデータの項目まで読める）と、トークンの水準（規則に要らない API まで呼べる）。規則の意味から最小のデータを決め、それ以外の API への到達を止める minTAP を作った。実際の IFTTT の規則で評価した",
+   "overlap": "adjacent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Experimental Security Analysis of the App Model in Business Collaboration Platforms",
+   "url": "https://arxiv.org/abs/2203.04427",
+   "authors_venue_year": "Yunang Chen, Yue Gao, Nick Ceccio, Rahul Chatterjee, Kassem Fawaz, Earlence Fernandes / USENIX Security 2022（arXiv に venue の記載は無く、USENIX の頁は検索結果で確認）",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "PDF の本文を取得して確かめた。Slack と Microsoft Teams のアプリのモデルが、least privilege と complete mediation に反することを実験で示した。Slack のスコープは標準の OAuth のスコープで、静的に宣言される。アプリの manifest を集める道具を作り、Slack のアプリ 2,460 件のうち 1,493 件（61%）が委任の攻撃を受けうること、563 件（23%）がその攻撃に要る権限を要求していることを数えた",
+   "overlap": "method_precedent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Hazard Integrated: Understanding Security Risks in App Extensions to Team Chat Systems",
+   "url": "https://www.ndss-symposium.org/wp-content/uploads/2022-387-paper.pdf",
+   "authors_venue_year": "Mingming Zha, Jice Wang, Yuhong Nan, XiaoFeng Wang, Yuqing Zhang, Zelin Yang / NDSS 2022",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "PDF の要旨を取得した。Team Chat の 12 システムで、第三者アプリの一生（導入・更新・設定・実行）を追い、55 件の問題を見つけた。原因は主に設計の不備・細かいアクセス制御の欠如・あいまいなデータアクセスの方針だった",
+   "overlap": "adjacent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Risky by Design? Evaluating Trust Assumptions in the Slack Application Ecosystem",
+   "url": "https://dl.acm.org/doi/10.1145/3803525.3804987",
+   "authors_venue_year": "著者・会議名は確かめられなかった（ACM DL は 403 で取得できず、他の検索でも見つからない）。DOI 10.1145/3803525.3804987",
+   "verified": "search_snippet_only",
+   "what_they_did_ja": "検索結果の要旨によると、Slack の文書にある API メソッドの約 25% は、メソッドとスコープの対応が一貫しない。2024〜2025 年の約 2,500 のマーケットプレイスのアプリのうち、少なくとも 9% が Slack の禁じるスコープを宣言していた。メソッドとスコープの対応表（PScout にあたるもの）の正しさそのものが、妥当性の脅威になりうることを示す。著者と会議名は不明なので、引用する前に一次資料を確かめること",
+   "overlap": "method_precedent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "OAuthHub: Mitigating OAuth Data Overaccess through a Local Data Hub",
+   "url": "https://arxiv.org/abs/2603.10056",
+   "authors_venue_year": "Qiyu Li, Yuhe Tian, Haojian Jin / PETS 2026（arXiv の注記）",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "Google Workspace Marketplace の OAuth アプリ 62 件で、要求するアクセスと仕事に要るアクセスを比べた。本文 §3 によると「50 out of 62, 81%」が要る以上を求める。ただしソースは無いので、要るものはアプリの説明から推定し、11 件はブラウザでの調査と動的な計装で確かめた。Google や Microsoft のスコープは粗く、「Gmail API ではそれしか選べないので全メールへのアクセスを求めることになる」とも書く（要求しすぎの一部は提供者の粒度が原因）",
+   "overlap": "method_precedent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Characterizing the Security of Github CI Workflows",
+   "url": "https://www.usenix.org/conference/usenixsecurity22/presentation/koishybayev",
+   "authors_venue_year": "Igibek Koishybayev, Aleksandr Nahapetyan, Raima Zachariah, Siddharth Muralee, Bradley Reaves, Alexandros Kapravelos, Aravind Machiry / USENIX Security 2022",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "447,238 の workflow（213,854 リポジトリ）を解析した。「99.8% of workflows are overprivileged」で、読み取りで足りるのに読み書きのトークンを持つ。GitHub のトークンの権限について、母集団の規模で過剰を測った先例である（判定の手順は頁に書かれていない）",
+   "overlap": "method_precedent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "SkillVet: Automated Traceability Analysis of Amazon Alexa Skills",
+   "url": "https://arxiv.org/abs/2103.02637",
+   "authors_venue_year": "Jide S. Edu, Xavier Ferrer-Aran, Jose M. Such, Guillermo Suarez-Tangil / arXiv（短い版が IEEE TDSC, doi 10.1109/TDSC.2021.3129116）/ 2021-2022",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "Alexa の skill 199,295 件で、要求したデータ権限とプライバシーポリシーの開示のつながり（traceability）を ML と NLP で調べた。権限を求める skill の約 43% が、つながりが切れているなどの悪い慣行だった。account linking を使えば権限の仕組みを迂回できることも示した。宣言どうし（権限とポリシー）を照らす例",
+   "overlap": "method_precedent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Hey Alexa, is this Skill Safe?: Taking a Closer Look at the Alexa Skill Ecosystem",
+   "url": "https://www.ndss-symposium.org/ndss-paper/hey-alexa-is-this-skill-safe-taking-a-closer-look-at-the-alexa-skill-ecosystem",
+   "authors_venue_year": "Christopher Lentzsch, Sheel Jayesh Shah, Benjamin Andow, Martin Degeling, Anupam Das, William Enck / NDSS 2021",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "7 つのストアの skill 90,194 件を測った。権限を使う skill の約 23.3% が、要求した権限に対応するデータの種類をポリシーで開示していない。承認の後に backend のコードを変えられる、という審査の弱さも示した",
+   "overlap": "adjacent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "PolicyLint: Investigating Internal Privacy Policy Contradictions on Google Play",
+   "url": "https://usenix.org/conference/usenixsecurity19/presentation/andow",
+   "authors_venue_year": "Benjamin Andow, Samin Yaseer Mahmud, Wenyu Wang, Justin Whitaker, William Enck, Bradley Reaves, Kapil Singh, Tao Xie / USENIX Security 2019",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "1 つの宣言（プライバシーポリシー）の中の矛盾を、否定とデータ・主体の意味の上下関係を考えて検出した。11,430 アプリの 14.2% に矛盾があり、510 件を手で確かめた。軸 (2)「宣言どうしの矛盾」（スコープ対 ToolAnnotations）の判定の型の先例。repo では docs/single_rater_precedents.md にだけ出てくる（判定者の数の調査）",
+   "overlap": "method_precedent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Honesty is the Best Policy: On the Accuracy of Apple Privacy Labels Compared to Apps' Privacy Policies",
+   "url": "https://petsymposium.org/popets/2024/popets-2024-0111.php",
+   "authors_venue_year": "Mir Masood Ali, David G. Balash, Monica Kodwani, Chris Kanich, Adam J. Aviv / PoPETs 2024 (4)",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "iOS アプリ 474,669 件で、Apple のプライバシーラベル（宣言 1）と、BERT で抽出したポリシーの記述（宣言 2）を比べた。「Data Not Collected」のラベルを持つアプリの 97% は、ポリシーが別のことを示す。原因としてテンプレートと定義の混乱を挙げる。宣言どうしを母集団の規模で照らす先例（repo の Lalaine・Koch ら（ラベル対挙動）とは比べる相手が違う）",
+   "overlap": "method_precedent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "SkillScope: Toward Fine-Grained Least-Privilege Enforcement for Agent Skills",
+   "url": "https://arxiv.org/abs/2605.05868",
+   "authors_venue_year": "Jiangrong Wu, Yuhong Nan, Yixi Lin, Huaijin Wang, Yuming Xiao, Shuai Wang, Zibin Zheng / arXiv / v1 2026-05-07, v3 2026-09-10",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "skill の指示とコードをグラフの行動の節点にし、タスクに依存する過剰な権限の候補を、再生で確かめる。有効な skill 68,312 件のうち 6,590 件で過剰な権限の挙動を確認した。F1 は 94.53%。注意: repo の related_work.md の「SkillScope」（arXiv 2605.12875、説明とコードの不一致）とは**別の論文で名前が同じ**。引用するときに混同しないこと",
+   "overlap": "adjacent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Beyond OAuth: Task-Scoped Authorization for AI Agents via Natural Language Slices",
+   "url": "https://arxiv.org/abs/2603.17170",
+   "authors_venue_year": "Reshabh K Sharma, Linxi Jiang, Shuo Chen, Zhiqiang Lin / arXiv / v1 2026-03-17, v2 2026-08-25",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "OAuth は操作子（TRANSFER など）の水準で許すので、エージェントは本質的に過剰な権限を持つ、と論じる。タスクから暗黙に許可を作る PAuth を提案した。AgentDojo の上の AuthBench で評価した。実在のサービスでスコープの広さを数える測定はしていない",
+   "overlap": "adjacent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Options, Not Clicks: Lattice Refinement for Consent-Driven MCP Authorization（Conleash）",
+   "url": "https://arxiv.org/abs/2605.11360",
+   "authors_venue_year": "Ying Li, Yanju Chen, Peiran Wang, Issac Khabra, Faysal Hossain Shezan, Yu Feng, Yuan Tian / arXiv / 2026-05-12",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "MCP のクライアント側に置く同意の仲介。危険度の束で安全な呼び出しを自動で許し、危険なものを昇格させる。実際のトレース 984 件で評価した。実在のサーバのスコープを測ったとは、要旨からは読めない",
+   "overlap": "adjacent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Capability Gates Are Not Authorization: Confused-Deputy Failures in LLM Agent Frameworks",
+   "url": "https://arxiv.org/abs/2606.28679",
+   "authors_venue_year": "David Mellafe Zuvic / arXiv / 2026-06-27",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "LangChain/LangGraph・LlamaIndex・Stripe Agent Toolkit は、どのツールを見せるかは既定で絞るが、呼び出しごとに引数の値で許可を確かめる仕組みは既定で持たない、と示した。ScopeGate を提案した",
+   "overlap": "adjacent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "From REST to MCP: An Empirical Study of API Wrapping and Automated Server Generation for LLM Agents",
+   "url": "https://arxiv.org/abs/2507.16044",
+   "authors_venue_year": "Meriem Mastouri, Emna Ksontini, Amine Barrak, Wael Kessentini / arXiv cs.SE / v1 2025-07-21, v4 2026-04-06",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "公式の MCP サーバ 116 件を調べ、大半が REST を裏に持ち、ほぼ API を包むだけであることを示した。OpenAPI 仕様と組にしたサーバで、公開する操作と省く操作を調べた。軸 (3)（上流の API の意味で効果を決める）が使える範囲の根拠になる。要旨には OAuth とスコープの語が無い（本文は未読）",
+   "overlap": "adjacent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Same Name, Different Server: A Security Census of Silent Drift in the Model Context Protocol Ecosystem",
+   "url": "https://arxiv.org/abs/2609.14119",
+   "authors_venue_year": "Obada Kraishan / arXiv / 2026-09-12",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "公開の登録簿にある 21,643 サーバを集め、14,353 件のソースを規則による scanner（8 類）にかけた。版を重ねたサーバの 51.1% が、宣伝する内容を版の間で変えていた。黙って変わる（drift）ことと、重大な所見とが関係する（OR 2.96）。要旨にツール注釈と OAuth は出てこない",
+   "overlap": "adjacent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Registry Descriptions Go Stale Unevenly: An 89-Day Measurement of Model Context Protocol Drift, and Why Drift-Ranked Re-Auditing Under-Covers It",
+   "url": "https://arxiv.org/abs/2608.00997",
+   "authors_venue_year": "Gautam Bharti / arXiv cs.SE / 2026-08-02（v2 08-04）",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "公式の登録簿の 120 スナップショット（19,099 サーバ）で、説明の変化を 89 日追った。要旨にツール注釈・OAuth・コードは出てこない",
+   "overlap": "adjacent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Model Context Protocol Threat Modeling and Analyzing Vulnerabilities to Prompt Injection with Tool Poisoning",
+   "url": "https://arxiv.org/abs/2603.22489",
+   "authors_venue_year": "Charoes Huang, Xin Huang, Ngoc Phu Tran, Amin Milani Fard / arXiv / 2026-03-23",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "STRIDE と DREAD で MCP の脅威を整理し、7 つのクライアントが tool poisoning をどう検証するかを比べた。GitHub の issue では「注釈を監査されない攻撃面として挙げた」と引かれていたが、要旨に注釈の語は無い。コードとの照合もしていない（mcp-sec-audit と同じ著者群）",
+   "overlap": "none",
+   "already_in_related_work": false
+  },
+  {
+   "title": "MCP Specification 2025-11-25: Security Best Practices（Confused Deputy / Token Passthrough / Scope Minimization）",
+   "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices",
+   "authors_venue_year": "Model Context Protocol 仕様（公式文書）/ 2025-11-25 版",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "本文を取得した。「MCP Proxy Server」を、第三者の API に対して「a single OAuth client」として振る舞うサーバと定義する。そのサーバの同意の頁は、要求する第三者の API のスコープを表示しなければならない（MUST）。Token Passthrough は禁止。Scope Minimization の節が扱うのは、MCP サーバ**自身**のスコープ（scopes_supported を全部出す、omnibus のスコープを使う、など）。**上流に要求するスコープの最小化は規範として書かれていない**。軸 (1)(2) の動機の一次資料になる",
+   "overlap": "adjacent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "OhAuth（Offroad）による OAuth マーケットプレイスのアプリの監査（Help Net Security の記事）",
+   "url": "https://www.helpnetsecurity.com/2026/06/04/oauth-marketplace-apps-audit/",
+   "authors_venue_year": "Offroad 社の OhAuth（ベンダーの報告、査読なし）/ 記事は 2026-06-04",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "Google Workspace Marketplace の 1,595 件と GitHub Marketplace の 1,295 件、計 2,890 件の OAuth アプリを調べた。677 件が「表明した機能を超える」権限を求めていた。ただし判定の手順（手作業か、LLM か、規則か）は記事に無い。灰色文献なので、数値は動機の補助にしか使えない（verified_by_me = none）",
+   "overlap": "adjacent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Exploring ChatGPT App Ecosystem: Distribution, Deployment and Security",
+   "url": "https://arxiv.org/abs/2408.14357",
+   "authors_venue_year": "Chuan Yan, Ruomai Ren, Mark Huasong Meng, Liuhuo Wan, Tian Yang Ooi, Guangdong Bai / ASE 2024",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "ChatGPT のプラグインの生態系を測り、第三者の API の認証とデータ保護に重い欠陥を見つけた。OAuth のスコープの広さを測ったかどうかは、要旨からは分からない",
+   "overlap": "adjacent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "Enterprise Identity Integration for AI-Assisted Developer Services: Architecture, Implementation, and Case Study",
+   "url": "https://arxiv.org/abs/2601.02698",
+   "authors_venue_year": "Manideep Reddy Chinthareddy / arXiv / 2026-01-06",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "MCP を使う開発環境に OAuth 2.0 と OIDC を組み込む構成を提案し、試作した。スコープで最小権限を強制できると書くが、ツールごとの対応表やスコープの使用を測ったとは要旨に無い",
+   "overlap": "adjacent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "A Two-Dimensional Study of the Model Context Protocol: Publication and Adoption",
+   "url": "https://arxiv.org/abs/2609.14721",
+   "authors_venue_year": "Natarajan Chidambaram, Mauro Dalle Lucca Tosi, Jordi Cabot / arXiv cs.SE / 2026-09-13",
+   "verified": "fetched_abstract",
+   "what_they_did_ja": "MCP 関連の出版物 802 件と GitHub リポジトリ 33,319 件を縦断で分析した。注釈・認可・コード解析は扱わない",
+   "overlap": "none",
+   "already_in_related_work": false
+  },
+  {
+   "title": "How Agents Ask for Permission: User Permissions for AI Agents, from Interfaces to Enforcement",
+   "url": "https://arxiv.org/abs/2607.13718",
+   "authors_venue_year": "Alexandra E. Michael, Franziska Roesner / arXiv / 2026-07",
+   "verified": "search_snippet_only",
+   "what_they_did_ja": "エージェントの権限の仕組みの提案 21 件を整理して分類を作り、商用のエージェント 5 つと比べた（検索結果の要旨による）",
+   "overlap": "adjacent",
+   "already_in_related_work": false
+  },
+  {
+   "title": "HintLint — Verify MCP tool annotations match actual behavior",
+   "url": "https://github.com/complira/hintlint",
+   "authors_venue_year": "complira（OSS と自分で出した報告書）/ 2026",
+   "verified": "search_snippet_only",
+   "what_they_did_ja": "repo で一次資料と照合済み（R1・2026-10-02 の調査）。D1〜D3 とソースを比べるが、Python では呼び出しを追わない。今回の検索でも、これより注釈の軸に近い新しい論文は見つからなかった",
+   "overlap": "scoops_annotation_axis",
+   "already_in_related_work": true
+  },
+  {
+   "title": "Description-Code Inconsistency in Real-world MCP Servers: Measurement, Detection, and Security Implications（DCIChecker）",
+   "url": "https://arxiv.org/abs/2606.04769",
+   "authors_venue_year": "arXiv 2606.04769（repo で照合済み）",
+   "verified": "search_snippet_only",
+   "what_they_did_ja": "説明文とコードの不一致（Undeclared Side Effects など）。ToolAnnotations は読まない。repo で照合済み",
+   "overlap": "adjacent",
+   "already_in_related_work": true
+  },
+  {
+   "title": "When Tool Calls Succeed but Workflows Fail: Anomalies at the Agent-Tool Boundary",
+   "url": "https://arxiv.org/abs/2609.15397",
+   "authors_venue_year": "arXiv 2609.15397（repo で照合済み）",
+   "verified": "search_snippet_only",
+   "what_they_did_ja": "公式の登録簿の 98,291 ツールで、4 つの注釈を数えた。検索の要約によれば、宣言のとおりに読むだけで実装とは照らさず、照らすには実装の水準の解析が要ると自分で書く",
+   "overlap": "adjacent",
+   "already_in_related_work": true
+  },
+  {
+   "title": "We Urgently Need Privilege Management in MCP: A Measurement of API Usage in MCP Ecosystems",
+   "url": "https://arxiv.org/abs/2507.06250",
+   "authors_venue_year": "Zhihao Li ほか / arXiv 2025（repo で照合済み）",
+   "verified": "search_snippet_only",
+   "what_they_did_ja": "2,562 の MCP アプリで、資源の API の使用を静的に数えた。宣言とも OAuth のスコープとも照らさない",
+   "overlap": "adjacent",
+   "already_in_related_work": true
+  },
+  {
+   "title": "Auditing MCP Servers for Over-Privileged Tool Capabilities（mcp-sec-audit）",
+   "url": "https://arxiv.org/abs/2603.21641",
+   "authors_venue_year": "Charoes Huang, Xin Huang, Amin Milani Fard / arXiv 2026（repo で照合済み）",
+   "verified": "search_snippet_only",
+   "what_they_did_ja": "題は「過剰な権限」だが、能力を列挙して点数をつけるだけで、宣言とも上流のスコープとも比べない",
+   "overlap": "adjacent",
+   "already_in_related_work": true
+  },
+  {
+   "title": "Android Permissions Demystified（Stowaway）",
+   "url": "https://people.eecs.berkeley.edu/~daw/papers/androidperm-ccs11.pdf",
+   "authors_venue_year": "Felt ほか / ACM CCS 2011（repo で照合済み）",
+   "verified": "search_snippet_only",
+   "what_they_did_ja": "manifest の権限と、静的に求めた API の使用を比べる。解決できない reflection を別の群にして数える。軸 (1) の評価の作法（偽陽性を手で確かめる・未解決の群）の原型",
+   "overlap": "method_precedent",
+   "already_in_related_work": true
+  },
+  {
+   "title": "PScout: Analyzing the Android Permission Specification",
+   "url": "https://www.eecg.utoronto.ca/~lie/papers/PScout-CCS2012-web.pdf",
+   "authors_venue_year": "Au ほか / ACM CCS 2012（repo で照合済み）",
+   "verified": "search_snippet_only",
+   "what_they_did_ja": "API と権限の対応表を静的解析で作った。上流 API のメソッドとスコープの対応表（軸 (1)(3) の土台）の先例",
+   "overlap": "method_precedent",
+   "already_in_related_work": true
+  },
+  {
+   "title": "Are chrome extensions compliant with the spirit of least privilege?",
+   "url": "https://www.cse.chalmers.se/~andrei/ijis22.pdf",
+   "authors_venue_year": "Picazo-Sanchez ほか / IJIS 2022（repo で照合済み）",
+   "verified": "search_snippet_only",
+   "what_they_did_ja": "Chrome 拡張の宣言した権限と、コードの使用を比べた。repo で照合済み",
+   "overlap": "method_precedent",
+   "already_in_related_work": true
+  },
+  {
+   "title": "ETDI: Mitigating Tool Squatting and Rug Pull Attacks in MCP by using OAuth-Enhanced Tool Definitions and Policy-Based Access Control",
+   "url": "https://arxiv.org/abs/2506.01333",
+   "authors_venue_year": "Manish Bhatt, Vineeth Sai Narajala, Idan Habler / arXiv 2025（repo で照合済み）",
+   "verified": "search_snippet_only",
+   "what_they_did_ja": "ツールの定義に OAuth の明示の権限を付けて守る、という提案。実在のサーバのスコープは測らない",
+   "overlap": "adjacent",
+   "already_in_related_work": true
+  }
+ ],
+ "gaps_ja": "調べた範囲で、まだ誰もしていないと見られること（「無い」ではなく「見つからなかった」。検索は題と要旨が中心で、学会の論文集を網羅してはいない）。\n\n1. **注釈の軸は今も他に取られていない。** 先行研究の整理（2026-10-02）の後に出た MCP の測定（2609.14119 drift census、2608.00997、2609.14721、2603.22489、2608.12880）は、どれも ToolAnnotations をコードと照らさない。arxiv.org に絞って readOnlyHint を検索しても、当たるのは既に記録済みのもの（2606.06387、2609.10962、2609.15397）だけだった。「Python の MCP サーバで、宣言 D1〜D4 を呼び出し先まで追った効果と照らし、人の判定つきで率を出す」仕事は、今回も見つからなかった。\n\n2. **上流スコープの過剰を、MCP サーバの母集団で、コードから測った仕事は無い（軸 1）。** MCP サーバが Google・GitHub・Slack・Microsoft などに OAuth クライアントとして求めるスコープと、ツールの API 呼び出しが実際に要るスコープを、母集団の規模で比べた仕事は見つからなかった。最も近い 3 つはどれも違う。MiniScope は ChatGPT と Claude の商用コネクタ（5 アプリ、6 構成）で、比べる元は宣伝された機能であり、コードを読まない。Zhou ら（2605.22333）は MCP サーバ自身の OAuth 実装の欠陥で、上流のスコープの広さではない。OhAuth はマーケットプレイスのアプリで、MCP ではなく、手順も開示していない。別の領域には「コード → 要る権限 → 宣言と照らす」の形が揃っている（Stowaway / PScout → Felt WebApps 2011 → SmartThings → K8s CCS 2023 / EPScan → PrivLess / ALPS）。しかし OAuth の上流スコープにこの形を当てた例は、dIFTTT（手順は要旨に書かれていない）と OAuthHub（説明からの推定、62 件）だけで、どちらもコードを読んでいない。\n\n3. **上流スコープと ToolAnnotations を照らした仕事は無い（軸 2、宣言どうしの矛盾）。** 「読むだけと名乗るのに、書き込みのスコープを持つ」という観察そのものは MiniScope が先にしている（ただし商用コネクタの宣伝文についてで、readOnlyHint という構造化された宣言ではない）。したがって「初めて見つけた」とは書けない。宣言どうしの矛盾を母集団の規模で数える判定の型には、先例がある（PolicyLint はポリシーの中で、Honesty is the Best Policy はラベル対ポリシー、SkillVet と Lentzsch らは権限対ポリシー）。MCP の構造化された 2 つの宣言を組にした仕事は見つからなかった。\n\n4. **上流 API の意味を使って、静的解析の未解決の効果（POST など）を決めた仕事は無い（軸 3）。** メソッドとスコープの対応表は、一部のサービスについてある。MiniScope は Google・Microsoft・Slack・Dropbox・Notion・Zoom の階層を作ったが、GitHub は無い。しかし、それをエージェントのツールサーバの効果の推論に使った例は無かった。妥当性の脅威も先に報告されている。Slack の文書のメソッドの約 25% はスコープとの対応が一貫しない（Risky by Design?、検索結果のみ）。また、提供者のスコープが粗いために過剰になる場合がある（OAuthHub、Beyond OAuth、SmartThings）。したがって、「開発者が求めすぎた」と「提供者の粒度が粗い」を分けないと、数字は肥大する。SmartThings は、まさにこの 2 つを分けて報告している。\n\n5. **仕様の側も空いている。** MCP の Security Best Practices（2025-11-25）の Scope Minimization は、サーバ自身のスコープの話だけをする。上流については、proxy サーバの同意の頁に「第三者の API のスコープを表示する」義務があるだけで、最小化の規範は無い。上流スコープの測定には仕様の側の動機があるが、対象になるのは全体の一部に限られる。STDIO のサーバは認可の仕様に従わないようにとされ（SHOULD NOT）、リモートでも OAuth は 30.45% で、しかもこれは自身の認可である。上流については API キーや個人トークンで、コードに要求スコープが現れないサーバも多いと見込まれる（この最後の点は文献ではなく本記録者の推測。母集団 3,462 件での割合は未測定で、不明）。\n\n記録の訂正の候補が 2 つある。(a) evidence/related_work_20261002/D1_other_domains.json の notes は、Felt WebApps 2011 を「コードとの照合は主題ではない」としている。しかし本文 §4.2.1 は、ソースの文字列検索で宣言と照らしている（14.7%）。(b) related_work.md の SkillScope（2605.12875）とは別に、同名の論文 2605.05868（最小権限の強制）がある。",
+ "summary_ja": "先行研究を 4 つの方向から調べた結果（主なものは arXiv・USENIX・NDSS・PoPETs の要旨の頁か PDF を取得した。取得できなかった EPScan・Risky by Design?・How Agents Ask は search_snippet_only と書いた）。\n\n(a) 注釈の軸: 他に取られていない。10-02 の整理の後に出た MCP の測定（2609.14119、2608.00997 など）は注釈をコードと照らさない。最も近いのは今も HintLint（既に記録済み）。\n\n(b) 上流 OAuth スコープの軸: **部分的に先を越されている。** MiniScope（arXiv 2512.11147、v2 は 3 日前の 2026-10-06）が、ChatGPT と Claude のコネクタで「宣伝されたツールは読むだけなのに、変更・削除のスコープを持つ」構成を 6 つ報告した。Google・Microsoft・Slack・Dropbox・Notion・Zoom のメソッドとスコープの階層も作っている。ただし、対象は商用の少数のコネクタ、比べる元は宣伝文、コードは読まず、本文に MCP も readOnlyHint も出てこない。repo では付録 G-13 が注釈の語の有無を確かめただけで、この監査は related_work.md に入っていない。MCP に固有の OAuth の測定（2605.22333）は、サーバ自身の認可の欠陥を測ったもので、上流のスコープの広さではない。\n\n(c) 手法の先例は厚い。「宣言した権限対、コードから求めた必要」の系譜には、Stowaway / PScout（記録済み）、Felt WebApps 2011、SmartThings S&P 2016、K8s CCS 2023、EPScan S&P 2025、PrivLess 2026、ALPS 2026、Koishybayev USENIX 2022 がある。OAuth に固有のものは、dIFTTT（チャネルの 75% が過剰）、Chen ら USENIX 2022（Slack の manifest 2,460 件）、OAuthHub（Marketplace 62 件中 50 件）、Risky by Design?（Slack のメソッドの 25% はスコープとの対応が一貫しない。検索結果のみ）。宣言どうしの矛盾には PolicyLint・Honesty is the Best Policy・SkillVet・Lentzsch らがある。Google Apps Script / Workspace アドオンと GitHub Apps について、査読つきの過剰の測定は見つからなかった（ベンダーの OhAuth の報告だけ）。\n\n(d) MCP の大規模な測定: 新しく増えたのは 2605.22333、2609.14119、2608.00997、2609.14721、2507.16044（REST を包むサーバが大半、という結果は軸 3 を使える範囲の根拠になる）。\n\n論文の設計への含意（文献から言える範囲）:\n- スコープの軸を足すなら、新しさとして言えるのは「上流スコープの過剰を見つけたこと」ではない（MiniScope、dIFTTT、OAuthHub が先にある）。言えるのは次の 2 点に限られる。① オープンソースの MCP サーバの母集団で、コードから求めた必要と照らすこと。② それを ToolAnnotations という第 2 の宣言に結びつけること。\n- 先例はそろって次の 2 つをしている。① 粗いスコープによる過剰と、開発者の求めすぎを分ける（SmartThings、OAuthHub）。② 対応表の誤りを妥当性の脅威として扱う。この 2 つを省くと、査読で突かれやすい。\n- 軸 3（上流の意味で unknown を決める）は解析器を変える。そのため、凍結（analyzer-freeze-3）との関係を別に決める必要がある。これは文献の問題ではない。\n- MiniScope の本文の文言と Felt の数値は、本記録者が WebFetch・pypdf で確かめたものである。論文に引く前に、scripts/verify_quote.py で照らし直すこと（verified_by_me = none）。\n\n一時ファイル（取得した PDF と抽出した文、メモ）: /tmp/claude-0/-home-user-auth-gap/9d8a4d2c-1b03-53cb-ba04-44a67affb095/scratchpad/scope_dir/literature/（k8s_pdf/、felt_pdf/、slack_pdf/、hazard_pdf/、notes.md）。repo のファイルは変えていない。"
+}

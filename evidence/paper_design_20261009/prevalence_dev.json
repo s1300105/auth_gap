@@ -1,0 +1,228 @@
+{
+ "samples": [
+  {
+   "sample": "v2 (local trees corpus/v2-*, MCP = post_fetch_check status mcp_server)",
+   "n_trees": 100,
+   "n_mcp_trees": 87,
+   "n_with_upstream_scope_decl": 17,
+   "n_scope_decl_reachable_from_tools": 9,
+   "n_conflict_candidates": 5,
+   "n_pat_env_only": 25
+  },
+  {
+   "sample": "v3 (local trees corpus/v3-*, MCP = post_fetch_check status mcp_server)",
+   "n_trees": 100,
+   "n_mcp_trees": 91,
+   "n_with_upstream_scope_decl": 15,
+   "n_scope_decl_reachable_from_tools": 10,
+   "n_conflict_candidates": 5,
+   "n_pat_env_only": 41
+  },
+  {
+   "sample": "v4 (local trees corpus/v4-*, MCP = post_fetch_check status mcp_server; 1 repo not fetched)",
+   "n_trees": 99,
+   "n_mcp_trees": 88,
+   "n_with_upstream_scope_decl": 12,
+   "n_scope_decl_reachable_from_tools": 8,
+   "n_conflict_candidates": 4,
+   "n_pat_env_only": 31
+  },
+  {
+   "sample": "TOTAL v2+v3+v4",
+   "n_trees": 299,
+   "n_mcp_trees": 266,
+   "n_with_upstream_scope_decl": 44,
+   "n_scope_decl_reachable_from_tools": 27,
+   "n_conflict_candidates": 14,
+   "n_pat_env_only": 97
+  }
+ ],
+ "providers": [
+  {
+   "provider": "A: Google (googleapis.com/auth/*, incl. Ad Manager dfp)",
+   "n_trees": 7
+  },
+  {
+   "provider": "A: Microsoft (Graph scopes / graph .default / Azure ARM .default)",
+   "n_trees": 5
+  },
+  {
+   "provider": "A: LinkedIn (w_member_social; same course file copied in 2 trees)",
+   "n_trees": 2
+  },
+  {
+   "provider": "A: Reddit (identity submit read [vote])",
+   "n_trees": 2
+  },
+  {
+   "provider": "A: Slack",
+   "n_trees": 1
+  },
+  {
+   "provider": "A: GitHub",
+   "n_trees": 1
+  },
+  {
+   "provider": "A: Spotify",
+   "n_trees": 1
+  },
+  {
+   "provider": "A: dbt Platform (user_access = PAT-equivalent)",
+   "n_trees": 1
+  },
+  {
+   "provider": "A: Kakao",
+   "n_trees": 1
+  },
+  {
+   "provider": "A: LY Ads / Yahoo! JAPAN (single scope yahooads)",
+   "n_trees": 1
+  },
+  {
+   "provider": "A: Zammad (single scope full)",
+   "n_trees": 1
+  },
+  {
+   "provider": "A: GoProfiles (first-party, per-tool scopes)",
+   "n_trees": 1
+  },
+  {
+   "provider": "A: Bugasura (first-party, single scope api)",
+   "n_trees": 1
+  },
+  {
+   "provider": "A: own memory-connector service",
+   "n_trees": 1
+  },
+  {
+   "provider": "Aid (identity/refresh-only): Google",
+   "n_trees": 3
+  },
+  {
+   "provider": "Aid: Microsoft",
+   "n_trees": 1
+  },
+  {
+   "provider": "Aid: GitHub",
+   "n_trees": 1
+  },
+  {
+   "provider": "Aid: Lark (offline_access only)",
+   "n_trees": 1
+  },
+  {
+   "provider": "Aid: Citeck (openid offline_access)",
+   "n_trees": 1
+  }
+ ],
+ "examples": [
+  {
+   "tree": "v3-typerobot__klavis (mcp_servers/reddit_search)",
+   "file_line": "mcp_servers/reddit_search/tools/base.py:62 (app token scope 'identity submit read'), :106 (user token 'identity submit read vote'); server.py:81-151 / :177-190 readOnlyHint True",
+   "scopes": "Reddit: identity, submit(W), read, vote(W)",
+   "tools_and_annotations": "Only the RO tools reddit_find_subreddits, reddit_search_posts, reddit_get_post_comments and reddit_find_similar_posts use the app-only token from reddit_get (tools/find_subreddits.py:19, search_posts.py:46, get_comments.py:28, find_similar.py:17). The write tools create_post, create_comment and upvote use the user token. get_user_posts (RO) also uses the user token.",
+   "judgement_ja": "最も強い候補。RO の tool だけが使う資格情報が submit（書き込み）を要求している。過剰権限と宣言どうしの食い違いの両方に当たる。ただし client_credentials（ユーザ文脈なし）で submit が実効を持つかは静的に決められない（不明）。"
+  },
+  {
+   "tree": "v4-vexxhost__entra-pim-mcp-server",
+   "file_line": "src/entra_pim_mcp_server/server.py:47-56 (GRAPH_SCOPES); :139-149 list_eligible readOnlyHint=True; :306-316 activate readOnlyHint=False",
+   "scopes": "Microsoft Graph: User.Read, Group.Read.All, PrivilegedAssignmentSchedule.ReadWrite.AzureADGroup(W), RoleAssignmentSchedule.ReadWrite.Directory(W), several *.Read.*",
+   "tools_and_annotations": "2 tools. The RO tool and the write tool use the same get_client().",
+   "judgement_ja": "混在サーバなので、サーバ単位では宣言と矛盾しない。RO の list_eligible が特権ロール割当の ReadWrite 資格を共有しているので、tool 単位では過剰権限の候補。"
+  },
+  {
+   "tree": "v2-aixolotl__microsoft-planner-mcp",
+   "file_line": "src/auth_provider.py:13-36 (AzureProvider additional_authorize_scopes); src/graph_client_manager.py:61 (OBO scopes=['https://graph.microsoft.com/.default'])",
+   "scopes": "Graph: Tasks.ReadWrite(W), User.Read, User.ReadBasic.All; MCP-layer required_scopes=['mcp-access']",
+   "tools_and_annotations": "Mixed: RO tools (e.g. tools/tasks.py:96) and destructiveHint tools (tools/tasks.py:580). Every tool calls Graph through the OBO token (.default = all consented scopes).",
+   "judgement_ja": "上流 scope をコードで宣言する典型（FastMCP の OAuth プロキシと OBO）。.default なので、tool ごとの権限はコードから分けられない。サーバ単位では宣言と矛盾しない。"
+  },
+  {
+   "tree": "v3-golinks__goprofiles-mcp",
+   "file_line": "src/goprofiles_mcp/server.py:47-54 (_SCOPES); :127-305 (per-tool scopes= + ToolAnnotations); src/goprofiles_mcp/client.py:99 (forwards incoming Authorization header)",
+   "scopes": "profiles:read/write, bravos:read/write, search:read, users:read (first-party)",
+   "tools_and_annotations": "10 tools. All 8 RO tools declare only :read scopes. Both readOnlyHint=False tools (create_bravo, schedule_meeting) declare :write.",
+   "judgement_ja": "tool ごとの scope 宣言（OpenAI Apps SDK の securitySchemes）と注釈が同じ場所に並ぶ珍しい実例で、10/10 が一致する（矛盾 0）。受け取ったトークンをそのまま上流 API へ転送する形で、仕様の token passthrough 禁止に触れうる（first-party なので判定は不明）。"
+  },
+  {
+   "tree": "v4-jayrockliffe-defused__gsc-mcp",
+   "file_line": "gsc_mcp/auth.py:29 (SCOPES webmasters.readonly)",
+   "scopes": "Google: webmasters.readonly (R)",
+   "tools_and_annotations": "7 readOnlyHint:true literals, no readOnlyHint:false",
+   "judgement_ja": "全 tool が RO で scope も読み取り専用なので、宣言どうしが一致する。正例（一致の対照）として使える。"
+  },
+  {
+   "tree": "v3-julianobarbosa__azure-finops-mcp-server",
+   "file_line": "azure_finops_mcp_server/helpers/subscription_manager.py:114 (https://management.azure.com/.default)",
+   "scopes": "Azure ARM .default",
+   "tools_and_annotations": "4 readOnlyHint:true literals, no false",
+   "judgement_ja": "全 RO のサーバ。ただし .default は権限を表さない（実効は Azure RBAC のロール）ので、読み取り専用かどうかはコードから決められない（不明）。"
+  },
+  {
+   "tree": "v3-bauer-group__ip-zammad-mcpserver",
+   "file_line": "app/bg-zammad-mcp/src/config.py:33 (ZAMMAD_OAUTH_SCOPE = 'full'), :159-165 (comment: Zammad accepts only 'full'); src/auth/zammad_oauth.py:348 (OAuthProxy)",
+   "scopes": "Zammad: full (the only scope)",
+   "tools_and_annotations": "35 readOnlyHint True / 29 False / 15 destructiveHint True",
+   "judgement_ja": "提供者の scope が 1 種類しかなく、読み取り専用の資格を作れない。scope の軸で区別できない例。"
+  },
+  {
+   "tree": "v2-yahoojp-marketing__ly-ads-mcp-server",
+   "file_line": "src/ly_ads_mcp/config.py:56 (scope='yahooads'); src/ly_ads_mcp/server.py:86 (OAuthProxy valid_scopes=[settings.scope])",
+   "scopes": "LY Ads: yahooads (single scope)",
+   "tools_and_annotations": "18 readOnlyHint True / 2 False",
+   "judgement_ja": "単一の粗い scope。RO の tool も書き込みできるトークンを共有する（弱い候補）。scope からは粒度の情報が得られない。"
+  },
+  {
+   "tree": "v2-prebid__salesagent",
+   "file_line": "src/adapters/gam/auth.py:100 (service_account scopes=['https://www.googleapis.com/auth/dfp']); src/core/main.py:333 (ToolAnnotations(**sdk_def['annotations']))",
+   "scopes": "Google Ad Manager: dfp (only scope; full access)",
+   "tools_and_annotations": "Annotations come from the external AdCP SDK and are not visible in code",
+   "judgement_ja": "上流 scope は書き込み可能。注釈がコードの外にあるので、照合はコードだけでは不可能（不明）。"
+  },
+  {
+   "tree": "v3-kvkthecreator__yarnnnn",
+   "file_line": "api/integrations/core/oauth.py:75-84 (Slack chat:write, im:write, channels:read/history ...), :115-119 (GitHub repo:status, public_repo, read:org, read:user; comment '(read)'), Reddit identity/submit/read",
+   "scopes": "Slack W+R, GitHub public_repo(W)/repo:status(W)/read:org, Reddit submit(W)",
+   "tools_and_annotations": "Mixed (readOnlyHint True 9 / False 8 / destructiveHint 10)",
+   "judgement_ja": "開発者のコメントは GitHub を『READ connector』と呼び public_repo に『(read)』と付ける。しかし public_repo は公開 repo への書き込み権を含む。scope の意味が誤解される実例（ADR で repo から狭めた経緯も残っている）。"
+  },
+  {
+   "tree": "v2-dbt-labs__dbt-mcp",
+   "file_line": "src/dbt_mcp/oauth/login.py:30 (scope = 'user_access offline_access')",
+   "scopes": "dbt Platform: user_access (PAT-equivalent per the code comment)",
+   "tools_and_annotations": "74 read_only_hint=True / 8 False; login.py is import-reachable from the RO tool modules",
+   "judgement_ja": "粗い scope（PAT と同等）。RO の tool も同じ資格を使う（弱い候補）。"
+  },
+  {
+   "tree": "v4-missionit__claroty-workshop (vendored falcon-mcp); same in v3-w159__tech-tools",
+   "file_line": "falcon_mcp/common/api_scopes.py (API_SCOPE_REQUIREMENTS); modules/base.py:23 default READ_ONLY_ANNOTATIONS; idp.py:33, ngsiem.py:49, rtr.py:88 (tech-tools: idp.py:33, ngsiem.py:142, rtr.py:120)",
+   "scopes": "CrowdStrike API scopes are set in the Falcon console (not requested in code). In code there is only a map from operation to required scope.",
+   "tools_and_annotations": "idp_investigate_entity (needs 'Identity Protection GraphQL:write'), search_ngsiem (NGSIEM:write), list_rtr_session_files ('Real time response:write'). All three get the default readOnlyHint=True.",
+   "judgement_ja": "コード内の宣言どうしの矛盾候補で、tree あたり 3 件。ただし GraphQL のクエリや検索ジョブの作成で :write が要るのは API の設計のためで、実効の書き込みとは限らない。scope は効果と一致しない（scope 照合の誤検出源の実例）。上流 scope の『要求』ではないので、表の候補数には数えていない。"
+  },
+  {
+   "tree": "v4-benjaminmridler__mcp-atlassian (also v3-lazyseaseal__validationtpmcp, v4-pengfeip908__git-skill-test)",
+   "file_line": "src/mcp_atlassian/utils/oauth.py:406 (scope = os.getenv('ATLASSIAN_OAUTH_SCOPE')); utils/oauth_setup.py:424-427 (wizard default 'read:jira-work write:jira-work read:confluence-space.summary offline_access')",
+   "scopes": "Atlassian, supplied at runtime from env (required); the literal is only the setup wizard's default",
+   "tools_and_annotations": "28 readOnlyHint True / 27 destructiveHint True",
+   "judgement_ja": "OAuth の流れはあるが、実行時の scope はコードに無い（B）。同じコードの写しが 3 木にある。"
+  },
+  {
+   "tree": "v2-mcparmory__registry",
+   "file_line": "servers/google-gmail/_auth.py:128 (scopes_env = os.getenv('OAUTH2_SCOPES')); :52 docstring lists Gmail scope URLs",
+   "scopes": "32 generated servers (authlib OAuth2), all scopes from env",
+   "tools_and_annotations": "e.g. servers/google-gmail/server.py: 27 readOnlyHint True plus write tools (create_draft, send_draft)",
+   "judgement_ja": "生成器が作った多数のサーバで、scope はすべて実行時に決まる。ソース中の scope URL は docstring の説明だけなので、要求とは数えない（B）。"
+  },
+  {
+   "tree": "v3-natejswenson__local-fitness",
+   "file_line": "src/local_fitness/agent/gcal.py:44-50 (SCOPE calendar.events with least-privilege comment)",
+   "scopes": "Google calendar.events (W, narrowed from calendar)",
+   "tools_and_annotations": "3 readOnlyHint True / 1 False. gcal.py is import-reachable from the tool modules, but whether an RO tool actually calls it is not verified.",
+   "judgement_ja": "最小権限を意識して scope を狭めた記述がある例。tool 単位の候補は import の到達までしか確かめていない（呼び出しの到達は不明）。"
+  }
+ ],
+ "method_ja": "データ: 開発用の corpus/v2-*（100 木）、v3-*（100 木）、v4-*（99 木、1 件は未取得）だけを使った。w-*・fx-*・prev*・A* は使っていない。MCP 木の分母は、プロジェクトの既存の定義（evidence/population_v{2,3,4}/post_fetch_check.json の status=mcp_server）で 87 / 91 / 88 = 266 木。参考として、自前の AST で tool の登録（@x.tool・list_tools / call_tool・add_tool・Tool(name=)・mcp.tool(...)(fn)）があり、かつ src で mcp / fastmcp を import している木も数えた。この定義だと 90 / 91 / 90 = 271 木になる（両定義の差: v2 は post_fetch だけ 1・AST だけ 4、v3 は 4・4、v4 は 4・6）。主要な値はどちらの定義でもほぼ同じで、A の数は 20 対 21。\n\n走査は scratch の scope_dir/prevalence/scan_scopes.py で行った。全 .py（97,639 ファイル、parse 失敗 127）を ast.parse にバイト列で渡した。パスの分類は scripts/sample_population_v2.py の cls を import して使い、vendored と non_src（tests・docs・examples・scripts など）を除いた。抽出したものは次の 5 つ:\n(a) 文字列定数のうち、googleapis.com/auth/・mail.google.com・graph.microsoft.com/・*/.default の URL\n(b) 『scope 文脈』の文字列。キーワード引数・代入先・dict キー・既定値の名前が scope / scopes / *_scopes のもの\n(c) OAuth ライブラリの import（google_auth_oauthlib、google.oauth2、requests_oauthlib、authlib、msal、azure.identity、spotipy など）と、authorize / token の URL\n(d) os.getenv / os.environ[...] / environ.get の定数キー、および BaseSettings のフィールド名\n(e) import のグラフ。絶対 import は末尾のモジュール名で突き合わせ、候補が複数なら共通のディレクトリ接頭辞が最長のものを採る。相対 import は level で解決する。\n\n到達性（analyze.py）は 3 種類を出した:\n- R: src の tool 登録ファイルと宣言ファイル（docs/corpus_sample_v*.json の declaring_paths）を根とする import の推移閉包\n- D: 宣言ファイルだけを根とする閉包\n- O: scripts/survey_roster.py が readOnlyHint:true の tool を見つけたファイルを根とする閉包\nsurvey_roster.py は build で scratch に出力した。repo には書き込んでいない。\n\n自動の候補は雑音が多かった。scope の語は ASGI scope、pytest、業務上の scope にも使われるので、候補のある 72 木と、OAuth に関係するファイル 81 木を人手でソースを読んで分類した。分類は木ごとに次の 6 つ:\n- A: MCP サーバのコード（R、または同じサーバの auth 設定。例: server.py が import する auth_provider）の中で、上流 API に対する権限を持つ scope のリテラルを要求している\n- Aid: 同じ条件で、要求している scope が識別・更新用だけ（openid / email / profile / User.Read / read:user / offline_access）\n- B: 上流の OAuth・資格の流れはあるが、権限を持つ scope がコードに無い（env、コンソール、RBAC、service account で scope 指定なし）\n- C: scope のリテラルが木の中にあるが、MCP サーバのコードの外にある（到達しないアプリ本体・scripts・tests・vendored の skill 集・JSON）\n- M: MCP 層（下流）の scope だけ（resource server・authorization server・required_scopes・scopes_supported）\n- N: 上のどれにも当たらない\n\nread と write の別は提供者の命名で判定した:\n- Google: .readonly / .read で終わるもの・metadata は R、それ以外は W\n- Graph: .Read* は R、.ReadWrite / .Send は W\n- Slack: :read / :history は R、:write は W\n- GitHub: read:* は R、repo / public_repo は W\n- 単一の粗い scope（dfp・full・yahooads・user_access・api）は W(coarse)\n- .default は U（決められない）\n\n表の欄の定義:\n- n_with_upstream_scope_decl = A + Aid + C\n- n_scope_decl_reachable_from_tools = A + Aid（うち権限を持つ A は 6 / 9 / 6 = 21 で、MCP 木の 7.9%。W は 18、R は 1、U は 2）\n- n_conflict_candidates: 依頼の定義どおり、readOnlyHint:true の tool と書き込み可能な上流 scope を要求するコードが同じサーバの資格を共有するもの。ソースで確認した。注釈が見えない木（prebid は SDK 由来、LinkedIn のサーバは注釈なし）は数えていない\n- n_pat_env_only: A・Aid・B ではない MCP 木のうち、R の範囲で資格らしい名前の env を読むもの。資格らしい名前は TOKEN|API_KEY|ACCESS_KEY|CLIENT_SECRET|PAT|SECRET_KEY|PASSWORD|CREDENTIAL|BEARER で、MCP|JWT|SESSION|SIGNING などを除く\n\nn_pat_env_only の変種: 木全体の src で数えると 35 / 48 / 41 = 124。LLM 系の鍵（OPENAI・ANTHROPIC など）だけの木を除くと、R の範囲で 22 / 37 / 27 = 86、木全体で 106。\n\n分類別の総数（266 木）: A 21、Aid 6、B 14、C 17、M 28、N 180。\n\nサーバ全体の強い矛盾（そのサーバの注釈が全部 RO なのに書き込み scope を要求する）を探したが、該当は 0 件だった。\n\nJSON / toml / cfg / txt の grep で上流 scope が出たのは 4 木（meta-skill の skill テンプレート、anybox の plugin registry、hughmkiii の genkit docs bundle、moon201595 の Apps Script マニフェスト）。どれも MCP サーバのコードではないので C とした。\n\nskill 集の除外の判断: v2-david-li0406__meta-skill-evloving の skill-flow/data/skills-refined-*-36k/skillsmp/<skill>/ は、第三者の skill 約 3.6 万件のデータ集で、.py が 35,693 ある。中に Google / Spotify / BigQuery などの scope と、他 skill の MCP tool ファイルがある。しかし宣言ファイル（rory-1/mcp_server.py）からの import 閉包 D には scope が 1 件も入らないので、C（vendored の skill 集）とした。同じ理由で、到達しない monorepo の部分（teman2・xagent・cohort など）も C にした。",
+ "caveats_ja": "- 取得木は sparse checkout で、.py .toml .txt .lock .json .cfg しか無い。YAML、.env.example、Markdown、JS/TS、Dockerfile に書いた scope は見えないので、A と B は下限値。\n- 到達性は import の水準で見ており、呼び出しの水準ではない。末尾名による解決は多サーバの monorepo で過剰に接続する。実例: klavis の tools.base が clickup / linear の server から到達すると誤って解決された。一方、到達の不足もある: server.py が import する auth_provider は、tool の根からは R=0 になる。A の判定は人手で補正したが、local-fitness などでは、RO の tool が実際に資格を使うかを確かめていない。\n- 分類は本記録者 1 人の判断で、二重判定はしていない。first-party の OAuth プロキシ（goprofiles・bugasura）を A に、自前の AS を持つもの（tallyfy・quollnet・storecipe など）を M にした境界は判断による。\n- read と write の別は提供者の命名規則による推定で、各社の文書とは照合していない（未検証）。.default、単一の scope（full・yahooads・dfp・user_access・api）、Falcon の :write（GraphQL のクエリでも要る）が示すとおり、scope は実効の書き込みと一致しない。\n- 数えたのは木で、サーバではない。klavis（多数のサーバ）、mcparmory（32 サーバ）、mcp-atlassian（3 木に同じコード）、LinkedIn のファイル（講座 repo の写しが 2 木）のように、重複と多サーバの集約がある。\n- env の判定は名前の正規表現による粗い推定。外向きの資格と内向きの資格（MCP の bearer 秘密など）の区別も、LLM 鍵の除外も近似。DB のパスワードも資格に含めた。\n- AST による MCP 木の判定は post_fetch と 4〜6 木ずれる。survey_roster.py は Python 3.12 で parse 失敗が v2 52 / v3 2 / v4 28 件あり、その木の RO tool は落ちうる。\n- v2〜v4 は開発用と中間検証のデータで、本記録者が既に見ている（D60 / D66）。この率を論文の母集団の値として引用してはいけない。論文に載せるなら、別の新しいデータで事前登録した手続きで測り直す必要がある。本数値は verified_by_me = 本記録者の 1 回の人手確認の段階にとどまる。\n- 『不明』として残したもの: reddit の client_credentials トークンで submit が実効を持つか、.default（Azure・Graph）の実効権限、prebid の注釈の値（外部 SDK）、MCP 層の first-party プロキシで token passthrough に当たるか。",
+ "summary_ja": "開発用の v2〜v4 にある MCP 木 266 本を調べた。権限を持つ上流 OAuth scope のリテラルを MCP サーバのコードで要求している木は 21（7.9%）で、v2 は 6/87、v3 は 9/91、v4 は 6/88。識別用の scope だけの木 6 を足すと 27（10.2%）になる。scope の要求がない木では、env のトークンや API キーだけを MCP コードから読む木が 97（36.5%、木全体で数えると 124）あった。OAuth の流れはあるが scope が実行時に決まる・コンソールで設定する・RBAC で決まる木（B）は 14 本あった。提供者で最も多いのは Google（7）と Microsoft（5）で、ほかは 1〜2 木ずつ広く散らばる。依頼の定義で照合すると（RO の tool が書き込み可能な scope の資格を共有する）候補は 14 木ある。ただし全部が RO と書き込みを併せ持つ混在サーバで、資格の共有による過剰権限にあたる。サーバ全体が RO なのに書き込み scope を要求する強い矛盾は 0 件だった。tool 単位で筋の良い候補は 2 つ。klavis の reddit_search は、RO の tool だけが使うトークンが submit を要求している。falcon-mcp の写し 2 木では、既定で RO と注釈された tool が、コード内の scope 対応表の上で :write を必要とし、該当が 3 tool ある（ただし API 設計による :write で、実効の書き込みではない可能性が高い）。粒度を表さない scope が多い（.default、full、yahooads、dfp、user_access）。tool ごとの scope と注釈を並べて書く実例（goprofiles。10/10 で一致）もある。以上から、上流 scope の軸は母集団の約 1 割にしか適用できず、主結果の新しい軸としては信号が弱い。事例研究、限界の議論、または per-tool scope（securitySchemes）宣言との照合という補助の節に向く。"
+}

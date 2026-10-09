@@ -1,0 +1,283 @@
+#!/usr/bin/env python3
+"""Aggregate scan_scopes.py output: MCP trees, scope sites (filtered), reachability, RO tools, env-only creds."""
+from __future__ import annotations
+
+import json
+import os
+import re
+import sys
+from collections import Counter, defaultdict, deque
+
+S = os.path.dirname(os.path.abspath(__file__))
+ROOT = "/home/user/auth_gap"
+OUT = os.path.join(S, "out")
+
+SCOPE_TOKEN_RE = re.compile(r"^[A-Za-z][\w.\-:/]*[\w]$")
+STOP = {"session", "function", "module", "class", "package", "global", "local", "user", "project", "workspace", "tenant",
+        "agent", "thread", "conversation", "request", "app", "all", "none", "default", "private", "public", "org", "team",
+        "repository", "personal", "shared", "system", "internal", "external", "file", "folder", "directory",
+        "path", "subtree", "recursive", "true", "false", "read", "write", "admin", "full", "basic", "minimal", "limited",
+        "global_scope", "local_scope", "memory", "user_id", "agent_id", "session_id", "run_id", "chat", "channel",
+        "space", "domain", "site", "account", "scope", "scopes", "string", "array", "object", "integer", "boolean", "number"}
+
+
+def looks_like_scope_token(s: str) -> bool:
+    s = s.strip()
+    if not s or len(s) > 120 or s.lower() in STOP:
+        return False
+    toks = re.split(r"[\s,]+", s)
+    if len(toks) > 1:
+        return all(looks_like_scope_token(t) for t in toks if t)
+    if not SCOPE_TOKEN_RE.match(s):
+        return False
+    # need a separator typical for scopes
+    return any(c in s for c in ":./-_") or s in ("openid", "email", "profile", "offline_access", "repo", "gist",
+                                                  "identify", "guilds", "bot", "api", "identity", "submit",
+                                                  "notifications", "workflow", "read", "write")
+
+
+def load_status():
+    st = {}
+    for s in ("v2", "v3", "v4"):
+        d = json.load(open(os.path.join(ROOT, f"evidence/population_{s}/post_fetch_check.json")))
+        for r in d["rows"]:
+            st[r["name"]] = r["status"]
+    return st
+
+
+def load_decl_paths():
+    dp = {}
+    for s in ("v2", "v3", "v4"):
+        d = json.load(open(os.path.join(ROOT, f"docs/corpus_sample_{s}.json")))
+        for t in d["targets"]:
+            dp[t["name"]] = t.get("declaring_paths", [])
+    return dp
+
+
+def load_roster():
+    ro = defaultdict(list)
+    for s in ("v2", "v3", "v4"):
+        d = json.load(open(os.path.join(S, f"roster_{s}.json")))
+        for t in d["trees"]:
+            for e in t["entries"]:
+                ro[t["tree"]].append(e)
+    return ro
+
+
+def module_index(files):
+    idx = defaultdict(list)
+    for rel in files:
+        if not rel.endswith(".py"):
+            continue
+        parts = rel[:-3].split("/")
+        if parts[-1] == "__init__":
+            parts = parts[:-1]
+        for i in range(len(parts)):
+            idx[".".join(parts[i:])].append(rel)
+    return idx
+
+
+def common_prefix_len(a, b):
+    pa, pb = a.split("/")[:-1], b.split("/")[:-1]
+    n = 0
+    for x, y in zip(pa, pb):
+        if x != y:
+            break
+        n += 1
+    return n
+
+
+def resolve(importer, imp, files, idx):
+    level, mod, names = imp
+    out = set()
+    if level > 0:
+        base = importer.split("/")[:-1]
+        if level - 1 > 0:
+            base = base[: len(base) - (level - 1)]
+        baseprefix = "/".join(base)
+        cands = []
+        mpath = (baseprefix + "/" if baseprefix else "") + (mod.replace(".", "/") if mod else "")
+        mpath = mpath.rstrip("/")
+        cands += [mpath + ".py", mpath + "/__init__.py"]
+        for n in names:
+            cands += [mpath + "/" + n + ".py", mpath + "/" + n + "/__init__.py"]
+        for c in cands:
+            c = c.lstrip("/")
+            if c in files:
+                out.add(c)
+        return out
+    keys = [mod] + [mod + "." + n for n in names]
+    for k in keys:
+        c = idx.get(k)
+        if not c:
+            continue
+        best = max(common_prefix_len(importer, x) for x in c)
+        # if the match is a suffix match with zero shared directory and the module is a single common name,
+        # we still accept (Python path may be the repo root) but keep only best ties
+        for x in c:
+            if common_prefix_len(importer, x) == best:
+                out.add(x)
+    # package __init__ chain of resolved files
+    extra = set()
+    for f in out:
+        d = f.split("/")[:-1]
+        depth = len(mod.split(".")) if mod else 0
+        for j in range(1, depth + 1):
+            p = "/".join(d[: len(d) - j + (0 if f.endswith("__init__.py") else 1)]) + "/__init__.py"
+            if p in files and p != f:
+                extra.add(p)
+    return out | extra
+
+
+def build_graph(files):
+    idx = module_index(files)
+    g = defaultdict(set)
+    for rel, rec in files.items():
+        for imp in rec["imports"]:
+            for t in resolve(rel, imp, files, idx):
+                if t != rel:
+                    g[rel].add(t)
+    return g
+
+
+def closure(g, roots):
+    seen = set(roots)
+    dq = deque(roots)
+    while dq:
+        x = dq.popleft()
+        for y in g.get(x, ()):
+            if y not in seen:
+                seen.add(y)
+                dq.append(y)
+    return seen
+
+
+def undirected_component(g, roots):
+    ug = defaultdict(set)
+    for a, bs in g.items():
+        for b in bs:
+            ug[a].add(b)
+            ug[b].add(a)
+    return closure(ug, roots)
+
+
+# ---------------- scope classification ----------------
+GOOGLE_RO_SUFFIX = (".readonly", ".read", "read-only", ".read_only", "readonly")
+GOOGLE_IDENTITY = {"userinfo.email", "userinfo.profile", "openid", "plus.me", "user.emails.read"}
+
+
+def classify_scope(prov, s):
+    """'read' / 'write' / 'identity' / 'undetermined'."""
+    t = s.strip()
+    if prov == "google":
+        m = re.search(r"googleapis\.com/auth/([\w.\-/]+)", t)
+        if not m:
+            if "mail.google.com" in t:
+                return "write"
+            return "write"  # feeds = full
+        suf = m.group(1)
+        if suf in GOOGLE_IDENTITY:
+            return "identity"
+        if suf.endswith(GOOGLE_RO_SUFFIX) or suf in ("gmail.metadata", "calendar.freebusy", "devstorage.read_only",
+                                                     "cloud-platform.read-only", "fitness.activity.read",
+                                                     "analytics.readonly", "webmasters.readonly"):
+            return "read"
+        return "write"
+    if prov == "microsoft":
+        if t.endswith("/.default"):
+            return "undetermined"
+        name = t.split("/")[-1]
+        if name in ("User.Read", "openid", "profile", "email", "offline_access", "User.ReadBasic.All"):
+            return "identity"
+        if re.search(r"\.(ReadWrite|Send|Write|Manage|Create|Delete|Invite|Export|Import)", name) or name.endswith(".Send"):
+            return "write"
+        if re.search(r"\.Read(Basic)?(\.|$)", name):
+            return "read"
+        return "undetermined"
+    if prov == "slack":
+        if re.search(r":(read|history)(\.|$)", t) or t.endswith(":read.email"):
+            return "read"
+        return "write"
+    if prov == "github":
+        if t in ("read:user", "user:email"):
+            return "identity"
+        if t.startswith("read:"):
+            return "read"
+        return "write"
+    if prov == "spotify":
+        return "write" if ("modify" in t or t in ("ugc-image-upload", "app-remote-control", "streaming")) else "read"
+    if prov == "atlassian":
+        return "read" if t.startswith("read:") else "write"
+    if prov == "dropbox":
+        return "read" if t.endswith(".read") else "write"
+    if prov == "twitter":
+        return "read" if t.endswith(".read") else ("identity" if t == "offline.access" else "write")
+    return "undetermined"
+
+
+def main():
+    status = load_status()
+    roster = load_roster()
+    decl_paths = load_decl_paths()
+    trees = sorted(f[:-5] for f in os.listdir(OUT) if f.endswith(".json"))
+    summary = {}
+    review = []
+    for t in trees:
+        d = json.load(open(os.path.join(OUT, t + ".json")))
+        files = d["files"]
+        src = {r: x for r, x in files.items() if x["cls"] == "src"}
+        tool_files = sorted(r for r, x in src.items() if x["tools"])
+        n_tools = sum(len(src[r]["tools"]) for r in tool_files)
+        imports_mcp_any = any(x["imports_mcp"] for x in src.values())
+        mcp_tree_ast = bool(tool_files) and imports_mcp_any
+        g = build_graph(files)
+        roots = sorted(set(tool_files) | {p for p in decl_paths.get(t, []) if p in src})
+        reach = closure(g, roots) if roots else set()
+        comp = undirected_component(g, roots) if roots else set()
+        droots = sorted(p for p in decl_paths.get(t, []) if p in files)
+        reach_decl = closure(g, droots) if droots else set()
+        # RO-tool files (from survey_roster) and their closures
+        ro_files = sorted({e["relpath"] for e in roster.get(t, []) if e.get("relpath") in files})
+        reach_ro = closure(g, ro_files) if ro_files else set()
+        # scope sites
+        sites = []
+        for rel, x in files.items():
+            for s in x["scopes"]:
+                tok = s["s"]
+                keep = s["prov"] is not None or (s["ctx"] != "anywhere_url" and looks_like_scope_token(tok)) \
+                    or s["ctx"] == "authorize_url_literal"
+                if not keep:
+                    continue
+                sites.append({"file": rel, "line": s["line"], "cls": x["cls"], "ctx": s["ctx"], "s": tok,
+                              "prov": s["prov"], "rw": classify_scope(s["prov"], tok) if s["prov"] else None,
+                              "reach": rel in reach, "reach_decl": rel in reach_decl, "reach_ro": rel in reach_ro, "same_file_tool": rel in roots, "comp": rel in comp})
+        # oauth indicators
+        oauth_imps = Counter()
+        oauth_urls = []
+        for rel, x in files.items():
+            if x["cls"] != "src":
+                continue
+            for m in x["oauth_imports"]:
+                oauth_imps[m] += 1
+            for u, ln in x["oauth_urls"]:
+                oauth_urls.append((rel, ln, u))
+        env = []
+        for rel, x in files.items():
+            if x["cls"] != "src":
+                continue
+            for name, ln in x["env"]:
+                env.append((rel, ln, name))
+            for name, ln in x["settings_fields"]:
+                env.append((rel, ln, "settings:" + name))
+        summary[t] = {
+            "status": status.get(t), "n_py": len(files), "n_src_py": len(src), "parse_fail": len(d["parse_fail"]),
+            "tool_files": tool_files, "roots": roots, "droots": droots, "ro_files": ro_files, "n_tools_ast": n_tools, "mcp_tree_ast": mcp_tree_ast,
+            "n_ro_roster": len(roster.get(t, [])), "n_reach": len(reach),
+            "sites": sites, "oauth_imports": dict(oauth_imps), "oauth_urls": oauth_urls[:50], "env": env,
+        }
+    json.dump(summary, open(os.path.join(S, "summary.json"), "w"), indent=1)
+    print("trees", len(summary))
+
+
+if __name__ == "__main__":
+    main()

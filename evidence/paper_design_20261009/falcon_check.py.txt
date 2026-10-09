@@ -1,0 +1,43 @@
+import ast,sys,os,re
+root=sys.argv[1]
+sc=ast.literal_eval(re.search(r"API_SCOPE_REQUIREMENTS\s*=\s*(\{.*?\n\})",open(os.path.join(root,'common/api_scopes.py')).read(),re.S).group(1))
+for fn in sorted(os.listdir(os.path.join(root,'modules'))):
+    if not fn.endswith('.py') or fn in('__init__.py','base.py'): continue
+    p=os.path.join(root,'modules',fn); src=open(p,'rb').read(); t=ast.parse(src)
+    methods={}
+    for c in ast.walk(t):
+        if isinstance(c,ast.ClassDef):
+            for m in c.body:
+                if isinstance(m,(ast.FunctionDef,ast.AsyncFunctionDef)):
+                    ops=set()
+                    for n in ast.walk(m):
+                        if isinstance(n,ast.Call):
+                            for a in list(n.args)+[k.value for k in n.keywords]:
+                                if isinstance(a,ast.Constant) and isinstance(a.value,str) and a.value in sc: ops.add(a.value)
+                    methods[m.name]=(ops,m.lineno)
+    # resolve helper calls one level
+    def ops_of(name,depth=0,seen=None):
+        seen=seen or set()
+        if name in seen or name not in methods: return set()
+        seen.add(name); ops=set(methods[name][0])
+        if depth<3:
+            m=[x for x in ast.walk(t) if isinstance(x,(ast.FunctionDef,ast.AsyncFunctionDef)) and x.name==name][0]
+            for n in ast.walk(m):
+                if isinstance(n,ast.Attribute) and isinstance(n.value,ast.Name) and n.value.id=='self' and n.attr in methods:
+                    ops|=ops_of(n.attr,depth+1,seen)
+        return ops
+    for n in ast.walk(t):
+        if isinstance(n,ast.Call) and isinstance(n.func,ast.Attribute) and n.func.attr=='_add_tool':
+            meth=None; ro=True; name=None
+            for k in n.keywords:
+                if k.arg=='method' and isinstance(k.value,ast.Attribute): meth=k.value.attr
+                if k.arg=='name' and isinstance(k.value,ast.Constant): name=k.value.value
+                if k.arg=='annotations':
+                    for kk in ast.walk(k.value):
+                        if isinstance(kk,ast.keyword) and kk.arg=='readOnlyHint' and isinstance(kk.value,ast.Constant): ro=kk.value.value
+            if meth is None and n.args and isinstance(n.args[0],ast.Attribute): meth=n.args[0].attr
+            ops=ops_of(meth) if meth else set()
+            scopes=sorted({s for o in ops for s in sc[o]})
+            w=[s for s in scopes if s.endswith(':write')]
+            flag='CONFLICT' if ro and w else ''
+            print(f"{fn}:{n.lineno} tool={name or meth} ro={ro} scopes={scopes} {flag}")

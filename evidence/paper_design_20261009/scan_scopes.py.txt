@@ -1,0 +1,369 @@
+#!/usr/bin/env python3
+"""Upstream OAuth scope prevalence scan (scratch; no authgap import).
+
+For each tree corpus/<prefix>*:
+  - every .py file (excluding .git) is parsed with ast (bytes).
+  - path class: vendored / non_src / src  (same rule as scripts/sample_population_v2.py: cls)
+  - MCP tool registrations (decorator .tool / list_tools / call_tool, add_tool(), Tool(name=...))
+  - scope candidate strings (provider pattern anywhere; any string inside a "scope context")
+  - OAuth flow indicators (imports + authorize/token URL strings)
+  - env-var credential reads (os.getenv / os.environ[...] / os.environ.get) with TOKEN/KEY/SECRET-like names
+  - import graph for reachability
+Output: one JSON per tree into OUTDIR.
+"""
+from __future__ import annotations
+
+import ast
+import json
+import os
+import re
+import sys
+from concurrent.futures import ProcessPoolExecutor
+
+ROOT = "/home/user/auth_gap"
+sys.path.insert(0, os.path.join(ROOT, "scripts"))
+from sample_population_v2 import cls  # noqa: E402
+
+# ---------------- provider patterns (applied to string constants) ----------------
+PROVIDER_PATTERNS = [
+    ("google", re.compile(r"https?://(www\.)?googleapis\.com/auth/[\w.\-/]+")),
+    ("google", re.compile(r"https?://mail\.google\.com/?$")),
+    ("google", re.compile(r"https?://(spreadsheets|docs)\.google\.com/feeds")),
+    ("google", re.compile(r"https?://www\.google\.com/m8/feeds")),
+    ("microsoft", re.compile(r"https?://graph\.microsoft\.com/[\w.\-]+")),
+    ("microsoft", re.compile(r"^(api://[^\s]+|https?://[\w.\-]+(\.azure\.com|\.windows\.net|\.dynamics\.com|\.microsoft\.com|\.azure\.net|\.office\.com|\.sharepoint\.com)[^\s]*)/\.default$")),
+    ("microsoft", re.compile(r"^(Mail|Files|User|Calendars|Contacts|Sites|Tasks|Notes|Chat|ChannelMessage|Channel|Team|Group|Directory|People|Presence|OnlineMeetings|MailboxSettings|Bookings|OnlineMeetingTranscript|Application|Policy|AuditLog|Reports|TeamSettings|Organization|Device)\.[A-Za-z.]+$")),
+    ("slack", re.compile(r"^(chat|channels|groups|im|mpim|users|files|reactions|pins|stars|team|usergroups|search|emoji|bookmarks|reminders|dnd|links|calls|conversations|admin|app_mentions|canvases|lists|assistant|metadata|remote_files|workflow|triggers|identity|users\.profile)(\.[a-z_]+)?:(read|write|history|manage|connect|customize|public|write\.public|write\.customize|basic|email|avatar|team|read\.email|invites|write\.invites)(\.[a-z_]+)*$")),
+    ("github", re.compile(r"^(read|write|admin|manage):(user|org|packages|public_key|repo_hook|gpg_key|discussion|project|enterprise|audit_log|ssh_signing_key|org_hook)$|^(user:email|user:follow|repo:status|repo_deployment|public_repo|repo:invite|security_events|delete_repo|delete:packages|codespace|copilot)$")),
+    ("spotify", re.compile(r"^(user|playlist|ugc|app|streaming)(-[a-z]+)+$")),
+    ("atlassian", re.compile(r"^(read|write|manage|delete):(jira|confluence|servicedesk|servicemanagement|jsw|bitbucket|account|me)[\w\-.:]*$")),
+    ("dropbox", re.compile(r"^(files|sharing|account_info|file_requests|contacts|team_data|members|groups|sessions|team_info|events)\.[a-z_.]+$")),
+    ("twitter", re.compile(r"^(tweet|users|follows|offline|space|mute|like|list|block|bookmark|dm)\.(read|write|access|moderate\.write)$")),
+    ("linkedin", re.compile(r"^(r|w|rw)_[a-z_]+$")),
+    ("hubspot", re.compile(r"^crm\.[a-z_.]+\.(read|write)$")),
+    ("gitlab", re.compile(r"^(api|read_api|read_user|read_repository|write_repository|read_registry|write_registry|sudo|admin_mode)$")),
+    ("xero", re.compile(r"^accounting\.[a-z.]+$")),
+    ("intuit", re.compile(r"^com\.intuit\.quickbooks\.[a-z]+$")),
+    ("zoho", re.compile(r"^Zoho[A-Za-z]+\.[A-Za-z.]+$")),
+    ("todoist", re.compile(r"^(data:read|data:read_write|data:delete|task:add|project:delete)$")),
+    ("strava", re.compile(r"^(activity|profile):(read|read_all|write)$")),
+]
+
+# strings that look like an OAuth scope in a scope context, but no provider matched (kept for manual review)
+STOP_SCOPE_VALUES = {"session", "function", "module", "class", "package", "global", "local", "user", "project",
+                     "workspace", "tenant", "agent", "thread", "conversation", "request", "app", "all", "none",
+                     "default", "private", "public", "org", "team", "repository", "repo", "personal", "shared",
+                     "system", "internal", "external", "file", "folder", "directory", "path", "subtree", "recursive"}
+
+SCOPE_NAME_RE = re.compile(r"(^|_)(scope|scopes)($|_)|scopes?$|^SCOPES?$", re.I)
+
+OAUTH_IMPORT_PREFIXES = {
+    "google_auth_oauthlib": "google_auth_oauthlib",
+    "google.oauth2": "google.oauth2",
+    "google.auth": "google.auth",
+    "googleapiclient": "googleapiclient",
+    "requests_oauthlib": "requests_oauthlib",
+    "oauthlib": "oauthlib",
+    "authlib": "authlib",
+    "msal": "msal",
+    "azure.identity": "azure.identity",
+    "spotipy": "spotipy",
+    "httpx_oauth": "httpx_oauth",
+    "slack_sdk.oauth": "slack_sdk.oauth",
+    "social_core": "social_core",
+    "fastmcp.server.auth": "fastmcp.server.auth",
+    "mcp.server.auth": "mcp.server.auth",
+    "mcp.client.auth": "mcp.client.auth",
+    "msgraph": "msgraph",
+    "O365": "O365",
+    "dropbox": "dropbox",
+    "tweepy": "tweepy",
+    "praw": "praw",
+    "atlassian": "atlassian",
+    "github": "PyGithub",
+    "slack_sdk": "slack_sdk",
+    "slack_bolt": "slack_bolt",
+    "notion_client": "notion_client",
+    "gitlab": "python-gitlab",
+}
+OAUTH_URL_RE = re.compile(
+    r"(/oauth2?/(v\d+(\.\d+)?/)?(authorize|auth|token)\b|accounts\.google\.com/o/oauth2|oauth2\.googleapis\.com/token|"
+    r"login\.microsoftonline\.com|slack\.com/oauth|github\.com/login/oauth|accounts\.spotify\.com/(authorize|api/token)|"
+    r"api\.notion\.com/v1/oauth|auth\.atlassian\.com/(authorize|oauth)|www\.dropbox\.com/oauth2|"
+    r"twitter\.com/i/oauth2|api\.x\.com/2/oauth2|gitlab\.com/oauth|zoom\.us/oauth|login\.salesforce\.com)")
+
+CRED_NAME_RE = re.compile(r"(TOKEN|API[_-]?KEY|APIKEY|SECRET|ACCESS[_-]?KEY|PASSWORD|PASSWD|CREDENTIAL|\bPAT\b|_PAT$|AUTH|BEARER|CLIENT_ID|PRIVATE_KEY)", re.I)
+LLM_KEY_RE = re.compile(r"(OPENAI|ANTHROPIC|CLAUDE|GEMINI|GOOGLE_API_KEY|GROQ|MISTRAL|COHERE|DEEPSEEK|OPENROUTER|TOGETHER|HF_|HUGGING|AZURE_OPENAI|PERPLEXITY|XAI|DASHSCOPE|MOONSHOT|ZHIPU|QWEN|LLM|OLLAMA|VOYAGE|JINA|FIREWORKS|REPLICATE|LANGSMITH|LANGCHAIN|TAVILY|SERPAPI|SERPER|EXA_|BRAVE)", re.I)
+
+
+def provider_of(s: str):
+    s2 = s.strip()
+    for prov, pat in PROVIDER_PATTERNS:
+        if pat.pattern.startswith("https") or prov == "google":
+            if pat.search(s2):
+                return prov
+        elif pat.match(s2):
+            return prov
+    # generic microsoft graph url check
+    if "graph.microsoft.com/" in s2:
+        return "microsoft"
+    return None
+
+
+def strings_in(node):
+    out = []
+    for n in ast.walk(node):
+        if isinstance(n, ast.Constant) and isinstance(n.value, str):
+            out.append((n.value, n.lineno))
+    return out
+
+
+def target_names(t):
+    if isinstance(t, ast.Name):
+        return [t.id]
+    if isinstance(t, ast.Attribute):
+        return [t.attr]
+    if isinstance(t, ast.Subscript) and isinstance(t.slice, ast.Constant) and isinstance(t.slice.value, str):
+        return [t.slice.value]
+    if isinstance(t, (ast.Tuple, ast.List)):
+        r = []
+        for e in t.elts:
+            r += target_names(e)
+        return r
+    return []
+
+
+def callee(call):
+    f = call.func
+    if isinstance(f, ast.Attribute):
+        base = f.value
+        bname = base.id if isinstance(base, ast.Name) else (base.attr if isinstance(base, ast.Attribute) else "")
+        return f"{bname}.{f.attr}" if bname else f.attr
+    if isinstance(f, ast.Name):
+        return f.id
+    return ""
+
+
+def env_reads(tree):
+    """(name, lineno) of env var reads with constant keys."""
+    out = []
+    for n in ast.walk(tree):
+        if isinstance(n, ast.Call):
+            c = callee(n)
+            if c in ("os.getenv", "getenv", "environ.get", "os.environ.get") or (c.endswith("environ.get")):
+                if n.args and isinstance(n.args[0], ast.Constant) and isinstance(n.args[0].value, str):
+                    out.append((n.args[0].value, n.lineno))
+        elif isinstance(n, ast.Subscript):
+            v = n.value
+            if (isinstance(v, ast.Attribute) and v.attr == "environ") or (isinstance(v, ast.Name) and v.id == "environ"):
+                if isinstance(n.slice, ast.Constant) and isinstance(n.slice.value, str):
+                    out.append((n.slice.value, n.lineno))
+    return out
+
+
+def basesettings_fields(tree):
+    out = []
+    for n in ast.walk(tree):
+        if isinstance(n, ast.ClassDef):
+            bases = [b.id if isinstance(b, ast.Name) else (b.attr if isinstance(b, ast.Attribute) else "") for b in n.bases]
+            if "BaseSettings" in bases:
+                for st in n.body:
+                    if isinstance(st, ast.AnnAssign) and isinstance(st.target, ast.Name):
+                        out.append((st.target.id, st.lineno))
+    return out
+
+
+def imports_of(tree):
+    """list of (level, module, names) for import graph; plus flat module names."""
+    out = []
+    for n in ast.walk(tree):
+        if isinstance(n, ast.Import):
+            for a in n.names:
+                out.append((0, a.name, []))
+        elif isinstance(n, ast.ImportFrom):
+            out.append((n.level, n.module or "", [a.name for a in n.names]))
+    return out
+
+
+def deco_kind(dec):
+    d = dec.func if isinstance(dec, ast.Call) else dec
+    if isinstance(d, ast.Attribute):
+        return d.attr
+    if isinstance(d, ast.Name):
+        return d.id
+    return None
+
+
+def ann_ro_value(node, ro_names):
+    """Return True/False/None for readOnlyHint inside node (kw or dict); resolves module-level names."""
+    for n in ast.walk(node):
+        if isinstance(n, ast.Call):
+            for kw in n.keywords:
+                if kw.arg in ("readOnlyHint", "read_only_hint") and isinstance(kw.value, ast.Constant):
+                    return kw.value.value
+        elif isinstance(n, ast.Dict):
+            for k, v in zip(n.keys, n.values):
+                if isinstance(k, ast.Constant) and k.value == "readOnlyHint" and isinstance(v, ast.Constant):
+                    return v.value
+        elif isinstance(n, ast.Name) and n.id in ro_names:
+            return ro_names[n.id]
+    return None
+
+
+def tools_in(tree, imports_mcp):
+    """MCP tool registrations in one file. Returns list of dicts {name, line, form, ro}."""
+    ro_names = {}
+    for st in tree.body:
+        if isinstance(st, ast.Assign):
+            v = ann_ro_value(st.value, {})
+            if v is not None:
+                for t in st.targets:
+                    if isinstance(t, ast.Name):
+                        ro_names[t.id] = v
+    out = []
+    for n in ast.walk(tree):
+        if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            for dec in n.decorator_list:
+                k = deco_kind(dec)
+                if k == "tool" and isinstance(dec.func if isinstance(dec, ast.Call) else dec, ast.Attribute):
+                    out.append({"name": n.name, "line": n.lineno, "form": "decorator",
+                                "ro": ann_ro_value(dec, ro_names) if isinstance(dec, ast.Call) else None})
+                elif k in ("list_tools", "call_tool") and isinstance(dec.func if isinstance(dec, ast.Call) else dec, ast.Attribute):
+                    out.append({"name": n.name, "line": n.lineno, "form": k, "ro": None})
+        elif isinstance(n, ast.Call):
+            c = callee(n)
+            last = c.split(".")[-1]
+            if last == "add_tool" and n.args:
+                a0 = n.args[0]
+                nm = a0.id if isinstance(a0, ast.Name) else (a0.attr if isinstance(a0, ast.Attribute) else "?")
+                out.append({"name": nm, "line": n.lineno, "form": "add_tool", "ro": ann_ro_value(n, ro_names)})
+            elif last == "Tool" and imports_mcp:
+                nm = next((k.value.value for k in n.keywords if k.arg == "name" and isinstance(k.value, ast.Constant)), None)
+                if nm is not None:
+                    out.append({"name": nm, "line": n.lineno, "form": "tool_ctor", "ro": ann_ro_value(n, ro_names)})
+            elif isinstance(n.func, ast.Call) and callee(n.func).split(".")[-1] == "tool" and n.args:
+                a0 = n.args[0]
+                nm = a0.id if isinstance(a0, ast.Name) else (a0.attr if isinstance(a0, ast.Attribute) else "?")
+                out.append({"name": nm, "line": n.lineno, "form": "call_register", "ro": ann_ro_value(n.func, ro_names)})
+    return out
+
+
+def scope_sites(tree):
+    """Scope-candidate strings. Each: (string, lineno, context, provider)."""
+    sites = []
+    seen = set()
+
+    def add(s, ln, ctx):
+        key = (s, ln, ctx)
+        if key in seen:
+            return
+        seen.add(key)
+        sites.append({"s": s[:300], "line": ln, "ctx": ctx, "prov": provider_of(s)})
+
+    # (a) provider patterns anywhere, only for URL-like providers (google / graph / .default) -- low noise
+    for n in ast.walk(tree):
+        if isinstance(n, ast.Constant) and isinstance(n.value, str):
+            v = n.value
+            if "googleapis.com/auth/" in v or re.search(r"https?://mail\.google\.com/?(\s|$)", v) or "graph.microsoft.com/" in v \
+                    or re.search(r"/\.default\b", v):
+                for tok in re.split(r"[\s,]+", v):
+                    if provider_of(tok) or "googleapis.com/auth/" in tok:
+                        add(tok, n.lineno, "anywhere_url")
+            if "scope=" in v and ("authorize" in v or "oauth" in v.lower()):
+                add(v, n.lineno, "authorize_url_literal")
+    # (b) scope contexts
+    for n in ast.walk(tree):
+        if isinstance(n, ast.Call):
+            for kw in n.keywords:
+                if kw.arg and SCOPE_NAME_RE.search(kw.arg):
+                    for s, ln in strings_in(kw.value):
+                        add(s, ln, f"kw:{kw.arg}@{callee(n)}")
+        elif isinstance(n, (ast.Assign, ast.AnnAssign)):
+            tgts = n.targets if isinstance(n, ast.Assign) else [n.target]
+            names = [x for t in tgts for x in target_names(t)]
+            if any(SCOPE_NAME_RE.search(x) for x in names) and n.value is not None:
+                for s, ln in strings_in(n.value):
+                    add(s, ln, "assign:" + ",".join(names))
+        elif isinstance(n, ast.Dict):
+            for k, v in zip(n.keys, n.values):
+                if isinstance(k, ast.Constant) and isinstance(k.value, str) and SCOPE_NAME_RE.search(k.value):
+                    for s, ln in strings_in(v):
+                        add(s, ln, f"dictkey:{k.value}")
+        elif isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            args = n.args.args + n.args.kwonlyargs
+            defaults = [None] * (len(n.args.args) - len(n.args.defaults)) + list(n.args.defaults) + list(n.args.kw_defaults)
+            for a, d in zip(args, defaults):
+                if d is not None and SCOPE_NAME_RE.search(a.arg):
+                    for s, ln in strings_in(d):
+                        add(s, ln, f"default:{a.arg}@{n.name}")
+    return sites
+
+
+def oauth_urls(tree):
+    out = []
+    for n in ast.walk(tree):
+        if isinstance(n, ast.Constant) and isinstance(n.value, str) and OAUTH_URL_RE.search(n.value):
+            out.append((n.value[:200], n.lineno))
+        elif isinstance(n, ast.JoinedStr):
+            for p in n.values:
+                if isinstance(p, ast.Constant) and isinstance(p.value, str) and OAUTH_URL_RE.search(p.value):
+                    out.append((p.value[:200], n.lineno))
+    return out
+
+
+def scan_tree(tree_dir):
+    name = os.path.basename(tree_dir)
+    files = {}
+    parse_fail = []
+    for dp, dns, fns in os.walk(tree_dir):
+        dns[:] = [d for d in dns if d != ".git"]
+        for fn in fns:
+            if not fn.endswith(".py"):
+                continue
+            full = os.path.join(dp, fn)
+            rel = os.path.relpath(full, tree_dir)
+            try:
+                with open(full, "rb") as fh:
+                    src = fh.read()
+            except OSError:
+                continue
+            try:
+                import warnings
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore")
+                    tree = ast.parse(src, filename=rel)
+            except (SyntaxError, ValueError, RecursionError, MemoryError):
+                parse_fail.append(rel)
+                continue
+            imps = imports_of(tree)
+            flat = [m for (lvl, m, _) in imps if lvl == 0]
+            imports_mcp = any(m == "mcp" or m.startswith("mcp.") or m == "fastmcp" or m.startswith("fastmcp.") for m in flat)
+            oauth_imps = sorted({lab for m in flat for pre, lab in OAUTH_IMPORT_PREFIXES.items() if m == pre or m.startswith(pre + ".")})
+            rec = {
+                "cls": cls(rel),
+                "imports": imps,
+                "imports_mcp": imports_mcp,
+                "oauth_imports": oauth_imps,
+                "tools": tools_in(tree, imports_mcp),
+                "scopes": scope_sites(tree),
+                "oauth_urls": oauth_urls(tree),
+                "env": env_reads(tree),
+                "settings_fields": basesettings_fields(tree),
+            }
+            files[rel] = rec
+    return {"tree": name, "files": files, "parse_fail": parse_fail}
+
+
+def main():
+    outdir = sys.argv[1]
+    trees = sys.argv[2:]
+    os.makedirs(outdir, exist_ok=True)
+    with ProcessPoolExecutor(max_workers=int(os.environ.get("NPROC", "8"))) as ex:
+        for res in ex.map(scan_tree, trees):
+            with open(os.path.join(outdir, res["tree"] + ".json"), "w") as fh:
+                json.dump(res, fh)
+            print(res["tree"], len(res["files"]), len(res["parse_fail"]), flush=True)
+
+
+if __name__ == "__main__":
+    main()
