@@ -136,6 +136,7 @@ cp evidence/practice_v4/survey_practice.csv ~/authgap_practice/
 | `evidence/population_v4/`・`docs/population_v4.md` | v4 の判定 |
 | `evidence/scan_v2_*/`（すべての run）・`evidence/v4pilot_depth/` | 解析器の出力 |
 | `python -m authgap ...`・`scripts/show_target.py`・`scripts/path_view.py` を練習の木に走らせること | 解析器の出力を見ることになる |
+| `git log` のコミットの本文（`git log -p`・GitHub のコミットの画面も）。とくに 2026-10-09 の練習のコミット | 本記録者がコミットの本文に W-01・T の答えを書いてしまった（`git pull` は本文を出さないので、pull はしてよい） |
 
 手引き・決定（`docs/decisions.md`）・未決（`docs/open_questions.md`。O48 を含む）・教科書は読んでかまいません（W-01・T の木の答えに
 かかわる記述は無いことを確かめてあります）。
