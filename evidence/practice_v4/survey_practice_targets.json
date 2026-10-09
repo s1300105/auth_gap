@@ -1,0 +1,124 @@
+{
+ "_note": "実態調査の順番の列（D82・D85）。列の順に判定し、最低 100・最大 200 件（段階 B1 で確定）。判定の前にコミットする。判定表には解析器の出力の欄を載せない。",
+ "kind": "survey",
+ "seed": 20261009,
+ "seed_role": "⑦ 実態調査の抜き取り",
+ "rng_order": "random.Random(seed) を 1 本。(1) 名簿のある木を名前の順に並べて shuffle、(2) 先頭から n 木について、その木の名簿（relpath・定義の行・宣言の行・名前の順）から randrange で 1 件。",
+ "python": "3.10.20",
+ "n_trees_in_roster": 46,
+ "n": 10,
+ "n_targets": 10,
+ "targets": [
+  {
+   "seq": 1,
+   "pair_id": "S-001",
+   "tree": "v4-kernelci__kci-dev",
+   "relpath": "kcidev/mcp/tools_maestro.py",
+   "form": "unmapped",
+   "tool": null,
+   "def_lineno": null,
+   "decl_lineno": 12,
+   "n_entries_in_tree": 2
+  },
+  {
+   "seq": 2,
+   "pair_id": "S-002",
+   "tree": "v4-bogacsmz__deja",
+   "relpath": "deja/mcp_server.py",
+   "form": "decorator",
+   "tool": "recall_memory",
+   "def_lineno": 40,
+   "decl_lineno": 36,
+   "n_entries_in_tree": 4
+  },
+  {
+   "seq": 3,
+   "pair_id": "S-003",
+   "tree": "v4-aukern__scout-api",
+   "relpath": "src/scout_api/search/mcp.py",
+   "form": "decorator",
+   "tool": "search_collection",
+   "def_lineno": 88,
+   "decl_lineno": 82,
+   "n_entries_in_tree": 2
+  },
+  {
+   "seq": 4,
+   "pair_id": "S-004",
+   "tree": "v4-adrmarabuco__mcp-trading-view",
+   "relpath": "tradingview_mcp.py",
+   "form": "decorator",
+   "tool": "tradingview_list_exchanges",
+   "def_lineno": 759,
+   "decl_lineno": 752,
+   "n_entries_in_tree": 6
+  },
+  {
+   "seq": 5,
+   "pair_id": "S-005",
+   "tree": "v4-matchaonmuffins__ms-cluster-formula-search",
+   "relpath": "formula_search/mcp_server.py",
+   "form": "decorator",
+   "tool": "formula_scan_all_levels",
+   "def_lineno": 277,
+   "decl_lineno": 271,
+   "n_entries_in_tree": 3
+  },
+  {
+   "seq": 6,
+   "pair_id": "S-006",
+   "tree": "v4-bimobintang__tradingagents",
+   "relpath": "TradingAgents/mcp_server/server.py",
+   "form": "add_tool",
+   "tool": "_fn",
+   "def_lineno": 184,
+   "decl_lineno": 184,
+   "n_entries_in_tree": 1
+  },
+  {
+   "seq": 7,
+   "pair_id": "S-007",
+   "tree": "v4-konsti__fastmcp-playground",
+   "relpath": "mcp/app/tools/portfolio.py",
+   "form": "call_register",
+   "tool": "portfolio_insights",
+   "def_lineno": 24,
+   "decl_lineno": 32,
+   "n_entries_in_tree": 2
+  },
+  {
+   "seq": 8,
+   "pair_id": "S-008",
+   "tree": "v4-gocronx__icon_mcp",
+   "relpath": "src/icon_mcp/server.py",
+   "form": "decorator",
+   "tool": "search_icons",
+   "def_lineno": 145,
+   "decl_lineno": 143,
+   "n_entries_in_tree": 3
+  },
+  {
+   "seq": 9,
+   "pair_id": "S-009",
+   "tree": "v4-kowntaewook__iwantgohome",
+   "relpath": "src/ctf_mcp/server.py",
+   "form": "unmapped",
+   "tool": null,
+   "def_lineno": null,
+   "decl_lineno": 71,
+   "n_entries_in_tree": 1
+  },
+  {
+   "seq": 10,
+   "pair_id": "S-010",
+   "tree": "v4-chmielvu__coderag-mcp",
+   "relpath": "src/coderag_mcp/server.py",
+   "form": "decorator",
+   "tool": "list_jobs",
+   "def_lineno": 385,
+   "decl_lineno": 379,
+   "n_entries_in_tree": 8
+  }
+ ],
+ "_note_practice": "練習用（2026-10-09）。本番の抜き取りではない。v4 の 99 木に scripts/survey_roster.py build を当てた名簿から、練習の 6 木・W-01 の木・docs/**/*.md・evidence/practice_v4/*.md・evidence/population_v4/v4_*.json に名前が出る 28 木・学生がチャットでコードを見た geocode-mcp を除いた 46 木で、survey_roster.py sample --seed 20261009（使い捨て）--n 10 を走らせた出力。S-001（unmapped、1 つの宣言を複数のツールが使う）はどのツールを判定するかの規則が無い（O48 (5)）ので飛ばし、S-002〜S-004 を T-01〜T-03 にした。解析器の出力は入っていない。"
+}
