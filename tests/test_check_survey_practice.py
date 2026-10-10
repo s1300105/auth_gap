@@ -134,13 +134,14 @@ def test_main_skips_unjudged_rows_and_checks_the_practice_sheet_columns(tmp_path
     assert cs.main([sheet, "--all"]) == 1
 
     p = tmp_path / "s.csv"
-    cols = list(BASE) + ["target_by_arg"]
-    with open(p, "w", encoding="utf-8-sig", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=cols)
-        w.writeheader()
-        w.writerow({**row(**VIOLATION), "target_by_arg": ""})
-    assert cs.main([str(p)]) == 1
-    assert "使わない欄" in capsys.readouterr().out
+    for extra in ("target_by_arg", "cause", "output_found", "error_class", "verdict"):  # 精度・見落としの判定の欄
+        cols = list(BASE) + [extra]
+        with open(p, "w", encoding="utf-8-sig", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=cols)
+            w.writeheader()
+            w.writerow({**row(**VIOLATION), extra: ""})
+        assert cs.main([str(p)]) == 1, extra
+        assert "使わない欄" in capsys.readouterr().out
 
 
 def test_condition_order_and_none_with_text_are_errors():

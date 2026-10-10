@@ -19,7 +19,7 @@
 | `対象外` | `evidence`（理由と行）・`stopped_early`（`違反なし`） | `write_target`・`condition_type`・`condition`・`depth`・`unknown_reason` | `note` |
 | どれでも | `minutes`・`ai_used`・`t_start`・`t_end`・`t_break`・`t_noai`・`t_ai`・`t_guide`・`t_setup` | — | `ai_model`・`ai_log`・`ai_found`（`ai_used` = `あり` のとき必ず） |
 
-- `target_by_arg`（D84）は**実態調査の違反には付けない**（学生の選択）。`cause`（見落としの原因）は解析器と比べる欄なので書かない。
+- `target_by_arg`（D84）は**実態調査の違反には付けない**（学生の選択）。`cause`（見落としの原因）は解析器と比べる欄なので書かない（O48 (4) の推奨。実態調査の節が手引きに無いため、まだ決まっていない）。
   どちらも表に欄がありません。
 - 配った欄（`seq`・`pair_id`・`tree`・`tool`・`roster_form`・`roster_relpath`・`roster_lineno`・`decl_lineno`・`decl`）は**変えない**。
 

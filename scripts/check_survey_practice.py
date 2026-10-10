@@ -47,7 +47,8 @@ TEXT_COLS = ("condition", "unknown_reason", "evidence", "ai_found", "note")
 REQUIRED_COLUMNS = ("pair_id", "tree", "outcome", *LABEL_COLS, "unknown_reason", "evidence", "ai_found", "note",
                     "minutes", "ai_used", "ai_model", "ai_log", "stopped_early", "t_start", "t_end", "t_break",
                     "t_noai", "t_ai", "t_guide", "t_setup")
-FORBIDDEN_COLUMNS = ("target_by_arg", "cause", "verdict")
+#: 精度・見落としの判定の欄（実態調査には無い。D84・手引き 18.4・13 節）。
+FORBIDDEN_COLUMNS = ("target_by_arg", "cause", "verdict", "output_found", "error_class")
 TIME_RE = re.compile(r"^([01]?\d|2[0-3]):[0-5]\d$")
 TIME_WITH_SECONDS_RE = re.compile(r"^\d{1,2}:\d{2}:\d{2}$")
 INT_RE = re.compile(r"^\d+$")

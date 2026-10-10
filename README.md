@@ -20,7 +20,11 @@ P0 を超える箇所を報告する。
     docs/        設計文書・凍結物・triage
     fixtures/    受け入れ fixture と期待値（手検証の入口）
     corpus/      解析対象の木（gitignore、scripts/fetch_corpus.py が生成）
-    evidence/    実行の証拠（gitignore、evidence/w0 のみ例外）
+    evidence/    実行の証拠（多くは gitignore。追跡するものは .gitignore の ! の行）
+                 実態調査の練習: evidence/practice_survey/README.md
+                 精度・見落としの判定の練習: evidence/practice_v4/README.md
+
+論文までの手順は docs/roadmap_to_paper.md。
     scripts/     取得・前測・検証スクリプト
     tests/       単体・回帰・決定論
 
