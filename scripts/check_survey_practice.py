@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""実態調査の形の練習の表（`evidence/practice_v4/survey_practice.csv` を写して書いたもの）の書き方を確かめる。
+"""実態調査の形の練習の表（`evidence/practice_survey/survey_practice.csv` を写して書いたもの）の書き方を確かめる。
 
     .venv/bin/python scripts/check_survey_practice.py ~/authgap_practice/survey_practice.csv
 
 判定の中身（違反かどうか）は確かめない。確かめるのは、欄の値が語彙の中にあるか、答えごとに書く欄・書かない欄が
-`evidence/practice_v4/manual/03_record.md` のとおりか、時間の欄が合っているか、だけ。
+`evidence/practice_survey/manual/03_record.md` のとおりか、時間の欄が合っているか、だけ。
 
 * 語彙（条件の種類・書き込み先の種類・不明の理由の類・AI の有無）は `scripts/final_aggregate.py` の定義を使う
   （語彙は 1 か所でしか定義しない）。実態調査の答えの値だけはここで定義する（手引きに実態調査の節がまだ無い。O48 (4)）。

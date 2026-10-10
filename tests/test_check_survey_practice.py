@@ -127,7 +127,7 @@ def test_newline_in_cell_is_an_error():
 
 
 def test_main_skips_unjudged_rows_and_checks_the_practice_sheet_columns(tmp_path, capsys):
-    sheet = os.path.join(ROOT, "evidence", "practice_v4", "survey_practice.csv")
+    sheet = os.path.join(ROOT, "evidence", "practice_survey", "survey_practice.csv")
     assert cs.main([sheet]) == 0  # 配った表は未記入で、欄がそろっている
     out = capsys.readouterr().out
     assert "まだ判定していない" in out and "誤りなし" in out

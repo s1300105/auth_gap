@@ -1,7 +1,7 @@
 # 練習の練習と、本番と同じ条件で 1 件の時間を測る手順 → `manual/` に移した
 
 この文書の中身（練習の練習 W-01、本番と同じ条件で測る T-01〜T-03、1 件の判定の手順、記録の書き方）は、2026-10-09 に、より細かい
-手順書 **`evidence/practice_v4/manual/`** に移しました。入口は `manual/README.md` です。
+手順書 **`evidence/practice_survey/manual/`** に移しました。入口は `manual/README.md` です。
 
 | 前のこの文書の節 | 移した先 |
 |---|---|

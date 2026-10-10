@@ -1,6 +1,6 @@
 # 3. 記録の書き方（表の欄ごと）
 
-表は `~/authgap_practice/survey_practice.csv`（`evidence/practice_v4/survey_practice.csv` の写し）です。1 件 = 1 行。この章は、
+表は `~/authgap_practice/survey_practice.csv`（`evidence/practice_survey/survey_practice.csv` の写し）です。1 件 = 1 行。この章は、
 **欄ごとに何を・どの字で書くか**を決めます。値の語彙は本番の集計の道具（`scripts/final_aggregate.py`）と同じ字です。書き終えたら
 `scripts/check_survey_practice.py` で確かめます（6 節）。
 

@@ -21,7 +21,7 @@ cd ~/research/auth_gap
 git pull
 ```
 
-- 出力の最後に、`evidence/practice_v4/manual/` などの新しいファイルが並べば最新です。`git log` の**本文**は読まないでください（1.4）。
+- 出力の最後に、`evidence/practice_survey/manual/` などの新しいファイルが並べば最新です。`git log` の**本文**は読まないでください（1.4）。
 
 仮想環境がまだ無ければ作ります（あれば飛ばす）:
 
@@ -33,7 +33,7 @@ uv pip install --python .venv/bin/python -r requirements.txt
 練習の 4 木（W-01・T-01〜T-03）を取ります:
 
 ```bash
-.venv/bin/python scripts/fetch_corpus.py --spec evidence/practice_v4/fetch_spec_survey_practice.json
+.venv/bin/python scripts/fetch_corpus.py --spec evidence/practice_survey/fetch_spec_survey_practice.json
 git restore docs/frame.csv docs/fetch_failures.md
 ```
 
@@ -66,8 +66,8 @@ git restore docs/frame.csv docs/fetch_failures.md
 
 ```bash
 mkdir -p ~/authgap_practice/worksheets ~/authgap_practice/ai_logs
-cp evidence/practice_v4/survey_practice.csv ~/authgap_practice/
-for id in W-01 T-01 T-02 T-03; do cp evidence/practice_v4/manual/worksheet.md ~/authgap_practice/worksheets/$id.md; done
+cp evidence/practice_survey/survey_practice.csv ~/authgap_practice/
+for id in W-01 T-01 T-02 T-03; do cp evidence/practice_survey/manual/worksheet.md ~/authgap_practice/worksheets/$id.md; done
 ls ~/authgap_practice ~/authgap_practice/worksheets
 ```
 
@@ -131,7 +131,7 @@ VS Code の場合:
 左に VS Code（木）、右上にこの手順書（`02_steps.md`）とワークシート、右下に表。手引き（`docs/drafts/final_judging_guide_draft.md`）は
 別のタブで開いておきます。
 
-- 手順書は、**手順書のフォルダだけ**を別の窓で開きます（`code evidence/practice_v4/manual`。Markdown のプレビューは `Ctrl+Shift+V` /
+- 手順書は、**手順書のフォルダだけ**を別の窓で開きます（`code evidence/practice_survey/manual`。Markdown のプレビューは `Ctrl+Shift+V` /
   `Cmd+Shift+V`）。手引きは `code docs/drafts/final_judging_guide_draft.md` か、GitHub の画面で開きます。
 - **repo の根（`~/research/auth_gap`）を VS Code で開いて検索しない**でください。木全体の検索に、参考の答え・解析器の出力
   （1.4 の表のもの）が当たります。
@@ -140,9 +140,9 @@ VS Code の場合:
 
 | 開かないもの | 理由 |
 |---|---|
-| `evidence/practice_v4/analyzer_view/`（`W-01.txt`・`T-*.txt`・`P-*.txt`） | 解析器の出力（実態調査は出力を見ずに判定する。D82） |
-| `evidence/practice_v4/survey_answers_DO_NOT_OPEN_FIRST/` | 参考の答え。`W-01.md` は W-01 を終えたら開く（練習の練習の振り返り）。`T-*.md` は T を全部終え、翌日の見直しを済ませてから開く（`05_practice.md` の 5.5） |
-| `evidence/practice_v4/answers_v4_DO_NOT_OPEN_FIRST.md`・`practice_*_targets.json` | P-M・P-C の答えと解析器の数 |
+| `evidence/practice_survey/analyzer_view/`（`W-01.txt`・`T-*.txt`） | 解析器の出力（実態調査は出力を見ずに判定する。D82）。任意の参考で、見るなら参考の答えと同じ時点より後 |
+| `evidence/practice_survey/survey_answers_DO_NOT_OPEN_FIRST/` | 参考の答え。`W-01.md` は W-01 を終えたら開く（練習の練習の振り返り）。`T-*.md` は T を全部終え、翌日の見直しを済ませてから開く（`05_practice.md` の 5.5） |
+| `evidence/practice_v4/` 全体 | 精度（矛）・見落としの判定の練習（実態調査の練習には要らない）。v4 の判定と解析器の出力が入っている |
 | `evidence/population_v4/`・`docs/population_v4.md` | v4 の判定 |
 | `evidence/scan_v2_*/`（すべての run）・`evidence/v4pilot_depth/` | 解析器の出力 |
 | `python -m authgap ...`・`scripts/show_target.py`・`scripts/path_view.py` を練習の木に走らせること | 解析器の出力を見ることになる |
@@ -154,7 +154,7 @@ VS Code の場合:
 読んでよいもの: 手引き・決定（`docs/decisions.md`）・未決（`docs/open_questions.md` の今の版）・教科書（上の表の例と表を除く）・
 この手順書。この手順書は練習の件の名前・コードを書いていません。ただし**参考の答えを書いたのと同じ作業の中で書いた**ので、仮の
 扱いの一部は練習の件で出会った形をきっかけに足しました（どれかは、答え合わせの後に参考の答えのファイルで分かります。限界は
-`evidence/practice_v4/README.md`）。
+`evidence/practice_survey/README.md`）。
 
 **この会話の Claude（repo を開いた Claude Code）には、W-01 を始めてから T を全部終え、翌日の見直しを済ませるまで聞かない**でください（手引き 21 の 6。
 この Claude は全部の練習の答えを知っています）。手順の分からないところは、始める前か、全部終えた後に聞きます。

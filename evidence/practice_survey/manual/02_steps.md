@@ -31,7 +31,7 @@
 
 1. ワークシート（`01_setup.md` の 1.2 で写した `~/authgap_practice/worksheets/<pair_id>.md`）と、表
    （`~/authgap_practice/survey_practice.csv`）のその件の行を開く。ワークシートが無ければ写す（`test -e ~/authgap_practice/worksheets/<pair_id>.md ||
-   cp evidence/practice_v4/manual/worksheet.md ~/authgap_practice/worksheets/<pair_id>.md`。書きかけのワークシートを上書きしないため）。
+   cp evidence/practice_survey/manual/worksheet.md ~/authgap_practice/worksheets/<pair_id>.md`。書きかけのワークシートを上書きしないため）。
 2. その件の木を VS Code の**新しい窓**で開く（`code corpus/<tree>`）。ほかの木の窓は閉じるか、別の窓のままにする。
 3. 右下の Python の表示（Pylance）の読み込みが終わるまで待つ。窓を開いてから使えるようになるまでの分数を、ワークシートの A 節の
    `t_setup` に書く（本番では件ごとに木が違うので、この手間が毎回かかる）。
