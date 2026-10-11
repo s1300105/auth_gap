@@ -39,11 +39,42 @@
 | `survey_practice.csv` | 4 件（W-01・T-01〜T-03）の記録の表。repo の根の `practice/` に写して書く（`t_` で始まる欄と `stopped_early` は練習だけの欄） | 準備で写す |
 | `fetch_spec_survey_practice.json` | 4 木の取得の指定（`manual/01_setup.md` の 1.1） | 準備で使う |
 | `survey_practice_targets.json` | T-01〜T-03 を選んだ名簿の抜き取りの列（解析器を使わない。seed は使い捨て） | 開かなくてよい |
+| `frame_keep46.json` | 抜き取りの枠の 46 木（下の「表の作り方と再現」） | 開かなくてよい |
 | `survey_answers_DO_NOT_OPEN_FIRST/` | 参考の答え（件ごとのファイル）。正解ではない。6 節の「解析器の出力との関係」は任意の参考（実態調査の振り返りには使わない） | `W-01.md` は W-01 を終えたら。`T-*.md` は T を全部終え、翌日の見直しを済ませてから |
 | `analyzer_view/` | 4 件について解析器が何を出したか（**任意の参考**。実態調査には使わない） | 見なくてよい。見るなら参考の答えと同じ時点より後 |
 | `warmup_and_timing.md` | 前の版の手順（`manual/` に移した。対応表だけ） | 開かなくてよい |
 
 記録の表の書き方は `scripts/check_survey_practice.py` で確かめます（`manual/03_record.md` の 6 節）。
+
+## 表の作り方と再現
+
+`survey_practice.csv` の先頭の 9 欄（`seq`〜`decl`）は、次のように作りました。**解析器は使っていません。**
+
+| 行 | 取り方 |
+|---|---|
+| T-01〜T-03 | `scripts/survey_roster.py`（名簿。D85 の規則で、宣言をコードから `ast` で探す）を v4 の木に当て、枠（`frame_keep46.json` の 46 木）から使い捨ての seed 20261009 で 10 件の列を抜き取った（`survey_practice_targets.json`）。列の 1 番目（`unmapped`）を飛ばし、2〜4 番目を T-01〜T-03 にした |
+| W-01 | 無作為ではなく手で選んだ件（選び方は W-01 を終えた後に答えのファイルで）。行の値は、名簿のその木・そのツールの件から写した |
+
+再現の手順（2026-10-11 に、この手順で作り直した表がコミット済みの表とバイト単位で一致することを確かめた）:
+
+```bash
+D=<作業用のディレクトリ>
+.venv/bin/python scripts/survey_roster.py build --corpus corpus --prefix v4- --out $D/roster_all.json
+.venv/bin/python scripts/survey_roster.py build --corpus corpus --prefix v4- \
+    --keep evidence/practice_survey/frame_keep46.json --out $D/roster_46.json
+.venv/bin/python scripts/survey_roster.py sample $D/roster_46.json --seed 20261009 --n 10 --out $D/targets.json
+.venv/bin/python scripts/practice_survey_sheet.py --roster $D/roster_all.json --targets $D/targets.json \
+    --warmup v4-andrewbolster__mcp.bolster.online:check_availability --skip S-001 --out $D/survey_practice.csv
+cmp $D/survey_practice.csv evidence/practice_survey/survey_practice.csv
+```
+
+- 名簿と抜き取りは決定論的（木・ファイル・件を並べてから `random.Random(seed)` を 1 本）。抜き取りは Python 3.10.20 で行った
+  （`survey_practice_targets.json` の `python`）。v4 の木では 3.12 でも同じ件と列が出る（3.10 だけで読めないファイルが 31 あるが、
+  どれにも宣言が無い）。
+- 要るもの: v4 の 99 木（取得の指定は `evidence/population_v4/fetch_spec.json`。**練習のあいだは開かないものに入っている**ので、
+  練習を終えてから作り直す）。
+- 限界: 枠の 46 木は、2026-10-09 に作業ファイルで手作りした一覧を、2026-10-11 に同じ規則で作り直してコミットしたもの（当時は規則を
+  文章でしか残していなかった）。seed は前もって登録していない使い捨て。本番の作り方とは違う（`docs/open_questions.md` の O49）。
 
 ## この練習の限界（2026-10-09）
 
