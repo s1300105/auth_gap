@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """実態調査の形の練習の表（`evidence/practice_survey/survey_practice.csv` を写して書いたもの）の書き方を確かめる。
 
-    .venv/bin/python scripts/check_survey_practice.py ~/authgap_practice/survey_practice.csv
+    .venv/bin/python scripts/check_survey_practice.py practice/survey_practice.csv
 
 判定の中身（違反かどうか）は確かめない。確かめるのは、欄の値が語彙の中にあるか、答えごとに書く欄・書かない欄が
 `evidence/practice_survey/manual/03_record.md` のとおりか、時間の欄が合っているか、だけ。

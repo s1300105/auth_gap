@@ -29,9 +29,9 @@
 
 **やること**
 
-1. ワークシート（`01_setup.md` の 1.2 で写した `~/authgap_practice/worksheets/<pair_id>.md`）と、表
-   （`~/authgap_practice/survey_practice.csv`）のその件の行を開く。ワークシートが無ければ写す（`test -e ~/authgap_practice/worksheets/<pair_id>.md ||
-   cp evidence/practice_survey/manual/worksheet.md ~/authgap_practice/worksheets/<pair_id>.md`。書きかけのワークシートを上書きしないため）。
+1. ワークシート（`01_setup.md` の 1.2 で写した `practice/worksheets/<pair_id>.md`）と、表
+   （`practice/survey_practice.csv`）のその件の行を開く。ワークシートが無ければ写す（repo の根で `test -e practice/worksheets/<pair_id>.md ||
+   cp evidence/practice_survey/manual/worksheet.md practice/worksheets/<pair_id>.md`。書きかけのワークシートを上書きしないため）。
 2. その件の木を VS Code の**新しい窓**で開く（`code corpus/<tree>`）。ほかの木の窓は閉じるか、別の窓のままにする。
 3. 右下の Python の表示（Pylance）の読み込みが終わるまで待つ。窓を開いてから使えるようになるまでの分数を、ワークシートの A 節の
    `t_setup` に書く（本番では件ごとに木が違うので、この手間が毎回かかる）。
@@ -453,7 +453,7 @@
 4. **事実の問い**だけを聞く。例:「この関数とそこから呼ばれる関数で、ファイル・データベース・外部のサーバに書き込む行はどれ？」
    「この POST の API は作成・更新・削除・照会のどれ？」。**聞かない**:「読み取り専用か」「環境を変えるか」「宣言に反するか」「正しいか」
    （言い換えも聞かない）。宣言の値・解析器の出力・自分の結論は渡さない。
-5. 会話の全文を `~/authgap_practice/ai_logs/<pair_id>.md` に保存する（ファイルの先頭に件の id を書く）。
+5. 会話の全文を `practice/ai_logs/<pair_id>.md` に保存する（ファイルの先頭に件の id を書く）。
 6. AI が示した行を**自分で開いて確かめる**。**深さ 4 の中で、D1 に反する動作で、段 9 で書いていないもの**だけを `ai_found` に書く（行と、
    反する理由を 1 文）。無ければ `なし`。深さ 4 の外・決められない動作は `note` に書く。**`outcome` とラベルは変えない。**
 7. AI に聞いていた分数を `t_ai` に書く。
@@ -472,8 +472,8 @@
 2. **時計を動かしたまま**、表を**保存**し（`03_record.md` の 5 節: CSV UTF-8 で保存）、確かめの道具にかける:
 
    ```bash
-   cd ~/research/auth_gap
-   .venv/bin/python scripts/check_survey_practice.py ~/authgap_practice/survey_practice.csv
+   cd ~/Project/research/Master_Project/auth_gap
+   .venv/bin/python scripts/check_survey_practice.py practice/survey_practice.csv
    ```
 
    時間の欄（`t_end`・`minutes` など）はまだ空なので、それについての「誤り」は出てよい。**それ以外の「誤り」を直して**、もう一度

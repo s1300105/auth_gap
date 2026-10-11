@@ -16,8 +16,10 @@
 
 ## 1.1 repo を更新し、木を取る
 
+この手順書では、repo の根（`auth_gap/`）を `~/Project/research/Master_Project/auth_gap` とします（自分の場所に読み替える）。**コマンドはすべて repo の根で打ちます。**
+
 ```bash
-cd ~/research/auth_gap
+cd ~/Project/research/Master_Project/auth_gap
 git pull
 ```
 
@@ -64,25 +66,36 @@ git restore docs/frame.csv docs/fetch_failures.md
 
 ## 1.2 作業用のフォルダと表を用意する
 
+repo の根に作業用のフォルダ `practice/` を作り、記録の表とワークシートを写します（作ってあれば飛ばす）:
+
 ```bash
-mkdir -p ~/authgap_practice/worksheets ~/authgap_practice/ai_logs
-cp evidence/practice_survey/survey_practice.csv ~/authgap_practice/
-for id in W-01 T-01 T-02 T-03; do cp evidence/practice_survey/manual/worksheet.md ~/authgap_practice/worksheets/$id.md; done
-ls ~/authgap_practice ~/authgap_practice/worksheets
+mkdir -p practice/worksheets practice/ai_logs
+cp evidence/practice_survey/survey_practice.csv practice/
+for id in W-01 T-01 T-02 T-03; do cp evidence/practice_survey/manual/worksheet.md practice/worksheets/$id.md; done
+ls practice practice/worksheets
 ```
 
-| ファイル | 中身 |
-|---|---|
-| `~/authgap_practice/survey_practice.csv` | 記録の表（4 行。`03_record.md`） |
-| `~/authgap_practice/worksheets/<id>.md` | 1 件 1 枚のメモ（`worksheet.md` の写し） |
-| `~/authgap_practice/ai_logs/<id>.md` | AI に聞いたときのログ（段 10 をしたときだけ） |
+できあがりの形（`ls practice` で `ai_logs  survey_practice.csv  worksheets`、`ls practice/worksheets` で `T-01.md  T-02.md  T-03.md  W-01.md`）:
 
-- repo の中の表は書き換えません（`git pull` のときにぶつからないように）。
+```
+auth_gap/                          ← repo の根（コマンドはここで打つ）
+├── practice/                      ← 練習の作業フォルダ（自分で書くのはここだけ）
+│   ├── survey_practice.csv        ← 記録の表（4 行。03_record.md）
+│   ├── worksheets/
+│   │   ├── W-01.md  T-01.md  T-02.md  T-03.md   ← 1 件 1 枚のメモ（worksheet.md の写し）
+│   └── ai_logs/                   ← AI に聞いたときのログ <id>.md（段 10 をしたときだけ）
+├── evidence/practice_survey/      ← 配った材料（書き換えない）
+└── corpus/                        ← 判定する木（1.1 で取ったもの）
+```
+
+- `practice/` は `.gitignore` に入れてあるので、`git status` に出ず、`git pull` ともぶつかりません。`git add` もしないでください
+  （公開の repo に入ります）。送るものは `05_practice.md` の 5.7。
+- 配った表（`evidence/practice_survey/survey_practice.csv`）など、git が追跡しているファイルは書き換えません。
 - 表を開くソフトの保存の注意は `03_record.md` の 5 節（Excel は「CSV UTF-8」で保存、時刻の列は文字列）。
 - 確かめの道具がこの表を読めるかを、まだ何も書いていない状態で確かめておきます:
 
   ```bash
-  .venv/bin/python scripts/check_survey_practice.py ~/authgap_practice/survey_practice.csv
+  .venv/bin/python scripts/check_survey_practice.py practice/survey_practice.csv
   ```
 
   4 行とも「まだ判定していない（飛ばした）」、最後に「誤りなし」と出れば成功です。
@@ -133,7 +146,8 @@ VS Code の場合:
 
 - 手順書は、**手順書のフォルダだけ**を別の窓で開きます（`code evidence/practice_survey/manual`。Markdown のプレビューは `Ctrl+Shift+V` /
   `Cmd+Shift+V`）。手引きは `code docs/drafts/final_judging_guide_draft.md` か、GitHub の画面で開きます。
-- **repo の根（`~/research/auth_gap`）を VS Code で開いて検索しない**でください。木全体の検索に、参考の答え・解析器の出力
+- ワークシートと表は、**作業フォルダだけ**を別の窓で開きます（`code practice`）。
+- **repo の根（`auth_gap/`）を VS Code で開いて検索しない**でください。木全体の検索に、参考の答え・解析器の出力
   （1.4 の表のもの）が当たります。
 
 ## 1.4 開かないもの（W-01 を始めてから、T の件を全部終え、翌日の見直しを済ませるまで）
@@ -165,7 +179,7 @@ VS Code の場合:
 
 1. **使う AI**: この repo の文脈を持たないもの。記憶（メモリ）を切った設定で使う（設定の画面で記憶・過去の会話の参照を切る）。
    件ごとに新しい会話にする。モデル名と版、画面（Web・アプリ）を控える（`ai_model` に書く）。
-2. **ログ**: 会話の全文を `~/authgap_practice/ai_logs/<id>.md` に保存する。ファイルの先頭に次を書く:
+2. **ログ**: 会話の全文を `practice/ai_logs/<id>.md` に保存する。ファイルの先頭に次を書く:
 
    ```
    # <id> の AI のログ

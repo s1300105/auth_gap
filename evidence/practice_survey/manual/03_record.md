@@ -1,6 +1,6 @@
 # 3. 記録の書き方（表の欄ごと）
 
-表は `~/authgap_practice/survey_practice.csv`（`evidence/practice_survey/survey_practice.csv` の写し）です。1 件 = 1 行。この章は、
+表は `practice/survey_practice.csv`（repo の根の作業フォルダ。`evidence/practice_survey/survey_practice.csv` の写し）です。1 件 = 1 行。この章は、
 **欄ごとに何を・どの字で書くか**を決めます。値の語彙は本番の集計の道具（`scripts/final_aggregate.py`）と同じ字です。書き終えたら
 `scripts/check_survey_practice.py` で確かめます（6 節）。
 
@@ -176,7 +176,7 @@
 |---|---|---|
 | `ai_used` | `なし` / `あり`（段 10 で AI に聞いたら `あり`。機械翻訳だけなら `なし`） | `なし` |
 | `ai_model` | `あり` のとき: モデル名と版、使った画面、記憶なし | `<モデル名> <版>（Web、記憶なし）` |
-| `ai_log` | `あり` のとき: ログのファイル（`~/authgap_practice` からの相対）。練習では件ごとに新しい会話・1 ファイル（手引き 21 の 6 は 1 つの会話で複数の木を扱ってよいとするが、練習ではより厳しくする） | `ai_logs/T-01.md` |
+| `ai_log` | `あり` のとき: ログのファイル（`practice/` からの相対）。練習では件ごとに新しい会話・1 ファイル（手引き 21 の 6 は 1 つの会話で複数の木を扱ってよいとするが、練習ではより厳しくする） | `ai_logs/T-01.md` |
 | `ai_found` | `あり` のとき: 新しく見つかった、深さ 4 の中の反する動作（`ファイル:行: 理由 1 文`。複数は「／」）。無ければ**ひらがな 2 文字の `なし` だけ**（`無し`・`なし。`・`特になし`・`ない`・`None`・`-` は集計で「新しい動作あり」に数えられる。確かめの道具は、`なし` でも `ファイル:行` を含むのでもない値を誤りにする）。段 10 をしなければ空 | `src/a.py:40: open(p, "w") で設定ファイルを書く` ／ `なし` |
 
 ### 3.7 時間の欄（練習だけの欄を含む）
@@ -226,7 +226,7 @@
   確かめの道具が読めない）。
 - **Numbers**: 「書き出す → CSV」で、テキストエンコーディングを **Unicode (UTF-8)** にする。
 - **Google スプレッドシート**: 「ファイル → ダウンロード → カンマ区切り形式（.csv）」（UTF-8 になる）。ダウンロードしたファイルで
-  `~/authgap_practice/survey_practice.csv` を置き換える。
+  `practice/survey_practice.csv` を置き換える。
 - セルの先頭を `=`・`+`・`-`・`@` にしない（式として読まれる）。
 - 見出しの行と欄の順を変えない。表の上に行を足さない（道具が読めなくなる）。
 - **結果の欄で並べ替えたり絞り込んだりしない**（手引き 21 の 2: 判定の途中で集計を見ることに当たる）。
@@ -238,8 +238,8 @@
 ## 6. 確かめの道具
 
 ```bash
-cd ~/research/auth_gap
-.venv/bin/python scripts/check_survey_practice.py ~/authgap_practice/survey_practice.csv
+cd ~/Project/research/Master_Project/auth_gap
+.venv/bin/python scripts/check_survey_practice.py practice/survey_practice.csv
 ```
 
 - 行ごとに「よい」「誤り: …」「注意: …」「まだ判定していない（飛ばした）」が出ます。**誤り**は直します（直したことを `note` に

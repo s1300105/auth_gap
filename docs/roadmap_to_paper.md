@@ -101,7 +101,7 @@
 見せる。**B1 の時間の見込みには、文書に出てこない木から本番と同じ抜き取りで選んだ T の件の分数を使う。** P-C・P-M は手引きの使い方を
 覚える練習としてだけ使う。矛の判定の 1 件の時間を測るには、同じように文書に出てこない木の矛の組で練習の件を作り直す（未作成）。
 
-1. `cd ~/research/auth_gap && git pull`
+1. `cd ~/Project/research/Master_Project/auth_gap && git pull`（repo の根）
 2. 練習の 6 木を取る（初回だけ）:
    ```bash
    .venv/bin/python scripts/fetch_corpus.py --spec evidence/practice_v4/fetch_spec_practice.json
