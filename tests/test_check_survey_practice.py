@@ -174,7 +174,8 @@ def test_violation_must_stop_at_the_first_one():
     # D88: 違反は最初に見つけた違反で止める。いいえ は 違反（深さ 4 の外）だけ
     errs, _ = cs.check_row(row(**{**VIOLATION, "stopped_early": "いいえ"}))
     assert any("D88" in e for e in errs)
-    errs, _ = cs.check_row(row(**{**VIOLATION, "outcome": "違反（深さ 4 の外）", "depth": "6", "stopped_early": "いいえ"}))
+    errs, _ = cs.check_row(row(**{**VIOLATION, "outcome": "違反（深さ 4 の外）", "depth": "6", "stopped_early": "いいえ",
+                                  "evidence": "a.py:10 → c.py:90 open(p, 'w')／読んだ範囲: a.py:1-30"}))
     assert errs == []
 
 
@@ -249,4 +250,13 @@ def test_guide_gap_unknown_needs_a_note():
     errs, _ = cs.check_row(row(**base))
     assert any("note" in e for e in errs)
     errs, _ = cs.check_row(row(**{**base, "note": "読めば 違反（初回）"}))
+    assert errs == []
+
+
+def test_outside_depth4_needs_path_and_read_range():
+    # 学生の決定（D89 の後）: 違反（深さ 4 の外）は止めずに全部読んだ答えなので、道筋と読んだ範囲の両方を書く
+    base = {**VIOLATION, "outcome": "違反（深さ 4 の外）", "depth": "6"}
+    errs, _ = cs.check_row(row(**{**base, "evidence": "a.py:10 → c.py:90 open(p, 'w')"}))
+    assert any("読んだ範囲" in e for e in errs)
+    errs, _ = cs.check_row(row(**{**base, "evidence": "a.py:10 → c.py:90 open(p, 'w')／読んだ範囲: a.py:1-30"}))
     assert errs == []
