@@ -45,6 +45,9 @@ STOPPED_BY_OUTCOME = {"違反": "はい", "違反（深さ 4 の外）": "いい
 #: 実態調査では使わない不明の理由の類（解析器の打ち切りの類。実態調査は解析器を見ない）。
 NOT_IN_SURVEY_CLASSES = ("打ち切り",)
 LABEL_COLS = ("write_target", "condition_type", "condition", "depth")
+#: 配った表の名簿の欄（判定者は書き換えない。03_record.md の 1 節）。写しで書き換わると、別の件を判定した記録になる。
+ROSTER_COLS = ("seq", "pair_id", "tree", "tool", "roster_form", "roster_relpath", "roster_lineno", "decl_lineno", "decl")
+DISTRIBUTED_SHEET = os.path.join(ROOT, "evidence", "practice_survey", "survey_practice.csv")
 TEXT_COLS = ("condition", "unknown_reason", "evidence", "ai_found", "note")
 REQUIRED_COLUMNS = ("pair_id", "tree", "outcome", *LABEL_COLS, "unknown_reason", "evidence", "ai_found", "note",
                     "minutes", "ai_used", "ai_model", "ai_log", "stopped_early", "t_start", "t_end", "t_break",
@@ -86,6 +89,8 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
     if out in ("違反でない", "不明", "違反（深さ 4 の外）") and "読んだ範囲" not in ev:
         errs.append(f"{out} なのに evidence に「読んだ範囲」が無い（18.4「反する動作は無い」でも読んだ範囲を書く。違反（深さ 4 の外）は"
                     "道筋と読んだ範囲の両方。03_record.md の 3.4）")
+    elif out in ("違反でない", "不明") and not ev.startswith("読んだ範囲"):
+        errs.append(f"{out} の evidence が「読んだ範囲」で始まっていない（「読んだ範囲: a.py:10-40、…」の形。03_record.md の 3.4）")
     # 違反（深さ 4 の外）は「道筋／読んだ範囲: …」。読んだ範囲の `a.py:1-30` で道筋の確かめが通らないよう、その前だけを見る
     path_part = ev.split("読んだ範囲")[0] if out == "違反（深さ 4 の外）" else ev
     if out in VIOLATIONS and ev and not FILE_LINE_RE.search(path_part):
@@ -132,6 +137,9 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
                     errs.append(f"unknown_reason の類 {cls} は実態調査では使わない（解析器の打ち切りの類）")
                 elif not re.match(r"^[:：]\s*\S", ur[len(cls):]):
                     errs.append("unknown_reason が類だけで説明が無い（「類: 説明（ファイル:行つき）」の形で書く）")
+                elif not re.match(r"^: \S", ur[len(cls):]):
+                    errs.append(f"unknown_reason = {ur!r}: 類の直後は半角の : と空白 1 つ（「{cls}: 説明」。全角の ： や空白なし・"
+                                "2 つ以上は 03_record.md の 3.3 の形でない）")
                 elif cls == "手引きで決まらない" and not note:
                     errs.append("unknown_reason が「手引きで決まらない」なのに note が空（読めば何になるかを書く。03_record.md の 3.5）")
             except VocabularyError as e:
@@ -198,6 +206,27 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
     return errs, notes
 
 
+def _distributed_roster() -> dict[str, dict[str, str]]:
+    """配った表の名簿の欄を pair_id ごとに返す（無ければ空。素振りの EX-1 などは配った表に無いので確かめない）。"""
+    try:
+        with open(DISTRIBUTED_SHEET, encoding="utf-8-sig", newline="") as f:
+            return {r["pair_id"].strip(): {c: (r.get(c) or "").strip() for c in ROSTER_COLS} for r in csv.DictReader(f)}
+    except (OSError, KeyError):
+        return {}
+
+
+def check_roster(r: dict, roster: dict[str, dict[str, str]]) -> list[str]:
+    """名簿の欄が配った表と同じかを確かめる（判定の前の行も確かめる）。"""
+    want = roster.get((r.get("pair_id") or "").strip())
+    if not want:
+        return []
+    changed = [c for c in ROSTER_COLS if c in r and (r.get(c) or "").strip() != want[c]]
+    if not changed:
+        return []
+    return [f"名簿の欄 {changed} が配った表（evidence/practice_survey/survey_practice.csv）と違う（名簿の欄は書き換えない。"
+            "03_record.md の 1 節。表計算のソフトで並べ替えた・数を変えたなら、配った表の値に戻す）"]
+
+
 def _header_hint(first_line: str) -> str:
     """見出しの欄が足りないときに、よくある原因を 1 つ当てる。"""
     if "pair_id" not in first_line:
@@ -237,6 +266,7 @@ def main(argv: list[str] | None = None) -> int:
     if not rows:
         print("誤り: 見出しの行だけで、件の行が無い")
         return 1
+    roster = _distributed_roster()
     for i, raw in enumerate(rows, start=2):
         pid = raw.get("pair_id") or "?"
         if None in raw:
@@ -249,21 +279,25 @@ def main(argv: list[str] | None = None) -> int:
             bad += 1
             continue
         r = dict(raw)
+        roster_errs = check_roster(r, roster)
+        for e in roster_errs:
+            print(f"{i} 行目 {pid}: 誤り: {e}")
         if not r.get("outcome", "").strip():
             if a.all:
                 print(f"{i} 行目 {pid}: 誤り: outcome が空（まだ判定していない）")
                 bad += 1
             else:
                 print(f"{i} 行目 {pid}: まだ判定していない（飛ばした）")
+                bad += bool(roster_errs)
             continue
         errs, notes = check_row(r)
         for e in errs:
             print(f"{i} 行目 {pid}: 誤り: {e}")
         for n in notes:
             print(f"{i} 行目 {pid}: 注意: {n}")
-        if not errs and not notes:
+        if not errs and not notes and not roster_errs:
             print(f"{i} 行目 {pid}: よい")
-        bad += bool(errs)
+        bad += bool(errs or roster_errs)
     print("誤りなし" if not bad else f"誤りのある行・欄: {bad}")
     return 1 if bad else 0
 

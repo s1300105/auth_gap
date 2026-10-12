@@ -79,7 +79,7 @@ def test_unknown_needs_class_and_rejects_truncation_class():
     assert errs
     errs, _ = cs.check_row(row(outcome="不明", evidence="a.py:3", unknown_reason="打ち切り: 解析器"))
     assert any("打ち切り" in e for e in errs)
-    errs, notes = cs.check_row(row(outcome="不明", evidence="a.py:3／読んだ範囲: a.py:1-9",
+    errs, notes = cs.check_row(row(outcome="不明", evidence="読んだ範囲: a.py:1-9",
                                    unknown_reason="相手の API: a.py:3 の POST の意味が文書に無い"))
     assert errs == [] and notes == []
     errs, _ = cs.check_row(row(outcome="不明", evidence="a.py:3", unknown_reason="相手の API: a.py:3 の POST"))
@@ -180,12 +180,12 @@ def test_violation_must_stop_at_the_first_one():
 
 
 def test_space_before_colon_in_unknown_reason_gets_a_hint():
-    errs, _ = cs.check_row(row(outcome="不明", evidence="a.py:3／読んだ範囲: a.py:1-9", unknown_reason="相手の API : a.py:3 の POST"))
+    errs, _ = cs.check_row(row(outcome="不明", evidence="読んだ範囲: a.py:1-9", unknown_reason="相手の API : a.py:3 の POST"))
     assert any("空白" in e for e in errs)
 
 
 def test_unknown_reason_needs_an_explanation():
-    errs, _ = cs.check_row(row(outcome="不明", evidence="a.py:3／読んだ範囲: a.py:1-9", unknown_reason="相手の API"))
+    errs, _ = cs.check_row(row(outcome="不明", evidence="読んだ範囲: a.py:1-9", unknown_reason="相手の API"))
     assert any("説明" in e for e in errs)
 
 
@@ -245,7 +245,7 @@ def test_violation_evidence_is_the_path_with_file_lines():
 
 
 def test_guide_gap_unknown_needs_a_note():
-    base = dict(outcome="不明", evidence="a.py:3／読んだ範囲: a.py:1-9",
+    base = dict(outcome="不明", evidence="読んだ範囲: a.py:1-9",
                 unknown_reason="手引きで決まらない: a.py:3 の遅延 import の一番上の書き込み")
     errs, _ = cs.check_row(row(**base))
     assert any("note" in e for e in errs)
@@ -263,3 +263,36 @@ def test_outside_depth4_needs_path_and_read_range():
     # 読んだ範囲だけで道筋が無い行は、読んだ範囲の a.py:1-30 があっても誤り
     errs, _ = cs.check_row(row(**{**base, "evidence": "読んだ範囲: a.py:1-30、b.py:5-20"}))
     assert any("道筋" in e for e in errs)
+
+
+def test_not_violation_evidence_starts_with_read_range():
+    # 03_record.md の 3.4: 違反でない・不明 は「読んだ範囲」の字で始める（含むだけでは足りない）
+    assert cs.check_row(row(outcome="違反でない", evidence="読んだ範囲: a.py:1-9"))[0] == []
+    assert cs.check_row(row(outcome="違反でない", evidence="読んだ範囲: a.py:1-9／https://example.com/api"))[0] == []
+    errs, _ = cs.check_row(row(outcome="違反でない", evidence="特に無い。読んだ範囲 なし"))
+    assert any("始まっていない" in e for e in errs)
+
+
+def test_unknown_reason_needs_halfwidth_colon_and_one_space():
+    base = dict(outcome="不明", evidence="読んだ範囲: a.py:1-9")
+    assert cs.check_row(row(**base, unknown_reason="相手の API: a.py:3 の POST"))[0] == []
+    for bad in ("相手の API：a.py:3 の POST", "相手の API:a.py:3 の POST", "相手の API:  a.py:3 の POST"):
+        errs, _ = cs.check_row(row(**base, unknown_reason=bad))
+        assert any("半角の : と空白 1 つ" in e for e in errs), bad
+
+
+def test_roster_columns_must_match_the_distributed_sheet(tmp_path, capsys):
+    sheet = os.path.join(ROOT, "evidence", "practice_survey", "survey_practice.csv")
+    with open(sheet, encoding="utf-8-sig", newline="") as f:
+        reader = csv.DictReader(f)
+        cols, rows = reader.fieldnames, list(reader)
+    rows[0]["roster_lineno"] = str(int(rows[0]["roster_lineno"]) + 1)  # 判定の前の行でも誤り
+    rows.append({**{c: "" for c in cols}, "seq": "9", "pair_id": "EX-1", "tree": "ex-notes"})  # 配った表に無い件は確かめない
+    p = tmp_path / "s.csv"
+    with open(p, "w", encoding="utf-8-sig", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=cols)
+        w.writeheader()
+        w.writerows(rows)
+    assert cs.main([str(p)]) == 1
+    out = capsys.readouterr().out
+    assert "roster_lineno" in out and out.count("配った表（evidence") == 1 and "EX-1: まだ判定していない" in out
