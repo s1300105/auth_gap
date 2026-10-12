@@ -38,9 +38,10 @@ from final_aggregate import (  # noqa: E402
 #: 実態調査の答え（D82・D85。「違反（深さ 4 の外）」は D68 の 2・18.3 の別の数え）。
 SURVEY_OUTCOMES = ("違反", "違反（深さ 4 の外）", "違反でない", "不明", "対象外")
 VIOLATIONS = ("違反", "違反（深さ 4 の外）")
-#: 練習だけの欄 `stopped_early`（最初の違反で止めたか）。D88 で最初の違反で止めるので、`違反` は `はい`、`違反（深さ 4 の外）` は
-#: `いいえ`（深さ 4 の中を全部読んだ答え）、ほかは `違反なし`。
+#: 練習だけの欄 `stopped_early`（最初の違反で止めたか）。D88 で最初の違反で止めるので、値は `outcome` から決まる（D89 で空でよく
+#: なった）。書くなら `違反` は `はい`、`違反（深さ 4 の外）` は `いいえ`（深さ 4 の中を全部読んだ答え）、ほかは `違反なし`。
 STOPPED = ("はい", "いいえ", "違反なし")
+STOPPED_BY_OUTCOME = {"違反": "はい", "違反（深さ 4 の外）": "いいえ"}
 #: 実態調査では使わない不明の理由の類（解析器の打ち切りの類。実態調査は解析器を見ない）。
 NOT_IN_SURVEY_CLASSES = ("打ち切り",)
 LABEL_COLS = ("write_target", "condition_type", "condition", "depth")
@@ -82,8 +83,10 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
         v = r.get(c, "")
         if v[:1] in ("=", "+", "-", "@"):
             notes.append(f"{c} の先頭が {v[:1]!r}（表計算のソフトで式として読まれる）")
-    if out in ("違反でない", "不明", *VIOLATIONS) and "読んだ範囲" not in ev:
-        errs.append(f"{out} なのに evidence に「読んだ範囲」が無い（18.4 はどの答えでも書くとする。止めたなら止めたところまで）")
+    if out in ("違反でない", "不明") and "読んだ範囲" not in ev:
+        errs.append(f"{out} なのに evidence に「読んだ範囲」が無い（18.4「反する動作は無い」でも読んだ範囲を書く。03_record.md の 3.4）")
+    if out in VIOLATIONS and ev and not FILE_LINE_RE.search(ev):
+        errs.append(f"{out} なのに evidence に「ファイル:行」が無い（道筋を、本体の行から反する行まで書く。03_record.md の 3.4）")
 
     if out in VIOLATIONS:
         wt = r.get("write_target", "").strip()
@@ -100,7 +103,7 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
         if parts and parts != ("なし",) and not r.get("condition", "").strip():
             errs.append("condition_type に条件があるのに condition（条件の中身）が空")
         if parts == ("なし",) and r.get("condition", "").strip():
-            errs.append("condition_type = なし なのに condition がある（なし のときは空にし、「毎回届く」は evidence に書く）")
+            errs.append("condition_type = なし なのに condition がある（なし のときは空にする）")
         if parts and list(parts) != sorted(parts, key=CONDITION_TYPES.index):
             errs.append(f"condition_type = {ct!r} の順が 14.3 の表の順でない（集計は書いた順のまま組み合わせを数えるので、練習では"
                         f" {';'.join(sorted(parts, key=CONDITION_TYPES.index))} とそろえる。O48 (4) の仮の扱い）")
@@ -138,17 +141,12 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
             errs.append(f"{out} なのに unknown_reason がある（不明のときだけ書く）")
 
     se = r.get("stopped_early", "").strip()
-    if se not in STOPPED:
-        errs.append(f"stopped_early = {se!r} は {list(STOPPED)} のどれでもない")
-    elif (se == "違反なし") == (out in VIOLATIONS):
-        errs.append(f"stopped_early = {se} と outcome = {out} が合わない（違反は はい、違反（深さ 4 の外）は いいえ、それ以外は 違反なし）")
-    elif se == "はい" and out == "違反（深さ 4 の外）":
-        errs.append("違反（深さ 4 の外）は深さ 4 の中を全部読んで違反が無かったときの答えなので、stopped_early = はい にならない（いいえ）")
-    elif se == "はい" and "最初の違反で止めた" not in note:
-        errs.append("stopped_early = はい なのに note に「最初の違反で止めた（深さ N まで読んだ）」が無い")
-    elif se == "いいえ" and out == "違反":
-        errs.append("違反は最初に見つけた違反で止めるので stopped_early = はい（D88。02_steps.md の段 7 の 3）。いいえ は"
-                    "違反（深さ 4 の外）だけ")
+    expected_se = STOPPED_BY_OUTCOME.get(out, "違反なし")
+    if se and se not in STOPPED:
+        errs.append(f"stopped_early = {se!r} は {list(STOPPED)} のどれでもない（空でよい。D89）")
+    elif se and se != expected_se:
+        errs.append(f"stopped_early = {se} と outcome = {out} が合わない（空でよい。書くなら {expected_se}。違反は最初に見つけた"
+                    "違反で止めるので はい、違反（深さ 4 の外）は深さ 4 の中を全部読んだ答えなので いいえ、それ以外は 違反なし。D88・D89）")
 
     au = r.get("ai_used", "").strip()
     if au not in AI_USED:

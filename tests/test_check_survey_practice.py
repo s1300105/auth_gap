@@ -14,7 +14,7 @@ import check_survey_practice as cs  # noqa: E402
 BASE = {
     "pair_id": "X-01", "tree": "t", "outcome": "", "write_target": "", "condition_type": "", "condition": "",
     "depth": "", "unknown_reason": "", "evidence": "", "ai_found": "", "note": "", "minutes": "20",
-    "ai_used": "なし", "ai_model": "", "ai_log": "", "stopped_early": "違反なし", "t_start": "10:00",
+    "ai_used": "なし", "ai_model": "", "ai_log": "", "stopped_early": "", "t_start": "10:00",
     "t_end": "10:25", "t_break": "5", "t_noai": "20", "t_ai": "0", "t_guide": "3", "t_setup": "2",
 }
 
@@ -26,8 +26,7 @@ def row(**kw):
 
 
 VIOLATION = dict(outcome="違反", write_target="ログ", condition_type="引数", condition="引数 save=True のとき",
-                 depth="2", evidence="a.py:10 → a.py:20 open(p, 'a')／読んだ範囲: a.py:1-30", stopped_early="はい",
-                 note="最初の違反で止めた（深さ 2 まで読んだ）")
+                 depth="2", evidence="a.py:10 → a.py:20 open(p, 'a')")
 
 
 def test_good_violation_row_passes():
@@ -71,7 +70,7 @@ def test_condition_text_required_unless_none():
 def test_other_unknown_target_needs_note_prefix():
     errs, _ = cs.check_row(row(**{**VIOLATION, "write_target": "その他・不明"}))
     assert any("その他:" in e for e in errs)
-    errs, _ = cs.check_row(row(**{**VIOLATION, "write_target": "その他・不明", "note": "その他: 受け渡しファイル／最初の違反で止めた（深さ 2 まで読んだ）"}))
+    errs, _ = cs.check_row(row(**{**VIOLATION, "write_target": "その他・不明", "note": "その他: 受け渡しファイル"}))
     assert errs == []
 
 
@@ -87,18 +86,18 @@ def test_unknown_needs_class_and_rejects_truncation_class():
     assert any("読んだ範囲" in e for e in errs)
 
 
-def test_stopped_early_matches_outcome():
+def test_stopped_early_may_be_empty_but_must_match_outcome_when_written():
+    # D89: 空でよい（outcome から決まる）。書くなら outcome と合う値で、note は要らない
+    assert cs.check_row(row(**VIOLATION))[0] == []
+    assert cs.check_row(row(**{**VIOLATION, "stopped_early": "はい"}))[0] == []
     errs, _ = cs.check_row(row(**{**VIOLATION, "stopped_early": "違反なし"}))
     assert any("stopped_early" in e for e in errs)
     errs, _ = cs.check_row(row(outcome="違反でない", evidence="読んだ範囲: a.py:1", stopped_early="はい"))
     assert any("stopped_early" in e for e in errs)
-    errs, _ = cs.check_row(row(**{**VIOLATION, "note": ""}))
-    assert any("最初の違反で止めた" in e for e in errs)  # 03_record が「必ず」とする書き方は誤り
-    errs, _ = cs.check_row(row(**{**VIOLATION, "stopped_early": "はい", "note": "最初の違反で止めた（深さ 2 まで読んだ）"}))
-    assert errs == []
-    errs, _ = cs.check_row(row(**{**VIOLATION, "outcome": "違反（深さ 4 の外）", "depth": "6", "stopped_early": "はい",
-                                  "note": "最初の違反で止めた（深さ 6 まで読んだ）"}))
-    assert any("深さ 4 の外" in e and "いいえ" in e for e in errs)
+    errs, _ = cs.check_row(row(**{**VIOLATION, "outcome": "違反（深さ 4 の外）", "depth": "6", "stopped_early": "はい"}))
+    assert any("いいえ" in e for e in errs)
+    errs, _ = cs.check_row(row(**{**VIOLATION, "stopped_early": "まあまあ"}))
+    assert any("どれでもない" in e for e in errs)
 
 
 def test_ai_fields():
@@ -152,7 +151,7 @@ def test_condition_order_and_none_with_text_are_errors():
 
 
 AI_BASE = {**VIOLATION, "ai_used": "あり", "ai_model": "m 1（Web、記憶なし）", "ai_log": "ai_logs/X-01.md", "t_ai": "0",
-           "note": "最初の違反で止めた（深さ 2 まで読んだ）／AI の前の判定: 違反"}
+           "note": "AI の前の判定: 違反"}
 
 
 def test_ai_found_must_be_exactly_nashi_or_name_a_line():
@@ -173,10 +172,9 @@ def test_ai_used_needs_the_pre_ai_outcome_in_note():
 
 def test_violation_must_stop_at_the_first_one():
     # D88: 違反は最初に見つけた違反で止める。いいえ は 違反（深さ 4 の外）だけ
-    errs, _ = cs.check_row(row(**{**VIOLATION, "stopped_early": "いいえ", "note": ""}))
+    errs, _ = cs.check_row(row(**{**VIOLATION, "stopped_early": "いいえ"}))
     assert any("D88" in e for e in errs)
-    errs, _ = cs.check_row(row(**{**VIOLATION, "outcome": "違反（深さ 4 の外）", "depth": "6", "stopped_early": "いいえ",
-                                  "note": ""}))
+    errs, _ = cs.check_row(row(**{**VIOLATION, "outcome": "違反（深さ 4 の外）", "depth": "6", "stopped_early": "いいえ"}))
     assert errs == []
 
 
@@ -238,9 +236,11 @@ def test_main_explains_a_bad_header(tmp_path, capsys):
     assert "件の行が無い" in capsys.readouterr().out
 
 
-def test_violation_without_read_range_is_an_error():
-    errs, _ = cs.check_row(row(**{**VIOLATION, "evidence": "a.py:10 → a.py:20 open(p, 'a')"}))
-    assert any("読んだ範囲" in e for e in errs)
+def test_violation_evidence_is_the_path_with_file_lines():
+    # D89: 違反の evidence は道筋だけでよい（読んだ範囲は要らない）が、ファイル:行が無ければ誤り
+    assert cs.check_row(row(**{**VIOLATION, "evidence": "a.py:10 → a.py:20 open(p, 'a')"}))[0] == []
+    errs, _ = cs.check_row(row(**{**VIOLATION, "evidence": "open で書いているので違反"}))
+    assert any("ファイル:行" in e for e in errs)
 
 
 def test_guide_gap_unknown_needs_a_note():
