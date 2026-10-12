@@ -138,8 +138,10 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
                 elif not re.match(r"^[:：]\s*\S", ur[len(cls):]):
                     errs.append("unknown_reason が類だけで説明が無い（「類: 説明（ファイル:行つき）」の形で書く）")
                 elif not re.match(r"^: \S", ur[len(cls):]):
-                    errs.append(f"unknown_reason = {ur!r}: 類の直後は半角の : と空白 1 つ（「{cls}: 説明」。全角の ： や空白なし・"
-                                "2 つ以上は 03_record.md の 3.3 の形でない）")
+                    wide = "　" in ur[len(cls):len(cls) + 3]
+                    errs.append(f"unknown_reason = {ur!r}: 類の直後は半角の : と半角の空白 1 つ（「{cls}: 説明」。"
+                                + ("コロンの後が全角の空白になっている" if wide else "全角の ： や空白なし・2 つ以上は")
+                                + " 03_record.md の 3.3 の形でない）")
                 elif cls == "手引きで決まらない" and not note:
                     errs.append("unknown_reason が「手引きで決まらない」なのに note が空（読めば何になるかを書く。03_record.md の 3.5）")
             except VocabularyError as e:

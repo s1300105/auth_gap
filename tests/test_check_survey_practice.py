@@ -276,9 +276,11 @@ def test_not_violation_evidence_starts_with_read_range():
 def test_unknown_reason_needs_halfwidth_colon_and_one_space():
     base = dict(outcome="不明", evidence="読んだ範囲: a.py:1-9")
     assert cs.check_row(row(**base, unknown_reason="相手の API: a.py:3 の POST"))[0] == []
-    for bad in ("相手の API：a.py:3 の POST", "相手の API:a.py:3 の POST", "相手の API:  a.py:3 の POST"):
+    for bad in ("相手の API：a.py:3 の POST", "相手の API:a.py:3 の POST", "相手の API:  a.py:3 の POST", "相手の API:　a.py:3 の POST"):
         errs, _ = cs.check_row(row(**base, unknown_reason=bad))
-        assert any("半角の : と空白 1 つ" in e for e in errs), bad
+        assert any("半角の : と半角の空白 1 つ" in e for e in errs), bad
+    errs, _ = cs.check_row(row(**base, unknown_reason="相手の API:　a.py:3 の POST"))
+    assert any("全角の空白" in e for e in errs)
 
 
 def test_roster_columns_must_match_the_distributed_sheet(tmp_path, capsys):
