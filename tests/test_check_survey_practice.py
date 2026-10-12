@@ -26,8 +26,8 @@ def row(**kw):
 
 
 VIOLATION = dict(outcome="違反", write_target="ログ", condition_type="引数", condition="引数 save=True のとき",
-                 depth="2", evidence="a.py:10 → a.py:20 open(p, 'a')／読んだ範囲: a.py:1-30", stopped_early="いいえ",
-                 note="最初の違反: 5 分（深さ 2 の a.py:20）")
+                 depth="2", evidence="a.py:10 → a.py:20 open(p, 'a')／読んだ範囲: a.py:1-30", stopped_early="はい",
+                 note="最初の違反で止めた（深さ 2 まで読んだ）")
 
 
 def test_good_violation_row_passes():
@@ -71,7 +71,7 @@ def test_condition_text_required_unless_none():
 def test_other_unknown_target_needs_note_prefix():
     errs, _ = cs.check_row(row(**{**VIOLATION, "write_target": "その他・不明"}))
     assert any("その他:" in e for e in errs)
-    errs, _ = cs.check_row(row(**{**VIOLATION, "write_target": "その他・不明", "note": "その他: 受け渡しファイル／最初の違反: 5 分（深さ 2 の a.py:20）"}))
+    errs, _ = cs.check_row(row(**{**VIOLATION, "write_target": "その他・不明", "note": "その他: 受け渡しファイル／最初の違反で止めた（深さ 2 まで読んだ）"}))
     assert errs == []
 
 
@@ -92,7 +92,7 @@ def test_stopped_early_matches_outcome():
     assert any("stopped_early" in e for e in errs)
     errs, _ = cs.check_row(row(outcome="違反でない", evidence="読んだ範囲: a.py:1", stopped_early="はい"))
     assert any("stopped_early" in e for e in errs)
-    errs, _ = cs.check_row(row(**{**VIOLATION, "stopped_early": "はい"}))
+    errs, _ = cs.check_row(row(**{**VIOLATION, "note": ""}))
     assert any("最初の違反で止めた" in e for e in errs)  # 03_record が「必ず」とする書き方は誤り
     errs, _ = cs.check_row(row(**{**VIOLATION, "stopped_early": "はい", "note": "最初の違反で止めた（深さ 2 まで読んだ）"}))
     assert errs == []
@@ -152,7 +152,7 @@ def test_condition_order_and_none_with_text_are_errors():
 
 
 AI_BASE = {**VIOLATION, "ai_used": "あり", "ai_model": "m 1（Web、記憶なし）", "ai_log": "ai_logs/X-01.md", "t_ai": "0",
-           "note": "最初の違反: 5 分（深さ 2 の a.py:20）／AI の前の判定: 違反"}
+           "note": "最初の違反で止めた（深さ 2 まで読んだ）／AI の前の判定: 違反"}
 
 
 def test_ai_found_must_be_exactly_nashi_or_name_a_line():
@@ -171,9 +171,13 @@ def test_ai_used_needs_the_pre_ai_outcome_in_note():
     assert any("AI の前の判定" in e for e in errs)
 
 
-def test_not_stopping_needs_the_first_violation_minute():
-    errs, _ = cs.check_row(row(**{**VIOLATION, "note": ""}))
-    assert any("最初の違反:" in e for e in errs)
+def test_violation_must_stop_at_the_first_one():
+    # D88: 違反は最初に見つけた違反で止める。いいえ は 違反（深さ 4 の外）だけ
+    errs, _ = cs.check_row(row(**{**VIOLATION, "stopped_early": "いいえ", "note": ""}))
+    assert any("D88" in e for e in errs)
+    errs, _ = cs.check_row(row(**{**VIOLATION, "outcome": "違反（深さ 4 の外）", "depth": "6", "stopped_early": "いいえ",
+                                  "note": ""}))
+    assert errs == []
 
 
 def test_space_before_colon_in_unknown_reason_gets_a_hint():

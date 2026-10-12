@@ -38,7 +38,8 @@ from final_aggregate import (  # noqa: E402
 #: 実態調査の答え（D82・D85。「違反（深さ 4 の外）」は D68 の 2・18.3 の別の数え）。
 SURVEY_OUTCOMES = ("違反", "違反（深さ 4 の外）", "違反でない", "不明", "対象外")
 VIOLATIONS = ("違反", "違反（深さ 4 の外）")
-#: 練習だけの欄 `stopped_early`（最初の違反で止めたか）。
+#: 練習だけの欄 `stopped_early`（最初の違反で止めたか）。D88 で最初の違反で止めるので、`違反` は `はい`、`違反（深さ 4 の外）` は
+#: `いいえ`（深さ 4 の中を全部読んだ答え）、ほかは `違反なし`。
 STOPPED = ("はい", "いいえ", "違反なし")
 #: 実態調査では使わない不明の理由の類（解析器の打ち切りの類。実態調査は解析器を見ない）。
 NOT_IN_SURVEY_CLASSES = ("打ち切り",)
@@ -140,14 +141,14 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
     if se not in STOPPED:
         errs.append(f"stopped_early = {se!r} は {list(STOPPED)} のどれでもない")
     elif (se == "違反なし") == (out in VIOLATIONS):
-        errs.append(f"stopped_early = {se} と outcome = {out} が合わない（違反のときは はい / いいえ、それ以外は 違反なし）")
+        errs.append(f"stopped_early = {se} と outcome = {out} が合わない（違反は はい、違反（深さ 4 の外）は いいえ、それ以外は 違反なし）")
     elif se == "はい" and out == "違反（深さ 4 の外）":
         errs.append("違反（深さ 4 の外）は深さ 4 の中を全部読んで違反が無かったときの答えなので、stopped_early = はい にならない（いいえ）")
     elif se == "はい" and "最初の違反で止めた" not in note:
         errs.append("stopped_early = はい なのに note に「最初の違反で止めた（深さ N まで読んだ）」が無い")
-    elif se == "いいえ" and out == "違反" and "最初の違反:" not in note:
-        errs.append("止めない方針（stopped_early = いいえ）の違反なのに note に「最初の違反: N 分（深さ D の ファイル:行）」が無い"
-                    "（段 7 の 3。B1 で止めたときの時間を出すのに使う）")
+    elif se == "いいえ" and out == "違反":
+        errs.append("違反は最初に見つけた違反で止めるので stopped_early = はい（D88。02_steps.md の段 7 の 3）。いいえ は"
+                    "違反（深さ 4 の外）だけ")
 
     au = r.get("ai_used", "").strip()
     if au not in AI_USED:
