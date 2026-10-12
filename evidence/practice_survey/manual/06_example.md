@@ -79,7 +79,7 @@
 
 ## 6.2 EX-1（`search_notes`）を段ごとに
 
-段 2〜8 は頭の中で考えるだけで、何も書きません。表に書くのは段 0・1・11 の時間の欄と、段 9 の 1 回だけです（D89）。
+段 2〜8 は頭の中で考えるだけで、何も書きません。表に書くのは段 0・1・11 の時間の欄、段 9 の 1 回、AI の欄（段 10。しなければ段 11 で `ai_used` = `なし`）だけです（D89）。
 
 **段 0**: 表の行を開き、木の窓を開いて読み込みを待った（`t_setup` = 1 を表に書いた）。
 
@@ -149,7 +149,7 @@
 | `condition` | 引数 save_history に真を渡したとき（既定は False） |
 | `depth` | `2` |
 | `unknown_reason` | （空） |
-| `evidence` | notes_server.py:48 search_notes → :38 _search（:37 save_history が真のとき）→ :30 _remember_query: open(~/.notes_mcp/history.jsonl, "a") に時刻と検索語を追記 |
+| `evidence` | notes_server.py:48 search_notes → :38 _search → :30 _remember_query: open(~/.notes_mcp/history.jsonl, "a") に時刻と検索語を追記 |
 | `ai_found` | （空） |
 | `note` | （空） |
 | `minutes` | `23` |

@@ -11,4 +11,4 @@
 | 2 の段 9（記録の欄） | `manual/03_record.md` |
 | 付録（早見表） | `manual/04_rules.md` |
 | 3〜6（W-01・T・P-M/P-C・送るもの） | `manual/05_practice.md` |
-| （新しく足した） | `manual/06_example.md`（例題）、`manual/worksheet.md`（1 件 1 枚のメモ）、`scripts/check_survey_practice.py`（表の書き方の確かめ） |
+| （新しく足した） | `manual/06_example.md`（例題）、`scripts/check_survey_practice.py`（表の書き方の確かめ）。`manual/worksheet.md`（1 件 1 枚のメモ）は 2026-10-12 にやめた（D89） |
