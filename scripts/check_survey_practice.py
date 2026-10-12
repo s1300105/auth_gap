@@ -86,8 +86,11 @@ def check_row(r: dict) -> tuple[list[str], list[str]]:
     if out in ("違反でない", "不明", "違反（深さ 4 の外）") and "読んだ範囲" not in ev:
         errs.append(f"{out} なのに evidence に「読んだ範囲」が無い（18.4「反する動作は無い」でも読んだ範囲を書く。違反（深さ 4 の外）は"
                     "道筋と読んだ範囲の両方。03_record.md の 3.4）")
-    if out in VIOLATIONS and ev and not FILE_LINE_RE.search(ev):
-        errs.append(f"{out} なのに evidence に「ファイル:行」が無い（道筋を、本体の行から反する行まで書く。03_record.md の 3.4）")
+    # 違反（深さ 4 の外）は「道筋／読んだ範囲: …」。読んだ範囲の `a.py:1-30` で道筋の確かめが通らないよう、その前だけを見る
+    path_part = ev.split("読んだ範囲")[0] if out == "違反（深さ 4 の外）" else ev
+    if out in VIOLATIONS and ev and not FILE_LINE_RE.search(path_part):
+        errs.append(f"{out} なのに evidence に道筋の「ファイル:行」が無い（道筋を、本体の行から反する行まで書く。違反（深さ 4 の外）は"
+                    "道筋の後に「／読んだ範囲: …」。03_record.md の 3.4）")
 
     if out in VIOLATIONS:
         wt = r.get("write_target", "").strip()

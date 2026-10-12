@@ -260,3 +260,6 @@ def test_outside_depth4_needs_path_and_read_range():
     assert any("読んだ範囲" in e for e in errs)
     errs, _ = cs.check_row(row(**{**base, "evidence": "a.py:10 → c.py:90 open(p, 'w')／読んだ範囲: a.py:1-30"}))
     assert errs == []
+    # 読んだ範囲だけで道筋が無い行は、読んだ範囲の a.py:1-30 があっても誤り
+    errs, _ = cs.check_row(row(**{**base, "evidence": "読んだ範囲: a.py:1-30、b.py:5-20"}))
+    assert any("道筋" in e for e in errs)
