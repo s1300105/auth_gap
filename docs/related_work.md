@@ -238,6 +238,54 @@ f817899）:
 
 ---
 
+## 2026-10-12 の再検索 — 前の結論のうち 2 つが崩れた（元の文は書き換えず、ここに書く）
+
+**元データ**: `research_notes/AuthGap 類似研究 検索/`（01〜07）、まとめは `reports/AuthGap 類似研究 検索.md`。
+上の 73 件に無いものと 2026-10-02 以降の新着を 7 つの方向で探した。各項目の検証の段（◎ / ○ / △）はノートの
+とおりで、本記録者が自分で開き直したのは reachscan の 3 点（下の 1.）だけである。数値はすべて著者の主張
+（`verified_by_me = none`。CLAUDE.md 規則 1）。
+
+**AuthGap と同じこと（宣言 4 つ × Python の手続き間の静的解析 × 未解決の率 × 事前登録と凍結 × 人の判定 ×
+注釈の修正コミットの再現率）をしている仕事は、見つからなかった。** ただし次の 2 文は崩れた。
+
+1. **「Python の MCP サーバについて、宣言を読み、呼び出し先まで追う静的な解析は、AuthGap のほかに見つからなかった」
+   （上の「前の記述の訂正」）は、2026-10-05 以降は成り立たない。** reachscan（`vinmay/reachscan`。v0.3.0 で
+   `ANNOTATION_MISMATCH` を追加、PR #32）が、明示された `readOnlyHint` / `openWorldHint` / `destructiveHint` を、
+   ファイルをまたぐ AST の呼び出しグラフで届く効果と照らす。本記録者が `4f6509d8`（v0.4.0）で確かめたこと:
+   `src/reachscan/reachability.py` 64 行 `TRAVERSAL_DEPTH = 8`、`src/reachscan/analysis/annotation_mismatch.py` の
+   規則は上の 3 ヒントだけで **`idempotentHint` は無い**、README 73 行は解決できないメソッド呼び出しの先の finding を
+   `unknown` とし「They can't produce an annotation mismatch and don't affect the exit code.」と書く（**未解決を
+   不一致なしの側に落とす**。R1 と同じ構図）。評価は 38 repo ＋公式 git サーバで不一致 16 件・確認済み TP 1 件で、
+   規則は corpus を見ながら直している（ノート 07 の読み。著者の主張）。誤りの向き: 前の文は 10-03 の時点では
+   正しかったが、AuthGap と同じ検査の道具が無いと読める書き方だった。
+2. **「解析器の凍結や事前登録の記載は見つからなかった」（「言えそうなこと」4）は、新規性の根拠としては崩れた。**
+   FCD（arXiv 2609.35088、○）、Agent Approval Laundering（2609.28586、◎）、AgentSecGraph（2610.03014、◎ / ○）が
+   凍結や事前の指定をしている。どれも `ToolAnnotations` とは照らさないので、組み合わせとしては残る。
+
+**狭めて書くもの**
+
+- 「言えそうなこと」3（実効の側で決められなかったものの率）: reachscan の `unknown` の件数、Scan the Skill
+  （2609.12001）の失敗件数の併記、Monat ら（SOAP 2020）の unsoundness alarm、JS の Jelly の解決率がある。
+  「Python で、効果の単位の `opaque(reason)` の率を主な結果にした例は見つからなかった」と書く。
+- 「言えそうなこと」5（向き）: 強制されない宣言の「狭すぎる」側は SkillScanner（CCS 2023、Alexa の自己申告）と
+  BIV（2605.11770、skill）が測っている。「副作用のヒントについて、MCP で」と書く。
+
+**新しく見つかった、最も近い論文**: ContractGuard（CCS 2026、Penn State。著者が公開した PDF の主要な節を読んだ ◎ はノート 06）。
+MCP ツールの入口から Tree-sitter で呼び出し先を深さ優先にたどり、LLM が**説明文**と照らす。1,000 サーバ・3,586 ツール、
+311 ツールの人の監査（著者の主張）。本文に annotation / `readOnlyHint` の語は無い。arXiv 2606.18550 の同名の別論文
+（ツール契約の署名）と取り違えないこと。
+
+**保たれるもの**: 「`ToolAnnotations` の値をコードと照らした**論文**は見つからなかった」、「D4（`idempotentHint`）を照らす
+ものは見つからなかった」、「初めて照合した」「検出力で勝る」とは言えない。
+
+**名前の注意**: 上の表の SkillScope は arXiv 2605.12875（説明文とコード）。arXiv 2605.05868（最小権限、CCS 2026）は別の論文。
+
+**次にすること**: CSS2026 2D1-1（東京都市大「安全なMCPレジストリのための検証フレームワーク」、10-19〜23 の後に予稿を
+読む）、ICSE 2027 の採択一覧（10-20 以降）、reachscan の新しい版。reachscan と比べるなら `depth_probe` と D79 の 352 件で、
+「見つけた」の数え方を走らせる前に決定として書く（D80 と同じ）。凍結の後に足すなら `docs/preregistration.md` に記録する。
+
+---
+
 ## 入手先
 
 | # | 論文 / ツール | URL | 状態 |
