@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:23:20Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_probe/cases/c10_tool_in_helper",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 2,
+  "py_entry_points": [
+    {
+      "name": "list_tools",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_probe/cases/c10_tool_in_helper/server.py",
+      "lineno": 16,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": []
+    },
+    {
+      "name": "call_tool",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_probe/cases/c10_tool_in_helper/server.py",
+      "lineno": 21,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "3010acfd1724"
+      ]
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "WRITE"
+  ],
+  "risks": [],
+  "findings": [
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_probe/cases/c10_tool_in_helper/server.py",
+        "lineno": 23,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "call_tool",
+        "reachability_path": [
+          "call_tool"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "3010acfd1724",
+        "finding_ref": "file_access:server.py:23:os.remove()"
+      }
+    }
+  ],
+  "annotation_mismatches": [],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

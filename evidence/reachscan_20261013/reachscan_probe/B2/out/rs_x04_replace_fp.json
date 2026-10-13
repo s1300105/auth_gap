@@ -1,0 +1,372 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:54:18Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 4,
+  "py_entry_points": [
+    {
+      "name": "fp_env_replace",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py",
+      "lineno": 11,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "27937be95a4b",
+        "d23d13a976b9"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "fp_join_replace",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py",
+      "lineno": 16,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "f95fd3735f41"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "fp_getcwd_replace",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py",
+      "lineno": 21,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "3c34d60611a1"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "fp_list_remove",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py",
+      "lineno": 26,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "f6bb7f0d1d77"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "SECRETS",
+    "WRITE"
+  ],
+  "risks": [],
+  "findings": [
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.environ.get.replace()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py",
+        "lineno": 12,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "fp_env_replace",
+        "reachability_path": [
+          "fp_env_replace"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "27937be95a4b",
+        "finding_ref": "file_access:server.py:12:os.environ.get.replace()"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.path.join.replace()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py",
+        "lineno": 17,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "fp_join_replace",
+        "reachability_path": [
+          "fp_join_replace"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "f95fd3735f41",
+        "finding_ref": "file_access:server.py:17:os.path.join.replace()"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.getcwd.replace()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py",
+        "lineno": 22,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "fp_getcwd_replace",
+        "reachability_path": [
+          "fp_getcwd_replace"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "3c34d60611a1",
+        "finding_ref": "file_access:server.py:22:os.getcwd.replace()"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "ostrich.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py",
+        "lineno": 28,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "fp_list_remove",
+        "reachability_path": [
+          "fp_list_remove"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "f6bb7f0d1d77",
+        "finding_ref": "file_access:server.py:28:ostrich.remove()"
+      }
+    },
+    {
+      "detector": "secrets",
+      "finding": {
+        "capability": "SECRETS",
+        "evidence": "os.environ.get('HOME')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py",
+        "lineno": 12,
+        "confidence": 0.7,
+        "explanation": "This code accesses secrets or credential sources.",
+        "impact": "Credentials may be disclosed and used for unauthorized access.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "fp_env_replace",
+        "reachability_path": [
+          "fp_env_replace"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "d23d13a976b9",
+        "finding_ref": "secrets:server.py:12:os.environ.get('HOME')"
+      }
+    }
+  ],
+  "annotation_mismatches": [
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "read_only_contradicted",
+      "risk_level": "high",
+      "tool": "fp_env_replace",
+      "entry_point": {
+        "name": "fp_env_replace",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py",
+        "lineno": 11,
+        "dispatch": "decorator"
+      },
+      "declared": {
+        "hint": "readOnlyHint",
+        "value": true
+      },
+      "observed": {
+        "capability": "WRITE",
+        "evidence": "os.environ.get.replace()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py",
+        "lineno": 12,
+        "finding_id": "27937be95a4b"
+      },
+      "reachability_path": [
+        "fp_env_replace"
+      ],
+      "message": "Tool 'fp_env_replace' declares readOnlyHint: true, but a call path from the tool reaches WRITE via os.environ.get.replace().",
+      "mismatch_id": "9d70b7cff1e5",
+      "additional_observations": []
+    },
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "read_only_contradicted",
+      "risk_level": "high",
+      "tool": "fp_getcwd_replace",
+      "entry_point": {
+        "name": "fp_getcwd_replace",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py",
+        "lineno": 21,
+        "dispatch": "decorator"
+      },
+      "declared": {
+        "hint": "readOnlyHint",
+        "value": true
+      },
+      "observed": {
+        "capability": "WRITE",
+        "evidence": "os.getcwd.replace()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py",
+        "lineno": 22,
+        "finding_id": "3c34d60611a1"
+      },
+      "reachability_path": [
+        "fp_getcwd_replace"
+      ],
+      "message": "Tool 'fp_getcwd_replace' declares readOnlyHint: true, but a call path from the tool reaches WRITE via os.getcwd.replace().",
+      "mismatch_id": "41098e1615eb",
+      "additional_observations": []
+    },
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "read_only_contradicted",
+      "risk_level": "high",
+      "tool": "fp_join_replace",
+      "entry_point": {
+        "name": "fp_join_replace",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py",
+        "lineno": 16,
+        "dispatch": "decorator"
+      },
+      "declared": {
+        "hint": "readOnlyHint",
+        "value": true
+      },
+      "observed": {
+        "capability": "WRITE",
+        "evidence": "os.path.join.replace()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py",
+        "lineno": 17,
+        "finding_id": "f95fd3735f41"
+      },
+      "reachability_path": [
+        "fp_join_replace"
+      ],
+      "message": "Tool 'fp_join_replace' declares readOnlyHint: true, but a call path from the tool reaches WRITE via os.path.join.replace().",
+      "mismatch_id": "5f91a2d45d39",
+      "additional_observations": []
+    },
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "read_only_contradicted",
+      "risk_level": "high",
+      "tool": "fp_list_remove",
+      "entry_point": {
+        "name": "fp_list_remove",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py",
+        "lineno": 26,
+        "dispatch": "decorator"
+      },
+      "declared": {
+        "hint": "readOnlyHint",
+        "value": true
+      },
+      "observed": {
+        "capability": "WRITE",
+        "evidence": "ostrich.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py",
+        "lineno": 28,
+        "finding_id": "f6bb7f0d1d77"
+      },
+      "reachability_path": [
+        "fp_list_remove"
+      ],
+      "message": "Tool 'fp_list_remove' declares readOnlyHint: true, but a call path from the tool reaches WRITE via ostrich.remove().",
+      "mismatch_id": "10be064eec48",
+      "additional_observations": []
+    }
+  ],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

@@ -1,0 +1,146 @@
+{
+ "tools": {
+  "e_subprocess_run": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):subprocess.run()@16"
+   ],
+   "rs_reach_findings": [
+    "EXECUTE:subprocess.run()@16"
+   ],
+   "ag": {
+    "effects": [
+     "subprocess.run:SPAWN@16(resolved)"
+    ],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [
+     "D1:spawn_command@16"
+    ],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "e_module_alias": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "subprocess.run:SPAWN@22(resolved)"
+    ],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [
+     "D1:spawn_command@22"
+    ],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "e_from_import": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "subprocess.run:SPAWN@28(resolved)"
+    ],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [
+     "D1:spawn_command@28"
+    ],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "e_check_output": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "subprocess.check_output:SPAWN@34(resolved)"
+    ],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [
+     "D1:spawn_command@34"
+    ],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "e_os_popen": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "os.popen:SPAWN@39(resolved)"
+    ],
+    "CONTRA": [
+     "D1:spawn_model@39"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "e_asyncio_exec": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "asyncio.create_subprocess_exec:SPAWN@44(resolved)"
+    ],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [
+     "D1:spawn_command@44"
+    ],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "e_os_system": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):os.system()@51"
+   ],
+   "rs_reach_findings": [
+    "EXECUTE:os.system()@51"
+   ],
+   "ag": {
+    "effects": [
+     "os.system:SPAWN@51(resolved)"
+    ],
+    "CONTRA": [
+     "D1:spawn_model@51"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "e_eval": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):eval()@57"
+   ],
+   "rs_reach_findings": [
+    "EXECUTE:eval()@57",
+    "DYNAMIC:eval@57"
+   ],
+   "ag": {
+    "effects": [
+     "builtins.eval:EXEC@57(resolved)"
+    ],
+    "CONTRA": [
+     "D1:exec@57"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  }
+ },
+ "rs_not_reachable_findings": []
+}

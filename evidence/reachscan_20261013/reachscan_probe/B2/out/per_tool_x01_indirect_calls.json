@@ -1,0 +1,87 @@
+{
+ "tools": {
+  "nested_def": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@37(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@37"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "dict_dispatch": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "partial_call": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@17(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@17"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "lambda_call": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):with open(..., mode='w')@22"
+   ],
+   "rs_reach_findings": [
+    "WRITE:with open(..., mode='w')@22"
+   ],
+   "ag": {
+    "effects": [],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "dynamic",
+     "unresolved"
+    ]
+   }
+  },
+  "to_thread_call": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@27(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@27"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  }
+ },
+ "rs_not_reachable_findings": [
+  "WRITE:with open(..., mode='w')@server.py:12=unreachable",
+  "WRITE:with open(..., mode='w')@server.py:17=unreachable",
+  "WRITE:with open(..., mode='w')@server.py:27=unreachable",
+  "WRITE:with open(..., mode='w')@server.py:37=unreachable"
+ ]
+}

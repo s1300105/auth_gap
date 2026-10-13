@@ -1,0 +1,12 @@
+"""B1 case 10: a server file at tests/server.py (test/benchmark-looking path). The tool claims readOnlyHint=True and writes."""
+from mcp.server.fastmcp import FastMCP
+from mcp.types import ToolAnnotations
+
+mcp = FastMCP("notes")
+
+
+@mcp.tool(annotations=ToolAnnotations(readOnlyHint=True))
+def save_tests_server(path: str, content: str) -> str:
+    with open(path, "w") as f:
+        f.write(content)
+    return "ok"

@@ -1,0 +1,1820 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "1a4a5a0bce26174bf65972982b8ccd0776403a72c26fa3cecb5f70b5ce271f01",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {
+    "NODOM(no_gate)": 12
+  },
+  "mcp_version": {
+    "class": "lt2",
+    "evidence": [
+      "lt2:import:server.py:mcp.server.fastmcp"
+    ]
+  },
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.017,
+    "run_id": "local",
+    "src_root": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": false,
+          "entry_lineno": 40,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 40,
+          "relpath": "server.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "pathlib.Path.mkdir",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Path",
+                "segs": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "cache",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "tail": {
+                  "prin": "OP",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "shape": {
+                    "k": "Unknown"
+                  }
+                }
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE"
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 40,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "server.py",
+          "site": "pathlib.Path.mkdir",
+          "slot": "path",
+          "unit_id": "mcp:nd_cache_mkdir:6a614562b317",
+          "verdicts": [
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 38,
+        "module": "server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "url"
+          }
+        ],
+        "qualname": "nd_cache_mkdir",
+        "relpath": "server.py",
+        "schema_hash": "6a614562b317",
+        "tool_name": "nd_cache_mkdir",
+        "unit_id": "mcp:nd_cache_mkdir:6a614562b317"
+      },
+      "unresolved_in_tree_calls": [],
+      "validator_shapes": [
+        "ctor_path",
+        "realpath"
+      ]
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": true,
+          "entry_lineno": 58,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 58,
+          "relpath": "server.py",
+          "resolution": "resolved",
+          "shape_from": {
+            "content": "annotation",
+            "path": "annotation"
+          },
+          "site": "shutil.copy",
+          "slots": {
+            "content": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "src"
+              ],
+              "shape": {
+                "formal": "src",
+                "k": "Atom"
+              }
+            },
+            "path": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "dst"
+              ],
+              "shape": {
+                "formal": "dst",
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE"
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:content": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 3,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:content": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:content": "MODEL",
+        "0:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 58,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction:D2",
+            "contradiction_reason:D2:fs_writeout_model_path",
+            "D_layer_present:kind:FS_WRITE"
+          ],
+          "relpath": "server.py",
+          "site": "shutil.copy",
+          "slot": "content",
+          "unit_id": "mcp:nd_copy:587b6dd245c7",
+          "verdicts": [
+            "CONTRADICTION",
+            "GAP_INJECT"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 58,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction:D2",
+            "contradiction_reason:D2:fs_writeout_model_path",
+            "D_layer_present:kind:FS_WRITE"
+          ],
+          "relpath": "server.py",
+          "site": "shutil.copy",
+          "slot": "path",
+          "unit_id": "mcp:nd_copy:587b6dd245c7",
+          "verdicts": [
+            "CONTRADICTION",
+            "GAP_INJECT"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 57,
+        "module": "server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "src"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "dst"
+          }
+        ],
+        "qualname": "nd_copy",
+        "relpath": "server.py",
+        "schema_hash": "587b6dd245c7",
+        "tool_name": "nd_copy",
+        "unit_id": "mcp:nd_copy:587b6dd245c7"
+      },
+      "unresolved_in_tree_calls": [],
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": true,
+          "entry_lineno": 52,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 52,
+          "relpath": "server.py",
+          "resolution": "resolved",
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "os.replace",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "dst"
+              ],
+              "shape": {
+                "formal": "dst",
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE"
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 3,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 52,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction:D2",
+            "contradiction_reason:D2:fs_remove",
+            "D_layer_present:kind:FS_WRITE"
+          ],
+          "relpath": "server.py",
+          "site": "os.replace",
+          "slot": "path",
+          "unit_id": "mcp:nd_replace:587b6dd245c7",
+          "verdicts": [
+            "CONTRADICTION",
+            "GAP_INJECT"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 51,
+        "module": "server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "src"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "dst"
+          }
+        ],
+        "qualname": "nd_replace",
+        "relpath": "server.py",
+        "schema_hash": "587b6dd245c7",
+        "tool_name": "nd_replace",
+        "unit_id": "mcp:nd_replace:587b6dd245c7"
+      },
+      "unresolved_in_tree_calls": [],
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "destructiveHint"
+        ],
+        "present_no_bound": [
+          "readOnlyHint"
+        ],
+        "upper": [
+          "DB",
+          "FS_READ",
+          "FS_WRITE",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "path",
+          "site": "server.py:L46",
+          "transform": "Path()"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": true,
+          "entry_lineno": 46,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 46,
+          "relpath": "server.py",
+          "required_by": [
+            "F7"
+          ],
+          "resolution": "resolved",
+          "shape_from": {
+            "content": "annotation",
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.write_text",
+          "slots": {
+            "content": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "data"
+              ],
+              "shape": {
+                "formal": "data",
+                "k": "Atom"
+              }
+            },
+            "path": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "path"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "resolved",
+                  "roots": [
+                    "path"
+                  ],
+                  "shape": {
+                    "formal": "path",
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE"
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:content": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 3,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:content": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:content": "MODEL",
+        "0:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 46,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction:D2",
+            "contradiction_reason:D2:fs_writeout_model_path",
+            "D_layer_present:kind:FS_WRITE"
+          ],
+          "relpath": "server.py",
+          "site": "pathlib.Path.write_text",
+          "slot": "content",
+          "unit_id": "mcp:nd_write_text:fcab354b29aa",
+          "verdicts": [
+            "CONTRADICTION",
+            "GAP_INJECT"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 46,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction:D2",
+            "contradiction_reason:D2:fs_writeout_model_path",
+            "D_layer_present:kind:FS_WRITE"
+          ],
+          "relpath": "server.py",
+          "site": "pathlib.Path.write_text",
+          "slot": "path",
+          "unit_id": "mcp:nd_write_text:fcab354b29aa",
+          "verdicts": [
+            "CONTRADICTION",
+            "GAP_INJECT"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "readOnlyHint": false
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 45,
+        "module": "server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "path"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "data"
+          }
+        ],
+        "qualname": "nd_write_text",
+        "relpath": "server.py",
+        "schema_hash": "fcab354b29aa",
+        "tool_name": "nd_write_text",
+        "unit_id": "mcp:nd_write_text:fcab354b29aa"
+      },
+      "unresolved_in_tree_calls": [],
+      "validator_shapes": [
+        "ctor_path"
+      ]
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": false,
+          "entry_lineno": 15,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 15,
+          "relpath": "server.py",
+          "resolution": "opaque",
+          "resolution_reasons": [
+            "unresolved"
+          ],
+          "site": "pathlib.Path.mkdir",
+          "slots": {
+            "path": {
+              "prin": "OP",
+              "prov": "opaque",
+              "prov_reasons": [
+                "unresolved"
+              ],
+              "shape": {
+                "k": "Path",
+                "segs": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "cache",
+                      "k": "Atom"
+                    }
+                  }
+                ],
+                "tail": {
+                  "prin": "OP",
+                  "prov": "opaque",
+                  "prov_reasons": [
+                    "unresolved"
+                  ],
+                  "shape": {
+                    "k": "Unknown"
+                  }
+                }
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE"
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 15,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction:D1",
+            "contradiction_reason:D1:fs_write"
+          ],
+          "relpath": "server.py",
+          "site": "pathlib.Path.mkdir",
+          "slot": "path",
+          "unit_id": "mcp:ro_cache_mkdir:6a614562b317",
+          "verdicts": [
+            "CONTRADICTION",
+            "UNKNOWN"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 13,
+        "module": "server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "url"
+          }
+        ],
+        "qualname": "ro_cache_mkdir",
+        "relpath": "server.py",
+        "schema_hash": "6a614562b317",
+        "tool_name": "ro_cache_mkdir",
+        "unit_id": "mcp:ro_cache_mkdir:6a614562b317"
+      },
+      "unresolved_in_tree_calls": [],
+      "validator_shapes": [
+        "ctor_path",
+        "realpath"
+      ]
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": true,
+          "entry_lineno": 33,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 33,
+          "relpath": "server.py",
+          "resolution": "resolved",
+          "shape_from": {
+            "content": "annotation",
+            "path": "annotation"
+          },
+          "site": "shutil.copy",
+          "slots": {
+            "content": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "src"
+              ],
+              "shape": {
+                "formal": "src",
+                "k": "Atom"
+              }
+            },
+            "path": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "dst"
+              ],
+              "shape": {
+                "formal": "dst",
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE"
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:content": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 3,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:content": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:content": "MODEL",
+        "0:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction:D1",
+            "contradiction_reason:D1:fs_write"
+          ],
+          "relpath": "server.py",
+          "site": "shutil.copy",
+          "slot": "content",
+          "unit_id": "mcp:ro_copy:587b6dd245c7",
+          "verdicts": [
+            "CONTRADICTION",
+            "GAP_INJECT"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 33,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction:D1",
+            "contradiction_reason:D1:fs_write"
+          ],
+          "relpath": "server.py",
+          "site": "shutil.copy",
+          "slot": "path",
+          "unit_id": "mcp:ro_copy:587b6dd245c7",
+          "verdicts": [
+            "CONTRADICTION",
+            "GAP_INJECT"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 32,
+        "module": "server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "src"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "dst"
+          }
+        ],
+        "qualname": "ro_copy",
+        "relpath": "server.py",
+        "schema_hash": "587b6dd245c7",
+        "tool_name": "ro_copy",
+        "unit_id": "mcp:ro_copy:587b6dd245c7"
+      },
+      "unresolved_in_tree_calls": [],
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": true,
+          "entry_lineno": 27,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 27,
+          "relpath": "server.py",
+          "resolution": "resolved",
+          "shape_from": {
+            "path": "annotation"
+          },
+          "site": "os.replace",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "dst"
+              ],
+              "shape": {
+                "formal": "dst",
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE"
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 3,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 27,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction:D1",
+            "contradiction_reason:D1:fs_write"
+          ],
+          "relpath": "server.py",
+          "site": "os.replace",
+          "slot": "path",
+          "unit_id": "mcp:ro_replace:587b6dd245c7",
+          "verdicts": [
+            "CONTRADICTION",
+            "GAP_INJECT"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 26,
+        "module": "server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "src"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "dst"
+          }
+        ],
+        "qualname": "ro_replace",
+        "relpath": "server.py",
+        "schema_hash": "587b6dd245c7",
+        "tool_name": "ro_replace",
+        "unit_id": "mcp:ro_replace:587b6dd245c7"
+      },
+      "unresolved_in_tree_calls": [],
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [
+        {
+          "root": "path",
+          "site": "server.py:L21",
+          "transform": "Path()"
+        }
+      ],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "destructive": true,
+          "entry_lineno": 21,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 21,
+          "relpath": "server.py",
+          "required_by": [
+            "F7"
+          ],
+          "resolution": "resolved",
+          "shape_from": {
+            "content": "annotation",
+            "path": "annotation"
+          },
+          "site": "pathlib.Path.write_text",
+          "slots": {
+            "content": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "data"
+              ],
+              "shape": {
+                "formal": "data",
+                "k": "Atom"
+              }
+            },
+            "path": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "path"
+              ],
+              "shape": {
+                "base": {
+                  "prin": "MODEL",
+                  "prov": "resolved",
+                  "roots": [
+                    "path"
+                  ],
+                  "shape": {
+                    "formal": "path",
+                    "k": "Atom"
+                  }
+                },
+                "k": "Path",
+                "segs": []
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE"
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:content": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 3,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:content": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:content": "MODEL",
+        "0:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 21,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction:D1",
+            "contradiction_reason:D1:fs_write"
+          ],
+          "relpath": "server.py",
+          "site": "pathlib.Path.write_text",
+          "slot": "content",
+          "unit_id": "mcp:ro_write_text:fcab354b29aa",
+          "verdicts": [
+            "CONTRADICTION",
+            "GAP_INJECT"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 21,
+          "notes": [
+            "select_manifest_only(assumed_trig)",
+            "contradiction:D1",
+            "contradiction_reason:D1:fs_write"
+          ],
+          "relpath": "server.py",
+          "site": "pathlib.Path.write_text",
+          "slot": "path",
+          "unit_id": "mcp:ro_write_text:fcab354b29aa",
+          "verdicts": [
+            "CONTRADICTION",
+            "GAP_INJECT"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 20,
+        "module": "server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "path"
+          },
+          {
+            "annotation": "str",
+            "index": 1,
+            "name": "data"
+          }
+        ],
+        "qualname": "ro_write_text",
+        "relpath": "server.py",
+        "schema_hash": "fcab354b29aa",
+        "tool_name": "ro_write_text",
+        "unit_id": "mcp:ro_write_text:fcab354b29aa"
+      },
+      "unresolved_in_tree_calls": [],
+      "validator_shapes": [
+        "ctor_path"
+      ]
+    }
+  ],
+  "unresolved_handler": {
+    "count": 0,
+    "sites": []
+  }
+}

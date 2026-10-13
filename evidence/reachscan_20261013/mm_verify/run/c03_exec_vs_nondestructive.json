@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:34:57Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c03_exec_vs_nondestructive",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 1,
+  "py_entry_points": [
+    {
+      "name": "run_cmd",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c03_exec_vs_nondestructive/server.py",
+      "lineno": 9,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "11ca47bf4e6d"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": false,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "explicit"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "EXECUTE"
+  ],
+  "risks": [],
+  "findings": [
+    {
+      "detector": "shell_exec",
+      "finding": {
+        "capability": "EXECUTE",
+        "evidence": "subprocess.run()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c03_exec_vs_nondestructive/server.py",
+        "lineno": 10,
+        "confidence": 0.95,
+        "explanation": "This code can execute shell or interpreter commands on the host.",
+        "impact": "A malicious prompt could run destructive commands, install malware, or alter the environment.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "run_cmd",
+        "reachability_path": [
+          "run_cmd"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "11ca47bf4e6d",
+        "finding_ref": "shell_exec:server.py:10:subprocess.run()"
+      }
+    }
+  ],
+  "annotation_mismatches": [],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

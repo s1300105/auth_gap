@@ -1,0 +1,66 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • const_same_file  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c02_module_const/server.py:17)
+  • const_imported  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c02_module_const/server.py:24)
+  • bool_const_value  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c02_module_const/server.py:31)
+  • const_reassigned  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c02_module_const/server.py:38)
+  • const_dict  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c02_module_const/server.py:45)
+
+Capabilities
+------------
+  • WRITE
+
+Combined Risks
+--------------
+  None inferred from combined-capability rules.
+
+Annotation Mismatches  —  MCP tool annotations contradicted by reachable code
+-----------------------------------------------------------------------------
+  [HIGH] bool_const_value declares readOnlyHint: true
+    but reaches WRITE via with open(..., mode='w') (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c02_module_const/server.py:32)
+    path: bool_const_value → with open(..., mode='w')
+  [HIGH] const_dict declares readOnlyHint: true
+    but reaches WRITE via with open(..., mode='w') (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c02_module_const/server.py:46)
+    path: const_dict → with open(..., mode='w')
+  [HIGH] const_imported declares readOnlyHint: true
+    but reaches WRITE via with open(..., mode='w') (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c02_module_const/server.py:25)
+    path: const_imported → with open(..., mode='w')
+  [HIGH] const_same_file declares readOnlyHint: true
+    but reaches WRITE via with open(..., mode='w') (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c02_module_const/server.py:18)
+    path: const_same_file → with open(..., mode='w')
+
+Reachability Summary
+--------------------
+     5 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c02_module_const/server.py:18)
+    path: const_same_file
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c02_module_const/server.py:25)
+    path: const_imported
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c02_module_const/server.py:32)
+    path: bool_const_value
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c02_module_const/server.py:39)
+    path: const_reassigned
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c02_module_const/server.py:46)
+    path: const_dict
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 2 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c02_module_const
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

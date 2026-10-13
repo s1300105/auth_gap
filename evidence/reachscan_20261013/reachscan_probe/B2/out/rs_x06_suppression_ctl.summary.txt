@@ -1,0 +1,9 @@
+version: 0.4.0 files: 1 eps: 2
+EP ro_write_suppressed server.py:10 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP cw_get_send_suppressed server.py:17 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=False(e) declared_tools: []
+FINDING network SEND 'requests.get' server.py:18 high reach=reachable ep=cw_get_send_suppressed path=['cw_get_send_suppressed'] 
+FINDING file_access WRITE "with open(..., mode='w')" server.py:11 high reach=reachable ep=ro_write_suppressed path=['ro_write_suppressed'] 
+MISMATCH ro_write_suppressed read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} WRITE "with open(..., mode='w')" server.py:11 send_kind=None dispatch=decorator path=['ro_write_suppressed'] extra=[] 
+MISMATCH cw_get_send_suppressed closed_world_contradicted medium {'hint': 'openWorldHint', 'value': False} SEND 'requests.get' server.py:18 send_kind=HTTP dispatch=decorator path=['cw_get_send_suppressed'] extra=[] 
+suppression_warnings: []
+risks: ['data_exfiltration']

@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 31
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION DB@params via psycopg.Cursor.execute (proxy)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind",
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "DB",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "params",
+            "unit_id": "mcp:drop_user:01fd2389c35f",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:params"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 31
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT DB@params via psycopg.Cursor.execute (proxy)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind",
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "DB",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "params",
+            "unit_id": "mcp:drop_user:01fd2389c35f",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "GAP_INJECT:params"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 31
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION DB@sql via psycopg.Cursor.execute (proxy)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind",
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "DB",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "sql",
+            "unit_id": "mcp:drop_user:01fd2389c35f",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:sql"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 15
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION DB@params via psycopg.Cursor.execute (proxy)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "DB",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "params",
+            "unit_id": "mcp:rename_user:8a1b63ae8e0b",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:params"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 15
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT DB@params via psycopg.Cursor.execute (proxy)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "DB",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "params",
+            "unit_id": "mcp:rename_user:8a1b63ae8e0b",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "GAP_INJECT:params"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 15
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION DB@sql via psycopg.Cursor.execute (proxy)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "DB",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "sql",
+            "unit_id": "mcp:rename_user:8a1b63ae8e0b",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:sql"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "informationUri": "https://github.com/s1300105/auth_gap",
+          "name": "AuthGap",
+          "rules": [
+            {
+              "fullDescription": {
+                "text": "CONTRADICTION on slot params"
+              },
+              "id": "CONTRADICTION:params",
+              "shortDescription": {
+                "text": "CONTRADICTION"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "CONTRADICTION on slot sql"
+              },
+              "id": "CONTRADICTION:sql",
+              "shortDescription": {
+                "text": "CONTRADICTION"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "GAP_INJECT on slot params"
+              },
+              "id": "GAP_INJECT:params",
+              "shortDescription": {
+                "text": "GAP_INJECT"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}

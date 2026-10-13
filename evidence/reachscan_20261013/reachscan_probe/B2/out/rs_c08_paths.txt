@@ -1,0 +1,76 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • ro_cache_mkdir  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:13)
+  • ro_write_text  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:20)
+  • ro_replace  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:26)
+  • ro_copy  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:32)
+  • nd_cache_mkdir  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:38)
+  • nd_write_text  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:45)
+  • nd_replace  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:51)
+  • nd_copy  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:57)
+
+Capabilities
+------------
+  • WRITE
+
+Combined Risks
+--------------
+  None inferred from combined-capability rules.
+
+Annotation Mismatches  —  MCP tool annotations contradicted by reachable code
+-----------------------------------------------------------------------------
+  [HIGH] ro_copy declares readOnlyHint: true
+    but reaches WRITE via shutil.copy() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:33)
+    path: ro_copy → shutil.copy()
+  [HIGH] ro_replace declares readOnlyHint: true
+    but reaches WRITE via os.replace() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:27)
+    path: ro_replace → os.replace()
+  [HIGH] ro_write_text declares readOnlyHint: true
+    but reaches WRITE via pathlib.Path.write_text() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:21)
+    path: ro_write_text → pathlib.Path.write_text()
+  [MEDIUM] nd_replace declares destructiveHint: false
+    but reaches WRITE via os.replace() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:52)
+    path: nd_replace → os.replace()
+  [MEDIUM] nd_write_text declares destructiveHint: false
+    but reaches WRITE via pathlib.Path.write_text() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:46)
+    path: nd_write_text → pathlib.Path.write_text()
+
+Reachability Summary
+--------------------
+     6 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] WRITE via pathlib.Path.write_text() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:21)
+    path: ro_write_text
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via os.replace() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:27)
+    path: ro_replace
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via shutil.copy() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:33)
+    path: ro_copy
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via pathlib.Path.write_text() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:46)
+    path: nd_write_text
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via os.replace() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:52)
+    path: nd_replace
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via shutil.copy() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/server.py:58)
+    path: nd_copy
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

@@ -1,0 +1,77 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • body_write  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/depth_probe_py/server.py:20)
+  • helper_write  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/depth_probe_py/server.py:27)
+  • helper_purge  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/depth_probe_py/server.py:33)
+
+Capabilities
+------------
+  • EXECUTE
+  • WRITE
+
+Combined Risks
+--------------
+  [HIGH] Destructive Agent Risk
+    why: The code can execute commands and perform destructive file actions.
+    capabilities: EXECUTE, WRITE
+
+Annotation Mismatches  —  MCP tool annotations contradicted by reachable code
+-----------------------------------------------------------------------------
+  [HIGH] body_write declares readOnlyHint: true
+    but reaches WRITE via with open(..., mode='w') (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/depth_probe_py/server.py:21)
+    call chain:
+      body_write
+      → with open(..., mode='w')
+  [HIGH] helper_purge declares readOnlyHint: true
+    but reaches WRITE via os.remove() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/depth_probe_py/server.py:15)
+    call chain:
+      helper_purge
+      → _purge
+      → os.remove()
+    also reaches:
+      - EXECUTE via subprocess.run() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/depth_probe_py/server.py:16) — path: helper_purge → _purge
+  [HIGH] helper_write declares readOnlyHint: true
+    but reaches WRITE via with open(..., mode='w') (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/depth_probe_py/server.py:10)
+    call chain:
+      helper_write
+      → _save
+      → with open(..., mode='w')
+
+Reachability Summary
+--------------------
+     4 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] EXECUTE via subprocess.run() (shell_exec @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/depth_probe_py/server.py:16)
+    call chain:
+      helper_purge
+      → _purge
+    explanation: This code can execute shell or interpreter commands on the host.
+    impact: A malicious prompt could run destructive commands, install malware, or alter the environment.
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/depth_probe_py/server.py:10)
+    call chain:
+      helper_write
+      → _save
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/depth_probe_py/server.py:21)
+    call chain:
+      body_write
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via os.remove() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/depth_probe_py/server.py:15)
+    call chain:
+      helper_purge
+      → _purge
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/depth_probe_py
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

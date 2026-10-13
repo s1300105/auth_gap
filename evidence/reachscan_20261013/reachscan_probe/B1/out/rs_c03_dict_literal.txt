@@ -1,0 +1,55 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • dict_literal  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c03_dict_literal/server.py:11)
+  • dict_call  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c03_dict_literal/server.py:18)
+  • unpack_dict  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c03_dict_literal/server.py:25)
+  • dict_spread_override  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c03_dict_literal/server.py:33)
+
+Capabilities
+------------
+  • WRITE
+
+Combined Risks
+--------------
+  None inferred from combined-capability rules.
+
+Annotation Mismatches  —  MCP tool annotations contradicted by reachable code
+-----------------------------------------------------------------------------
+  [HIGH] dict_literal declares readOnlyHint: true
+    but reaches WRITE via with open(..., mode='w') (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c03_dict_literal/server.py:12)
+    path: dict_literal → with open(..., mode='w')
+  [HIGH] dict_spread_override declares readOnlyHint: true
+    but reaches WRITE via with open(..., mode='w') (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c03_dict_literal/server.py:34)
+    path: dict_spread_override → with open(..., mode='w')
+
+Reachability Summary
+--------------------
+     4 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c03_dict_literal/server.py:12)
+    path: dict_literal
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c03_dict_literal/server.py:19)
+    path: dict_call
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c03_dict_literal/server.py:26)
+    path: unpack_dict
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c03_dict_literal/server.py:34)
+    path: dict_spread_override
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c03_dict_literal
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

@@ -1,0 +1,128 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:23:32Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c09_open_wplus",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 2,
+  "py_entry_points": [
+    {
+      "name": "wplus",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c09_open_wplus/server.py",
+      "lineno": 9,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "3668cfee5099"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "mode_var",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c09_open_wplus/server.py",
+      "lineno": 14,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "8e6f27ef5fb3"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "READ"
+  ],
+  "risks": [],
+  "findings": [
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "READ",
+        "evidence": "with open(..., mode='w+')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c09_open_wplus/server.py",
+        "lineno": 10,
+        "confidence": 0.9,
+        "explanation": "This code can read local files from the filesystem.",
+        "impact": "Private files may be exposed to later processing or exfiltration.",
+        "risk_level": "medium",
+        "reachability": "reachable",
+        "entry_point_name": "wplus",
+        "reachability_path": [
+          "wplus"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "3668cfee5099",
+        "finding_ref": "file_access:server.py:10:with open(..., mode='w+')"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "READ",
+        "evidence": "open(..., mode='')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c09_open_wplus/server.py",
+        "lineno": 15,
+        "confidence": 0.9,
+        "explanation": "This code can read local files from the filesystem.",
+        "impact": "Private files may be exposed to later processing or exfiltration.",
+        "risk_level": "medium",
+        "reachability": "reachable",
+        "entry_point_name": "mode_var",
+        "reachability_path": [
+          "mode_var"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "8e6f27ef5fb3",
+        "finding_ref": "file_access:server.py:15:open(..., mode='')"
+      }
+    }
+  ],
+  "annotation_mismatches": [],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

@@ -1,0 +1,22 @@
+num_files_scanned: 2 entry_points_detected: 5
+EP const_same_file server.py:17 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+EP const_imported server.py:24 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+EP bool_const_value server.py:31 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+EP const_reassigned server.py:38 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [null, "unresolvable"], "destructiveHint": [null, "unresolvable"], "idempotentHint": [null, "unresolvable"], "openWorldHint": [null, "unresolvable"], "declared": true, "unresolved_reference": true}
+EP const_dict server.py:45 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+FINDING WRITE "with open(..., mode='w')" server.py:18 reachable ep= const_same_file path= ['const_same_file']
+FINDING WRITE "with open(..., mode='w')" server.py:25 reachable ep= const_imported path= ['const_imported']
+FINDING WRITE "with open(..., mode='w')" server.py:32 reachable ep= bool_const_value path= ['bool_const_value']
+FINDING WRITE "with open(..., mode='w')" server.py:39 reachable ep= const_reassigned path= ['const_reassigned']
+FINDING WRITE "with open(..., mode='w')" server.py:46 reachable ep= const_dict path= ['const_dict']
+MISMATCH bool_const_value read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= decorator ep_line= 31 observed= WRITE "with open(..., mode='w')" line 32 path= ['bool_const_value'] extra_obs= []
+MISMATCH const_dict read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= decorator ep_line= 45 observed= WRITE "with open(..., mode='w')" line 46 path= ['const_dict'] extra_obs= []
+MISMATCH const_imported read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= decorator ep_line= 24 observed= WRITE "with open(..., mode='w')" line 25 path= ['const_imported'] extra_obs= []
+MISMATCH const_same_file read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= decorator ep_line= 17 observed= WRITE "with open(..., mode='w')" line 18 path= ['const_same_file'] extra_obs= []
+EXPLAIN: Not checked (annotations couldn't be resolved statically):
+    • const_reassigned (server.py:38): readOnlyHint, destructiveHint, idempotentHint, openWorldHint — annotations passed by a reference that couldn't be resolved

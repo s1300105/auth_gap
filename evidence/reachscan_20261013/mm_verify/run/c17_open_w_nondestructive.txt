@@ -1,0 +1,52 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • save  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c17_open_w_nondestructive/server.py:9)
+  • append  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c17_open_w_nondestructive/server.py:14)
+  • copy_over  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c17_open_w_nondestructive/server.py:19)
+
+Capabilities
+------------
+  • WRITE
+
+Combined Risks
+--------------
+  None inferred from combined-capability rules.
+
+Annotation Mismatches  —  MCP tool annotations contradicted by reachable code
+-----------------------------------------------------------------------------
+  [MEDIUM] save declares destructiveHint: false
+    but reaches WRITE via with open(..., mode='w') (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c17_open_w_nondestructive/server.py:10)
+    call chain:
+      save
+      → with open(..., mode='w')
+
+Reachability Summary
+--------------------
+     3 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c17_open_w_nondestructive/server.py:10)
+    call chain:
+      save
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via with open(..., mode='a') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c17_open_w_nondestructive/server.py:15)
+    call chain:
+      append
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via shutil.copy() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c17_open_w_nondestructive/server.py:20)
+    call chain:
+      copy_over
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c17_open_w_nondestructive
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

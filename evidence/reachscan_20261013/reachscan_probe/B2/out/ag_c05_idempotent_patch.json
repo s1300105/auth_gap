@@ -1,0 +1,57 @@
+[
+  {
+    "declared": {
+      "bottom": true,
+      "explicit": [],
+      "idempotent": true,
+      "present_no_bound": [
+        "idempotentHint",
+        "readOnlyHint"
+      ]
+    },
+    "lineno": 10,
+    "observed_kind": "FS_WRITE",
+    "relpath": "server.py",
+    "tool_name": "append_log",
+    "unit_id": "mcp:append_log:f416379351c1"
+  },
+  {
+    "declared": {
+      "bottom": true,
+      "explicit": [],
+      "idempotent": true,
+      "present_no_bound": [
+        "idempotentHint"
+      ]
+    },
+    "lineno": 17,
+    "observed_kind": "FS_WRITE",
+    "relpath": "server.py",
+    "tool_name": "append_log_idem_only",
+    "unit_id": "mcp:append_log_idem_only:f416379351c1"
+  },
+  {
+    "declared": {
+      "bottom": false,
+      "explicit": [
+        "destructiveHint"
+      ],
+      "idempotent": true,
+      "present_no_bound": [
+        "idempotentHint",
+        "readOnlyHint"
+      ],
+      "upper": [
+        "DB",
+        "FS_READ",
+        "FS_WRITE",
+        "NET"
+      ]
+    },
+    "lineno": 24,
+    "observed_kind": "FS_WRITE",
+    "relpath": "server.py",
+    "tool_name": "append_log_nondestructive",
+    "unit_id": "mcp:append_log_nondestructive:f416379351c1"
+  }
+]

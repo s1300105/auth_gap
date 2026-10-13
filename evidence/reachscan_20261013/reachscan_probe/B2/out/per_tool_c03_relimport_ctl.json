@@ -1,0 +1,80 @@
+{
+ "tools": {
+  "t_plain": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):with open(..., mode='w')@5"
+   ],
+   "rs_reach_findings": [
+    "WRITE:with open(..., mode='w')@5"
+   ],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@5(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@5"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "t_alias": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@10(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@10"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "t_modalias": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):with open(..., mode='w')@15"
+   ],
+   "rs_reach_findings": [
+    "WRITE:with open(..., mode='w')@15"
+   ],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@15(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@15"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "t_dotted": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@20(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@20"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  }
+ },
+ "rs_not_reachable_findings": [
+  "WRITE:with open(..., mode='w')@pkg/storage.py:10=unreachable",
+  "WRITE:with open(..., mode='w')@pkg/storage.py:20=unreachable"
+ ]
+}

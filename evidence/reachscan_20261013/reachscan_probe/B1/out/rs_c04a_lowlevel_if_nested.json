@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:52:48Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c04a_lowlevel_if_nested",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 2,
+  "py_entry_points": [
+    {
+      "name": "list_tools",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c04a_lowlevel_if_nested/server.py",
+      "lineno": 20,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.6,
+      "reachable_findings": [],
+      "declared_tools": [
+        {
+          "name": "save",
+          "lineno": 22,
+          "annotations": {
+            "declared": true,
+            "unresolved_reference": false,
+            "readOnlyHint": {
+              "value": true,
+              "source": "explicit"
+            },
+            "destructiveHint": {
+              "value": false,
+              "source": "default"
+            },
+            "idempotentHint": {
+              "value": false,
+              "source": "default"
+            },
+            "openWorldHint": {
+              "value": true,
+              "source": "default"
+            }
+          }
+        },
+        {
+          "name": "erase",
+          "lineno": 28,
+          "annotations": {
+            "declared": true,
+            "unresolved_reference": false,
+            "readOnlyHint": {
+              "value": false,
+              "source": "explicit"
+            },
+            "destructiveHint": {
+              "value": true,
+              "source": "explicit"
+            },
+            "idempotentHint": {
+              "value": false,
+              "source": "default"
+            },
+            "openWorldHint": {
+              "value": true,
+              "source": "default"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "call_tool",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c04a_lowlevel_if_nested/server.py",
+      "lineno": 37,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.6,
+      "reachable_findings": [
+        "bdfe34117032",
+        "8585b016c611"
+      ]
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "WRITE"
+  ],
+  "risks": [],
+  "findings": [
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c04a_lowlevel_if_nested/server.py",
+        "lineno": 13,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "call_tool",
+        "reachability_path": [
+          "call_tool",
+          "_erase"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "bdfe34117032",
+        "finding_ref": "file_access:server.py:13:os.remove()"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "with open(..., mode='w')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c04a_lowlevel_if_nested/server.py",
+        "lineno": 39,
+        "confidence": 0.95,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "call_tool",
+        "reachability_path": [
+          "call_tool"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "8585b016c611",
+        "finding_ref": "file_access:server.py:39:with open(..., mode='w')"
+      }
+    }
+  ],
+  "annotation_mismatches": [
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "read_only_contradicted",
+      "risk_level": "high",
+      "tool": "save",
+      "entry_point": {
+        "name": "call_tool",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c04a_lowlevel_if_nested/server.py",
+        "lineno": 37,
+        "dispatch": "lowlevel"
+      },
+      "declared": {
+        "hint": "readOnlyHint",
+        "value": true
+      },
+      "observed": {
+        "capability": "WRITE",
+        "evidence": "with open(..., mode='w')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c04a_lowlevel_if_nested/server.py",
+        "lineno": 39,
+        "finding_id": "8585b016c611"
+      },
+      "reachability_path": [
+        "call_tool"
+      ],
+      "message": "Tool 'save' declares readOnlyHint: true, but a call path from the tool reaches WRITE via with open(..., mode='w').",
+      "mismatch_id": "9cd13a641fb6",
+      "additional_observations": []
+    }
+  ],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

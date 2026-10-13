@@ -1,0 +1,10 @@
+dispatch_sites: []
+unresolved_handler: {"count": 0, "sites": []}
+parse_failures: [] truncations: []
+======================================================================
+UNIT cond_import_write qual= cond_import_write entry_kind= decorator line= 14 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_WRITE FS_WRITE line 2 destructive= True fs_mode= w res= opaque form= direct chain= ['save'] attributed= - opaque= -
+  ROW builtins.open FS_WRITE path line 2 verdicts= ['CONTRADICTION', 'GAP_INJECT', 'UNKNOWN'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -

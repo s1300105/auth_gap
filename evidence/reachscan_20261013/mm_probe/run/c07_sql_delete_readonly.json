@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:23:32Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c07_sql_delete_readonly",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 1,
+  "py_entry_points": [
+    {
+      "name": "purge",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c07_sql_delete_readonly/server.py",
+      "lineno": 9,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [],
+  "risks": [],
+  "findings": [],
+  "annotation_mismatches": [],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

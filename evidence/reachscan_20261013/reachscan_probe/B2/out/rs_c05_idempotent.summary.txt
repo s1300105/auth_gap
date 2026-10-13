@@ -1,0 +1,9 @@
+version: 0.4.0 files: 1 eps: 3
+EP append_log server.py:9 mcp decorator ann: readOnlyHint=False(e) destructiveHint=True(d) idempotentHint=True(e) openWorldHint=True(d) declared_tools: []
+EP append_log_idem_only server.py:16 mcp decorator ann: readOnlyHint=False(d) destructiveHint=True(d) idempotentHint=True(e) openWorldHint=True(d) declared_tools: []
+EP append_log_nondestructive server.py:23 mcp decorator ann: readOnlyHint=False(e) destructiveHint=False(e) idempotentHint=True(e) openWorldHint=True(d) declared_tools: []
+FINDING file_access WRITE "with open(..., mode='a')" server.py:10 high reach=reachable ep=append_log path=['append_log'] 
+FINDING file_access WRITE "with open(..., mode='a')" server.py:17 high reach=reachable ep=append_log_idem_only path=['append_log_idem_only'] 
+FINDING file_access WRITE "with open(..., mode='a')" server.py:24 high reach=reachable ep=append_log_nondestructive path=['append_log_nondestructive'] 
+suppression_warnings: []
+risks: []

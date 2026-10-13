@@ -1,0 +1,32 @@
+dispatch_sites: [{"candidates": ["git_log"], "form": "if_chain", "lineno": 28, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}, {"candidates": ["_run_shell"], "form": "if_chain", "lineno": 30, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}]
+unresolved_handler: {"count": 0, "sites": []}
+parse_failures: [] truncations: []
+======================================================================
+UNIT run_shell qual= _run_shell entry_kind= decorator line= 21 ann_form= dict ann= {'openWorldHint': True}
+  D_kind: {"bottom": true, "explicit": ["openWorldHint"], "malformed": ["read_only_hint"], "open_world": true, "present_no_bound": []}
+  trig: {'label': 'MODEL', 'mode': 'traced', 'via': {'candidates': ['_run_shell'], 'form': 'if_chain', 'lineno': 30, 'opaque_reason': None, 'relpath': 'server.py', 'resolution': 'resolved', 'selector': 'name', 'selector_is_model': True}} opaque_reasons: ['receiver', 'unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT subprocess.run SPAWN SPAWN_MODEL_ARGV line 22 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW subprocess.run SPAWN shell_string line 22 verdicts= ['GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= [] notes= None attributed= -
+======================================================================
+UNIT git_log qual= git_log entry_kind= decorator line= 15 ann_form= ToolAnnotations ann= {'destructiveHint': False, 'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": ["destructiveHint"], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'traced', 'via': {'candidates': ['git_log'], 'form': 'if_chain', 'lineno': 28, 'opaque_reason': None, 'relpath': 'server.py', 'resolution': 'resolved', 'selector': 'name', 'selector_is_model': True}} opaque_reasons: ['receiver', 'unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT subprocess.run SPAWN SPAWN_CONST_ARGV line 17 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW subprocess.run SPAWN argv0 line 17 verdicts= ['GAP_SELECT'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['contradiction_unknown:D1:spawn_command'] attributed= -
+  ROW subprocess.run SPAWN argv[*] line 17 verdicts= ['GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['contradiction_unknown:D1:spawn_command'] attributed= -
+  ROW subprocess.run SPAWN cwd line 17 verdicts= ['GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['contradiction_unknown:D1:spawn_command'] attributed= -
+======================================================================
+UNIT None qual= handle_call_tool entry_kind= lowlevel_v1 line= 26 ann_form= None ann= None
+  unit.dispatch_names = ["exec", "git_log", "run_shell"]
+  dispatch_join = {"attribution": {"0": ["git_log"], "1": ["run_shell"]}, "effects_all_tools": [], "tools": ["git_log", "run_shell"], "unjoined_literals": 0}
+  D_kind: {"bottom": true, "explicit": ["openWorldHint", "readOnlyHint"], "malformed": ["read_only_hint"], "present_no_bound": ["destructiveHint"]}
+  trig: {'label': 'MODEL', 'mode': 'traced', 'via': {'candidates': ['git_log'], 'form': 'if_chain', 'lineno': 28, 'opaque_reason': None, 'relpath': 'server.py', 'resolution': 'resolved', 'selector': 'name', 'selector_is_model': True}} opaque_reasons: ['receiver', 'unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT subprocess.run SPAWN SPAWN_CONST_ARGV line 17 destructive= - fs_mode= - res= resolved form= direct chain= ['git_log'] attributed= - opaque= -
+  EFFECT subprocess.run SPAWN SPAWN_MODEL_ARGV line 22 destructive= - fs_mode= - res= resolved form= direct chain= ['_run_shell'] attributed= - opaque= -
+  ROW subprocess.run SPAWN argv0 line 17 verdicts= ['GAP_SELECT'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['contradiction_unknown:D1:spawn_command'] attributed= -
+  ROW subprocess.run SPAWN argv[*] line 17 verdicts= ['GAP_SELECT'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['contradiction_unknown:D1:spawn_command'] attributed= -
+  ROW subprocess.run SPAWN cwd line 17 verdicts= ['GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['contradiction_unknown:D1:spawn_command'] attributed= -
+  ROW subprocess.run SPAWN shell_string line 22 verdicts= ['GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= [] notes= None attributed= -

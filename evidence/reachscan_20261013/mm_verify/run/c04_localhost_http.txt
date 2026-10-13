@@ -1,0 +1,64 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • local_http  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c04_localhost_http/server.py:9)
+  • local_sock  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c04_localhost_http/server.py:13)
+  • private_sock  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c04_localhost_http/server.py:17)
+
+Capabilities
+------------
+  • SEND
+
+Combined Risks
+--------------
+  None inferred from combined-capability rules.
+
+Annotation Mismatches  —  MCP tool annotations contradicted by reachable code
+-----------------------------------------------------------------------------
+  [MEDIUM] local_http declares openWorldHint: false
+    reaches outbound HTTP call: requests.get (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c04_localhost_http/server.py:10)
+    call chain:
+      local_http
+      → requests.get
+    also reaches:
+      - SEND via requests.get -> http://localhost:8080/status (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c04_localhost_http/server.py:10) — path: local_http
+  [MEDIUM] private_sock declares openWorldHint: false
+    reaches outbound socket call: socket.create_connection (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c04_localhost_http/server.py:18)
+    call chain:
+      private_sock
+      → socket.create_connection
+
+Reachability Summary
+--------------------
+     4 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] SEND via socket.create_connection (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c04_localhost_http/server.py:14)
+    call chain:
+      local_sock
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+  [HIGH] SEND via socket.create_connection (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c04_localhost_http/server.py:18)
+    call chain:
+      private_sock
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+  [HIGH] SEND via requests.get (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c04_localhost_http/server.py:10)
+    call chain:
+      local_http
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+  [HIGH] SEND via requests.get -> http://localhost:8080/status (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c04_localhost_http/server.py:10)
+    call chain:
+      local_http
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c04_localhost_http
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

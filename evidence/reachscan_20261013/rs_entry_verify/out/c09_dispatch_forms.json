@@ -1,0 +1,205 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:36:28Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c09_dispatch_forms",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 2,
+  "py_entry_points": [
+    {
+      "name": "list_tools",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c09_dispatch_forms/server.py",
+      "lineno": 22,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [],
+      "declared_tools": [
+        {
+          "name": "wipe",
+          "lineno": 24,
+          "annotations": {
+            "declared": true,
+            "unresolved_reference": false,
+            "readOnlyHint": {
+              "value": true,
+              "source": "explicit"
+            },
+            "destructiveHint": {
+              "value": false,
+              "source": "default"
+            },
+            "idempotentHint": {
+              "value": false,
+              "source": "default"
+            },
+            "openWorldHint": {
+              "value": true,
+              "source": "default"
+            }
+          }
+        },
+        {
+          "name": "wipe_alias",
+          "lineno": 26,
+          "annotations": {
+            "declared": true,
+            "unresolved_reference": false,
+            "readOnlyHint": {
+              "value": true,
+              "source": "explicit"
+            },
+            "destructiveHint": {
+              "value": false,
+              "source": "default"
+            },
+            "idempotentHint": {
+              "value": false,
+              "source": "default"
+            },
+            "openWorldHint": {
+              "value": true,
+              "source": "default"
+            }
+          }
+        },
+        {
+          "name": "zap",
+          "lineno": 28,
+          "annotations": {
+            "declared": true,
+            "unresolved_reference": false,
+            "readOnlyHint": {
+              "value": true,
+              "source": "explicit"
+            },
+            "destructiveHint": {
+              "value": false,
+              "source": "default"
+            },
+            "idempotentHint": {
+              "value": false,
+              "source": "default"
+            },
+            "openWorldHint": {
+              "value": true,
+              "source": "default"
+            }
+          }
+        },
+        {
+          "name": "erase",
+          "lineno": 30,
+          "annotations": {
+            "declared": true,
+            "unresolved_reference": false,
+            "readOnlyHint": {
+              "value": true,
+              "source": "explicit"
+            },
+            "destructiveHint": {
+              "value": false,
+              "source": "default"
+            },
+            "idempotentHint": {
+              "value": false,
+              "source": "default"
+            },
+            "openWorldHint": {
+              "value": true,
+              "source": "default"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "call_tool",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c09_dispatch_forms/server.py",
+      "lineno": 36,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "ec33d4c58d76",
+        "a6f21aec7db4"
+      ]
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "WRITE"
+  ],
+  "risks": [],
+  "findings": [
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c09_dispatch_forms/server.py",
+        "lineno": 9,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "call_tool",
+        "reachability_path": [
+          "call_tool",
+          "_wipe"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "ec33d4c58d76",
+        "finding_ref": "file_access:server.py:9:os.remove()"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c09_dispatch_forms/server.py",
+        "lineno": 14,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "unreachable",
+        "entry_point_name": null,
+        "reachability_path": null,
+        "reachability_path_truncated": false,
+        "finding_id": "01db4837504c",
+        "finding_ref": "file_access:server.py:14:os.remove()"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c09_dispatch_forms/server.py",
+        "lineno": 43,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "call_tool",
+        "reachability_path": [
+          "call_tool"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "a6f21aec7db4",
+        "finding_ref": "file_access:server.py:43:os.remove()"
+      }
+    }
+  ],
+  "annotation_mismatches": [],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

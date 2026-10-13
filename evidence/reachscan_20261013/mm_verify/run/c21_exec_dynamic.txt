@@ -1,0 +1,48 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • calc  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c21_exec_dynamic/server.py:9)
+
+Capabilities
+------------
+  • DYNAMIC
+  • EXECUTE
+
+Combined Risks
+--------------
+  None inferred from combined-capability rules.
+
+Annotation Mismatches  —  MCP tool annotations contradicted by reachable code
+-----------------------------------------------------------------------------
+  [HIGH] calc declares readOnlyHint: true
+    but reaches EXECUTE via eval() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c21_exec_dynamic/server.py:10)
+    call chain:
+      calc
+      → eval()
+    also reaches:
+      - DYNAMIC via eval (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c21_exec_dynamic/server.py:10) — path: calc
+
+Reachability Summary
+--------------------
+     2 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] EXECUTE via eval() (shell_exec @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c21_exec_dynamic/server.py:10)
+    call chain:
+      calc
+    explanation: This code can execute shell or interpreter commands on the host.
+    impact: A malicious prompt could run destructive commands, install malware, or alter the environment.
+  [HIGH] DYNAMIC via eval (dynamic_exec @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c21_exec_dynamic/server.py:10)
+    call chain:
+      calc
+    explanation: This code performs dynamic execution or runtime code loading.
+    impact: Untrusted input could become executable code, increasing compromise risk.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c21_exec_dynamic
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

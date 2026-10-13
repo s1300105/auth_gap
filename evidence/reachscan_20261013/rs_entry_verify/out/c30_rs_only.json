@@ -1,0 +1,199 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:36:29Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c30_rs_only",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 5,
+  "py_entry_points": [
+    {
+      "name": "li_named",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c30_rs_only/agent.py",
+      "lineno": 25,
+      "framework": "llamaindex",
+      "pattern_type": "registration_call",
+      "confidence": 0.95,
+      "reachable_findings": [
+        "9b4b0ea12f4f"
+      ]
+    },
+    {
+      "name": "dspy_named",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c30_rs_only/agent.py",
+      "lineno": 35,
+      "framework": "dspy",
+      "pattern_type": "registration_call",
+      "confidence": 0.95,
+      "reachable_findings": [
+        "cdba8cd6f3b2"
+      ]
+    },
+    {
+      "name": "pa_plain",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c30_rs_only/agent.py",
+      "lineno": 14,
+      "framework": "pydantic_ai",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "89363464d24f"
+      ]
+    },
+    {
+      "name": "ag_llm",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c30_rs_only/agent.py",
+      "lineno": 20,
+      "framework": "autogen",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "8b8d1f56c6ab"
+      ]
+    },
+    {
+      "name": "MgTool",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c30_rs_only/agent.py",
+      "lineno": 41,
+      "framework": "metagpt",
+      "pattern_type": "decorator",
+      "confidence": 0.95,
+      "reachable_findings": []
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "WRITE"
+  ],
+  "risks": [],
+  "findings": [
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c30_rs_only/agent.py",
+        "lineno": 15,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "pa_plain",
+        "reachability_path": [
+          "pa_plain"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "89363464d24f",
+        "finding_ref": "file_access:agent.py:15:os.remove()"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c30_rs_only/agent.py",
+        "lineno": 21,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "ag_llm",
+        "reachability_path": [
+          "ag_llm"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "8b8d1f56c6ab",
+        "finding_ref": "file_access:agent.py:21:os.remove()"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c30_rs_only/agent.py",
+        "lineno": 26,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "li_named",
+        "reachability_path": [
+          "li_fn"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "9b4b0ea12f4f",
+        "finding_ref": "file_access:agent.py:26:os.remove()"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c30_rs_only/agent.py",
+        "lineno": 31,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "unreachable",
+        "entry_point_name": null,
+        "reachability_path": null,
+        "reachability_path_truncated": false,
+        "finding_id": "98baee49f78c",
+        "finding_ref": "file_access:agent.py:31:os.remove()"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c30_rs_only/agent.py",
+        "lineno": 36,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "dspy_named",
+        "reachability_path": [
+          "dspy_fn"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "cdba8cd6f3b2",
+        "finding_ref": "file_access:agent.py:36:os.remove()"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/cases/c30_rs_only/agent.py",
+        "lineno": 43,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "unreachable",
+        "entry_point_name": null,
+        "reachability_path": null,
+        "reachability_path_truncated": false,
+        "finding_id": "1e77988a6819",
+        "finding_ref": "file_access:agent.py:43:os.remove()"
+      }
+    }
+  ],
+  "annotation_mismatches": [],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

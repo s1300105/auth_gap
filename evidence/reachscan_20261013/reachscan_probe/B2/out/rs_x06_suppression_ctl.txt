@@ -1,0 +1,48 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • ro_write_suppressed  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression_ctl/server.py:10)
+  • cw_get_send_suppressed  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression_ctl/server.py:17)
+
+Capabilities
+------------
+  • SEND
+  • WRITE
+
+Combined Risks
+--------------
+  [HIGH] Data Exfiltration Risk
+    why: The code can both access/change local files and send data externally.
+    capabilities: SEND, WRITE
+
+Annotation Mismatches  —  MCP tool annotations contradicted by reachable code
+-----------------------------------------------------------------------------
+  [HIGH] ro_write_suppressed declares readOnlyHint: true
+    but reaches WRITE via with open(..., mode='w') (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression_ctl/server.py:11)
+    path: ro_write_suppressed → with open(..., mode='w')
+  [MEDIUM] cw_get_send_suppressed declares openWorldHint: false
+    reaches outbound HTTP call: requests.get (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression_ctl/server.py:18)
+    path: cw_get_send_suppressed → requests.get
+
+Reachability Summary
+--------------------
+     2 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] SEND via requests.get (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression_ctl/server.py:18)
+    path: cw_get_send_suppressed
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression_ctl/server.py:11)
+    path: ro_write_suppressed
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression_ctl
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

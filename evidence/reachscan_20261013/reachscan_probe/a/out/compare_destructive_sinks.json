@@ -1,0 +1,130 @@
+{
+ "nd_append": {
+  "authgap_contradiction": false,
+  "authgap_notes": [],
+  "expected_contradiction": false,
+  "reachscan_findings_for_tool": [
+   [
+    "WRITE",
+    "with open(..., mode='a')",
+    25
+   ]
+  ],
+  "reachscan_mismatch": false,
+  "reachscan_mismatches": []
+ },
+ "nd_mixed": {
+  "authgap_contradiction": true,
+  "authgap_notes": [
+   "contradiction:D2",
+   "contradiction_reason:D2:fs_remove"
+  ],
+  "expected_contradiction": true,
+  "reachscan_findings_for_tool": [],
+  "reachscan_mismatch": false,
+  "reachscan_mismatches": []
+ },
+ "nd_mkdir": {
+  "authgap_contradiction": false,
+  "authgap_notes": [],
+  "expected_contradiction": false,
+  "reachscan_findings_for_tool": [],
+  "reachscan_mismatch": false,
+  "reachscan_mismatches": []
+ },
+ "nd_overwrite": {
+  "authgap_contradiction": true,
+  "authgap_notes": [
+   "contradiction:D2",
+   "contradiction_reason:D2:fs_writeout_model_path"
+  ],
+  "expected_contradiction": true,
+  "reachscan_findings_for_tool": [
+   [
+    "WRITE",
+    "with open(..., mode='w')",
+    33
+   ]
+  ],
+  "reachscan_mismatch": true,
+  "reachscan_mismatches": [
+   [
+    "non_destructive_contradicted",
+    "medium",
+    "with open(..., mode='w')",
+    33
+   ]
+  ]
+ },
+ "nd_rmtree": {
+  "authgap_contradiction": true,
+  "authgap_notes": [
+   "contradiction:D2",
+   "contradiction_reason:D2:fs_remove"
+  ],
+  "expected_contradiction": true,
+  "reachscan_findings_for_tool": [],
+  "reachscan_mismatch": false,
+  "reachscan_mismatches": []
+ },
+ "nd_unknown_mode": {
+  "authgap_contradiction": true,
+  "authgap_notes": [
+   "contradiction:D2",
+   "contradiction_reason:D2:fs_unknown_model_path"
+  ],
+  "expected_contradiction": true,
+  "reachscan_findings_for_tool": [
+   [
+    "READ",
+    "with open(..., mode='')",
+    48
+   ]
+  ],
+  "reachscan_mismatch": false,
+  "reachscan_mismatches": []
+ },
+ "nd_write_text": {
+  "authgap_contradiction": true,
+  "authgap_notes": [
+   "contradiction:D2",
+   "contradiction_reason:D2:fs_writeout_model_path"
+  ],
+  "expected_contradiction": true,
+  "reachscan_findings_for_tool": [
+   [
+    "WRITE",
+    "pathlib.Path.write_text()",
+    56
+   ]
+  ],
+  "reachscan_mismatch": true,
+  "reachscan_mismatches": [
+   [
+    "non_destructive_contradicted",
+    "medium",
+    "pathlib.Path.write_text()",
+    56
+   ]
+  ]
+ },
+ "none_rmtree": {
+  "authgap_contradiction": false,
+  "authgap_notes": [],
+  "expected_contradiction": false,
+  "reachscan_findings_for_tool": [],
+  "reachscan_mismatch": false,
+  "reachscan_mismatches": []
+ },
+ "ro_mkdir": {
+  "authgap_contradiction": true,
+  "authgap_notes": [
+   "contradiction:D1",
+   "contradiction_reason:D1:fs_write"
+  ],
+  "expected_contradiction": true,
+  "reachscan_findings_for_tool": [],
+  "reachscan_mismatch": false,
+  "reachscan_mismatches": []
+ }
+}

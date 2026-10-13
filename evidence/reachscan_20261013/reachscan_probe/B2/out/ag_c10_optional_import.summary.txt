@@ -1,0 +1,26 @@
+dispatch_sites: []
+unresolved_handler: {"count": 0, "sites": []}
+parse_failures: [] truncations: []
+======================================================================
+UNIT delete_alias qual= delete_alias entry_kind= decorator line= 34 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT os.remove FS_WRITE FS_WRITE line 35 destructive= True fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW os.remove FS_WRITE path line 35 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
+======================================================================
+UNIT dump_cond_def qual= dump_cond_def entry_kind= decorator line= 40 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_WRITE FS_WRITE line 16 destructive= True fs_mode= w res= opaque form= direct chain= ['_dump'] attributed= - opaque= -
+  EFFECT builtins.open FS_WRITE FS_WRITE line 20 destructive= True fs_mode= w res= opaque form= direct chain= ['_dump'] attributed= - opaque= -
+  ROW builtins.open FS_WRITE path line 16 verdicts= ['CONTRADICTION', 'GAP_INJECT', 'UNKNOWN'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
+  ROW builtins.open FS_WRITE path line 20 verdicts= ['CONTRADICTION', 'GAP_INJECT', 'UNKNOWN'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
+======================================================================
+UNIT dump_yaml qual= dump_yaml entry_kind= decorator line= 25 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_WRITE FS_WRITE line 28 destructive= True fs_mode= w res= resolved form= direct chain= None attributed= - opaque= -
+  ROW builtins.open FS_WRITE path line 28 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -

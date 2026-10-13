@@ -1,0 +1,262 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:23:38Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/dispatch_join_ctl_remove",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 3,
+  "py_entry_points": [
+    {
+      "name": "list_tools",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/dispatch_join_ctl_remove/server.py",
+      "lineno": 19,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [],
+      "declared_tools": [
+        {
+          "name": "read_note",
+          "lineno": 22,
+          "annotations": {
+            "declared": true,
+            "unresolved_reference": false,
+            "readOnlyHint": {
+              "value": true,
+              "source": "explicit"
+            },
+            "destructiveHint": {
+              "value": false,
+              "source": "default"
+            },
+            "idempotentHint": {
+              "value": false,
+              "source": "default"
+            },
+            "openWorldHint": {
+              "value": true,
+              "source": "default"
+            }
+          }
+        },
+        {
+          "name": "write_note",
+          "lineno": 24,
+          "annotations": {
+            "declared": true,
+            "unresolved_reference": false,
+            "readOnlyHint": {
+              "value": false,
+              "source": "explicit"
+            },
+            "destructiveHint": {
+              "value": true,
+              "source": "explicit"
+            },
+            "idempotentHint": {
+              "value": false,
+              "source": "default"
+            },
+            "openWorldHint": {
+              "value": true,
+              "source": "default"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "call_tool",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/dispatch_join_ctl_remove/server.py",
+      "lineno": 32,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "5fa0221d40ce",
+        "e71bfd5735ea",
+        "f5c2999cfe81"
+      ]
+    },
+    {
+      "name": "deco_read",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/dispatch_join_ctl_remove/server.py",
+      "lineno": 50,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "35d7c1ce954f"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "READ",
+    "SECRETS",
+    "WRITE"
+  ],
+  "risks": [],
+  "findings": [
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "READ",
+        "evidence": "with open(..., mode='')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/dispatch_join_ctl_remove/server.py",
+        "lineno": 51,
+        "confidence": 0.9,
+        "explanation": "This code can read local files from the filesystem.",
+        "impact": "Private files may be exposed to later processing or exfiltration.",
+        "risk_level": "medium",
+        "reachability": "reachable",
+        "entry_point_name": "deco_read",
+        "reachability_path": [
+          "deco_read"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "35d7c1ce954f",
+        "finding_ref": "file_access:server.py:51:with open(..., mode='')"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/dispatch_join_ctl_remove/server.py",
+        "lineno": 35,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "call_tool",
+        "reachability_path": [
+          "call_tool"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "5fa0221d40ce",
+        "finding_ref": "file_access:server.py:35:os.remove()"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "READ",
+        "evidence": "with open(..., mode='')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/dispatch_join_ctl_remove/server.py",
+        "lineno": 38,
+        "confidence": 0.9,
+        "explanation": "This code can read local files from the filesystem.",
+        "impact": "Private files may be exposed to later processing or exfiltration.",
+        "risk_level": "medium",
+        "reachability": "reachable",
+        "entry_point_name": "call_tool",
+        "reachability_path": [
+          "call_tool"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "e71bfd5735ea",
+        "finding_ref": "file_access:server.py:38:with open(..., mode='')"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "with open(..., mode='w')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/dispatch_join_ctl_remove/server.py",
+        "lineno": 42,
+        "confidence": 0.95,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "call_tool",
+        "reachability_path": [
+          "call_tool"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "f5c2999cfe81",
+        "finding_ref": "file_access:server.py:42:with open(..., mode='w')"
+      }
+    },
+    {
+      "detector": "secrets",
+      "finding": {
+        "capability": "SECRETS",
+        "evidence": "os.environ.get('DYN_TOOL')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/dispatch_join_ctl_remove/server.py",
+        "lineno": 15,
+        "confidence": 0.7,
+        "explanation": "This code accesses secrets or credential sources.",
+        "impact": "Credentials may be disclosed and used for unauthorized access.",
+        "risk_level": "high",
+        "reachability": "module_level",
+        "entry_point_name": null,
+        "reachability_path": null,
+        "reachability_path_truncated": false,
+        "finding_id": "4dba42d63048",
+        "finding_ref": "secrets:server.py:15:os.environ.get('DYN_TOOL')"
+      }
+    }
+  ],
+  "annotation_mismatches": [
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "read_only_contradicted",
+      "risk_level": "high",
+      "tool": "read_note",
+      "entry_point": {
+        "name": "call_tool",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/dispatch_join_ctl_remove/server.py",
+        "lineno": 32,
+        "dispatch": "lowlevel"
+      },
+      "declared": {
+        "hint": "readOnlyHint",
+        "value": true
+      },
+      "observed": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/dispatch_join_ctl_remove/server.py",
+        "lineno": 35,
+        "finding_id": "5fa0221d40ce"
+      },
+      "reachability_path": [
+        "call_tool"
+      ],
+      "message": "Tool 'read_note' declares readOnlyHint: true, but a call path from the tool reaches WRITE via os.remove().",
+      "mismatch_id": "703a6e4d3bed",
+      "additional_observations": []
+    }
+  ],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

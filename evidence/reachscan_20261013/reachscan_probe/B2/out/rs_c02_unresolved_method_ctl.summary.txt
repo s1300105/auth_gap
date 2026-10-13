@@ -1,0 +1,11 @@
+version: 0.4.0 files: 1 eps: 5
+EP save_new_instance server.py:41 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP save_module_instance server.py:47 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP export_via_self_attr server.py:53 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP export_via_self_method server.py:59 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP name_only_match server.py:65 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+FINDING file_access WRITE "with open(..., mode='w')" server.py:12 high reach=unknown ep=None path=None 
+FINDING file_access WRITE "with open(..., mode='w')" server.py:27 high reach=unknown ep=None path=None 
+FINDING file_access WRITE 'os.remove()' server.py:33 high reach=unreachable ep=None path=None 
+suppression_warnings: []
+risks: []

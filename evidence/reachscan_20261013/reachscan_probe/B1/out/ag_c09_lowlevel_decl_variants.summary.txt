@@ -1,0 +1,18 @@
+dispatch_sites: [{"candidates": ["_write"], "form": "if_chain", "lineno": 53, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}, {"candidates": ["_write"], "form": "if_chain", "lineno": 55, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}, {"candidates": ["_write"], "form": "if_chain", "lineno": 57, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}, {"candidates": ["_write"], "form": "if_chain", "lineno": 59, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}, {"candidates": [], "form": "if_chain", "lineno": 61, "opaque_reason": "dynamic_registry", "relpath": "server.py", "resolution": "opaque", "selector": "name", "selector_is_model": true}, {"candidates": ["_dict_dispatched"], "form": "subscript", "lineno": 62, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}]
+unresolved_handler: {"count": 0, "sites": []}
+parse_failures: [] truncations: []
+======================================================================
+UNIT None qual= call_tool entry_kind= lowlevel_v1 line= 52 ann_form= None ann= None
+  unit.dispatch_names = ["aliased_cls", "helper_listed", "in_tuple", "module_listed"]
+  dispatch_join = {"attribution": {"0": ["helper_listed", "in_tuple", "module_listed"], "1": ["module_listed"], "2": ["helper_listed"], "3": ["in_tuple"]}, "effects_all_tools": [0], "tools": ["helper_listed", "in_tuple", "module_listed"], "unjoined_literals": 0}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'traced', 'via': {'candidates': ['_write'], 'form': 'if_chain', 'lineno': 53, 'opaque_reason': None, 'relpath': 'server.py', 'resolution': 'resolved', 'selector': 'name', 'selector_is_model': True}} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_WRITE FS_WRITE line 32 destructive= True fs_mode= w res= resolved form= direct chain= ['_write'] attributed= - opaque= -
+  EFFECT builtins.open FS_WRITE FS_WRITE line 32 destructive= True fs_mode= w res= resolved form= direct chain= ['_write'] attributed= - opaque= -
+  EFFECT builtins.open FS_WRITE FS_WRITE line 32 destructive= True fs_mode= w res= resolved form= direct chain= ['_write'] attributed= - opaque= -
+  EFFECT builtins.open FS_WRITE FS_WRITE line 32 destructive= True fs_mode= w res= resolved form= direct chain= ['_write'] attributed= - opaque= -
+  ROW builtins.open FS_WRITE path line 32 verdicts= ['CONTRADICTION', 'GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= ['kind'] notes= ['contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
+  ROW builtins.open FS_WRITE path line 32 verdicts= ['CONTRADICTION', 'GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= ['kind'] notes= ['contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
+  ROW builtins.open FS_WRITE path line 32 verdicts= ['CONTRADICTION', 'GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= ['kind'] notes= ['contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
+  ROW builtins.open FS_WRITE path line 32 verdicts= ['CONTRADICTION', 'GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= ['kind'] notes= ['contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -

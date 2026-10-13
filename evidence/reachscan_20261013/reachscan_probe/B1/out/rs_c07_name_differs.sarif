@@ -1,0 +1,1409 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "reachscan",
+          "version": "0.4.0",
+          "informationUri": "https://github.com/vinmay/reachscan",
+          "rules": [
+            {
+              "id": "reachscan/EXECUTE",
+              "name": "Execute",
+              "shortDescription": {
+                "text": "EXECUTE capability"
+              },
+              "fullDescription": {
+                "text": "This code can execute shell or interpreter commands on the host."
+              },
+              "help": {
+                "text": "This code can execute shell or interpreter commands on the host. A malicious prompt could run destructive commands, install malware, or alter the environment."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "execute"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/SEND",
+              "name": "Send",
+              "shortDescription": {
+                "text": "SEND capability"
+              },
+              "fullDescription": {
+                "text": "This code can send data over the network to external services."
+              },
+              "help": {
+                "text": "This code can send data over the network to external services. Sensitive local data could be transmitted to untrusted endpoints."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "send"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/READ",
+              "name": "Read",
+              "shortDescription": {
+                "text": "READ capability"
+              },
+              "fullDescription": {
+                "text": "This code can read local files from the filesystem."
+              },
+              "help": {
+                "text": "This code can read local files from the filesystem. Private files may be exposed to later processing or exfiltration."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "read"
+                ],
+                "security-severity": "5.0"
+              }
+            },
+            {
+              "id": "reachscan/WRITE",
+              "name": "Write",
+              "shortDescription": {
+                "text": "WRITE capability"
+              },
+              "fullDescription": {
+                "text": "This code can write, modify, move, or delete files."
+              },
+              "help": {
+                "text": "This code can write, modify, move, or delete files. An unsafe prompt could tamper with project files or remove important data."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "write"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/SECRETS",
+              "name": "Secrets",
+              "shortDescription": {
+                "text": "SECRETS capability"
+              },
+              "fullDescription": {
+                "text": "This code accesses secrets or credential sources."
+              },
+              "help": {
+                "text": "This code accesses secrets or credential sources. Credentials may be disclosed and used for unauthorized access."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "secrets"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/DYNAMIC",
+              "name": "Dynamic",
+              "shortDescription": {
+                "text": "DYNAMIC capability"
+              },
+              "fullDescription": {
+                "text": "This code performs dynamic execution or runtime code loading."
+              },
+              "help": {
+                "text": "This code performs dynamic execution or runtime code loading. Untrusted input could become executable code, increasing compromise risk."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "dynamic"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/AUTONOMY",
+              "name": "Autonomy",
+              "shortDescription": {
+                "text": "AUTONOMY capability"
+              },
+              "fullDescription": {
+                "text": "This code can schedule or continue actions without direct user interaction."
+              },
+              "help": {
+                "text": "This code can schedule or continue actions without direct user interaction. Risky behavior may repeat in the background after the initiating prompt."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "autonomy"
+                ],
+                "security-severity": "5.0"
+              }
+            },
+            {
+              "id": "mcp-risk-mismatch",
+              "name": "McpRiskMismatch",
+              "shortDescription": {
+                "text": "MCP tool annotation contradicted by reachable code"
+              },
+              "fullDescription": {
+                "text": "An MCP tool explicitly declares a ToolAnnotations hint (readOnlyHint, openWorldHint, or destructiveHint) that a call path from the tool contradicts."
+              },
+              "help": {
+                "text": "Clients use these hints to decide what to auto-approve. A false hint can let a tool that writes, executes, or reaches the network run without the approval the client would otherwise ask for. Fix the code or correct the annotation."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "mcp",
+                  "annotations"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/combined/data_exfiltration",
+              "name": "DataExfiltration",
+              "shortDescription": {
+                "text": "Data Exfiltration Risk"
+              },
+              "fullDescription": {
+                "text": "The code can both access/change local files and send data externally."
+              },
+              "help": {
+                "text": "The code can both access/change local files and send data externally."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "combined-risk"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/combined/remote_control",
+              "name": "RemoteControl",
+              "shortDescription": {
+                "text": "Remote Control Risk"
+              },
+              "fullDescription": {
+                "text": "The code can execute commands and communicate over the network."
+              },
+              "help": {
+                "text": "The code can execute commands and communicate over the network."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "combined-risk"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/combined/secret_leak",
+              "name": "SecretLeakage",
+              "shortDescription": {
+                "text": "Secret Leakage Risk"
+              },
+              "fullDescription": {
+                "text": "The code can read local files and transmit their contents externally."
+              },
+              "help": {
+                "text": "The code can read local files and transmit their contents externally."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "combined-risk"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/combined/destructive_agent",
+              "name": "DestructiveAgent",
+              "shortDescription": {
+                "text": "Destructive Agent Risk"
+              },
+              "fullDescription": {
+                "text": "The code can execute commands and perform destructive file actions."
+              },
+              "help": {
+                "text": "The code can execute commands and perform destructive file actions."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "combined-risk"
+                ],
+                "security-severity": "8.0"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "reachscan/WRITE",
+          "level": "error",
+          "message": {
+            "text": "WRITE via with open(..., mode='w') is reachable from LLM entry point 'write-memo'. Call chain: memo_impl. An unsafe prompt could tamper with project files or remove important data."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "fast.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 10
+                }
+              }
+            }
+          ],
+          "properties": {
+            "detector": "file_access",
+            "capability": "WRITE",
+            "evidence": "with open(..., mode='w')",
+            "riskLevel": "high",
+            "reachability": "reachable",
+            "confidence": 0.95,
+            "entryPoint": "write-memo",
+            "reachabilityPath": [
+              "memo_impl"
+            ],
+            "reachabilityPathTruncated": false,
+            "findingId": "ddd131c2a7b5"
+          },
+          "ruleIndex": 3,
+          "partialFingerprints": {
+            "reachscanFindingId/v1": "ddd131c2a7b5"
+          },
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from entry point 'write-memo'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "fast.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 9
+                          }
+                        },
+                        "message": {
+                          "text": "LLM entry point memo_impl"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "fast.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 10
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via with open(..., mode='w')"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "reachscan/WRITE",
+          "level": "error",
+          "message": {
+            "text": "WRITE via with open(..., mode='w') is reachable from LLM entry point 'write-memo-positional'. Call chain: memo_impl_positional. An unsafe prompt could tamper with project files or remove important data."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "fast.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 17
+                }
+              }
+            }
+          ],
+          "properties": {
+            "detector": "file_access",
+            "capability": "WRITE",
+            "evidence": "with open(..., mode='w')",
+            "riskLevel": "high",
+            "reachability": "reachable",
+            "confidence": 0.95,
+            "entryPoint": "write-memo-positional",
+            "reachabilityPath": [
+              "memo_impl_positional"
+            ],
+            "reachabilityPathTruncated": false,
+            "findingId": "0673510c0a84"
+          },
+          "ruleIndex": 3,
+          "partialFingerprints": {
+            "reachscanFindingId/v1": "0673510c0a84"
+          },
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from entry point 'write-memo-positional'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "fast.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 16
+                          }
+                        },
+                        "message": {
+                          "text": "LLM entry point memo_impl_positional"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "fast.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 17
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via with open(..., mode='w')"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "reachscan/WRITE",
+          "level": "error",
+          "message": {
+            "text": "WRITE via with open(..., mode='w') is reachable from LLM entry point 'call_tool'. Call chain: call_tool -> write_note_impl. An unsafe prompt could tamper with project files or remove important data."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 23
+                }
+              }
+            }
+          ],
+          "properties": {
+            "detector": "file_access",
+            "capability": "WRITE",
+            "evidence": "with open(..., mode='w')",
+            "riskLevel": "high",
+            "reachability": "reachable",
+            "confidence": 0.95,
+            "entryPoint": "call_tool",
+            "reachabilityPath": [
+              "call_tool",
+              "write_note_impl"
+            ],
+            "reachabilityPathTruncated": false,
+            "findingId": "9d79630d5910"
+          },
+          "ruleIndex": 3,
+          "partialFingerprints": {
+            "reachscanFindingId/v1": "9d79630d5910"
+          },
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from entry point 'call_tool'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 59
+                          }
+                        },
+                        "message": {
+                          "text": "LLM entry point call_tool"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 22
+                          }
+                        },
+                        "message": {
+                          "text": "calls write_note_impl"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 23
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via with open(..., mode='w')"
+                        }
+                      },
+                      "nestingLevel": 2,
+                      "executionOrder": 2
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "reachscan/WRITE",
+          "level": "error",
+          "message": {
+            "text": "WRITE via with open(..., mode='a') is reachable from LLM entry point 'call_tool'. Call chain: call_tool -> memo_writer. An unsafe prompt could tamper with project files or remove important data."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "detector": "file_access",
+            "capability": "WRITE",
+            "evidence": "with open(..., mode='a')",
+            "riskLevel": "high",
+            "reachability": "reachable",
+            "confidence": 0.95,
+            "entryPoint": "call_tool",
+            "reachabilityPath": [
+              "call_tool",
+              "memo_writer"
+            ],
+            "reachabilityPathTruncated": false,
+            "findingId": "2e145a82350b"
+          },
+          "ruleIndex": 3,
+          "partialFingerprints": {
+            "reachscanFindingId/v1": "2e145a82350b"
+          },
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from entry point 'call_tool'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 59
+                          }
+                        },
+                        "message": {
+                          "text": "LLM entry point call_tool"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 38
+                          }
+                        },
+                        "message": {
+                          "text": "calls memo_writer"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 39
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via with open(..., mode='a')"
+                        }
+                      },
+                      "nestingLevel": 2,
+                      "executionOrder": 2
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "reachscan/WRITE",
+          "level": "error",
+          "message": {
+            "text": "WRITE via os.rename() is reachable from LLM entry point 'call_tool'. Call chain: call_tool -> archive_impl. An unsafe prompt could tamper with project files or remove important data."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 29
+                }
+              }
+            }
+          ],
+          "properties": {
+            "detector": "file_access",
+            "capability": "WRITE",
+            "evidence": "os.rename()",
+            "riskLevel": "high",
+            "reachability": "reachable",
+            "confidence": 0.9,
+            "entryPoint": "call_tool",
+            "reachabilityPath": [
+              "call_tool",
+              "archive_impl"
+            ],
+            "reachabilityPathTruncated": false,
+            "findingId": "5cd2723f7ba1"
+          },
+          "ruleIndex": 3,
+          "partialFingerprints": {
+            "reachscanFindingId/v1": "5cd2723f7ba1"
+          },
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from entry point 'call_tool'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 59
+                          }
+                        },
+                        "message": {
+                          "text": "LLM entry point call_tool"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 28
+                          }
+                        },
+                        "message": {
+                          "text": "calls archive_impl"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 29
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via os.rename()"
+                        }
+                      },
+                      "nestingLevel": 2,
+                      "executionOrder": 2
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "reachscan/WRITE",
+          "level": "error",
+          "message": {
+            "text": "WRITE via os.remove() is reachable from LLM entry point 'call_tool'. Call chain: call_tool -> purge_impl. An unsafe prompt could tamper with project files or remove important data."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 34
+                }
+              }
+            }
+          ],
+          "properties": {
+            "detector": "file_access",
+            "capability": "WRITE",
+            "evidence": "os.remove()",
+            "riskLevel": "high",
+            "reachability": "reachable",
+            "confidence": 0.9,
+            "entryPoint": "call_tool",
+            "reachabilityPath": [
+              "call_tool",
+              "purge_impl"
+            ],
+            "reachabilityPathTruncated": false,
+            "findingId": "926e488f159d"
+          },
+          "ruleIndex": 3,
+          "partialFingerprints": {
+            "reachscanFindingId/v1": "926e488f159d"
+          },
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from entry point 'call_tool'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 59
+                          }
+                        },
+                        "message": {
+                          "text": "LLM entry point call_tool"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 33
+                          }
+                        },
+                        "message": {
+                          "text": "calls purge_impl"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 34
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via os.remove()"
+                        }
+                      },
+                      "nestingLevel": 2,
+                      "executionOrder": 2
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "mcp-risk-mismatch",
+          "level": "error",
+          "message": {
+            "text": "Tool 'archive-note' declares readOnlyHint: true, but a call path from the tool reaches WRITE via os.rename()."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 29
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 59
+                }
+              },
+              "message": {
+                "text": "Tool 'archive-note' declares readOnlyHint: true"
+              }
+            }
+          ],
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from MCP tool 'archive-note'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 59
+                          }
+                        },
+                        "message": {
+                          "text": "MCP tool 'archive-note' (call_tool)"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 28
+                          }
+                        },
+                        "message": {
+                          "text": "calls archive_impl"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 29
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via os.rename()"
+                        }
+                      },
+                      "nestingLevel": 2,
+                      "executionOrder": 2
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "reachscanMismatchId/v1": "9284940980c2"
+          },
+          "properties": {
+            "tool": "archive-note",
+            "mismatchRule": "read_only_contradicted",
+            "declared": {
+              "hint": "readOnlyHint",
+              "value": true
+            },
+            "observed": {
+              "capability": "WRITE",
+              "evidence": "os.rename()",
+              "finding_id": "5cd2723f7ba1"
+            },
+            "riskLevel": "high",
+            "dispatch": "lowlevel",
+            "reachabilityPath": [
+              "call_tool",
+              "archive_impl"
+            ],
+            "additionalObservations": 0
+          },
+          "ruleIndex": 7
+        },
+        {
+          "ruleId": "mcp-risk-mismatch",
+          "level": "error",
+          "message": {
+            "text": "Tool 'save-note' declares readOnlyHint: true, but a call path from the tool reaches WRITE via with open(..., mode='w')."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 23
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 59
+                }
+              },
+              "message": {
+                "text": "Tool 'save-note' declares readOnlyHint: true"
+              }
+            }
+          ],
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from MCP tool 'save-note'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 59
+                          }
+                        },
+                        "message": {
+                          "text": "MCP tool 'save-note' (call_tool)"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 22
+                          }
+                        },
+                        "message": {
+                          "text": "calls write_note_impl"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 23
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via with open(..., mode='w')"
+                        }
+                      },
+                      "nestingLevel": 2,
+                      "executionOrder": 2
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "reachscanMismatchId/v1": "6be93cf8ab39"
+          },
+          "properties": {
+            "tool": "save-note",
+            "mismatchRule": "read_only_contradicted",
+            "declared": {
+              "hint": "readOnlyHint",
+              "value": true
+            },
+            "observed": {
+              "capability": "WRITE",
+              "evidence": "with open(..., mode='w')",
+              "finding_id": "9d79630d5910"
+            },
+            "riskLevel": "high",
+            "dispatch": "lowlevel",
+            "reachabilityPath": [
+              "call_tool",
+              "write_note_impl"
+            ],
+            "additionalObservations": 0
+          },
+          "ruleIndex": 7
+        },
+        {
+          "ruleId": "mcp-risk-mismatch",
+          "level": "error",
+          "message": {
+            "text": "Tool 'write-memo' declares readOnlyHint: true, but a call path from the tool reaches WRITE via with open(..., mode='w')."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "fast.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 10
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "fast.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 9
+                }
+              },
+              "message": {
+                "text": "Tool 'write-memo' declares readOnlyHint: true"
+              }
+            }
+          ],
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from MCP tool 'write-memo'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "fast.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 9
+                          }
+                        },
+                        "message": {
+                          "text": "MCP tool 'write-memo' (memo_impl)"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "fast.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 10
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via with open(..., mode='w')"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "reachscanMismatchId/v1": "06d085faca6d"
+          },
+          "properties": {
+            "tool": "write-memo",
+            "mismatchRule": "read_only_contradicted",
+            "declared": {
+              "hint": "readOnlyHint",
+              "value": true
+            },
+            "observed": {
+              "capability": "WRITE",
+              "evidence": "with open(..., mode='w')",
+              "finding_id": "ddd131c2a7b5"
+            },
+            "riskLevel": "high",
+            "dispatch": "decorator",
+            "reachabilityPath": [
+              "memo_impl"
+            ],
+            "additionalObservations": 0
+          },
+          "ruleIndex": 7
+        },
+        {
+          "ruleId": "mcp-risk-mismatch",
+          "level": "error",
+          "message": {
+            "text": "Tool 'write-memo-positional' declares readOnlyHint: true, but a call path from the tool reaches WRITE via with open(..., mode='w')."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "fast.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 17
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "fast.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 16
+                }
+              },
+              "message": {
+                "text": "Tool 'write-memo-positional' declares readOnlyHint: true"
+              }
+            }
+          ],
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from MCP tool 'write-memo-positional'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "fast.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 16
+                          }
+                        },
+                        "message": {
+                          "text": "MCP tool 'write-memo-positional' (memo_impl_positional)"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "fast.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 17
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via with open(..., mode='w')"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "reachscanMismatchId/v1": "b61cdd3fc113"
+          },
+          "properties": {
+            "tool": "write-memo-positional",
+            "mismatchRule": "read_only_contradicted",
+            "declared": {
+              "hint": "readOnlyHint",
+              "value": true
+            },
+            "observed": {
+              "capability": "WRITE",
+              "evidence": "with open(..., mode='w')",
+              "finding_id": "0673510c0a84"
+            },
+            "riskLevel": "high",
+            "dispatch": "decorator",
+            "reachabilityPath": [
+              "memo_impl_positional"
+            ],
+            "additionalObservations": 0
+          },
+          "ruleIndex": 7
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "properties": {
+        "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c07_name_differs",
+        "sourceType": "local",
+        "entryPointsDetected": 4,
+        "includeUnreachable": false,
+        "omittedFindings": 0
+      },
+      "originalUriBaseIds": {
+        "%SRCROOT%": {
+          "uri": "file:///tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c07_name_differs/"
+        }
+      }
+    }
+  ]
+}

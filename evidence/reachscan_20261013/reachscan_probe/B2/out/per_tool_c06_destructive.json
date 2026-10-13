@@ -1,0 +1,123 @@
+{
+ "tools": {
+  "rm_os_remove": {
+   "rs_mismatch": [
+    "non_destructive_contradicted(medium):os.remove()@15"
+   ],
+   "rs_reach_findings": [
+    "WRITE:os.remove()@15"
+   ],
+   "ag": {
+    "effects": [
+     "os.remove:FS_WRITE@15(resolved)"
+    ],
+    "CONTRA": [
+     "D2:fs_remove@15"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "rm_subprocess": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [
+    "EXECUTE:subprocess.run()@21"
+   ],
+   "ag": {
+    "effects": [
+     "subprocess.run:SPAWN@21(resolved)"
+    ],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [
+     "D2:spawn_command@21"
+    ],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "rm_path_unlink": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "pathlib.Path.unlink:FS_WRITE@27(resolved)"
+    ],
+    "CONTRA": [
+     "D2:fs_remove@27"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "rm_rmtree": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "shutil.rmtree:FS_WRITE@33(resolved)"
+    ],
+    "CONTRA": [
+     "D2:fs_remove@33"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "rm_rmdir": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "os.rmdir:FS_WRITE@39(resolved)"
+    ],
+    "CONTRA": [
+     "D2:fs_remove@39"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "rm_truncate": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "rm_move": {
+   "rs_mismatch": [
+    "non_destructive_contradicted(medium):shutil.move()@51"
+   ],
+   "rs_reach_findings": [
+    "WRITE:shutil.move()@51"
+   ],
+   "ag": {
+    "effects": [
+     "shutil.move:FS_WRITE@51(resolved)"
+    ],
+    "CONTRA": [
+     "D2:fs_remove@51"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  }
+ },
+ "rs_not_reachable_findings": []
+}

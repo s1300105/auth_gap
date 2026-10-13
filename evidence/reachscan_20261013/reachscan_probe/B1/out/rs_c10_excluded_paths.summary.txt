@@ -1,0 +1,6 @@
+num_files_scanned: 1 entry_points_detected: 1
+EP save_root server.py:9 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+FINDING WRITE "with open(..., mode='w')" server.py:10 reachable ep= save_root path= ['save_root']
+MISMATCH save_root read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= decorator ep_line= 9 observed= WRITE "with open(..., mode='w')" line 10 path= ['save_root'] extra_obs= []
+EXPLAIN: (no 'Not checked' block)

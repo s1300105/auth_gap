@@ -1,0 +1,227 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:23:38Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 4,
+  "py_entry_points": [
+    {
+      "name": "git_log",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools/server.py",
+      "lineno": 15,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "4f3eab51f355"
+      ],
+      "annotations": {
+        "declared": false,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": false,
+          "source": "default"
+        },
+        "destructiveHint": {
+          "value": true,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "run_shell",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools/server.py",
+      "lineno": 21,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "cc2ec31570bc"
+      ],
+      "annotations": {
+        "declared": false,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": false,
+          "source": "default"
+        },
+        "destructiveHint": {
+          "value": true,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "handle_call_tool",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools/server.py",
+      "lineno": 26,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": []
+    },
+    {
+      "name": "handle_list_tools",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools/server.py",
+      "lineno": 58,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [],
+      "declared_tools": [
+        {
+          "name": "git_log",
+          "lineno": 36,
+          "annotations": {
+            "declared": true,
+            "unresolved_reference": false,
+            "readOnlyHint": {
+              "value": true,
+              "source": "explicit"
+            },
+            "destructiveHint": {
+              "value": false,
+              "source": "explicit"
+            },
+            "idempotentHint": {
+              "value": false,
+              "source": "default"
+            },
+            "openWorldHint": {
+              "value": true,
+              "source": "default"
+            }
+          }
+        },
+        {
+          "name": "run_shell",
+          "lineno": 41,
+          "annotations": {
+            "declared": true,
+            "unresolved_reference": false,
+            "readOnlyHint": {
+              "value": null,
+              "source": "unresolvable"
+            },
+            "destructiveHint": {
+              "value": null,
+              "source": "unresolvable"
+            },
+            "idempotentHint": {
+              "value": false,
+              "source": "default"
+            },
+            "openWorldHint": {
+              "value": true,
+              "source": "explicit"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "EXECUTE"
+  ],
+  "risks": [],
+  "findings": [
+    {
+      "detector": "shell_exec",
+      "finding": {
+        "capability": "EXECUTE",
+        "evidence": "subprocess.run()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools/server.py",
+        "lineno": 17,
+        "confidence": 0.95,
+        "explanation": "This code can execute shell or interpreter commands on the host.",
+        "impact": "A malicious prompt could run destructive commands, install malware, or alter the environment.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "git_log",
+        "reachability_path": [
+          "git_log"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "4f3eab51f355",
+        "finding_ref": "shell_exec:server.py:17:subprocess.run()"
+      }
+    },
+    {
+      "detector": "shell_exec",
+      "finding": {
+        "capability": "EXECUTE",
+        "evidence": "subprocess.run()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools/server.py",
+        "lineno": 22,
+        "confidence": 0.95,
+        "explanation": "This code can execute shell or interpreter commands on the host.",
+        "impact": "A malicious prompt could run destructive commands, install malware, or alter the environment.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "run_shell",
+        "reachability_path": [
+          "_run_shell"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "cc2ec31570bc",
+        "finding_ref": "shell_exec:server.py:22:subprocess.run()"
+      }
+    }
+  ],
+  "annotation_mismatches": [
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "read_only_contradicted",
+      "risk_level": "high",
+      "tool": "git_log",
+      "entry_point": {
+        "name": "handle_call_tool",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools/server.py",
+        "lineno": 26,
+        "dispatch": "lowlevel"
+      },
+      "declared": {
+        "hint": "readOnlyHint",
+        "value": true
+      },
+      "observed": {
+        "capability": "EXECUTE",
+        "evidence": "subprocess.run()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools/server.py",
+        "lineno": 17,
+        "finding_id": "4f3eab51f355"
+      },
+      "reachability_path": [
+        "handle_call_tool",
+        "git_log"
+      ],
+      "message": "Tool 'git_log' declares readOnlyHint: true, but a call path from the tool reaches EXECUTE via subprocess.run().",
+      "mismatch_id": "8948adec7de9",
+      "additional_observations": []
+    }
+  ],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

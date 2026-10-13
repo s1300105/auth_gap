@@ -1,0 +1,142 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:22:49Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/cg_probe_1012/cases/c04_depth",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 1,
+  "py_entry_points": [
+    {
+      "name": "deep",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/cg_probe_1012/cases/c04_depth/server.py",
+      "lineno": 39,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "9cffbb20ccc0"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "EXECUTE",
+    "WRITE"
+  ],
+  "risks": [],
+  "findings": [
+    {
+      "detector": "shell_exec",
+      "finding": {
+        "capability": "EXECUTE",
+        "evidence": "subprocess.run()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/cg_probe_1012/cases/c04_depth/server.py",
+        "lineno": 35,
+        "confidence": 0.95,
+        "explanation": "This code can execute shell or interpreter commands on the host.",
+        "impact": "A malicious prompt could run destructive commands, install malware, or alter the environment.",
+        "risk_level": "high",
+        "reachability": "unreachable",
+        "entry_point_name": null,
+        "reachability_path": null,
+        "reachability_path_truncated": false,
+        "finding_id": "be73ffad25e5",
+        "finding_ref": "shell_exec:server.py:35:subprocess.run()"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/cg_probe_1012/cases/c04_depth/server.py",
+        "lineno": 31,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "deep",
+        "reachability_path": [
+          "deep",
+          "f1",
+          "f2",
+          "f3",
+          "f4",
+          "f5",
+          "f6",
+          "f7",
+          "f8"
+        ],
+        "reachability_path_truncated": true,
+        "finding_id": "9cffbb20ccc0",
+        "finding_ref": "file_access:server.py:31:os.remove()"
+      }
+    }
+  ],
+  "annotation_mismatches": [
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "read_only_contradicted",
+      "risk_level": "high",
+      "tool": "deep",
+      "entry_point": {
+        "name": "deep",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/cg_probe_1012/cases/c04_depth/server.py",
+        "lineno": 39,
+        "dispatch": "decorator"
+      },
+      "declared": {
+        "hint": "readOnlyHint",
+        "value": true
+      },
+      "observed": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/cg_probe_1012/cases/c04_depth/server.py",
+        "lineno": 31,
+        "finding_id": "9cffbb20ccc0"
+      },
+      "reachability_path": [
+        "deep",
+        "f1",
+        "f2",
+        "f3",
+        "f4",
+        "f5",
+        "f6",
+        "f7",
+        "f8"
+      ],
+      "message": "Tool 'deep' declares readOnlyHint: true, but a call path from the tool reaches WRITE via os.remove().",
+      "mismatch_id": "e452f3a00a7b",
+      "additional_observations": []
+    }
+  ],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

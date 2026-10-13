@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:23:21Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_probe/cases/c17_class_tool",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 1,
+  "py_entry_points": [
+    {
+      "name": "purge_named",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_probe/cases/c17_class_tool/tools.py",
+      "lineno": 5,
+      "framework": "langchain",
+      "pattern_type": "class_attribute",
+      "confidence": 0.95,
+      "reachable_findings": [
+        "f4e2479d21cb"
+      ]
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "WRITE"
+  ],
+  "risks": [],
+  "findings": [
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_probe/cases/c17_class_tool/tools.py",
+        "lineno": 10,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "purge_named",
+        "reachability_path": [
+          "PurgeNamed._run"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "f4e2479d21cb",
+        "finding_ref": "file_access:tools.py:10:os.remove()"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_probe/cases/c17_class_tool/tools.py",
+        "lineno": 18,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "unreachable",
+        "entry_point_name": null,
+        "reachability_path": null,
+        "reachability_path_truncated": false,
+        "finding_id": "ed3b13475aaf",
+        "finding_ref": "file_access:tools.py:18:os.remove()"
+      }
+    }
+  ],
+  "annotation_mismatches": [],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

@@ -1,0 +1,43 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • post_it  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c06_http_post_readonly/server.py:9)
+  • delete_remote  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c06_http_post_readonly/server.py:13)
+
+Capabilities
+------------
+  • SEND
+
+Combined Risks
+--------------
+  None inferred from combined-capability rules.
+
+Reachability Summary
+--------------------
+     3 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] SEND via requests.post (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c06_http_post_readonly/server.py:10)
+    call chain:
+      post_it
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+  [HIGH] SEND via requests.delete (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c06_http_post_readonly/server.py:14)
+    call chain:
+      delete_remote
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+  [HIGH] SEND via requests.post -> https://api.example.com/items (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c06_http_post_readonly/server.py:10)
+    call chain:
+      post_it
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c06_http_post_readonly
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

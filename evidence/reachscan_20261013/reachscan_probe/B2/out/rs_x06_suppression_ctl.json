@@ -1,0 +1,200 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:54:20Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression_ctl",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 2,
+  "py_entry_points": [
+    {
+      "name": "ro_write_suppressed",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression_ctl/server.py",
+      "lineno": 10,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "f9ad042bde9c"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "cw_get_send_suppressed",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression_ctl/server.py",
+      "lineno": 17,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "7f0fe1cb4bb1"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": false,
+          "source": "explicit"
+        }
+      }
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "SEND",
+    "WRITE"
+  ],
+  "risks": [
+    {
+      "id": "data_exfiltration",
+      "title": "Data Exfiltration Risk",
+      "severity": "high",
+      "why": "The code can both access/change local files and send data externally.",
+      "capabilities_triggered": [
+        "SEND",
+        "WRITE"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "detector": "network",
+      "finding": {
+        "capability": "SEND",
+        "evidence": "requests.get",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression_ctl/server.py",
+        "lineno": 18,
+        "confidence": 0.95,
+        "explanation": "This code can send data over the network to external services.",
+        "impact": "Sensitive local data could be transmitted to untrusted endpoints.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "cw_get_send_suppressed",
+        "reachability_path": [
+          "cw_get_send_suppressed"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "7f0fe1cb4bb1",
+        "finding_ref": "network:server.py:18:requests.get"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "with open(..., mode='w')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression_ctl/server.py",
+        "lineno": 11,
+        "confidence": 0.95,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "ro_write_suppressed",
+        "reachability_path": [
+          "ro_write_suppressed"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "f9ad042bde9c",
+        "finding_ref": "file_access:server.py:11:with open(..., mode='w')"
+      }
+    }
+  ],
+  "annotation_mismatches": [
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "read_only_contradicted",
+      "risk_level": "high",
+      "tool": "ro_write_suppressed",
+      "entry_point": {
+        "name": "ro_write_suppressed",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression_ctl/server.py",
+        "lineno": 10,
+        "dispatch": "decorator"
+      },
+      "declared": {
+        "hint": "readOnlyHint",
+        "value": true
+      },
+      "observed": {
+        "capability": "WRITE",
+        "evidence": "with open(..., mode='w')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression_ctl/server.py",
+        "lineno": 11,
+        "finding_id": "f9ad042bde9c"
+      },
+      "reachability_path": [
+        "ro_write_suppressed"
+      ],
+      "message": "Tool 'ro_write_suppressed' declares readOnlyHint: true, but a call path from the tool reaches WRITE via with open(..., mode='w').",
+      "mismatch_id": "17066ba249b1",
+      "additional_observations": []
+    },
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "closed_world_contradicted",
+      "risk_level": "medium",
+      "tool": "cw_get_send_suppressed",
+      "entry_point": {
+        "name": "cw_get_send_suppressed",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression_ctl/server.py",
+        "lineno": 17,
+        "dispatch": "decorator"
+      },
+      "declared": {
+        "hint": "openWorldHint",
+        "value": false
+      },
+      "observed": {
+        "capability": "SEND",
+        "send_kind": "HTTP",
+        "evidence": "requests.get",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression_ctl/server.py",
+        "lineno": 18,
+        "finding_id": "7f0fe1cb4bb1"
+      },
+      "reachability_path": [
+        "cw_get_send_suppressed"
+      ],
+      "message": "Tool 'cw_get_send_suppressed' declares openWorldHint: false; reaches outbound HTTP call: requests.get.",
+      "mismatch_id": "1ab3a01b284a",
+      "additional_observations": []
+    }
+  ],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

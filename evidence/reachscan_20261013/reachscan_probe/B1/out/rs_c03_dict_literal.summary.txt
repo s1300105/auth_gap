@@ -1,0 +1,19 @@
+num_files_scanned: 1 entry_points_detected: 4
+EP dict_literal server.py:11 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+EP dict_call server.py:18 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [null, "unresolvable"], "destructiveHint": [null, "unresolvable"], "idempotentHint": [null, "unresolvable"], "openWorldHint": [null, "unresolvable"], "declared": true, "unresolved_reference": true}
+EP unpack_dict server.py:25 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [null, "unresolvable"], "destructiveHint": [null, "unresolvable"], "idempotentHint": [null, "unresolvable"], "openWorldHint": [null, "unresolvable"], "declared": true, "unresolved_reference": false}
+EP dict_spread_override server.py:33 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [true, "explicit"], "destructiveHint": [null, "unresolvable"], "idempotentHint": [null, "unresolvable"], "openWorldHint": [null, "unresolvable"], "declared": true, "unresolved_reference": false}
+FINDING WRITE "with open(..., mode='w')" server.py:12 reachable ep= dict_literal path= ['dict_literal']
+FINDING WRITE "with open(..., mode='w')" server.py:19 reachable ep= dict_call path= ['dict_call']
+FINDING WRITE "with open(..., mode='w')" server.py:26 reachable ep= unpack_dict path= ['unpack_dict']
+FINDING WRITE "with open(..., mode='w')" server.py:34 reachable ep= dict_spread_override path= ['dict_spread_override']
+MISMATCH dict_literal read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= decorator ep_line= 11 observed= WRITE "with open(..., mode='w')" line 12 path= ['dict_literal'] extra_obs= []
+MISMATCH dict_spread_override read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= decorator ep_line= 33 observed= WRITE "with open(..., mode='w')" line 34 path= ['dict_spread_override'] extra_obs= []
+EXPLAIN: Not checked (annotations couldn't be resolved statically):
+    • dict_call (server.py:18): readOnlyHint, destructiveHint, idempotentHint, openWorldHint — annotations passed by a reference that couldn't be resolved
+    • unpack_dict (server.py:25): readOnlyHint, destructiveHint, idempotentHint, openWorldHint — non-literal or SDK-version-dependent hint values
+    • dict_spread_override (server.py:33): destructiveHint, idempotentHint, openWorldHint — non-literal or SDK-version-dependent hint values

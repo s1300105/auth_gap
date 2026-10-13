@@ -1,0 +1,47 @@
+{
+ "tools": {
+  "self_recursive": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):with open(..., mode='w')@10"
+   ],
+   "rs_reach_findings": [
+    "WRITE:with open(..., mode='w')@10"
+   ],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@10(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@10"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "recursion",
+     "unresolved"
+    ]
+   }
+  },
+  "mutual_recursive": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):with open(..., mode='w')@24"
+   ],
+   "rs_reach_findings": [
+    "WRITE:with open(..., mode='w')@24"
+   ],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@24(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@24"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "recursion",
+     "unresolved"
+    ]
+   }
+  }
+ },
+ "rs_not_reachable_findings": []
+}

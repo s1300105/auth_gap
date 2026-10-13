@@ -1,0 +1,38 @@
+dispatch_sites: []
+unresolved_handler: {"count": 0, "sites": []}
+parse_failures: [] truncations: []
+======================================================================
+UNIT call_hint qual= call_hint entry_kind= decorator line= 29 ann_form= ToolAnnotations ann= {}
+  D_kind: {"bottom": true, "explicit": [], "present_no_bound": []}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_WRITE FS_WRITE line 30 destructive= True fs_mode= w res= resolved form= direct chain= None attributed= - opaque= -
+  ROW builtins.open FS_WRITE path line 30 verdicts= ['GAP_INJECT'] covered_by= None D_layer= [] notes= ['select_manifest_only(assumed_trig)'] attributed= -
+======================================================================
+UNIT dict_env_hint qual= dict_env_hint entry_kind= decorator line= 36 ann_form= dict ann= {}
+  D_kind: {"bottom": true, "explicit": [], "present_no_bound": []}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_WRITE FS_WRITE line 37 destructive= True fs_mode= w res= resolved form= direct chain= None attributed= - opaque= -
+  ROW builtins.open FS_WRITE path line 37 verdicts= ['GAP_INJECT'] covered_by= None D_layer= [] notes= ['select_manifest_only(assumed_trig)'] attributed= -
+======================================================================
+UNIT env_hint qual= env_hint entry_kind= decorator line= 22 ann_form= ToolAnnotations ann= {}
+  D_kind: {"bottom": true, "explicit": [], "present_no_bound": []}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_WRITE FS_WRITE line 23 destructive= True fs_mode= w res= resolved form= direct chain= None attributed= - opaque= -
+  ROW builtins.open FS_WRITE path line 23 verdicts= ['GAP_INJECT'] covered_by= None D_layer= [] notes= ['select_manifest_only(assumed_trig)'] attributed= -
+======================================================================
+UNIT factory_ann qual= factory_ann entry_kind= decorator line= 43 ann_form= unreadable ann= None
+  D_kind: {"bottom": true, "explicit": [], "present_no_bound": [], "unknown": true}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_WRITE FS_WRITE line 44 destructive= True fs_mode= w res= resolved form= direct chain= None attributed= - opaque= -
+  ROW builtins.open FS_WRITE path line 44 verdicts= ['GAP_INJECT'] covered_by= None D_layer= ['unknown'] notes= ['select_manifest_only(assumed_trig)'] attributed= -
+======================================================================
+UNIT mixed_nonliteral qual= mixed_nonliteral entry_kind= decorator line= 50 ann_form= ToolAnnotations ann= {'destructiveHint': False}
+  D_kind: {"bottom": false, "explicit": ["destructiveHint"], "present_no_bound": [], "upper": ["DB", "FS_READ", "FS_WRITE", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT os.remove FS_WRITE FS_WRITE line 51 destructive= True fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW os.remove FS_WRITE path line 51 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D2', 'contradiction_reason:D2:fs_remove', 'D_layer_present:kind:FS_WRITE'] attributed= -

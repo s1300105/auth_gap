@@ -1,0 +1,14 @@
+version: 0.4.0 files: 1 eps: 5
+EP nested_def server.py:35 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP dict_dispatch server.py:44 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP partial_call server.py:50 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP lambda_call server.py:57 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP to_thread_call server.py:64 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+FINDING file_access WRITE "with open(..., mode='w')" server.py:12 high reach=unreachable ep=None path=None 
+FINDING file_access WRITE "with open(..., mode='w')" server.py:17 high reach=unreachable ep=None path=None 
+FINDING file_access WRITE "with open(..., mode='w')" server.py:22 high reach=reachable ep=lambda_call path=['lambda_call', '_write_lambda'] 
+FINDING file_access WRITE "with open(..., mode='w')" server.py:27 high reach=unreachable ep=None path=None 
+FINDING file_access WRITE "with open(..., mode='w')" server.py:37 high reach=unreachable ep=None path=None 
+MISMATCH lambda_call read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} WRITE "with open(..., mode='w')" server.py:22 send_kind=None dispatch=decorator path=['lambda_call', '_write_lambda'] extra=[] 
+suppression_warnings: []
+risks: []

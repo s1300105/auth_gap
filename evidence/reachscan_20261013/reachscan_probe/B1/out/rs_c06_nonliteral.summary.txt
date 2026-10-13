@@ -1,0 +1,25 @@
+num_files_scanned: 1 entry_points_detected: 5
+EP env_hint server.py:22 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [null, "unresolvable"], "destructiveHint": [null, "unresolvable"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+EP call_hint server.py:29 mcp decorator 0.8 reachable_findings= 2
+   annotations: {"readOnlyHint": [null, "unresolvable"], "destructiveHint": [null, "unresolvable"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+EP dict_env_hint server.py:36 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [null, "unresolvable"], "destructiveHint": [null, "unresolvable"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+EP factory_ann server.py:43 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [null, "unresolvable"], "destructiveHint": [null, "unresolvable"], "idempotentHint": [null, "unresolvable"], "openWorldHint": [null, "unresolvable"], "declared": true, "unresolved_reference": true}
+EP mixed_nonliteral server.py:50 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [null, "unresolvable"], "destructiveHint": [false, "explicit"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+FINDING WRITE "with open(..., mode='w')" server.py:23 reachable ep= env_hint path= ['env_hint']
+FINDING WRITE "with open(..., mode='w')" server.py:30 reachable ep= call_hint path= ['call_hint']
+FINDING WRITE "with open(..., mode='w')" server.py:37 reachable ep= dict_env_hint path= ['dict_env_hint']
+FINDING WRITE "with open(..., mode='w')" server.py:44 reachable ep= factory_ann path= ['factory_ann']
+FINDING WRITE 'os.remove()' server.py:51 reachable ep= mixed_nonliteral path= ['mixed_nonliteral']
+FINDING SECRETS "os.environ.get('NOTES_RO')" server.py:14 reachable ep= call_hint path= ['call_hint', 'is_read_only']
+FINDING SECRETS "os.getenv('NOTES_RO')" server.py:35 module_level ep= None path= None
+FINDING SECRETS "os.environ.get('NOTES_RO')" server.py:21 module_level ep= None path= None
+EXPLAIN: Not checked (annotations couldn't be resolved statically):
+    • env_hint (server.py:22): readOnlyHint, destructiveHint — non-literal or SDK-version-dependent hint values
+    • call_hint (server.py:29): readOnlyHint, destructiveHint — non-literal or SDK-version-dependent hint values
+    • dict_env_hint (server.py:36): readOnlyHint, destructiveHint — non-literal or SDK-version-dependent hint values
+    • factory_ann (server.py:43): readOnlyHint, destructiveHint, idempotentHint, openWorldHint — annotations passed by a reference that couldn't be resolved
+    • mixed_nonliteral (server.py:50): readOnlyHint — non-literal or SDK-version-dependent hint values

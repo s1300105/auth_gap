@@ -1,0 +1,6 @@
+version: 0.4.0 files: 4 eps: 1
+EP cond_import_write pkg/server.py:14 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+FINDING file_access WRITE "with open(..., mode='w')" pkg/fast.py:2 high reach=unreachable ep=None path=None 
+FINDING file_access WRITE "with open(..., mode='w')" pkg/slow.py:2 high reach=unreachable ep=None path=None 
+suppression_warnings: []
+risks: []

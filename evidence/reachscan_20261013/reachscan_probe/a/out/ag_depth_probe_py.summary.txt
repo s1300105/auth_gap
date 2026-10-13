@@ -1,0 +1,27 @@
+dispatch_sites: []
+unresolved_handler: {"count": 0, "sites": []}
+parse_failures: [] truncations: []
+======================================================================
+UNIT body_write qual= body_write entry_kind= decorator line= 20 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_WRITE FS_WRITE line 21 destructive= True fs_mode= w res= resolved form= direct chain= None attributed= - opaque= -
+  ROW builtins.open FS_WRITE path line 21 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
+======================================================================
+UNIT helper_purge qual= helper_purge entry_kind= decorator line= 33 ann_form= ToolAnnotations ann= {'destructiveHint': False, 'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": ["destructiveHint"], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT os.remove FS_WRITE FS_WRITE line 15 destructive= True fs_mode= - res= resolved form= direct chain= ['_purge'] attributed= - opaque= -
+  EFFECT subprocess.run SPAWN SPAWN_CONST_ARGV line 16 destructive= - fs_mode= - res= resolved form= direct chain= ['_purge'] attributed= - opaque= -
+  ROW os.remove FS_WRITE path line 15 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
+  ROW subprocess.run SPAWN argv0 line 16 verdicts= [] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)', 'contradiction_unknown:D1:spawn_command'] attributed= -
+  ROW subprocess.run SPAWN argv[*] line 16 verdicts= ['GAP_INJECT'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)', 'contradiction_unknown:D1:spawn_command'] attributed= -
+======================================================================
+UNIT helper_write qual= helper_write entry_kind= decorator line= 27 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_WRITE FS_WRITE line 10 destructive= True fs_mode= w res= resolved form= direct chain= ['_save'] attributed= - opaque= -
+  ROW builtins.open FS_WRITE path line 10 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -

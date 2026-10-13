@@ -1,0 +1,291 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:52:45Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c01b_snake_lt2",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 4,
+  "py_entry_points": [
+    {
+      "name": "snake_obj",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c01b_snake_lt2/server.py",
+      "lineno": 12,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "d1ed358b5a1d"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": null,
+          "source": "unresolvable"
+        },
+        "destructiveHint": {
+          "value": null,
+          "source": "unresolvable"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "snake_dict",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c01b_snake_lt2/server.py",
+      "lineno": 19,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "3385045508cb"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": null,
+          "source": "unresolvable"
+        },
+        "destructiveHint": {
+          "value": null,
+          "source": "unresolvable"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "both_spellings",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c01b_snake_lt2/server.py",
+      "lineno": 26,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "96ff144b472d"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "camel_ctl",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c01b_snake_lt2/server.py",
+      "lineno": 33,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "976e4fd765ed"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "WRITE"
+  ],
+  "risks": [],
+  "findings": [
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "with open(..., mode='w')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c01b_snake_lt2/server.py",
+        "lineno": 13,
+        "confidence": 0.95,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "snake_obj",
+        "reachability_path": [
+          "snake_obj"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "d1ed358b5a1d",
+        "finding_ref": "file_access:server.py:13:with open(..., mode='w')"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "with open(..., mode='w')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c01b_snake_lt2/server.py",
+        "lineno": 20,
+        "confidence": 0.95,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "snake_dict",
+        "reachability_path": [
+          "snake_dict"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "3385045508cb",
+        "finding_ref": "file_access:server.py:20:with open(..., mode='w')"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "with open(..., mode='w')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c01b_snake_lt2/server.py",
+        "lineno": 27,
+        "confidence": 0.95,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "both_spellings",
+        "reachability_path": [
+          "both_spellings"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "96ff144b472d",
+        "finding_ref": "file_access:server.py:27:with open(..., mode='w')"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "with open(..., mode='w')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c01b_snake_lt2/server.py",
+        "lineno": 34,
+        "confidence": 0.95,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "camel_ctl",
+        "reachability_path": [
+          "camel_ctl"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "976e4fd765ed",
+        "finding_ref": "file_access:server.py:34:with open(..., mode='w')"
+      }
+    }
+  ],
+  "annotation_mismatches": [
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "read_only_contradicted",
+      "risk_level": "high",
+      "tool": "both_spellings",
+      "entry_point": {
+        "name": "both_spellings",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c01b_snake_lt2/server.py",
+        "lineno": 26,
+        "dispatch": "decorator"
+      },
+      "declared": {
+        "hint": "readOnlyHint",
+        "value": true
+      },
+      "observed": {
+        "capability": "WRITE",
+        "evidence": "with open(..., mode='w')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c01b_snake_lt2/server.py",
+        "lineno": 27,
+        "finding_id": "96ff144b472d"
+      },
+      "reachability_path": [
+        "both_spellings"
+      ],
+      "message": "Tool 'both_spellings' declares readOnlyHint: true, but a call path from the tool reaches WRITE via with open(..., mode='w').",
+      "mismatch_id": "5057c0508487",
+      "additional_observations": []
+    },
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "read_only_contradicted",
+      "risk_level": "high",
+      "tool": "camel_ctl",
+      "entry_point": {
+        "name": "camel_ctl",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c01b_snake_lt2/server.py",
+        "lineno": 33,
+        "dispatch": "decorator"
+      },
+      "declared": {
+        "hint": "readOnlyHint",
+        "value": true
+      },
+      "observed": {
+        "capability": "WRITE",
+        "evidence": "with open(..., mode='w')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c01b_snake_lt2/server.py",
+        "lineno": 34,
+        "finding_id": "976e4fd765ed"
+      },
+      "reachability_path": [
+        "camel_ctl"
+      ],
+      "message": "Tool 'camel_ctl' declares readOnlyHint: true, but a call path from the tool reaches WRITE via with open(..., mode='w').",
+      "mismatch_id": "6ba18088eb8f",
+      "additional_observations": []
+    }
+  ],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

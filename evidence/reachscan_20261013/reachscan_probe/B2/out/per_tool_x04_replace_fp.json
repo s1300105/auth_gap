@@ -1,0 +1,68 @@
+{
+ "tools": {
+  "fp_env_replace": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):os.environ.get.replace()@12"
+   ],
+   "rs_reach_findings": [
+    "WRITE:os.environ.get.replace()@12",
+    "SECRETS:os.environ.get('HOME')@12"
+   ],
+   "ag": {
+    "effects": [],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": []
+   }
+  },
+  "fp_join_replace": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):os.path.join.replace()@17"
+   ],
+   "rs_reach_findings": [
+    "WRITE:os.path.join.replace()@17"
+   ],
+   "ag": {
+    "effects": [],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "fp_getcwd_replace": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):os.getcwd.replace()@22"
+   ],
+   "rs_reach_findings": [
+    "WRITE:os.getcwd.replace()@22"
+   ],
+   "ag": {
+    "effects": [],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "fp_list_remove": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):ostrich.remove()@28"
+   ],
+   "rs_reach_findings": [
+    "WRITE:ostrich.remove()@28"
+   ],
+   "ag": {
+    "effects": [],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  }
+ },
+ "rs_not_reachable_findings": []
+}

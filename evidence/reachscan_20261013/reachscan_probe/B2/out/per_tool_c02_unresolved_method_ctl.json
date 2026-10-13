@@ -1,0 +1,85 @@
+{
+ "tools": {
+  "save_new_instance": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@12(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@12"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "save_module_instance": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@12(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@12"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "export_via_self_attr": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@12(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@12"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "export_via_self_method": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@27(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@27"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "name_only_match": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  }
+ },
+ "rs_not_reachable_findings": [
+  "WRITE:with open(..., mode='w')@server.py:12=unknown",
+  "WRITE:with open(..., mode='w')@server.py:27=unknown",
+  "WRITE:os.remove()@server.py:33=unreachable"
+ ]
+}

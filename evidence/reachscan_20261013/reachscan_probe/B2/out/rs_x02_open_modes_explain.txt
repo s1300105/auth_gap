@@ -1,0 +1,74 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • m_w  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x02_open_modes/server.py:13)
+  • m_wplus  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x02_open_modes/server.py:20)
+  • m_aplus  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x02_open_modes/server.py:27)
+  • m_rplus  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x02_open_modes/server.py:34)
+  • m_wt  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x02_open_modes/server.py:41)
+  • m_modevar  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x02_open_modes/server.py:48)
+  • m_path_open  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x02_open_modes/server.py:56)
+  • m_io_open  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x02_open_modes/server.py:63)
+  • m_os_open  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x02_open_modes/server.py:70)
+
+Capabilities
+------------
+  • READ
+  • WRITE
+
+Combined Risks
+--------------
+  None inferred from combined-capability rules.
+
+Annotation Mismatches  —  MCP tool annotations contradicted by reachable code
+-----------------------------------------------------------------------------
+  [HIGH] m_w declares readOnlyHint: true
+    but reaches WRITE via with open(..., mode='w') (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x02_open_modes/server.py:14)
+    call chain:
+      m_w
+      → with open(..., mode='w')
+
+Reachability Summary
+--------------------
+     6 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x02_open_modes/server.py:14)
+    call chain:
+      m_w
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [MEDIUM] READ via with open(..., mode='w+') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x02_open_modes/server.py:21)
+    call chain:
+      m_wplus
+    explanation: This code can read local files from the filesystem.
+    impact: Private files may be exposed to later processing or exfiltration.
+  [MEDIUM] READ via with open(..., mode='a+') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x02_open_modes/server.py:28)
+    call chain:
+      m_aplus
+    explanation: This code can read local files from the filesystem.
+    impact: Private files may be exposed to later processing or exfiltration.
+  [MEDIUM] READ via with open(..., mode='r+') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x02_open_modes/server.py:35)
+    call chain:
+      m_rplus
+    explanation: This code can read local files from the filesystem.
+    impact: Private files may be exposed to later processing or exfiltration.
+  [MEDIUM] READ via with open(..., mode='wt') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x02_open_modes/server.py:42)
+    call chain:
+      m_wt
+    explanation: This code can read local files from the filesystem.
+    impact: Private files may be exposed to later processing or exfiltration.
+  [MEDIUM] READ via with open(..., mode='') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x02_open_modes/server.py:50)
+    call chain:
+      m_modevar
+    explanation: This code can read local files from the filesystem.
+    impact: Private files may be exposed to later processing or exfiltration.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x02_open_modes
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

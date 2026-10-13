@@ -1,0 +1,7 @@
+num_files_scanned: 1 entry_points_detected: 1
+EP save_module_level server.py:25 mcp decorator 0.6 reachable_findings= 1
+   annotations: {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+FINDING WRITE "with open(..., mode='w')" server.py:26 reachable ep= save_module_level path= ['save_module_level']
+FINDING WRITE "with open(..., mode='w')" server.py:14 unreachable ep= None path= None
+MISMATCH save_module_level read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= decorator ep_line= 25 observed= WRITE "with open(..., mode='w')" line 26 path= ['save_module_level'] extra_obs= []
+EXPLAIN: (no 'Not checked' block)

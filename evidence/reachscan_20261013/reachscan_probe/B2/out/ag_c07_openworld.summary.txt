@@ -1,0 +1,44 @@
+dispatch_sites: []
+unresolved_handler: {"count": 0, "sites": []}
+parse_failures: [] truncations: []
+======================================================================
+UNIT get_external_literal qual= get_external_literal entry_kind= decorator line= 47 ann_form= ToolAnnotations ann= {'openWorldHint': False, 'readOnlyHint': True}
+  D_kind: {"bottom": false, "closed_world": true, "explicit": ["readOnlyHint"], "present_no_bound": ["openWorldHint"], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT httpx.get NET NET line 48 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW httpx.get NET url.host line 48 verdicts= ['CONTRADICTION'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D3', 'contradiction_reason:D3:net_external_host'] attributed= -
+  ROW httpx.get NET url.path line 48 verdicts= ['CONTRADICTION'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D3', 'contradiction_reason:D3:net_external_host'] attributed= -
+  ROW httpx.get NET url.scheme line 48 verdicts= ['CONTRADICTION'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D3', 'contradiction_reason:D3:net_external_host'] attributed= -
+======================================================================
+UNIT get_loopback qual= get_loopback entry_kind= decorator line= 19 ann_form= ToolAnnotations ann= {'openWorldHint': False, 'readOnlyHint': True}
+  D_kind: {"bottom": false, "closed_world": true, "explicit": ["readOnlyHint"], "present_no_bound": ["openWorldHint"], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT httpx.get NET NET line 20 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW httpx.get NET url.host line 20 verdicts= [] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)'] attributed= -
+  ROW httpx.get NET url.path line 20 verdicts= [] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)'] attributed= -
+  ROW httpx.get NET url.scheme line 20 verdicts= [] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)'] attributed= -
+======================================================================
+UNIT post_nonliteral qual= post_nonliteral entry_kind= decorator line= 13 ann_form= ToolAnnotations ann= {'openWorldHint': False, 'readOnlyHint': True}
+  D_kind: {"bottom": false, "closed_world": true, "explicit": ["readOnlyHint"], "present_no_bound": ["openWorldHint"], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT requests.post NET NET line 14 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW requests.post NET body line 14 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)', 'contradiction_unknown:D1:net_post', 'contradiction:D3', 'contradiction_reason:D3:net_model_host', 'D_layer_present:kind:NET'] attributed= -
+  ROW requests.post NET url.host line 14 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)', 'contradiction_unknown:D1:net_post', 'contradiction:D3', 'contradiction_reason:D3:net_model_host', 'D_layer_present:kind:NET'] attributed= -
+======================================================================
+UNIT sock_connect qual= sock_connect entry_kind= decorator line= 25 ann_form= ToolAnnotations ann= {'openWorldHint': False, 'readOnlyHint': True}
+  D_kind: {"bottom": false, "closed_world": true, "explicit": ["readOnlyHint"], "present_no_bound": ["openWorldHint"], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+======================================================================
+UNIT sock_create_connection qual= sock_create_connection entry_kind= decorator line= 33 ann_form= ToolAnnotations ann= {'openWorldHint': False, 'readOnlyHint': True}
+  D_kind: {"bottom": false, "closed_world": true, "explicit": ["readOnlyHint"], "present_no_bound": ["openWorldHint"], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+======================================================================
+UNIT sock_create_connection_loopback qual= sock_create_connection_loopback entry_kind= decorator line= 40 ann_form= ToolAnnotations ann= {'openWorldHint': False, 'readOnlyHint': True}
+  D_kind: {"bottom": false, "closed_world": true, "explicit": ["readOnlyHint"], "present_no_bound": ["openWorldHint"], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []

@@ -1,0 +1,71 @@
+{
+ "tools": {
+  "chain4": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):with open(..., mode='w')@18"
+   ],
+   "rs_reach_findings": [
+    "WRITE:with open(..., mode='w')@18"
+   ],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@18(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@18"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "chain5": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):with open(..., mode='w')@37"
+   ],
+   "rs_reach_findings": [
+    "WRITE:with open(..., mode='w')@37"
+   ],
+   "ag": {
+    "effects": [],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "depth"
+    ]
+   }
+  },
+  "chain8": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):with open(..., mode='w')@65"
+   ],
+   "rs_reach_findings": [
+    "WRITE:with open(..., mode='w')@65"
+   ],
+   "ag": {
+    "effects": [],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "depth"
+    ]
+   }
+  },
+  "chain9": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "depth"
+    ]
+   }
+  }
+ },
+ "rs_not_reachable_findings": [
+  "WRITE:with open(..., mode='w')@server.py:96=unreachable"
+ ]
+}

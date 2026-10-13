@@ -1,0 +1,59 @@
+{
+ "tools": {
+  "append_log": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [
+    "WRITE:with open(..., mode='a')@10"
+   ],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@10(resolved)"
+    ],
+    "CONTRA": [
+     "D4:fs_append@10"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "append_log_idem_only": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [
+    "WRITE:with open(..., mode='a')@17"
+   ],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@17(resolved)"
+    ],
+    "CONTRA": [
+     "D4:fs_append@17"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "append_log_nondestructive": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [
+    "WRITE:with open(..., mode='a')@24"
+   ],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@24(resolved)"
+    ],
+    "CONTRA": [
+     "D4:fs_append@24"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  }
+ },
+ "rs_not_reachable_findings": []
+}

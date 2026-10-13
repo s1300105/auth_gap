@@ -1,0 +1,21 @@
+num_files_scanned: 2 entry_points_detected: 4
+EP write-memo fast.py:9 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+EP write-memo-positional fast.py:16 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+EP list_tools server.py:45 mcp decorator 0.8 reachable_findings= 0
+   declared_tool: save-note line 47 {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+   declared_tool: archive-note line 49 {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+   declared_tool: memo line 53 {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+EP call_tool server.py:59 mcp decorator 0.8 reachable_findings= 4
+FINDING WRITE "with open(..., mode='w')" fast.py:10 reachable ep= write-memo path= ['memo_impl']
+FINDING WRITE "with open(..., mode='w')" fast.py:17 reachable ep= write-memo-positional path= ['memo_impl_positional']
+FINDING WRITE "with open(..., mode='w')" server.py:23 reachable ep= call_tool path= ['call_tool', 'write_note_impl']
+FINDING WRITE "with open(..., mode='a')" server.py:39 reachable ep= call_tool path= ['call_tool', 'memo_writer']
+FINDING WRITE 'os.rename()' server.py:29 reachable ep= call_tool path= ['call_tool', 'archive_impl']
+FINDING WRITE 'os.remove()' server.py:34 reachable ep= call_tool path= ['call_tool', 'purge_impl']
+MISMATCH archive-note read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= lowlevel ep_line= 59 observed= WRITE 'os.rename()' line 29 path= ['call_tool', 'archive_impl'] extra_obs= []
+MISMATCH save-note read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= lowlevel ep_line= 59 observed= WRITE "with open(..., mode='w')" line 23 path= ['call_tool', 'write_note_impl'] extra_obs= []
+MISMATCH write-memo read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= decorator ep_line= 9 observed= WRITE "with open(..., mode='w')" line 10 path= ['memo_impl'] extra_obs= []
+MISMATCH write-memo-positional read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= decorator ep_line= 16 observed= WRITE "with open(..., mode='w')" line 17 path= ['memo_impl_positional'] extra_obs= []
+EXPLAIN: (no 'Not checked' block)

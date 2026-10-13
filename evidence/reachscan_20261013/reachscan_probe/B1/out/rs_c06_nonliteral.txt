@@ -1,0 +1,68 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • env_hint  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py:22)
+  • call_hint  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py:29)
+  • dict_env_hint  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py:36)
+  • factory_ann  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py:43)
+  • mixed_nonliteral  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py:50)
+
+Capabilities
+------------
+  • SECRETS
+  • WRITE
+
+Combined Risks
+--------------
+  None inferred from combined-capability rules.
+
+Reachability Summary
+--------------------
+     6 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+     2 module-level  — execute on import, not on any call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py:23)
+    path: env_hint
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py:30)
+    path: call_hint
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py:37)
+    path: dict_env_hint
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py:44)
+    path: factory_ann
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via os.remove() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py:51)
+    path: mixed_nonliteral
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] SECRETS via os.environ.get('NOTES_RO') (secrets @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py:14)
+    path: call_hint → is_read_only
+    explanation: This code accesses secrets or credential sources.
+    impact: Credentials may be disclosed and used for unauthorized access.
+
+Other Findings  —  not on LLM call path
+-----------------------------------------
+  [HIGH] MODULE_LEVEL  SECRETS via os.getenv('NOTES_RO') (secrets @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py:35)
+    reachability: Executes on import — runs whenever this module loads
+    explanation: This code accesses secrets or credential sources.
+    impact: Credentials may be disclosed and used for unauthorized access.
+  [HIGH] MODULE_LEVEL  SECRETS via os.environ.get('NOTES_RO') (secrets @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py:21)
+    reachability: Executes on import — runs whenever this module loads
+    explanation: This code accesses secrets or credential sources.
+    impact: Credentials may be disclosed and used for unauthorized access.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

@@ -1,0 +1,150 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:23:32Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c06_http_post_readonly",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 2,
+  "py_entry_points": [
+    {
+      "name": "post_it",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c06_http_post_readonly/server.py",
+      "lineno": 9,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "7075ff687540",
+        "d4b661209bd8"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "delete_remote",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c06_http_post_readonly/server.py",
+      "lineno": 13,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "6968d04492ae"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": false,
+          "source": "default"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "explicit"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "SEND"
+  ],
+  "risks": [],
+  "findings": [
+    {
+      "detector": "network",
+      "finding": {
+        "capability": "SEND",
+        "evidence": "requests.post",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c06_http_post_readonly/server.py",
+        "lineno": 10,
+        "confidence": 0.95,
+        "explanation": "This code can send data over the network to external services.",
+        "impact": "Sensitive local data could be transmitted to untrusted endpoints.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "post_it",
+        "reachability_path": [
+          "post_it"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "7075ff687540",
+        "finding_ref": "network:server.py:10:requests.post"
+      }
+    },
+    {
+      "detector": "network",
+      "finding": {
+        "capability": "SEND",
+        "evidence": "requests.delete",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c06_http_post_readonly/server.py",
+        "lineno": 14,
+        "confidence": 0.95,
+        "explanation": "This code can send data over the network to external services.",
+        "impact": "Sensitive local data could be transmitted to untrusted endpoints.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "delete_remote",
+        "reachability_path": [
+          "delete_remote"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "6968d04492ae",
+        "finding_ref": "network:server.py:14:requests.delete"
+      }
+    },
+    {
+      "detector": "network",
+      "finding": {
+        "capability": "SEND",
+        "evidence": "requests.post -> https://api.example.com/items",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c06_http_post_readonly/server.py",
+        "lineno": 10,
+        "confidence": 0.9,
+        "explanation": "This code can send data over the network to external services.",
+        "impact": "Sensitive local data could be transmitted to untrusted endpoints.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "post_it",
+        "reachability_path": [
+          "post_it"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "d4b661209bd8",
+        "finding_ref": "network:server.py:10:requests.post -> https://api.example.com/items"
+      }
+    }
+  ],
+  "annotation_mismatches": [],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

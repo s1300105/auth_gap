@@ -1,0 +1,9 @@
+num_files_scanned: 1 entry_points_detected: 1
+EP save_static server.py:12 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+FINDING WRITE "with open(..., mode='w')" server.py:13 reachable ep= save_static path= ['StaticTools.save_static']
+FINDING WRITE "with open(..., mode='w')" server.py:28 unreachable ep= None path= None
+FINDING WRITE "with open(..., mode='w')" server.py:33 unreachable ep= None path= None
+FINDING WRITE "with open(..., mode='w')" server.py:41 unreachable ep= None path= None
+MISMATCH save_static read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= decorator ep_line= 12 observed= WRITE "with open(..., mode='w')" line 13 path= ['StaticTools.save_static'] extra_obs= []
+EXPLAIN: (no 'Not checked' block)

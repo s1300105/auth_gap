@@ -1,0 +1,104 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "1a4a5a0bce26174bf65972982b8ccd0776403a72c26fa3cecb5f70b5ce271f01",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {},
+  "mcp_version": {
+    "class": "unknown",
+    "evidence": []
+  },
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.003,
+    "run_id": "local",
+    "src_root": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/rs_entry_verify/new/t1_class_run_spill"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [],
+      "enforcement": {
+        "path": "dynamic_schema",
+        "reason": "登録経路が執行表に無い",
+        "verdict": "D_unknown"
+      },
+      "gate": {},
+      "gate_occ_by_effect": {},
+      "gate_predicate_present": false,
+      "grades": {},
+      "notes": [],
+      "opaque_reasons": [],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {},
+      "req_val": {},
+      "rows": [],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "entry_kind": "method",
+        "framework": "agno",
+        "is_async": false,
+        "lineno": 8,
+        "module": "agent",
+        "params": [],
+        "qualname": "FileTools.list_files",
+        "relpath": "agent.py",
+        "schema_hash": "d36d5fd42096",
+        "tool_name": "list_files",
+        "unit_id": "agno:FileTools.list_files:d36d5fd42096"
+      },
+      "unresolved_in_tree_calls": [],
+      "validator_shapes": []
+    }
+  ],
+  "unresolved_handler": {
+    "count": 0,
+    "sites": []
+  }
+}

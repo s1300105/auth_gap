@@ -1,0 +1,13 @@
+version: 0.4.0 files: 3 eps: 4
+EP t_plain pkg/server.py:14 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP t_alias pkg/server.py:20 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP t_modalias pkg/server.py:26 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP t_dotted pkg/server.py:32 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+FINDING file_access WRITE "with open(..., mode='w')" pkg/io.py:5 high reach=reachable ep=t_plain path=['t_plain', 'save_plain'] 
+FINDING file_access WRITE "with open(..., mode='w')" pkg/io.py:10 high reach=unreachable ep=None path=None 
+FINDING file_access WRITE "with open(..., mode='w')" pkg/io.py:15 high reach=reachable ep=t_modalias path=['t_modalias', 'save_modalias'] 
+FINDING file_access WRITE "with open(..., mode='w')" pkg/io.py:20 high reach=unreachable ep=None path=None 
+MISMATCH t_modalias read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} WRITE "with open(..., mode='w')" pkg/io.py:15 send_kind=None dispatch=decorator path=['t_modalias', 'save_modalias'] extra=[] 
+MISMATCH t_plain read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} WRITE "with open(..., mode='w')" pkg/io.py:5 send_kind=None dispatch=decorator path=['t_plain', 'save_plain'] extra=[] 
+suppression_warnings: []
+risks: []

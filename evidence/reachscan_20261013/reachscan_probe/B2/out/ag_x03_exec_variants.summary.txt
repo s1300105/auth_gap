@@ -1,0 +1,64 @@
+dispatch_sites: []
+unresolved_handler: {"count": 0, "sites": []}
+parse_failures: [] truncations: []
+======================================================================
+UNIT e_asyncio_exec qual= e_asyncio_exec entry_kind= decorator line= 43 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT asyncio.create_subprocess_exec SPAWN SPAWN_CONST_ARGV line 44 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW asyncio.create_subprocess_exec SPAWN argv0 line 44 verdicts= [] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction_unknown:D1:spawn_command'] attributed= -
+  ROW asyncio.create_subprocess_exec SPAWN argv[*] line 44 verdicts= ['GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction_unknown:D1:spawn_command'] attributed= -
+======================================================================
+UNIT e_check_output qual= e_check_output entry_kind= decorator line= 33 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT subprocess.check_output SPAWN SPAWN_CONST_ARGV line 34 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW subprocess.check_output SPAWN argv0 line 34 verdicts= [] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction_unknown:D1:spawn_command'] attributed= -
+  ROW subprocess.check_output SPAWN argv[*] line 34 verdicts= ['GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction_unknown:D1:spawn_command'] attributed= -
+======================================================================
+UNIT e_eval qual= e_eval entry_kind= decorator line= 56 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.eval EXEC EXEC line 57 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW builtins.eval EXEC code_text line 57 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:exec'] attributed= -
+======================================================================
+UNIT e_from_import qual= e_from_import entry_kind= decorator line= 27 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT subprocess.run SPAWN SPAWN_CONST_ARGV line 28 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW subprocess.run SPAWN argv0 line 28 verdicts= [] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction_unknown:D1:spawn_command'] attributed= -
+  ROW subprocess.run SPAWN argv[*] line 28 verdicts= ['GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction_unknown:D1:spawn_command'] attributed= -
+======================================================================
+UNIT e_module_alias qual= e_module_alias entry_kind= decorator line= 21 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT subprocess.run SPAWN SPAWN_CONST_ARGV line 22 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW subprocess.run SPAWN argv0 line 22 verdicts= [] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction_unknown:D1:spawn_command'] attributed= -
+  ROW subprocess.run SPAWN argv[*] line 22 verdicts= ['GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction_unknown:D1:spawn_command'] attributed= -
+======================================================================
+UNIT e_os_popen qual= e_os_popen entry_kind= decorator line= 38 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT os.popen SPAWN SPAWN_MODEL_ARGV line 39 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW os.popen SPAWN shell_string line 39 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:spawn_model'] attributed= -
+======================================================================
+UNIT e_os_system qual= e_os_system entry_kind= decorator line= 50 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT os.system SPAWN SPAWN_MODEL_ARGV line 51 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW os.system SPAWN shell_string line 51 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:spawn_model'] attributed= -
+======================================================================
+UNIT e_subprocess_run qual= e_subprocess_run entry_kind= decorator line= 15 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT subprocess.run SPAWN SPAWN_CONST_ARGV line 16 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW subprocess.run SPAWN argv0 line 16 verdicts= [] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction_unknown:D1:spawn_command'] attributed= -
+  ROW subprocess.run SPAWN argv[*] line 16 verdicts= ['GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction_unknown:D1:spawn_command'] attributed= -

@@ -1,0 +1,153 @@
+{
+ "tools": {
+  "ro_cache_mkdir": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "pathlib.Path.mkdir:FS_WRITE@15(opaque)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@15"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "ro_write_text": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):pathlib.Path.write_text()@21"
+   ],
+   "rs_reach_findings": [
+    "WRITE:pathlib.Path.write_text()@21"
+   ],
+   "ag": {
+    "effects": [
+     "pathlib.Path.write_text:FS_WRITE@21(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@21"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "ro_replace": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):os.replace()@27"
+   ],
+   "rs_reach_findings": [
+    "WRITE:os.replace()@27"
+   ],
+   "ag": {
+    "effects": [
+     "os.replace:FS_WRITE@27(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@27"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "ro_copy": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):shutil.copy()@33"
+   ],
+   "rs_reach_findings": [
+    "WRITE:shutil.copy()@33"
+   ],
+   "ag": {
+    "effects": [
+     "shutil.copy:FS_WRITE@33(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@33"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "nd_cache_mkdir": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "pathlib.Path.mkdir:FS_WRITE@40(opaque)"
+    ],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "nd_write_text": {
+   "rs_mismatch": [
+    "non_destructive_contradicted(medium):pathlib.Path.write_text()@46"
+   ],
+   "rs_reach_findings": [
+    "WRITE:pathlib.Path.write_text()@46"
+   ],
+   "ag": {
+    "effects": [
+     "pathlib.Path.write_text:FS_WRITE@46(resolved)"
+    ],
+    "CONTRA": [
+     "D2:fs_writeout_model_path@46"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "nd_replace": {
+   "rs_mismatch": [
+    "non_destructive_contradicted(medium):os.replace()@52"
+   ],
+   "rs_reach_findings": [
+    "WRITE:os.replace()@52"
+   ],
+   "ag": {
+    "effects": [
+     "os.replace:FS_WRITE@52(resolved)"
+    ],
+    "CONTRA": [
+     "D2:fs_remove@52"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "nd_copy": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [
+    "WRITE:shutil.copy()@58"
+   ],
+   "ag": {
+    "effects": [
+     "shutil.copy:FS_WRITE@58(resolved)"
+    ],
+    "CONTRA": [
+     "D2:fs_writeout_model_path@58"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  }
+ },
+ "rs_not_reachable_findings": []
+}

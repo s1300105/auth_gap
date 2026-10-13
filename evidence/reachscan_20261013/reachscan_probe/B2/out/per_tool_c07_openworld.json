@@ -1,0 +1,112 @@
+{
+ "tools": {
+  "post_nonliteral": {
+   "rs_mismatch": [
+    "closed_world_contradicted(medium):requests.post@14"
+   ],
+   "rs_reach_findings": [
+    "SEND:requests.post@14"
+   ],
+   "ag": {
+    "effects": [
+     "requests.post:NET@14(resolved)"
+    ],
+    "CONTRA": [
+     "D3:net_model_host@14"
+    ],
+    "CONTRA_UNKNOWN": [
+     "D1:net_post@14"
+    ],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "get_loopback": {
+   "rs_mismatch": [
+    "closed_world_contradicted(medium):httpx.get@20"
+   ],
+   "rs_reach_findings": [
+    "SEND:httpx.get@20",
+    "SEND:httpx.get -> http://127.0.0.1:8000/health@20"
+   ],
+   "ag": {
+    "effects": [
+     "httpx.get:NET@20(resolved)"
+    ],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "sock_connect": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [
+    "SEND:socket.socket@26",
+    "SEND:s.connect@27"
+   ],
+   "ag": {
+    "effects": [],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "sock_create_connection": {
+   "rs_mismatch": [
+    "closed_world_contradicted(medium):socket.create_connection@34"
+   ],
+   "rs_reach_findings": [
+    "SEND:socket.create_connection@34"
+   ],
+   "ag": {
+    "effects": [],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "sock_create_connection_loopback": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [
+    "SEND:socket.create_connection@41"
+   ],
+   "ag": {
+    "effects": [],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "get_external_literal": {
+   "rs_mismatch": [
+    "closed_world_contradicted(medium):httpx.get@48"
+   ],
+   "rs_reach_findings": [
+    "SEND:httpx.get@48",
+    "SEND:httpx.get -> https://example.com/@48"
+   ],
+   "ag": {
+    "effects": [
+     "httpx.get:NET@48(resolved)"
+    ],
+    "CONTRA": [
+     "D3:net_external_host@48"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  }
+ },
+ "rs_not_reachable_findings": []
+}

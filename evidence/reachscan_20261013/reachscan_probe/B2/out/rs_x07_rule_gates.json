@@ -1,0 +1,457 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:54:21Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 6,
+  "py_entry_points": [
+    {
+      "name": "g_destr_only",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+      "lineno": 13,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "01db4837504c"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": false,
+          "source": "default"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "explicit"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "g_ro_and_nd",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+      "lineno": 19,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "e4f6829bf34e"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "explicit"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "g_ro_false_only",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+      "lineno": 25,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "af635028c4cd"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": false,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": true,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "g_ro_http_delete",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+      "lineno": 31,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "5a2dc1debd75"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "g_ro_http_post",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+      "lineno": 36,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "a80077b9476d"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "g_cw_spawn",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+      "lineno": 41,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "777598ea1c0b"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": false,
+          "source": "explicit"
+        }
+      }
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "EXECUTE",
+    "SEND",
+    "WRITE"
+  ],
+  "risks": [
+    {
+      "id": "data_exfiltration",
+      "title": "Data Exfiltration Risk",
+      "severity": "high",
+      "why": "The code can both access/change local files and send data externally.",
+      "capabilities_triggered": [
+        "SEND",
+        "WRITE"
+      ]
+    },
+    {
+      "id": "remote_control",
+      "title": "Remote Control Risk",
+      "severity": "high",
+      "why": "The code can execute commands and communicate over the network.",
+      "capabilities_triggered": [
+        "EXECUTE",
+        "SEND"
+      ]
+    },
+    {
+      "id": "destructive_agent",
+      "title": "Destructive Agent Risk",
+      "severity": "high",
+      "why": "The code can execute commands and perform destructive file actions.",
+      "capabilities_triggered": [
+        "EXECUTE",
+        "WRITE"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "detector": "shell_exec",
+      "finding": {
+        "capability": "EXECUTE",
+        "evidence": "subprocess.run()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+        "lineno": 42,
+        "confidence": 0.95,
+        "explanation": "This code can execute shell or interpreter commands on the host.",
+        "impact": "A malicious prompt could run destructive commands, install malware, or alter the environment.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "g_cw_spawn",
+        "reachability_path": [
+          "g_cw_spawn"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "777598ea1c0b",
+        "finding_ref": "shell_exec:server.py:42:subprocess.run()"
+      }
+    },
+    {
+      "detector": "network",
+      "finding": {
+        "capability": "SEND",
+        "evidence": "requests.delete",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+        "lineno": 32,
+        "confidence": 0.95,
+        "explanation": "This code can send data over the network to external services.",
+        "impact": "Sensitive local data could be transmitted to untrusted endpoints.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "g_ro_http_delete",
+        "reachability_path": [
+          "g_ro_http_delete"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "5a2dc1debd75",
+        "finding_ref": "network:server.py:32:requests.delete"
+      }
+    },
+    {
+      "detector": "network",
+      "finding": {
+        "capability": "SEND",
+        "evidence": "requests.post",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+        "lineno": 37,
+        "confidence": 0.95,
+        "explanation": "This code can send data over the network to external services.",
+        "impact": "Sensitive local data could be transmitted to untrusted endpoints.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "g_ro_http_post",
+        "reachability_path": [
+          "g_ro_http_post"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "a80077b9476d",
+        "finding_ref": "network:server.py:37:requests.post"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+        "lineno": 14,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "g_destr_only",
+        "reachability_path": [
+          "g_destr_only"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "01db4837504c",
+        "finding_ref": "file_access:server.py:14:os.remove()"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+        "lineno": 20,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "g_ro_and_nd",
+        "reachability_path": [
+          "g_ro_and_nd"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "e4f6829bf34e",
+        "finding_ref": "file_access:server.py:20:os.remove()"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+        "lineno": 26,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "g_ro_false_only",
+        "reachability_path": [
+          "g_ro_false_only"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "af635028c4cd",
+        "finding_ref": "file_access:server.py:26:os.remove()"
+      }
+    }
+  ],
+  "annotation_mismatches": [
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "read_only_contradicted",
+      "risk_level": "high",
+      "tool": "g_cw_spawn",
+      "entry_point": {
+        "name": "g_cw_spawn",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+        "lineno": 41,
+        "dispatch": "decorator"
+      },
+      "declared": {
+        "hint": "readOnlyHint",
+        "value": true
+      },
+      "observed": {
+        "capability": "EXECUTE",
+        "evidence": "subprocess.run()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+        "lineno": 42,
+        "finding_id": "777598ea1c0b"
+      },
+      "reachability_path": [
+        "g_cw_spawn"
+      ],
+      "message": "Tool 'g_cw_spawn' declares readOnlyHint: true, but a call path from the tool reaches EXECUTE via subprocess.run().",
+      "mismatch_id": "9b5198097c24",
+      "additional_observations": []
+    },
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "read_only_contradicted",
+      "risk_level": "high",
+      "tool": "g_ro_and_nd",
+      "entry_point": {
+        "name": "g_ro_and_nd",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+        "lineno": 19,
+        "dispatch": "decorator"
+      },
+      "declared": {
+        "hint": "readOnlyHint",
+        "value": true
+      },
+      "observed": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+        "lineno": 20,
+        "finding_id": "e4f6829bf34e"
+      },
+      "reachability_path": [
+        "g_ro_and_nd"
+      ],
+      "message": "Tool 'g_ro_and_nd' declares readOnlyHint: true, but a call path from the tool reaches WRITE via os.remove().",
+      "mismatch_id": "0fc12b14ca67",
+      "additional_observations": []
+    },
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "non_destructive_contradicted",
+      "risk_level": "medium",
+      "tool": "g_destr_only",
+      "entry_point": {
+        "name": "g_destr_only",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+        "lineno": 13,
+        "dispatch": "decorator"
+      },
+      "declared": {
+        "hint": "destructiveHint",
+        "value": false
+      },
+      "observed": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py",
+        "lineno": 14,
+        "finding_id": "01db4837504c"
+      },
+      "reachability_path": [
+        "g_destr_only"
+      ],
+      "message": "Tool 'g_destr_only' declares destructiveHint: false, but a call path from the tool reaches WRITE via os.remove().",
+      "mismatch_id": "fe0d5a47f22d",
+      "additional_observations": []
+    }
+  ],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

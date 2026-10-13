@@ -1,0 +1,14 @@
+dispatch_sites: [{"candidates": ["f.write", "open", "types.TextContent"], "form": "if_chain", "lineno": 38, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}, {"candidates": ["f.write", "open", "types.TextContent"], "form": "if_chain", "lineno": 38, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}, {"candidates": ["_erase", "types.TextContent"], "form": "if_chain", "lineno": 42, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}, {"candidates": ["_erase", "types.TextContent"], "form": "if_chain", "lineno": 42, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}]
+unresolved_handler: {"count": 0, "sites": []}
+parse_failures: [] truncations: []
+======================================================================
+UNIT None qual= serve.call_tool entry_kind= lowlevel_v1 line= 37 ann_form= None ann= None
+  unit.dispatch_names = ["erase", "save"]
+  dispatch_join = {"attribution": {"0": ["save"], "1": ["erase"]}, "effects_all_tools": [], "tools": ["erase", "save"], "unjoined_literals": 0}
+  D_kind: {"bottom": true, "explicit": ["readOnlyHint"], "present_no_bound": ["destructiveHint", "readOnlyHint"]}
+  trig: {'label': 'MODEL', 'mode': 'traced', 'via': {'candidates': ['f.write', 'open', 'types.TextContent'], 'form': 'if_chain', 'lineno': 38, 'opaque_reason': None, 'relpath': 'server.py', 'resolution': 'resolved', 'selector': 'name', 'selector_is_model': True}} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_WRITE FS_WRITE line 39 destructive= True fs_mode= w res= resolved form= direct chain= None attributed= - opaque= -
+  EFFECT os.remove FS_WRITE FS_WRITE line 13 destructive= True fs_mode= - res= resolved form= direct chain= ['_erase'] attributed= - opaque= -
+  ROW builtins.open FS_WRITE path line 39 verdicts= ['CONTRADICTION', 'GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= ['kind'] notes= ['contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
+  ROW os.remove FS_WRITE path line 13 verdicts= ['GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= ['kind_no_bound'] notes= None attributed= -

@@ -1,0 +1,10 @@
+num_files_scanned: 1 entry_points_detected: 2
+EP list_tools server.py:38 mcp decorator 0.8 reachable_findings= 0
+   declared_tool: in_tuple line 44 {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+   declared_tool: dict_dispatch line 46 {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+   declared_tool: module_listed line 10 {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+EP call_tool server.py:52 mcp decorator 0.8 reachable_findings= 1
+FINDING WRITE "with open(..., mode='w')" server.py:23 unreachable ep= None path= None
+FINDING WRITE "with open(..., mode='w')" server.py:32 reachable ep= call_tool path= ['call_tool', '_write']
+MISMATCH module_listed read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= lowlevel ep_line= 52 observed= WRITE "with open(..., mode='w')" line 32 path= ['call_tool', '_write'] extra_obs= []
+EXPLAIN: (no 'Not checked' block)

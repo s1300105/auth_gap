@@ -1,0 +1,46 @@
+{
+ "tools": {
+  "ro_write_suppressed": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):with open(..., mode='w')@12 [suppressed]"
+   ],
+   "rs_reach_findings": [
+    "WRITE:with open(..., mode='w')@12"
+   ],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@12(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@12"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "cw_get_send_suppressed": {
+   "rs_mismatch": [
+    "closed_world_contradicted(medium):requests.get@19"
+   ],
+   "rs_reach_findings": [
+    "SEND:requests.get@19"
+   ],
+   "ag": {
+    "effects": [
+     "requests.get:NET@19(resolved)"
+    ],
+    "CONTRA": [
+     "D3:net_model_host@19"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "receiver",
+     "unresolved"
+    ]
+   }
+  }
+ },
+ "rs_not_reachable_findings": []
+}

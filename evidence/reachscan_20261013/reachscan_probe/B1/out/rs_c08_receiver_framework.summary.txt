@@ -1,0 +1,10 @@
+num_files_scanned: 1 entry_points_detected: 3
+EP via_constructor server.py:21 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+EP via_external_factory server.py:28 langchain_or_crewai decorator 0.6 reachable_findings= 1
+EP via_local_factory server.py:35 langchain_or_crewai decorator 0.6 reachable_findings= 1
+FINDING WRITE "with open(..., mode='w')" server.py:22 reachable ep= via_constructor path= ['via_constructor']
+FINDING WRITE "with open(..., mode='w')" server.py:29 reachable ep= via_external_factory path= ['via_external_factory']
+FINDING WRITE "with open(..., mode='w')" server.py:36 reachable ep= via_local_factory path= ['via_local_factory']
+MISMATCH via_constructor read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= decorator ep_line= 21 observed= WRITE "with open(..., mode='w')" line 22 path= ['via_constructor'] extra_obs= []
+EXPLAIN: (no 'Not checked' block)

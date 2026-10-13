@@ -1,0 +1,38 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • wplus  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c09_open_wplus/server.py:9)
+  • mode_var  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c09_open_wplus/server.py:14)
+
+Capabilities
+------------
+  • READ
+
+Combined Risks
+--------------
+  None inferred from combined-capability rules.
+
+Reachability Summary
+--------------------
+     2 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [MEDIUM] READ via with open(..., mode='w+') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c09_open_wplus/server.py:10)
+    call chain:
+      wplus
+    explanation: This code can read local files from the filesystem.
+    impact: Private files may be exposed to later processing or exfiltration.
+  [MEDIUM] READ via open(..., mode='') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c09_open_wplus/server.py:15)
+    call chain:
+      mode_var
+    explanation: This code can read local files from the filesystem.
+    impact: Private files may be exposed to later processing or exfiltration.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c09_open_wplus
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

@@ -1,0 +1,85 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • post_nonliteral  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:13)
+  • get_loopback  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:19)
+  • sock_connect  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:25)
+  • sock_create_connection  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:33)
+  • sock_create_connection_loopback  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:40)
+  • get_external_literal  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:47)
+
+Capabilities
+------------
+  • SEND
+
+Combined Risks
+--------------
+  None inferred from combined-capability rules.
+
+Annotation Mismatches  —  MCP tool annotations contradicted by reachable code
+-----------------------------------------------------------------------------
+  [MEDIUM] get_external_literal declares openWorldHint: false
+    reaches outbound HTTP call: httpx.get (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:48)
+    path: get_external_literal → httpx.get
+    (+1 more contradicting call site; use --explain)
+  [MEDIUM] get_loopback declares openWorldHint: false
+    reaches outbound HTTP call: httpx.get (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:20)
+    path: get_loopback → httpx.get
+    (+1 more contradicting call site; use --explain)
+  [MEDIUM] post_nonliteral declares openWorldHint: false
+    reaches outbound HTTP call: requests.post (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:14)
+    path: post_nonliteral → requests.post
+  [MEDIUM] sock_create_connection declares openWorldHint: false
+    reaches outbound socket call: socket.create_connection (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:34)
+    path: sock_create_connection → socket.create_connection
+
+Reachability Summary
+--------------------
+     9 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] SEND via requests.post (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:14)
+    path: post_nonliteral
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+  [HIGH] SEND via httpx.get (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:20)
+    path: get_loopback
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+  [HIGH] SEND via socket.socket (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:26)
+    path: sock_connect
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+  [HIGH] SEND via s.connect (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:27)
+    path: sock_connect
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+  [HIGH] SEND via socket.create_connection (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:34)
+    path: sock_create_connection
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+  [HIGH] SEND via socket.create_connection (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:41)
+    path: sock_create_connection_loopback
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+  [HIGH] SEND via httpx.get (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:48)
+    path: get_external_literal
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+  [HIGH] SEND via httpx.get -> http://127.0.0.1:8000/health (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:20)
+    path: get_loopback
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+  [HIGH] SEND via httpx.get -> https://example.com/ (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld/server.py:48)
+    path: get_external_literal
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c07_openworld
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

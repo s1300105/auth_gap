@@ -1,0 +1,51 @@
+{
+ "tools": {
+  "rename_user": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "psycopg.Cursor.execute:DB@15(resolved)"
+    ],
+    "CONTRA": [
+     "D1:db_modify@15"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "list_users": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "psycopg.Cursor.execute:DB@24(resolved)"
+    ],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "drop_user": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "psycopg.Cursor.execute:DB@31(resolved)"
+    ],
+    "CONTRA": [
+     "D2:db_modify@31"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  }
+ },
+ "rs_not_reachable_findings": []
+}

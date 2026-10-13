@@ -1,0 +1,61 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • ro_write_suppressed  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression/server.py:11)
+  • cw_get_send_suppressed  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression/server.py:18)
+
+Capabilities
+------------
+  • SEND
+  • WRITE
+
+Combined Risks
+--------------
+  [HIGH] Data Exfiltration Risk
+    why: The code can both access/change local files and send data externally.
+    capabilities: SEND, WRITE
+    all findings suppressed:
+      - SEND via requests.get (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression/server.py:19): probe B2 suppression test
+      - WRITE via with open(..., mode='w') (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression/server.py:12): probe B2 suppression test
+
+Annotation Mismatches  —  MCP tool annotations contradicted by reachable code
+-----------------------------------------------------------------------------
+  [HIGH] SUPPRESSED  ro_write_suppressed declares readOnlyHint: true
+    suppressed: probe B2 suppression test (line 9; doesn't affect the exit code)
+    but reaches WRITE via with open(..., mode='w') (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression/server.py:12)
+    call chain:
+      ro_write_suppressed
+      → with open(..., mode='w')
+  [MEDIUM] cw_get_send_suppressed declares openWorldHint: false
+    reaches outbound HTTP call: requests.get (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression/server.py:19)
+    call chain:
+      cw_get_send_suppressed
+      → requests.get
+
+Reachability Summary
+--------------------
+     2 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+     2 suppressed    — allowed by a reachscan:allow comment (also counted above)
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] SUPPRESSED  SEND via requests.get (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression/server.py:19)
+    suppressed: probe B2 suppression test (line 19; doesn't affect the exit code)
+    call chain:
+      cw_get_send_suppressed
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+  [HIGH] SUPPRESSED  WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression/server.py:12)
+    suppressed: probe B2 suppression test (line 12; doesn't affect the exit code)
+    call chain:
+      ro_write_suppressed
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

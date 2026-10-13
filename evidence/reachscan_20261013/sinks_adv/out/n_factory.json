@@ -1,0 +1,270 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:38:32Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_adv/cases/n_factory",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 2,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 4,
+  "py_entry_points": [
+    {
+      "name": "cw_factory_var",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_adv/cases/n_factory/server.py",
+      "lineno": 9,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "949b5e04176c"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": false,
+          "source": "default"
+        },
+        "destructiveHint": {
+          "value": true,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": false,
+          "source": "explicit"
+        }
+      }
+    },
+    {
+      "name": "cw_factory_chain",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_adv/cases/n_factory/server.py",
+      "lineno": 15,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "225629d2cd36"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": false,
+          "source": "default"
+        },
+        "destructiveHint": {
+          "value": true,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": false,
+          "source": "explicit"
+        }
+      }
+    },
+    {
+      "name": "cw_factory_tryimport",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_adv/cases/n_factory/server.py",
+      "lineno": 20,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "1898cd7a8f5a"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": false,
+          "source": "default"
+        },
+        "destructiveHint": {
+          "value": true,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": false,
+          "source": "explicit"
+        }
+      }
+    },
+    {
+      "name": "cw_factory_two_hop",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_adv/cases/n_factory/server.py",
+      "lineno": 26,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": false,
+          "source": "default"
+        },
+        "destructiveHint": {
+          "value": true,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": false,
+          "source": "explicit"
+        }
+      }
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "SEND"
+  ],
+  "risks": [],
+  "findings": [
+    {
+      "detector": "network",
+      "finding": {
+        "capability": "SEND",
+        "evidence": "helpers.make_httpx_tryimport",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_adv/cases/n_factory/server.py",
+        "lineno": 21,
+        "confidence": 0.8,
+        "explanation": "This code can send data over the network to external services.",
+        "impact": "Sensitive local data could be transmitted to untrusted endpoints.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "cw_factory_tryimport",
+        "reachability_path": [
+          "cw_factory_tryimport"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "1898cd7a8f5a",
+        "finding_ref": "network:server.py:21:helpers.make_httpx_tryimport"
+      }
+    },
+    {
+      "detector": "network",
+      "finding": {
+        "capability": "SEND",
+        "evidence": "requests.Session.get (client from make_req())",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_adv/cases/n_factory/server.py",
+        "lineno": 11,
+        "confidence": 0.9,
+        "explanation": "This code can send data over the network to external services.",
+        "impact": "Sensitive local data could be transmitted to untrusted endpoints.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "cw_factory_var",
+        "reachability_path": [
+          "cw_factory_var"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "949b5e04176c",
+        "finding_ref": "network:server.py:11:requests.Session.get (client from make_req())"
+      }
+    },
+    {
+      "detector": "network",
+      "finding": {
+        "capability": "SEND",
+        "evidence": "requests.Session.get (client from make_req())",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_adv/cases/n_factory/server.py",
+        "lineno": 16,
+        "confidence": 0.9,
+        "explanation": "This code can send data over the network to external services.",
+        "impact": "Sensitive local data could be transmitted to untrusted endpoints.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "cw_factory_chain",
+        "reachability_path": [
+          "cw_factory_chain"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "225629d2cd36",
+        "finding_ref": "network:server.py:16:requests.Session.get (client from make_req())"
+      }
+    }
+  ],
+  "annotation_mismatches": [
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "closed_world_contradicted",
+      "risk_level": "medium",
+      "tool": "cw_factory_chain",
+      "entry_point": {
+        "name": "cw_factory_chain",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_adv/cases/n_factory/server.py",
+        "lineno": 15,
+        "dispatch": "decorator"
+      },
+      "declared": {
+        "hint": "openWorldHint",
+        "value": false
+      },
+      "observed": {
+        "capability": "SEND",
+        "send_kind": "HTTP",
+        "evidence": "requests.Session.get (client from make_req())",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_adv/cases/n_factory/server.py",
+        "lineno": 16,
+        "finding_id": "225629d2cd36"
+      },
+      "reachability_path": [
+        "cw_factory_chain"
+      ],
+      "message": "Tool 'cw_factory_chain' declares openWorldHint: false; reaches outbound HTTP call: requests.Session.get (client from make_req()).",
+      "mismatch_id": "290df406a697",
+      "additional_observations": []
+    },
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "closed_world_contradicted",
+      "risk_level": "medium",
+      "tool": "cw_factory_var",
+      "entry_point": {
+        "name": "cw_factory_var",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_adv/cases/n_factory/server.py",
+        "lineno": 9,
+        "dispatch": "decorator"
+      },
+      "declared": {
+        "hint": "openWorldHint",
+        "value": false
+      },
+      "observed": {
+        "capability": "SEND",
+        "send_kind": "HTTP",
+        "evidence": "requests.Session.get (client from make_req())",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_adv/cases/n_factory/server.py",
+        "lineno": 11,
+        "finding_id": "949b5e04176c"
+      },
+      "reachability_path": [
+        "cw_factory_var"
+      ],
+      "message": "Tool 'cw_factory_var' declares openWorldHint: false; reaches outbound HTTP call: requests.Session.get (client from make_req()).",
+      "mismatch_id": "52930f079863",
+      "additional_observations": []
+    }
+  ],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

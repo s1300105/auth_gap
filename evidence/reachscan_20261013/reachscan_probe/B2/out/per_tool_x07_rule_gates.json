@@ -1,0 +1,120 @@
+{
+ "tools": {
+  "g_destr_only": {
+   "rs_mismatch": [
+    "non_destructive_contradicted(medium):os.remove()@14"
+   ],
+   "rs_reach_findings": [
+    "WRITE:os.remove()@14"
+   ],
+   "ag": {
+    "effects": [
+     "os.remove:FS_WRITE@14(resolved)"
+    ],
+    "CONTRA": [
+     "D2:fs_remove@14"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "g_ro_and_nd": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):os.remove()@20"
+   ],
+   "rs_reach_findings": [
+    "WRITE:os.remove()@20"
+   ],
+   "ag": {
+    "effects": [
+     "os.remove:FS_WRITE@20(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@20"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "g_ro_false_only": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [
+    "WRITE:os.remove()@26"
+   ],
+   "ag": {
+    "effects": [
+     "os.remove:FS_WRITE@26(resolved)"
+    ],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "g_ro_http_delete": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [
+    "SEND:requests.delete@32"
+   ],
+   "ag": {
+    "effects": [
+     "requests.delete:NET@32(resolved)"
+    ],
+    "CONTRA": [
+     "D1:net_modify@32"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "receiver",
+     "unresolved"
+    ]
+   }
+  },
+  "g_ro_http_post": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [
+    "SEND:requests.post@37"
+   ],
+   "ag": {
+    "effects": [
+     "requests.post:NET@37(resolved)"
+    ],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [
+     "D1:net_post@37"
+    ],
+    "opaque_reasons": [
+     "receiver",
+     "unresolved"
+    ]
+   }
+  },
+  "g_cw_spawn": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):subprocess.run()@42"
+   ],
+   "rs_reach_findings": [
+    "EXECUTE:subprocess.run()@42"
+   ],
+   "ag": {
+    "effects": [
+     "subprocess.run:SPAWN@42(resolved)"
+    ],
+    "CONTRA": [
+     "D1:spawn_model@42",
+     "D3:spawn_model@42"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  }
+ },
+ "rs_not_reachable_findings": []
+}

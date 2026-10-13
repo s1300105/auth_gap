@@ -1,0 +1,159 @@
+{
+ "tools": {
+  "m_w": {
+   "rs_mismatch": [
+    "read_only_contradicted(high):with open(..., mode='w')@14"
+   ],
+   "rs_reach_findings": [
+    "WRITE:with open(..., mode='w')@14"
+   ],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@14(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@14"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "m_wplus": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [
+    "READ:with open(..., mode='w+')@21"
+   ],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@21(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@21"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "m_aplus": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [
+    "READ:with open(..., mode='a+')@28"
+   ],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@28(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@28"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "m_rplus": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [
+    "READ:with open(..., mode='r+')@35"
+   ],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@35(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@35"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "m_wt": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [
+    "READ:with open(..., mode='wt')@42"
+   ],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@42(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@42"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "m_modevar": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [
+    "READ:with open(..., mode='')@50"
+   ],
+   "ag": {
+    "effects": [
+     "builtins.open:FS_WRITE@50(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@50"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "m_path_open": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "pathlib.Path.open:FS_WRITE@57(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@57"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "m_io_open": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [
+     "io.open:FS_WRITE@64(resolved)"
+    ],
+    "CONTRA": [
+     "D1:fs_write@64"
+    ],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  },
+  "m_os_open": {
+   "rs_mismatch": [],
+   "rs_reach_findings": [],
+   "ag": {
+    "effects": [],
+    "CONTRA": [],
+    "CONTRA_UNKNOWN": [],
+    "opaque_reasons": [
+     "unresolved"
+    ]
+   }
+  }
+ },
+ "rs_not_reachable_findings": []
+}

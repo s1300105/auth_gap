@@ -1,0 +1,23 @@
+dispatch_sites: [{"candidates": ["TextContent", "f.read", "open"], "form": "if_chain", "lineno": 36, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}, {"candidates": ["f.write", "open"], "form": "if_chain", "lineno": 40, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}]
+unresolved_handler: {"count": 0, "sites": []}
+parse_failures: [] truncations: []
+======================================================================
+UNIT None qual= call_tool entry_kind= lowlevel_v1 line= 32 ann_form= None ann= None
+  unit.dispatch_names = ["read_note", "write_note"]
+  dispatch_join = {"attribution": {"0": ["read_note", "write_note"], "1": ["read_note"], "2": ["write_note"]}, "effects_all_tools": [0], "tools": ["read_note", "write_note"], "unjoined_literals": 1}
+  D_kind: {"bottom": true, "explicit": ["readOnlyHint"], "present_no_bound": ["destructiveHint", "readOnlyHint"]}
+  trig: {'label': 'MODEL', 'mode': 'traced', 'via': {'candidates': ['TextContent', 'f.read', 'open'], 'form': 'if_chain', 'lineno': 36, 'opaque_reason': None, 'relpath': 'server.py', 'resolution': 'resolved', 'selector': 'name', 'selector_is_model': True}} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT os.remove FS_WRITE FS_WRITE line 35 destructive= True fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  EFFECT builtins.open FS_READ FS_READ line 38 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  EFFECT builtins.open FS_WRITE FS_WRITE line 42 destructive= True fs_mode= w res= resolved form= direct chain= None attributed= - opaque= -
+  ROW os.remove FS_WRITE path line 35 verdicts= ['CONTRADICTION', 'GAP_SELECT'] covered_by= None D_layer= ['kind_no_bound'] notes= ['contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
+  ROW builtins.open FS_READ path line 38 verdicts= ['GAP_INJECT', 'INVENTORY'] covered_by= kind D_layer= ['kind'] notes= ['D_layer_present:kind:FS_READ'] attributed= -
+  ROW builtins.open FS_WRITE path line 42 verdicts= ['GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= ['kind_no_bound'] notes= None attributed= -
+======================================================================
+UNIT deco_read qual= deco_read entry_kind= decorator line= 50 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_READ FS_READ line 51 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW builtins.open FS_READ path line 51 verdicts= ['GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'D_layer_present:kind:FS_READ'] attributed= -

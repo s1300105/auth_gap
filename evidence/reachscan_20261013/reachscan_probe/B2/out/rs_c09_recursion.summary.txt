@@ -1,0 +1,9 @@
+version: 0.4.0 files: 1 eps: 2
+EP self_recursive server.py:31 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP mutual_recursive server.py:36 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+FINDING file_access WRITE "with open(..., mode='w')" server.py:10 high reach=reachable ep=self_recursive path=['self_recursive', 'walk'] 
+FINDING file_access WRITE "with open(..., mode='w')" server.py:24 high reach=reachable ep=mutual_recursive path=['mutual_recursive', 'ping', 'pong'] 
+MISMATCH mutual_recursive read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} WRITE "with open(..., mode='w')" server.py:24 send_kind=None dispatch=decorator path=['mutual_recursive', 'ping', 'pong'] extra=[] 
+MISMATCH self_recursive read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} WRITE "with open(..., mode='w')" server.py:10 send_kind=None dispatch=decorator path=['self_recursive', 'walk'] extra=[] 
+suppression_warnings: []
+risks: []

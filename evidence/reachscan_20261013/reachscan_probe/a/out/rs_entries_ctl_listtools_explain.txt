@@ -1,0 +1,52 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • git_log  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools/server.py:15)
+  • run_shell  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools/server.py:21)
+  • handle_call_tool  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools/server.py:26)
+  • handle_list_tools  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools/server.py:58)
+
+Capabilities
+------------
+  • EXECUTE
+
+Combined Risks
+--------------
+  None inferred from combined-capability rules.
+
+Annotation Mismatches  —  MCP tool annotations contradicted by reachable code
+-----------------------------------------------------------------------------
+  [HIGH] git_log declares readOnlyHint: true
+    but reaches EXECUTE via subprocess.run() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools/server.py:17)
+    call chain:
+      handle_call_tool
+      → git_log
+      → subprocess.run()
+
+  Not checked (annotations couldn't be resolved statically):
+    • run_shell (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools/server.py:41): readOnlyHint, destructiveHint — non-literal or SDK-version-dependent hint values
+
+Reachability Summary
+--------------------
+     2 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] EXECUTE via subprocess.run() (shell_exec @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools/server.py:17)
+    call chain:
+      git_log
+    explanation: This code can execute shell or interpreter commands on the host.
+    impact: A malicious prompt could run destructive commands, install malware, or alter the environment.
+  [HIGH] EXECUTE via subprocess.run() (shell_exec @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools/server.py:22)
+    call chain:
+      _run_shell
+    explanation: This code can execute shell or interpreter commands on the host.
+    impact: A malicious prompt could run destructive commands, install malware, or alter the environment.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/synthetic/entries_ctl_listtools
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

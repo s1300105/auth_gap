@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "pkg/slow.py"
+                },
+                "region": {
+                  "startLine": 2
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION FS_WRITE@path via builtins.open (direct); chain=save"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "opaque",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:cond_import_write:b1ef559040e6",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "save"
+            ]
+          },
+          "ruleId": "CONTRADICTION:path"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "pkg/slow.py"
+                },
+                "region": {
+                  "startLine": 2
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT FS_WRITE@path via builtins.open (direct); chain=save"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "opaque",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:cond_import_write:b1ef559040e6",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "save"
+            ]
+          },
+          "ruleId": "GAP_INJECT:path"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "pkg/slow.py"
+                },
+                "region": {
+                  "startLine": 2
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "UNKNOWN FS_WRITE@path via builtins.open (direct); chain=save"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "opaque",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:cond_import_write:b1ef559040e6",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "save"
+            ]
+          },
+          "ruleId": "UNKNOWN:path"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "informationUri": "https://github.com/s1300105/auth_gap",
+          "name": "AuthGap",
+          "rules": [
+            {
+              "fullDescription": {
+                "text": "CONTRADICTION on slot path"
+              },
+              "id": "CONTRADICTION:path",
+              "shortDescription": {
+                "text": "CONTRADICTION"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "GAP_INJECT on slot path"
+              },
+              "id": "GAP_INJECT:path",
+              "shortDescription": {
+                "text": "GAP_INJECT"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "UNKNOWN on slot path"
+              },
+              "id": "UNKNOWN:path",
+              "shortDescription": {
+                "text": "UNKNOWN"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}

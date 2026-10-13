@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:32:23Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/cg_verify_1012/cases/c07b_importas",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 3,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 1,
+  "py_entry_points": [
+    {
+      "name": "wipe",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/cg_verify_1012/cases/c07b_importas/server.py",
+      "lineno": 12,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "2d90f169d8c4"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "WRITE"
+  ],
+  "risks": [],
+  "findings": [
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/cg_verify_1012/cases/c07b_importas/pkg/ops.py",
+        "lineno": 5,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "wipe",
+        "reachability_path": [
+          "wipe",
+          "purge"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "2d90f169d8c4",
+        "finding_ref": "file_access:pkg/ops.py:5:os.remove()"
+      }
+    }
+  ],
+  "annotation_mismatches": [
+    {
+      "rule_id": "mcp-risk-mismatch",
+      "rule": "read_only_contradicted",
+      "risk_level": "high",
+      "tool": "wipe",
+      "entry_point": {
+        "name": "wipe",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/cg_verify_1012/cases/c07b_importas/server.py",
+        "lineno": 12,
+        "dispatch": "decorator"
+      },
+      "declared": {
+        "hint": "readOnlyHint",
+        "value": true
+      },
+      "observed": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/cg_verify_1012/cases/c07b_importas/pkg/ops.py",
+        "lineno": 5,
+        "finding_id": "2d90f169d8c4"
+      },
+      "reachability_path": [
+        "wipe",
+        "purge"
+      ],
+      "message": "Tool 'wipe' declares readOnlyHint: true, but a call path from the tool reaches WRITE via os.remove().",
+      "mismatch_id": "d0a85efd3db2",
+      "additional_observations": []
+    }
+  ],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

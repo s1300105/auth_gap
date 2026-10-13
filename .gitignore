@@ -62,6 +62,11 @@ __pycache__/
 !evidence/owasp_mcp_20261009/
 # 深さを決める予備調査（D74）
 !evidence/v4pilot_depth/
+# reachscan（2026-10-05 に注釈の照合を入れた OSS）の詳説の元データ。合成ケースと、reachscan 0.4.0 / AuthGap の生出力
+# （research_notes/AuthGap 類似研究 検索/08_reachscan_deep_dive.md）。評価・練習のデータは入っていない
+!evidence/reachscan_20261013/
+# 上の中の n04b_venv は「走査から除いた .venv に import を結ぶか」を試すケースで、偽の .venv そのものが入力
+!evidence/reachscan_20261013/cg_verify_1012/cases_new/n04b_venv/.venv/
 evidence/determinism_v2/*.err
 
 # 先行研究の PDF 置き場。**公開 repo なので著作物は入れない**（docs/related_work.md の規則 2）。

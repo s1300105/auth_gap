@@ -1,0 +1,863 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "reachscan",
+          "version": "0.4.0",
+          "informationUri": "https://github.com/vinmay/reachscan",
+          "rules": [
+            {
+              "id": "reachscan/EXECUTE",
+              "name": "Execute",
+              "shortDescription": {
+                "text": "EXECUTE capability"
+              },
+              "fullDescription": {
+                "text": "This code can execute shell or interpreter commands on the host."
+              },
+              "help": {
+                "text": "This code can execute shell or interpreter commands on the host. A malicious prompt could run destructive commands, install malware, or alter the environment."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "execute"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/SEND",
+              "name": "Send",
+              "shortDescription": {
+                "text": "SEND capability"
+              },
+              "fullDescription": {
+                "text": "This code can send data over the network to external services."
+              },
+              "help": {
+                "text": "This code can send data over the network to external services. Sensitive local data could be transmitted to untrusted endpoints."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "send"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/READ",
+              "name": "Read",
+              "shortDescription": {
+                "text": "READ capability"
+              },
+              "fullDescription": {
+                "text": "This code can read local files from the filesystem."
+              },
+              "help": {
+                "text": "This code can read local files from the filesystem. Private files may be exposed to later processing or exfiltration."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "read"
+                ],
+                "security-severity": "5.0"
+              }
+            },
+            {
+              "id": "reachscan/WRITE",
+              "name": "Write",
+              "shortDescription": {
+                "text": "WRITE capability"
+              },
+              "fullDescription": {
+                "text": "This code can write, modify, move, or delete files."
+              },
+              "help": {
+                "text": "This code can write, modify, move, or delete files. An unsafe prompt could tamper with project files or remove important data."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "write"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/SECRETS",
+              "name": "Secrets",
+              "shortDescription": {
+                "text": "SECRETS capability"
+              },
+              "fullDescription": {
+                "text": "This code accesses secrets or credential sources."
+              },
+              "help": {
+                "text": "This code accesses secrets or credential sources. Credentials may be disclosed and used for unauthorized access."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "secrets"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/DYNAMIC",
+              "name": "Dynamic",
+              "shortDescription": {
+                "text": "DYNAMIC capability"
+              },
+              "fullDescription": {
+                "text": "This code performs dynamic execution or runtime code loading."
+              },
+              "help": {
+                "text": "This code performs dynamic execution or runtime code loading. Untrusted input could become executable code, increasing compromise risk."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "dynamic"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/AUTONOMY",
+              "name": "Autonomy",
+              "shortDescription": {
+                "text": "AUTONOMY capability"
+              },
+              "fullDescription": {
+                "text": "This code can schedule or continue actions without direct user interaction."
+              },
+              "help": {
+                "text": "This code can schedule or continue actions without direct user interaction. Risky behavior may repeat in the background after the initiating prompt."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "autonomy"
+                ],
+                "security-severity": "5.0"
+              }
+            },
+            {
+              "id": "mcp-risk-mismatch",
+              "name": "McpRiskMismatch",
+              "shortDescription": {
+                "text": "MCP tool annotation contradicted by reachable code"
+              },
+              "fullDescription": {
+                "text": "An MCP tool explicitly declares a ToolAnnotations hint (readOnlyHint, openWorldHint, or destructiveHint) that a call path from the tool contradicts."
+              },
+              "help": {
+                "text": "Clients use these hints to decide what to auto-approve. A false hint can let a tool that writes, executes, or reaches the network run without the approval the client would otherwise ask for. Fix the code or correct the annotation."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "mcp",
+                  "annotations"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/combined/data_exfiltration",
+              "name": "DataExfiltration",
+              "shortDescription": {
+                "text": "Data Exfiltration Risk"
+              },
+              "fullDescription": {
+                "text": "The code can both access/change local files and send data externally."
+              },
+              "help": {
+                "text": "The code can both access/change local files and send data externally."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "combined-risk"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/combined/remote_control",
+              "name": "RemoteControl",
+              "shortDescription": {
+                "text": "Remote Control Risk"
+              },
+              "fullDescription": {
+                "text": "The code can execute commands and communicate over the network."
+              },
+              "help": {
+                "text": "The code can execute commands and communicate over the network."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "combined-risk"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/combined/secret_leak",
+              "name": "SecretLeakage",
+              "shortDescription": {
+                "text": "Secret Leakage Risk"
+              },
+              "fullDescription": {
+                "text": "The code can read local files and transmit their contents externally."
+              },
+              "help": {
+                "text": "The code can read local files and transmit their contents externally."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "combined-risk"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/combined/destructive_agent",
+              "name": "DestructiveAgent",
+              "shortDescription": {
+                "text": "Destructive Agent Risk"
+              },
+              "fullDescription": {
+                "text": "The code can execute commands and perform destructive file actions."
+              },
+              "help": {
+                "text": "The code can execute commands and perform destructive file actions."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "combined-risk"
+                ],
+                "security-severity": "8.0"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "reachscan/EXECUTE",
+          "level": "error",
+          "message": {
+            "text": "EXECUTE via subprocess.run() is reachable from LLM entry point 'rm_subprocess'. Call chain: rm_subprocess. A malicious prompt could run destructive commands, install malware, or alter the environment."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 21
+                }
+              }
+            }
+          ],
+          "properties": {
+            "detector": "shell_exec",
+            "capability": "EXECUTE",
+            "evidence": "subprocess.run()",
+            "riskLevel": "high",
+            "reachability": "reachable",
+            "confidence": 0.95,
+            "entryPoint": "rm_subprocess",
+            "reachabilityPath": [
+              "rm_subprocess"
+            ],
+            "reachabilityPathTruncated": false,
+            "findingId": "f1b8d1c311e6"
+          },
+          "ruleIndex": 0,
+          "partialFingerprints": {
+            "reachscanFindingId/v1": "f1b8d1c311e6"
+          },
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from entry point 'rm_subprocess'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 20
+                          }
+                        },
+                        "message": {
+                          "text": "LLM entry point rm_subprocess"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 21
+                          }
+                        },
+                        "message": {
+                          "text": "EXECUTE via subprocess.run()"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "reachscan/WRITE",
+          "level": "error",
+          "message": {
+            "text": "WRITE via os.remove() is reachable from LLM entry point 'rm_os_remove'. Call chain: rm_os_remove. An unsafe prompt could tamper with project files or remove important data."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 15
+                }
+              }
+            }
+          ],
+          "properties": {
+            "detector": "file_access",
+            "capability": "WRITE",
+            "evidence": "os.remove()",
+            "riskLevel": "high",
+            "reachability": "reachable",
+            "confidence": 0.9,
+            "entryPoint": "rm_os_remove",
+            "reachabilityPath": [
+              "rm_os_remove"
+            ],
+            "reachabilityPathTruncated": false,
+            "findingId": "d21f997696fb"
+          },
+          "ruleIndex": 3,
+          "partialFingerprints": {
+            "reachscanFindingId/v1": "d21f997696fb"
+          },
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from entry point 'rm_os_remove'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 14
+                          }
+                        },
+                        "message": {
+                          "text": "LLM entry point rm_os_remove"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 15
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via os.remove()"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "reachscan/WRITE",
+          "level": "error",
+          "message": {
+            "text": "WRITE via shutil.move() is reachable from LLM entry point 'rm_move'. Call chain: rm_move. An unsafe prompt could tamper with project files or remove important data."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 51
+                }
+              }
+            }
+          ],
+          "properties": {
+            "detector": "file_access",
+            "capability": "WRITE",
+            "evidence": "shutil.move()",
+            "riskLevel": "high",
+            "reachability": "reachable",
+            "confidence": 0.9,
+            "entryPoint": "rm_move",
+            "reachabilityPath": [
+              "rm_move"
+            ],
+            "reachabilityPathTruncated": false,
+            "findingId": "bcf1cf5f6235"
+          },
+          "ruleIndex": 3,
+          "partialFingerprints": {
+            "reachscanFindingId/v1": "bcf1cf5f6235"
+          },
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from entry point 'rm_move'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 50
+                          }
+                        },
+                        "message": {
+                          "text": "LLM entry point rm_move"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 51
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via shutil.move()"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "reachscan/combined/destructive_agent",
+          "level": "error",
+          "message": {
+            "text": "Destructive Agent Risk: The code can execute commands and perform destructive file actions. Capabilities: EXECUTE, WRITE."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 21
+                }
+              }
+            }
+          ],
+          "properties": {
+            "riskId": "destructive_agent",
+            "severity": "high",
+            "capabilities": [
+              "EXECUTE",
+              "WRITE"
+            ],
+            "allCapabilitiesReachable": true
+          },
+          "ruleIndex": 11,
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 15
+                }
+              },
+              "message": {
+                "text": "WRITE via os.remove()"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "mcp-risk-mismatch",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'rm_move' declares destructiveHint: false, but a call path from the tool reaches WRITE via shutil.move()."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 51
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 50
+                }
+              },
+              "message": {
+                "text": "Tool 'rm_move' declares destructiveHint: false"
+              }
+            }
+          ],
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from MCP tool 'rm_move'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 50
+                          }
+                        },
+                        "message": {
+                          "text": "MCP tool 'rm_move' (rm_move)"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 51
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via shutil.move()"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "reachscanMismatchId/v1": "988ca27bb022"
+          },
+          "properties": {
+            "tool": "rm_move",
+            "mismatchRule": "non_destructive_contradicted",
+            "declared": {
+              "hint": "destructiveHint",
+              "value": false
+            },
+            "observed": {
+              "capability": "WRITE",
+              "evidence": "shutil.move()",
+              "finding_id": "bcf1cf5f6235"
+            },
+            "riskLevel": "medium",
+            "dispatch": "decorator",
+            "reachabilityPath": [
+              "rm_move"
+            ],
+            "additionalObservations": 0
+          },
+          "ruleIndex": 7
+        },
+        {
+          "ruleId": "mcp-risk-mismatch",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'rm_os_remove' declares destructiveHint: false, but a call path from the tool reaches WRITE via os.remove()."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 15
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 14
+                }
+              },
+              "message": {
+                "text": "Tool 'rm_os_remove' declares destructiveHint: false"
+              }
+            }
+          ],
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from MCP tool 'rm_os_remove'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 14
+                          }
+                        },
+                        "message": {
+                          "text": "MCP tool 'rm_os_remove' (rm_os_remove)"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 15
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via os.remove()"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "reachscanMismatchId/v1": "4c5a9c589f45"
+          },
+          "properties": {
+            "tool": "rm_os_remove",
+            "mismatchRule": "non_destructive_contradicted",
+            "declared": {
+              "hint": "destructiveHint",
+              "value": false
+            },
+            "observed": {
+              "capability": "WRITE",
+              "evidence": "os.remove()",
+              "finding_id": "d21f997696fb"
+            },
+            "riskLevel": "medium",
+            "dispatch": "decorator",
+            "reachabilityPath": [
+              "rm_os_remove"
+            ],
+            "additionalObservations": 0
+          },
+          "ruleIndex": 7
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "properties": {
+        "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c06_destructive",
+        "sourceType": "local",
+        "entryPointsDetected": 7,
+        "includeUnreachable": false,
+        "omittedFindings": 0
+      },
+      "originalUriBaseIds": {
+        "%SRCROOT%": {
+          "uri": "file:///tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c06_destructive/"
+        }
+      }
+    }
+  ]
+}

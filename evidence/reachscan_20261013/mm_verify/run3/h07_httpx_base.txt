@@ -1,0 +1,40 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • status  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_verify/cases3/h07_httpx_base/server.py:8)
+
+Capabilities
+------------
+  • SEND
+
+Combined Risks
+--------------
+  None inferred from combined-capability rules.
+
+Annotation Mismatches  —  MCP tool annotations contradicted by reachable code
+-----------------------------------------------------------------------------
+  [MEDIUM] status declares openWorldHint: false
+    reaches outbound HTTP call: httpx.AsyncClient.get (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_verify/cases3/h07_httpx_base/server.py:10)
+    call chain:
+      status
+      → httpx.AsyncClient.get
+
+Reachability Summary
+--------------------
+     1 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] SEND via httpx.AsyncClient.get (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_verify/cases3/h07_httpx_base/server.py:10)
+    call chain:
+      status
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_verify/cases3/h07_httpx_base
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

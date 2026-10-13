@@ -1,0 +1,78 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • g_destr_only  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py:13)
+  • g_ro_and_nd  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py:19)
+  • g_ro_false_only  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py:25)
+  • g_ro_http_delete  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py:31)
+  • g_ro_http_post  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py:36)
+  • g_cw_spawn  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py:41)
+
+Capabilities
+------------
+  • EXECUTE
+  • SEND
+  • WRITE
+
+Combined Risks
+--------------
+  [HIGH] Data Exfiltration Risk
+    why: The code can both access/change local files and send data externally.
+    capabilities: SEND, WRITE
+  [HIGH] Remote Control Risk
+    why: The code can execute commands and communicate over the network.
+    capabilities: EXECUTE, SEND
+  [HIGH] Destructive Agent Risk
+    why: The code can execute commands and perform destructive file actions.
+    capabilities: EXECUTE, WRITE
+
+Annotation Mismatches  —  MCP tool annotations contradicted by reachable code
+-----------------------------------------------------------------------------
+  [HIGH] g_cw_spawn declares readOnlyHint: true
+    but reaches EXECUTE via subprocess.run() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py:42)
+    path: g_cw_spawn → subprocess.run()
+  [HIGH] g_ro_and_nd declares readOnlyHint: true
+    but reaches WRITE via os.remove() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py:20)
+    path: g_ro_and_nd → os.remove()
+  [MEDIUM] g_destr_only declares destructiveHint: false
+    but reaches WRITE via os.remove() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py:14)
+    path: g_destr_only → os.remove()
+
+Reachability Summary
+--------------------
+     6 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] EXECUTE via subprocess.run() (shell_exec @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py:42)
+    path: g_cw_spawn
+    explanation: This code can execute shell or interpreter commands on the host.
+    impact: A malicious prompt could run destructive commands, install malware, or alter the environment.
+  [HIGH] SEND via requests.delete (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py:32)
+    path: g_ro_http_delete
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+  [HIGH] SEND via requests.post (network @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py:37)
+    path: g_ro_http_post
+    explanation: This code can send data over the network to external services.
+    impact: Sensitive local data could be transmitted to untrusted endpoints.
+  [HIGH] WRITE via os.remove() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py:14)
+    path: g_destr_only
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via os.remove() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py:20)
+    path: g_ro_and_nd
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via os.remove() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates/server.py:26)
+    path: g_ro_false_only
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x07_rule_gates
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

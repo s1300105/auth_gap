@@ -1,0 +1,346 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:52:50Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 5,
+  "py_entry_points": [
+    {
+      "name": "env_hint",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py",
+      "lineno": 22,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "9d79630d5910"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": null,
+          "source": "unresolvable"
+        },
+        "destructiveHint": {
+          "value": null,
+          "source": "unresolvable"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "call_hint",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py",
+      "lineno": 29,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "41a7fa6579ad",
+        "d40c595a9f6f"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": null,
+          "source": "unresolvable"
+        },
+        "destructiveHint": {
+          "value": null,
+          "source": "unresolvable"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "dict_env_hint",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py",
+      "lineno": 36,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "c5361fe21553"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": null,
+          "source": "unresolvable"
+        },
+        "destructiveHint": {
+          "value": null,
+          "source": "unresolvable"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "factory_ann",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py",
+      "lineno": 43,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "4e6e574cb0f8"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": true,
+        "readOnlyHint": {
+          "value": null,
+          "source": "unresolvable"
+        },
+        "destructiveHint": {
+          "value": null,
+          "source": "unresolvable"
+        },
+        "idempotentHint": {
+          "value": null,
+          "source": "unresolvable"
+        },
+        "openWorldHint": {
+          "value": null,
+          "source": "unresolvable"
+        }
+      }
+    },
+    {
+      "name": "mixed_nonliteral",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py",
+      "lineno": 50,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "97ffd9bc9124"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": null,
+          "source": "unresolvable"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "explicit"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "SECRETS",
+    "WRITE"
+  ],
+  "risks": [],
+  "findings": [
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "with open(..., mode='w')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py",
+        "lineno": 23,
+        "confidence": 0.95,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "env_hint",
+        "reachability_path": [
+          "env_hint"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "9d79630d5910",
+        "finding_ref": "file_access:server.py:23:with open(..., mode='w')"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "with open(..., mode='w')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py",
+        "lineno": 30,
+        "confidence": 0.95,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "call_hint",
+        "reachability_path": [
+          "call_hint"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "41a7fa6579ad",
+        "finding_ref": "file_access:server.py:30:with open(..., mode='w')"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "with open(..., mode='w')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py",
+        "lineno": 37,
+        "confidence": 0.95,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "dict_env_hint",
+        "reachability_path": [
+          "dict_env_hint"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "c5361fe21553",
+        "finding_ref": "file_access:server.py:37:with open(..., mode='w')"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "with open(..., mode='w')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py",
+        "lineno": 44,
+        "confidence": 0.95,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "factory_ann",
+        "reachability_path": [
+          "factory_ann"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "4e6e574cb0f8",
+        "finding_ref": "file_access:server.py:44:with open(..., mode='w')"
+      }
+    },
+    {
+      "detector": "file_access",
+      "finding": {
+        "capability": "WRITE",
+        "evidence": "os.remove()",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py",
+        "lineno": 51,
+        "confidence": 0.9,
+        "explanation": "This code can write, modify, move, or delete files.",
+        "impact": "An unsafe prompt could tamper with project files or remove important data.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "mixed_nonliteral",
+        "reachability_path": [
+          "mixed_nonliteral"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "97ffd9bc9124",
+        "finding_ref": "file_access:server.py:51:os.remove()"
+      }
+    },
+    {
+      "detector": "secrets",
+      "finding": {
+        "capability": "SECRETS",
+        "evidence": "os.environ.get('NOTES_RO')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py",
+        "lineno": 14,
+        "confidence": 0.7,
+        "explanation": "This code accesses secrets or credential sources.",
+        "impact": "Credentials may be disclosed and used for unauthorized access.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "call_hint",
+        "reachability_path": [
+          "call_hint",
+          "is_read_only"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "d40c595a9f6f",
+        "finding_ref": "secrets:server.py:14:os.environ.get('NOTES_RO')"
+      }
+    },
+    {
+      "detector": "secrets",
+      "finding": {
+        "capability": "SECRETS",
+        "evidence": "os.getenv('NOTES_RO')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py",
+        "lineno": 35,
+        "confidence": 0.7,
+        "explanation": "This code accesses secrets or credential sources.",
+        "impact": "Credentials may be disclosed and used for unauthorized access.",
+        "risk_level": "high",
+        "reachability": "module_level",
+        "entry_point_name": null,
+        "reachability_path": null,
+        "reachability_path_truncated": false,
+        "finding_id": "00fedc49643b",
+        "finding_ref": "secrets:server.py:35:os.getenv('NOTES_RO')"
+      }
+    },
+    {
+      "detector": "secrets",
+      "finding": {
+        "capability": "SECRETS",
+        "evidence": "os.environ.get('NOTES_RO')",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B1/cases/c06_nonliteral/server.py",
+        "lineno": 21,
+        "confidence": 0.7,
+        "explanation": "This code accesses secrets or credential sources.",
+        "impact": "Credentials may be disclosed and used for unauthorized access.",
+        "risk_level": "high",
+        "reachability": "module_level",
+        "entry_point_name": null,
+        "reachability_path": null,
+        "reachability_path_truncated": false,
+        "finding_id": "3c4318a04ab6",
+        "finding_ref": "secrets:server.py:21:os.environ.get('NOTES_RO')"
+      }
+    }
+  ],
+  "annotation_mismatches": [],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

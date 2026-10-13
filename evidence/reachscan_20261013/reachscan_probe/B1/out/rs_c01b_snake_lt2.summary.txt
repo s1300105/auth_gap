@@ -1,0 +1,18 @@
+num_files_scanned: 1 entry_points_detected: 4
+EP snake_obj server.py:12 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [null, "unresolvable"], "destructiveHint": [null, "unresolvable"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+EP snake_dict server.py:19 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [null, "unresolvable"], "destructiveHint": [null, "unresolvable"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+EP both_spellings server.py:26 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+EP camel_ctl server.py:33 mcp decorator 0.8 reachable_findings= 1
+   annotations: {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+FINDING WRITE "with open(..., mode='w')" server.py:13 reachable ep= snake_obj path= ['snake_obj']
+FINDING WRITE "with open(..., mode='w')" server.py:20 reachable ep= snake_dict path= ['snake_dict']
+FINDING WRITE "with open(..., mode='w')" server.py:27 reachable ep= both_spellings path= ['both_spellings']
+FINDING WRITE "with open(..., mode='w')" server.py:34 reachable ep= camel_ctl path= ['camel_ctl']
+MISMATCH both_spellings read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= decorator ep_line= 26 observed= WRITE "with open(..., mode='w')" line 27 path= ['both_spellings'] extra_obs= []
+MISMATCH camel_ctl read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= decorator ep_line= 33 observed= WRITE "with open(..., mode='w')" line 34 path= ['camel_ctl'] extra_obs= []
+EXPLAIN: Not checked (annotations couldn't be resolved statically):
+    • snake_obj (server.py:12): readOnlyHint, destructiveHint — non-literal or SDK-version-dependent hint values
+    • snake_dict (server.py:19): readOnlyHint, destructiveHint — non-literal or SDK-version-dependent hint values

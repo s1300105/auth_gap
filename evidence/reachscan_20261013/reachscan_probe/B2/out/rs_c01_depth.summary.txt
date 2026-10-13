@@ -1,0 +1,14 @@
+version: 0.4.0 files: 1 eps: 4
+EP chain4 server.py:102 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP chain5 server.py:107 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP chain8 server.py:112 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP chain9 server.py:117 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+FINDING file_access WRITE "with open(..., mode='w')" server.py:18 high reach=reachable ep=chain4 path=['chain4', 'a1', 'a2', 'a3', 'a4'] 
+FINDING file_access WRITE "with open(..., mode='w')" server.py:37 high reach=reachable ep=chain5 path=['chain5', 'b1', 'b2', 'b3', 'b4', 'b5'] 
+FINDING file_access WRITE "with open(..., mode='w')" server.py:65 high reach=reachable ep=chain8 path=['chain8', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8'] 
+FINDING file_access WRITE "with open(..., mode='w')" server.py:96 high reach=unreachable ep=None path=None 
+MISMATCH chain4 read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} WRITE "with open(..., mode='w')" server.py:18 send_kind=None dispatch=decorator path=['chain4', 'a1', 'a2', 'a3', 'a4'] extra=[] 
+MISMATCH chain5 read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} WRITE "with open(..., mode='w')" server.py:37 send_kind=None dispatch=decorator path=['chain5', 'b1', 'b2', 'b3', 'b4', 'b5'] extra=[] 
+MISMATCH chain8 read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} WRITE "with open(..., mode='w')" server.py:65 send_kind=None dispatch=decorator path=['chain8', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8'] extra=[] 
+suppression_warnings: []
+risks: []

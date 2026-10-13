@@ -1,0 +1,238 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-10-12T23:34:04Z",
+  "reachscan_version": "0.4.0",
+  "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_probe/cases/e_ro_send_db",
+  "source_type": "local",
+  "resolved_version": null,
+  "num_files_scanned": 1,
+  "num_ts_files_scanned": 0,
+  "entry_points_detected": 5,
+  "py_entry_points": [
+    {
+      "name": "ro_requests_delete",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_probe/cases/e_ro_send_db/server.py",
+      "lineno": 10,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "7ac7ce5d1dbe"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "ro_requests_post",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_probe/cases/e_ro_send_db/server.py",
+      "lineno": 15,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "fe6d3427432f"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "ro_sqlite_delete",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_probe/cases/e_ro_send_db/server.py",
+      "lineno": 20,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": true,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "default"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "nd_sqlite_drop",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_probe/cases/e_ro_send_db/server.py",
+      "lineno": 28,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": false,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "explicit"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    },
+    {
+      "name": "nd_requests_delete",
+      "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_probe/cases/e_ro_send_db/server.py",
+      "lineno": 35,
+      "framework": "mcp",
+      "pattern_type": "decorator",
+      "confidence": 0.8,
+      "reachable_findings": [
+        "41cf774c243b"
+      ],
+      "annotations": {
+        "declared": true,
+        "unresolved_reference": false,
+        "readOnlyHint": {
+          "value": false,
+          "source": "explicit"
+        },
+        "destructiveHint": {
+          "value": false,
+          "source": "explicit"
+        },
+        "idempotentHint": {
+          "value": false,
+          "source": "default"
+        },
+        "openWorldHint": {
+          "value": true,
+          "source": "default"
+        }
+      }
+    }
+  ],
+  "ts_entry_points": [],
+  "capabilities": [
+    "SEND"
+  ],
+  "risks": [],
+  "findings": [
+    {
+      "detector": "network",
+      "finding": {
+        "capability": "SEND",
+        "evidence": "requests.delete",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_probe/cases/e_ro_send_db/server.py",
+        "lineno": 11,
+        "confidence": 0.95,
+        "explanation": "This code can send data over the network to external services.",
+        "impact": "Sensitive local data could be transmitted to untrusted endpoints.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "ro_requests_delete",
+        "reachability_path": [
+          "ro_requests_delete"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "7ac7ce5d1dbe",
+        "finding_ref": "network:server.py:11:requests.delete"
+      }
+    },
+    {
+      "detector": "network",
+      "finding": {
+        "capability": "SEND",
+        "evidence": "requests.post",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_probe/cases/e_ro_send_db/server.py",
+        "lineno": 16,
+        "confidence": 0.95,
+        "explanation": "This code can send data over the network to external services.",
+        "impact": "Sensitive local data could be transmitted to untrusted endpoints.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "ro_requests_post",
+        "reachability_path": [
+          "ro_requests_post"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "fe6d3427432f",
+        "finding_ref": "network:server.py:16:requests.post"
+      }
+    },
+    {
+      "detector": "network",
+      "finding": {
+        "capability": "SEND",
+        "evidence": "requests.delete",
+        "file": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/sinks_probe/cases/e_ro_send_db/server.py",
+        "lineno": 36,
+        "confidence": 0.95,
+        "explanation": "This code can send data over the network to external services.",
+        "impact": "Sensitive local data could be transmitted to untrusted endpoints.",
+        "risk_level": "high",
+        "reachability": "reachable",
+        "entry_point_name": "nd_requests_delete",
+        "reachability_path": [
+          "nd_requests_delete"
+        ],
+        "reachability_path_truncated": false,
+        "finding_id": "41cf774c243b",
+        "finding_ref": "network:server.py:36:requests.delete"
+      }
+    }
+  ],
+  "annotation_mismatches": [],
+  "suppression_warnings": [],
+  "other_languages": [],
+  "static_analysis_note": "This report reflects code patterns. It does not prove runtime behavior or exploitability."
+}

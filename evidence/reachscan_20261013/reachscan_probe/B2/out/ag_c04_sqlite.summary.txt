@@ -1,0 +1,26 @@
+dispatch_sites: []
+unresolved_handler: {"count": 0, "sites": []}
+parse_failures: [] truncations: []
+======================================================================
+UNIT drop_user qual= drop_user entry_kind= decorator line= 29 ann_form= ToolAnnotations ann= {'destructiveHint': False, 'readOnlyHint': False}
+  D_kind: {"bottom": false, "explicit": ["destructiveHint"], "present_no_bound": ["readOnlyHint"], "upper": ["DB", "FS_READ", "FS_WRITE", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT psycopg.Cursor.execute DB DB_WRITE line 31 destructive= - fs_mode= - res= resolved form= proxy chain= None attributed= - opaque= -
+  ROW psycopg.Cursor.execute DB params line 31 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D2', 'contradiction_reason:D2:db_modify', 'D_layer_present:kind:DB'] attributed= -
+  ROW psycopg.Cursor.execute DB sql line 31 verdicts= ['CONTRADICTION'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D2', 'contradiction_reason:D2:db_modify'] attributed= -
+======================================================================
+UNIT list_users qual= list_users entry_kind= decorator line= 21 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT psycopg.Cursor.execute DB DB_READ line 24 destructive= - fs_mode= - res= resolved form= proxy chain= None attributed= - opaque= -
+  ROW psycopg.Cursor.execute DB sql line 24 verdicts= [] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)'] attributed= -
+======================================================================
+UNIT rename_user qual= rename_user entry_kind= decorator line= 12 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT psycopg.Cursor.execute DB DB_WRITE line 15 destructive= - fs_mode= - res= resolved form= proxy chain= None attributed= - opaque= -
+  ROW psycopg.Cursor.execute DB params line 15 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:db_modify'] attributed= -
+  ROW psycopg.Cursor.execute DB sql line 15 verdicts= ['CONTRADICTION'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:db_modify'] attributed= -

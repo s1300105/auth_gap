@@ -1,0 +1,800 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "reachscan",
+          "version": "0.4.0",
+          "informationUri": "https://github.com/vinmay/reachscan",
+          "rules": [
+            {
+              "id": "reachscan/EXECUTE",
+              "name": "Execute",
+              "shortDescription": {
+                "text": "EXECUTE capability"
+              },
+              "fullDescription": {
+                "text": "This code can execute shell or interpreter commands on the host."
+              },
+              "help": {
+                "text": "This code can execute shell or interpreter commands on the host. A malicious prompt could run destructive commands, install malware, or alter the environment."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "execute"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/SEND",
+              "name": "Send",
+              "shortDescription": {
+                "text": "SEND capability"
+              },
+              "fullDescription": {
+                "text": "This code can send data over the network to external services."
+              },
+              "help": {
+                "text": "This code can send data over the network to external services. Sensitive local data could be transmitted to untrusted endpoints."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "send"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/READ",
+              "name": "Read",
+              "shortDescription": {
+                "text": "READ capability"
+              },
+              "fullDescription": {
+                "text": "This code can read local files from the filesystem."
+              },
+              "help": {
+                "text": "This code can read local files from the filesystem. Private files may be exposed to later processing or exfiltration."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "read"
+                ],
+                "security-severity": "5.0"
+              }
+            },
+            {
+              "id": "reachscan/WRITE",
+              "name": "Write",
+              "shortDescription": {
+                "text": "WRITE capability"
+              },
+              "fullDescription": {
+                "text": "This code can write, modify, move, or delete files."
+              },
+              "help": {
+                "text": "This code can write, modify, move, or delete files. An unsafe prompt could tamper with project files or remove important data."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "write"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/SECRETS",
+              "name": "Secrets",
+              "shortDescription": {
+                "text": "SECRETS capability"
+              },
+              "fullDescription": {
+                "text": "This code accesses secrets or credential sources."
+              },
+              "help": {
+                "text": "This code accesses secrets or credential sources. Credentials may be disclosed and used for unauthorized access."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "secrets"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/DYNAMIC",
+              "name": "Dynamic",
+              "shortDescription": {
+                "text": "DYNAMIC capability"
+              },
+              "fullDescription": {
+                "text": "This code performs dynamic execution or runtime code loading."
+              },
+              "help": {
+                "text": "This code performs dynamic execution or runtime code loading. Untrusted input could become executable code, increasing compromise risk."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "dynamic"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/AUTONOMY",
+              "name": "Autonomy",
+              "shortDescription": {
+                "text": "AUTONOMY capability"
+              },
+              "fullDescription": {
+                "text": "This code can schedule or continue actions without direct user interaction."
+              },
+              "help": {
+                "text": "This code can schedule or continue actions without direct user interaction. Risky behavior may repeat in the background after the initiating prompt."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "autonomy"
+                ],
+                "security-severity": "5.0"
+              }
+            },
+            {
+              "id": "mcp-risk-mismatch",
+              "name": "McpRiskMismatch",
+              "shortDescription": {
+                "text": "MCP tool annotation contradicted by reachable code"
+              },
+              "fullDescription": {
+                "text": "An MCP tool explicitly declares a ToolAnnotations hint (readOnlyHint, openWorldHint, or destructiveHint) that a call path from the tool contradicts."
+              },
+              "help": {
+                "text": "Clients use these hints to decide what to auto-approve. A false hint can let a tool that writes, executes, or reaches the network run without the approval the client would otherwise ask for. Fix the code or correct the annotation."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "mcp",
+                  "annotations"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/combined/data_exfiltration",
+              "name": "DataExfiltration",
+              "shortDescription": {
+                "text": "Data Exfiltration Risk"
+              },
+              "fullDescription": {
+                "text": "The code can both access/change local files and send data externally."
+              },
+              "help": {
+                "text": "The code can both access/change local files and send data externally."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "combined-risk"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/combined/remote_control",
+              "name": "RemoteControl",
+              "shortDescription": {
+                "text": "Remote Control Risk"
+              },
+              "fullDescription": {
+                "text": "The code can execute commands and communicate over the network."
+              },
+              "help": {
+                "text": "The code can execute commands and communicate over the network."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "combined-risk"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/combined/secret_leak",
+              "name": "SecretLeakage",
+              "shortDescription": {
+                "text": "Secret Leakage Risk"
+              },
+              "fullDescription": {
+                "text": "The code can read local files and transmit their contents externally."
+              },
+              "help": {
+                "text": "The code can read local files and transmit their contents externally."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "combined-risk"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/combined/destructive_agent",
+              "name": "DestructiveAgent",
+              "shortDescription": {
+                "text": "Destructive Agent Risk"
+              },
+              "fullDescription": {
+                "text": "The code can execute commands and perform destructive file actions."
+              },
+              "help": {
+                "text": "The code can execute commands and perform destructive file actions."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "combined-risk"
+                ],
+                "security-severity": "8.0"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "reachscan/SEND",
+          "level": "error",
+          "message": {
+            "text": "SEND via requests.get is reachable from LLM entry point 'cw_get_send_suppressed'. Call chain: cw_get_send_suppressed. Sensitive local data could be transmitted to untrusted endpoints."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 19
+                }
+              }
+            }
+          ],
+          "properties": {
+            "detector": "network",
+            "capability": "SEND",
+            "evidence": "requests.get",
+            "riskLevel": "high",
+            "reachability": "reachable",
+            "confidence": 0.95,
+            "entryPoint": "cw_get_send_suppressed",
+            "reachabilityPath": [
+              "cw_get_send_suppressed"
+            ],
+            "reachabilityPathTruncated": false,
+            "findingId": "85c8997fddfd"
+          },
+          "ruleIndex": 1,
+          "partialFingerprints": {
+            "reachscanFindingId/v1": "85c8997fddfd"
+          },
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from entry point 'cw_get_send_suppressed'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 18
+                          }
+                        },
+                        "message": {
+                          "text": "LLM entry point cw_get_send_suppressed"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 19
+                          }
+                        },
+                        "message": {
+                          "text": "SEND via requests.get"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "suppressions": [
+            {
+              "kind": "inSource",
+              "justification": "probe B2 suppression test"
+            }
+          ]
+        },
+        {
+          "ruleId": "reachscan/WRITE",
+          "level": "error",
+          "message": {
+            "text": "WRITE via with open(..., mode='w') is reachable from LLM entry point 'ro_write_suppressed'. Call chain: ro_write_suppressed. An unsafe prompt could tamper with project files or remove important data."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 12
+                }
+              }
+            }
+          ],
+          "properties": {
+            "detector": "file_access",
+            "capability": "WRITE",
+            "evidence": "with open(..., mode='w')",
+            "riskLevel": "high",
+            "reachability": "reachable",
+            "confidence": 0.95,
+            "entryPoint": "ro_write_suppressed",
+            "reachabilityPath": [
+              "ro_write_suppressed"
+            ],
+            "reachabilityPathTruncated": false,
+            "findingId": "9f86b9312fe5"
+          },
+          "ruleIndex": 3,
+          "partialFingerprints": {
+            "reachscanFindingId/v1": "9f86b9312fe5"
+          },
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from entry point 'ro_write_suppressed'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 11
+                          }
+                        },
+                        "message": {
+                          "text": "LLM entry point ro_write_suppressed"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 12
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via with open(..., mode='w')"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "suppressions": [
+            {
+              "kind": "inSource",
+              "justification": "probe B2 suppression test"
+            }
+          ]
+        },
+        {
+          "ruleId": "reachscan/combined/data_exfiltration",
+          "level": "error",
+          "message": {
+            "text": "Data Exfiltration Risk: The code can both access/change local files and send data externally. Capabilities: SEND, WRITE. Includes suppressed findings."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 19
+                }
+              }
+            }
+          ],
+          "properties": {
+            "riskId": "data_exfiltration",
+            "severity": "high",
+            "capabilities": [
+              "SEND",
+              "WRITE"
+            ],
+            "allCapabilitiesReachable": true,
+            "includesSuppressedFindings": true,
+            "allFindingsSuppressed": true,
+            "suppressedFindings": [
+              "85c8997fddfd",
+              "9f86b9312fe5"
+            ]
+          },
+          "ruleIndex": 8,
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 12
+                }
+              },
+              "message": {
+                "text": "WRITE via with open(..., mode='w')"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "mcp-risk-mismatch",
+          "level": "error",
+          "message": {
+            "text": "Tool 'ro_write_suppressed' declares readOnlyHint: true, but a call path from the tool reaches WRITE via with open(..., mode='w')."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 12
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 11
+                }
+              },
+              "message": {
+                "text": "Tool 'ro_write_suppressed' declares readOnlyHint: true"
+              }
+            }
+          ],
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from MCP tool 'ro_write_suppressed'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 11
+                          }
+                        },
+                        "message": {
+                          "text": "MCP tool 'ro_write_suppressed' (ro_write_suppressed)"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 12
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via with open(..., mode='w')"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "reachscanMismatchId/v1": "db274f3d2dc6"
+          },
+          "properties": {
+            "tool": "ro_write_suppressed",
+            "mismatchRule": "read_only_contradicted",
+            "declared": {
+              "hint": "readOnlyHint",
+              "value": true
+            },
+            "observed": {
+              "capability": "WRITE",
+              "evidence": "with open(..., mode='w')",
+              "finding_id": "9f86b9312fe5"
+            },
+            "riskLevel": "high",
+            "dispatch": "decorator",
+            "reachabilityPath": [
+              "ro_write_suppressed"
+            ],
+            "additionalObservations": 0
+          },
+          "ruleIndex": 7,
+          "suppressions": [
+            {
+              "kind": "inSource",
+              "justification": "probe B2 suppression test"
+            }
+          ]
+        },
+        {
+          "ruleId": "mcp-risk-mismatch",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'cw_get_send_suppressed' declares openWorldHint: false; reaches outbound HTTP call: requests.get."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 19
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 18
+                }
+              },
+              "message": {
+                "text": "Tool 'cw_get_send_suppressed' declares openWorldHint: false"
+              }
+            }
+          ],
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from MCP tool 'cw_get_send_suppressed'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 18
+                          }
+                        },
+                        "message": {
+                          "text": "MCP tool 'cw_get_send_suppressed' (cw_get_send_suppressed)"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 19
+                          }
+                        },
+                        "message": {
+                          "text": "SEND via requests.get"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "reachscanMismatchId/v1": "5f5daecb957a"
+          },
+          "properties": {
+            "tool": "cw_get_send_suppressed",
+            "mismatchRule": "closed_world_contradicted",
+            "declared": {
+              "hint": "openWorldHint",
+              "value": false
+            },
+            "observed": {
+              "capability": "SEND",
+              "evidence": "requests.get",
+              "finding_id": "85c8997fddfd"
+            },
+            "riskLevel": "medium",
+            "dispatch": "decorator",
+            "reachabilityPath": [
+              "cw_get_send_suppressed"
+            ],
+            "additionalObservations": 0
+          },
+          "ruleIndex": 7
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "properties": {
+        "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression",
+        "sourceType": "local",
+        "entryPointsDetected": 2,
+        "includeUnreachable": false,
+        "omittedFindings": 0
+      },
+      "originalUriBaseIds": {
+        "%SRCROOT%": {
+          "uri": "file:///tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x06_suppression/"
+        }
+      }
+    }
+  ]
+}

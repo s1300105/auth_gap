@@ -1,0 +1,32 @@
+dispatch_sites: [{"candidates": ["write_note_impl"], "form": "if_chain", "lineno": 60, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}, {"candidates": ["archive_impl"], "form": "if_chain", "lineno": 62, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}, {"candidates": ["purge_impl"], "form": "if_chain", "lineno": 64, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}, {"candidates": ["memo_writer"], "form": "if_chain", "lineno": 66, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}]
+unresolved_handler: {"count": 0, "sites": []}
+parse_failures: [] truncations: []
+======================================================================
+UNIT write-memo qual= memo_impl entry_kind= decorator line= 9 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_WRITE FS_WRITE line 10 destructive= True fs_mode= w res= resolved form= direct chain= None attributed= - opaque= -
+  ROW builtins.open FS_WRITE path line 10 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
+======================================================================
+UNIT memo_impl_positional qual= memo_impl_positional entry_kind= decorator line= 16 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_WRITE FS_WRITE line 17 destructive= True fs_mode= w res= resolved form= direct chain= None attributed= - opaque= -
+  ROW builtins.open FS_WRITE path line 17 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
+======================================================================
+UNIT None qual= call_tool entry_kind= lowlevel_v1 line= 59 ann_form= None ann= None
+  unit.dispatch_names = ["memo"]
+  dispatch_join = {"attribution": {"0": ["memo"], "1": ["memo"], "2": ["memo"], "3": ["memo"]}, "effects_all_tools": [0, 1, 2, 3], "tools": ["memo"], "unjoined_literals": 2}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'traced', 'via': {'candidates': ['write_note_impl'], 'form': 'if_chain', 'lineno': 60, 'opaque_reason': None, 'relpath': 'server.py', 'resolution': 'resolved', 'selector': 'name', 'selector_is_model': True}} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_WRITE FS_WRITE line 23 destructive= True fs_mode= w res= resolved form= direct chain= ['write_note_impl'] attributed= - opaque= -
+  EFFECT os.rename FS_WRITE FS_WRITE line 29 destructive= True fs_mode= - res= resolved form= direct chain= ['archive_impl'] attributed= - opaque= -
+  EFFECT os.remove FS_WRITE FS_WRITE line 34 destructive= True fs_mode= - res= resolved form= direct chain= ['purge_impl'] attributed= - opaque= -
+  EFFECT builtins.open FS_WRITE FS_WRITE line 39 destructive= False fs_mode= a res= resolved form= direct chain= ['memo_writer'] attributed= - opaque= -
+  ROW builtins.open FS_WRITE path line 23 verdicts= ['CONTRADICTION', 'GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= ['kind'] notes= ['contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
+  ROW os.rename FS_WRITE path line 29 verdicts= ['CONTRADICTION', 'GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= ['kind'] notes= ['contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
+  ROW os.remove FS_WRITE path line 34 verdicts= ['CONTRADICTION', 'GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= ['kind'] notes= ['contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
+  ROW builtins.open FS_WRITE path line 39 verdicts= ['CONTRADICTION', 'GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= ['kind'] notes= ['contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -

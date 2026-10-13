@@ -1,0 +1,41 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • list_tools  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c02a_lowlevel_plain/server.py:15)
+  • call_tool  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c02a_lowlevel_plain/server.py:24)
+
+Capabilities
+------------
+  • READ
+  • WRITE
+
+Combined Risks
+--------------
+  None inferred from combined-capability rules.
+
+Reachability Summary
+--------------------
+     2 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [MEDIUM] READ via with open(..., mode='') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c02a_lowlevel_plain/server.py:8)
+    call chain:
+      call_tool
+      → read_it
+    explanation: This code can read local files from the filesystem.
+    impact: Private files may be exposed to later processing or exfiltration.
+  [HIGH] WRITE via os.remove() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c02a_lowlevel_plain/server.py:12)
+    call chain:
+      call_tool
+      → delete_it
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/c02a_lowlevel_plain
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

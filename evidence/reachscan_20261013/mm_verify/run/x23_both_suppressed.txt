@@ -1,0 +1,43 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • get  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/x23_both_suppressed/server.py:8)
+
+Capabilities
+------------
+  • WRITE
+
+Combined Risks
+--------------
+  None inferred from combined-capability rules.
+
+Annotation Mismatches  —  MCP tool annotations contradicted by reachable code
+-----------------------------------------------------------------------------
+  [HIGH] SUPPRESSED  get declares readOnlyHint: true
+    suppressed: temp file cleanup (line 7; doesn't affect the exit code)
+    but reaches WRITE via os.remove() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/x23_both_suppressed/server.py:9)
+    call chain:
+      get
+      → os.remove()
+
+Reachability Summary
+--------------------
+     1 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+     1 suppressed    — allowed by a reachscan:allow comment (also counted above)
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] SUPPRESSED  WRITE via os.remove() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/x23_both_suppressed/server.py:9)
+    suppressed: temp file (line 9; doesn't affect the exit code)
+    call chain:
+      get
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/mm_probe/cases/x23_both_suppressed
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

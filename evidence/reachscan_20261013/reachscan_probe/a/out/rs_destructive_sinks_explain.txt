@@ -1,0 +1,69 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • nd_mkdir  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/destructive_sinks/server.py:16)
+  • nd_append  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/destructive_sinks/server.py:23)
+  • nd_overwrite  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/destructive_sinks/server.py:31)
+  • nd_rmtree  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/destructive_sinks/server.py:39)
+  • nd_unknown_mode  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/destructive_sinks/server.py:46)
+  • nd_write_text  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/destructive_sinks/server.py:54)
+  • ro_mkdir  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/destructive_sinks/server.py:62)
+  • none_rmtree  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/destructive_sinks/server.py:70)
+  • nd_mixed  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/destructive_sinks/server.py:77)
+
+Capabilities
+------------
+  • READ
+  • WRITE
+
+Combined Risks
+--------------
+  None inferred from combined-capability rules.
+
+Annotation Mismatches  —  MCP tool annotations contradicted by reachable code
+-----------------------------------------------------------------------------
+  [MEDIUM] nd_overwrite declares destructiveHint: false
+    but reaches WRITE via with open(..., mode='w') (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/destructive_sinks/server.py:33)
+    call chain:
+      nd_overwrite
+      → with open(..., mode='w')
+  [MEDIUM] nd_write_text declares destructiveHint: false
+    but reaches WRITE via pathlib.Path.write_text() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/destructive_sinks/server.py:56)
+    call chain:
+      nd_write_text
+      → pathlib.Path.write_text()
+
+Reachability Summary
+--------------------
+     4 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] WRITE via with open(..., mode='a') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/destructive_sinks/server.py:25)
+    call chain:
+      nd_append
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via with open(..., mode='w') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/destructive_sinks/server.py:33)
+    call chain:
+      nd_overwrite
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [MEDIUM] READ via with open(..., mode='') (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/destructive_sinks/server.py:48)
+    call chain:
+      nd_unknown_mode
+    explanation: This code can read local files from the filesystem.
+    impact: Private files may be exposed to later processing or exfiltration.
+  [HIGH] WRITE via pathlib.Path.write_text() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/destructive_sinks/server.py:56)
+    call chain:
+      nd_write_text
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/a/inputs/destructive_sinks
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

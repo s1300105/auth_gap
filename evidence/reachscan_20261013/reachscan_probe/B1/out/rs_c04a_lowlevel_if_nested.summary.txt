@@ -1,0 +1,9 @@
+num_files_scanned: 1 entry_points_detected: 2
+EP list_tools server.py:20 mcp decorator 0.6 reachable_findings= 0
+   declared_tool: save line 22 {"readOnlyHint": [true, "explicit"], "destructiveHint": [false, "default"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+   declared_tool: erase line 28 {"readOnlyHint": [false, "explicit"], "destructiveHint": [true, "explicit"], "idempotentHint": [false, "default"], "openWorldHint": [true, "default"], "declared": true, "unresolved_reference": false}
+EP call_tool server.py:37 mcp decorator 0.6 reachable_findings= 2
+FINDING WRITE 'os.remove()' server.py:13 reachable ep= call_tool path= ['call_tool', '_erase']
+FINDING WRITE "with open(..., mode='w')" server.py:39 reachable ep= call_tool path= ['call_tool']
+MISMATCH save read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} dispatch= lowlevel ep_line= 37 observed= WRITE "with open(..., mode='w')" line 39 path= ['call_tool'] extra_obs= []
+EXPLAIN: (no 'Not checked' block)

@@ -1,0 +1,79 @@
+Agent Capability Report
+=======================
+
+Python Entry Points (LLM-controlled surface)
+----------------------------------------------
+  • fp_env_replace  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py:11)
+  • fp_join_replace  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py:16)
+  • fp_getcwd_replace  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py:21)
+  • fp_list_remove  (mcp/decorator @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py:26)
+
+Capabilities
+------------
+  • SECRETS
+  • WRITE
+
+Combined Risks
+--------------
+  None inferred from combined-capability rules.
+
+Annotation Mismatches  —  MCP tool annotations contradicted by reachable code
+-----------------------------------------------------------------------------
+  [HIGH] fp_env_replace declares readOnlyHint: true
+    but reaches WRITE via os.environ.get.replace() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py:12)
+    call chain:
+      fp_env_replace
+      → os.environ.get.replace()
+  [HIGH] fp_getcwd_replace declares readOnlyHint: true
+    but reaches WRITE via os.getcwd.replace() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py:22)
+    call chain:
+      fp_getcwd_replace
+      → os.getcwd.replace()
+  [HIGH] fp_join_replace declares readOnlyHint: true
+    but reaches WRITE via os.path.join.replace() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py:17)
+    call chain:
+      fp_join_replace
+      → os.path.join.replace()
+  [HIGH] fp_list_remove declares readOnlyHint: true
+    but reaches WRITE via ostrich.remove() (/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py:28)
+    call chain:
+      fp_list_remove
+      → ostrich.remove()
+
+Reachability Summary
+--------------------
+     5 reachable     — LLM can trigger these directly
+     0 unreachable   — exist in codebase, not on any LLM call path
+
+Reachable Findings  —  LLM can trigger these directly
+----------------------------------------------------
+  [HIGH] WRITE via os.environ.get.replace() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py:12)
+    call chain:
+      fp_env_replace
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via os.path.join.replace() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py:17)
+    call chain:
+      fp_join_replace
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via os.getcwd.replace() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py:22)
+    call chain:
+      fp_getcwd_replace
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] WRITE via ostrich.remove() (file_access @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py:28)
+    call chain:
+      fp_list_remove
+    explanation: This code can write, modify, move, or delete files.
+    impact: An unsafe prompt could tamper with project files or remove important data.
+  [HIGH] SECRETS via os.environ.get('HOME') (secrets @ /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp/server.py:12)
+    call chain:
+      fp_env_replace
+    explanation: This code accesses secrets or credential sources.
+    impact: Credentials may be disclosed and used for unauthorized access.
+
+Static analysis only: this report reflects code patterns, not runtime behavior or exploitability.
+Scanned: 1 python files, 0 TypeScript/JavaScript files under /tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/x04_replace_fp
+
+Useful? Star reachscan on GitHub: https://github.com/vinmay/reachscan

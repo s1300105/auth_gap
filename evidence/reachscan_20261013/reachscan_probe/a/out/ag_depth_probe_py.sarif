@@ -1,0 +1,303 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 21
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION FS_WRITE@path via builtins.open (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:body_write:95cdc987656a",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:path"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 21
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT FS_WRITE@path via builtins.open (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:body_write:95cdc987656a",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "GAP_INJECT:path"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 15
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION FS_WRITE@path via os.remove (direct); chain=_purge"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind",
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:helper_purge:b1ef559040e6",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "_purge"
+            ]
+          },
+          "ruleId": "CONTRADICTION:path"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 15
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT FS_WRITE@path via os.remove (direct); chain=_purge"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind",
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:helper_purge:b1ef559040e6",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "_purge"
+            ]
+          },
+          "ruleId": "GAP_INJECT:path"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 16
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT SPAWN@argv[*] via subprocess.run (direct); chain=_purge"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind",
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "SPAWN",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "argv[*]",
+            "unit_id": "mcp:helper_purge:b1ef559040e6",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "_purge"
+            ]
+          },
+          "ruleId": "GAP_INJECT:argv[*]"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 10
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION FS_WRITE@path via builtins.open (direct); chain=_save"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:helper_write:95cdc987656a",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "_save"
+            ]
+          },
+          "ruleId": "CONTRADICTION:path"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 10
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT FS_WRITE@path via builtins.open (direct); chain=_save"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:helper_write:95cdc987656a",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": [
+              "_save"
+            ]
+          },
+          "ruleId": "GAP_INJECT:path"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "informationUri": "https://github.com/s1300105/auth_gap",
+          "name": "AuthGap",
+          "rules": [
+            {
+              "fullDescription": {
+                "text": "CONTRADICTION on slot path"
+              },
+              "id": "CONTRADICTION:path",
+              "shortDescription": {
+                "text": "CONTRADICTION"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "GAP_INJECT on slot argv[*]"
+              },
+              "id": "GAP_INJECT:argv[*]",
+              "shortDescription": {
+                "text": "GAP_INJECT"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "GAP_INJECT on slot path"
+              },
+              "id": "GAP_INJECT:path",
+              "shortDescription": {
+                "text": "GAP_INJECT"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}

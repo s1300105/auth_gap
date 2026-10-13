@@ -1,0 +1,12 @@
+version: 0.4.0 files: 1 eps: 3
+EP dump_yaml server.py:25 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP delete_alias server.py:34 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+EP dump_cond_def server.py:40 mcp decorator ann: readOnlyHint=True(e) destructiveHint=False(d) idempotentHint=False(d) openWorldHint=True(d) declared_tools: []
+FINDING file_access WRITE "with open(..., mode='w')" server.py:28 high reach=reachable ep=dump_yaml path=['dump_yaml'] 
+FINDING file_access WRITE "with open(..., mode='w')" server.py:16 high reach=unreachable ep=None path=None 
+FINDING file_access WRITE "with open(..., mode='w')" server.py:20 high reach=unreachable ep=None path=None 
+FINDING file_access WRITE 'os.remove' server.py:35 high reach=reachable ep=delete_alias path=['delete_alias'] 
+MISMATCH delete_alias read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} WRITE 'os.remove' server.py:35 send_kind=None dispatch=decorator path=['delete_alias'] extra=[] 
+MISMATCH dump_yaml read_only_contradicted high {'hint': 'readOnlyHint', 'value': True} WRITE "with open(..., mode='w')" server.py:28 send_kind=None dispatch=decorator path=['dump_yaml'] extra=[] 
+suppression_warnings: []
+risks: []

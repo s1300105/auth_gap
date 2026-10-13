@@ -1,0 +1,47 @@
+dispatch_sites: []
+unresolved_handler: {"count": 0, "sites": []}
+parse_failures: [] truncations: []
+======================================================================
+UNIT g_cw_spawn qual= g_cw_spawn entry_kind= decorator line= 41 ann_form= ToolAnnotations ann= {'openWorldHint': False, 'readOnlyHint': True}
+  D_kind: {"bottom": false, "closed_world": true, "explicit": ["readOnlyHint"], "present_no_bound": ["openWorldHint"], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT subprocess.run SPAWN SPAWN_MODEL_ARGV line 42 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW subprocess.run SPAWN argv0 line 42 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:spawn_model', 'contradiction:D3', 'contradiction_reason:D3:spawn_model'] attributed= -
+  ROW subprocess.run SPAWN argv[*] line 42 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:spawn_model', 'contradiction:D3', 'contradiction_reason:D3:spawn_model'] attributed= -
+======================================================================
+UNIT g_destr_only qual= g_destr_only entry_kind= decorator line= 13 ann_form= ToolAnnotations ann= {'destructiveHint': False}
+  D_kind: {"bottom": false, "explicit": ["destructiveHint"], "present_no_bound": [], "upper": ["DB", "FS_READ", "FS_WRITE", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT os.remove FS_WRITE FS_WRITE line 14 destructive= True fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW os.remove FS_WRITE path line 14 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D2', 'contradiction_reason:D2:fs_remove', 'D_layer_present:kind:FS_WRITE'] attributed= -
+======================================================================
+UNIT g_ro_and_nd qual= g_ro_and_nd entry_kind= decorator line= 19 ann_form= ToolAnnotations ann= {'destructiveHint': False, 'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": ["destructiveHint"], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT os.remove FS_WRITE FS_WRITE line 20 destructive= True fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW os.remove FS_WRITE path line 20 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
+======================================================================
+UNIT g_ro_false_only qual= g_ro_false_only entry_kind= decorator line= 25 ann_form= ToolAnnotations ann= {'readOnlyHint': False}
+  D_kind: {"bottom": true, "explicit": [], "present_no_bound": ["readOnlyHint"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT os.remove FS_WRITE FS_WRITE line 26 destructive= True fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW os.remove FS_WRITE path line 26 verdicts= ['GAP_INJECT'] covered_by= None D_layer= ['kind_no_bound'] notes= ['select_manifest_only(assumed_trig)'] attributed= -
+======================================================================
+UNIT g_ro_http_delete qual= g_ro_http_delete entry_kind= decorator line= 31 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['receiver', 'unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT requests.delete NET NET line 32 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW requests.delete NET url.host line 32 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:net_modify', 'D_layer_present:kind:NET'] attributed= -
+======================================================================
+UNIT g_ro_http_post qual= g_ro_http_post entry_kind= decorator line= 36 ann_form= ToolAnnotations ann= {'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": [], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['receiver', 'unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT requests.post NET NET line 37 destructive= - fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW requests.post NET body line 37 verdicts= [] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction_unknown:D1:net_post'] attributed= -
+  ROW requests.post NET url.host line 37 verdicts= ['GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'contradiction_unknown:D1:net_post', 'D_layer_present:kind:NET'] attributed= -

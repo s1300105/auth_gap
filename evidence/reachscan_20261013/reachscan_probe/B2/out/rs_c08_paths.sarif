@@ -1,0 +1,1404 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "reachscan",
+          "version": "0.4.0",
+          "informationUri": "https://github.com/vinmay/reachscan",
+          "rules": [
+            {
+              "id": "reachscan/EXECUTE",
+              "name": "Execute",
+              "shortDescription": {
+                "text": "EXECUTE capability"
+              },
+              "fullDescription": {
+                "text": "This code can execute shell or interpreter commands on the host."
+              },
+              "help": {
+                "text": "This code can execute shell or interpreter commands on the host. A malicious prompt could run destructive commands, install malware, or alter the environment."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "execute"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/SEND",
+              "name": "Send",
+              "shortDescription": {
+                "text": "SEND capability"
+              },
+              "fullDescription": {
+                "text": "This code can send data over the network to external services."
+              },
+              "help": {
+                "text": "This code can send data over the network to external services. Sensitive local data could be transmitted to untrusted endpoints."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "send"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/READ",
+              "name": "Read",
+              "shortDescription": {
+                "text": "READ capability"
+              },
+              "fullDescription": {
+                "text": "This code can read local files from the filesystem."
+              },
+              "help": {
+                "text": "This code can read local files from the filesystem. Private files may be exposed to later processing or exfiltration."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "read"
+                ],
+                "security-severity": "5.0"
+              }
+            },
+            {
+              "id": "reachscan/WRITE",
+              "name": "Write",
+              "shortDescription": {
+                "text": "WRITE capability"
+              },
+              "fullDescription": {
+                "text": "This code can write, modify, move, or delete files."
+              },
+              "help": {
+                "text": "This code can write, modify, move, or delete files. An unsafe prompt could tamper with project files or remove important data."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "write"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/SECRETS",
+              "name": "Secrets",
+              "shortDescription": {
+                "text": "SECRETS capability"
+              },
+              "fullDescription": {
+                "text": "This code accesses secrets or credential sources."
+              },
+              "help": {
+                "text": "This code accesses secrets or credential sources. Credentials may be disclosed and used for unauthorized access."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "secrets"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/DYNAMIC",
+              "name": "Dynamic",
+              "shortDescription": {
+                "text": "DYNAMIC capability"
+              },
+              "fullDescription": {
+                "text": "This code performs dynamic execution or runtime code loading."
+              },
+              "help": {
+                "text": "This code performs dynamic execution or runtime code loading. Untrusted input could become executable code, increasing compromise risk."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "dynamic"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/AUTONOMY",
+              "name": "Autonomy",
+              "shortDescription": {
+                "text": "AUTONOMY capability"
+              },
+              "fullDescription": {
+                "text": "This code can schedule or continue actions without direct user interaction."
+              },
+              "help": {
+                "text": "This code can schedule or continue actions without direct user interaction. Risky behavior may repeat in the background after the initiating prompt."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "autonomy"
+                ],
+                "security-severity": "5.0"
+              }
+            },
+            {
+              "id": "mcp-risk-mismatch",
+              "name": "McpRiskMismatch",
+              "shortDescription": {
+                "text": "MCP tool annotation contradicted by reachable code"
+              },
+              "fullDescription": {
+                "text": "An MCP tool explicitly declares a ToolAnnotations hint (readOnlyHint, openWorldHint, or destructiveHint) that a call path from the tool contradicts."
+              },
+              "help": {
+                "text": "Clients use these hints to decide what to auto-approve. A false hint can let a tool that writes, executes, or reaches the network run without the approval the client would otherwise ask for. Fix the code or correct the annotation."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "mcp",
+                  "annotations"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/combined/data_exfiltration",
+              "name": "DataExfiltration",
+              "shortDescription": {
+                "text": "Data Exfiltration Risk"
+              },
+              "fullDescription": {
+                "text": "The code can both access/change local files and send data externally."
+              },
+              "help": {
+                "text": "The code can both access/change local files and send data externally."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "combined-risk"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/combined/remote_control",
+              "name": "RemoteControl",
+              "shortDescription": {
+                "text": "Remote Control Risk"
+              },
+              "fullDescription": {
+                "text": "The code can execute commands and communicate over the network."
+              },
+              "help": {
+                "text": "The code can execute commands and communicate over the network."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "combined-risk"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/combined/secret_leak",
+              "name": "SecretLeakage",
+              "shortDescription": {
+                "text": "Secret Leakage Risk"
+              },
+              "fullDescription": {
+                "text": "The code can read local files and transmit their contents externally."
+              },
+              "help": {
+                "text": "The code can read local files and transmit their contents externally."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "combined-risk"
+                ],
+                "security-severity": "8.0"
+              }
+            },
+            {
+              "id": "reachscan/combined/destructive_agent",
+              "name": "DestructiveAgent",
+              "shortDescription": {
+                "text": "Destructive Agent Risk"
+              },
+              "fullDescription": {
+                "text": "The code can execute commands and perform destructive file actions."
+              },
+              "help": {
+                "text": "The code can execute commands and perform destructive file actions."
+              },
+              "helpUri": "https://github.com/vinmay/reachscan",
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "reachscan",
+                  "combined-risk"
+                ],
+                "security-severity": "8.0"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "reachscan/WRITE",
+          "level": "error",
+          "message": {
+            "text": "WRITE via pathlib.Path.write_text() is reachable from LLM entry point 'ro_write_text'. Call chain: ro_write_text. An unsafe prompt could tamper with project files or remove important data."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 21
+                }
+              }
+            }
+          ],
+          "properties": {
+            "detector": "file_access",
+            "capability": "WRITE",
+            "evidence": "pathlib.Path.write_text()",
+            "riskLevel": "high",
+            "reachability": "reachable",
+            "confidence": 0.95,
+            "entryPoint": "ro_write_text",
+            "reachabilityPath": [
+              "ro_write_text"
+            ],
+            "reachabilityPathTruncated": false,
+            "findingId": "8c39484eec94"
+          },
+          "ruleIndex": 3,
+          "partialFingerprints": {
+            "reachscanFindingId/v1": "8c39484eec94"
+          },
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from entry point 'ro_write_text'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 20
+                          }
+                        },
+                        "message": {
+                          "text": "LLM entry point ro_write_text"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 21
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via pathlib.Path.write_text()"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "reachscan/WRITE",
+          "level": "error",
+          "message": {
+            "text": "WRITE via os.replace() is reachable from LLM entry point 'ro_replace'. Call chain: ro_replace. An unsafe prompt could tamper with project files or remove important data."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "detector": "file_access",
+            "capability": "WRITE",
+            "evidence": "os.replace()",
+            "riskLevel": "high",
+            "reachability": "reachable",
+            "confidence": 0.9,
+            "entryPoint": "ro_replace",
+            "reachabilityPath": [
+              "ro_replace"
+            ],
+            "reachabilityPathTruncated": false,
+            "findingId": "704d7007835c"
+          },
+          "ruleIndex": 3,
+          "partialFingerprints": {
+            "reachscanFindingId/v1": "704d7007835c"
+          },
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from entry point 'ro_replace'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 26
+                          }
+                        },
+                        "message": {
+                          "text": "LLM entry point ro_replace"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 27
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via os.replace()"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "reachscan/WRITE",
+          "level": "error",
+          "message": {
+            "text": "WRITE via shutil.copy() is reachable from LLM entry point 'ro_copy'. Call chain: ro_copy. An unsafe prompt could tamper with project files or remove important data."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "detector": "file_access",
+            "capability": "WRITE",
+            "evidence": "shutil.copy()",
+            "riskLevel": "high",
+            "reachability": "reachable",
+            "confidence": 0.9,
+            "entryPoint": "ro_copy",
+            "reachabilityPath": [
+              "ro_copy"
+            ],
+            "reachabilityPathTruncated": false,
+            "findingId": "9e975a50edee"
+          },
+          "ruleIndex": 3,
+          "partialFingerprints": {
+            "reachscanFindingId/v1": "9e975a50edee"
+          },
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from entry point 'ro_copy'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 32
+                          }
+                        },
+                        "message": {
+                          "text": "LLM entry point ro_copy"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 33
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via shutil.copy()"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "reachscan/WRITE",
+          "level": "error",
+          "message": {
+            "text": "WRITE via pathlib.Path.write_text() is reachable from LLM entry point 'nd_write_text'. Call chain: nd_write_text. An unsafe prompt could tamper with project files or remove important data."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 46
+                }
+              }
+            }
+          ],
+          "properties": {
+            "detector": "file_access",
+            "capability": "WRITE",
+            "evidence": "pathlib.Path.write_text()",
+            "riskLevel": "high",
+            "reachability": "reachable",
+            "confidence": 0.95,
+            "entryPoint": "nd_write_text",
+            "reachabilityPath": [
+              "nd_write_text"
+            ],
+            "reachabilityPathTruncated": false,
+            "findingId": "43d2d8dbfe06"
+          },
+          "ruleIndex": 3,
+          "partialFingerprints": {
+            "reachscanFindingId/v1": "43d2d8dbfe06"
+          },
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from entry point 'nd_write_text'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 45
+                          }
+                        },
+                        "message": {
+                          "text": "LLM entry point nd_write_text"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 46
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via pathlib.Path.write_text()"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "reachscan/WRITE",
+          "level": "error",
+          "message": {
+            "text": "WRITE via os.replace() is reachable from LLM entry point 'nd_replace'. Call chain: nd_replace. An unsafe prompt could tamper with project files or remove important data."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 52
+                }
+              }
+            }
+          ],
+          "properties": {
+            "detector": "file_access",
+            "capability": "WRITE",
+            "evidence": "os.replace()",
+            "riskLevel": "high",
+            "reachability": "reachable",
+            "confidence": 0.9,
+            "entryPoint": "nd_replace",
+            "reachabilityPath": [
+              "nd_replace"
+            ],
+            "reachabilityPathTruncated": false,
+            "findingId": "de5db5621b74"
+          },
+          "ruleIndex": 3,
+          "partialFingerprints": {
+            "reachscanFindingId/v1": "de5db5621b74"
+          },
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from entry point 'nd_replace'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 51
+                          }
+                        },
+                        "message": {
+                          "text": "LLM entry point nd_replace"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 52
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via os.replace()"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "reachscan/WRITE",
+          "level": "error",
+          "message": {
+            "text": "WRITE via shutil.copy() is reachable from LLM entry point 'nd_copy'. Call chain: nd_copy. An unsafe prompt could tamper with project files or remove important data."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 58
+                }
+              }
+            }
+          ],
+          "properties": {
+            "detector": "file_access",
+            "capability": "WRITE",
+            "evidence": "shutil.copy()",
+            "riskLevel": "high",
+            "reachability": "reachable",
+            "confidence": 0.9,
+            "entryPoint": "nd_copy",
+            "reachabilityPath": [
+              "nd_copy"
+            ],
+            "reachabilityPathTruncated": false,
+            "findingId": "638723549974"
+          },
+          "ruleIndex": 3,
+          "partialFingerprints": {
+            "reachscanFindingId/v1": "638723549974"
+          },
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from entry point 'nd_copy'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 57
+                          }
+                        },
+                        "message": {
+                          "text": "LLM entry point nd_copy"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 58
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via shutil.copy()"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "mcp-risk-mismatch",
+          "level": "error",
+          "message": {
+            "text": "Tool 'ro_copy' declares readOnlyHint: true, but a call path from the tool reaches WRITE via shutil.copy()."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 33
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 32
+                }
+              },
+              "message": {
+                "text": "Tool 'ro_copy' declares readOnlyHint: true"
+              }
+            }
+          ],
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from MCP tool 'ro_copy'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 32
+                          }
+                        },
+                        "message": {
+                          "text": "MCP tool 'ro_copy' (ro_copy)"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 33
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via shutil.copy()"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "reachscanMismatchId/v1": "32669116446a"
+          },
+          "properties": {
+            "tool": "ro_copy",
+            "mismatchRule": "read_only_contradicted",
+            "declared": {
+              "hint": "readOnlyHint",
+              "value": true
+            },
+            "observed": {
+              "capability": "WRITE",
+              "evidence": "shutil.copy()",
+              "finding_id": "9e975a50edee"
+            },
+            "riskLevel": "high",
+            "dispatch": "decorator",
+            "reachabilityPath": [
+              "ro_copy"
+            ],
+            "additionalObservations": 0
+          },
+          "ruleIndex": 7
+        },
+        {
+          "ruleId": "mcp-risk-mismatch",
+          "level": "error",
+          "message": {
+            "text": "Tool 'ro_replace' declares readOnlyHint: true, but a call path from the tool reaches WRITE via os.replace()."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 27
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 26
+                }
+              },
+              "message": {
+                "text": "Tool 'ro_replace' declares readOnlyHint: true"
+              }
+            }
+          ],
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from MCP tool 'ro_replace'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 26
+                          }
+                        },
+                        "message": {
+                          "text": "MCP tool 'ro_replace' (ro_replace)"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 27
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via os.replace()"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "reachscanMismatchId/v1": "3819ca4d6c93"
+          },
+          "properties": {
+            "tool": "ro_replace",
+            "mismatchRule": "read_only_contradicted",
+            "declared": {
+              "hint": "readOnlyHint",
+              "value": true
+            },
+            "observed": {
+              "capability": "WRITE",
+              "evidence": "os.replace()",
+              "finding_id": "704d7007835c"
+            },
+            "riskLevel": "high",
+            "dispatch": "decorator",
+            "reachabilityPath": [
+              "ro_replace"
+            ],
+            "additionalObservations": 0
+          },
+          "ruleIndex": 7
+        },
+        {
+          "ruleId": "mcp-risk-mismatch",
+          "level": "error",
+          "message": {
+            "text": "Tool 'ro_write_text' declares readOnlyHint: true, but a call path from the tool reaches WRITE via pathlib.Path.write_text()."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 21
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 20
+                }
+              },
+              "message": {
+                "text": "Tool 'ro_write_text' declares readOnlyHint: true"
+              }
+            }
+          ],
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from MCP tool 'ro_write_text'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 20
+                          }
+                        },
+                        "message": {
+                          "text": "MCP tool 'ro_write_text' (ro_write_text)"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 21
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via pathlib.Path.write_text()"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "reachscanMismatchId/v1": "61e45a54e29e"
+          },
+          "properties": {
+            "tool": "ro_write_text",
+            "mismatchRule": "read_only_contradicted",
+            "declared": {
+              "hint": "readOnlyHint",
+              "value": true
+            },
+            "observed": {
+              "capability": "WRITE",
+              "evidence": "pathlib.Path.write_text()",
+              "finding_id": "8c39484eec94"
+            },
+            "riskLevel": "high",
+            "dispatch": "decorator",
+            "reachabilityPath": [
+              "ro_write_text"
+            ],
+            "additionalObservations": 0
+          },
+          "ruleIndex": 7
+        },
+        {
+          "ruleId": "mcp-risk-mismatch",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'nd_replace' declares destructiveHint: false, but a call path from the tool reaches WRITE via os.replace()."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 52
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 51
+                }
+              },
+              "message": {
+                "text": "Tool 'nd_replace' declares destructiveHint: false"
+              }
+            }
+          ],
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from MCP tool 'nd_replace'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 51
+                          }
+                        },
+                        "message": {
+                          "text": "MCP tool 'nd_replace' (nd_replace)"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 52
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via os.replace()"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "reachscanMismatchId/v1": "bb6757f8c42a"
+          },
+          "properties": {
+            "tool": "nd_replace",
+            "mismatchRule": "non_destructive_contradicted",
+            "declared": {
+              "hint": "destructiveHint",
+              "value": false
+            },
+            "observed": {
+              "capability": "WRITE",
+              "evidence": "os.replace()",
+              "finding_id": "de5db5621b74"
+            },
+            "riskLevel": "medium",
+            "dispatch": "decorator",
+            "reachabilityPath": [
+              "nd_replace"
+            ],
+            "additionalObservations": 0
+          },
+          "ruleIndex": 7
+        },
+        {
+          "ruleId": "mcp-risk-mismatch",
+          "level": "warning",
+          "message": {
+            "text": "Tool 'nd_write_text' declares destructiveHint: false, but a call path from the tool reaches WRITE via pathlib.Path.write_text()."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 46
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "id": 1,
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 45
+                }
+              },
+              "message": {
+                "text": "Tool 'nd_write_text' declares destructiveHint: false"
+              }
+            }
+          ],
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Call chain from MCP tool 'nd_write_text'"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 45
+                          }
+                        },
+                        "message": {
+                          "text": "MCP tool 'nd_write_text' (nd_write_text)"
+                        }
+                      },
+                      "nestingLevel": 0,
+                      "executionOrder": 0
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "server.py",
+                            "uriBaseId": "%SRCROOT%"
+                          },
+                          "region": {
+                            "startLine": 46
+                          }
+                        },
+                        "message": {
+                          "text": "WRITE via pathlib.Path.write_text()"
+                        }
+                      },
+                      "nestingLevel": 1,
+                      "executionOrder": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "reachscanMismatchId/v1": "4cb116215aef"
+          },
+          "properties": {
+            "tool": "nd_write_text",
+            "mismatchRule": "non_destructive_contradicted",
+            "declared": {
+              "hint": "destructiveHint",
+              "value": false
+            },
+            "observed": {
+              "capability": "WRITE",
+              "evidence": "pathlib.Path.write_text()",
+              "finding_id": "43d2d8dbfe06"
+            },
+            "riskLevel": "medium",
+            "dispatch": "decorator",
+            "reachabilityPath": [
+              "nd_write_text"
+            ],
+            "additionalObservations": 0
+          },
+          "ruleIndex": 7
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "properties": {
+        "target": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths",
+        "sourceType": "local",
+        "entryPointsDetected": 8,
+        "includeUnreachable": false,
+        "omittedFindings": 0
+      },
+      "originalUriBaseIds": {
+        "%SRCROOT%": {
+          "uri": "file:///tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/reachscan_probe/B2/cases/c08_paths/"
+        }
+      }
+    }
+  ]
+}
