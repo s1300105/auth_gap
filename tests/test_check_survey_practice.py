@@ -34,19 +34,22 @@ def _sheet():
         return list(reader.fieldnames), list(reader)
 
 
-V = 'a.py:43 tool → a.py:34 helper → a.py:30: open(p, "a") に追記'
-TRACED = "a.py:52 tool → a.py:19 Client.__init__ → httpx.Client（外）／a.py:52 tool → a.py:23 Client.search → httpx.Client.get（外）"
+# D91 の改訂: 本体は書かず、本体が呼んだ先から書く
+V = 'a.py:34 helper → a.py:29 save → a.py:30: open(p, "a") に追記'
+TRACED = "a.py:19 Client.__init__ → httpx.Client（外）／a.py:23 Client.search → httpx.Client.get（外）"
 
 
 def test_good_rows_for_each_outcome():
     # D91: 関数は「ファイル:行 名前」、木の外は「名前（外）」、道筋どうしは「／」
     assert cs.check_row(row("違反", V)) == []
-    assert cs.check_row(row("違反", "a.py:43 tool → requests.post（外）: 相手に注文を作る")) == []
-    assert cs.check_row(row("違反（深さ 4 の外）", V + "／a.py:43 tool → a.py:34 helper")) == []
+    assert cs.check_row(row("違反", "requests.post（外）: 相手に注文を作る")) == []  # 本体が木の外の関数を呼んで反する
+    assert cs.check_row(row("違反", "a.py:47: open(p, 'a') に追記")) == []  # 本体の中の行が反する
+    assert cs.check_row(row("違反（深さ 4 の外）", V + "／a.py:34 helper → a.py:29 save")) == []
     assert cs.check_row(row("違反でない", TRACED)) == []
-    assert cs.check_row(row("違反でない", "app.py:293 check")) == []  # 木の中の関数を何も呼ばない
+    assert cs.check_row(row("違反でない", "本体だけ")) == []  # 本体が何も呼ばない
+    assert cs.check_row(row("違反でない", "get_token（外）／a.py:150 get_avail → get_merged（外）")) == []
     assert cs.check_row(row("違反でない", TRACED + "／https://example.com/api")) == []
-    assert cs.check_row(row("違反でない", "a.py:52 tool → client.search_items（外）／API 名から")) == []
+    assert cs.check_row(row("違反でない", "client.search_items（外）／API 名から")) == []
     assert cs.check_row(row("不明", TRACED)) == []
     assert cs.check_row(row("対象外", "a.py:12 の辞書は設定の見本で、どのサーバにも登録されない")) == []
 
@@ -67,7 +70,7 @@ def test_not_violation_evidence_is_traced_paths_with_file_lines():
 
 
 def test_violation_evidence_is_one_path_ending_with_the_line_and_what_it_does():
-    for bad in ("open で書いているので違反", "a.py:43 tool → a.py:34 helper", "tool → helper → a.py:30: open"):
+    for bad in ("open で書いているので違反", "a.py:34 helper → a.py:29 save", "helper → save → a.py:30: open", "本体だけ"):
         assert any("反する行までの道筋" in e for e in cs.check_row(row("違反", bad))), bad
 
 
@@ -75,7 +78,7 @@ def test_outside_depth4_needs_the_traced_paths_after_the_violation_path():
     out = "違反（深さ 4 の外）"
     assert any("たどった道筋が無い" in e for e in cs.check_row(row(out, V)))
     # たどった道筋だけで、反する行までの道筋が無い行は誤り
-    assert any("反する行までの道筋" in e for e in cs.check_row(row(out, "a.py:43 tool → a.py:34 helper")))
+    assert any("反する行までの道筋" in e for e in cs.check_row(row(out, "a.py:34 helper → a.py:29 save")))
 
 
 def test_newline_and_formula_prefix_are_errors():

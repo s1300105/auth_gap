@@ -33,7 +33,8 @@ FORBIDDEN_COLUMNS = ("target_by_arg", "cause", "verdict", "output_found", "error
 ROSTER_COLS = ("seq", "pair_id", "tree", "tool", "roster_form", "roster_relpath", "roster_lineno", "decl_lineno", "decl")
 DISTRIBUTED_SHEET = os.path.join(ROOT, "evidence", "practice_survey", "survey_practice.csv")
 #: 道筋の始まり「ファイル:行 名前」と、違反の道筋の終わり「ファイル:行: 何をするか」か「名前（外）: 何をするか」（D91）。
-PATH_START_RE = re.compile(r"^\S+:\d+ \S")
+#: 本体は書かず、呼んだ先から書く（D91 の改訂）。始まりは「ファイル:行 名前」「名前（外）」、本体の中の行が反するなら「ファイル:行: …」
+PATH_START_RE = re.compile(r"^(\S+:\d+[ :] ?\S|[^\s→／]+（外）)")
 VIOLATION_END_RE = re.compile(r"(\S+:\d+|（外）): \S")
 
 
@@ -56,6 +57,8 @@ def check_row(r: dict) -> list[str]:
     # D91: 道筋は「ファイル:行 名前 → … 」。道筋どうしは「／」。URL と「API 名から」は添え物
     segs = [x.strip() for x in ev.split("／") if x.strip()]
     paths = [x for x in segs if not (x.startswith("http") or x == "API 名から")]
+    if out in ("違反でない", "不明") and paths == ["本体だけ"]:
+        return errs
     if out in VIOLATIONS:
         if not paths or not PATH_START_RE.match(paths[0]) or not VIOLATION_END_RE.search(paths[0]):
             errs.append(f"{out} なのに evidence の最初が反する行までの道筋でない（「ファイル:行 名前 → … → ファイル:行: 何をするか」。"

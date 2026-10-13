@@ -38,18 +38,20 @@
 ## 3. `evidence`
 
 `evidence` は、**たどった関数の道筋**で書きます（D91。学生の案）。関数は、木の中なら定義の `ファイル:行`（`def` の行）を付けて
-`ファイル:行 名前`、木の外（`import` した先が木の中に無い）なら `名前（外）` と書き、` → ` でつなぎます。
+`ファイル:行 名前`、木の外（`import` した先が木の中に無い）なら `名前（外）` と書き、` → ` でつなぎます。**本体（ツールの関数）は書かず、
+本体が呼んだ先から書きます**（本体は表の名簿の欄で分かる。D91 の改訂）。
 
 | `outcome` | 書くこと |
 |---|---|
-| `違反` | **反する行までの道筋 1 本**: 本体から反する動作のある関数まで、最後に「`→ ファイル:行: 何をするか`」（反する行と、何をするかを一言）。反するのが木の外の関数なら「`→ 名前（外）: 何をするか`」 |
+| `違反` | **反する行までの道筋 1 本**: 本体が呼んだ先から反する動作のある関数まで、最後に「`→ ファイル:行: 何をするか`」（反する行と、何をするかを一言）。反するのが木の外の関数なら「`→ 名前（外）: 何をするか`」。本体の中の行そのものが反するなら `ファイル:行: 何をするか` だけ |
 | `違反（深さ 4 の外）` | 反する行までの道筋（深さ 4 より奥まで）、続けて「／」で区切って、深さ 4 までに**たどった道筋を全部** |
-| `違反でない`・`不明` | **たどった道筋を全部**、「／」で区切って並べる |
+| `違反でない`・`不明` | **たどった道筋を全部**、「／」で区切って並べる。本体が何も呼ばない（木の中の関数も、確かめた木の外の関数も無い）なら `本体だけ` |
 | `対象外` | **理由**を 1 文（宣言の行と、なぜツールの宣言でないか） |
 
 **たどった道筋の書き方**
 
-- 1 本ごとに本体から書き始める（同じ始まりでも省かない）。
+- 1 本ごとに、本体が呼んだ先（深さ 1）から書き始める（同じ始まりでも省かない）。
+- 判定した関数が名簿の `tool` と違うとき（宣言が別の関数に付いていた。O48 (4)）だけ、最初に本体の `ファイル:行 名前` を書く。
 - 1 本は、それより先に木の中の関数を呼ばない関数か、深さ 4 の関数か、木の外の関数（`（外）`）で終わる。
 - 木の外の関数は、**環境を変えるかを確かめたもの**（反しうる候補・知られていないライブラリの関数。段 4 の 5・段 5）を書く。
   値の変換や組み込みの関数（`json.dumps`・`str.strip` など）は書かなくてよい。
@@ -65,14 +67,14 @@
 
 **良い例**（6 章の例題と架空の例）
 
-- `違反`: `notes_server.py:43 search_notes → notes_server.py:34 _search → notes_server.py:29 _remember_query → notes_server.py:30: open(~/.notes_mcp/history.jsonl, "a") に時刻と検索語を追記`
-- `違反（深さ 4 の外）`: `app/server.py:41 export_items → app/a.py:20 _collect → app/b.py:44 _prepare → app/c.py:12 _build → app/d.py:27 _flush → app/e.py:55 _write_cache → app/e.py:58: open(p, "w") でキャッシュを書く／app/server.py:41 export_items → app/a.py:20 _collect → app/b.py:44 _prepare → app/c.py:12 _build → app/d.py:27 _flush`
-- `違反でない`: `notes_server.py:52 list_tags → notes_server.py:19 NotesClient.__init__ → httpx.Client（外）／notes_server.py:52 list_tags → notes_server.py:23 NotesClient.search → httpx.Client.get（外）`
-- `不明`: `app/server.py:31 sync_items → app/client.py:20 ItemClient.sync → httpx.Client.post（外）`（POST の意味が相手の文書にも無く、決められない）
+- `違反`: `notes_server.py:34 _search → notes_server.py:29 _remember_query → notes_server.py:30: open(~/.notes_mcp/history.jsonl, "a") に時刻と検索語を追記`
+- `違反（深さ 4 の外）`: `app/a.py:20 _collect → app/b.py:44 _prepare → app/c.py:12 _build → app/d.py:27 _flush → app/e.py:55 _write_cache → app/e.py:58: open(p, "w") でキャッシュを書く／app/a.py:20 _collect → app/b.py:44 _prepare → app/c.py:12 _build → app/d.py:27 _flush`
+- `違反でない`: `notes_server.py:19 NotesClient.__init__ → httpx.Client（外）／notes_server.py:23 NotesClient.search → httpx.Client.get（外）`
+- `不明`: `app/client.py:20 ItemClient.sync → httpx.Client.post（外）`（POST の意味が相手の文書にも無く、決められない）
 - `対象外`: `app/settings.py:12 の辞書 DEFAULT_ANNOTATIONS は設定の見本で、どのサーバにも登録されない`
 
 **悪い例**: 「open で書いているので違反」（行が無い）／「特に書き込みは無い」（道筋が無い）／
-`search_notes → _search`（`ファイル:行` が無い）／「AI によると POST は照会」（URL が無い）。
+`_search → _remember_query`（`ファイル:行` が無い）／「AI によると POST は照会」（URL が無い）。
 
 ---
 
@@ -98,7 +100,7 @@
 
 - 行ごとに「よい」「誤り: …」「まだ判定していない（飛ばした）」が出ます。**誤り**は直します。
 - 確かめるのは書き方だけです: `outcome` が 5 つの値のどれか、`evidence` が空でないか、`違反`・`違反でない`・`不明`・`違反（深さ 4 の外）` の
-  `evidence` が `ファイル:行 名前` で始まる道筋か、`違反（深さ 4 の外）` に「／」の後のたどった道筋があるか、セルの中に改行が無いか、名簿の欄が配った表と同じか。判定の中身は確かめません。
+  `evidence` が `ファイル:行 名前`（か `名前（外）`）で始まる道筋か、`違反（深さ 4 の外）` に「／」の後のたどった道筋があるか、セルの中に改行が無いか、名簿の欄が配った表と同じか。判定の中身は確かめません。
 - 前の版の表（時間・ラベル・メモの欄があるもの）でも読めます。その欄は見ません（空のままでよい）。
 - 欄の数が見出しと合わない行は「欄の数が見出しより多い／少ない」とだけ出ます。表計算のソフトで開いて保存し直してから、もう一度
   かけます。
