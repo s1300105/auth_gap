@@ -134,6 +134,7 @@ uv venv .venv312 --python 3.12 && uv pip install --python .venv312/bin/python -r
 .venv/bin/python scripts/freeze_analyzer.py --run scan_v2_run<N> --decision D59 --date YYYY-MM-DD   # → docs/fingerprint.json
 ```
 
+**実態調査の判定は `survey/PROTOCOL.md` だけを見て行う（D95。手引きの当てはめと仮の扱い。手引きと食い違ったら手引きを採る）。** 練習の手順書は `archive/practice_survey_manual/`（記録）。
 **手検証の入口は `docs/verification_guide.md`。**
 **判断の履歴は `docs/decisions.md`。** 仕様書と違う値を出しているときは
 まずここを見る。

@@ -25,7 +25,7 @@ import csv
 import json
 import sys
 
-#: 練習の表の欄（`03_record.md`）。先頭の 9 欄を名簿から書き、ほかは空で配る。
+#: 練習の表の欄（`survey/PROTOCOL.md` の 7 節）。先頭の 9 欄を名簿から書き、ほかは空で配る。
 #: D90（学生: 記録は練習も本番も最低限）で、判定者が書く欄は outcome と evidence だけ。
 COLUMNS = ("seq", "pair_id", "tree", "tool", "roster_form", "roster_relpath", "roster_lineno", "decl_lineno", "decl",
            "outcome", "evidence")

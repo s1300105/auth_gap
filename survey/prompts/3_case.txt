@@ -1,0 +1,108 @@
+You will determine what happens when one tool function of a Python MCP server is called.
+Apply only the rules below. Parts replaced by [REDACTED] were removed on purpose. Do not try to reconstruct them.
+Do not use docstrings, comments, tool descriptions, or the names of functions in the project as evidence of what the code does.
+
+Where to start (depth 0)
+1. Start from the tool function {tool_name} at {relpath}:{line}. These also run at depth 0: the wrapper code of decorators
+   defined in the given files that wrap the tool (only decorators applied below the MCP registration decorator run), server
+   middleware defined in the given files and functions passed to third-party middleware (also those of a parent server that this
+   server is mounted on), and, for a low-level server, the dispatch code that runs before the branch for this tool (ignore the
+   branches for other tools).
+2. Arguments that the framework injects (such as ctx) are not chosen by the model. All other tool arguments are chosen by the
+   model: consider every value they can take.
+3. If the given files show that {tool_name} at that line is never registered as a tool of an MCP server (for example it is only an
+   example or a configuration value), answer "not a tool". If it is registered only with a framework other than MCP, treat that
+   as undetermined: the answer is "changes the environment" or "changes the environment beyond depth 4" if you find such an
+   action, and otherwise "undetermined".
+
+How far to read
+4. Follow calls into functions defined in the given files, up to depth 4. Each of these adds one level: a call f(...);
+   a method call (decide the receiver's class from its assignments); constructing a class (its __init__, __post_init__,
+   default_factory functions, pydantic validators); a function passed to Thread(target=...), Process(target=...),
+   asyncio.to_thread, run_in_executor, Executor.submit, Executor.map, call_soon, add_done_callback, or functools.partial;
+   reading a property; entering a with-block (__enter__/__exit__); calling an object (__call__); the default value of a
+   parameter that is a function, when the caller does not pass one; a worker started at server start that processes what the
+   tool put on a queue (one level from the function that puts it). A wrapper calling the wrapped tool does not add a level.
+   Library calls and value conversions do not add a level. If a function is reached in several ways, use the smallest depth.
+   Read the functions at depth 4, but do not look for functions beyond depth 4.
+5. A function passed by name to third-party code without being called (a callback such as token_saver=_save, or Depends(f)) is
+   called only as the library's official documentation says. If the documentation does not say whether or when it is called,
+   that is undetermined. Its depth is that of the function that passed it, or 0 if it was passed at module level or as a tool
+   parameter.
+6. If one call can reach several candidates (a dict of handlers, an implementation chosen by configuration, getattr), consider
+   all candidates that can be read. A key chosen by the model can take any value. It is undetermined only if the candidates can
+   grow outside the given project (for example plugins) or if how a candidate is chosen cannot be read.
+7. Do not look inside third-party libraries. Judge a library call only by what the call itself does. Decide this from the name
+   only when the name clearly says create, update, delete, write, save, or send, or clearly says get, list, search, read, or
+   fetch; otherwise use the official documentation; if neither tells, it is undetermined. Side effects inside a library that
+   are not what the call is for (for example caching to disk on its own, or sending telemetry after an init call) do not count.
+8. A script of the same project started as a child process is read, and everything the child process does counts. A program
+   that is not in the project and has no official documentation is undetermined.
+
+Whether an action is reached
+9. An action is reached if at least one execution path of a tool call executes it. This includes paths that depend on the
+   model's arguments, the first call only, failure or retry, external state or remote responses, or settings the operator
+   controls (environment variables, configuration files, optional dependencies). Writes done after the call returns, by work
+   the call queued or started (threads, processes, workers), are reached.
+10. Not reached: code called only from command-line entry points, tests, or scripts; branches closed by a constant that is never
+    changed; code after an unconditional return or raise; statements that run when a module is imported at server start.
+11. One-time initialization (for example "if _x is None: _init()") is reached if nothing completes it before the server accepts
+    calls, if it is done only in main() or under if __name__ == "__main__", or if it is done in a startup hook of a component
+    that wraps the server. It is not reached if a lifespan function of the MCP server (or of the parent server it is mounted on)
+    always completes it, or if it runs at module import. It is reached if that lifespan does it only under a condition or
+    swallows its failure, and reached again if something resets it to None while the server is serving. Code after the yield
+    of a lifespan runs at shutdown and does not complete anything beforehand.
+
+What changes the environment
+12. An action changes the environment if it changes something that remains after the call, on the host or on a remote service:
+    - files: writing, appending, creating (including directories, touch, and opening in mode 'a'), deleting, moving, or changing
+      permissions, including temporary files deleted within the same call;
+    - databases: INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, REPLACE, settings or maintenance that persist (PRAGMA journal_mode,
+      VACUUM), ORM add/delete/save/merge, and sqlite3.connect on a file that does not exist yet;
+    - remote services: HTTP PUT, PATCH, DELETE; a POST that creates, updates, or deletes (decide by what the remote API does;
+      a POST that only queries does not count); sending email or messages; publishing to a queue; storing to cloud storage;
+      a GraphQL mutation (a query text chosen by the model counts); records sent directly to an external logging or
+      telemetry service;
+    - processes and code: eval or exec; starting a process whose command the model can choose, or whose fixed command changes
+      the environment according to its documentation, or to which the model can pass options that change the environment;
+      a command set by the operator is decided from its default value, a sample configuration, or its documentation, and is
+      undetermined if none of these tells;
+    - logging calls, but only if the logging configuration that runs when this server starts (including configuration done
+      only in main(), configuration files, and options in the files that start the server) writes to a file or sends to syslog;
+    - saving tokens, sessions, or caches to disk.
+13. These do not change the environment: in-memory state (module-level variables, lru_cache, class attributes), os.environ,
+    os.chdir, stdout and stderr, notifications to the client (for example ctx.info or ctx.report_progress), reading files,
+    HTTP GET, HEAD, OPTIONS (even if the API creates something), SELECT, connection-level settings (PRAGMA foreign_keys),
+    transaction control alone (BEGIN, COMMIT), starting a thread.
+
+Answer
+14. "changes the environment": an action at depth 0-4 is reached and changes the environment.
+    "changes the environment beyond depth 4": no such action at depth 0-4, but you happened to see one deeper (do not search
+    for it). This answer comes before "undetermined".
+    "undetermined": neither of the above, but an action at depth 0-4 may be reached and change the environment and this cannot
+    be decided: a target, destination, or command decided by a library's return value or by external state at run time; a
+    remote API whose meaning is not documented; a dynamic call whose target or timing cannot be known; an initialization whose
+    timing cannot be read; or a case that these rules do not cover (rule 15). An action that would not change the environment
+    even if reached is never a reason for "undetermined".
+    "no change": otherwise.
+15. The rules do not cover the following cases. If the answer depends on one of them, it is undetermined:
+    the top-level statements of a module that is first imported inside the tool code (unless the module is also imported at
+    server start, in which case they are not reached); a server created inside a function, or a tool registered only inside
+    main(); a module-level low-level Server whose initialization is done only in main(); module-level initialization placed
+    after mcp.run(), done only under a condition, or with its failure swallowed; initialization in the lifespan of an app that
+    is not an MCP server (Starlette, FastAPI); whether files such as pyproject.toml or a Dockerfile decide how the server is
+    started; whether a constant in a configuration module is meant to be edited by the operator; a value set by a different
+    tool call; a function registered with atexit; eval or exec of constant code; log records filtered out by the configured
+    log level; how deep a started script of the same project goes; changes to an in-memory SQLite database, TEMP TABLEs, or
+    changes rolled back within the same call.
+16. If you need a file that is not among the given files (for example where a called function of the same project is defined),
+    list it under "Missing files" instead of guessing.
+
+Files (with line numbers):
+{files_with_line_numbers}
+
+Reply in this format:
+Answer: <changes the environment / changes the environment beyond depth 4 / undetermined / no change / not a tool>
+Path: <file:line function -> ... -> file:line: what it does>   (for every answer except "no change")
+Uncertain points: <what could not be decided, with file:line>
+Missing files: <paths, or "none">
