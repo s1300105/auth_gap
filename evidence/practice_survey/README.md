@@ -14,7 +14,7 @@
 （D82 の 2。矛かつ違反の件は、解析器の指した位置が違反かも判定する）。これは実態調査の判定とは別の、後の段で、**この練習ではしません**。
 
 **手引き 18 節（見落としの判定）を引く理由**: D82 は「手順は見落としの判定（手引き 18 節）と同じ」と決めました。ただし、答える問いは
-「このツールは宣言に反するか」で、解析器の見落としを探すのではありません。手順書（`manual/02_steps.md` の冒頭「18 節との違い」）は
+「このツールは宣言に反するか」で、解析器の見落としを探すのではありません。手順書（`archive/practice_survey_manual/02_steps.md` の冒頭「18 節との違い」）は
 18 節を次のように分けて使います。
 
 | 18 節のうち | 実態調査で |
@@ -25,26 +25,22 @@
 
 ## 始め方
 
-1. **`manual/README.md`**（手順書の地図）を読む。
-2. **`manual/05_practice.md`**（練習の進め方）を読む。
-3. **`manual/01_setup.md`** のとおりに準備する（木を取る・表を写す・エディタの AI を切る・開かないものを確かめる・手引きを読む）。
-4. W-01（練習の練習）→ 振り返り → T-01（→ T-02 → T-03）の順に、`manual/02_steps.md` の段 0〜9 をなぞって判定する。
-5. 送るものは `manual/05_practice.md` の 5.7。
+練習は 2026-10-13 に終えた（下の「練習の結果」）。練習で使った手順書は `archive/practice_survey_manual/` に移した（D95）。今の判定の
+規則の正本は `survey/PROTOCOL.md`。練習をやり直すなら、`archive/practice_survey_manual/README.md` から読む。
 
 ## ファイル
 
 | ファイル | 中身 | いつ開く |
 |---|---|---|
-| `manual/` | 手順書（準備・1 件の手順 段 0〜9・記録の書き方・判断の早見表・練習の進め方・例題・FAQ・チェックリスト） | 最初から |
+| `archive/practice_survey_manual/`（repo の根） | 練習で使った手順書（記録。D95 で移した） | 練習をやり直すとき |
 | `survey_practice.csv` | 4 件（W-01・T-01〜T-03）の記録の表。repo の根の `practice/` に写して書く（書くのは段 9 の `outcome` と `evidence` だけ。D90） | 準備で写す |
-| `fetch_spec_survey_practice.json` | 4 木の取得の指定（`manual/01_setup.md` の 1.1） | 準備で使う |
+| `fetch_spec_survey_practice.json` | 4 木の取得の指定（`archive/practice_survey_manual/01_setup.md` の 1.1） | 準備で使う |
 | `survey_practice_targets.json` | T-01〜T-03 を選んだ名簿の抜き取りの列（解析器を使わない。seed は使い捨て） | 開かなくてよい |
 | `frame_keep46.json` | 抜き取りの枠の 46 木（下の「表の作り方と再現」） | 開かなくてよい |
 | `survey_answers_DO_NOT_OPEN_FIRST/` | 参考の答え（件ごとのファイル）。正解ではない。6 節の「解析器の出力との関係」は任意の参考（実態調査の振り返りには使わない） | `W-01.md` は W-01 を終えたら。`T-*.md` は T を全部終え、翌日の見直しを済ませてから |
 | `analyzer_view/` | 4 件について解析器が何を出したか（**任意の参考**。実態調査には使わない） | 見なくてよい。見るなら参考の答えと同じ時点より後 |
-| `warmup_and_timing.md` | 前の版の手順（`manual/` に移した。対応表だけ） | 開かなくてよい |
 
-記録の表の書き方は `scripts/check_survey_practice.py` で確かめます（`manual/03_record.md` の 5 節）。
+記録の表の書き方は `scripts/check_survey_practice.py` で確かめます（`survey/PROTOCOL.md` の 6 節）。
 
 ## 表の作り方と再現
 
@@ -90,7 +86,7 @@ cmp $D/survey_practice.csv evidence/practice_survey/survey_practice.csv
 
 ## この練習の限界（2026-10-09）
 
-- **目隠し**: 手順書（`manual/`）・FAQ・O48 の仮の扱いは、本記録者（AI）が 4 件の参考の答えを書いたのと同じ作業の中で書いた。
+- **目隠し**: 手順書（今の `archive/practice_survey_manual/`）・FAQ・O48 の仮の扱いは、本記録者（AI）が 4 件の参考の答えを書いたのと同じ作業の中で書いた。
   点検（5 つの観点の敵対的な点検ほか、2026-10-09）で、練習の件に近すぎる例と一文を外した（何を外したかは、各件の答えのファイルの
   末尾に書いた。ここに書くと答えの手がかりになる）。それでも、仮の扱いの一部は練習の件で出会った形をきっかけに足したもので、
   T の件ではその形に前もって答えが用意されている。どれがどの件から来たかは、各件の答えのファイルの末尾に書いた。
@@ -102,7 +98,7 @@ cmp $D/survey_practice.csv evidence/practice_survey/survey_practice.csv
   選んだ v4 の抜き取りの木を含む）と学生が見た木を除いた。抜き取りの列の 1 番目は `unmapped`（1 つの宣言を複数のツールが使う）で、
   選び方の規則が未決（O48 (5)）なので飛ばした（本番なら飛ばさず、判定者がツールを決める。D85 の 3）。
 - **練習のあいだに、git が追跡している repo のファイルを書き換えない**（`docs/preregistration.md` の §5 を含む。書くのは repo の根の
-  作業フォルダ `practice/` だけで、これは `.gitignore` に入れてある）。手引きで決まらなかった点は、（任意の）迷ったところの紙の控えで送る（`manual/05_practice.md` の 5.7。D90 の前は
+  作業フォルダ `practice/` だけで、これは `.gitignore` に入れてある）。手引きで決まらなかった点は、（任意の）迷ったところの紙の控えで送る（`archive/practice_survey_manual/05_practice.md` の 5.7。D90 の前は
   `unknown_reason` で送っていた）。
 - 2026-10-10 に、精度・見落としの練習（`evidence/practice_v4/`）と同じフォルダにあったのをこのフォルダに分けた。あわせて、手順書の
   振り返りで解析器の出力を見る段を任意の参考にした（ほかの手順は同じ）。

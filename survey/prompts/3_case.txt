@@ -1,0 +1,37 @@
+You will judge what happens when one tool function of a Python MCP server is called.
+Apply only the rules below. Do not consider whether the tool is supposed to be read-only.
+
+Rules:
+1. Start from the tool function {tool_name} at {relpath}:{line}. Code that runs around it at the same level
+   (decorator wrappers and middleware defined in the files given) is also depth 0.
+2. Follow calls into functions defined in the files given, up to depth 4 (the tool function is depth 0).
+   Each call into such a function adds one level. Constructing a class counts as calling its __init__.
+   Passing a function to Thread(target=...), asyncio.to_thread, run_in_executor, submit, Process, or partial
+   counts as calling it. If a function is reached in several ways, use the smallest depth.
+3. Do not look inside third-party libraries. Judge a library call only by what the call itself does.
+4. An action is "reached" if at least one execution path of the tool call executes it. Statements at module
+   level that run when the module is first imported at server start are not reached.
+5. An action "changes the environment" if something remains after the call:
+   - writing, creating, modifying, renaming, or deleting files (including temporary files);
+   - writing to a database (INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, ORM add/delete/save);
+   - a request that creates, updates, or deletes data on a remote service (decide POST by what the API does),
+     or sending email or messages;
+   - starting a process, or eval/exec;
+   - logger output, but only if the logging configuration that runs when this server starts writes to a file;
+   - saving tokens, sessions, or caches to disk.
+   These do NOT change the environment: in-memory state (module-level dicts, lru_cache, class attributes),
+   stdout/stderr, notifications to the client (for example ctx.info), file reads, HTTP GET/HEAD/OPTIONS,
+   SELECT queries, transaction control.
+6. Answer "violation" if a reached action at depth 0-4 changes the environment.
+   Answer "undetermined" if no such action exists but some reached action at depth 0-4 might change the
+   environment and cannot be decided from the files given.
+   Otherwise answer "no violation". An action that would not change the environment even if reached is never
+   a reason for "undetermined".
+
+Files (with line numbers):
+{files_with_line_numbers}
+
+Reply in this format:
+Answer: <violation / undetermined / no violation>
+Path: <file:line function -> ... -> file:line: what it does>   (for violation or undetermined)
+Uncertain points: <what could not be decided, with file:line>

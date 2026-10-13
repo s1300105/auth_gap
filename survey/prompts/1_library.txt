@@ -1,0 +1,18 @@
+You will answer a factual question about a third-party Python library API.
+Answer only about the library's documented behavior. If you are not certain, answer "unknown". Do not guess.
+
+Package: {package}
+Function or method: {qualified_name}
+How it is called (argument values redacted): {call_line}
+
+Question: When this call executes, which of the following does it do?
+(a) write, modify, or delete files on the local machine
+(b) send a request that creates, updates, or deletes data on a remote service
+(c) start a process or execute code
+(d) write to a database
+(e) none of the above (it only reads or computes)
+(unknown) cannot be determined
+
+Reply in this format:
+Answer: <a/b/c/d/e/unknown; more than one is allowed>
+Evidence: <URL of the official documentation that supports the answer>
