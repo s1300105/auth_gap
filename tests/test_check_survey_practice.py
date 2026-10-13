@@ -49,7 +49,7 @@ def test_good_rows_for_each_outcome():
     assert cs.check_row(row("不明", U)) == []
     assert cs.check_row(row("不明", "client.sync_items（外）")) == []
     assert cs.check_row(row("不明", "httpx.Client.post（外）: POST /v2/run の意味が文書に無い")) == []  # http で始まる名前は URL でない
-    assert cs.check_row(row("不明", "app.py:40: Flask の route にだけ登録（MCP 以外の枠組み）")) == []  # 呼び出しでない点
+    assert cs.check_row(row("不明", "server.py:40: 初期化を済ませる場所が読み切れない")) == []  # 呼び出しでない点
     assert cs.check_row(row("不明", "a.py:10 helper → a.py:20 Backend.record: 受け手のクラスが決まらない")) == []  # 添え書き
     assert cs.check_row(row("違反", "client.create_order（外）: 注文を作る／API 名から")) == []
     assert cs.check_row(row("違反", "a.py:20 sync → sdk.Client.sync（外）: 同期のジョブを作る／https://docs.example.com/sync")) == []
