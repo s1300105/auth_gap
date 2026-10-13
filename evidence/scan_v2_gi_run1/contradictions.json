@@ -1,0 +1,5680 @@
+{
+ "_note": "CONTRADICTION（ユニット × (site, kind)。ユニットは unit_id と位置で区別）。手検証の候補表。relpath / lineno は組の中の (relpath, lineno) の対の最小、全位置は locations。",
+ "n": 193,
+ "rows": [
+  {
+   "tree": "v2-artyomzemlyak__tg-note",
+   "unit": "sync_docling_models",
+   "unit_relpath": "docker/docling-mcp/app/tg_docling/server.py",
+   "unit_lineno": 111,
+   "tool": "sync_docling_models",
+   "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+   "effect_kind": "FS_WRITE",
+   "site": "shutil.rmtree",
+   "lineno": 256,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "lineno": 256,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    },
+    {
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "lineno": 515,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    },
+    {
+     "relpath": "docker/docling-mcp/app/tg_docling/model_sync.py",
+     "lineno": 586,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-dddabtc__winremote-mcp",
+   "unit": "OCR",
+   "unit_relpath": "src/winremote/__main__.py",
+   "unit_lineno": 1377,
+   "tool": "OCR",
+   "relpath": "src/winremote/ocr.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.unlink",
+   "lineno": 114,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/winremote/ocr.py",
+     "lineno": 114,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-dddabtc__winremote-mcp",
+   "unit": "PlaySound",
+   "unit_relpath": "src/winremote/__main__.py",
+   "unit_lineno": 771,
+   "tool": "PlaySound",
+   "relpath": "src/winremote/__main__.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 855,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/winremote/__main__.py",
+     "lineno": 855,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-diterex__youtube-research-mcp",
+   "unit": "get_video_frames",
+   "unit_relpath": "src/yt_research_mcp/server.py",
+   "unit_lineno": 1495,
+   "tool": "get_video_frames",
+   "relpath": "src/yt_research_mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 858,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/yt_research_mcp/server.py",
+     "lineno": 858,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-diterex__youtube-research-mcp",
+   "unit": "get_video_frames",
+   "unit_relpath": "src/yt_research_mcp/server.py",
+   "unit_lineno": 1495,
+   "tool": "get_video_frames",
+   "relpath": "src/yt_research_mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "shutil.rmtree",
+   "lineno": 844,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/yt_research_mcp/server.py",
+     "lineno": 844,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-dondetir__codegrok_mcp",
+   "unit": "memory_stats",
+   "unit_relpath": "src/codegrok_mcp/mcp/server.py",
+   "unit_lineno": 728,
+   "tool": "memory_stats",
+   "relpath": "src/codegrok_mcp/indexing/memory_retriever.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 84,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/codegrok_mcp/indexing/memory_retriever.py",
+     "lineno": 84,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-dondetir__codegrok_mcp",
+   "unit": "recall",
+   "unit_relpath": "src/codegrok_mcp/mcp/server.py",
+   "unit_lineno": 585,
+   "tool": "recall",
+   "relpath": "src/codegrok_mcp/indexing/memory_retriever.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 84,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/codegrok_mcp/indexing/memory_retriever.py",
+     "lineno": 84,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-fanfan-de__anybox",
+   "unit": "register.get_blendfile_summary_datablocks_for_cli",
+   "unit_relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools/get_blendfile_summary_datablocks.py",
+   "unit_lineno": 43,
+   "tool": "get_blendfile_summary_datablocks_for_cli",
+   "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools_helpers/blender_cli.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 165,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools_helpers/blender_cli.py",
+     "lineno": 165,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-fanfan-de__anybox",
+   "unit": "register.get_blendfile_summary_missing_files_for_cli",
+   "unit_relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools/get_blendfile_summary_missing_files.py",
+   "unit_lineno": 44,
+   "tool": "get_blendfile_summary_missing_files_for_cli",
+   "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools_helpers/blender_cli.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 165,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools_helpers/blender_cli.py",
+     "lineno": 165,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-fanfan-de__anybox",
+   "unit": "register.get_blendfile_summary_of_linked_libraries_for_cli",
+   "unit_relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools/get_blendfile_summary_of_linked_libraries.py",
+   "unit_lineno": 43,
+   "tool": "get_blendfile_summary_of_linked_libraries_for_cli",
+   "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools_helpers/blender_cli.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 165,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools_helpers/blender_cli.py",
+     "lineno": 165,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-fanfan-de__anybox",
+   "unit": "register.get_blendfile_summary_path_info_for_cli",
+   "unit_relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools/get_blendfile_summary_path_info.py",
+   "unit_lineno": 43,
+   "tool": "get_blendfile_summary_path_info_for_cli",
+   "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools_helpers/blender_cli.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 165,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools_helpers/blender_cli.py",
+     "lineno": 165,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-fanfan-de__anybox",
+   "unit": "register.get_blendfile_summary_usage_guess_for_cli",
+   "unit_relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools/get_blendfile_summary_usage_guess.py",
+   "unit_lineno": 43,
+   "tool": "get_blendfile_summary_usage_guess_for_cli",
+   "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools_helpers/blender_cli.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.remove",
+   "lineno": 165,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "plugins/Anybox-Plugins/blender/runtime/blender-mcp/blmcp/tools_helpers/blender_cli.py",
+     "lineno": 165,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-fbratten__agentspool",
+   "unit": "comm_discover_agents",
+   "unit_relpath": "agent_comm_mcp/server.py",
+   "unit_lineno": 364,
+   "tool": "comm_discover_agents",
+   "relpath": "agent_comm/registry.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 91,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "agent_comm/registry.py",
+     "lineno": 91,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-fbratten__agentspool",
+   "unit": "comm_get_conversation",
+   "unit_relpath": "agent_comm_mcp/server.py",
+   "unit_lineno": 513,
+   "tool": "comm_get_conversation",
+   "relpath": "agent_comm/registry.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 91,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "agent_comm/registry.py",
+     "lineno": 91,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-fbratten__agentspool",
+   "unit": "comm_get_conversation",
+   "unit_relpath": "agent_comm_mcp/server.py",
+   "unit_lineno": 513,
+   "tool": "comm_get_conversation",
+   "relpath": "agent_comm/spool.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 42,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "agent_comm/spool.py",
+     "lineno": 42,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-fbratten__agentspool",
+   "unit": "comm_heartbeat",
+   "unit_relpath": "agent_comm_mcp/server.py",
+   "unit_lineno": 404,
+   "tool": "comm_heartbeat",
+   "relpath": "agent_comm/registry.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 112,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "agent_comm/registry.py",
+     "lineno": 112,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-fbratten__agentspool",
+   "unit": "comm_heartbeat",
+   "unit_relpath": "agent_comm_mcp/server.py",
+   "unit_lineno": 404,
+   "tool": "comm_heartbeat",
+   "relpath": "agent_comm/registry.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 115,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "agent_comm/registry.py",
+     "lineno": 115,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-fbratten__agentspool",
+   "unit": "comm_message_status",
+   "unit_relpath": "agent_comm_mcp/server.py",
+   "unit_lineno": 458,
+   "tool": "comm_message_status",
+   "relpath": "agent_comm/registry.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 91,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "agent_comm/registry.py",
+     "lineno": 91,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-fbratten__agentspool",
+   "unit": "comm_register_agent",
+   "unit_relpath": "agent_comm_mcp/server.py",
+   "unit_lineno": 321,
+   "tool": "comm_register_agent",
+   "relpath": "agent_comm/registry.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 112,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "agent_comm/registry.py",
+     "lineno": 112,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-fbratten__agentspool",
+   "unit": "comm_register_agent",
+   "unit_relpath": "agent_comm_mcp/server.py",
+   "unit_lineno": 321,
+   "tool": "comm_register_agent",
+   "relpath": "agent_comm/registry.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 115,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "agent_comm/registry.py",
+     "lineno": 115,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-fbratten__agentspool",
+   "unit": "comm_relay_list_secrets",
+   "unit_relpath": "agent_comm_mcp/server.py",
+   "unit_lineno": 631,
+   "tool": "comm_relay_list_secrets",
+   "relpath": "agent_comm/registry.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 91,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "agent_comm/registry.py",
+     "lineno": 91,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-fbratten__agentspool",
+   "unit": "comm_spool_stats",
+   "unit_relpath": "agent_comm_mcp/server.py",
+   "unit_lineno": 486,
+   "tool": "comm_spool_stats",
+   "relpath": "agent_comm/registry.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 91,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "agent_comm/registry.py",
+     "lineno": 91,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-fbratten__agentspool",
+   "unit": "comm_spool_stats",
+   "unit_relpath": "agent_comm_mcp/server.py",
+   "unit_lineno": 486,
+   "tool": "comm_spool_stats",
+   "relpath": "agent_comm/spool.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 42,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "agent_comm/spool.py",
+     "lineno": 42,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-gwicho38__write-like-me-mcp",
+   "unit": "analyze_writing_style",
+   "unit_relpath": "src/write_like_me_mcp/server.py",
+   "unit_lineno": 584,
+   "tool": "analyze_writing_style",
+   "relpath": "src/write_like_me_mcp/indexer.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 312,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/write_like_me_mcp/indexer.py",
+     "lineno": 312,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/write_like_me_mcp/indexer.py",
+     "lineno": 313,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "install.room_manage",
+   "unit_relpath": "src/teamplay_talk/tools/consolidated.py",
+   "unit_lineno": 665,
+   "tool": "room_manage",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "install.room_manage",
+   "unit_relpath": "src/teamplay_talk/tools/consolidated.py",
+   "unit_lineno": 665,
+   "tool": "room_manage",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.add_task",
+   "unit_relpath": "src/teamplay_talk/tools/roadmap.py",
+   "unit_lineno": 864,
+   "tool": "add_task",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.add_task",
+   "unit_relpath": "src/teamplay_talk/tools/roadmap.py",
+   "unit_lineno": 864,
+   "tool": "add_task",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.apply_daily_checkin",
+   "unit_relpath": "src/teamplay_talk/tools/daily.py",
+   "unit_lineno": 704,
+   "tool": "apply_daily_checkin",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.apply_daily_checkin",
+   "unit_relpath": "src/teamplay_talk/tools/daily.py",
+   "unit_lineno": 704,
+   "tool": "apply_daily_checkin",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.post",
+   "lineno": 74,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 74,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.apply_daily_checkin",
+   "unit_relpath": "src/teamplay_talk/tools/daily.py",
+   "unit_lineno": 704,
+   "tool": "apply_daily_checkin",
+   "relpath": "src/teamplay_talk/kakao_calendar.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.request",
+   "lineno": 338,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2",
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_calendar.py",
+     "lineno": 338,
+     "declarations": [
+      "D2",
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.apply_daily_checkin",
+   "unit_relpath": "src/teamplay_talk/tools/daily.py",
+   "unit_lineno": 704,
+   "tool": "apply_daily_checkin",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 1472,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 1611,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.assign_roles",
+   "unit_relpath": "src/teamplay_talk/tools/roles.py",
+   "unit_lineno": 302,
+   "tool": "assign_roles",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.assign_roles",
+   "unit_relpath": "src/teamplay_talk/tools/roles.py",
+   "unit_lineno": 302,
+   "tool": "assign_roles",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.build_roadmap",
+   "unit_relpath": "src/teamplay_talk/tools/roadmap.py",
+   "unit_lineno": 752,
+   "tool": "build_roadmap",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.calendar_create_room_event",
+   "unit_relpath": "src/teamplay_talk/tools/calendar.py",
+   "unit_lineno": 78,
+   "tool": "calendar_create_room_event",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.calendar_create_task_events",
+   "unit_relpath": "src/teamplay_talk/tools/calendar.py",
+   "unit_lineno": 254,
+   "tool": "calendar_create_task_events",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.close_poll",
+   "unit_relpath": "src/teamplay_talk/tools/feedback.py",
+   "unit_lineno": 795,
+   "tool": "close_poll",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.create_daily_checkin",
+   "unit_relpath": "src/teamplay_talk/tools/daily.py",
+   "unit_lineno": 660,
+   "tool": "create_daily_checkin",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.create_daily_checkin",
+   "unit_relpath": "src/teamplay_talk/tools/daily.py",
+   "unit_lineno": 660,
+   "tool": "create_daily_checkin",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.create_poll",
+   "unit_relpath": "src/teamplay_talk/tools/feedback.py",
+   "unit_lineno": 266,
+   "tool": "create_poll",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.create_poll",
+   "unit_relpath": "src/teamplay_talk/tools/feedback.py",
+   "unit_lineno": 266,
+   "tool": "create_poll",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.create_room",
+   "unit_relpath": "src/teamplay_talk/tools/rooms.py",
+   "unit_lineno": 186,
+   "tool": "create_room",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.create_room",
+   "unit_relpath": "src/teamplay_talk/tools/rooms.py",
+   "unit_lineno": 186,
+   "tool": "create_room",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 1166,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.daily_report",
+   "unit_relpath": "src/teamplay_talk/tools/daily.py",
+   "unit_lineno": 743,
+   "tool": "daily_report",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 1472,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.daily_task_digest",
+   "unit_relpath": "src/teamplay_talk/tools/roadmap.py",
+   "unit_lineno": 1500,
+   "tool": "daily_task_digest",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.decompose_roadmap",
+   "unit_relpath": "src/teamplay_talk/tools/roadmap.py",
+   "unit_lineno": 1141,
+   "tool": "decompose_roadmap",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.decompose_roadmap",
+   "unit_relpath": "src/teamplay_talk/tools/roadmap.py",
+   "unit_lineno": 1141,
+   "tool": "decompose_roadmap",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 1309,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.delete_room",
+   "unit_relpath": "src/teamplay_talk/tools/rooms.py",
+   "unit_lineno": 423,
+   "tool": "delete_room",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.delete_task",
+   "unit_relpath": "src/teamplay_talk/tools/roadmap.py",
+   "unit_lineno": 919,
+   "tool": "delete_task",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.finalize_roles",
+   "unit_relpath": "src/teamplay_talk/tools/roles.py",
+   "unit_lineno": 482,
+   "tool": "finalize_roles",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.finalize_roles",
+   "unit_relpath": "src/teamplay_talk/tools/roles.py",
+   "unit_lineno": 482,
+   "tool": "finalize_roles",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 1153,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.gather_locations",
+   "unit_relpath": "src/teamplay_talk/tools/feedback.py",
+   "unit_lineno": 457,
+   "tool": "gather_locations",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.gather_locations",
+   "unit_relpath": "src/teamplay_talk/tools/feedback.py",
+   "unit_lineno": 457,
+   "tool": "gather_locations",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.gather_opinions",
+   "unit_relpath": "src/teamplay_talk/tools/feedback.py",
+   "unit_lineno": 367,
+   "tool": "gather_opinions",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.gather_opinions",
+   "unit_relpath": "src/teamplay_talk/tools/feedback.py",
+   "unit_lineno": 367,
+   "tool": "gather_opinions",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.gather_task_opinions",
+   "unit_relpath": "src/teamplay_talk/tools/feedback.py",
+   "unit_lineno": 584,
+   "tool": "gather_task_opinions",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.gather_task_opinions",
+   "unit_relpath": "src/teamplay_talk/tools/feedback.py",
+   "unit_lineno": 584,
+   "tool": "gather_task_opinions",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.get_poll_results",
+   "unit_relpath": "src/teamplay_talk/tools/feedback.py",
+   "unit_lineno": 767,
+   "tool": "get_poll_results",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.get_poll_results",
+   "unit_relpath": "src/teamplay_talk/tools/feedback.py",
+   "unit_lineno": 767,
+   "tool": "get_poll_results",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 1153,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.join_room",
+   "unit_relpath": "src/teamplay_talk/tools/rooms.py",
+   "unit_lineno": 229,
+   "tool": "join_room",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.join_room",
+   "unit_relpath": "src/teamplay_talk/tools/rooms.py",
+   "unit_lineno": 229,
+   "tool": "join_room",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.post",
+   "lineno": 74,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 74,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.join_room",
+   "unit_relpath": "src/teamplay_talk/tools/rooms.py",
+   "unit_lineno": 229,
+   "tool": "join_room",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 1166,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.leave_room",
+   "unit_relpath": "src/teamplay_talk/tools/rooms.py",
+   "unit_lineno": 544,
+   "tool": "leave_room",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.member_tasks",
+   "unit_relpath": "src/teamplay_talk/tools/roadmap.py",
+   "unit_lineno": 1396,
+   "tool": "member_tasks",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.member_tasks",
+   "unit_relpath": "src/teamplay_talk/tools/roadmap.py",
+   "unit_lineno": 1396,
+   "tool": "member_tasks",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 1153,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.notify_room",
+   "unit_relpath": "src/teamplay_talk/tools/notifications.py",
+   "unit_lineno": 43,
+   "tool": "notify_room",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.restore_room",
+   "unit_relpath": "src/teamplay_talk/tools/rooms.py",
+   "unit_lineno": 487,
+   "tool": "restore_room",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.restore_room",
+   "unit_relpath": "src/teamplay_talk/tools/rooms.py",
+   "unit_lineno": 487,
+   "tool": "restore_room",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 945,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 958,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.room_dashboard",
+   "unit_relpath": "src/teamplay_talk/tools/reports.py",
+   "unit_lineno": 86,
+   "tool": "room_dashboard",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.room_dashboard",
+   "unit_relpath": "src/teamplay_talk/tools/reports.py",
+   "unit_lineno": 86,
+   "tool": "room_dashboard",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 1153,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.rooms",
+   "unit_relpath": "src/teamplay_talk/tools/rooms.py",
+   "unit_lineno": 343,
+   "tool": "rooms",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.rooms",
+   "unit_relpath": "src/teamplay_talk/tools/rooms.py",
+   "unit_lineno": 343,
+   "tool": "rooms",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 1153,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.schedule_meeting",
+   "unit_relpath": "src/teamplay_talk/tools/meeting.py",
+   "unit_lineno": 61,
+   "tool": "schedule_meeting",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.schedule_meeting",
+   "unit_relpath": "src/teamplay_talk/tools/meeting.py",
+   "unit_lineno": 61,
+   "tool": "schedule_meeting",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.schedule_roadmap",
+   "unit_relpath": "src/teamplay_talk/tools/roadmap.py",
+   "unit_lineno": 1007,
+   "tool": "schedule_roadmap",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.schedule_roadmap",
+   "unit_relpath": "src/teamplay_talk/tools/roadmap.py",
+   "unit_lineno": 1007,
+   "tool": "schedule_roadmap",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 1472,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.send_form",
+   "unit_relpath": "src/teamplay_talk/tools/feedback.py",
+   "unit_lineno": 823,
+   "tool": "send_form",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.set_roles",
+   "unit_relpath": "src/teamplay_talk/tools/roles.py",
+   "unit_lineno": 649,
+   "tool": "set_roles",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint",
+    "openWorldHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 785,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 1309,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.switch_room",
+   "unit_relpath": "src/teamplay_talk/tools/rooms.py",
+   "unit_lineno": 292,
+   "tool": "switch_room",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.switch_room",
+   "unit_relpath": "src/teamplay_talk/tools/rooms.py",
+   "unit_lineno": 292,
+   "tool": "switch_room",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 1166,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.update_task",
+   "unit_relpath": "src/teamplay_talk/tools/roadmap.py",
+   "unit_lineno": 949,
+   "tool": "update_task",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.update_task",
+   "unit_relpath": "src/teamplay_talk/tools/roadmap.py",
+   "unit_lineno": 949,
+   "tool": "update_task",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 1472,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.view_roadmap",
+   "unit_relpath": "src/teamplay_talk/tools/roadmap.py",
+   "unit_lineno": 839,
+   "tool": "view_roadmap",
+   "relpath": "src/teamplay_talk/kakao.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 81,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao.py",
+     "lineno": 81,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-hbg1345__teamplay-talk",
+   "unit": "register.view_roadmap",
+   "unit_relpath": "src/teamplay_talk/tools/roadmap.py",
+   "unit_lineno": 839,
+   "tool": "view_roadmap",
+   "relpath": "src/teamplay_talk/kakao_store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 36,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/teamplay_talk/kakao_store.py",
+     "lineno": 36,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/teamplay_talk/storage.py",
+     "lineno": 1153,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-innovatehubph__innovatehub-ai-platform",
+   "unit": "send_message",
+   "unit_relpath": "python/helpers/mcp_server.py",
+   "unit_lineno": 86,
+   "tool": "send_message",
+   "relpath": "python/helpers/files.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 326,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "python/helpers/files.py",
+     "lineno": 326,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    },
+    {
+     "relpath": "python/helpers/files.py",
+     "lineno": 329,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-innovatehubph__innovatehub-ai-platform",
+   "unit": "send_message",
+   "unit_relpath": "python/helpers/mcp_server.py",
+   "unit_lineno": 86,
+   "tool": "send_message",
+   "relpath": "python/helpers/files.py",
+   "effect_kind": "FS_WRITE",
+   "site": "shutil.rmtree",
+   "lineno": 317,
+   "destructive": true,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "python/helpers/files.py",
+     "lineno": 317,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    },
+    {
+     "relpath": "python/helpers/files.py",
+     "lineno": 332,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-jsyzlbw__bbwatch",
+   "unit": "find_materials",
+   "unit_relpath": "src/bbwatch/mcp_server.py",
+   "unit_lineno": 97,
+   "tool": "find_materials",
+   "relpath": "src/bbwatch/config.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 39,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/bbwatch/config.py",
+     "lineno": 39,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-jsyzlbw__bbwatch",
+   "unit": "get_status",
+   "unit_relpath": "src/bbwatch/mcp_server.py",
+   "unit_lineno": 72,
+   "tool": "get_status",
+   "relpath": "src/bbwatch/config.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 39,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/bbwatch/config.py",
+     "lineno": 39,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-jsyzlbw__bbwatch",
+   "unit": "list_courses",
+   "unit_relpath": "src/bbwatch/mcp_server.py",
+   "unit_lineno": 129,
+   "tool": "list_courses",
+   "relpath": "src/bbwatch/config.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 39,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/bbwatch/config.py",
+     "lineno": 39,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-jsyzlbw__bbwatch",
+   "unit": "list_courses",
+   "unit_relpath": "src/bbwatch/mcp_server.py",
+   "unit_lineno": 129,
+   "tool": "list_courses",
+   "relpath": "src/bbwatch/session.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 23,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/bbwatch/session.py",
+     "lineno": 23,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-jsyzlbw__bbwatch",
+   "unit": "list_pending",
+   "unit_relpath": "src/bbwatch/mcp_server.py",
+   "unit_lineno": 48,
+   "tool": "list_pending",
+   "relpath": "src/bbwatch/config.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 39,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/bbwatch/config.py",
+     "lineno": 39,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-jsyzlbw__bbwatch",
+   "unit": "list_tasks",
+   "unit_relpath": "src/bbwatch/mcp_server.py",
+   "unit_lineno": 35,
+   "tool": "list_tasks",
+   "relpath": "src/bbwatch/config.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 39,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/bbwatch/config.py",
+     "lineno": 39,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "TestTheFrontendActsOnTheMarker.test_a_login_that_does_not_help_stops_after_one_retry.scrape",
+   "unit_relpath": "tests/test_daemon_auth.py",
+   "unit_lineno": 392,
+   "tool": "scrape",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "TestTheFrontendActsOnTheMarker.test_a_login_that_does_not_help_stops_after_one_retry.scrape",
+   "unit_relpath": "tests/test_daemon_auth.py",
+   "unit_lineno": 392,
+   "tool": "scrape",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 94,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "TestTheFrontendActsOnTheMarker.test_a_login_that_does_not_help_stops_after_one_retry.scrape",
+   "unit_relpath": "tests/test_daemon_auth.py",
+   "unit_lineno": 392,
+   "tool": "scrape",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 96,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "TestTheRepairRunsForReal.test_a_replay_that_runs_long_does_not_hang_the_client.scrape",
+   "unit_relpath": "tests/test_daemon_auth.py",
+   "unit_lineno": 648,
+   "tool": "scrape",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "TestTheRepairRunsForReal.test_a_replay_that_runs_long_does_not_hang_the_client.scrape",
+   "unit_relpath": "tests/test_daemon_auth.py",
+   "unit_lineno": 648,
+   "tool": "scrape",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 94,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "TestTheRepairRunsForReal.test_a_replay_that_runs_long_does_not_hang_the_client.scrape",
+   "unit_relpath": "tests/test_daemon_auth.py",
+   "unit_lineno": 648,
+   "tool": "scrape",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 96,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "_owner_that_fails_with.scrape",
+   "unit_relpath": "tests/test_daemon_auth.py",
+   "unit_lineno": 57,
+   "tool": "scrape",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "_owner_that_fails_with.scrape",
+   "unit_relpath": "tests/test_daemon_auth.py",
+   "unit_lineno": 57,
+   "tool": "scrape",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 94,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "_owner_that_fails_with.scrape",
+   "unit_relpath": "tests/test_daemon_auth.py",
+   "unit_lineno": 57,
+   "tool": "scrape",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 96,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.get_company_employees",
+   "unit_relpath": "linkedin_mcp_server/tools/company.py",
+   "unit_lineno": 223,
+   "tool": "get_company_employees",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.get_company_employees",
+   "unit_relpath": "linkedin_mcp_server/tools/company.py",
+   "unit_lineno": 223,
+   "tool": "get_company_employees",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 94,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.get_company_employees",
+   "unit_relpath": "linkedin_mcp_server/tools/company.py",
+   "unit_lineno": 223,
+   "tool": "get_company_employees",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 96,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.get_company_posts",
+   "unit_relpath": "linkedin_mcp_server/tools/company.py",
+   "unit_lineno": 108,
+   "tool": "get_company_posts",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.get_company_posts",
+   "unit_relpath": "linkedin_mcp_server/tools/company.py",
+   "unit_lineno": 108,
+   "tool": "get_company_posts",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 94,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.get_company_posts",
+   "unit_relpath": "linkedin_mcp_server/tools/company.py",
+   "unit_lineno": 108,
+   "tool": "get_company_posts",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 96,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.get_company_profile",
+   "unit_relpath": "linkedin_mcp_server/tools/company.py",
+   "unit_lineno": 40,
+   "tool": "get_company_profile",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.get_company_profile",
+   "unit_relpath": "linkedin_mcp_server/tools/company.py",
+   "unit_lineno": 40,
+   "tool": "get_company_profile",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 94,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.get_company_profile",
+   "unit_relpath": "linkedin_mcp_server/tools/company.py",
+   "unit_lineno": 40,
+   "tool": "get_company_profile",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 96,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.search_companies",
+   "unit_relpath": "linkedin_mcp_server/tools/company.py",
+   "unit_lineno": 176,
+   "tool": "search_companies",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.search_companies",
+   "unit_relpath": "linkedin_mcp_server/tools/company.py",
+   "unit_lineno": 176,
+   "tool": "search_companies",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 94,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_company_tools.search_companies",
+   "unit_relpath": "linkedin_mcp_server/tools/company.py",
+   "unit_lineno": 176,
+   "tool": "search_companies",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 96,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_feed_tools.get_feed",
+   "unit_relpath": "linkedin_mcp_server/tools/feed.py",
+   "unit_lineno": 42,
+   "tool": "get_feed",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_feed_tools.get_feed",
+   "unit_relpath": "linkedin_mcp_server/tools/feed.py",
+   "unit_lineno": 42,
+   "tool": "get_feed",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 94,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_feed_tools.get_feed",
+   "unit_relpath": "linkedin_mcp_server/tools/feed.py",
+   "unit_lineno": 42,
+   "tool": "get_feed",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 96,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_job_tools.get_job_details",
+   "unit_relpath": "linkedin_mcp_server/tools/job.py",
+   "unit_lineno": 33,
+   "tool": "get_job_details",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_job_tools.get_job_details",
+   "unit_relpath": "linkedin_mcp_server/tools/job.py",
+   "unit_lineno": 33,
+   "tool": "get_job_details",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 94,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_job_tools.get_job_details",
+   "unit_relpath": "linkedin_mcp_server/tools/job.py",
+   "unit_lineno": 33,
+   "tool": "get_job_details",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 96,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_job_tools.get_saved_jobs",
+   "unit_relpath": "linkedin_mcp_server/tools/job.py",
+   "unit_lineno": 160,
+   "tool": "get_saved_jobs",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_job_tools.get_saved_jobs",
+   "unit_relpath": "linkedin_mcp_server/tools/job.py",
+   "unit_lineno": 160,
+   "tool": "get_saved_jobs",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 94,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_job_tools.get_saved_jobs",
+   "unit_relpath": "linkedin_mcp_server/tools/job.py",
+   "unit_lineno": 160,
+   "tool": "get_saved_jobs",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 96,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_job_tools.search_jobs",
+   "unit_relpath": "linkedin_mcp_server/tools/job.py",
+   "unit_lineno": 80,
+   "tool": "search_jobs",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_job_tools.search_jobs",
+   "unit_relpath": "linkedin_mcp_server/tools/job.py",
+   "unit_lineno": 80,
+   "tool": "search_jobs",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 94,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_job_tools.search_jobs",
+   "unit_relpath": "linkedin_mcp_server/tools/job.py",
+   "unit_lineno": 80,
+   "tool": "search_jobs",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 96,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_messaging_tools.get_inbox",
+   "unit_relpath": "linkedin_mcp_server/tools/messaging.py",
+   "unit_lineno": 36,
+   "tool": "get_inbox",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_messaging_tools.get_inbox",
+   "unit_relpath": "linkedin_mcp_server/tools/messaging.py",
+   "unit_lineno": 36,
+   "tool": "get_inbox",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 94,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_messaging_tools.get_inbox",
+   "unit_relpath": "linkedin_mcp_server/tools/messaging.py",
+   "unit_lineno": 36,
+   "tool": "get_inbox",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 96,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_person_tools.get_my_profile",
+   "unit_relpath": "linkedin_mcp_server/tools/person.py",
+   "unit_lineno": 316,
+   "tool": "get_my_profile",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_person_tools.get_my_profile",
+   "unit_relpath": "linkedin_mcp_server/tools/person.py",
+   "unit_lineno": 316,
+   "tool": "get_my_profile",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 94,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_person_tools.get_my_profile",
+   "unit_relpath": "linkedin_mcp_server/tools/person.py",
+   "unit_lineno": 316,
+   "tool": "get_my_profile",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 96,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_person_tools.get_person_profile",
+   "unit_relpath": "linkedin_mcp_server/tools/person.py",
+   "unit_lineno": 38,
+   "tool": "get_person_profile",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_person_tools.get_person_profile",
+   "unit_relpath": "linkedin_mcp_server/tools/person.py",
+   "unit_lineno": 38,
+   "tool": "get_person_profile",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 94,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_person_tools.get_person_profile",
+   "unit_relpath": "linkedin_mcp_server/tools/person.py",
+   "unit_lineno": 38,
+   "tool": "get_person_profile",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 96,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_person_tools.get_sidebar_profiles",
+   "unit_relpath": "linkedin_mcp_server/tools/person.py",
+   "unit_lineno": 263,
+   "tool": "get_sidebar_profiles",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_person_tools.get_sidebar_profiles",
+   "unit_relpath": "linkedin_mcp_server/tools/person.py",
+   "unit_lineno": 263,
+   "tool": "get_sidebar_profiles",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 94,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_person_tools.get_sidebar_profiles",
+   "unit_relpath": "linkedin_mcp_server/tools/person.py",
+   "unit_lineno": 263,
+   "tool": "get_sidebar_profiles",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 96,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_person_tools.search_people",
+   "unit_relpath": "linkedin_mcp_server/tools/person.py",
+   "unit_lineno": 111,
+   "tool": "search_people",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_person_tools.search_people",
+   "unit_relpath": "linkedin_mcp_server/tools/person.py",
+   "unit_lineno": 111,
+   "tool": "search_people",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 94,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_person_tools.search_people",
+   "unit_relpath": "linkedin_mcp_server/tools/person.py",
+   "unit_lineno": 111,
+   "tool": "search_people",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 96,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_post_tools.search_posts",
+   "unit_relpath": "linkedin_mcp_server/tools/post.py",
+   "unit_lineno": 39,
+   "tool": "search_posts",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.chmod",
+   "lineno": 93,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 93,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_post_tools.search_posts",
+   "unit_relpath": "linkedin_mcp_server/tools/post.py",
+   "unit_lineno": 39,
+   "tool": "search_posts",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.replace",
+   "lineno": 94,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 94,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-kaistenberg__mcp-linkedin",
+   "unit": "register_post_tools.search_posts",
+   "unit_relpath": "linkedin_mcp_server/tools/post.py",
+   "unit_lineno": 39,
+   "tool": "search_posts",
+   "relpath": "linkedin_mcp_server/common_utils.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 96,
+   "destructive": true,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "linkedin_mcp_server/common_utils.py",
+     "lineno": 96,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-khairu-aqsara__code-rag",
+   "unit": "coderag_list_files",
+   "unit_relpath": "mcp/server.py",
+   "unit_lineno": 500,
+   "tool": "coderag_list_files",
+   "relpath": "mcp/server.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.get",
+   "lineno": 96,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "mcp/server.py",
+     "lineno": 96,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_action_tools.get_action_details",
+   "unit_relpath": "ros-mcp-server/ros_mcp/tools/actions.py",
+   "unit_lineno": 121,
+   "tool": "get_action_details",
+   "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 119,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+     "lineno": 119,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_action_tools.get_actions",
+   "unit_relpath": "ros-mcp-server/ros_mcp/tools/actions.py",
+   "unit_lineno": 30,
+   "tool": "get_actions",
+   "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 119,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+     "lineno": 119,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_node_tools.get_node_details",
+   "unit_relpath": "ros-mcp-server/ros_mcp/tools/nodes.py",
+   "unit_lineno": 66,
+   "tool": "get_node_details",
+   "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 119,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+     "lineno": 119,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_node_tools.get_nodes",
+   "unit_relpath": "ros-mcp-server/ros_mcp/tools/nodes.py",
+   "unit_lineno": 23,
+   "tool": "get_nodes",
+   "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 119,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+     "lineno": 119,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_parameter_tools.get_parameter_details",
+   "unit_relpath": "ros-mcp-server/ros_mcp/tools/parameters.py",
+   "unit_lineno": 505,
+   "tool": "get_parameter_details",
+   "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 119,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+     "lineno": 119,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_parameter_tools.get_parameters",
+   "unit_relpath": "ros-mcp-server/ros_mcp/tools/parameters.py",
+   "unit_lineno": 400,
+   "tool": "get_parameters",
+   "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 119,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+     "lineno": 119,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_service_tools.get_service_details",
+   "unit_relpath": "ros-mcp-server/ros_mcp/tools/services.py",
+   "unit_lineno": 109,
+   "tool": "get_service_details",
+   "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 119,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+     "lineno": 119,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_service_tools.get_service_type",
+   "unit_relpath": "ros-mcp-server/ros_mcp/tools/services.py",
+   "unit_lineno": 61,
+   "tool": "get_service_type",
+   "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 119,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+     "lineno": 119,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_service_tools.get_services",
+   "unit_relpath": "ros-mcp-server/ros_mcp/tools/services.py",
+   "unit_lineno": 23,
+   "tool": "get_services",
+   "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 119,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+     "lineno": 119,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_topic_tools.get_message_details",
+   "unit_relpath": "ros-mcp-server/ros_mcp/tools/topics.py",
+   "unit_lineno": 211,
+   "tool": "get_message_details",
+   "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 119,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+     "lineno": 119,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_topic_tools.get_topic_details",
+   "unit_relpath": "ros-mcp-server/ros_mcp/tools/topics.py",
+   "unit_lineno": 124,
+   "tool": "get_topic_details",
+   "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 119,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+     "lineno": 119,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_topic_tools.get_topic_type",
+   "unit_relpath": "ros-mcp-server/ros_mcp/tools/topics.py",
+   "unit_lineno": 72,
+   "tool": "get_topic_type",
+   "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 119,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+     "lineno": 119,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_topic_tools.get_topics",
+   "unit_relpath": "ros-mcp-server/ros_mcp/tools/topics.py",
+   "unit_lineno": 30,
+   "tool": "get_topics",
+   "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 119,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+     "lineno": 119,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_topic_tools.subscribe_for_duration",
+   "unit_relpath": "ros-mcp-server/ros_mcp/tools/topics.py",
+   "unit_lineno": 424,
+   "tool": "subscribe_for_duration",
+   "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 143,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+     "lineno": 143,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_topic_tools.subscribe_for_duration",
+   "unit_relpath": "ros-mcp-server/ros_mcp/tools/topics.py",
+   "unit_lineno": 424,
+   "tool": "subscribe_for_duration",
+   "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 119,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+     "lineno": 119,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_topic_tools.subscribe_once",
+   "unit_relpath": "ros-mcp-server/ros_mcp/tools/topics.py",
+   "unit_lineno": 282,
+   "tool": "subscribe_once",
+   "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 143,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+     "lineno": 143,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-lara-unb__ros-mcp-ur3-antigravity",
+   "unit": "register_topic_tools.subscribe_once",
+   "unit_relpath": "ros-mcp-server/ros_mcp/tools/topics.py",
+   "unit_lineno": 282,
+   "tool": "subscribe_once",
+   "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.makedirs",
+   "lineno": 119,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "ros-mcp-server/ros_mcp/utils/websocket.py",
+     "lineno": 119,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-letsgojh0810__godsaeng-salon",
+   "unit": "check_reminders",
+   "unit_relpath": "server.py",
+   "unit_lineno": 613,
+   "tool": "check_reminders",
+   "relpath": "server.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 677,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "server.py",
+     "lineno": 677,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-nan-fe__agents",
+   "unit": "create_mcp.get_lark_auth_status",
+   "unit_relpath": "mcp-lark/server/app.py",
+   "unit_lineno": 184,
+   "tool": "get_lark_auth_status",
+   "relpath": "mcp-lark/lark_im/client.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.post",
+   "lineno": 86,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "mcp-lark/lark_im/client.py",
+     "lineno": 86,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-nan-fe__agents",
+   "unit": "create_mcp.list_chat_messages",
+   "unit_relpath": "mcp-lark/server/app.py",
+   "unit_lineno": 134,
+   "tool": "list_chat_messages",
+   "relpath": "mcp-lark/lark_im/client.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.post",
+   "lineno": 86,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "mcp-lark/lark_im/client.py",
+     "lineno": 86,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-nan-fe__agents",
+   "unit": "create_mcp.list_chat_messages",
+   "unit_relpath": "mcp-lark/server/app.py",
+   "unit_lineno": 134,
+   "tool": "list_chat_messages",
+   "relpath": "mcp-lark/lark_im/client.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.request",
+   "lineno": 129,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "mcp-lark/lark_im/client.py",
+     "lineno": 129,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-nan-fe__agents",
+   "unit": "create_mcp.reply_message",
+   "unit_relpath": "mcp-lark/server/app.py",
+   "unit_lineno": 107,
+   "tool": "reply_message",
+   "relpath": "mcp-lark/lark_im/client.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.post",
+   "lineno": 86,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "mcp-lark/lark_im/client.py",
+     "lineno": 86,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-nan-fe__agents",
+   "unit": "create_mcp.reply_message",
+   "unit_relpath": "mcp-lark/server/app.py",
+   "unit_lineno": 107,
+   "tool": "reply_message",
+   "relpath": "mcp-lark/lark_im/client.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.request",
+   "lineno": 129,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "mcp-lark/lark_im/client.py",
+     "lineno": 129,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-nightfast-app__hvac-mcp",
+   "unit": "register.hvac_capacitor_crossref",
+   "unit_relpath": "src/hvac_mcp/tools/parts.py",
+   "unit_lineno": 252,
+   "tool": "hvac_capacitor_crossref",
+   "relpath": "src/hvac_mcp/storage.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 73,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/hvac_mcp/storage.py",
+     "lineno": 73,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-nightfast-app__hvac-mcp",
+   "unit": "register.hvac_code_lookup",
+   "unit_relpath": "src/hvac_mcp/tools/code_lookup.py",
+   "unit_lineno": 104,
+   "tool": "hvac_code_lookup",
+   "relpath": "src/hvac_mcp/storage.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 73,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/hvac_mcp/storage.py",
+     "lineno": 73,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-nightfast-app__hvac-mcp",
+   "unit": "register.hvac_diagnostic_symptom_tree",
+   "unit_relpath": "src/hvac_mcp/tools/diagnostics.py",
+   "unit_lineno": 136,
+   "tool": "hvac_diagnostic_symptom_tree",
+   "relpath": "src/hvac_mcp/storage.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 73,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/hvac_mcp/storage.py",
+     "lineno": 73,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-nightfast-app__hvac-mcp",
+   "unit": "register.hvac_fault_code_lookup",
+   "unit_relpath": "src/hvac_mcp/tools/diagnostics.py",
+   "unit_lineno": 196,
+   "tool": "hvac_fault_code_lookup",
+   "relpath": "src/hvac_mcp/storage.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 73,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/hvac_mcp/storage.py",
+     "lineno": 73,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-nightfast-app__hvac-mcp",
+   "unit": "register.hvac_refrigerant_charge_check",
+   "unit_relpath": "src/hvac_mcp/tools/refrigerant.py",
+   "unit_lineno": 241,
+   "tool": "hvac_refrigerant_charge_check",
+   "relpath": "src/hvac_mcp/storage.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 73,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/hvac_mcp/storage.py",
+     "lineno": 73,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-nightfast-app__hvac-mcp",
+   "unit": "register.hvac_refrigerant_pt_lookup",
+   "unit_relpath": "src/hvac_mcp/tools/refrigerant.py",
+   "unit_lineno": 174,
+   "tool": "hvac_refrigerant_pt_lookup",
+   "relpath": "src/hvac_mcp/storage.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 73,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/hvac_mcp/storage.py",
+     "lineno": 73,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-rwheeler007__cohort",
+   "unit": "channel_summary",
+   "unit_relpath": "cohort/mcp/server.py",
+   "unit_lineno": 429,
+   "tool": "channel_summary",
+   "relpath": "cohort/sqlite_storage.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 78,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "cohort/sqlite_storage.py",
+     "lineno": 78,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-rwheeler007__cohort",
+   "unit": "cohort_complete_item",
+   "unit_relpath": "cohort/mcp/server.py",
+   "unit_lineno": 1301,
+   "tool": "cohort_complete_item",
+   "relpath": "cohort/mcp/client.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.request",
+   "lineno": 39,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "cohort/mcp/client.py",
+     "lineno": 39,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-rwheeler007__cohort",
+   "unit": "cohort_error",
+   "unit_relpath": "cohort/mcp/server.py",
+   "unit_lineno": 3503,
+   "tool": "cohort_error",
+   "relpath": "cohort/mcp/client.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.request",
+   "lineno": 39,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "cohort/mcp/client.py",
+     "lineno": 39,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-rwheeler007__cohort",
+   "unit": "cohort_get_mentions",
+   "unit_relpath": "cohort/mcp/server.py",
+   "unit_lineno": 1009,
+   "tool": "cohort_get_mentions",
+   "relpath": "cohort/sqlite_storage.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 78,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "cohort/sqlite_storage.py",
+     "lineno": 78,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-rwheeler007__cohort",
+   "unit": "cohort_meeting_disable",
+   "unit_relpath": "cohort/mcp/server.py",
+   "unit_lineno": 2340,
+   "tool": "cohort_meeting_disable",
+   "relpath": "cohort/mcp/client.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.request",
+   "lineno": 39,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "cohort/mcp/client.py",
+     "lineno": 39,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-rwheeler007__cohort",
+   "unit": "cohort_meeting_remove_participant",
+   "unit_relpath": "cohort/mcp/server.py",
+   "unit_lineno": 2204,
+   "tool": "cohort_meeting_remove_participant",
+   "relpath": "cohort/mcp/client.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.request",
+   "lineno": 39,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "cohort/mcp/client.py",
+     "lineno": 39,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-rwheeler007__cohort",
+   "unit": "cohort_respond",
+   "unit_relpath": "cohort/mcp/server.py",
+   "unit_lineno": 3370,
+   "tool": "cohort_respond",
+   "relpath": "cohort/mcp/client.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.request",
+   "lineno": 39,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "cohort/mcp/client.py",
+     "lineno": 39,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-rwheeler007__cohort",
+   "unit": "cohort_set_deliverables",
+   "unit_relpath": "cohort/mcp/server.py",
+   "unit_lineno": 3166,
+   "tool": "cohort_set_deliverables",
+   "relpath": "cohort/mcp/client.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.request",
+   "lineno": 39,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "cohort/mcp/client.py",
+     "lineno": 39,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-rwheeler007__cohort",
+   "unit": "cohort_submit_review",
+   "unit_relpath": "cohort/mcp/server.py",
+   "unit_lineno": 3121,
+   "tool": "cohort_submit_review",
+   "relpath": "cohort/mcp/client.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.request",
+   "lineno": 39,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "cohort/mcp/client.py",
+     "lineno": 39,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-rwheeler007__cohort",
+   "unit": "desktop_status",
+   "unit_relpath": "cohort/desktop/mcp_server.py",
+   "unit_lineno": 248,
+   "tool": "desktop_status",
+   "relpath": "cohort/desktop/config.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 110,
+   "destructive": false,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "cohort/desktop/config.py",
+     "lineno": 110,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    },
+    {
+     "relpath": "cohort/desktop/config.py",
+     "lineno": 111,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-rwheeler007__cohort",
+   "unit": "internal_web_fetch",
+   "unit_relpath": "cohort/mcp/server.py",
+   "unit_lineno": 2563,
+   "tool": "internal_web_fetch",
+   "relpath": "cohort/mcp/server.py",
+   "effect_kind": "FS_WRITE",
+   "site": "pathlib.Path.mkdir",
+   "lineno": 2608,
+   "destructive": false,
+   "D_explicit": [
+    "openWorldHint",
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "cohort/mcp/server.py",
+     "lineno": 2608,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": false
+    }
+   ]
+  },
+  {
+   "tree": "v2-rwheeler007__cohort",
+   "unit": "read_channel",
+   "unit_relpath": "cohort/mcp/server.py",
+   "unit_lineno": 259,
+   "tool": "read_channel",
+   "relpath": "cohort/sqlite_storage.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 78,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "cohort/sqlite_storage.py",
+     "lineno": 78,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-vishalsachdev__canvas-mcp",
+   "unit": "register_shared_file_tools.download_course_file",
+   "unit_relpath": "src/canvas_mcp/tools/files.py",
+   "unit_lineno": 46,
+   "tool": "download_course_file",
+   "relpath": "src/canvas_mcp/tools/files.py",
+   "effect_kind": "FS_WRITE",
+   "site": "os.unlink",
+   "lineno": 145,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/canvas_mcp/tools/files.py",
+     "lineno": 145,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-zelladir__asquared-mcp",
+   "unit": "build_mcp.coord_ack",
+   "unit_relpath": "src/asquared_mcp/server.py",
+   "unit_lineno": 329,
+   "tool": "coord_ack",
+   "relpath": "src/asquared_mcp/store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 139,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/asquared_mcp/store.py",
+     "lineno": 139,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-zelladir__asquared-mcp",
+   "unit": "build_mcp.coord_post",
+   "unit_relpath": "src/asquared_mcp/server.py",
+   "unit_lineno": 221,
+   "tool": "coord_post",
+   "relpath": "src/asquared_mcp/notify.py",
+   "effect_kind": "NET",
+   "site": "httpx.AsyncClient.post",
+   "lineno": 93,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/asquared_mcp/notify.py",
+     "lineno": 93,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-zelladir__asquared-mcp",
+   "unit": "build_mcp.coord_post",
+   "unit_relpath": "src/asquared_mcp/server.py",
+   "unit_lineno": 221,
+   "tool": "coord_post",
+   "relpath": "src/asquared_mcp/store.py",
+   "effect_kind": "DB",
+   "site": "psycopg.Cursor.execute",
+   "lineno": 150,
+   "destructive": null,
+   "D_explicit": [
+    "destructiveHint"
+   ],
+   "declarations": [
+    "D2"
+   ],
+   "locations": [
+    {
+     "relpath": "src/asquared_mcp/store.py",
+     "lineno": 150,
+     "declarations": [
+      "D2"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-zomma-dev__quantcontext-mcp-server",
+   "unit": "backtest_strategy",
+   "unit_relpath": "src/quantcontext/server.py",
+   "unit_lineno": 346,
+   "tool": "backtest_strategy",
+   "relpath": "src/quantcontext/engine/data.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 263,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/quantcontext/engine/data.py",
+     "lineno": 263,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    },
+    {
+     "relpath": "src/quantcontext/engine/data.py",
+     "lineno": 315,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  },
+  {
+   "tree": "v2-zomma-dev__quantcontext-mcp-server",
+   "unit": "factor_analysis",
+   "unit_relpath": "src/quantcontext/server.py",
+   "unit_lineno": 510,
+   "tool": "factor_analysis",
+   "relpath": "src/quantcontext/engine/data.py",
+   "effect_kind": "NET",
+   "site": "urllib.request.urlopen",
+   "lineno": 622,
+   "destructive": null,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D3"
+   ],
+   "locations": [
+    {
+     "relpath": "src/quantcontext/engine/data.py",
+     "lineno": 622,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    },
+    {
+     "relpath": "src/quantcontext/engine/data.py",
+     "lineno": 656,
+     "declarations": [
+      "D3"
+     ],
+     "destructive": null
+    }
+   ]
+  },
+  {
+   "tree": "v2-zomma-dev__quantcontext-mcp-server",
+   "unit": "screen_stocks",
+   "unit_relpath": "src/quantcontext/server.py",
+   "unit_lineno": 213,
+   "tool": "screen_stocks",
+   "relpath": "src/quantcontext/engine/data.py",
+   "effect_kind": "FS_WRITE",
+   "site": "builtins.open",
+   "lineno": 263,
+   "destructive": true,
+   "D_explicit": [
+    "readOnlyHint"
+   ],
+   "declarations": [
+    "D1"
+   ],
+   "locations": [
+    {
+     "relpath": "src/quantcontext/engine/data.py",
+     "lineno": 263,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    },
+    {
+     "relpath": "src/quantcontext/engine/data.py",
+     "lineno": 315,
+     "declarations": [
+      "D1"
+     ],
+     "destructive": true
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,78 @@
+{
+ "n_manifests": 87,
+ "G0": {
+  "effect_sites": 221,
+  "unit_site_kind": 193,
+  "units": 121,
+  "trees": 20,
+  "by_kind": {
+   "FS_WRITE": 109,
+   "DB": 65,
+   "NET": 47
+  },
+  "by_decl": {
+   "D2": 63,
+   "D1": 119,
+   "D3": 40
+  }
+ },
+ "G1": {
+  "effect_sites": 22,
+  "unit_site_kind": 22,
+  "units": 21,
+  "trees": 8,
+  "by_kind": {
+   "FS_WRITE": 6,
+   "DB": 6,
+   "NET": 10
+  },
+  "by_decl": {
+   "D1": 7,
+   "D2": 12,
+   "D3": 3
+  }
+ },
+ "G2": {
+  "effect_sites": 8,
+  "unit_site_kind": 8,
+  "units": 8,
+  "trees": 4,
+  "by_kind": {
+   "FS_WRITE": 6,
+   "NET": 1,
+   "DB": 1
+  },
+  "by_decl": {
+   "D1": 7,
+   "D3": 1
+  }
+ },
+ "G3": {
+  "effect_sites": 1,
+  "unit_site_kind": 1,
+  "units": 1,
+  "trees": 1,
+  "by_kind": {
+   "NET": 1
+  },
+  "by_decl": {
+   "D3": 1
+  }
+ },
+ "G3_examples": [
+  {
+   "tree": "v2-khairu-aqsara__code-rag",
+   "unit": "mcp:coderag_list_files:4c50eb039af5",
+   "relpath": "mcp/server.py",
+   "lineno": 96,
+   "site": "httpx.AsyncClient.get",
+   "kind": "NET",
+   "decls": [
+    "D3"
+   ],
+   "inject_slots": [
+    "url.host"
+   ]
+  }
+ ]
+}
