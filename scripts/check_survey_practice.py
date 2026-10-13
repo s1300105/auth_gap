@@ -32,7 +32,9 @@ FORBIDDEN_COLUMNS = ("target_by_arg", "cause", "verdict", "output_found", "error
 #: 配った表の名簿の欄（判定者は書き換えない。03_record.md の 1 節）。写しで書き換わると、別の件を判定した記録になる。
 ROSTER_COLS = ("seq", "pair_id", "tree", "tool", "roster_form", "roster_relpath", "roster_lineno", "decl_lineno", "decl")
 DISTRIBUTED_SHEET = os.path.join(ROOT, "evidence", "practice_survey", "survey_practice.csv")
-FILE_LINE_RE = re.compile(r"\S+:\d+")
+#: 道筋の始まり「ファイル:行 名前」と、違反の道筋の終わり「ファイル:行: 何をするか」か「名前（外）: 何をするか」（D91）。
+PATH_START_RE = re.compile(r"^\S+:\d+ \S")
+VIOLATION_END_RE = re.compile(r"(\S+:\d+|（外）): \S")
 
 
 def check_row(r: dict) -> list[str]:
@@ -51,14 +53,20 @@ def check_row(r: dict) -> list[str]:
     if not ev:
         errs.append("evidence が空（どの答えでも書く。03_record.md の 3 節）")
         return errs
-    if out in ("違反でない", "不明") and not ev.startswith("読んだ範囲"):
-        errs.append(f"{out} の evidence が「読んだ範囲」で始まっていない（「読んだ範囲: a.py:10-40、…」の形。03_record.md の 3 節）")
-    if out == "違反（深さ 4 の外）" and "読んだ範囲" not in ev:
-        errs.append("違反（深さ 4 の外） なのに evidence に「読んだ範囲」が無い（道筋の後に「／読んだ範囲: …」。03_record.md の 3 節）")
-    # 違反（深さ 4 の外）は「道筋／読んだ範囲: …」。読んだ範囲の `a.py:1-30` で道筋の確かめが通らないよう、その前だけを見る
-    path_part = ev.split("読んだ範囲")[0] if out == "違反（深さ 4 の外）" else ev
-    if out in VIOLATIONS and not FILE_LINE_RE.search(path_part):
-        errs.append(f"{out} なのに evidence に道筋の「ファイル:行」が無い（本体の行から反する行まで書く。03_record.md の 3 節）")
+    # D91: 道筋は「ファイル:行 名前 → … 」。道筋どうしは「／」。URL と「API 名から」は添え物
+    segs = [x.strip() for x in ev.split("／") if x.strip()]
+    paths = [x for x in segs if not (x.startswith("http") or x == "API 名から")]
+    if out in VIOLATIONS:
+        if not paths or not PATH_START_RE.match(paths[0]) or not VIOLATION_END_RE.search(paths[0]):
+            errs.append(f"{out} なのに evidence の最初が反する行までの道筋でない（「ファイル:行 名前 → … → ファイル:行: 何をするか」。"
+                        "03_record.md の 3 節）")
+    if out == "違反（深さ 4 の外）" and not any(PATH_START_RE.match(x) for x in paths[1:]):
+        errs.append("違反（深さ 4 の外） なのに「／」の後に、深さ 4 までにたどった道筋が無い（03_record.md の 3 節）")
+    if out in ("違反でない", "不明"):
+        bad = [x for x in paths if not PATH_START_RE.match(x)]
+        if not paths or bad:
+            errs.append(f"{out} の evidence が、たどった道筋（「ファイル:行 名前 → …」を「／」で並べたもの）になっていない"
+                        f"{'（' + bad[0][:30] + '…）' if bad else ''}（03_record.md の 3 節）")
     return errs
 
 

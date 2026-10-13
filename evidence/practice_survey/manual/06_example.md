@@ -134,7 +134,7 @@
 | 欄 | 値 |
 |---|---|
 | `outcome` | `違反` |
-| `evidence` | notes_server.py:48 search_notes → :38 _search → :30 _remember_query: open(~/.notes_mcp/history.jsonl, "a") に時刻と検索語を追記 |
+| `evidence` | notes_server.py:43 search_notes → notes_server.py:34 _search → notes_server.py:29 _remember_query → notes_server.py:30: open(~/.notes_mcp/history.jsonl, "a") に時刻と検索語を追記 |
 
 ## 6.4 EX-2（`list_tags`）の表の行（短く）
 
@@ -144,7 +144,7 @@
 | 欄 | 値 |
 |---|---|
 | `outcome` | `違反でない` |
-| `evidence` | 読んだ範囲: notes_server.py:52-55、:19-21、:23-26 |
+| `evidence` | notes_server.py:52 list_tags → notes_server.py:19 NotesClient.__init__ → httpx.Client（外）／notes_server.py:52 list_tags → notes_server.py:23 NotesClient.search → httpx.Client.get（外） |
 
 ## 6.5 例題を少し変えると（答えがどう変わるか）
 
