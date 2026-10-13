@@ -10,6 +10,9 @@
 * `pair_id` は `final_sample.py` が付けた ID（`C-D1-001` / `M-001` / `U-D2-001`）。並べ替えに依らない。
 * **見落としの表には解析器の出力を載せない**（効果の数・理由・位置・site・kind・打ち切りの印。手引き 18.2: 解析器の出力を
   見る前に読む）。載っていないことを書く前に確かめる（`MISS_FORBIDDEN`）。
+* **モデルの値が制御位置に届く矛の層（D90）の欄は、どの表にも載せない**（`model_control`・`model_control_rows`。
+  語は `contradiction_by_decl.MODEL_CONTROL_FIELDS` の 1 か所）。`columns()` と書き出す前の行の両方で確かめる。
+  盲検ではない（判定者は手順 B で slot の主体と確度を、この表で理由のコードを見る）が、層の印そのものは出さない。
 * `--agreement`（`final_sample.py agreement` の出力）を渡すと、判定の一致を確かめる組だけの空の表
   （`agreement_<種類>.csv`）も書く。行の順は本表の `seq` の順（本表と同じ並べ替えの部分列）。
 
@@ -27,6 +30,10 @@ import csv
 import json
 import os
 import random
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from contradiction_by_decl import MC_STATUSES, MODEL_CONTROL_FIELDS  # noqa: E402
 
 KINDS = ("contradiction", "miss", "unknown")
 
@@ -66,7 +73,36 @@ def columns(kind: str) -> list[str]:
         bad = MISS_FORBIDDEN & set(cols)
         if bad:
             raise AssertionError(f"見落としの表に解析器の出力の欄がある: {sorted(bad)}")
+    leak = MODEL_CONTROL_FIELDS & set(cols)
+    if leak:
+        raise AssertionError(f"層の欄（D90）が判定表に載っている: {sorted(leak)}")
     return cols
+
+
+#: ソースのテキストから来る欄（ツール名・ファイル名・呼び出し名）。`set_model_control` のような名前が最終評価の
+#: データにありうるので、層の値の検査をしない（欄の名前の検査は全部の欄にかける）。
+SOURCE_TEXT_COLS = frozenset({"tree", "unit", "unit_relpath", "site", "locations"})
+
+
+def check_no_layer_leak(cols: list[str], rows: list[list[str]], where: str) -> None:
+    """層（D90）の欄の名前と層の値が表に出ていないか（書き出す前に確かめる）。
+
+    * 欄の名前（`MODEL_CONTROL_FIELDS`）は全部の欄で見る。
+    * 値は、ソースのテキストから来る欄（`SOURCE_TEXT_COLS`）と `seq`・`pair_id` を除いた欄で、セルを空白で区切った
+      語（前後の引用符・括弧・コロンを落とす）が層の値（`MC_STATUSES`）か欄の名前に**完全一致**するかで見る。
+      部分文字列では見ない（ソース由来の名前で止まらないように。止まる向きの誤りでも封の後に道具を直すことになる）。
+    """
+    leak = MODEL_CONTROL_FIELDS & set(cols)
+    if leak:
+        raise AssertionError(f"{where}: 層の欄（D90）が載っている: {sorted(leak)}")
+    bad = set(MC_STATUSES) | MODEL_CONTROL_FIELDS
+    for r in rows:
+        for c, v in zip(cols, r, strict=True):
+            if c in ("seq", "pair_id") or c in SOURCE_TEXT_COLS:
+                continue
+            words = {w.strip("'\"{}[](),:") for w in v.split()}
+            if words & bad:
+                raise AssertionError(f"{where}: 層の印（D90）がセルに出ている（{c} = {v!r}）")
 
 
 def cell(v) -> str:
@@ -121,6 +157,7 @@ def main(argv: list[str] | None = None) -> int:
         if len(set(ids)) != len(ids):
             raise SystemExit(f"{kind} の pair_id が重複している")
         sheets[kind] = sheet_rows(kind, s["targets"], a.seed)
+        check_no_layer_leak(columns(kind), sheets[kind], f"{kind}.csv")
         write_csv(os.path.join(a.out_dir, f"{kind}.csv"), columns(kind), sheets[kind])
         print(f"{kind}.csv: {len(sheets[kind])} 行")
     if a.agreement:

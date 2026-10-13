@@ -21,6 +21,12 @@
 決まった順に使う（出力の `rng_order` に書く）。`random` の `sample` / `randrange` の結果は Python の版で変わりうる
 （保証されているのは `seed` と `random()` だけ）ので、出力に `python` を書く。**同じ Python で走らせる。**
 
+モデルの値が制御位置に届く矛の層（D90）: 矛の `by_decl.<d>`（D1〜D3）に、**選ばなかった組も含む全数**
+`n_pairs_S1`・`n_pairs_S2`・`n_trees_S1`・`n_trees_S2`（と位置の数・S1−S2）を足し、targets の各組に `model_control`
+（層の値・ほかの軸の値・列）と `model_control_rows`（層を満たす行）を残す。層の判定は
+`contradiction_by_decl.load_model_control` の 1 か所。**この 2 つの欄は判定表に写さない**（`final_sheet.py` が確かめる）。
+層のために多めに抜き取らない（抜き取りの乱数の列は変わらない）。
+
 出力には、選んだ組に加えて**選ばなかった分を含む件数**（宣言ごと・木ごとの矛の総数、不の理由ごとの総数、見落としの
 対象の総数）を書く。件数は第 23 節の「参考（件数）」と分母に使う。**判定の前に出力をコミットする。**
 
@@ -49,7 +55,13 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 
-from contradiction_by_decl import apply_flip, load_reasons  # noqa: E402
+from contradiction_by_decl import (  # noqa: E402
+    LAYER_DECLS,
+    apply_flip,
+    load_model_control,
+    load_reasons,
+    model_control_counts,
+)
 from runlib import load_manifest, run_manifests, unit_key  # noqa: E402
 
 DECLS = ("D1", "D2", "D3", "D4")
@@ -220,10 +232,23 @@ def denominators(manifests: list[tuple[str, str]]) -> dict:
                      "D3: closed_world、D4: idempotent。事前登録 §2.12 (f)）。走査した木 = summary.json の ok の木。"}
 
 
+def _layer_counts(mc: dict, decl: str) -> dict:
+    """矛の `by_decl.<d>` に足す層の全数（D90。主の軸、選ばなかった組も含む）。D4 は層を出さないので None。"""
+    if decl not in LAYER_DECLS:
+        return {k: None for k in ("n_pairs_S1", "n_pairs_S2", "n_trees_S1", "n_trees_S2", "n_locations_S1",
+                                  "n_locations_S2", "n_pairs_S1_minus_S2", "n_trees_S1_minus_S2")}
+    c = model_control_counts(mc, decl)
+    return {"n_pairs_S1": c["S1"]["pairs"], "n_pairs_S2": c["S2"]["pairs"],
+            "n_trees_S1": c["S1"]["trees"], "n_trees_S2": c["S2"]["trees"],
+            "n_locations_S1": c["S1"]["locations"], "n_locations_S2": c["S2"]["locations"],
+            "n_pairs_S1_minus_S2": c["S1_minus_S2"]["pairs"], "n_trees_S1_minus_S2": c["S1_minus_S2"]["trees"]}
+
+
 def sample_contradiction(run_dir: str, seed: int, max_trees: int = 200, per_tree: int = 3,
                          allow_missing: bool = False) -> dict:
     manifests, warnings = checked_manifests(run_dir, allow_missing)
     pairs = classify_pairs(run_dir)
+    mc = load_model_control(run_dir)
     rng = random.Random(seed)
     by_decl, targets = {}, []
     for decl in DECLS:
@@ -231,13 +256,23 @@ def sample_contradiction(run_dir: str, seed: int, max_trees: int = 200, per_tree
         for p, v in pairs.items():
             if p[6] == decl and v["status"] == "矛":
                 by_tree[p[0]].append(p)
+        if decl in LAYER_DECLS:
+            got = {p for p in mc if p[6] == decl}
+            want = {p for ps in by_tree.values() for p in ps}
+            if got != want:  # 層の全数が矛の組と同じ集合から数えられていないと、n_pairs_S1 の分母がずれる
+                raise SystemExit(f"{decl}: 層の組（{len(got)}）と矛の組（{len(want)}）が一致しない")
         chosen, picked = select_trees_then_pairs(rng, by_tree, max_trees, per_tree)
         sel = [p for t in chosen for p in picked[t]]
         locs = pair_locations(run_dir, sel, "矛")
         for k, p in enumerate(sel):
-            targets.append({"pair_id": f"C-{decl}-{k + 1:03d}", **pair_record(p),
-                            "reasons": pairs[p]["reasons"], "locations": locs[p],
-                            "n_pairs_in_tree": len(by_tree[p[0]])})
+            t = {"pair_id": f"C-{decl}-{k + 1:03d}", **pair_record(p),
+                 "reasons": pairs[p]["reasons"], "locations": locs[p],
+                 "n_pairs_in_tree": len(by_tree[p[0]])}
+            if decl in LAYER_DECLS:
+                rec = mc[p]
+                t["model_control"] = {k2: v for k2, v in rec.items() if k2 not in ("rows_S1", "rows_S2")}
+                t["model_control_rows"] = {"S1": rec["rows_S1"], "S2": rec["rows_S2"]}
+            targets.append(t)
         chosen_set = set(chosen)
         by_decl[decl] = {
             "n_pairs": sum(len(v) for v in by_tree.values()), "n_trees": len(by_tree),
@@ -246,6 +281,7 @@ def sample_contradiction(run_dir: str, seed: int, max_trees: int = 200, per_tree
             "trees": [{"tree": t, "n_pairs": len(by_tree[t]), "selected": t in chosen_set,
                        "n_selected": len(picked.get(t, []))} for t in sorted(by_tree)],
         }
+        by_decl[decl].update(_layer_counts(mc, decl))
     cj = contradictions_json_counts(run_dir)
     consistency = {"contradictions_json_by_decl": cj,
                    "manifest_by_decl": {d: by_decl[d]["n_pairs"] for d in DECLS},
@@ -260,7 +296,9 @@ def sample_contradiction(run_dir: str, seed: int, max_trees: int = 200, per_tree
     return {
         "_note": "最終評価の矛の判定対象（事前登録 §2.12 (d)、D69・D70 の 1）。判定の前にコミットする。",
         "kind": "contradiction", "seed": seed, "seed_role": "① 矛の抜き取り",
-        "rules": {"max_trees_per_decl": max_trees, "max_pairs_per_tree": per_tree, "unit": "宣言ごと（D70 の 1 (a)）"},
+        "rules": {"max_trees_per_decl": max_trees, "max_pairs_per_tree": per_tree, "unit": "宣言ごと（D70 の 1 (a)）",
+                  "model_control": "D90。D1〜D3 の by_decl に層の全数（主の軸 = 行はどれか・効果は全部）、targets に "
+                                   "model_control と model_control_rows（判定表に写さない）。層のために多めに抜き取らない"},
         "rng_order": "random.Random(seed) を 1 本。D1→D2→D3→D4 の順に、(1) 木が上限を超えたら木の sample、"
                      "(2) 選んだ木を名前の順に、組が上限を超えたらその木の組の sample。上限以下なら乱数を使わない。",
         "python": sys.version.split()[0], **run_meta(run_dir), "warnings": warnings,

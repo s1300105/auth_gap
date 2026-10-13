@@ -24,6 +24,10 @@ D64（添削の段階 A）で直したこと:
   残す。`--require-fingerprint` で凍結の記録と照合する（U54 / R5-r2-4）。
 * 効果の件数は生の行数と一意の行数を併記する（U32 / R4-r1-8。解析器は変えない）。
 
+D90 で足したこと: `contradictions.json` の各 location に、層の列 `inject_slots`・`inject_primary_slots`・
+`model_choice`（chosen / influenced / none）・`effect_resolution` を**既存の鍵の後ろに**足す。値は
+`contradiction_by_decl.location_facts`（層の判定の 1 か所）から写すだけで、組が層に入るかはここで決めない。
+
     .venv312/bin/python scripts/scan_v2.py --label run4
 """
 
@@ -42,9 +46,16 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 
+# 層の列（D90）の判定は contradiction_by_decl.py の 1 か所
+from contradiction_by_decl import location_facts  # noqa: E402
+
 from authgap.report import canonical_json, manifest_json  # noqa: E402
 from authgap.runner import RunConfig, run  # noqa: E402
 from authgap.val.engine import Options  # noqa: E402
+
+#: `contradictions.json` の各 location に足す層の列（D90）。既存の鍵とその順は変えない（compare_scans.py は
+#: contradictions.json を読まないが、手で突き合わせるときに前の run と同じ形で読めるように後ろに足す）。
+LOCATION_LAYER_FIELDS = ("inject_slots", "inject_primary_slots", "model_choice", "effect_resolution")
 
 
 def _contradiction_rows(tree: str, manifest: dict) -> list[dict]:
@@ -56,23 +67,35 @@ def _contradiction_rows(tree: str, manifest: dict) -> list[dict]:
         eff_by: dict[tuple, list] = collections.defaultdict(list)
         for e in u.get("effects", []):
             eff_by[(e.get("relpath"), e.get("lineno"), e["site"], e["kind"])].append(e)
+        eff_idx: dict[tuple, list] = collections.defaultdict(list)  # 層の列（D90）用。効果の番号つき
+        for i, e in enumerate(u.get("effects", [])):
+            eff_idx[(e.get("relpath"), e.get("lineno"), e["site"], e["kind"])].append((i, e))
+        rows_by: dict[tuple, list] = collections.defaultdict(list)  # 同じ効果の位置の全部の行（slot ごと）
+        for r in u.get("rows", []):
+            rows_by[(r.get("relpath"), r.get("lineno"), r.get("site"), r.get("kind"))].append(r)
         for r in u.get("rows", []):
             if "CONTRADICTION" not in r.get("verdicts", []):
                 continue
             key = (un["unit_id"], un.get("relpath") or "", un.get("lineno") or 0, r["site"], r["kind"])
             g = groups.setdefault(key, {"unit": u, "dk": dk, "locs": {}})
             decls = sorted({n.split(":")[1] for n in r.get("notes", []) if n.startswith("contradiction:")})
-            effs = eff_by.get((r["relpath"], r["lineno"], r["site"], r["kind"]), [])
+            ek = (r["relpath"], r["lineno"], r["site"], r["kind"])
+            effs = eff_by.get(ek, [])
             ds = [e.get("destructive") for e in effs if "destructive" in e]
             loc = g["locs"].setdefault((r["relpath"], r["lineno"]), {"declarations": set(), "ds": []})
             loc["declarations"] |= set(decls)
             loc["ds"] += ds
+            if "layer" not in loc:
+                f = location_facts(u, r["relpath"], r["lineno"], r["site"], r["kind"], rows_by.get(ek, []),
+                                   eff_idx.get(ek, []), set())
+                loc["layer"] = {k: f[k] for k in LOCATION_LAYER_FIELDS}
     out = []
     for key in sorted(groups, key=lambda k: tuple(str(x) for x in k)):
         g = groups[key]
         u = g["unit"]
         for v in g["locs"].values():
             v["destructive"] = _any_destructive(v.pop("ds"))
+            v["layer"] = v.get("layer") or {}
         locs = sorted(g["locs"].items(), key=lambda kv: (kv[0][0] or "", kv[0][1] or 0))
         (relpath, lineno), _ = locs[0]
         destructive = _any_destructive([v["destructive"] for _, v in locs])
@@ -90,8 +113,10 @@ def _contradiction_rows(tree: str, manifest: dict) -> list[dict]:
             "D_explicit": list(g["dk"].get("explicit", [])),
             # どの宣言に反したか（D56。D1〜D4 は 4 つとも主指標、D62）
             "declarations": sorted(set().union(*(v["declarations"] for _, v in locs))),
+            # 層の列（D90）は既存の鍵の後ろに足す: GAP_INJECT の slot、そのうち主 slot、主 slot の値の主体と確度
+            # （その位置の全効果で chosen / influenced / none。保守的）、効果そのものの確度。
             "locations": [{"relpath": rp, "lineno": ln, "declarations": sorted(v["declarations"]),
-                           "destructive": v["destructive"]} for (rp, ln), v in locs],
+                           "destructive": v["destructive"], **v["layer"]} for (rp, ln), v in locs],
         })
     return out
 

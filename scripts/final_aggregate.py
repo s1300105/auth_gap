@@ -59,6 +59,12 @@
   百分位は線形補間（numpy の既定と同じ）の 2.5% と 97.5%。(b)(c) は各回の (a) × N / 分母。
   **n < 10 の宣言は区間を出さず**、件数と木ごとの内訳の表を出す（D73 の 4）。
 * 件数の精度 Σ正 / (Σ正 + Σ誤) と 95% Wilson 区間（z = 1.96）。不明を誤とみなした値も併記。
+* モデルの値が制御位置に届く矛の層（D90）: `model_control_strata`（`impact_strata` の隣）。全数（組・位置・木、÷N・÷M_d、
+  区間なし）、(f) の抜き取りのままの層の中と外の k_S / n_S（n_S < 10 は表だけ、10 以上は上と同じ bootstrap）、
+  ゲートの状態と効果の確度の内訳、D1 の正の D84 ③ × 層、D3 の正の通信先の種類 × 層。層の判定と群の対応は
+  `contradiction_by_decl` の 1 か所。層の値は抜き取りの段で targets に残したものを pair_id で読み、`--run` があれば
+  組ごとに走査から数え直した値と照合する（食い違えば止める）。S2・S1−S2 の群の k_S / n_S と、D1 の ② 重い書き込み先の
+  正だけの対応表は、事前登録の外の参考として出す。
 * 条件の読み方（D68 の 1、第 23.5 節）: (B) は運用者が決める条件（運用者の設定・起動の方法）が 1 つでも入る正を、
   (C) は条件が「なし」でない正を、**誤に置き換えて**主指標を計算し直す。正の件数の (A)(B)(C) も出す。
 """
@@ -774,6 +780,220 @@ def impact_strata(ps: list[Pair]) -> dict:
             | {"（未記入）": sum(1 for p in heavy if not p.target_by_arg)}}
 
 
+# --- モデルの値が制御位置に届く矛の層（D90） -------------------------------------------------------------
+
+#: 群（S1・S2・S1−S2・層の外）と対応表の列は `contradiction_by_decl.MC_GROUPS`・`MC_COLS`・`mc_col` の 1 か所（D90）。
+#: 事前登録 (g) の k_S / n_S は S1（層）と層の外。S2・S1−S2 の群は**事前登録の外の参考**として出す。
+MC_PREREG_GROUPS = ("S1", "outside")
+
+
+def layer_status_by_pair_id(csample: Optional[dict], mc: Optional[dict] = None) -> dict[str, Optional[str]]:
+    """矛の抜き取りの targets から `pair_id → 層の値`（`model_control.status`）。記録の無い組は None。
+
+    層の値は抜き取りの段で `final_sample.py` が targets に残したもの（判定の前にコミットする。判定表には写さない）。
+    語彙（`MC_STATUSES`）に無い値は例外。`mc`（`--run` から数え直した `load_model_control`）があれば、
+    各組の値を組の鍵 (木, relpath, 行, qualname, site, kind, 宣言) で走査の値と突き合わせ、食い違えば例外（D90）。
+    """
+    from contradiction_by_decl import MC_STATUSES
+
+    out: dict[str, Optional[str]] = {}
+    for t in (csample or {}).get("targets") or []:
+        rec = t.get("model_control")
+        st = rec.get("status") if isinstance(rec, dict) else None
+        if st is not None and st not in MC_STATUSES:
+            raise ValueError(f"{t.get(ID_COL)}: 層の値 {st!r} が語彙に無い（MC_STATUSES。D90）")
+        if st is not None and mc is not None:
+            key = (t.get("tree"), t.get("unit_relpath"), t.get("unit_lineno"), t.get("unit"), t.get("site"),
+                   t.get("kind"), t.get("decl"))
+            got = (mc.get(key) or {}).get("status")
+            if got != st:
+                raise ValueError(f"{t.get(ID_COL)}: 抜き取りの層の値 {st!r} が走査から数え直した値 {got!r} と違う（D90）")
+        out[t.get(ID_COL)] = st
+    return out
+
+
+def _ratio_block(trees: Optional[int], N: Optional[int], M: Optional[int]) -> dict:
+    return {"trees": trees, "per_N": _ratio(trees, N) if (trees is not None and N) else None,
+            "per_M_d": _ratio(trees, M) if (trees is not None and M) else None}
+
+
+def model_control_strata(pairs: list[Pair], csample: Optional[dict], mc: Optional[dict], N: dict, M: dict,
+                         seed: int, reps: int, warnings: list) -> dict:
+    """D90 の層。宣言ごと（D1〜D3、D1 が先）。全数（区間なし）と、判定との突き合わせ k_S / n_S（層の中と外）。
+
+    * 全数は `--run` があれば `contradiction_by_decl.load_model_control` から（層の判定の 1 か所）、無ければ矛の
+      抜き取りの `by_decl.<d>.n_pairs_S1` などから。両方あれば突き合わせ、食い違えば誤り。
+    * k_S / n_S は (f) の抜き取り（1 木 3 件）をそのまま使う。n_S = 層の組を 1 件以上判定した木、k_S = そのうち層の組に
+      正が 1 件以上あった木。`tree_metrics` と同じ関数・同じ seed ④・同じ反復で、n < 10 なら区間を出さず木ごとの表だけ（D73 の 4）。
+    * ゲートの状態・効果の確度・GAP_INJECT は列（層の出入りに使わない）。閾値は置かない。
+    """
+    from contradiction_by_decl import (
+        AXES,
+        LAYER_DECLS,
+        LAYER_WORDING,
+        MC_COLS,
+        MC_GROUPS,
+        fixed_wording,
+        mc_col,
+        model_control_counts,
+        unknown_model_reasons,
+    )
+
+    status_of = layer_status_by_pair_id(csample, mc)
+    have_layer = any(v is not None for v in status_of.values())
+    new_format = any(isinstance((csample or {}).get("by_decl", {}).get(d, {}).get("n_pairs_S1"), int)
+                     for d in LAYER_DECLS)
+    out: dict = {"_note": "D90。解析器の出力の層（主指標ではない）。宣言ごと、合算しない。S1−S2 は「不明」。"
+                          "全数には区間を付けない。÷M_d は実態の割合ではなく解析器の出力の割合。",
+                 "judged_source": "矛の抜き取りの targets の model_control.status" if have_layer else None}
+    if csample is not None and not have_layer:
+        msg = "矛の抜き取りの targets に model_control が無い。層の k_S / n_S を出さない（全数だけ）"
+        out["judged_note"] = msg
+        if new_format:
+            warnings.append(msg)
+    for d in LAYER_DECLS:
+        blk: dict = {"wording": LAYER_WORDING[d]}
+        sb = ((csample or {}).get("by_decl") or {}).get(d) or {}
+        if mc is not None:
+            c = model_control_counts(mc, d)
+            for key, ck in (("n_pairs_S1", ("S1", "pairs")), ("n_pairs_S2", ("S2", "pairs")),
+                            ("n_trees_S1", ("S1", "trees")), ("n_trees_S2", ("S2", "trees"))):
+                if isinstance(sb.get(key), int) and sb[key] != c[ck[0]][ck[1]]:
+                    raise ValueError(f"{d}: 矛の抜き取りの {key} = {sb[key]} が走査の {c[ck[0]][ck[1]]} と違う（D90）")
+            totals = {k: c[k] for k in ("S1", "S2", "S1_minus_S2", "S2_choice_reason", "S2_other_reason",
+                                        "S1_gap_inject_primary", "outside_S1_gap_inject_primary",
+                                        "G1_nonprimary", "outside")}
+            blk["axes"] = {}
+            for a in AXES[1:]:  # 主でない 3 つの組み合わせ（主は totals）
+                ca = model_control_counts(mc, d, a)
+                blk["axes"][ca["axis"]] = {k: ca[k] for k in ("S1", "S2", "S1_minus_S2")}
+            blk["S1_by_gate_state"] = c["S1_by_gate_state"]
+            blk["S1_by_effect_resolution"] = c["S1_by_effect_resolution"]
+            blk["unknown_with_primary_model"] = unknown_model_reasons(mc, d)
+            blk["totals_source"] = "--run（load_model_control）"
+        elif isinstance(sb.get("n_pairs_S1"), int):
+            totals = {"S1": {"pairs": sb["n_pairs_S1"], "locations": sb.get("n_locations_S1"), "trees": sb["n_trees_S1"]},
+                      "S2": {"pairs": sb["n_pairs_S2"], "locations": sb.get("n_locations_S2"), "trees": sb["n_trees_S2"]},
+                      "S1_minus_S2": {"pairs": sb.get("n_pairs_S1_minus_S2"), "locations": None,
+                                      "trees": sb.get("n_trees_S1_minus_S2")}}
+            blk["totals_source"] = "矛の抜き取りの by_decl（--run なし。位置・列の内訳は無い）"
+        else:
+            totals = None
+            blk["totals_source"] = None
+        blk["totals"] = totals
+        if totals is not None:
+            blk["tree_ratios"] = {k: _ratio_block(totals[k]["trees"], N.get(d), M.get(d))
+                                  for k in ("S1", "S2", "S1_minus_S2") if k in totals}
+            if all(isinstance(totals[k]["pairs"], int) and isinstance(totals[k]["trees"], int)
+                   for k in ("S2", "S1_minus_S2")):
+                blk["fixed_wording"] = fixed_wording(totals)
+        ps = [p for p in pairs if p.decl == d]
+        if have_layer and ps:
+            missing = sorted(p.id for p in ps if status_of.get(p.id) is None)
+            if missing:
+                warnings.append(f"{d}: 層の記録の無い判定済みの組 {len(missing)}（{missing[:5]}）。層の中にも外にも数えない")
+            judged = {}
+            for g, sts in MC_GROUPS.items():
+                sub = [p for p in ps if status_of.get(p.id) in sts]
+                cnt = collections.Counter(p.verdict for p in sub)
+                tm = tree_metrics(tree_counts(sub), None, None, None, seed, reps) if sub else None
+                judged[g] = {"prereg": g in MC_PREREG_GROUPS,
+                             "pairs": len(sub), "correct": cnt["正"], "wrong": cnt["誤"], "unknown": cnt["不明"],
+                             "n_S": tm["n"] if tm else 0, "k_S": tm["k"] if tm else 0,
+                             "k_over_n": tm["a"] if tm else None,
+                             "interval": (tm["interval"] or {}).get("a") if tm else None,
+                             "interval_note": tm.get("interval_note") if tm else "判定した組が無い",
+                             "per_tree": tm["per_tree"] if tm else []}
+            judged["no_layer_record"] = {"pairs": len(missing)}
+            blk["judged"] = judged
+        if d == "D1" and have_layer:
+            correct = [p for p in ps if p.verdict == "正"]
+            tba = (*TARGET_BY_ARG, "（未記入）")
+
+            def table(xs: list[Pair], tba: tuple[str, ...] = tba) -> dict:
+                t = {v: {c: 0 for c in MC_COLS} for v in tba}
+                for p in xs:
+                    t[p.target_by_arg or "（未記入）"][mc_col(status_of.get(p.id))] += 1
+                return t
+            blk["d84_step3_correspondence"] = {
+                "_note": "D1 の正だけ。行 = D84 の ③ target_by_arg（人）、列 = 層（解析器）。(b0) なので人の答えの行と"
+                         "層を満たす行が同じとは限らない（control_line が無い）。同じものを 2 回測った表ではない。"
+                         "heavy_write_target（② 重い書き込み先の正だけ）は事前登録の外の参考",
+                "all_correct": table(correct),
+                "heavy_write_target": table([p for p in correct if p.write_target in HEAVY_WRITE_TARGETS])}
+        if d == "D3" and have_layer:
+            correct = [p for p in ps if p.verdict == "正"]
+            t = {v: {c: 0 for c in MC_COLS} for v in (*COMM_TARGETS, "（未記入）")}
+            for p in correct:
+                t[p.write_target or "（未記入）"][mc_col(status_of.get(p.id))] += 1
+            blk["d3_destination_correspondence"] = {
+                "_note": "D3 の正だけ。行 = 通信先の種類（人、D68 の 3）、列 = 層（解析器）。D3 の層は理由のコードの"
+                         "言い換えに近い（net_model_host）", "table": t}
+        out[d] = blk
+    return out
+
+
+def model_control_md(st: dict) -> list[str]:
+    from contradiction_by_decl import MC_COLS, MC_GROUPS
+
+    o = ["", "## モデルの値が制御位置に届く矛の層（D90。解析器の出力。主指標ではない）", "",
+         "S1 = 主 slot の値の主体が MODEL の矛の組、S2 = そのうち MODEL かつ resolved、S1−S2 = **不明**。宣言ごと、合算しない。"
+         "全数には区間を付けない。÷M_d は解析器の出力の割合。攻撃に使えることを示した数ではない。", "",
+         "| 宣言 | 層 | 組 | 物理的な位置 | 木 | 木 ÷N | 木 ÷M_d |", "|---|---|---|---|---|---|---|"]
+    names = {"S1": "S1 流れ込む", "S2": "S2 選べる", "S1_minus_S2": "S1−S2 不明",
+             "S2_choice_reason": "S2 のうち理由が選択理由", "S2_other_reason": "S2 のうち選択理由でない",
+             "S1_gap_inject_primary": "参考: S1 ∩ 案 A（S1 を満たす行の主 slot に GAP_INJECT）",
+             "outside_S1_gap_inject_primary": "参考: S1 の外で主 slot に GAP_INJECT（効果の軸で外れたものなど）"}
+    for d, blk in st.items():
+        if not isinstance(blk, dict) or "wording" not in blk or not blk.get("totals"):
+            continue
+        rat = blk.get("tree_ratios") or {}
+        for k, lab in names.items():
+            c = blk["totals"].get(k)
+            if not c:
+                continue
+            r = rat.get(k) or {}
+            o.append(f"| {d} | {lab} | {_f(c['pairs'], False)} | {_f(c.get('locations'), False)} | {_f(c['trees'], False)} | "
+                     f"{_f(r.get('per_N'))} | {_f(r.get('per_M_d'))} |")
+    o.append("")
+    for d, blk in st.items():
+        if isinstance(blk, dict) and blk.get("fixed_wording"):
+            o.append(f"- {d}（{blk['wording']}）: {blk['fixed_wording']}")
+    for d, blk in st.items():
+        if not isinstance(blk, dict) or not blk.get("judged"):
+            continue
+        o += ["", f"### {d}: 判定との突き合わせ（(f) の抜き取りのまま。木の単位。S2・S1−S2 の群は事前登録の外の参考）", "",
+              "| 群 | 組 | 正 | 誤 | 不明 | n_S | k_S | k_S / n_S | 区間 |", "|---|---|---|---|---|---|---|---|---|"]
+        for g in MC_GROUPS:
+            j = blk["judged"][g]
+            lab = g if j.get("prereg", True) else f"{g}（参考）"
+            o.append(f"| {lab} | {j['pairs']} | {j['correct']} | {j['wrong']} | {j['unknown']} | {j['n_S']} | {j['k_S']} | "
+                     f"{_f(j['k_over_n'])} | {_ci(j['interval']) if j['interval'] else (j['interval_note'] or '—')} |")
+        for g in MC_GROUPS:  # n_S < 10 は件数と木ごとの表だけ（層の外も同じ打ち切り。D73 の 4）
+            j = blk["judged"][g]
+            if j["n_S"] and j["interval"] is None:
+                o += ["", f"{d} {g} の木ごと（n_S = {j['n_S']} < {MIN_TREES_FOR_INTERVAL}）: "
+                      + ", ".join(f"{t['tree']} 正 {t['correct']}・誤 {t['wrong']}・不明 {t['unknown']}" for t in j["per_tree"])]
+    for d, blk in st.items():
+        if not isinstance(blk, dict):
+            continue
+        for key, title in (("d84_step3_correspondence", "D84 の ③ × 層（D1 の正）"),
+                           ("d3_destination_correspondence", "通信先の種類 × 層（D3 の正）")):
+            corr = blk.get(key)
+            if not corr:
+                continue
+            tabs = [("全部の正", corr["all_correct"]), ("② 重い書き込み先の正（事前登録の外の参考）", corr["heavy_write_target"])] \
+                if key == "d84_step3_correspondence" else [("全部の正", corr["table"])]
+            for lab, t in tabs:
+                o += ["", f"### {title}: {lab}", "", "| 人 \\ 層 | " + " | ".join(MC_COLS) + " |",
+                      "|---" * (len(MC_COLS) + 1) + "|"]
+                o += [f"| {v} | " + " | ".join(str(row[c]) for c in MC_COLS) + " |" for v, row in t.items()]
+        if blk.get("S1_by_gate_state") is not None:
+            o += ["", f"- {d} S1 のゲートの状態: " + (", ".join(f"{k} {v}" for k, v in blk["S1_by_gate_state"].items()) or "—")
+                  + "。効果の確度: " + (", ".join(f"{k} {v}" for k, v in blk["S1_by_effect_resolution"].items()) or "—")]
+    return o
+
+
 def aggregate_contradictions(pairs: list[Pair], facts: Optional[RunFacts], sample_N: dict, sample_M: dict,
                              sample_scan: Optional[int], seed: int, reps: int, warnings: list,
                              resolved: Optional[dict] = None) -> dict:
@@ -999,6 +1219,8 @@ def to_markdown(res: dict) -> str:
                      f" → ② 重い書き込み先 {st['step2_heavy_target']['pairs']} 組・{st['step2_heavy_target']['trees']} 木"
                      f" → ③ 場所を引数が決める {st['step3_target_by_arg_yes']['pairs']} 組・{st['step3_target_by_arg_yes']['trees']} 木"
                      f"（③ の内訳: " + ", ".join(f"{k} {v}" for k, v in st["step3_breakdown"].items()) + "）")
+    if res.get("model_control_strata"):
+        o += model_control_md(res["model_control_strata"])
     if res.get("misses"):
         a = res["misses"]["all"]
         o += ["", "## 見落とし", "", f"判定 {a['judged']}。" + ", ".join(f"{k} {v}" for k, v in a["outcomes"].items())
@@ -1167,6 +1389,13 @@ def main(argv: Optional[list[str]] = None) -> int:
                       "source": "矛の抜き取りの出力（--run なし）"}
     res["contradictions"] = aggregate_contradictions(pairs, facts, sample_N, sample_M, sample_scan, a.seed, a.reps,
                                                      warnings, resolved)
+    if a.run or csample is not None:
+        from contradiction_by_decl import load_model_control
+
+        Nd = facts.N if facts else sample_N
+        Md = facts.M if facts else sample_M
+        res["model_control_strata"] = model_control_strata(
+            pairs, csample, load_model_control(a.run) if a.run else None, Nd or {}, Md or {}, a.seed, a.reps, warnings)
     if a.v4_judgments:
         d12 = [p for p in pairs if p.decl in ("D1", "D2")]
         pl = pair_level(d12)
