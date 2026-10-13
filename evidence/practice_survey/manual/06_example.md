@@ -144,7 +144,7 @@
 | 欄 | 値 |
 |---|---|
 | `outcome` | `違反でない` |
-| `evidence` | notes_server.py:19 NotesClient.__init__ → httpx.Client（外）／notes_server.py:23 NotesClient.search → httpx.Client.get（外） |
+| `evidence` | （空。`違反でない` は書かない。D92） |
 
 ## 6.5 例題を少し変えると（答えがどう変わるか）
 

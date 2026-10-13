@@ -4,7 +4,7 @@
     .venv/bin/python scripts/check_survey_practice.py practice/survey_practice.csv
 
 判定の中身（違反かどうか）は確かめない。D90（学生: 記録は練習も本番も最低限）で、判定者が書くのは `outcome` と `evidence` だけに
-なった。確かめるのは、`outcome` が答えの値のどれかか、`evidence` が答えごとの形（`evidence/practice_survey/manual/03_record.md` の
+なった。確かめるのは、`outcome` が答えの値のどれかか、`evidence` が答えごとの形（D91・D92。`違反でない` は空）（`evidence/practice_survey/manual/03_record.md` の
 3 節）か、名簿の欄が配った表と同じか、だけ。
 
 * `outcome` が空の行は「まだ判定していない」として飛ばす（`--all` を付けると誤りにする）。
@@ -51,27 +51,22 @@ def check_row(r: dict) -> list[str]:
             errs.append(f"{c} に改行がある（1 つのセルに改行を入れない。「／」で区切る）")
         if v[:1] in ("=", "+", "-", "@"):
             errs.append(f"{c} の先頭が {v[:1]!r}（表計算のソフトで式として読まれる）")
-    if not ev:
-        errs.append("evidence が空（どの答えでも書く。03_record.md の 3 節）")
+    # D92: evidence を書くのは 違反・違反（深さ 4 の外）・不明・対象外。違反でない は空（書いてあっても見ない）
+    if out == "違反でない":
         return errs
-    # D91: 道筋は「ファイル:行 名前 → … 」。道筋どうしは「／」。URL と「API 名から」は添え物
+    if not ev:
+        errs.append(f"{out} なのに evidence が空（違反は反する行までの道筋、不明は決められなかった呼び出しまでの道筋、"
+                    "対象外は理由を 1 文。03_record.md の 3 節）")
+        return errs
+    # D91: 道筋は「ファイル:行 名前 → …」（本体は書かず、呼んだ先から）。URL と「API 名から」は「／」の後の添え物
     segs = [x.strip() for x in ev.split("／") if x.strip()]
     paths = [x for x in segs if not (x.startswith("http") or x == "API 名から")]
-    if out in ("違反でない", "不明") and paths == ["本体だけ"]:
-        return errs
-    if out in VIOLATIONS:
-        if not paths or not PATH_START_RE.match(paths[0]) or not VIOLATION_END_RE.search(paths[0]):
-            errs.append(f"{out} なのに evidence の最初が反する行までの道筋でない（「ファイル:行 名前 → … → ファイル:行: 何をするか」。"
-                        "03_record.md の 3 節）")
-    if out == "違反（深さ 4 の外）" and not any(PATH_START_RE.match(x) for x in paths[1:]):
-        errs.append("違反（深さ 4 の外） なのに「／」の後に、深さ 4 までにたどった道筋が無い（03_record.md の 3 節）")
-    if out in ("違反でない", "不明"):
-        bad = [x for x in paths if not PATH_START_RE.match(x)]
-        if not paths or bad:
-            errs.append(f"{out} の evidence が、たどった道筋（「ファイル:行 名前 → …」を「／」で並べたもの）になっていない"
-                        f"{'（' + bad[0][:30] + '…）' if bad else ''}（03_record.md の 3 節）")
+    if out in VIOLATIONS and (not paths or not PATH_START_RE.match(paths[0]) or not VIOLATION_END_RE.search(paths[0])):
+        errs.append(f"{out} なのに evidence が反する行までの道筋でない（「ファイル:行 名前 → … → ファイル:行: 何をするか」。"
+                    "03_record.md の 3 節）")
+    if out == "不明" and (not paths or not PATH_START_RE.match(paths[0])):
+        errs.append("不明 なのに evidence が、決められなかった呼び出しまでの道筋（「ファイル:行 名前 → …」）でない（03_record.md の 3 節）")
     return errs
-
 
 def _distributed_roster() -> dict[str, dict[str, str]]:
     """配った表の名簿の欄を pair_id ごとに返す（無ければ空。素振りの EX-1 などは配った表に無いので確かめない）。"""
