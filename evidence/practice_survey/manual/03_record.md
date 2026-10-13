@@ -2,7 +2,7 @@
 
 表は `practice/survey_practice.csv`（repo の根の作業フォルダ。`evidence/practice_survey/survey_practice.csv` の写し）です。1 件 = 1 行。
 **書くのは `outcome` と `evidence` の 2 つだけで、段 9 で 1 回だけ書きます**（D90。練習も本番も）。時間・ラベル・メモ・AI の欄は
-ありません。判定の途中で考えたこと（手順書の段 2〜8・チェックリスト）も書き残しません。書き終えたら
+ありません（翌日の見直しで答えを変えたときは、行を直すだけ。`02_steps.md` の段 9 の 4）。判定の途中で考えたこと（手順書の段 2〜8・チェックリスト）も書き残しません。書き終えたら
 `scripts/check_survey_practice.py` で確かめます（5 節）。
 
 ---
