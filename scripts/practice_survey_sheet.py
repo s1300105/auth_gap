@@ -26,10 +26,9 @@ import json
 import sys
 
 #: 練習の表の欄（`03_record.md`）。先頭の 9 欄を名簿から書き、ほかは空で配る。
+#: D90（学生: 記録は練習も本番も最低限）で、判定者が書く欄は outcome と evidence だけ。
 COLUMNS = ("seq", "pair_id", "tree", "tool", "roster_form", "roster_relpath", "roster_lineno", "decl_lineno", "decl",
-           "outcome", "write_target", "condition_type", "condition", "depth", "unknown_reason", "evidence", "ai_found",
-           "note", "minutes", "ai_used", "ai_model", "ai_log", "stopped_early", "t_start", "t_end", "t_break", "t_noai",
-           "t_ai", "t_guide", "t_setup")
+           "outcome", "evidence")
 
 
 def row_of(seq: int, pair_id: str, entry: dict) -> dict:
