@@ -25,8 +25,9 @@ D1（`readOnlyHint: true`）を宣言した MCP のツールを無作為に選�
 3. **枠を pin し、取得し、名簿を作る**（解析器を使わない）:
    `scripts/sample_population_v2.py --all` → 取得と取得後の条件・重複の除去 → `scripts/survey_roster.py build`。
 4. **抜き取る**: `scripts/survey_roster.py sample <名簿> --seed <封の日付>7 --n <件数> --out <列>`。**判定の前に列をコミットする**。
-5. **判定する**: 列の順に、`PROTOCOL.md` のとおり。表には名簿の 9 欄 ＋ `outcome`・`evidence` だけ。AI を使ったら、1 件 1 ファイルの
-   ログを残す（`PROTOCOL.md` の 8 節）。全部終えるまで AuthGap の出力を見ない。
+5. **判定する**: 列の順に、`PROTOCOL.md` のとおり。表には名簿の 9 欄 ＋ `outcome`・`evidence` だけ。1 件を書いたら、全件で
+   プロンプト 3（AI の参考の答え）を使い、要れば答えを直す。最終の答えが主の数（D96）。1 件 1 ファイルのログを残す（`PROTOCOL.md` の
+   8 節）。全部終えるまで AuthGap の出力を見ない。
 6. **突き合わせる**: 全部終えてから、AuthGap（と比べる相手）の出力と突き合わせて再現率を出す。
 
 件数は 200（D94）。200 が判定できた件か抜き取る件かは未決（O50 の 1）。
