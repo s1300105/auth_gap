@@ -50,6 +50,7 @@ def test_good_rows_for_each_outcome():
     assert cs.check_row(row("不明", "client.sync_items（外）")) == []
     assert cs.check_row(row("不明", "httpx.Client.post（外）: POST /v2/run の意味が文書に無い")) == []  # http で始まる名前は URL でない
     assert cs.check_row(row("不明", "app.py:40: Flask の route にだけ登録（MCP 以外の枠組み）")) == []  # 呼び出しでない点
+    assert cs.check_row(row("不明", "a.py:10 helper → a.py:20 Backend.record: 受け手のクラスが決まらない")) == []  # 添え書き
     assert cs.check_row(row("違反", "client.create_order（外）: 注文を作る／API 名から")) == []
     assert cs.check_row(row("違反", "a.py:20 sync → sdk.Client.sync（外）: 同期のジョブを作る／https://docs.example.com/sync")) == []
     assert cs.check_row(row("違反でない", "")) == []
@@ -85,10 +86,14 @@ def test_evidence_is_one_path_with_attachments_after_it():
         assert any("1 本を先頭に" in e for e in cs.check_row(row(out, ev))), (out, ev)
 
 
-def test_corpus_prefix_and_ascii_arrow_are_errors():
-    assert any("corpus/" in e for e in cs.check_row(row("違反", "corpus/x/a.py:34 helper → corpus/x/a.py:30: open に追記")))
+def test_paths_from_tree_root_arrows_and_separators():
+    for bad in ("corpus/x/a.py:34 helper → corpus/x/a.py:30: open に追記", "./corpus/x/a.py:30: open に追記",
+                "/home/u/auth_gap/corpus/x/a.py:30: open に追記", "./a.py:30: open に追記"):
+        assert any("木の根から" in e for e in cs.check_row(row("違反", bad))), bad
     assert any("->" in e for e in cs.check_row(row("違反", V.replace(" → ", " -> "))))
     assert any("->" in e for e in cs.check_row(row("不明", U.replace(" → ", " -> "))))
+    for bad in ("client.create_order（外）: 注文を作る/API 名から", V + " / https://docs.example.com/x"):
+        assert any("半角" in e for e in cs.check_row(row("違反", bad))), bad
 
 
 def test_newline_and_formula_prefix_are_errors():
@@ -152,6 +157,31 @@ def test_sheet_option_checks_the_main_survey_roster(tmp_path, capsys):
     _write(p, cols, judged)
     assert cs.main([str(p), "--sheet", str(sheet)]) == 0
     assert cs.main([str(p), "--sheet", str(tmp_path / "missing.csv")]) == 1  # 配った表を読めなければ照らせない
+
+
+def test_sheet_option_checks_rows_one_to_one(tmp_path, capsys):
+    # 本番: 行を消す・足す・pair_id を書き換える・重複させると、名簿の欄が合っていても誤り
+    cols, rows = _sheet()
+    dist = [{**rows[0], "pair_id": "S-001", "seq": "1"}, {**rows[1], "pair_id": "S-002", "seq": "2"}]
+    sheet = tmp_path / "dist.csv"
+    _write(sheet, cols, dist)
+    p = tmp_path / "judged.csv"
+    for judged, want in (([dist[0]], "行が無い"),
+                         ([dist[0], dist[1], dist[1]], "同じ pair_id"),
+                         ([dist[0], {**dist[1], "pair_id": "S-009"}], "配った表に無い pair_id")):
+        _write(p, cols, judged)
+        assert cs.main([str(p), "--sheet", str(sheet)]) == 1, want
+        assert want in capsys.readouterr().out
+    _write(p, cols, dist)
+    assert cs.main([str(p), "--sheet", str(sheet)]) == 0
+
+
+def test_duplicate_rows_are_errors_in_practice_too(tmp_path, capsys):
+    cols, rows = _sheet()
+    p = tmp_path / "s.csv"
+    _write(p, cols, rows + [rows[0]])
+    assert cs.main([str(p)]) == 1
+    assert "同じ pair_id" in capsys.readouterr().out
 
 
 def test_shifted_columns_are_reported_once(tmp_path, capsys):
