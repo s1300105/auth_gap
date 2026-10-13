@@ -165,6 +165,7 @@ VS Code の場合:
 | `evidence/population_v4/`・`docs/population_v4.md` | v4 の判定 |
 | `evidence/scan_v2_*/`（すべての run）・`evidence/v4pilot_depth/` | 解析器の出力 |
 | `python -m authgap ...`・`scripts/show_target.py`・`scripts/path_view.py` を練習の木に走らせること | 解析器の出力を見ることになる |
+| 静的解析の道具（pyan3 などの呼び出しグラフの道具・CodeQL・Semgrep・Bandit）を練習の木に走らせること | 正解（人の判定）が道具に寄る（D93）。検索とエディタの移動は使ってよい |
 | `git log` のコミットの本文（`git log -p`・GitHub のコミットの画面も）。とくに 2026-10-09 の練習のコミット | 本記録者がコミットの本文に W-01・T の答えを書いてしまった（`git pull` は本文を出さないので、pull はしてよい） |
 | **どのファイルでも古い版**（`git show <commit>:<パス>`・`git log -p`・GitHub の履歴・blame） | 前の版の手順書・O48 に、練習の件の答えの手がかりがあった（今の版は読んでよい） |
 | `docs/corpus_sample_v4.json`・`evidence/population_v2/`・`evidence/paper_design_20261009/` | 練習の木の宣言の場所・ツールの数・解析器の数が載っている |
