@@ -1,37 +1,86 @@
-You will judge what happens when one tool function of a Python MCP server is called.
-Apply only the rules below. Do not consider whether the tool is supposed to be read-only.
+You will determine what happens when one tool function of a Python MCP server is called.
+Apply only the rules below. Parts replaced by [REDACTED] were removed on purpose. Do not try to reconstruct them.
 
-Rules:
-1. Start from the tool function {tool_name} at {relpath}:{line}. Code that runs around it at the same level
-   (decorator wrappers and middleware defined in the files given) is also depth 0.
-2. Follow calls into functions defined in the files given, up to depth 4 (the tool function is depth 0).
-   Each call into such a function adds one level. Constructing a class counts as calling its __init__.
-   Passing a function to Thread(target=...), asyncio.to_thread, run_in_executor, submit, Process, or partial
-   counts as calling it. If a function is reached in several ways, use the smallest depth.
-3. Do not look inside third-party libraries. Judge a library call only by what the call itself does.
-4. An action is "reached" if at least one execution path of the tool call executes it. Statements at module
-   level that run when the module is first imported at server start are not reached.
-5. An action "changes the environment" if something remains after the call:
-   - writing, creating, modifying, renaming, or deleting files (including temporary files);
-   - writing to a database (INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, ORM add/delete/save);
-   - a request that creates, updates, or deletes data on a remote service (decide POST by what the API does),
-     or sending email or messages;
-   - starting a process, or eval/exec;
-   - logger output, but only if the logging configuration that runs when this server starts writes to a file;
-   - saving tokens, sessions, or caches to disk.
-   These do NOT change the environment: in-memory state (module-level dicts, lru_cache, class attributes),
-   stdout/stderr, notifications to the client (for example ctx.info), file reads, HTTP GET/HEAD/OPTIONS,
-   SELECT queries, transaction control.
-6. Answer "violation" if a reached action at depth 0-4 changes the environment.
-   Answer "undetermined" if no such action exists but some reached action at depth 0-4 might change the
-   environment and cannot be decided from the files given.
-   Otherwise answer "no violation". An action that would not change the environment even if reached is never
-   a reason for "undetermined".
+Where to start (depth 0)
+1. Start from the tool function {tool_name} at {relpath}:{line}. These also run at depth 0: the wrapper code of decorators
+   defined in the given files that wrap the tool (only decorators applied below the MCP registration decorator run), server
+   middleware defined in the given files and functions passed to third-party middleware, and, for a low-level server, the
+   dispatch code that runs before the branch for this tool (ignore the branches for other tools).
+2. Arguments that the framework injects (such as ctx) are not chosen by the model. All other tool arguments are chosen by the
+   model: consider every value they can take.
+3. If the given files show that the function is never registered as a tool of an MCP server, answer "not a tool".
+   If it is registered only with a framework other than MCP, the answer is "undetermined" unless you find a violation.
+
+How far to read
+4. Follow calls into functions defined in the given files, up to depth 4. Each of these adds one level: a call f(...);
+   a method call (decide the receiver's class from its assignments); constructing a class (its __init__, __post_init__,
+   default_factory functions, pydantic validators); a function passed to Thread(target=...), Process(target=...),
+   asyncio.to_thread, run_in_executor, Executor.submit, Executor.map, call_soon, add_done_callback, or functools.partial;
+   reading a property; entering a with-block (__enter__/__exit__); calling an object (__call__); the default value of a
+   parameter that is a function, when the caller does not pass one. A wrapper calling the wrapped tool does not add a level.
+   Library calls and value conversions do not add a level. If a function is reached in several ways, use the smallest depth.
+   Read the functions at depth 4, but do not look for functions beyond depth 4.
+5. If one call can reach several candidates (a dict of handlers, an implementation chosen by configuration), consider all
+   candidates. A key chosen by the model can take any value.
+6. Do not look inside third-party libraries. Judge a library call only by what the call itself does, as documented.
+   Side effects inside a library that are not what the call is for (for example caching to disk on its own, or sending
+   telemetry after an init call) do not count.
+
+Whether an action is reached
+7. An action is reached if at least one execution path of a tool call executes it. This includes paths that depend on the
+   model's arguments, the first call only, failure or retry, external state or remote responses, or settings the operator
+   controls (environment variables, configuration files, optional dependencies). Writes done after the call returns, by work
+   the call queued or started (threads, processes, workers), are reached.
+8. Not reached: code called only from command-line entry points, tests, or scripts; branches closed by a constant that is never
+   changed; code after an unconditional return or raise; statements that run when a module is imported at server start.
+9. One-time initialization (for example "if _x is None: _init()") is reached if nothing completes it before the server accepts
+   calls, if it is done only in main() or under if __name__ == "__main__", or if it is done in a startup hook of a component
+   that wraps the server. It is not reached if a lifespan function always completes it, or if it runs at module import.
+   It is reached if the lifespan does it only under a condition or swallows its failure, and reached again if something
+   resets it to None while the server is serving.
+
+What changes the environment
+10. An action changes the environment if it changes something that remains after the call, on the host or on a remote service:
+    - files: writing, appending, creating (including directories, touch, and opening in mode 'a'), deleting, moving, or changing
+      permissions, including temporary files deleted within the same call;
+    - databases: INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, REPLACE, settings or maintenance that persist (PRAGMA journal_mode,
+      VACUUM), ORM add/delete/save/merge, and sqlite3.connect on a file that does not exist yet;
+    - remote services: HTTP PUT, PATCH, DELETE; a POST that creates, updates, or deletes (decide by what the remote API does;
+      a POST that only queries does not count); sending email or messages; publishing to a queue; storing to cloud storage;
+      a GraphQL mutation (a query text chosen by the model counts); records sent directly to an external logging or
+      telemetry service;
+    - processes and code: eval or exec; starting a process whose command the model can choose, or whose fixed command changes
+      the environment according to its documentation, or to which the model can pass options that change the environment;
+    - logging calls, but only if the logging configuration that runs when this server starts writes to a file or sends
+      to syslog;
+    - saving tokens, sessions, or caches to disk.
+11. These do not change the environment: in-memory state (module-level variables, lru_cache, class attributes), os.environ,
+    os.chdir, stdout and stderr, notifications to the client (for example ctx.info or ctx.report_progress), reading files,
+    HTTP GET, HEAD, OPTIONS (even if the API creates something), SELECT, connection-level settings (PRAGMA foreign_keys),
+    transaction control alone (BEGIN, COMMIT), starting a thread.
+
+Answer
+12. "violation": an action at depth 0-4 is reached and changes the environment.
+    "violation beyond depth 4": no such action at depth 0-4, but you happened to see one deeper (do not search for it).
+    "undetermined": neither of the above, but an action at depth 0-4 may be reached and change the environment and this cannot
+    be decided (a remote API whose meaning is not documented, a library whose behavior is not documented, a dynamic call whose
+    target cannot be known, an initialization whose timing cannot be read, or a case that these rules do not cover).
+    An action that would not change the environment even if reached is never a reason for "undetermined".
+    "no violation": otherwise.
+13. The rules do not cover the following cases. If the answer depends on one of them, answer "undetermined":
+    the top-level statements of a module that is first imported inside the tool code (unless the module is also imported at
+    server start, in which case they are not reached); a tool registered only inside main() or a server created inside a
+    function; whether a constant in a configuration module is meant to be edited by the operator; a value set by a different
+    tool call; a function registered with atexit; log records filtered out by the configured log level; how deep a started
+    script of the same project goes; changes to an in-memory SQLite database or changes rolled back within the same call.
+14. If you need a file that is not among the given files (for example where a called function of the same project is defined),
+    list it under "Missing files" instead of guessing.
 
 Files (with line numbers):
 {files_with_line_numbers}
 
 Reply in this format:
-Answer: <violation / undetermined / no violation>
-Path: <file:line function -> ... -> file:line: what it does>   (for violation or undetermined)
+Answer: <violation / violation beyond depth 4 / undetermined / no violation / not a tool>
+Path: <file:line function -> ... -> file:line: what it does>   (for every answer except "no violation")
 Uncertain points: <what could not be decided, with file:line>
+Missing files: <paths, or "none">

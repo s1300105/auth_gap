@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
-"""実態調査の練習の表（`evidence/practice_survey/survey_practice.csv` を写して書いたもの）の書き方を確かめる。
+"""実態調査の表（配った表を写して `outcome` と `evidence` を書いたもの）の書き方を確かめる。練習にも本番にも使う。
 
-    .venv/bin/python scripts/check_survey_practice.py practice/survey_practice.csv
+    .venv/bin/python scripts/check_survey_practice.py practice/survey_practice.csv            # 練習（配った練習の表と照らす）
+    .venv/bin/python scripts/check_survey_practice.py <書いた表> --sheet <配った本番の表>       # 本番
 
 判定の中身（違反かどうか）は確かめない。D90（学生: 記録は練習も本番も最低限）で、判定者が書くのは `outcome` と `evidence` だけに
-なった。確かめるのは、`outcome` が答えの値のどれかか、`evidence` が答えごとの形（D91・D92。`違反でない` は空）（`survey/PROTOCOL.md` の 6 節。D95 の前は `evidence/practice_survey/manual/03_record.md` の
-3 節）か、名簿の欄が配った表と同じか、だけ。
+なった。確かめるのは、`outcome` が答えの値のどれかか、`evidence` が答えごとの形（D91・D92。`違反でない` は空で、書いてあっても見ない）
+（`survey/PROTOCOL.md` の 7 節。D95 の前は `archive/practice_survey_manual/03_record.md` の 3 節）か、名簿の欄が配った表と同じか、だけ。
 
+* 道筋は 1 本。「ファイル:行 名前」か「名前（外）」を「→」でつなぐ。違反は最後が「ファイル:行: 何をするか」か「名前（外）: 何をするか」。
+  不明は最後が呼び出しか「ファイル:行: 何が決められないか」。パスは木の根から（`corpus/` を付けない）。`->` は使わない。
 * `outcome` が空の行は「まだ判定していない」として飛ばす（`--all` を付けると誤りにする）。
 * 誤りがあれば行ごとに出し、終了コード 1。
 * 前の版の表（時間・ラベル・メモ・AI の欄があるもの）も読める。その欄は見ない。
@@ -29,13 +32,38 @@ VIOLATIONS = ("違反", "違反（深さ 4 の外）")
 REQUIRED_COLUMNS = ("pair_id", "outcome", "evidence")
 #: 精度・見落としの判定の欄（実態調査には無い。D84・手引き 18.4・13 節）。
 FORBIDDEN_COLUMNS = ("target_by_arg", "cause", "verdict", "output_found", "error_class")
-#: 配った表の名簿の欄（判定者は書き換えない。survey/PROTOCOL.md の 6 節）。写しで書き換わると、別の件を判定した記録になる。
+#: 配った表の名簿の欄（判定者は書き換えない。survey/PROTOCOL.md の 7 節）。写しで書き換わると、別の件を判定した記録になる。
 ROSTER_COLS = ("seq", "pair_id", "tree", "tool", "roster_form", "roster_relpath", "roster_lineno", "decl_lineno", "decl")
+#: `--sheet` を省いたときに照らす、配った練習の表。
 DISTRIBUTED_SHEET = os.path.join(ROOT, "evidence", "practice_survey", "survey_practice.csv")
-#: 道筋の始まり「ファイル:行 名前」と、違反の道筋の終わり「ファイル:行: 何をするか」か「名前（外）: 何をするか」（D91）。
-#: 本体は書かず、呼んだ先から書く（D91 の改訂）。始まりは「ファイル:行 名前」「名前（外）」、本体の中の行が反するなら「ファイル:行: …」
-PATH_START_RE = re.compile(r"^(\S+:\d+[ :] ?\S|[^\s→／]+（外）)")
-VIOLATION_END_RE = re.compile(r"(\S+:\d+|（外）): \S")
+#: 道筋の 1 つの段（D91）: 木の中の関数「ファイル:行 名前」、木の外の関数「名前（外）」。本体は書かず、呼んだ先から書く（D91 の改訂）。
+STEP_RE = re.compile(r"^(\S+:\d+ \S+|[^\s→／:]+（外）)$")
+#: 道筋の終わり（D91）: 「ファイル:行: 何をするか」（本体の中の行そのものなら、これだけ）か「名前（外）: 何をするか」。
+END_RE = re.compile(r"^(\S+:\d+|[^\s→／:]+（外）): \S")
+ATTACHMENT_API_NAME = "API 名から"
+#: 添え物の URL（`httpx.Client.post（外）` のような道筋を URL と取り違えないよう、`http://`・`https://` で始まるものだけ）。
+URL_RE = re.compile(r"^https?://\S+$")
+
+
+def _path_errors(path: str, out: str) -> list[str]:
+    """道筋 1 本の形を確かめる（survey/PROTOCOL.md の 7 節）。"""
+    errs: list[str] = []
+    if "->" in path:
+        errs.append("道筋のつなぎに -> がある（「→」でつなぐ）")
+    steps = [x.strip() for x in path.split("→")]
+    if any(st.startswith("corpus/") for st in steps):
+        errs.append("パスに corpus/ が付いている（木の根から書く）")
+    if errs:
+        return errs
+    head, last = steps[:-1], steps[-1]
+    if out in VIOLATIONS:
+        if not all(STEP_RE.match(st) for st in head) or not END_RE.match(last):
+            errs.append(f"{out} なのに evidence が反する行までの道筋でない（「ファイル:行 名前 → … → ファイル:行: 何をするか」、"
+                        "木の外は「名前（外）」。反する行が最後。survey/PROTOCOL.md の 7 節）")
+    elif not all(STEP_RE.match(st) for st in head) or not (STEP_RE.match(last) or END_RE.match(last)):
+        errs.append("不明 なのに evidence が、決められなかった点までの道筋（「ファイル:行 名前 → … → 名前（外）」、呼び出しでなければ"
+                    "「ファイル:行: 何が決められないか」）でない（survey/PROTOCOL.md の 7 節）")
+    return errs
 
 
 def check_row(r: dict) -> list[str]:
@@ -43,7 +71,7 @@ def check_row(r: dict) -> list[str]:
     errs: list[str] = []
     out = (r.get("outcome") or "").strip()
     if out not in SURVEY_OUTCOMES:
-        return [f"outcome = {out!r} は {list(SURVEY_OUTCOMES)} のどれでもない（字のとおりに書く。survey/PROTOCOL.md の 5 節）"]
+        return [f"outcome = {out!r} は {list(SURVEY_OUTCOMES)} のどれでもない（字のとおりに書く。survey/PROTOCOL.md の 6 節）"]
     ev = (r.get("evidence") or "").strip()
     for c in ("outcome", "evidence"):
         v = r.get(c) or ""
@@ -55,29 +83,33 @@ def check_row(r: dict) -> list[str]:
     if out == "違反でない":
         return errs
     if not ev:
-        errs.append(f"{out} なのに evidence が空（違反は反する行までの道筋、不明は決められなかった呼び出しまでの道筋、"
-                    "対象外は理由を 1 文。survey/PROTOCOL.md の 6 節）")
+        errs.append(f"{out} なのに evidence が空（違反は反する行までの道筋、不明は決められなかった点までの道筋、"
+                    "対象外は理由を 1 文。survey/PROTOCOL.md の 7 節）")
         return errs
-    # D91: 道筋は「ファイル:行 名前 → …」（本体は書かず、呼んだ先から）。URL と「API 名から」は「／」の後の添え物
+    if out == "対象外":
+        return errs
+    # D91: 道筋は 1 本で先頭。URL（公式の文書で決めた）と「API 名から」（名前で決めた）は「／」の後の添え物
     segs = [x.strip() for x in ev.split("／") if x.strip()]
-    paths = [x for x in segs if not (x.startswith("http") or x == "API 名から")]
-    if out in VIOLATIONS and (not paths or not PATH_START_RE.match(paths[0]) or not VIOLATION_END_RE.search(paths[0])):
-        errs.append(f"{out} なのに evidence が反する行までの道筋でない（「ファイル:行 名前 → … → ファイル:行: 何をするか」。"
-                    "survey/PROTOCOL.md の 6 節）")
-    if out == "不明" and (not paths or not PATH_START_RE.match(paths[0])):
-        errs.append("不明 なのに evidence が、決められなかった呼び出しまでの道筋（「ファイル:行 名前 → …」）でない（survey/PROTOCOL.md の 6 節）")
+    paths = [x for x in segs if not (URL_RE.match(x) or x == ATTACHMENT_API_NAME)]
+    if len(paths) != 1 or segs[0] != paths[0]:
+        what = "反する行までの道筋" if out in VIOLATIONS else "決められなかった点までの道筋"
+        errs.append(f"{out} の evidence は{what} 1 本を先頭に書き、添えるのは「／」の後の URL と「{ATTACHMENT_API_NAME}」だけ"
+                    f"（道筋が {len(paths)} 本。survey/PROTOCOL.md の 7 節）")
+        return errs
+    errs += _path_errors(paths[0], out)
     return errs
 
-def _distributed_roster() -> dict[str, dict[str, str]]:
-    """配った表の名簿の欄を pair_id ごとに返す（無ければ空。素振りの EX-1 などは配った表に無いので確かめない）。"""
+
+def _distributed_roster(path: str = DISTRIBUTED_SHEET) -> dict[str, dict[str, str]]:
+    """配った表の名簿の欄を pair_id ごとに返す（無ければ空。配った表に無い件（素振りの EX-1 など）は確かめない）。"""
     try:
-        with open(DISTRIBUTED_SHEET, encoding="utf-8-sig", newline="") as f:
+        with open(path, encoding="utf-8-sig", newline="") as f:
             return {r["pair_id"].strip(): {c: (r.get(c) or "").strip() for c in ROSTER_COLS} for r in csv.DictReader(f)}
     except (OSError, KeyError):
         return {}
 
 
-def check_roster(r: dict, roster: dict[str, dict[str, str]]) -> list[str]:
+def check_roster(r: dict, roster: dict[str, dict[str, str]], sheet: str = DISTRIBUTED_SHEET) -> list[str]:
     """名簿の欄が配った表と同じかを確かめる（判定の前の行も確かめる）。"""
     want = roster.get((r.get("pair_id") or "").strip())
     if not want:
@@ -85,8 +117,8 @@ def check_roster(r: dict, roster: dict[str, dict[str, str]]) -> list[str]:
     changed = [c for c in ROSTER_COLS if c in r and (r.get(c) or "").strip() != want[c]]
     if not changed:
         return []
-    return [f"名簿の欄 {changed} が配った表（evidence/practice_survey/survey_practice.csv）と違う（名簿の欄は書き換えない。"
-            "survey/PROTOCOL.md の 6 節。表計算のソフトで並べ替えた・数を変えたなら、配った表の値に戻す）"]
+    return [f"名簿の欄 {changed} が配った表（{os.path.relpath(sheet, ROOT)}）と違う（名簿の欄は書き換えない。"
+            "survey/PROTOCOL.md の 7 節。表計算のソフトで並べ替えた・数を変えたなら、配った表の値に戻す）"]
 
 
 def _header_hint(first_line: str) -> str:
@@ -104,6 +136,8 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("csv")
     ap.add_argument("--all", action="store_true", help="outcome が空の行も誤りにする")
+    ap.add_argument("--sheet", default=DISTRIBUTED_SHEET,
+                    help="名簿の欄を照らす配った表（既定は練習の表 evidence/practice_survey/survey_practice.csv）")
     a = ap.parse_args(argv)
     try:
         with open(a.csv, encoding="utf-8-sig", newline="") as f:
@@ -128,7 +162,10 @@ def main(argv: list[str] | None = None) -> int:
     if not rows:
         print("誤り: 見出しの行だけで、件の行が無い")
         return 1
-    roster = _distributed_roster()
+    roster = _distributed_roster(a.sheet)
+    if not roster:
+        print(f"誤り: 配った表 {a.sheet} を読めない（名簿の欄を照らせない）")
+        bad += 1
     for i, raw in enumerate(rows, start=2):
         pid = raw.get("pair_id") or "?"
         if None in raw:
@@ -141,7 +178,7 @@ def main(argv: list[str] | None = None) -> int:
             bad += 1
             continue
         r = dict(raw)
-        roster_errs = check_roster(r, roster)
+        roster_errs = check_roster(r, roster, a.sheet)
         for e in roster_errs:
             print(f"{i} 行目 {pid}: 誤り: {e}")
         if not r.get("outcome", "").strip():

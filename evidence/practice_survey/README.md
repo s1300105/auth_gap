@@ -40,7 +40,7 @@
 | `survey_answers_DO_NOT_OPEN_FIRST/` | 参考の答え（件ごとのファイル）。正解ではない。6 節の「解析器の出力との関係」は任意の参考（実態調査の振り返りには使わない） | `W-01.md` は W-01 を終えたら。`T-*.md` は T を全部終え、翌日の見直しを済ませてから |
 | `analyzer_view/` | 4 件について解析器が何を出したか（**任意の参考**。実態調査には使わない） | 見なくてよい。見るなら参考の答えと同じ時点より後 |
 
-記録の表の書き方は `scripts/check_survey_practice.py` で確かめます（`survey/PROTOCOL.md` の 6 節）。
+記録の表の書き方は `scripts/check_survey_practice.py` で確かめます（`survey/PROTOCOL.md` の 7 節）。
 
 ## 表の作り方と再現
 

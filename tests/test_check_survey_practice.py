@@ -1,6 +1,7 @@
-"""`scripts/check_survey_practice.py`（実態調査の練習の表の書き方の確かめ）の試験。入力は全部合成。
+"""`scripts/check_survey_practice.py`（実態調査の表の書き方の確かめ）の試験。入力は全部合成。
 
-D90: 判定者が書くのは `outcome` と `evidence` だけ。D91・D92: `evidence` は反する（決められない）行までの道筋で、違反でない は空。
+D90: 判定者が書くのは `outcome` と `evidence` だけ。D91・D92: `evidence` は反する（決められない）点までの道筋 1 本で、違反でない は空。
+形は `survey/PROTOCOL.md` の 7 節。
 """
 
 from __future__ import annotations
@@ -47,7 +48,10 @@ def test_good_rows_for_each_outcome():
     assert cs.check_row(row("違反（深さ 4 の外）", V)) == []
     assert cs.check_row(row("不明", U)) == []
     assert cs.check_row(row("不明", "client.sync_items（外）")) == []
+    assert cs.check_row(row("不明", "httpx.Client.post（外）: POST /v2/run の意味が文書に無い")) == []  # http で始まる名前は URL でない
+    assert cs.check_row(row("不明", "app.py:40: Flask の route にだけ登録（MCP 以外の枠組み）")) == []  # 呼び出しでない点
     assert cs.check_row(row("違反", "client.create_order（外）: 注文を作る／API 名から")) == []
+    assert cs.check_row(row("違反", "a.py:20 sync → sdk.Client.sync（外）: 同期のジョブを作る／https://docs.example.com/sync")) == []
     assert cs.check_row(row("違反でない", "")) == []
     assert cs.check_row(row("対象外", "a.py:12 の辞書は設定の見本で、どのサーバにも登録されない")) == []
 
@@ -64,13 +68,27 @@ def test_evidence_is_required_except_not_violation():
 
 def test_unknown_evidence_is_a_path():
     for bad in ("よく分からない", "Client.sync → post（外）", "読んだ範囲: a.py:1-9"):
-        assert any("決められなかった呼び出し" in e for e in cs.check_row(row("不明", bad))), bad
+        assert any("決められなかった点までの道筋" in e for e in cs.check_row(row("不明", bad))), bad
 
 
 def test_violation_evidence_is_one_path_ending_with_the_line_and_what_it_does():
     for out in ("違反", "違反（深さ 4 の外）"):
-        for bad in ("open で書いているので違反", "a.py:34 helper → a.py:29 save", "helper → save → a.py:30: open"):
+        for bad in ("open で書いているので違反", "a.py:34 helper → a.py:29 save", "helper → save → a.py:30: open",
+                    "a.py:30: open(p) に追記 → a.py:29 save"):  # 反する行が最後でない
             assert any("反する行までの道筋" in e for e in cs.check_row(row(out, bad))), (out, bad)
+
+
+def test_evidence_is_one_path_with_attachments_after_it():
+    # D92: 道筋は 1 本。添え物（URL・「API 名から」）は道筋の後
+    two = V + "／a.py:50 other → a.py:51: unlink(p)"
+    for out, ev in (("違反", two), ("不明", U + "／a.py:9 g → b.py:3 h"), ("違反", "API 名から／" + V)):
+        assert any("1 本を先頭に" in e for e in cs.check_row(row(out, ev))), (out, ev)
+
+
+def test_corpus_prefix_and_ascii_arrow_are_errors():
+    assert any("corpus/" in e for e in cs.check_row(row("違反", "corpus/x/a.py:34 helper → corpus/x/a.py:30: open に追記")))
+    assert any("->" in e for e in cs.check_row(row("違反", V.replace(" → ", " -> "))))
+    assert any("->" in e for e in cs.check_row(row("不明", U.replace(" → ", " -> "))))
 
 
 def test_newline_and_formula_prefix_are_errors():
@@ -117,6 +135,23 @@ def test_roster_columns_must_match_the_distributed_sheet(tmp_path, capsys):
     assert cs.main([str(p)]) == 1
     out = capsys.readouterr().out
     assert "roster_lineno" in out and out.count("配った表（evidence") == 1 and "EX-1: まだ判定していない" in out
+
+
+def test_sheet_option_checks_the_main_survey_roster(tmp_path, capsys):
+    # 本番: --sheet で配った本番の表と照らす（練習の表に無い pair_id でも名簿の欄を確かめる）
+    cols, rows = _sheet()
+    dist = [{**rows[0], "pair_id": "S-001", "tree": "final-a__b"}]
+    sheet = tmp_path / "dist.csv"
+    _write(sheet, cols, dist)
+    judged = [{**dist[0], "roster_relpath": "other.py", "outcome": "違反でない", "evidence": ""}]
+    p = tmp_path / "judged.csv"
+    _write(p, cols, judged)
+    assert cs.main([str(p), "--sheet", str(sheet)]) == 1
+    assert "roster_relpath" in capsys.readouterr().out
+    judged[0]["roster_relpath"] = dist[0]["roster_relpath"]
+    _write(p, cols, judged)
+    assert cs.main([str(p), "--sheet", str(sheet)]) == 0
+    assert cs.main([str(p), "--sheet", str(tmp_path / "missing.csv")]) == 1  # 配った表を読めなければ照らせない
 
 
 def test_shifted_columns_are_reported_once(tmp_path, capsys):

@@ -1,18 +1,26 @@
 You will answer a factual question about a third-party Python library API.
-Answer only about the library's documented behavior. If you are not certain, answer "unknown". Do not guess.
+Answer only from the official documentation of the library or of the remote service it calls.
+If the documentation does not say, answer "unknown". Do not guess.
 
-Package: {package}
+Package: {package} (version: {version, or "unknown"})
 Function or method: {qualified_name}
-How it is called (argument values redacted): {call_line}
+How it is called (secret values replaced by [REDACTED]): {call_line}
 
-Question: When this call executes, which of the following does it do?
-(a) write, modify, or delete files on the local machine
-(b) send a request that creates, updates, or deletes data on a remote service
-(c) start a process or execute code
-(d) write to a database
-(e) none of the above (it only reads or computes)
-(unknown) cannot be determined
+Questions:
+1. What does this call itself do, as documented? Choose all that apply:
+   (a) writes, creates, modifies, renames, or deletes files or directories on the local machine
+   (b) writes to a database (data, schema, or a setting that persists)
+   (c) sends a request that creates, updates, or deletes something on a remote service, or sends an email or a message
+   (d) starts a process or executes code
+   (e) none of the above (it only reads, queries, or computes)
+   (unknown) the documentation does not say
+2. If the call sends an HTTP request: the HTTP method and the endpoint, and what the remote operation does
+   (create / update / delete / query / unknown).
+3. Other side effects that the documentation mentions but that are not what the call is for
+   (for example caching to disk or sending telemetry), or "none mentioned".
 
 Reply in this format:
-Answer: <a/b/c/d/e/unknown; more than one is allowed>
-Evidence: <URL of the official documentation that supports the answer>
+1. Answer: <letters, or unknown>
+2. HTTP: <method endpoint: create / update / delete / query / unknown>, or "no HTTP request"
+3. Other side effects: <...>
+Evidence: <URL of the official documentation for each answer>
