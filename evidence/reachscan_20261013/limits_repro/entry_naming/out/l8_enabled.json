@@ -1,0 +1,409 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": false,
+    "deny": [
+      "run-cmd-kw",
+      "run-cmd-pos"
+    ],
+    "excluded_files": [],
+    "source": "in_tree_exposure"
+  },
+  "dispatch_sites": [],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "1a4a5a0bce26174bf65972982b8ccd0776403a72c26fa3cecb5f70b5ce271f01",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {
+    "NODOM(no_gate)": 2
+  },
+  "mcp_version": {
+    "class": "unknown",
+    "evidence": []
+  },
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.006,
+    "run_id": "local",
+    "src_root": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/limits_repro/entry_naming/l8_enabled"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 16,
+          "exec_mode": {
+            "shell": {
+              "const": true,
+              "prin": "OP",
+              "source": "literal"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 16,
+          "relpath": "server.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "shape_from": {
+            "shell_string": "annotation"
+          },
+          "site": "subprocess.run",
+          "slots": {
+            "shell_string": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "cmd"
+              ],
+              "shape": {
+                "formal": "cmd",
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_MODEL_ARGV"
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:shell_string": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 3,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:shell_string": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:shell_string": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "op"
+          ],
+          "covered_by": "op",
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 16,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "server.py",
+          "site": "subprocess.run",
+          "slot": "shell_string",
+          "unit_id": "mcp:run_kw:d3f15820bb15",
+          "verdicts": [
+            "INVENTORY"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 15,
+        "module": "server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "cmd"
+          }
+        ],
+        "qualname": "run_kw",
+        "relpath": "server.py",
+        "schema_hash": "d3f15820bb15",
+        "tool_name": "run-cmd-kw",
+        "unit_id": "mcp:run_kw:d3f15820bb15"
+      },
+      "unresolved_in_tree_calls": [],
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [],
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 11,
+          "exec_mode": {
+            "shell": {
+              "const": true,
+              "prin": "OP",
+              "source": "literal"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 11,
+          "relpath": "server.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "shape_from": {
+            "shell_string": "annotation"
+          },
+          "site": "subprocess.run",
+          "slots": {
+            "shell_string": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "cmd"
+              ],
+              "shape": {
+                "formal": "cmd",
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_MODEL_ARGV"
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:shell_string": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 3,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:shell_string": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:shell_string": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "op"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 11,
+          "notes": [
+            "select_manifest_only(assumed_trig)"
+          ],
+          "relpath": "server.py",
+          "site": "subprocess.run",
+          "slot": "shell_string",
+          "unit_id": "mcp:run_pos:d3f15820bb15",
+          "verdicts": [
+            "GAP_INJECT"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "assumed"
+      },
+      "unit": {
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 10,
+        "module": "server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "cmd"
+          }
+        ],
+        "qualname": "run_pos",
+        "relpath": "server.py",
+        "schema_hash": "d3f15820bb15",
+        "tool_name": "run_pos",
+        "unit_id": "mcp:run_pos:d3f15820bb15"
+      },
+      "unresolved_in_tree_calls": [],
+      "validator_shapes": []
+    }
+  ],
+  "unresolved_handler": {
+    "count": 0,
+    "sites": []
+  }
+}

@@ -1430,6 +1430,104 @@ v4（D66）では正 46 のうち 43 が裏方の書き込みだった（初回�
   登録していない使い捨て、`unmapped` の 1 件を飛ばし、W-01 は手で選んだ。本番は `--keep` で機械的に決まる枠・⑦・飛ばさない。
 - **期限**: 手引きと事前登録の封（段階 B2）の前。結果を見た後には変えない（CLAUDE.md 規則 5）。
 
+## O50. reachscan との比較（2026-10-13）で見つけた解析器の誤りと見落とし — **既知の限界（`analyzer-freeze-3` のまま直さない）。要る判断は 50.1・50.2・50.3・50.6・50.10・50.11**
+
+- **経緯**: reachscan（`research_notes/AuthGap 類似研究 検索/08_reachscan_deep_dive.md`）と同じ合成ケースに凍結版をかけ、
+  違いの出た 16 点を、1 点ずつ別の担当が凍結版で再現し、さらに別の担当が反証にかけた（`authgap/` の 27 ファイルの sha256 は
+  `docs/fingerprint.json` と全件一致、どれも `--determinism 3` でバイト一致）。記録: `evidence/reachscan_20261013/authgap_limits_check.json`
+  （再現と反証の全文）、ケースは同じ下の `limits_repro/` ほか。**評価・練習のデータ（annotation_fixes_*、practice_*、
+  population_v3 / v4、corpus/）には走らせていない。** v2 の頻度は、保存済みの出力から読めた分だけ書いた。
+- **既に記録があったもの（ここでは足さない）**: `Tool(name=<非リテラル>)` を join しないこと（事前登録 §2.9 (a)(d)、設計どおり）、
+  木全体から名前だけで join すること（U44 / R2-r1-5）、FastMCP の位置引数のツール名（U41）、深さの上限の先（O29 / O38 / D54）、
+  末尾名の降下の誤警報（O41 / O43 / D61 改訂 G2）、条件つき import の先 1 件にしか降りないこと（U10 / R1-r1-6）。
+  詳説ノートの §10 はこれらを「記載が見つからなかった」と書いたが、誤りだった（ノートに訂正を書いた）。
+- **50.1（U41 への追記。誤 clear）非リテラルのヒントが落ちると、残ったキーで宣言が付け替わる。** 値が読めないキーを
+  `take()` が黙って捨てる（`authgap/entries.py:2756-2759`）ことは U41 / R2-r1-4 にある。新しいのは、ほかのキーが残る形で、
+  `readOnlyHint=<非リテラル>, destructiveHint=False` は D2（`dparse.py:212`）、`readOnlyHint=<非リテラル>, idempotentHint=True` は
+  D4（`dparse.py:236`, `:597`）として、D_unknown の印なしに判定される。値が実行時に True なら本来は D1 で、追記や INSERT の D1 の
+  矛が注記なしの内になり、D4 では追記以外の D1 の矛がすべて消える。`os.remove` は矛のまま欄だけ D1 から移る。U41 の「影響は
+  D_unknown と r_D の報告だけ」（review_triage.md:2105）はこの形では成り立たない。版 >=2.0 の snake_case と低レベルの `Tool(...)` も
+  同じ関数を通る。再現: B1 c06 mixed_nonliteral、annx c07_nonlit_ro、`limits_repro/annotations/refute/new/` の r01_mixed・r07_idem_remove。
+  v2: デコレータの位置には 0 件（R2-r1-4 の探索）。「注釈ありで D_kind が完全に空」は f0a_v2_run3（凍結前の版）で 125 ユニットで、
+  121 は snake_case の木で説明がつき、残る 4 ユニット / 4 木の形は不明。**要る判断**: (1) U41 の行に書き足すか。(2) 最終評価の手検証で、
+  readOnlyHint が非リテラルのまま D2 / D4 と判定されたユニットを拾い、D1 として見直す手順を足すか。
+- **50.2（U41 への追記。数え落としと分母）注釈の辞書の計算キーと、r_malformed の分母の形。** `{RO_KEY: True}`・`{"readOnly" + "Hint": True}`
+  も `**` と同じ検査（`entries.py:2784`, `:2793`）で黙って飛ばし ⊥ にする（仕様どおりなら D_unknown。判定は同じ）。別に、事前登録 §2.11
+  （`docs/preregistration.md:489`）と `scripts/r_malformed.py:23` の分母は `ToolAnnotations` / `dict` / `unreadable` だけで、仕様 Def 6 の
+  `ToolAnnotations(**{...})`（annotation_form `unpack`、`entries.py:2781`）を含まない。分子は形を見ないので、版 <2.0 の木の
+  `ToolAnnotations(**{"read_only_hint": True})` は分子に入って分母に入らない（合成の 1 木で r_malformed_annotated = 2.0）。v2 run24 は
+  分子が 0 で動かない。**要る判断**: (1) 計算キーを U41 に一言足すか。(2) r_malformed の分母に unpack を足すか（足すなら §2.11 からの
+  逸脱として、最終評価のデータを見る前に決める）。(3) review_triage.md にだけある U41 (f)（`{"readOnlyHint": True, **OVR}` の後勝ちを
+  見ない D1 の誤警報）を O42 の表に独立の行として載せるか。
+- **50.3（新。表示と分母）裸の `@tool` を import 元を見ずに mcp 規則に当てる。** `_match_decorator`（`entries.py:284-293`）は末尾名で
+  照らし、最初に当たった規則を返す。mcp 規則の names に `"tool"` がある（`catalog/entries.py:138`）ので、langchain_core・crewai・agno・
+  strands・claude_agent_sdk の `@tool` も jlowin fastmcp の `@mcp.tool` も framework=mcp になり、デコレータ形の fastmcp 規則
+  （`:143-148`）と langchain 規則（`:163`）はどの名前にも当たらない。判定は変わらない（どの経路も enforced）。誤るのは unit_id の接頭辞、
+  framework、`scripts/f0a.py:359` / `:615` の枠組み別の集計で、`entry_seed.py:1116` の pydantic の種も mcp / fastmcp 以外に当たる
+  （O42 U23 の条件の外）。v2（F0a v2 run3）では宣言ファイルの外の langchain / langgraph / strands のディレクトリに 22 ユニット（3 木）。
+  これらに MCP の宣言は無く、scan_v2_run24 の矛には 0 行。F0a の点検（`docs/f0a_checks.md:835`, `:856`, `:901`）で付記として観察されていた
+  が、限界としては記録していなかった。再現: `rs_entry_verify/new/t14_key_import_shadow`、`limits_repro/entry_naming_refute/r9_*`。
+  **要る判断**: (a) 論文で「入口 14 形」と書くとき、2 規則が凍結版では当たらないことを注記するか。(b) MCP 母集団のツール数・危険
+  ユニット数に MCP に登録されない `@tool` を入れたまま報告するか（入れるなら、新しいデータでは import 元を数えて別に示すか）。
+  (c) U23 にこの例外を書き足すか。
+- **50.4（新。U11 と同じ族。誤警報）モジュール直下で束縛し直した `eval` / `exec` / `compile` / `open` を組込みの sink として読む。**
+  `resolve_call_name`（`authgap/srcindex.py:486-493`）は関数の局所束縛と import 表に無い名前を `BUILTIN_SINK_NAMES`（`:21`）なら
+  `builtins.<名>` にする。モジュール直下の `def eval` / `compile = str` / `from fsutil import *` の open はどちらの表にも入らない。
+  木内の定義にも降りるので、本当の効果に加えて存在しない EXEC / FS_WRITE の行が 1 本足される。再現: `sinks_adv/cases/r_eval_shadow`
+  ほか。v2: `builtins.eval` / `exec` / `compile` の矛は run1〜run24 で 0 件、`builtins.open` の矛（run24 で 4 件）がこの形かは不明。
+  手検証では誤 E3 として落ちる。直すには「その名前の無条件の束縛がちょうど 1 つ」などの条件が要り、素朴に直すと
+  `if sys.version_info < (3, 0): def open` の真の行を消す（U11 の守り、review_triage.md:870 と同じ論点）。
+- **50.5（O41 / O39 への追記。誤 clear）sink 語彙に行の無い API の名前。** 合成の最小ケースで効果の行が出なかったもの:
+  ファイルは `os.open(..., O_WRONLY|O_CREAT|O_TRUNC)` + `os.write`、`os.truncate`、`Path.rename`、`Path.replace`、`aiofiles.open(p, "w")`、
+  `Path.touch`、`os.removedirs`、`shutil.copytree`（`Path.rmdir` は D43 で記録済み）。`os.rename` / `os.replace` は矛になる。`Path.replace` は
+  `str.replace` の TRANSFER に当たるので `unresolved` も残らない。通信は `webbrowser.open`、`websockets.connect`、`socket.create_connection`、
+  `httpx.stream` と `Client().stream`、aiohttp の `ClientSession().get` / `.delete` / `.ws_connect`、`aiohttp.request`（O39 が挙げるのは
+  requests / httpx のセッションのメソッドとモジュール関数だけ）。影響は D1 / D2 の矛（ファイル、`httpx.stream("DELETE")`）と D3 の矛・
+  D4 の不の消失。v2 の件数は不明。足すなら語彙の凍結からの逸脱で、`os.open` のフラグの読み方、pathlib の rename / replace / rmdir を
+  D32 の破壊的な一覧に入れるか、`webbrowser.open` を NET と SPAWN のどちらにするか、socket の宛先の slot の写し方を決める。
+- **50.6（新。仕様との食い違い。誤 clear）辞書・`getattr`・局所変数の関数値で振り分けた先に降りない。** `HANDLERS[k](p)`・
+  `HANDLERS.get(k)(p)`・`getattr(obj, k)(p)`・`fn = _rm; fn(p)` は、`dotted_of(node.func)` が None になるか関数値を持たないので候補 0 になり
+  （`val/engine.py:978-980`, `:1998-2000`）、ユニットに `unresolved` を立てるだけで効果の行も G5 の印も出ない。readOnlyHint のツール 7 つが
+  これらを通って `os.remove` に届くのに矛も不も 0 だった（`limits_repro/unresolved_depth*/l14_subscript_dispatch`）。`trig.py:238-251` は同じ
+  呼び出しを dispatch_sites に resolved・候補 `['_rm']` と出すが、降下には使わない。**仕様書 §2.5.4（`AUTHGAP_BRIEF_v3.md:449`）は
+  「ディスパッチキーが定数辞書リテラル…へ解決できる場合は候補集合を展開し各候補を別経路とする。解決できない場合は
+  `OPAQUE(dynamic_registry)`」と書く**ので、実装と食い違う（D64 のレビューは「Def 4 の形にも無い関数値の追跡は仕様の外」として
+  `evidence/review/explore_r3plus.json` に記録しただけ）。**要る判断**: 仕様書の値も残したうえで（CLAUDE.md 規則 6）、限界の節に書くか、
+  食い違いとして `docs/decisions.md` に決定を残すか。
+- **50.7（U42 への追記。分母と誤警報）低レベルの join の候補名をハンドラの本体からしか集めない。** モジュール直下の
+  `HANDLERS = {"zap": _zap}` を引く形では zap が候補にならず `Tool(name="zap")` は join されない（`entries.py:2615`。§2.9 (a) の字義どおり）。
+  一方 trig の索引（`trig.py:163-170`, `:286-289`）は同じ辞書を読む。効果は 50.6 のとおりどちらにしても行にならないので、矛の有無は
+  変わらない。逆に、ハンドラ本体の辞書リテラルのキーは用途を問わず候補になり（`entries.py:2624-2627`）、別ファイルの同名の
+  `Tool(name="status", readOnlyHint=True)` と組むと共通処理の追記が D1 の誤警報になる（l4e。U44 の R2-r1-5 との組み合わせ）。
+- **50.8（U42 への追記。誤 clear）共通処理の引数の比較が、帰属を狭める。** `_dispatch_test_names`（`analyze.py:637-641`）は比較の左辺を
+  見ないので、name の分岐の外にある `arguments.get("action") == "wipe"` の文字列が join 済みのツール名と一致すると、その効果の帰属が
+  全ツールから {wipe} に狭まり、readOnly の peek の D1 の矛が消える（l5c。対照 l5c_ctl では出る）。R2-r2-4 は誤警報の向きだけを記録して
+  いた。U42 の直し方 (1) を入れれば消える。v2 / v3 で該当する形は 0 件（R2-r2-4 の AST 測定）。
+- **50.9（U44 への追記。誤 clear）MCP 以外の `Tool(name=…)` も宣言のリテラルとして集め、先勝ちで MCP の宣言を奪う。**
+  `find_tool_literals` は末尾名で集める（`entries.py:2698-2700`。広さは反例 B6 のため意図して残した）。`langchain_core.tools.Tool` や
+  `dspy.Tool` は absent のリテラルになり、パスの順で同名の MCP のリテラルより先にあると先勝ち（`entries.py:2814`）で readOnlyHint の宣言を
+  奪い、`os.remove` の D1 が消える（l7a / l7b。対照 l7a_ctl と順序を替えた l7e では出る）。奪われたリテラルは未 join の件数にも入らない。
+  最終評価では、低レベルサーバと同じ木に非 MCP の `Tool(name=…)` があるかを手で確かめる。v2 で起きたかは不明。
+- **50.10（新。表示と読み方）ユニットの `opaque_reasons` の `unresolved` は見分けの印にならない。** `val/engine.py:886` は木内の定義・
+  TRANSFER・構築子・組込みの値操作のどれにも当たらない呼び出しで立て（sink 自身、`f.write`、`sorted`、`log.info(...)` を含む）、`:518` は
+  import したモジュール名や組込みの名前を読むだけで立てる。呼び出し位置は残らず（`:224-226`）、判定には使わない（`verdict.py:152-155`）。
+  そのため O17 の「ユニットに `opaque_reasons` が残るので clean ではなく opaque」は `unresolved` については根拠にならず、手順書の見落としの
+  原因分類（`final_evaluation_procedure.md:822`, `:1176-1177`）でもほぼ必ず真になる。probe / F0a の `resolution_by_cause` はユニットの印を
+  効果の理由と同じ箱に足すので、合計が確度の opaque の件数と合わない（f0a_v2_run3 で 4,702 に対し 11,506。`verification_guide.md:265` の
+  点検は成り立たない）。**要る判断**: (a) 論文で O17 の言い方を使うなら、`unresolved` 以外の理由か `unresolved_in_tree_calls`・`cap_hits` に
+  限るか。(b) 手順書の原因分類の手がかりから `unresolved` を外すか（封の前なら直す）。(c) `resolution_by_cause` を効果の理由とユニットの
+  印に分けて出し直すか（scripts/ だけでできる）。
+- **50.11（表示・主張の範囲）opaque 率は「見つかった効果の slot の値」の率で、降りなかった先を数えない。** `opaque_ratio_primary_slots` /
+  `_all_slots` と `in_tree_resolution_ratio` は、見つかった効果だけから数える（仕様書 §10、事前登録 :164、`analyze.py:969-983`）。深さの
+  上限・50.6 の振り分け・局所変数の関数値の先は分子にも分母にも入らない（B2-c01 は 4 ツール中 3 つの書き込みが深さの外で opaque 率 0.0・
+  解決率 1.0）。manifest に率が無いのは仕様書 §5.1 どおりで誤りではない。`docs/related_work.md` の「言えそうなこと」3 と
+  `docs/contradiction_matrix.md:206` の「opaque 52.8%」は、この率を「実効の側で決められなかったものの率」と読ませる。**要る判断**:
+  (1) 論文では「見つかった効果の制御位置のうち値を読み切れなかった割合」と書き、呼び出しの解決率や検出の網羅率ではないと明記するか。
+  (2) 降りなかったものの量として、`cap_hits` に depth のあるユニットと `unresolved_in_tree_calls` のあるユニットを併記するか（50.6 の
+  振り分けと関数値は印が無く数えられない、とも書く）。(3) 率を論文に載せるなら、凍結版で v2 の F0a を取り直すか（今の f0a_v2_run3 は
+  凍結前の `4a26f92`）。
+- **なぜ直さないか（全項目）**: 凍結（`analyzer-freeze-3`）の後に見つけたため。CLAUDE.md の「凍結後に見つけた誤りは直さず限界として書く」。
+
 ## O19. 先行研究 3 本が主軸と競合する可能性 — **解決（D40: 3 本とも一次資料を読んだ。判断は (a)「測定研究として立て直す」）**
 
 **2026-09-22 追記（D39）**: 学生が PDF を提供し、R2（AgentFlow）と R3（ReactAppScan）を読了。

@@ -1,0 +1,1240 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [
+    {
+      "candidates": [
+        "git_log"
+      ],
+      "form": "if_chain",
+      "lineno": 28,
+      "opaque_reason": null,
+      "relpath": "server.py",
+      "resolution": "resolved",
+      "selector": "name",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "_run_shell"
+      ],
+      "form": "if_chain",
+      "lineno": 30,
+      "opaque_reason": null,
+      "relpath": "server.py",
+      "resolution": "resolved",
+      "selector": "name",
+      "selector_is_model": true
+    }
+  ],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "1a4a5a0bce26174bf65972982b8ccd0776403a72c26fa3cecb5f70b5ce271f01",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {
+    "NODOM(no_gate)": 4,
+    "NODOM(non_binding_gate)": 4
+  },
+  "mcp_version": {
+    "class": "lt2",
+    "evidence": [
+      "lt2:import:server.py:mcp.server.fastmcp",
+      "lt2:shape:server.py:handle_call_tool:call_tool"
+    ]
+  },
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.016,
+    "run_id": "local",
+    "src_root": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/limits_repro/lowlevel_join/saved/A_entries"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [
+          "openWorldHint"
+        ],
+        "malformed": [
+          "read_only_hint"
+        ],
+        "open_world": true,
+        "present_no_bound": []
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 22,
+          "exec_mode": {
+            "shell": {
+              "const": true,
+              "prin": "OP",
+              "source": "literal"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 22,
+          "relpath": "server.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "shape_from": {
+            "shell_string": "annotation"
+          },
+          "site": "subprocess.run",
+          "slots": {
+            "shell_string": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "command"
+              ],
+              "shape": {
+                "formal": "command",
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_MODEL_ARGV"
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:shell_string": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 3,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:shell_string": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:shell_string": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 22,
+          "relpath": "server.py",
+          "rubric_1c": "gap(P0:no_exposure)",
+          "site": "subprocess.run",
+          "slot": "shell_string",
+          "unit_id": "mcp:_run_shell:f3f2d5cea802",
+          "verdicts": [
+            "GAP_INJECT",
+            "GAP_SELECT"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "traced",
+        "via": {
+          "candidates": [
+            "_run_shell"
+          ],
+          "form": "if_chain",
+          "lineno": 30,
+          "opaque_reason": null,
+          "relpath": "server.py",
+          "resolution": "resolved",
+          "selector": "name",
+          "selector_is_model": true
+        }
+      },
+      "unit": {
+        "annotation_form": "dict",
+        "annotations": {
+          "openWorldHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 21,
+        "malformed_fields": [
+          "read_only_hint"
+        ],
+        "module": "server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "command"
+          }
+        ],
+        "qualname": "_run_shell",
+        "relpath": "server.py",
+        "schema_hash": "f3f2d5cea802",
+        "tool_name": "run_shell",
+        "unit_id": "mcp:_run_shell:f3f2d5cea802"
+      },
+      "unresolved_in_tree_calls": [],
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": false,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": [
+          "destructiveHint"
+        ],
+        "upper": [
+          "FS_READ",
+          "NET"
+        ]
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "effects": [
+        {
+          "entry_lineno": 17,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "literal"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 17,
+          "relpath": "server.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "shape_from": {
+            "argv[*]": "annotation",
+            "cwd": "annotation"
+          },
+          "site": "subprocess.run",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "git",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "max_count"
+              ],
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "git",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "log",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "attrs": [
+                      "joined"
+                    ],
+                    "prin": "MODEL",
+                    "prov": "resolved",
+                    "roots": [
+                      "max_count"
+                    ],
+                    "shape": {
+                      "items": [
+                        {
+                          "prin": "OP",
+                          "prov": "resolved",
+                          "shape": {
+                            "const": "-n",
+                            "k": "Atom"
+                          }
+                        },
+                        {
+                          "prin": "MODEL",
+                          "prov": "resolved",
+                          "roots": [
+                            "max_count"
+                          ],
+                          "shape": {
+                            "formal": "max_count",
+                            "k": "Atom"
+                          }
+                        }
+                      ],
+                      "k": "Str"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            },
+            "cwd": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "repo_path"
+              ],
+              "shape": {
+                "formal": "repo_path",
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV"
+        }
+      ],
+      "enforcement": {
+        "path": "highlevel_decorator",
+        "reason": "v2.0.0b2 `2713b53` の mcpserver/tools/base.py:152 が fn_metadata.call_fn_with_arg_validation(...)。v2.2.0 `9972c21` では当該 API は deprecated で経路は base.py:149 validate_arguments + :176 call_fn。v1.30.0 `8c2fa6e` では fastmcp/tools/base.py:101",
+        "verdict": "enforced"
+      },
+      "gate": {
+        "0:argv0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:argv[*]": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:cwd": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:cwd": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL"
+      },
+      "req_val": {
+        "0:argv0": "MODEL",
+        "0:argv[*]": "MODEL",
+        "0:cwd": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 17,
+          "notes": [
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "server.py",
+          "site": "subprocess.run",
+          "slot": "argv0",
+          "unit_id": "mcp:git_log:0c140b83781b",
+          "verdicts": [
+            "GAP_SELECT"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 17,
+          "notes": [
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "server.py",
+          "site": "subprocess.run",
+          "slot": "argv[*]",
+          "unit_id": "mcp:git_log:0c140b83781b",
+          "verdicts": [
+            "GAP_INJECT",
+            "GAP_SELECT"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 17,
+          "notes": [
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "server.py",
+          "site": "subprocess.run",
+          "slot": "cwd",
+          "unit_id": "mcp:git_log:0c140b83781b",
+          "verdicts": [
+            "GAP_INJECT",
+            "GAP_SELECT"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "traced",
+        "via": {
+          "candidates": [
+            "git_log"
+          ],
+          "form": "if_chain",
+          "lineno": 28,
+          "opaque_reason": null,
+          "relpath": "server.py",
+          "resolution": "resolved",
+          "selector": "name",
+          "selector_is_model": true
+        }
+      },
+      "unit": {
+        "annotation_form": "ToolAnnotations",
+        "annotations": {
+          "destructiveHint": false,
+          "readOnlyHint": true
+        },
+        "entry_kind": "decorator",
+        "framework": "mcp",
+        "is_async": false,
+        "lineno": 15,
+        "module": "server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "repo_path"
+          },
+          {
+            "annotation": "int",
+            "default": "10",
+            "index": 1,
+            "name": "max_count"
+          }
+        ],
+        "qualname": "git_log",
+        "relpath": "server.py",
+        "schema_hash": "0c140b83781b",
+        "tool_name": "git_log",
+        "unit_id": "mcp:git_log:0c140b83781b"
+      },
+      "unresolved_in_tree_calls": [],
+      "validator_shapes": []
+    },
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [
+          "openWorldHint",
+          "readOnlyHint"
+        ],
+        "malformed": [
+          "read_only_hint"
+        ],
+        "present_no_bound": [
+          "destructiveHint"
+        ]
+      },
+      "D_kind_by_tool": {
+        "git_log": {
+          "bottom": false,
+          "explicit": [
+            "readOnlyHint"
+          ],
+          "present_no_bound": [
+            "destructiveHint"
+          ],
+          "upper": [
+            "FS_READ",
+            "NET"
+          ]
+        },
+        "run_shell": {
+          "bottom": true,
+          "explicit": [
+            "openWorldHint"
+          ],
+          "open_world": true,
+          "present_no_bound": []
+        }
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "dispatch_join": {
+        "attribution": {
+          "0": [
+            "git_log"
+          ],
+          "1": [
+            "run_shell"
+          ]
+        },
+        "effects_all_tools": [],
+        "tools": [
+          "git_log",
+          "run_shell"
+        ],
+        "unjoined_literals": 0
+      },
+      "effects": [
+        {
+          "entry_lineno": 29,
+          "exec_mode": {
+            "shell": {
+              "const": false,
+              "prin": "OP",
+              "source": "literal"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 17,
+          "relpath": "server.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "site": "subprocess.run",
+          "slots": {
+            "argv0": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "const": "git",
+                "k": "Atom"
+              }
+            },
+            "argv[*]": {
+              "prin": "OP",
+              "prov": "resolved",
+              "shape": {
+                "items": [
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "git",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "const": "log",
+                      "k": "Atom"
+                    }
+                  },
+                  {
+                    "attrs": [
+                      "joined"
+                    ],
+                    "prin": "OP",
+                    "prov": "resolved",
+                    "shape": {
+                      "items": [
+                        {
+                          "prin": "OP",
+                          "prov": "resolved",
+                          "shape": {
+                            "const": "-n",
+                            "k": "Atom"
+                          }
+                        },
+                        {
+                          "prin": "OP",
+                          "prov": "resolved",
+                          "shape": {
+                            "const": 10,
+                            "k": "Atom"
+                          }
+                        }
+                      ],
+                      "k": "Str"
+                    }
+                  }
+                ],
+                "k": "Seq"
+              }
+            },
+            "cwd": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "arguments[\"repo_path\"]"
+              ],
+              "shape": {
+                "formal": "arguments",
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_CONST_ARGV",
+          "witness_chain": [
+            "git_log"
+          ]
+        },
+        {
+          "entry_lineno": 31,
+          "exec_mode": {
+            "shell": {
+              "const": true,
+              "prin": "OP",
+              "source": "literal"
+            }
+          },
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 22,
+          "relpath": "server.py",
+          "required_by": [
+            "A5",
+            "F3",
+            "F9"
+          ],
+          "resolution": "resolved",
+          "site": "subprocess.run",
+          "slots": {
+            "shell_string": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "arguments[\"command\"]"
+              ],
+              "shape": {
+                "formal": "arguments",
+                "k": "Atom"
+              }
+            }
+          },
+          "sub_kind": "SPAWN_MODEL_ARGV",
+          "witness_chain": [
+            "_run_shell"
+          ]
+        }
+      ],
+      "enforcement": {
+        "path": "lowlevel_v1_decorator",
+        "pin": {
+          "name": "mcp",
+          "source": "",
+          "spec": null,
+          "status": "unreadable",
+          "version": null
+        },
+        "reason": "版が確定しない（`>=` だけの指定は版を確定しない。規則 2）。**既定で「執行あり」とも「執行なし」とも仮定しない**（規則 4）",
+        "verdict": "D_unknown"
+      },
+      "gate": {
+        "0:argv0": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "<inline_literal>",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "name"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L30"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:argv[*]": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "<inline_literal>",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "name"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L30"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "0:cwd": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "<inline_literal>",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "name"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L30"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:shell_string": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "<inline_literal>",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "name"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "non_binding_gate",
+            "verdict": "NODOM",
+            "witness": "L30"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 5,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [
+          {
+            "form": "value",
+            "grade": "MODEL",
+            "name": "<inline_literal>",
+            "node": 6,
+            "recognition": "V",
+            "subjects": [
+              "name"
+            ],
+            "value_grade": "allowlist"
+          }
+        ],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM",
+          "witness": "L30"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 4,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "<inline_literal>",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "name"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM",
+            "witness": "L30"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [
+            {
+              "form": "value",
+              "grade": "MODEL",
+              "name": "<inline_literal>",
+              "node": 6,
+              "recognition": "V",
+              "subjects": [
+                "name"
+              ],
+              "value_grade": "allowlist"
+            }
+          ],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [
+            6
+          ],
+          "per_copy": [
+            {
+              "node": 5,
+              "status": "gated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": true,
+      "grades": {
+        "0:argv0": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:argv[*]": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "0:cwd": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:shell_string": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "receiver",
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL"
+      },
+      "req_val": {
+        "0:argv0": "MODEL",
+        "0:argv[*]": "MODEL",
+        "0:cwd": "MODEL",
+        "1:shell_string": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 17,
+          "notes": [
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "server.py",
+          "site": "subprocess.run",
+          "slot": "argv0",
+          "unit_id": "mcp-lowlevel-v1:handle_call_tool:965af40077db",
+          "verdicts": [
+            "GAP_SELECT"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 17,
+          "notes": [
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "server.py",
+          "site": "subprocess.run",
+          "slot": "argv[*]",
+          "unit_id": "mcp-lowlevel-v1:handle_call_tool:965af40077db",
+          "verdicts": [
+            "GAP_SELECT"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind",
+            "kind_no_bound"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 17,
+          "notes": [
+            "contradiction_unknown:D1:spawn_command"
+          ],
+          "relpath": "server.py",
+          "site": "subprocess.run",
+          "slot": "cwd",
+          "unit_id": "mcp-lowlevel-v1:handle_call_tool:965af40077db",
+          "verdicts": [
+            "GAP_INJECT",
+            "GAP_SELECT"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "SPAWN",
+          "lineno": 22,
+          "relpath": "server.py",
+          "site": "subprocess.run",
+          "slot": "shell_string",
+          "unit_id": "mcp-lowlevel-v1:handle_call_tool:965af40077db",
+          "verdicts": [
+            "GAP_INJECT",
+            "GAP_SELECT"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "traced",
+        "via": {
+          "candidates": [
+            "git_log"
+          ],
+          "form": "if_chain",
+          "lineno": 28,
+          "opaque_reason": null,
+          "relpath": "server.py",
+          "resolution": "resolved",
+          "selector": "name",
+          "selector_is_model": true
+        }
+      },
+      "unit": {
+        "dispatch_annotations": {
+          "git_log": {
+            "annotations": {
+              "destructiveHint": false,
+              "readOnlyHint": true
+            },
+            "form": "ToolAnnotations"
+          },
+          "run_shell": {
+            "annotations": {
+              "openWorldHint": true
+            },
+            "form": "dict"
+          }
+        },
+        "dispatch_names": [
+          "exec",
+          "git_log",
+          "run_shell"
+        ],
+        "dispatch_unjoined": 0,
+        "entry_kind": "lowlevel_v1",
+        "framework": "mcp-lowlevel-v1",
+        "is_async": true,
+        "lineno": 26,
+        "malformed_fields": [
+          "read_only_hint"
+        ],
+        "module": "server",
+        "params": [
+          {
+            "annotation": "str",
+            "index": 0,
+            "name": "name"
+          },
+          {
+            "annotation": "dict",
+            "index": 1,
+            "name": "arguments"
+          }
+        ],
+        "qualname": "handle_call_tool",
+        "relpath": "server.py",
+        "schema_hash": "965af40077db",
+        "tool_name": null,
+        "unit_id": "mcp-lowlevel-v1:handle_call_tool:965af40077db"
+      },
+      "unresolved_in_tree_calls": [],
+      "validator_shapes": []
+    }
+  ],
+  "unresolved_handler": {
+    "count": 0,
+    "sites": []
+  }
+}

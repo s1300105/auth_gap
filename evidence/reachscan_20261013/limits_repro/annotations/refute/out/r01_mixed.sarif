@@ -1,0 +1,779 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 22
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION FS_WRITE@path via builtins.open (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind",
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:lit_append:9cfbf83d25f6",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:path"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 22
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT FS_WRITE@path via builtins.open (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind",
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:lit_append:9cfbf83d25f6",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "GAP_INJECT:path"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 76
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION NET@url.host via requests.get (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "NET",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "url.host",
+            "unit_id": "mcp:lit_closed_world:8b42ee9ede2c",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:url.host"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 76
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION NET@url.path via requests.get (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "NET",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "url.path",
+            "unit_id": "mcp:lit_closed_world:8b42ee9ede2c",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:url.path"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 76
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION NET@url.query via requests.get (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "NET",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "url.query",
+            "unit_id": "mcp:lit_closed_world:8b42ee9ede2c",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:url.query"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 76
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT NET@url.query via requests.get (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "NET",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "url.query",
+            "unit_id": "mcp:lit_closed_world:8b42ee9ede2c",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "GAP_INJECT:url.query"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 76
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION NET@url.scheme via requests.get (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "NET",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "url.scheme",
+            "unit_id": "mcp:lit_closed_world:8b42ee9ede2c",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:url.scheme"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 64
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION FS_WRITE@path via builtins.open (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind",
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:lit_idem_overwrite:9cfbf83d25f6",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:path"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 64
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT FS_WRITE@path via builtins.open (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind",
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:lit_idem_overwrite:9cfbf83d25f6",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "GAP_INJECT:path"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 51
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION DB@params via psycopg.Cursor.execute (proxy)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind",
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "DB",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "params",
+            "unit_id": "mcp:lit_insert:0204fbf97916",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:params"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 51
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT DB@params via psycopg.Cursor.execute (proxy)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind",
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "DB",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "params",
+            "unit_id": "mcp:lit_insert:0204fbf97916",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "GAP_INJECT:params"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 51
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION DB@sql via psycopg.Cursor.execute (proxy)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind",
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "DB",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "sql",
+            "unit_id": "mcp:lit_insert:0204fbf97916",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:sql"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 81
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION FS_WRITE@path via os.remove (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:lit_ro_nl_destr:b1ef559040e6",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:path"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 81
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT FS_WRITE@path via os.remove (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:lit_ro_nl_destr:b1ef559040e6",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "GAP_INJECT:path"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 36
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION FS_WRITE@path via builtins.open (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind",
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:lit_write_const:24207698f081",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:path"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 15
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT FS_WRITE@path via builtins.open (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:nl_append:9cfbf83d25f6",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "GAP_INJECT:path"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 71
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT NET@url.query via requests.get (direct)"
+          },
+          "properties": {
+            "D_layer_present": [],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "NET",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "url.query",
+            "unit_id": "mcp:nl_closed_world:8b42ee9ede2c",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "GAP_INJECT:url.query"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 57
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT FS_WRITE@path via builtins.open (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind_no_bound"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:nl_idem_overwrite:9cfbf83d25f6",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "GAP_INJECT:path"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 44
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT DB@params via psycopg.Cursor.execute (proxy)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "proxy",
+            "grade": null,
+            "kind": "DB",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "params",
+            "unit_id": "mcp:nl_insert:0204fbf97916",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "GAP_INJECT:params"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "informationUri": "https://github.com/s1300105/auth_gap",
+          "name": "AuthGap",
+          "rules": [
+            {
+              "fullDescription": {
+                "text": "CONTRADICTION on slot params"
+              },
+              "id": "CONTRADICTION:params",
+              "shortDescription": {
+                "text": "CONTRADICTION"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "CONTRADICTION on slot path"
+              },
+              "id": "CONTRADICTION:path",
+              "shortDescription": {
+                "text": "CONTRADICTION"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "CONTRADICTION on slot sql"
+              },
+              "id": "CONTRADICTION:sql",
+              "shortDescription": {
+                "text": "CONTRADICTION"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "CONTRADICTION on slot url.host"
+              },
+              "id": "CONTRADICTION:url.host",
+              "shortDescription": {
+                "text": "CONTRADICTION"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "CONTRADICTION on slot url.path"
+              },
+              "id": "CONTRADICTION:url.path",
+              "shortDescription": {
+                "text": "CONTRADICTION"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "CONTRADICTION on slot url.query"
+              },
+              "id": "CONTRADICTION:url.query",
+              "shortDescription": {
+                "text": "CONTRADICTION"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "CONTRADICTION on slot url.scheme"
+              },
+              "id": "CONTRADICTION:url.scheme",
+              "shortDescription": {
+                "text": "CONTRADICTION"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "GAP_INJECT on slot params"
+              },
+              "id": "GAP_INJECT:params",
+              "shortDescription": {
+                "text": "GAP_INJECT"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "GAP_INJECT on slot path"
+              },
+              "id": "GAP_INJECT:path",
+              "shortDescription": {
+                "text": "GAP_INJECT"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "GAP_INJECT on slot url.query"
+              },
+              "id": "GAP_INJECT:url.query",
+              "shortDescription": {
+                "text": "GAP_INJECT"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}

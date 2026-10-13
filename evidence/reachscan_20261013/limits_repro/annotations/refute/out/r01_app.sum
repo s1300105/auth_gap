@@ -1,0 +1,9 @@
+UNIT nl_append L14 form=ToolAnnotations ann={'destructiveHint': False} und=None disp=None
+   D_kind: {"bottom": false, "explicit": ["destructiveHint"], "present_no_bound": [], "upper": ["DB", "FS_READ", "FS_WRITE", "NET"]}
+   ROW L15 builtins.open FS_WRITE verdicts=['GAP_INJECT'] notes=[]
+UNIT nl_insert L42 form=ToolAnnotations ann={'destructiveHint': False} und=None disp=None
+   D_kind: {"bottom": false, "explicit": ["destructiveHint"], "present_no_bound": [], "upper": ["DB", "FS_READ", "FS_WRITE", "NET"]}
+   ROW L44 psycopg.Cursor.execute DB verdicts=['GAP_INJECT'] notes=[]
+UNIT nl_write_const L28 form=ToolAnnotations ann={'destructiveHint': False} und=None disp=None
+   D_kind: {"bottom": false, "explicit": ["destructiveHint"], "present_no_bound": [], "upper": ["DB", "FS_READ", "FS_WRITE", "NET"]}
+   ROW L29 builtins.open FS_WRITE verdicts=[] notes=['contradiction_unknown:D2:fs_writeout']

@@ -1,0 +1,264 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 32
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION EXEC@code_text via builtins.compile (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "EXEC",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "code_text",
+            "unit_id": "mcp:ro_shadow_compile_assign:18bf56c3f7ac",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:code_text"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 32
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT EXEC@code_text via builtins.compile (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "EXEC",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "code_text",
+            "unit_id": "mcp:ro_shadow_compile_assign:18bf56c3f7ac",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "GAP_INJECT:code_text"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 22
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION EXEC@code_text via builtins.eval (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "EXEC",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "code_text",
+            "unit_id": "mcp:ro_shadow_eval:18bf56c3f7ac",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:code_text"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 22
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT EXEC@code_text via builtins.eval (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "EXEC",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "code_text",
+            "unit_id": "mcp:ro_shadow_eval:18bf56c3f7ac",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "GAP_INJECT:code_text"
+        },
+        {
+          "level": "note",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 27
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "CONTRADICTION FS_WRITE@path via builtins.open (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:ro_shadow_open_w:2a41d9093b8f",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "CONTRADICTION:path"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "server.py"
+                },
+                "region": {
+                  "startLine": 27
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "GAP_INJECT FS_WRITE@path via builtins.open (direct)"
+          },
+          "properties": {
+            "D_layer_present": [
+              "kind"
+            ],
+            "covered_by": null,
+            "form": "direct",
+            "grade": null,
+            "kind": "FS_WRITE",
+            "resolution": "resolved",
+            "rule_w": false,
+            "slot": "path",
+            "unit_id": "mcp:ro_shadow_open_w:2a41d9093b8f",
+            "weak_reason": null,
+            "witness": "",
+            "witness_chain": []
+          },
+          "ruleId": "GAP_INJECT:path"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "informationUri": "https://github.com/s1300105/auth_gap",
+          "name": "AuthGap",
+          "rules": [
+            {
+              "fullDescription": {
+                "text": "CONTRADICTION on slot code_text"
+              },
+              "id": "CONTRADICTION:code_text",
+              "shortDescription": {
+                "text": "CONTRADICTION"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "CONTRADICTION on slot path"
+              },
+              "id": "CONTRADICTION:path",
+              "shortDescription": {
+                "text": "CONTRADICTION"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "GAP_INJECT on slot code_text"
+              },
+              "id": "GAP_INJECT:code_text",
+              "shortDescription": {
+                "text": "GAP_INJECT"
+              }
+            },
+            {
+              "fullDescription": {
+                "text": "GAP_INJECT on slot path"
+              },
+              "id": "GAP_INJECT:path",
+              "shortDescription": {
+                "text": "GAP_INJECT"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}

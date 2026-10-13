@@ -1,0 +1,40 @@
+dispatch_sites: []
+unresolved_handler: {"count": 0, "sites": []}
+parse_failures: [] truncations: []
+======================================================================
+UNIT append_idem_nonlit qual= append_idem_nonlit entry_kind= decorator line= 43 ann_form= ToolAnnotations ann= {'idempotentHint': True}
+  D_kind: {"bottom": true, "explicit": [], "idempotent": true, "present_no_bound": ["idempotentHint"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_WRITE FS_WRITE line 44 destructive= False fs_mode= a res= resolved form= direct chain= None attributed= - opaque= -
+  ROW builtins.open FS_WRITE path line 44 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind_no_bound'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D4', 'contradiction_reason:D4:fs_append'] attributed= -
+======================================================================
+UNIT append_lit qual= append_lit entry_kind= decorator line= 20 ann_form= ToolAnnotations ann= {'destructiveHint': False, 'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": ["destructiveHint"], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_WRITE FS_WRITE line 21 destructive= False fs_mode= a res= resolved form= direct chain= None attributed= - opaque= -
+  ROW builtins.open FS_WRITE path line 21 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
+======================================================================
+UNIT append_nonlit qual= append_nonlit entry_kind= decorator line= 13 ann_form= ToolAnnotations ann= {'destructiveHint': False}
+  D_kind: {"bottom": false, "explicit": ["destructiveHint"], "present_no_bound": [], "upper": ["DB", "FS_READ", "FS_WRITE", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT builtins.open FS_WRITE FS_WRITE line 14 destructive= False fs_mode= a res= resolved form= direct chain= None attributed= - opaque= -
+  ROW builtins.open FS_WRITE path line 14 verdicts= ['GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'D_layer_present:kind:FS_WRITE'] attributed= -
+======================================================================
+UNIT insert_lit qual= insert_lit entry_kind= decorator line= 35 ann_form= ToolAnnotations ann= {'destructiveHint': False, 'readOnlyHint': True}
+  D_kind: {"bottom": false, "explicit": ["readOnlyHint"], "present_no_bound": ["destructiveHint"], "upper": ["FS_READ", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT psycopg.Cursor.execute DB DB_WRITE line 37 destructive= - fs_mode= - res= resolved form= proxy chain= None attributed= - opaque= -
+  ROW psycopg.Cursor.execute DB params line 37 verdicts= ['CONTRADICTION', 'GAP_INJECT'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:db_modify'] attributed= -
+  ROW psycopg.Cursor.execute DB sql line 37 verdicts= ['CONTRADICTION'] covered_by= None D_layer= ['kind', 'kind_no_bound'] notes= ['select_manifest_only(assumed_trig)', 'contradiction:D1', 'contradiction_reason:D1:db_modify'] attributed= -
+======================================================================
+UNIT insert_nonlit qual= insert_nonlit entry_kind= decorator line= 27 ann_form= ToolAnnotations ann= {'destructiveHint': False}
+  D_kind: {"bottom": false, "explicit": ["destructiveHint"], "present_no_bound": [], "upper": ["DB", "FS_READ", "FS_WRITE", "NET"]}
+  trig: {'label': 'MODEL', 'mode': 'assumed'} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT psycopg.Cursor.execute DB DB_WRITE line 29 destructive= - fs_mode= - res= resolved form= proxy chain= None attributed= - opaque= -
+  ROW psycopg.Cursor.execute DB params line 29 verdicts= ['GAP_INJECT'] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)', 'D_layer_present:kind:DB'] attributed= -
+  ROW psycopg.Cursor.execute DB sql line 29 verdicts= [] covered_by= None D_layer= ['kind'] notes= ['select_manifest_only(assumed_trig)'] attributed= -

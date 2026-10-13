@@ -1,0 +1,77 @@
+[
+  {
+    "declared": {
+      "bottom": true,
+      "explicit": [],
+      "idempotent": true,
+      "present_no_bound": [
+        "idempotentHint"
+      ]
+    },
+    "lineno": 44,
+    "observed_kind": "FS_WRITE",
+    "relpath": "server.py",
+    "tool_name": "append_idem_nonlit",
+    "unit_id": "mcp:append_idem_nonlit:65ea5fa56bc4"
+  },
+  {
+    "declared": {
+      "bottom": false,
+      "explicit": [
+        "readOnlyHint"
+      ],
+      "present_no_bound": [
+        "destructiveHint"
+      ],
+      "upper": [
+        "FS_READ",
+        "NET"
+      ]
+    },
+    "lineno": 21,
+    "observed_kind": "FS_WRITE",
+    "relpath": "server.py",
+    "tool_name": "append_lit",
+    "unit_id": "mcp:append_lit:65ea5fa56bc4"
+  },
+  {
+    "declared": {
+      "bottom": false,
+      "explicit": [
+        "readOnlyHint"
+      ],
+      "present_no_bound": [
+        "destructiveHint"
+      ],
+      "upper": [
+        "FS_READ",
+        "NET"
+      ]
+    },
+    "lineno": 37,
+    "observed_kind": "DB",
+    "relpath": "server.py",
+    "tool_name": "insert_lit",
+    "unit_id": "mcp:insert_lit:9eeb3bf467f9"
+  },
+  {
+    "declared": {
+      "bottom": false,
+      "explicit": [
+        "readOnlyHint"
+      ],
+      "present_no_bound": [
+        "destructiveHint"
+      ],
+      "upper": [
+        "FS_READ",
+        "NET"
+      ]
+    },
+    "lineno": 37,
+    "observed_kind": "DB",
+    "relpath": "server.py",
+    "tool_name": "insert_lit",
+    "unit_id": "mcp:insert_lit:9eeb3bf467f9"
+  }
+]

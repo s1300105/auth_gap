@@ -1,0 +1,500 @@
+{
+  "d_op": {
+    "allow": null,
+    "ask": [],
+    "bottom": true,
+    "deny": [],
+    "excluded_files": [],
+    "source": null
+  },
+  "dispatch_sites": [
+    {
+      "candidates": [
+        "os.remove"
+      ],
+      "form": "if_chain",
+      "lineno": 24,
+      "opaque_reason": null,
+      "relpath": "server.py",
+      "resolution": "resolved",
+      "selector": "name",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "os.remove"
+      ],
+      "form": "if_chain",
+      "lineno": 26,
+      "opaque_reason": null,
+      "relpath": "server.py",
+      "resolution": "resolved",
+      "selector": "name",
+      "selector_is_model": true
+    },
+    {
+      "candidates": [
+        "os.remove"
+      ],
+      "form": "if_chain",
+      "lineno": 28,
+      "opaque_reason": null,
+      "relpath": "server.py",
+      "resolution": "resolved",
+      "selector": "name",
+      "selector_is_model": true
+    }
+  ],
+  "fingerprint": {
+    "caps": {
+      "AST_NODE_CAP": 20000,
+      "CFG_NODE_CAP": 2000,
+      "EFFECT_ROW_CAP": 200,
+      "K": 16,
+      "MAX_DEPTH": 4,
+      "SUMMARY_CAP": 200,
+      "WALL_CLOCK_CAP": 10.0
+    },
+    "counts": {
+      "direct_sink_names": 67,
+      "pipe_rows": 2,
+      "proxy_rows": 17,
+      "validator_shapes": 12,
+      "weak_reasons": 22
+    },
+    "frozen_at": null,
+    "git_commit": null,
+    "schema": "authgap/v1",
+    "sha256": {
+      "enforcement_table": "cdd0d27b161e9397d28ef7c8b977645746e3087787954e501d29a160889f8bb2",
+      "entry_catalog": "1a4a5a0bce26174bf65972982b8ccd0776403a72c26fa3cecb5f70b5ce271f01",
+      "gate_vocabulary": "b9e3b37efa378551fcb5a9928d57a1aa8fc963c5c6cab7a54358d2f21b47e600",
+      "sink_table": "48554b6446c24a981ee61a263f12742068e25567a2bb203998037815ed1853cb"
+    }
+  },
+  "gate_verdict_counts": {
+    "NODOM(no_gate)": 3
+  },
+  "mcp_version": {
+    "class": "lt2",
+    "evidence": [
+      "lt2:shape:server.py:call_tool:call_tool"
+    ]
+  },
+  "parse_failures": [],
+  "population": "mcp_server",
+  "run_meta": {
+    "elapsed_s": 0.009,
+    "run_id": "local",
+    "src_root": "/tmp/claude-0/-home-user-auth-gap/47888d26-b392-5abf-8b68-d6c4b0285b05/scratchpad/limits_repro/annotations/refute/new/r03_lowlevel"
+  },
+  "schema": "authgap/v1",
+  "truncations": [],
+  "units": [
+    {
+      "D_kind": {
+        "bottom": true,
+        "explicit": [
+          "readOnlyHint"
+        ],
+        "present_no_bound": []
+      },
+      "D_kind_by_tool": {
+        "wipe_lit": {
+          "bottom": false,
+          "explicit": [
+            "readOnlyHint"
+          ],
+          "present_no_bound": [],
+          "upper": [
+            "FS_READ",
+            "NET"
+          ]
+        },
+        "wipe_nl": {
+          "bottom": true,
+          "explicit": [],
+          "present_no_bound": []
+        },
+        "wipe_spread": {
+          "bottom": true,
+          "explicit": [],
+          "present_no_bound": []
+        }
+      },
+      "alias_facts": [],
+      "cap_hits": [],
+      "config_atoms": {},
+      "d_prev_joined": false,
+      "dispatch_join": {
+        "attribution": {
+          "0": [
+            "wipe_nl"
+          ],
+          "1": [
+            "wipe_spread"
+          ],
+          "2": [
+            "wipe_lit"
+          ]
+        },
+        "effects_all_tools": [],
+        "tools": [
+          "wipe_lit",
+          "wipe_nl",
+          "wipe_spread"
+        ],
+        "unjoined_literals": 0
+      },
+      "effects": [
+        {
+          "destructive": true,
+          "entry_lineno": 25,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 25,
+          "relpath": "server.py",
+          "resolution": "resolved",
+          "site": "os.remove",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "arguments[\"p\"]"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE"
+        },
+        {
+          "destructive": true,
+          "entry_lineno": 27,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 27,
+          "relpath": "server.py",
+          "resolution": "resolved",
+          "site": "os.remove",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "arguments[\"q\"]"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE"
+        },
+        {
+          "destructive": true,
+          "entry_lineno": 29,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 29,
+          "relpath": "server.py",
+          "resolution": "resolved",
+          "site": "os.remove",
+          "slots": {
+            "path": {
+              "prin": "MODEL",
+              "prov": "resolved",
+              "roots": [
+                "arguments[\"r\"]"
+              ],
+              "shape": {
+                "k": "Unknown"
+              }
+            }
+          },
+          "sub_kind": "FS_WRITE"
+        }
+      ],
+      "enforcement": {
+        "path": "lowlevel_v1_decorator",
+        "pin": {
+          "name": "mcp",
+          "source": "",
+          "spec": null,
+          "status": "unreadable",
+          "version": null
+        },
+        "reason": "版が確定しない（`>=` だけの指定は版を確定しない。規則 2）。**既定で「執行あり」とも「執行なし」とも仮定しない**（規則 4）",
+        "verdict": "D_unknown"
+      },
+      "gate": {
+        "0:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2:path": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 5,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_occ": {
+        "candidates": [],
+        "gate": {
+          "reason": "no_gate",
+          "verdict": "NODOM"
+        },
+        "notes": [],
+        "passing": [],
+        "per_copy": [
+          {
+            "node": 3,
+            "status": "ungated"
+          }
+        ],
+        "req": "MODEL"
+      },
+      "gate_occ_by_effect": {
+        "0": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 3,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "1": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 4,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        },
+        "2": {
+          "candidates": [],
+          "gate": {
+            "reason": "no_gate",
+            "verdict": "NODOM"
+          },
+          "notes": [],
+          "passing": [],
+          "per_copy": [
+            {
+              "node": 5,
+              "status": "ungated"
+            }
+          ],
+          "req": "MODEL"
+        }
+      },
+      "gate_predicate_present": false,
+      "grades": {
+        "0:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "1:path": {
+          "grade": null,
+          "weak_reason": null
+        },
+        "2:path": {
+          "grade": null,
+          "weak_reason": null
+        }
+      },
+      "notes": [],
+      "opaque_reasons": [
+        "unresolved"
+      ],
+      "req_occ": "MODEL",
+      "req_occ_by_effect": {
+        "0": "MODEL",
+        "1": "MODEL",
+        "2": "MODEL"
+      },
+      "req_val": {
+        "0:path": "MODEL",
+        "1:path": "MODEL",
+        "2:path": "MODEL"
+      },
+      "rows": [
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 25,
+          "relpath": "server.py",
+          "site": "os.remove",
+          "slot": "path",
+          "unit_id": "mcp-lowlevel-v1:call_tool:33283c184333",
+          "verdicts": [
+            "GAP_INJECT",
+            "GAP_SELECT"
+          ]
+        },
+        {
+          "D_layer_present": [],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 27,
+          "relpath": "server.py",
+          "site": "os.remove",
+          "slot": "path",
+          "unit_id": "mcp-lowlevel-v1:call_tool:33283c184333",
+          "verdicts": [
+            "GAP_INJECT",
+            "GAP_SELECT"
+          ]
+        },
+        {
+          "D_layer_present": [
+            "kind"
+          ],
+          "covered_by": null,
+          "form": "direct",
+          "kind": "FS_WRITE",
+          "lineno": 29,
+          "notes": [
+            "contradiction:D1",
+            "contradiction_reason:D1:fs_write"
+          ],
+          "relpath": "server.py",
+          "site": "os.remove",
+          "slot": "path",
+          "unit_id": "mcp-lowlevel-v1:call_tool:33283c184333",
+          "verdicts": [
+            "CONTRADICTION",
+            "GAP_INJECT",
+            "GAP_SELECT"
+          ]
+        }
+      ],
+      "trig": {
+        "label": "MODEL",
+        "mode": "traced",
+        "via": {
+          "candidates": [
+            "os.remove"
+          ],
+          "form": "if_chain",
+          "lineno": 24,
+          "opaque_reason": null,
+          "relpath": "server.py",
+          "resolution": "resolved",
+          "selector": "name",
+          "selector_is_model": true
+        }
+      },
+      "unit": {
+        "dispatch_annotations": {
+          "wipe_lit": {
+            "annotations": {
+              "readOnlyHint": true
+            },
+            "form": "ToolAnnotations"
+          },
+          "wipe_nl": {
+            "annotations": {},
+            "form": "ToolAnnotations"
+          },
+          "wipe_spread": {
+            "annotations": {},
+            "form": "dict"
+          }
+        },
+        "dispatch_names": [
+          "wipe_lit",
+          "wipe_nl",
+          "wipe_spread"
+        ],
+        "dispatch_unjoined": 0,
+        "entry_kind": "lowlevel_v1",
+        "framework": "mcp-lowlevel-v1",
+        "is_async": true,
+        "lineno": 23,
+        "module": "server",
+        "params": [
+          {
+            "index": 0,
+            "name": "name"
+          },
+          {
+            "index": 1,
+            "name": "arguments"
+          }
+        ],
+        "qualname": "call_tool",
+        "relpath": "server.py",
+        "schema_hash": "33283c184333",
+        "tool_name": null,
+        "unit_id": "mcp-lowlevel-v1:call_tool:33283c184333"
+      },
+      "unresolved_in_tree_calls": [],
+      "validator_shapes": []
+    }
+  ],
+  "unresolved_handler": {
+    "count": 0,
+    "sites": []
+  }
+}

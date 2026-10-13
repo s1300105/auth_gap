@@ -1,0 +1,14 @@
+dispatch_sites: [{"candidates": ["os.remove"], "form": "if_chain", "lineno": 22, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}, {"candidates": ["os.remove"], "form": "if_chain", "lineno": 25, "opaque_reason": null, "relpath": "server.py", "resolution": "resolved", "selector": "name", "selector_is_model": true}]
+unresolved_handler: {"count": 0, "sites": []}
+parse_failures: [] truncations: []
+======================================================================
+UNIT None qual= call_tool entry_kind= lowlevel_v1 line= 21 ann_form= None ann= None
+  unit.dispatch_names = ["wipe", "wipe_lit"]
+  dispatch_join = {"attribution": {"0": ["wipe"], "1": ["wipe_lit"]}, "effects_all_tools": [], "tools": ["wipe", "wipe_lit"], "unjoined_literals": 0}
+  D_kind: {"bottom": true, "explicit": ["readOnlyHint"], "present_no_bound": []}
+  trig: {'label': 'MODEL', 'mode': 'traced', 'via': {'candidates': ['os.remove'], 'form': 'if_chain', 'lineno': 22, 'opaque_reason': None, 'relpath': 'server.py', 'resolution': 'resolved', 'selector': 'name', 'selector_is_model': True}} opaque_reasons: ['unresolved'] notes: []
+  unresolved_in_tree_calls: []
+  EFFECT os.remove FS_WRITE FS_WRITE line 23 destructive= True fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  EFFECT os.remove FS_WRITE FS_WRITE line 26 destructive= True fs_mode= - res= resolved form= direct chain= None attributed= - opaque= -
+  ROW os.remove FS_WRITE path line 23 verdicts= ['GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= [] notes= None attributed= -
+  ROW os.remove FS_WRITE path line 26 verdicts= ['CONTRADICTION', 'GAP_INJECT', 'GAP_SELECT'] covered_by= None D_layer= ['kind'] notes= ['contradiction:D1', 'contradiction_reason:D1:fs_write'] attributed= -
